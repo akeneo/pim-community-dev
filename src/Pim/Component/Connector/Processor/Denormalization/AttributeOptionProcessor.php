@@ -90,7 +90,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function findOrCreateAttributeOption(array $convertedItem)
     {

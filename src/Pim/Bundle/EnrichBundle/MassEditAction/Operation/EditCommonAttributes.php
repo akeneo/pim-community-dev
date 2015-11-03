@@ -8,10 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\FileStorage;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -237,7 +237,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * Add all the values required by the given attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param LocaleInterface    $locale
      */
     protected function addValues(AttributeInterface $attribute, $locale)

@@ -41,7 +41,7 @@ class VariantGroupAxisValidator extends ConstraintValidator
 
     /**
      * @param VariantGroupAxis $constraint
-     * @param \Pim\Component\Catalog\Model\GroupInterface   $variantGroup
+     * @param GroupInterface   $variantGroup
      */
     protected function validateAttributeAxis(VariantGroupAxis $constraint, GroupInterface $variantGroup)
     {

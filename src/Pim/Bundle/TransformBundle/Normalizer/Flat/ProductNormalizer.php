@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -92,7 +92,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize properties
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     protected function normalizeProperties(ProductInterface $product)
     {
@@ -102,7 +102,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize values
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string|null      $format
      * @param array            $context
      */
@@ -140,7 +140,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Get filtered values
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $context
      *
      * @return ProductValueInterface[]
@@ -187,7 +187,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalizes a family
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      */
     protected function normalizeFamily(FamilyInterface $family = null)
     {
@@ -197,7 +197,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalizes groups
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface[] $groups
+     * @param GroupInterface[] $groups
      */
     protected function normalizeGroups($groups = [])
     {

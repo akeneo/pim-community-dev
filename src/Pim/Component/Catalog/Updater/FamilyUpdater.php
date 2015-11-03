@@ -9,11 +9,11 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -133,7 +133,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      * @param array           $data
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $data)
@@ -156,9 +156,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
-     * @return \Pim\Component\Catalog\Model\AttributeRequirementInterface[]
+     * @return AttributeRequirementInterface[]
      */
     protected function getExistingIdentifierRequirements(FamilyInterface $family)
     {
@@ -255,7 +255,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      * @param array           $data
      *
      * @throws \InvalidArgumentException
@@ -279,7 +279,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      * @param string          $data
      *
      * @throws \InvalidArgumentException

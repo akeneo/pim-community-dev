@@ -61,7 +61,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function getProduct($identifier)
     {
@@ -72,7 +72,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return ConstraintViolationListInterface
      */

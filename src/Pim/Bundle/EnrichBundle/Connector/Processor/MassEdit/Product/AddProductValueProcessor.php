@@ -82,7 +82,7 @@ class AddProductValueProcessor extends AbstractProcessor
     /**
      * Add data from $actions to the given $product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $actions
      *
      * @return AddProductValueProcessor

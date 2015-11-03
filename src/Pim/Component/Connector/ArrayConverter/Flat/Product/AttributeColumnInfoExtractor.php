@@ -94,7 +94,7 @@ class AttributeColumnInfoExtractor
      * Extract information from an attribute and exploded field name
      * This method is used from extractColumnInfo and can be redefine to add new rules
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $explodedFieldName
      *
      * @return array

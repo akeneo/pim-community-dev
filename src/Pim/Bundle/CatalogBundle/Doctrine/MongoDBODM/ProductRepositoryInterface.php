@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -20,30 +20,30 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface ProductRepositoryInterface extends BaseProductRepositoryInterface, AssociationRepositoryInterface
 {
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string[]
      */
     public function findAllIdsForAttribute(AttributeInterface $attribute);
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @return string[]
      */
     public function findAllIdsForFamily(FamilyInterface $family);
 
     /**
-     * @param \Pim\Component\Catalog\Model\CategoryInterface $category
+     * @param CategoryInterface $category
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface[]
+     * @return ProductInterface[]
      */
     public function findAllForCategory(CategoryInterface $category);
 
     /**
      * @param GroupInterface $group
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface[]
+     * @return ProductInterface[]
      */
     public function findAllForGroup(GroupInterface $group);
 

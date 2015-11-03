@@ -11,8 +11,8 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -194,7 +194,7 @@ class AttributeOptionController
     /**
      * Manage form submission of an attribute option
      *
-     * @param \Pim\Component\Catalog\Model\AttributeOptionInterface $attributeOption
+     * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
      *
      * @return FormInterface
@@ -243,7 +243,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function findAttributeOptionOr404($id)
     {

@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -119,7 +120,7 @@ class Loader implements LoaderInterface
     {
         //TODO: make this work without the media manager
 
-        if ($object instanceof \Pim\Component\Catalog\Model\ProductInterface) {
+        if ($object instanceof ProductInterface) {
             $this->mediaManager->handleProductMedias($object);
         }
         $this->objectManager->persist($object);

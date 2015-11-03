@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog;
 
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChosableInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 
 /**
  * Channel interface
@@ -48,12 +48,12 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Cho
     public function setLabel($label);
 
     /**
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     public function getCategory();
 
     /**
-     * @param \Pim\Component\Catalog\Model\CategoryInterface $category
+     * @param CategoryInterface $category
      *
      * @return ChannelInterface
      */

@@ -76,7 +76,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
     /**
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      */
     protected function getAttribute($code)
     {

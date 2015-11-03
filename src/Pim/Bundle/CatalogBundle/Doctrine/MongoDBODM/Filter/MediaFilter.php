@@ -104,7 +104,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $value
      */
     public function checkValue(AttributeInterface $attribute, $value)

@@ -7,10 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 /**
  * Updates and validates a variant group
@@ -106,7 +106,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param string         $field
      * @param mixed          $data
      *
@@ -138,7 +138,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param string         $code
      */
     protected function setCode(GroupInterface $variantGroup, $code)
@@ -163,7 +163,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param array          $labels
      *
      * @throws \InvalidArgumentException
@@ -238,9 +238,9 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      *
-     * @return \Pim\Component\Catalog\Model\ProductTemplateInterface
+     * @return ProductTemplateInterface
      */
     protected function getProductTemplate(GroupInterface $variantGroup)
     {

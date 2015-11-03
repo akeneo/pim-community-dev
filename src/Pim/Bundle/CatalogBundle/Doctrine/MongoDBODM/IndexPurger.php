@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -94,7 +94,7 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      */
     public function purgeIndexesFromAttribute(AttributeInterface $attribute)
     {

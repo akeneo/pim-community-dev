@@ -122,7 +122,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Check if value is valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkValue(AttributeInterface $attribute, $data)
@@ -190,7 +190,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $data
      *
      * @return float

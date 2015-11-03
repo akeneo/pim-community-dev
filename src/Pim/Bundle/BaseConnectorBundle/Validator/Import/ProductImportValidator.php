@@ -172,7 +172,7 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string
      */
@@ -227,7 +227,7 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns a ProductValue
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface    $product
+     * @param ProductInterface    $product
      * @param ColumnInfoInterface $columnInfo
      *
      * @return ProductValueInterface

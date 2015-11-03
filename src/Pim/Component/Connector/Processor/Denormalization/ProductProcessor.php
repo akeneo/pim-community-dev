@@ -370,7 +370,7 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $filteredItem
      *
      * @return array
@@ -450,7 +450,7 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $filteredItem
      *
      * @throws \InvalidArgumentException

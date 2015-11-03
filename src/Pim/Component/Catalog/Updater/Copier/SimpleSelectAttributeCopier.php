@@ -65,9 +65,9 @@ class SimpleSelectAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $fromProduct
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $toProduct
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
+     * @param ProductInterface   $fromProduct
+     * @param ProductInterface   $toProduct
+     * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string|null        $fromLocale
      * @param string|null        $toLocale

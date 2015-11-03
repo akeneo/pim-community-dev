@@ -5,13 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -70,7 +70,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     public function generateMissingForProduct(ProductInterface $product)
     {
@@ -98,7 +98,7 @@ class CompletenessManager
     /**
      * Schedule recalculation of completenesses for a product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     public function schedule(ProductInterface $product)
     {
@@ -111,7 +111,7 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      */
     public function scheduleForFamily(FamilyInterface $family)
     {

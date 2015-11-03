@@ -71,7 +71,7 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope
@@ -102,7 +102,7 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
     /**
      * Remove options from attribute
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
+     * @param ProductValueInterface $toValue
      */
     protected function removeOptions(ProductValueInterface $toValue)
     {

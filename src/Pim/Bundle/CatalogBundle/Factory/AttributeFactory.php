@@ -40,7 +40,7 @@ class AttributeFactory
      *
      * @param string|null $type
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function createAttribute($type = null)
     {

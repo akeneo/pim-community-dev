@@ -48,7 +48,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * Prepare option code for AttributeOptionRepository::findByReference
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string             $optionCode
      *
      * @return string

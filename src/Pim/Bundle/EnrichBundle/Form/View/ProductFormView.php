@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Form\FormView;
@@ -75,7 +75,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeGroupInterface $group
+     * @param AttributeGroupInterface $group
      */
     protected function orderGroupAttributes(AttributeGroupInterface $group)
     {
@@ -83,7 +83,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeGroupInterface $group
+     * @param AttributeGroupInterface $group
      *
      * @return bool
      */
@@ -104,7 +104,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
@@ -127,7 +127,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      * @param FormView              $view
      */
     protected function addValue(ProductValueInterface $value, FormView $view)
@@ -197,7 +197,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string             $locale
      *
      * @return ArrayCollection

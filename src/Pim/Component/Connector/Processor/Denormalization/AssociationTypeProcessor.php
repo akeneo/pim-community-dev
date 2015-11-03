@@ -112,7 +112,7 @@ class AssociationTypeProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AssociationTypeInterface $associationType
+     * @param AssociationTypeInterface $associationType
      *
      * @throws \InvalidArgumentException
      *

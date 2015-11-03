@@ -79,7 +79,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * Sets the options of the attribute
      *
      * @param string             $class
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $optionsData
      */
     protected function setOptions($class, AttributeInterface $attribute, array $optionsData)

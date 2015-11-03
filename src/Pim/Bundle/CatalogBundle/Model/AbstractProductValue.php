@@ -28,7 +28,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /** @var int|string */
     protected $id;
 
-    /** @var \Pim\Component\Catalog\Model\AttributeInterface */
+    /** @var AttributeInterface */
     protected $attribute;
 
     /** @var mixed */

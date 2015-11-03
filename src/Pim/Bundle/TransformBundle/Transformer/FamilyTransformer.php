@@ -97,7 +97,7 @@ class FamilyTransformer extends NestedEntityTransformer
      * Sets the requirements for a channel
      *
      * @param string          $class
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      * @param string          $channelCode
      * @param array           $attributeCodes
      */

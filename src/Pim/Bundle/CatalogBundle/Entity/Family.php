@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
@@ -50,7 +50,7 @@ class Family implements FamilyInterface
     protected $translations;
 
     /**
-     * @var \Pim\Component\Catalog\Model\AttributeInterface
+     * @var AttributeInterface
      */
     protected $attributeAsLabel;
 

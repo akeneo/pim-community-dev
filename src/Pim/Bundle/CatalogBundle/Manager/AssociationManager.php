@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 /**
  * Association Manager
@@ -28,7 +28,7 @@ class AssociationManager
     /**
      * Get association count by association type
      *
-     * @param \Pim\Component\Catalog\Model\AssociationTypeInterface $type
+     * @param AssociationTypeInterface $type
      *
      * @return int
      */

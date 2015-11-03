@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Group repository interface
@@ -36,7 +36,7 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     /**
      * Return the number of groups containing the provided attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return int
      */

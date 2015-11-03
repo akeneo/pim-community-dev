@@ -273,7 +273,7 @@ class ProductController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function findAttributeOr404($id)
     {

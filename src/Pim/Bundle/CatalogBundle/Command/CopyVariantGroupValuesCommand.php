@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -97,7 +97,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductTemplateInterface $template
+     * @param ProductTemplateInterface $template
      * @param ProductInterface[]       $products
      *
      * @return array $violations

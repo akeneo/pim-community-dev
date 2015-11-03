@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -63,7 +63,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
+     * @param ProductInterface[] $products
      *
      * @return array ['products' => ProductInterface[], 'violations' => []]
      */

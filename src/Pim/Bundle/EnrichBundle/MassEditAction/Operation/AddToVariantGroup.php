@@ -13,11 +13,11 @@ use Pim\Component\Catalog\Model\GroupInterface;
  */
 class AddToVariantGroup extends AbstractMassEditOperation
 {
-    /** @var \Pim\Component\Catalog\Model\GroupInterface */
+    /** @var GroupInterface */
     protected $group;
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      */
     public function setGroup(GroupInterface $group)
     {
@@ -25,7 +25,7 @@ class AddToVariantGroup extends AbstractMassEditOperation
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     public function getGroup()
     {

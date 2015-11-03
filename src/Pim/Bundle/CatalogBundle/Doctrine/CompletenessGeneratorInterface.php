@@ -21,7 +21,7 @@ interface CompletenessGeneratorInterface
      * Generate completeness for a product. CAUTION: in current
      * implementations, the product must already be flushed to the DBs
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     public function generateMissingForProduct(ProductInterface $product);
 
@@ -40,7 +40,7 @@ interface CompletenessGeneratorInterface
     /**
      * Schedule recalculation of completenesses for a product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     public function schedule(ProductInterface $product);
 
@@ -48,7 +48,7 @@ interface CompletenessGeneratorInterface
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      */
     public function scheduleForFamily(FamilyInterface $family);
 

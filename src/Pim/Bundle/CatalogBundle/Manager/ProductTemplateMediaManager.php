@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\FileStorage;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

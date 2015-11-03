@@ -234,7 +234,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * Fetch medias product values
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return ProductValueInterface[]
      */

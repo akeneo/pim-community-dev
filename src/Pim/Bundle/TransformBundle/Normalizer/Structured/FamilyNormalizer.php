@@ -67,7 +67,7 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Normalize the attributes
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @return array
      */
@@ -91,7 +91,7 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Normalize the requirements
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @return array
      */

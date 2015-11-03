@@ -4,11 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -28,7 +28,7 @@ interface ProductRepositoryInterface
      *
      * @throws NonUniqueResultException
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface|null
+     * @return ProductInterface|null
      */
     public function findOneByWithValues($id);
 
@@ -61,7 +61,7 @@ interface ProductRepositoryInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface[]
+     * @return ProductInterface[]
      */
     public function findAllWithAttribute(AttributeInterface $attribute);
 
@@ -70,7 +70,7 @@ interface ProductRepositoryInterface
      *
      * @param AttributeOptionInterface $option
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface[]
+     * @return ProductInterface[]
      */
     public function findAllWithAttributeOption(AttributeOptionInterface $option);
 
@@ -79,7 +79,7 @@ interface ProductRepositoryInterface
      *
      * @param int $id
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function getFullProduct($id);
 
@@ -134,7 +134,7 @@ interface ProductRepositoryInterface
     /**
      * @param string|int $id
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface|null
+     * @return ProductInterface|null
      */
     public function findOneById($id);
 
@@ -146,7 +146,7 @@ interface ProductRepositoryInterface
     public function getEligibleProductIdsForVariantGroup($variantGroupId);
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      * @param                $maxResults
      *
      * @return array
@@ -154,7 +154,7 @@ interface ProductRepositoryInterface
     public function getProductsByGroup(GroupInterface $group, $maxResults);
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      *
      * @return int
      */

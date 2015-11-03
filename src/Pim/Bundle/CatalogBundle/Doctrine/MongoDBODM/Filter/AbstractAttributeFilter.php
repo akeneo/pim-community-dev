@@ -22,7 +22,7 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
     /**
      * Check locale and scope are valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
      * @param string             $type

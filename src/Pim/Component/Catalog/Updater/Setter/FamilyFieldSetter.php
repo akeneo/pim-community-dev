@@ -78,7 +78,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
     /**
      * @param string $familyCode
      *
-     * @return \Pim\Component\Catalog\Model\FamilyInterface
+     * @return FamilyInterface
      */
     protected function getFamily($familyCode)
     {

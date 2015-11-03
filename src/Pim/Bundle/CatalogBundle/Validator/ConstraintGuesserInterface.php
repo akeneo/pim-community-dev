@@ -26,7 +26,7 @@ interface ConstraintGuesserInterface
     /**
      * Guess the constraints for the given attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Constraint[]
      */

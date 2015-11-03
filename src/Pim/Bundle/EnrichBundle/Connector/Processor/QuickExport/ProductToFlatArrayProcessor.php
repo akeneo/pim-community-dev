@@ -183,7 +183,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /**
      * Fetch product media
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return ProductMediaInterface[]
      */

@@ -69,7 +69,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     protected function addMissingAssociations(ProductInterface $product)
     {
@@ -79,7 +79,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add products and groups to associations
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param mixed            $data
      */
     protected function addProductsAndGroupsToAssociations(ProductInterface $product, $data)

@@ -84,7 +84,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
      * @param string             $locale    the locale
      * @param string             $scope     the scope

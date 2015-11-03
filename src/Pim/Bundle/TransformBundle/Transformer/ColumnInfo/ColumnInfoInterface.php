@@ -16,7 +16,7 @@ interface ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws \Pim\Bundle\TransformBundle\Exception\ColumnLabelException
      */

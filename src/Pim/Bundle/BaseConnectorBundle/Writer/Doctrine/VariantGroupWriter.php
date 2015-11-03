@@ -8,8 +8,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
@@ -117,7 +117,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Save the variant group and related product template
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      */
     protected function saveVariantGroup(GroupInterface $variantGroup)
     {
@@ -128,7 +128,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Copy variant group values to products
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      */
     protected function copyValuesToProducts(GroupInterface $variantGroup)
     {
@@ -146,7 +146,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      */
     protected function incrementUpdatedVariantGroupCount(GroupInterface $group)
     {

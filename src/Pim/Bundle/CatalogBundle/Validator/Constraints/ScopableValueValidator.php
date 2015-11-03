@@ -33,7 +33,7 @@ class ScopableValueValidator extends ConstraintValidator
      */
     public function validate($productValue, Constraint $constraint)
     {
-        /** @var \Pim\Component\Catalog\Model\ProductValueInterface */
+        /** @var ProductValueInterface */
         if ($productValue instanceof ProductValueInterface) {
             $isScopable = $productValue->getAttribute()->isScopable();
             $channelCode = $productValue->getScope();
@@ -62,7 +62,7 @@ class ScopableValueValidator extends ConstraintValidator
 
     /**
      * @param ScopableValue         $constraint
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      */
     protected function addExpectedScopeViolation(ScopableValue $constraint, ProductValueInterface $value)
     {

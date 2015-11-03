@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\ChannelInterface;
 
 /**
  * Locale interface

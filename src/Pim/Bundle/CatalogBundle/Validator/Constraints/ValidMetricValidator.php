@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -39,7 +39,7 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param AttributeInterface|MetricInterface|\Pim\Component\Catalog\Model\ProductValueInterface $object
+     * @param AttributeInterface|MetricInterface|ProductValueInterface $object
      * @param Constraint                                               $constraint
      */
     public function validate($object, Constraint $constraint)

@@ -120,7 +120,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * Find wrapped products from a product
      *
      * @param SequentialEdit   $sequentialEdit
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
     {
@@ -141,7 +141,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * @param SequentialEdit $sequentialEdit
      * @param int            $currentKey
      *
-     * @return null|\Pim\Component\Catalog\Model\ProductInterface
+     * @return null|ProductInterface
      */
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
@@ -161,7 +161,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * @param SequentialEdit $sequentialEdit
      * @param int            $currentKey
      *
-     * @return null|\Pim\Component\Catalog\Model\ProductInterface
+     * @return null|ProductInterface
      */
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {

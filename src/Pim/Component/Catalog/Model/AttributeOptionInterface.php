@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute options

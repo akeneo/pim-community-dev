@@ -7,9 +7,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -181,7 +181,7 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Update default tree of users using a tree that will be removed
      *
-     * @param \Pim\Component\Catalog\Model\CategoryInterface $category
+     * @param CategoryInterface $category
      */
     protected function onTreeRemoved(CategoryInterface $category)
     {

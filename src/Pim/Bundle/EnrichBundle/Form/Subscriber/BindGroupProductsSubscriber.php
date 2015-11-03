@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -56,7 +56,7 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
     /**
      * Bind products
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      * @param array          $appendProducts
      * @param array          $removeProducts
      */

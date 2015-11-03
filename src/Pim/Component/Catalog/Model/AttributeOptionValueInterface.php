@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Component\Catalog\Model;
+
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**

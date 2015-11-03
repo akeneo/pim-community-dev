@@ -61,7 +61,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /**
      * Check locale and scope are valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
      * @param string             $type

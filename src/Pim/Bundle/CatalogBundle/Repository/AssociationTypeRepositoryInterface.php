@@ -21,7 +21,7 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Component\Catalog\Model\AssociationTypeInterface[]
+     * @return AssociationTypeInterface[]
      */
     public function findMissingAssociationTypes(ProductInterface $product);
 

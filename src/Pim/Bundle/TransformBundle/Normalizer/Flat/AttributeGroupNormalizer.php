@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
  * Flat attribute group normalizer

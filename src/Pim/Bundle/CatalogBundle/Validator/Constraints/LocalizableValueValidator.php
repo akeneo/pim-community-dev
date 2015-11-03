@@ -76,7 +76,7 @@ class LocalizableValueValidator extends ConstraintValidator
 
     /**
      * @param LocalizableValue      $constraint
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      * @param string                $localeCode
      */
     protected function addUnexistingLocaleViolation(

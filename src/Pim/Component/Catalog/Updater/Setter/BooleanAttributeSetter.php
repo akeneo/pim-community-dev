@@ -48,7 +48,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
     /**
      * Set the data into the product value
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale

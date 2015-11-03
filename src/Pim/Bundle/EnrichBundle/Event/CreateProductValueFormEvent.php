@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\Event;
 class CreateProductValueFormEvent extends Event
 {
     /**
-     * @var \Pim\Component\Catalog\Model\ProductValueInterface
+     * @var ProductValueInterface
      */
     protected $productValue;
 
@@ -58,7 +58,7 @@ class CreateProductValueFormEvent extends Event
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ProductValueInterface
      */
     public function getProductValue()
     {

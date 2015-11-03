@@ -51,7 +51,7 @@ class NumberAttributeSetter extends AbstractAttributeSetter
      * Set data into product value
      *
      * @param ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope

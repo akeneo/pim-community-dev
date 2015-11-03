@@ -97,7 +97,7 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * When validates values for a VariantGroup there is not product related to the value
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
+     * @param ProductValueInterface $productValue
      *
      * @return bool
      */
@@ -123,7 +123,7 @@ class UniqueValueValidator extends ConstraintValidator
     /**
      * Get product value from form
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface|null
+     * @return ProductValueInterface|null
      */
     protected function getProductValueFromForm()
     {

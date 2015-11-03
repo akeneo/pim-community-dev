@@ -29,7 +29,7 @@ class SequentialEdit
     /** @var ProductInterface */
     protected $previous;
 
-    /** @var \Pim\Component\Catalog\Model\ProductInterface */
+    /** @var ProductInterface */
     protected $next;
 
     /**
@@ -117,7 +117,7 @@ class SequentialEdit
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function getCurrent()
     {
@@ -145,7 +145,7 @@ class SequentialEdit
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $previous
+     * @param ProductInterface $previous
      *
      * @return SequentialEdit
      */

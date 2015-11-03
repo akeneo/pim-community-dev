@@ -56,7 +56,7 @@ class ProductQueryUtility
     /**
      * Normalize the field name for value
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */

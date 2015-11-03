@@ -27,7 +27,7 @@ class MetricFactory
      *
      * @param string $family
      *
-     * @return \Pim\Component\Catalog\Model\MetricInterface
+     * @return MetricInterface
      */
     public function createMetric($family)
     {

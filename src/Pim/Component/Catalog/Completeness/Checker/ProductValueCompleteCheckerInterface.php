@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 interface ProductValueCompleteCheckerInterface
 {
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
+     * @param ProductValueInterface $productValue
      * @param \Pim\Component\Catalog\ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      *
@@ -27,7 +27,7 @@ interface ProductValueCompleteCheckerInterface
     );
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
+     * @param ProductValueInterface $productValue
      *
      * @return bool
      */

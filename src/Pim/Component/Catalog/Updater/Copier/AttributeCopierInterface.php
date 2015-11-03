@@ -19,8 +19,8 @@ interface AttributeCopierInterface extends CopierInterface
      *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      * @param array              $options
      *
      * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
@@ -37,8 +37,8 @@ interface AttributeCopierInterface extends CopierInterface
     /**
      * Supports the source and destination attributes
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      *
      * @return bool
      */

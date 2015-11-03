@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -24,7 +24,7 @@ interface ProductBuilderInterface
      * @param string $identifier
      * @param string $familyCode
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function createProduct($identifier = null, $familyCode = null);
 
@@ -52,7 +52,7 @@ interface ProductBuilderInterface
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
@@ -60,7 +60,7 @@ interface ProductBuilderInterface
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      *
      * @return bool
@@ -72,10 +72,10 @@ interface ProductBuilderInterface
     /**
      * Add a product price with currency to the value. If the price already exists, it is returned.
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return null|\Pim\Component\Catalog\Model\ProductPriceInterface
+     * @return null|ProductPriceInterface
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency);
 
@@ -87,14 +87,14 @@ interface ProductBuilderInterface
      * @param string                $currency
      * @param float|int             $data
      *
-     * @return null|\Pim\Component\Catalog\Model\ProductPriceInterface
+     * @return null|ProductPriceInterface
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data);
 
     /**
      * Remove extra prices that are not in the currencies passed in arguments
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      * @param array                 $currencies
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
@@ -111,8 +111,8 @@ interface ProductBuilderInterface
     /**
      * Add a missing value to the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
      *

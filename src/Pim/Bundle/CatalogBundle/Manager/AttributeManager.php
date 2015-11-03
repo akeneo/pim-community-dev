@@ -61,7 +61,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      *
      * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
      */
@@ -102,7 +102,7 @@ class AttributeManager
     /**
      * Update attribute option sorting
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $sorting
      */
     public function updateSorting(AttributeInterface $attribute, array $sorting = [])
@@ -124,7 +124,7 @@ class AttributeManager
      *
      * @throws EntityNotFoundException
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      *
      * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
      */

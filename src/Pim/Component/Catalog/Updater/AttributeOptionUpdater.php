@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
  * Updates and validates an attribute option
@@ -103,7 +103,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      */
     protected function findAttribute($code)
     {

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -82,7 +82,7 @@ class AttributeCache
     /**
      * Returns the required attribute codes for a product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return array
      */
@@ -110,7 +110,7 @@ class AttributeCache
     /**
      * Returns the attribute codes for a group
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      *
      * @return array
      */
@@ -127,7 +127,7 @@ class AttributeCache
     /**
      * Returns the attribute codes for a family
      *
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @return array
      */

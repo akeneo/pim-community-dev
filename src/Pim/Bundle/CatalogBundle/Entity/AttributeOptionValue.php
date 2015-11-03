@@ -23,7 +23,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     protected $id;
 
     /**
-     * @var \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @var AttributeOptionInterface
      */
     protected $option;
 

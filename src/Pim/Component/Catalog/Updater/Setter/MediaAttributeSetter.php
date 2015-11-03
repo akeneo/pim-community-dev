@@ -139,7 +139,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /**
      * TODO: inform the user that this could take some time
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @throws InvalidArgumentException If an invalid filePath is provided

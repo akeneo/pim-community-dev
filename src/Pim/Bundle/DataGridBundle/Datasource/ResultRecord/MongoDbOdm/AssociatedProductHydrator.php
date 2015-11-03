@@ -24,7 +24,7 @@ class AssociatedProductHydrator implements HydratorInterface
     protected $productClass;
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $productClass
+     * @param ProductInterface $productClass
      */
     public function __construct($productClass)
     {

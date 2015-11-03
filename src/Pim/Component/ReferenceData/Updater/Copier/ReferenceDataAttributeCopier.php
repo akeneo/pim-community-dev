@@ -80,10 +80,10 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $fromProduct
+     * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      * @param string|null        $fromLocale
      * @param string|null        $toLocale
      * @param string|null        $fromScope
@@ -114,8 +114,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
-     * @param \Pim\Component\Catalog\Model\AttributeInterface    $attribute
+     * @param ProductValueInterface $value
+     * @param AttributeInterface    $attribute
      * @param string                $type
      *
      * @return string

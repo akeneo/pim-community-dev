@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 class ProductSpec extends ObjectBehavior
 {
-    function it_has_family(\Pim\Component\Catalog\Model\FamilyInterface $family)
+    function it_has_family(FamilyInterface $family)
     {
         $family->getId()->willReturn(42);
         $this->setFamily($family);
@@ -24,7 +24,7 @@ class ProductSpec extends ObjectBehavior
         $this->getFamilyId()->shouldReturn(42);
     }
 
-    function it_belongs_to_categories(\Pim\Component\Catalog\Model\CategoryInterface $category1, \Pim\Component\Catalog\Model\CategoryInterface $category2)
+    function it_belongs_to_categories(CategoryInterface $category1, CategoryInterface $category2)
     {
         $this->addCategory($category1);
         $this->getCategories()->shouldHaveCount(1);
@@ -35,7 +35,7 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type(
         Association $assoc1,
         Association $assoc2,
-        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType1,
         AssociationTypeInterface $assocType2
     ) {
         $assoc1->getAssociationType()->willReturn($assocType1);
@@ -48,8 +48,8 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type_code(
         Association $assoc1,
         Association $assoc2,
-        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType1,
-        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
     ) {
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
@@ -67,12 +67,12 @@ class ProductSpec extends ObjectBehavior
         $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 
-    function it_has_not_attribute_in_family_without_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute)
+    function it_has_not_attribute_in_family_without_family(AttributeInterface $attribute)
     {
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
+    function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(false);
         $family->getId()->willReturn(42);
@@ -81,7 +81,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_attribute_in_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
+    function it_has_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);
@@ -90,12 +90,12 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
     }
 
-    function it_has_not_attribute_in_group_without_groups(\Pim\Component\Catalog\Model\AttributeInterface $attribute)
+    function it_has_not_attribute_in_group_without_groups(AttributeInterface $attribute)
     {
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_a_non_variant_group(AttributeInterface $attribute, GroupInterface $group, \Pim\Component\Catalog\Model\GroupTypeInterface $groupType)
+    function it_has_not_attribute_in_a_non_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType)
     {
         $groupType->isVariant()->willReturn(false);
         $group->addProduct($this)->willReturn($this);
@@ -105,7 +105,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
     }
 
-    function it_has_attribute_in_a_variant_group(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_has_attribute_in_a_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);
@@ -117,7 +117,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
     }
 
-    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, \Pim\Component\Catalog\Model\GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
+    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(false);
@@ -136,7 +136,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_editable_with_group_containing_attribute(\Pim\Component\Catalog\Model\AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_is_not_attribute_editable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);
@@ -165,7 +165,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_family_containing_attribute(AttributeInterface $attribute, \Pim\Component\Catalog\Model\FamilyInterface $family, ArrayCollection $familyAttributes)
+    function it_is_not_attribute_removable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);
@@ -175,7 +175,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);

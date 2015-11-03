@@ -69,7 +69,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Remove prices from product value
      *
      * @param ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
@@ -90,7 +90,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Check if data are valid
      * "data": doesn't need value
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @return mixed

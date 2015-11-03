@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -45,7 +45,7 @@ class AttributeValuesResolver
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface[] $attributes
+     * @param AttributeInterface[] $attributes
      *
      * @return array:array
      */
@@ -77,7 +77,7 @@ class AttributeValuesResolver
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $values
      *
      * @return array
@@ -99,7 +99,7 @@ class AttributeValuesResolver
     /**
      * Return rows for available locales
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */

@@ -69,7 +69,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      */
@@ -86,7 +86,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      * @param string             $joinAlias the join alias
@@ -103,7 +103,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute      the attribute
+     * @param AttributeInterface $attribute      the attribute
      * @param string             $joinAlias      the join alias
      * @param string             $joinAliasMedia the join alias
      */
@@ -114,7 +114,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string             $operator  the used operator
      * @param string|array       $value     the value(s) to filter
      * @param string             $locale    the locale
@@ -133,7 +133,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      * @param string             $joinAlias the join alias
@@ -189,7 +189,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $value
      */
     protected function checkValue(AttributeInterface $attribute, $value)

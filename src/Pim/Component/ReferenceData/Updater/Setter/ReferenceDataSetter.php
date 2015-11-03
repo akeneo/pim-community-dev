@@ -103,7 +103,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
      * Set reference data into the product value
      *
      * @param AttributeInterface          $attribute
-     * @param \Pim\Component\Catalog\Model\ProductInterface            $product
+     * @param ProductInterface            $product
      * @param ReferenceDataInterface|null $referenceData
      * @param string|null                 $locale
      * @param string|null                 $scope

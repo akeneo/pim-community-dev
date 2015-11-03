@@ -71,7 +71,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     /**
      * Check if data is valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
@@ -104,8 +104,8 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     /**
      * Set the data into the product value
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $unit
      * @param string             $locale

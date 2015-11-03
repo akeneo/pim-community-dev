@@ -101,7 +101,7 @@ class FamilyProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      * @param array           $convertedItem
      *
      * @throws \InvalidArgumentException
@@ -112,7 +112,7 @@ class FamilyProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @throws \InvalidArgumentException
      *

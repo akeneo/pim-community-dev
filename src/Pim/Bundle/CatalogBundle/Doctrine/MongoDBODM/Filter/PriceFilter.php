@@ -111,7 +111,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkValue(AttributeInterface $attribute, $data)

@@ -179,7 +179,7 @@ class ProductAssociationProcessor extends AbstractProcessor
     /**
      * @param string $identifier
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface|null
+     * @return ProductInterface|null
      */
     public function findProduct($identifier)
     {

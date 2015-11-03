@@ -204,7 +204,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Add a filter condition on an attribute
      *
      * @param AttributeFilterInterface $filter    the filter
-     * @param \Pim\Component\Catalog\Model\AttributeInterface       $attribute the attribute
+     * @param AttributeInterface       $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
      * @param array                    $context   the filter context
@@ -249,7 +249,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Sort by attribute value
      *
      * @param AttributeSorterInterface $sorter    the sorter
-     * @param \Pim\Component\Catalog\Model\AttributeInterface       $attribute the attribute to sort on
+     * @param AttributeInterface       $attribute the attribute to sort on
      * @param string                   $direction the direction to use
      * @param array                    $context   the sorter context
      *

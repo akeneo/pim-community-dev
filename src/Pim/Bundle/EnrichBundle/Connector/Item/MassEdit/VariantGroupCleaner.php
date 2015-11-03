@@ -10,10 +10,10 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -203,7 +203,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
 
     /**
      * @param ConstraintViolationListInterface $violations
-     * @param \Pim\Component\Catalog\Model\ProductInterface                 $product
+     * @param ProductInterface                 $product
      */
     protected function addWarningMessage($violations, $product)
     {
@@ -227,7 +227,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      *
      * @return array
      */
@@ -253,7 +253,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
      *    'red_xs_ferrari'  => [13]
      * ]
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $axisAttributeCodes
      *
      * @return string
@@ -272,7 +272,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     /**
      * Fill the array with products id based on their variant axis combination as key
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $productAttributeAxis
      * @param string           $keyCombination
      *

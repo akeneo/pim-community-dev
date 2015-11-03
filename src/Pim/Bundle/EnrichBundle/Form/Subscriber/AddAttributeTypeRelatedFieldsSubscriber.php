@@ -101,7 +101,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      * Customize the attribute form
      *
      * @param Form               $form
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      */
     protected function customizeForm(Form $form, AttributeInterface $attribute)
     {

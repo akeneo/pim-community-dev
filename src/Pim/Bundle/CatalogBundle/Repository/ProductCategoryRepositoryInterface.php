@@ -21,7 +21,7 @@ interface ProductCategoryRepositoryInterface
     /**
      * Return the number of times the product is present in each tree
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product The product to look for in the trees
+     * @param ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
      *
@@ -34,7 +34,7 @@ interface ProductCategoryRepositoryInterface
      * You can define if you just want to get the property of the actual node or with its children with the direct
      * parameter
      *
-     * @param \Pim\Component\Catalog\Model\CategoryInterface $category   the requested node
+     * @param CategoryInterface $category   the requested node
      * @param QueryBuilder      $categoryQb category query buider
      *
      * @return array

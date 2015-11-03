@@ -16,8 +16,8 @@ interface FieldCopierInterface extends CopierInterface
     /**
      * Copy a data from a source field to a destination field
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $fromProduct
-     * @param \Pim\Component\Catalog\Model\ProductInterface $toProduct
+     * @param ProductInterface $fromProduct
+     * @param ProductInterface $toProduct
      * @param string           $fromField
      * @param string           $toField
      * @param array            $options

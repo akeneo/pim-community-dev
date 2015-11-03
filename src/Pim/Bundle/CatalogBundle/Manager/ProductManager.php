@@ -168,7 +168,7 @@ class ProductManager implements ProductManagerInterface
      * Deletes values that link an attribute to a product
      *
      * @param ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $savingOptions
      *
      * @deprecated Will be removed in 1.5, please use ProductBuilderInterface::removeAttributeFromProduct() and
@@ -192,7 +192,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Return the identifier attribute
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      *
      * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifier();
      */
@@ -216,7 +216,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Create a product value
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ProductValueInterface
      *
      * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProductValue();
      */
@@ -304,7 +304,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Check if a product value with a specific value already exists
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return bool
      *

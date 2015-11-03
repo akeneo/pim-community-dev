@@ -4,12 +4,12 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,7 +31,7 @@ class Group implements GroupInterface
     /** @var string $code */
     protected $code;
 
-    /** @var \Pim\Component\Catalog\Model\GroupTypeInterface */
+    /** @var GroupTypeInterface */
     protected $type;
 
     /**  @var ArrayCollection $products */

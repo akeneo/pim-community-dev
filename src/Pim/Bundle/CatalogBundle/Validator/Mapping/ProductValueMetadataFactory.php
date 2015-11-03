@@ -70,7 +70,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return ClassMetadata
      */
@@ -93,7 +93,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /**
      * @param ClassMetadata      $metadata
      * @param Constraint         $constraint
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      */
     protected function addConstraint(ClassMetadata $metadata, Constraint $constraint, AttributeInterface $attribute)
     {

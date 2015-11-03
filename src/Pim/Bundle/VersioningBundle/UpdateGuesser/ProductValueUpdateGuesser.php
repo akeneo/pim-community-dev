@@ -5,8 +5,8 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
@@ -63,7 +63,7 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
      * @param EntityManager $em
      * @param object        $entity
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface[]
+     * @return ProductInterface[]
      */
     protected function guessDeletionUpdates(EntityManager $em, $entity)
     {

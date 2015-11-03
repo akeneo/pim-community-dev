@@ -17,8 +17,8 @@ interface AttributeSetterInterface extends SetterInterface
     /**
      * Set attribute data
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product   The product to modify
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute The attribute of the product to modify
+     * @param ProductInterface   $product   The product to modify
+     * @param AttributeInterface $attribute The attribute of the product to modify
      * @param mixed              $data      The data to set
      * @param array              $options   Options passed to the setter
      */

@@ -84,9 +84,9 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      * Copy single value
      *
      * @param ProductInterface   $fromProduct
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $toProduct
+     * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope
@@ -117,8 +117,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Remove reference data collection from attribute
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
-     * @param \Pim\Component\Catalog\Model\AttributeInterface    $toAttribute
+     * @param ProductValueInterface $toValue
+     * @param AttributeInterface    $toAttribute
      */
     protected function removeReferenceDataCollection(ProductValueInterface $toValue, AttributeInterface $toAttribute)
     {
@@ -133,9 +133,9 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Copy attribute reference data collection into a reference data collection attribute
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $fromValue
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
-     * @param \Pim\Component\Catalog\Model\AttributeInterface    $fromAttribute
+     * @param ProductValueInterface $fromValue
+     * @param ProductValueInterface $toValue
+     * @param AttributeInterface    $fromAttribute
      * @param AttributeInterface    $toAttribute
      */
     protected function copyReferenceDataCollection(
@@ -153,8 +153,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
-     * @param \Pim\Component\Catalog\Model\AttributeInterface    $attribute
+     * @param ProductValueInterface $value
+     * @param AttributeInterface    $attribute
      * @param string                $type
      * @param bool                  $singularify
      *

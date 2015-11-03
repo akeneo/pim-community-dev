@@ -113,8 +113,8 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
     /**
      * Set prices into the product value
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope

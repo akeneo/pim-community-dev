@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Attribute option
@@ -28,7 +28,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * Overrided to change target entity name
      *
-     * @var \Pim\Component\Catalog\Model\AttributeInterface
+     * @var AttributeInterface
      */
     protected $attribute;
 

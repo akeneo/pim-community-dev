@@ -34,7 +34,7 @@ class ProductTransformer extends EntityTransformer
     /** @var CachedReader */
     protected $associationReader;
 
-    /** @var \Pim\Component\Catalog\Model\AttributeInterface */
+    /** @var AttributeInterface */
     protected $identifierAttribute;
 
     /** @var array */

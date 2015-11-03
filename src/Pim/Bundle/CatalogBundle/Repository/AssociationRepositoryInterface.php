@@ -26,7 +26,7 @@ interface AssociationRepositoryInterface
     /**
      * Get the list of associations corresponding to the given owner IDs
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $ownerIds
      *
      * @return \Pim\Bundle\CatalogBundle\Model\Association[]

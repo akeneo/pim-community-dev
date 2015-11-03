@@ -16,7 +16,7 @@ interface FieldAdderInterface extends AdderInterface
     /**
      * Set field data
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product The product to modify
+     * @param ProductInterface $product The product to modify
      * @param string           $field   The field of the product to modify
      * @param mixed            $data    The data to add
      * @param array            $options Options passed to the adder

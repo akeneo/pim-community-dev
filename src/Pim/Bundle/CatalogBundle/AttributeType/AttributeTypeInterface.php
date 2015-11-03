@@ -34,7 +34,7 @@ interface AttributeTypeInterface
     /**
      * Get value form type alias to use to render value
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
@@ -52,7 +52,7 @@ interface AttributeTypeInterface
     /**
      * Guess the constraints to apply on the form
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return array
      */
@@ -61,7 +61,7 @@ interface AttributeTypeInterface
     /**
      * Get value form type data
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return mixed
      */
@@ -71,7 +71,7 @@ interface AttributeTypeInterface
      * Build form types for custom properties of an attribute
      *
      * @param FormFactoryInterface $factory   the form factory
-     * @param \Pim\Component\Catalog\Model\AttributeInterface   $attribute the attribute
+     * @param AttributeInterface   $attribute the attribute
      *
      * @return FormInterface the form
      */

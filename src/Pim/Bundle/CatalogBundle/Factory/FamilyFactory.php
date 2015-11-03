@@ -47,7 +47,7 @@ class FamilyFactory
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\FamilyInterface
+     * @return FamilyInterface
      */
     public function createFamily()
     {

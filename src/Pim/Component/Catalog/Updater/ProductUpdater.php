@@ -170,7 +170,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /**
      * Sets the field
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string           $field
      * @param mixed            $value
      */
@@ -185,7 +185,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
      *  - sets optional values (not related to family's attributes) when a data is provided
      *  - sets optional values (not related to family's attributes) with empty data if value already exists
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string           $attributeCode
      * @param array            $values
      */
@@ -210,7 +210,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
      * Updates product with its variant group values to ensure that values coming from variant group are always
      * applied after the product values (if a product value is updated and should come from variant group)
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param array            $data
      */
     protected function updateProductVariantValues(ProductInterface $product, array $data)

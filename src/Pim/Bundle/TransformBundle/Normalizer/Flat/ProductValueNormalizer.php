@@ -120,7 +120,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Normalize the field name for values
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */

@@ -6,10 +6,10 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -232,7 +232,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update groups of the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return bool
      */
@@ -244,7 +244,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update categories of the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return bool
      */
@@ -256,7 +256,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update status of the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return bool
      */
@@ -268,7 +268,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update associations of the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return bool
      */
@@ -320,7 +320,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @throws ObjectNotFoundException
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function getAttribute($code)
     {

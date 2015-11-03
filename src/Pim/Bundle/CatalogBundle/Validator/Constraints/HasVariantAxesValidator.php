@@ -40,8 +40,8 @@ class HasVariantAxesValidator extends ConstraintValidator
     /**
      * Get missing axis codes of a product given a variant group
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
-     * @param \Pim\Component\Catalog\Model\GroupInterface   $variantGroup
+     * @param ProductInterface $product
+     * @param GroupInterface   $variantGroup
      *
      * @return array
      */

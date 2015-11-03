@@ -202,7 +202,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      *
      * @param ProductTemplateInterface|null $template
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface[]
+     * @return ProductValueInterface[]
      */
     protected function getProductTemplateMediaValues(ProductTemplateInterface $template = null)
     {

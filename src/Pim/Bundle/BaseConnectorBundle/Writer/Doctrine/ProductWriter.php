@@ -113,7 +113,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     protected function incrementCount(ProductInterface $product)
     {

@@ -55,7 +55,7 @@ class GroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        /* @var \Pim\Component\Catalog\Model\GroupInterface $group */
+        /* @var GroupInterface $group */
         $this->checkItemData($item);
         $group = $this->findOrCreateGroup($item);
         $this->updateGroup($group, $item);
@@ -79,7 +79,7 @@ class GroupProcessor extends AbstractProcessor
      *
      * @param array $groupData
      *
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     protected function findOrCreateGroup(array $groupData)
     {
@@ -105,10 +105,10 @@ class GroupProcessor extends AbstractProcessor
     /**
      * Update the variant group fields.
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      * @param array          $groupData
      *
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     protected function updateGroup(GroupInterface $group, array $groupData)
     {
@@ -123,7 +123,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      * @param array          $item
      */
     protected function validateGroup(GroupInterface $group, array $item)

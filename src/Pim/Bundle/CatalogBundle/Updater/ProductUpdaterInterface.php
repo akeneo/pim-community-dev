@@ -18,7 +18,7 @@ interface ProductUpdaterInterface
     /**
      * Sets the data in values of many products
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
+     * @param ProductInterface[] $products
      * @param string             $field
      * @param mixed              $data
      * @param string             $locale
@@ -33,7 +33,7 @@ interface ProductUpdaterInterface
     /**
      * Copies a value from a source field to a destination field in many products
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
+     * @param ProductInterface[] $products
      * @param string             $fromField
      * @param string             $toField
      * @param string             $fromLocale

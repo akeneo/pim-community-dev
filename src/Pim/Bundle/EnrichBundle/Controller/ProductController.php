@@ -14,13 +14,13 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -363,7 +363,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * Fetch the filled tree
      *
-     * @param \Pim\Component\Catalog\Model\CategoryInterface $parent
+     * @param CategoryInterface $parent
      * @param Collection        $categories
      *
      * @return CategoryInterface[]
@@ -487,7 +487,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * Returns the options for the edit form
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return array
      */

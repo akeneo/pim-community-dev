@@ -7,9 +7,9 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -108,7 +108,7 @@ class VariantGroupProcessor extends AbstractProcessor
      *
      * @param array $groupData
      *
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     protected function findOrCreateVariantGroup(array $groupData)
     {
@@ -127,10 +127,10 @@ class VariantGroupProcessor extends AbstractProcessor
     /**
      * Update the variant group fields.
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param array          $groupData
      *
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     protected function updateVariantGroup(GroupInterface $variantGroup, array $groupData)
     {
@@ -148,7 +148,7 @@ class VariantGroupProcessor extends AbstractProcessor
     /**
      * Update the variant group values.
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param array          $groupData
      */
     protected function updateVariantGroupValues(GroupInterface $variantGroup, array $groupData)
@@ -166,7 +166,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      * @param array          $groupData
      *
      * @throws InvalidItemException
@@ -257,9 +257,9 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
+     * @param GroupInterface $variantGroup
      *
-     * @return \Pim\Component\Catalog\Model\ProductTemplateInterface
+     * @return ProductTemplateInterface
      */
     protected function getProductTemplate(GroupInterface $variantGroup)
     {

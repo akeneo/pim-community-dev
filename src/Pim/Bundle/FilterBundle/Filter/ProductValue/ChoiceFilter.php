@@ -115,7 +115,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */

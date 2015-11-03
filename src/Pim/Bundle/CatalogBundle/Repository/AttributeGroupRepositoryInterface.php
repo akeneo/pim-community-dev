@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
+     * @return AttributeGroupInterface
      */
     public function findAllWithTranslations();
 
@@ -37,7 +37,7 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
     /**
      * Get the default attribute group
      *
-     * @return null|\Pim\Component\Catalog\Model\AttributeGroupInterface
+     * @return null|AttributeGroupInterface
      */
     public function findDefaultAttributeGroup();
 

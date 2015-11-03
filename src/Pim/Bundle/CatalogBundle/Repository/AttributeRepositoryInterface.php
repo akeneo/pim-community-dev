@@ -20,7 +20,7 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function findAllWithTranslations();
 
@@ -37,7 +37,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function findAllInDefaultGroup();
 
@@ -119,7 +119,7 @@ interface AttributeRepositoryInterface extends
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function getIdentifier();
 
@@ -133,7 +133,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Get non identifier attributes
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function getNonIdentifierAttributes();
 

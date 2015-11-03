@@ -97,7 +97,7 @@ class ProductController extends FOSRestController
     /**
      * Serialize a single product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string[]         $channels
      * @param string[]         $locales
      *

@@ -63,7 +63,7 @@ class CreateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface|null
+     * @return ProductInterface|null
      */
     protected function getProduct($identifier)
     {
@@ -76,7 +76,7 @@ class CreateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function createProduct($identifier)
     {
@@ -87,7 +87,7 @@ class CreateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return ConstraintViolationListInterface
      */
@@ -100,7 +100,7 @@ class CreateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      */
     protected function saveProduct(ProductInterface $product)
     {

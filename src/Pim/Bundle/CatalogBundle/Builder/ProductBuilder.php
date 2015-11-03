@@ -5,13 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -311,7 +311,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return null|\Pim\Component\Catalog\Model\ProductPriceInterface
+     * @return null|ProductPriceInterface
      */
     protected function getPriceForCurrency(ProductValueInterface $value, $currency)
     {
@@ -327,7 +327,7 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * Get expected attributes for the product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return AttributeInterface[]
      */

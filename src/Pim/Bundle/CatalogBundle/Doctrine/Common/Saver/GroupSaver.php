@@ -10,8 +10,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -84,7 +84,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($group, array $options = [])
     {
-        /* @var \Pim\Component\Catalog\Model\GroupInterface */
+        /* @var GroupInterface */
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -157,7 +157,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
+     * @param ProductInterface[] $products
      */
     protected function addProducts(array $products)
     {
@@ -165,7 +165,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
+     * @param ProductInterface[] $products
      */
     protected function removeProducts(array $products)
     {
@@ -175,7 +175,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /**
      * Copy the variant group values on any products belonging in the variant group
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      */
     protected function copyVariantGroupValues(GroupInterface $group)
     {

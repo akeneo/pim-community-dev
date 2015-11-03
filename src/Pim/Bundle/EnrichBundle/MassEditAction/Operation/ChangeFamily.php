@@ -13,11 +13,11 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 class ChangeFamily extends AbstractMassEditOperation
 {
-    /** @var \Pim\Component\Catalog\Model\FamilyInterface $family The family to change the product family to */
+    /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
 
     /**
-     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
+     * @param FamilyInterface $family
      *
      * @return ChangeFamily
      */
@@ -29,7 +29,7 @@ class ChangeFamily extends AbstractMassEditOperation
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\FamilyInterface
+     * @return FamilyInterface
      */
     public function getFamily()
     {

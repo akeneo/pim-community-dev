@@ -127,7 +127,7 @@ class ProductAssociationFilter implements ProductFilterInterface
     /**
      * Normalize original associations
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return array
      */

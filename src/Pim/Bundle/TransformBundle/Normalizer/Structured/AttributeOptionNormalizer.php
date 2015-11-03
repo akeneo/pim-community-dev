@@ -46,7 +46,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /**
      * Returns an array containing the label values
      *
-     * @param \Pim\Component\Catalog\Model\AttributeOptionInterface $entity
+     * @param AttributeOptionInterface $entity
      * @param array                    $context
      *
      * @return array

@@ -75,8 +75,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     /**
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope

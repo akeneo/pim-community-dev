@@ -28,7 +28,7 @@ class ProductHandler
     /**
      * Serialize a single product
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string[]         $channels
      * @param string[]         $locales
      * @param string           $url

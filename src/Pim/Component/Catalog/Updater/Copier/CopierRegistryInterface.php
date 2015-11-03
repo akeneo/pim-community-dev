@@ -42,8 +42,8 @@ interface CopierRegistryInterface
     public function getFieldCopier($fromField, $toField);
 
     /**
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      *
      * @return AttributeCopierInterface
      */

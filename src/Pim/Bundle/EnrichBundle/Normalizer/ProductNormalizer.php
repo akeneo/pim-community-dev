@@ -97,7 +97,7 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return array
      */

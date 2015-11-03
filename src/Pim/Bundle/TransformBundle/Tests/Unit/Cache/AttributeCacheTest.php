@@ -68,7 +68,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $attributeType
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function addAttribute($code, $attributeType = 'default')
     {
@@ -180,7 +180,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param array  $familyAttributeCodes
      * @param array  $categories
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function getProductMock(
         $productId = null,

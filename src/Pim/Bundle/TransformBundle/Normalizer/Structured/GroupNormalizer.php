@@ -79,7 +79,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
     /**
      * Normalize the attributes
      *
-     * @param \Pim\Component\Catalog\Model\GroupInterface $group
+     * @param GroupInterface $group
      *
      * @return array
      */

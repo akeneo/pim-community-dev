@@ -136,7 +136,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get the value form type name to use to ensure binding
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
@@ -148,7 +148,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type alias to use to render value
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
@@ -177,7 +177,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Guess the constraints to apply on the form
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return array
      */
@@ -195,7 +195,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type data
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      *
      * @return mixed
      */

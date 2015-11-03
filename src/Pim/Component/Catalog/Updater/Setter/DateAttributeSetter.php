@@ -52,7 +52,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
     /**
      * Format data
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @return string

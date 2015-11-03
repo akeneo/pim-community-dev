@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -63,7 +63,7 @@ class GroupManager
     /**
      * Get available axis
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function getAvailableAxis()
     {

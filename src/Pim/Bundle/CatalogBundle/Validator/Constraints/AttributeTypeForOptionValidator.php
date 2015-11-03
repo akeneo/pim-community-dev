@@ -22,7 +22,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      */
     public function validate($attributeOption, Constraint $constraint)
     {
-        /** @var \Pim\Component\Catalog\Model\AttributeOptionInterface */
+        /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute       = $attributeOption->getAttribute();
             $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
@@ -34,7 +34,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
 
     /**
      * @param AttributeTypeForOption   $constraint
-     * @param \Pim\Component\Catalog\Model\AttributeOptionInterface $option
+     * @param AttributeOptionInterface $option
      */
     protected function addInvalidAttributeViolation(
         AttributeTypeForOption $constraint,

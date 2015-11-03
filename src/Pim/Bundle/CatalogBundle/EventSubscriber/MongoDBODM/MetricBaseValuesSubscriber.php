@@ -108,7 +108,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Allow to create convert data in standard unit for metrics
      *
-     * @param \Pim\Component\Catalog\Model\MetricInterface $metric
+     * @param MetricInterface $metric
      */
     protected function createMetricBaseValues(MetricInterface $metric)
     {

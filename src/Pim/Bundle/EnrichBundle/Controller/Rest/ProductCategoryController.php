@@ -81,7 +81,7 @@ class ProductCategoryController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {

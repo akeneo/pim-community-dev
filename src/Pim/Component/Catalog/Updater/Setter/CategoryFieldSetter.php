@@ -100,7 +100,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
     /**
      * @param string $categoryCode
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function getCategory($categoryCode)
     {

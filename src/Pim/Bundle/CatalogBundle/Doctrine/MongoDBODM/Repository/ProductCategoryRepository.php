@@ -6,8 +6,8 @@ use Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCat
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

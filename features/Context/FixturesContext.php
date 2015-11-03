@@ -25,11 +25,11 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -277,7 +277,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -325,7 +325,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\GroupInterface
+     * @return GroupInterface
      */
     protected function getVariantGroup($code)
     {
@@ -372,7 +372,7 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
@@ -1464,7 +1464,7 @@ class FixturesContext extends RawMinkContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function getProduct($sku)
     {
@@ -1794,7 +1794,7 @@ class FixturesContext extends RawMinkContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ProductValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1821,7 +1821,7 @@ class FixturesContext extends RawMinkContext
      * @param string $label
      * @param bool   $isVariant
      *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {
@@ -1839,7 +1839,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string|array $data
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function createAttribute($data)
     {
@@ -1942,7 +1942,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function createTree($code)
     {
@@ -1952,7 +1952,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function createCategory($data)
     {
@@ -2094,7 +2094,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -2211,7 +2211,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
+     * @return AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {

@@ -70,7 +70,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     /**
      * Check if data are valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @return mixed

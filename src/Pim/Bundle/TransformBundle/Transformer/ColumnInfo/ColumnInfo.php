@@ -52,7 +52,7 @@ class ColumnInfo implements ColumnInfoInterface
     protected $rawSuffixes;
 
     /**
-     * @var \Pim\Component\Catalog\Model\AttributeInterface
+     * @var AttributeInterface
      */
     protected $attribute;
 
@@ -74,7 +74,7 @@ class ColumnInfo implements ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws ColumnLabelException
      */

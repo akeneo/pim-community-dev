@@ -75,7 +75,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
     /**
      * Check if data is valid
      *
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
@@ -106,7 +106,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
      * Set options into the product value
      *
      * @param ProductInterface   $product
-     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array              $attributeOptions
      * @param string             $locale
      * @param string             $scope

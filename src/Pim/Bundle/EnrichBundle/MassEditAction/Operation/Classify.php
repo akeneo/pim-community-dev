@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
  */
 class Classify extends AbstractMassEditOperation
 {
-    /** @var \Pim\Component\Catalog\Model\CategoryInterface[] */
+    /** @var CategoryInterface[] */
     protected $categories;
 
     /**
@@ -25,7 +25,7 @@ class Classify extends AbstractMassEditOperation
     }
 
     /**
-     * @return \Pim\Component\Catalog\Model\CategoryInterface[]
+     * @return CategoryInterface[]
      */
     public function getCategories()
     {
@@ -33,7 +33,7 @@ class Classify extends AbstractMassEditOperation
     }
 
     /**
-     * @param \Pim\Component\Catalog\Model\CategoryInterface[] $categories
+     * @param CategoryInterface[] $categories
      *
      * @return Classify
      */

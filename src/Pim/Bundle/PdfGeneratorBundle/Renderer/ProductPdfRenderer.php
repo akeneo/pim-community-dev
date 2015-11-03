@@ -111,7 +111,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * Get attributes to display
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string           $locale
      *
      * @return AttributeInterface[]
@@ -124,7 +124,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * get attributes grouped by attribute group
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param string           $locale
      *
      * @return AttributeGroup[]
@@ -152,7 +152,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param string           $locale
      * @param string           $scope
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     protected function getImageAttributes(ProductInterface $product, $locale, $scope)
     {

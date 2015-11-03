@@ -83,7 +83,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
      * Mark attribute as variant
      *
      * @param FormView              $view
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
+     * @param ProductValueInterface $value
      */
     protected function markAttributeAsUpdatedByVariant(FormView $view, ProductValueInterface $value)
     {

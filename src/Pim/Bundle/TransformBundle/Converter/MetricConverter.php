@@ -32,7 +32,7 @@ class MetricConverter
     /**
      * Convert all the products metric values into the channel configured conversion units
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      * @param ChannelInterface $channel
      */
     public function convert(ProductInterface $product, ChannelInterface $channel)

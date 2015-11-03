@@ -77,7 +77,7 @@ class UniqueValuesSet
     /**
      * spl_object_hash for new product and id when product exists
      *
-     * @param \Pim\Component\Catalog\Model\ProductInterface $product
+     * @param ProductInterface $product
      *
      * @return string
      */
