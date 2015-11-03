@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 
 /**
@@ -115,7 +115,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param mixed $attribute
      * @param mixed $channel
      *
-     * @return AttributeRequirementInterface
+     * @return \Pim\Component\Catalog\Model\AttributeRequirementInterface
      */
     private function getAttributeRequirementMock($attribute, $channel = null)
     {

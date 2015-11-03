@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Prophecy\Argument;

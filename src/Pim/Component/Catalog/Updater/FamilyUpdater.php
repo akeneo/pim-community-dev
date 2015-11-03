@@ -9,7 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -158,7 +158,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      *
-     * @return AttributeRequirementInterface[]
+     * @return \Pim\Component\Catalog\Model\AttributeRequirementInterface[]
      */
     protected function getExistingIdentifierRequirements(FamilyInterface $family)
     {
