@@ -184,4 +184,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeOptionInterface/Component\\Catalog\\Model\\AttributeOptionInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeOptionValueInterface/Component\\Catalog\\Model\\AttributeOptionValueInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupInterface/Component\\Catalog\\Model\\GroupInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupTypeInterface/Component\\Catalog\\Model\\GroupTypeInterface/g'
 ```
