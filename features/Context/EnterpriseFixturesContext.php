@@ -832,7 +832,15 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         if (in_array($type, ['product category', 'asset category', 'locale'])) {
-            return ($action === 'edit') ? Attributes::EDIT_ITEMS : Attributes::VIEW_ITEMS;
+            switch ($action) {
+                case 'own':
+                    return Attributes::OWN_PRODUCTS;
+                case 'edit':
+                    return Attributes::EDIT_ITEMS;
+                case 'view':
+                default:
+                    return Attributes::VIEW_ITEMS;
+            }
         }
 
         throw new \Exception('Undefined access type');
