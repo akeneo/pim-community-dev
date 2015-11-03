@@ -7,7 +7,7 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -86,7 +86,7 @@ class UserContext
      *
      * @throws \LogicException When there are no activated locales
      *
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     public function getCurrentLocale()
     {
@@ -122,7 +122,7 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return LocaleInterface[]
+     * @return \Pim\Component\Catalog\LocaleInterface[]
      */
     public function getUserLocales()
     {
@@ -252,7 +252,7 @@ class UserContext
     /**
      * Returns the user locale
      *
-     * @return LocaleInterface|null
+     * @return \Pim\Component\Catalog\LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -264,7 +264,7 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return LocaleInterface|null
+     * @return \Pim\Component\Catalog\LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
@@ -274,7 +274,7 @@ class UserContext
     /**
      * Checks if a locale is activated
      *
-     * @param LocaleInterface $locale
+     * @param \Pim\Component\Catalog\LocaleInterface $locale
      *
      * @return bool
      */

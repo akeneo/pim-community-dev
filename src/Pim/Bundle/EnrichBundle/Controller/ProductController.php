@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
@@ -398,7 +398,7 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * @return LocaleInterface[]
+     * @return \Pim\Component\Catalog\LocaleInterface[]
      */
     protected function getUserLocales()
     {
@@ -422,7 +422,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws \Exception
      *
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     protected function getDataLocale()
     {

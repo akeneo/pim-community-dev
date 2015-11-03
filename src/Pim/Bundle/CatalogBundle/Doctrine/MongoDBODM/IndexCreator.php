@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 
@@ -109,7 +109,7 @@ class IndexCreator
      * - completenesses
      * - localizable attributes
      *
-     * @param LocaleInterface $locale
+     * @param \Pim\Component\Catalog\LocaleInterface $locale
      */
     public function ensureIndexesFromLocale(LocaleInterface $locale)
     {

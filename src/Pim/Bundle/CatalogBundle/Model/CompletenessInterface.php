@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Component\Catalog\LocaleInterface;
 
 /**
  * Channel interface

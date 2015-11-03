@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 
 /**
  * Locale repository interface
@@ -19,7 +19,7 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
     /**
      * Return an array of activated locales
      *
-     * @return LocaleInterface[]
+     * @return \Pim\Component\Catalog\LocaleInterface[]
      */
     public function getActivatedLocales();
 

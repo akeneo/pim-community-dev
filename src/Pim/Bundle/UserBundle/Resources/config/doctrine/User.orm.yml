@@ -121,9 +121,9 @@ Pim\Bundle\UserBundle\Entity\User:
                         onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\LocaleInterface
         uiLocale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\LocaleInterface
             joinColumn:
               name: ui_locale_id
               nullable: false

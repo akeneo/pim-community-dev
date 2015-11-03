@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -121,10 +121,10 @@ class User implements UserInterface
     /** @var DateTime $updatedAt */
     protected $updatedAt;
 
-    /** @var LocaleInterface */
+    /** @var \Pim\Component\Catalog\LocaleInterface */
     protected $catalogLocale;
 
-    /** @var LocaleInterface */
+    /** @var \Pim\Component\Catalog\LocaleInterface */
     protected $uiLocale;
 
     /** @var Channel */

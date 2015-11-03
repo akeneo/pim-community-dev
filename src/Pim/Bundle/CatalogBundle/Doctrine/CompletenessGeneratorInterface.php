@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -57,7 +57,7 @@ interface CompletenessGeneratorInterface
      * of a channel and a locale id
      *
      * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param \Pim\Component\Catalog\LocaleInterface  $locale
      */
     public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale);
 }

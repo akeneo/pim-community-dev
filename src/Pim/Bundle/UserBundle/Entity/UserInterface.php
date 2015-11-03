@@ -12,7 +12,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -403,19 +403,19 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function preUpdate();
 
     /**
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     public function getCatalogLocale();
 
     /**
-     * @param LocaleInterface $catalogLocale
+     * @param \Pim\Component\Catalog\LocaleInterface $catalogLocale
      *
      * @return UserInterface
      */
     public function setCatalogLocale(LocaleInterface $catalogLocale);
 
     /**
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     public function getUiLocale();
 

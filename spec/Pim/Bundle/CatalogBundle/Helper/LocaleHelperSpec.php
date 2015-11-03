@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Intl;

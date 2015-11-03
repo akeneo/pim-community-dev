@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 
 class CompletenessNormalizerSpec extends ObjectBehavior
 {

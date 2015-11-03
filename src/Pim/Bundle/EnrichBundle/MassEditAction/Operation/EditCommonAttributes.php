@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\FileStorage;
@@ -31,7 +31,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var ArrayCollection */
     protected $displayedAttributes;
 
-    /** @var LocaleInterface */
+    /** @var \Pim\Component\Catalog\LocaleInterface */
     protected $locale;
 
     /** @var ProductBuilderInterface */
@@ -120,7 +120,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     public function getLocale()
     {

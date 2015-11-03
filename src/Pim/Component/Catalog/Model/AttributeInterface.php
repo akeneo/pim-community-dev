@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -571,11 +571,11 @@ interface AttributeInterface extends
     /**
      * Remove available locale
      *
-     * @param LocaleInterface $availableLocale
+     * @param \Pim\Component\Catalog\LocaleInterface $availableLocale
      *
      * @return AttributeInterface
      */
-    public function removeAvailableLocale(LocaleInterface $availableLocale);
+    public function removeAvailableLocale(\Pim\Component\Catalog\LocaleInterface $availableLocale);
 
     /**
      * Set scopable

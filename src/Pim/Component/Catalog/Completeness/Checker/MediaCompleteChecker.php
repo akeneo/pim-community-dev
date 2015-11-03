@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**

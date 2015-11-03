@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -40,7 +40,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var AttributeInterface[] */
     protected $attributes = [];
 
-    /** @var LocaleInterface[] */
+    /** @var \Pim\Component\Catalog\LocaleInterface[] */
     protected $locales = [];
 
     /** @var array */
@@ -342,7 +342,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @throws ObjectNotFoundException
      *
-     * @return LocaleInterface
+     * @return \Pim\Component\Catalog\LocaleInterface
      */
     protected function getLocale($code, $activeOnly = true)
     {
