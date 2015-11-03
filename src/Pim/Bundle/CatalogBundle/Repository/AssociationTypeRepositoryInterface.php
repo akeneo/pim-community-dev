@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -21,7 +21,7 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @param ProductInterface $product
      *
-     * @return AssociationTypeInterface[]
+     * @return \Pim\Component\Catalog\Model\AssociationTypeInterface[]
      */
     public function findMissingAssociationTypes(ProductInterface $product);
 

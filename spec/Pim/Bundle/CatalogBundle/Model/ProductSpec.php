@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -35,7 +35,7 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type(
         Association $assoc1,
         Association $assoc2,
-        AssociationTypeInterface $assocType1,
+        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType1,
         AssociationTypeInterface $assocType2
     ) {
         $assoc1->getAssociationType()->willReturn($assocType1);
@@ -48,8 +48,8 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type_code(
         Association $assoc1,
         Association $assoc2,
-        AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType1,
+        \Pim\Component\Catalog\Model\AssociationTypeInterface $assocType2
     ) {
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
