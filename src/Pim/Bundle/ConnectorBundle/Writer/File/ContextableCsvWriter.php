@@ -16,6 +16,9 @@ class ContextableCsvWriter extends CsvWriter
     /** @var array */
     protected $context = [];
 
+    /** @var  int */
+    protected $csvFileNumber;
+
     /**
      * @return array
      */
@@ -54,5 +57,38 @@ class ContextableCsvWriter extends CsvWriter
         }
 
         return $this->resolvedFilePath;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->csvFileNumber = 0;
+        $this->filePath = parent::getPath();
+        $this->resolvedFilePath = $this->getPath();
+        
+        $this->incrementFileNumber();
+    }
+
+    /**
+     * Increments file number in file name
+     */
+    public function incrementFileNumber()
+    {
+        $this->resolvedFilePath = strtr($this->filePath, [
+            '%filenumber%' => $this->csvFileNumber++
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        parent::flush();
+
+        $this->incrementFileNumber();
+        $this->items = [];
     }
 }
