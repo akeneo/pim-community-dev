@@ -14,6 +14,7 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute'
+            - %pim_catalog.entity.family.class%
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%

@@ -61,6 +61,9 @@ class FamilyController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $familyRemover;
 
+    /** @var string */
+    protected $familyClass;
+
     /**
      * Constructor
      *
@@ -81,6 +84,7 @@ class FamilyController extends AbstractDoctrineController
      * @param SaverInterface           $familySaver
      * @param RemoverInterface         $familyRemover
      * @param string                   $attributeClass
+     * @param string                   $familyClass
      */
     public function __construct(
         Request $request,
@@ -99,7 +103,8 @@ class FamilyController extends AbstractDoctrineController
         Form $familyForm,
         SaverInterface $familySaver,
         RemoverInterface $familyRemover,
-        $attributeClass
+        $attributeClass,
+        $familyClass
     ) {
         parent::__construct(
             $request,
@@ -121,6 +126,7 @@ class FamilyController extends AbstractDoctrineController
         $this->attributeClass = $attributeClass;
         $this->familySaver    = $familySaver;
         $this->familyRemover  = $familyRemover;
+        $this->familyClass    = $familyClass;
     }
 
     /**
@@ -171,17 +177,17 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Edit a family
      *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Family $family
+     * @param int $id
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
      *
      * @return array
      */
-    public function editAction(Family $family)
+    public function editAction($id)
     {
+        $family = $this->findOr404($this->familyClass, $id);
+
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.updated');
         }
@@ -198,16 +204,16 @@ class FamilyController extends AbstractDoctrineController
     /**
      * History of a family
      *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Family $family
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_history")
      *
      * @return Response
      */
-    public function historyAction(Family $family)
+    public function historyAction($id)
     {
+        $family = $this->findOr404($this->familyClass, $id);
+
         return $this->render(
             'PimEnrichBundle:Family:_history.html.twig',
             [
@@ -219,14 +225,15 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove a family
      *
-     * @param Family $family
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_remove")
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(Family $family)
+    public function removeAction($id)
     {
+        $family = $this->findOr404($this->familyClass, $id);
         $this->familyRemover->remove($family);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -239,14 +246,16 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Add attributes to a family
      *
-     * @param Family $family
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addAttributesAction(Family $family)
+    public function addAttributesAction($id)
     {
+        $family = $this->findOr404($this->familyClass, $id);
+
         $availableAttributes = new AvailableAttributes();
         $attributesForm      = $this->getAvailableAttributesForm(
             $family->getAttributes()->toArray(),
@@ -279,7 +288,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAttributeAction($familyId, $attributeId)
     {
-        $family    = $this->findOr404('PimCatalogBundle:Family', $familyId);
+        $family    = $this->findOr404($this->familyClass, $familyId);
         $attribute = $this->findOr404($this->attributeClass, $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
