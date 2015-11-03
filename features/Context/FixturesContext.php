@@ -701,6 +701,55 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following families:$/
+     */
+    public function thereShouldBeTheFollowingFamilies(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $family = $this->getFamily($data['code']);
+            $this->refresh($family);
+
+            $requirement = $this->normalizeRequirements($family);
+
+            assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
+            assertEquals($data['attribute_as_label'], $family->getAttributeAsLabel()->getCode());
+            assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
+            assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
+            assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+        }
+    }
+
+    /**
+     * Normalize the requirements
+     *
+     * @param FamilyInterface $family
+     *
+     * @return array
+     */
+    protected function normalizeRequirements(FamilyInterface $family)
+    {
+        $required = [];
+        $flat     = [];
+        foreach ($family->getAttributeRequirements() as $requirement) {
+            $channelCode = $requirement->getChannel()->getCode();
+            if (!isset($required['requirements-' . $channelCode])) {
+                $required['requirements-' . $channelCode] = [];
+            }
+            if ($requirement->isRequired()) {
+                $required['requirements-' . $channelCode][] = $requirement->getAttribute()->getCode();
+            }
+        }
+
+        foreach ($required as $key => $attributes) {
+            $flat[$key] = implode(',', $attributes);
+        }
+
+        return $flat;
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^there should be the following options:$/
      */
     public function thereShouldBeTheFollowingOptions(TableNode $table)
@@ -1489,6 +1538,16 @@ class FixturesContext extends RawMinkContext
     public function getUser($username)
     {
         return $this->getEntityOrException('User', ['username' => $username]);
+    }
+
+    /**
+     * @param string $localeCode
+     *
+     * @return LocaleInterface
+     */
+    public function getLocaleFromCode($localeCode)
+    {
+        return $this->getEntityOrException('Locale', ['code' => $localeCode]);
     }
 
     /**
