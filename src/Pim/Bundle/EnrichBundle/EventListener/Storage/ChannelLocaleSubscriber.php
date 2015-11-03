@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

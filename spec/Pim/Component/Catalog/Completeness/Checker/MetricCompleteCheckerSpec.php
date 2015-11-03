@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;

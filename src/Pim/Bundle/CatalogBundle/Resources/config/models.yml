@@ -13,7 +13,7 @@ parameters:
     pim_catalog.model.attribute_option_value.interface: Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface
     pim_catalog.model.attribute_requirement.interface:  Pim\Component\Catalog\Model\AttributeRequirementInterface
     pim_catalog.model.family.interface:                 Pim\Component\Catalog\Model\FamilyInterface
-    pim_catalog.model.channel.interface:                Pim\Bundle\CatalogBundle\Model\ChannelInterface
+    pim_catalog.model.channel.interface:                Pim\Component\Catalog\ChannelInterface
     pim_catalog.model.currency.interface:               Pim\Bundle\CatalogBundle\Model\CurrencyInterface
     pim_catalog.model.locale.interface:                 Pim\Component\Catalog\LocaleInterface
     pim_catalog.model.metric.interface:                 Pim\Bundle\CatalogBundle\Model\MetricInterface

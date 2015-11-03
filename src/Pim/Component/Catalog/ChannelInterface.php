@@ -1,7 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog;
 
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChosableInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Component\Catalog\LocaleInterface;
 

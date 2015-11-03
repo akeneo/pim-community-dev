@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;

@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as M
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;

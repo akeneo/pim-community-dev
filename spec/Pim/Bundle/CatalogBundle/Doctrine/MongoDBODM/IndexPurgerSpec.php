@@ -7,7 +7,7 @@ use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Component\Catalog\LocaleInterface;
 

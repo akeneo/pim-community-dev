@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -158,7 +158,7 @@ class NamingUtility
     /**
      * Get all channels
      *
-     * @return ChannelInterface[]
+     * @return \Pim\Component\Catalog\ChannelInterface[]
      */
     public function getChannels()
     {

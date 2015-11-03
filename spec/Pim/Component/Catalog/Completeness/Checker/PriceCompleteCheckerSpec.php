@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Completeness\Checker;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;

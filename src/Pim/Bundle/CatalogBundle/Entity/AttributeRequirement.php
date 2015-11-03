@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
@@ -35,7 +35,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     protected $attribute;
 
     /**
-     * @var ChannelInterface
+     * @var \Pim\Component\Catalog\ChannelInterface
      */
     protected $channel;
 

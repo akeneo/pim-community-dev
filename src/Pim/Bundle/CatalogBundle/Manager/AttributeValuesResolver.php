@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -23,7 +23,7 @@ class AttributeValuesResolver
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var ChannelInterface[] */
+    /** @var \Pim\Component\Catalog\ChannelInterface[] */
     protected $channels;
 
     /** @var LocaleInterface[] */
@@ -168,7 +168,7 @@ class AttributeValuesResolver
     }
 
     /**
-     * @return ChannelInterface[]
+     * @return \Pim\Component\Catalog\ChannelInterface[]
      */
     protected function getChannels()
     {

@@ -33,7 +33,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
                     onDelete: CASCADE
                     nullable: false
         channel:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            targetEntity: Pim\Component\Catalog\ChannelInterface
             joinColumns:
                 channel_id:
                     referencedColumnName: id

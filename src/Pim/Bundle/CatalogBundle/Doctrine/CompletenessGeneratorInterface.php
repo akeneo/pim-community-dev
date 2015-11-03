@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -28,7 +28,7 @@ interface CompletenessGeneratorInterface
     /**
      * Generate completeness for a channel
      *
-     * @param ChannelInterface $channel
+     * @param \Pim\Component\Catalog\ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 

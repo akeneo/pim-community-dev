@@ -18,5 +18,5 @@ Pim\Bundle\CatalogBundle\Entity\Locale:
             column: is_activated
     manyToMany:
         channels:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            targetEntity: Pim\Component\Catalog\ChannelInterface
             mappedBy: locales

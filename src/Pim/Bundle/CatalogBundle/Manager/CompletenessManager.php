@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -80,7 +80,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param ChannelInterface $channel
+     * @param \Pim\Component\Catalog\ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -124,7 +124,7 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all products
      * of a channel
      *
-     * @param ChannelInterface $channel
+     * @param \Pim\Component\Catalog\ChannelInterface $channel
      *
      * @deprecated To be removed in 1.5
      */
