@@ -40,10 +40,10 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA  => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
-        );
+        ];
     }
 
     /**
@@ -59,7 +59,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $requirements = array();
+        $requirements = [];
 
         foreach ($family->getAttributes() as $attribute) {
             foreach ($this->channels as $channel) {

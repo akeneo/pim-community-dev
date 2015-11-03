@@ -22,19 +22,19 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $expectedFunctions = array(
+    protected $expectedFunctions = [
         'oro_datetime_formatter_list' => 'getDateTimeFormatterList',
         'oro_date_format'             => 'getDateFormat',
         'oro_time_format'             => 'getTimeFormat',
         'oro_datetime_format'         => 'getDateTimeFormat',
-    );
+    ];
 
     protected function setUp()
     {
         $this->converterRegistry =
             $this->getMockBuilder('Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry')
                 ->disableOriginalConstructor()
-                ->setMethods(array('getFormatConverter', 'getFormatConverters'))
+                ->setMethods(['getFormatConverter', 'getFormatConverters'])
                 ->getMock();
 
         $this->extension = new DateFormatExtension($this->converterRegistry);
@@ -61,7 +61,7 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\Twig_SimpleFunction', $actualFunction);
             $actualFunctionName = $actualFunction->getName();
             $this->assertArrayHasKey($actualFunctionName, $this->expectedFunctions);
-            $expectedCallback = array($this->extension, $this->expectedFunctions[$actualFunctionName]);
+            $expectedCallback = [$this->extension, $this->expectedFunctions[$actualFunctionName]];
             $this->assertEquals($expectedCallback, $actualFunction->getCallable());
         }
     }
@@ -129,10 +129,10 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDateTimeFormatterList()
     {
-        $formatConverters = array(
+        $formatConverters = [
             'first'  => $this->createFormatConverter(),
             'second' => $this->createFormatConverter(),
-        );
+        ];
         $this->converterRegistry->expects($this->once())
             ->method('getFormatConverters')
             ->will($this->returnValue($formatConverters));

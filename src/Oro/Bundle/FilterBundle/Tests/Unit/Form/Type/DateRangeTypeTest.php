@@ -41,16 +41,16 @@ class DateRangeTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'          => 'date',
-                    'field_options'       => array(),
-                    'start_field_options' => array(),
-                    'end_field_options'   => array(),
-                )
-            )
-        );
+                    'field_options'       => [],
+                    'start_field_options' => [],
+                    'end_field_options'   => [],
+                ]
+            ]
+        ];
     }
 
     /**
@@ -58,23 +58,23 @@ class DateRangeTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'custom format' => array(
-                'bindData' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
-                'formData' => array(
+        return [
+            'custom format' => [
+                'bindData' => ['start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'],
+                'formData' => [
                     'start' => $this->createDateTime('1970-01-12', 'UTC'),
                     'end'   => $this->createDateTime('2013-01-12', 'UTC'),
-                ),
-                'viewData' => array(
-                    'value' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+                ],
+                'viewData' => [
+                    'value' => ['start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'format' => \IntlDateFormatter::MEDIUM
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**

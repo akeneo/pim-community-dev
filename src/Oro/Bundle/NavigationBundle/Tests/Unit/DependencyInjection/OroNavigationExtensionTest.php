@@ -10,13 +10,13 @@ class OroNavigationExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new OroNavigationExtension();
 
-        $configs = array();
+        $configs = [];
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $container->expects($this->any())
             ->method('getParameter')
             ->with('kernel.bundles')
-            ->will($this->returnValue(array('Oro\Bundle\NavigationBundle\OroNavigationBundle')));
+            ->will($this->returnValue(['Oro\Bundle\NavigationBundle\OroNavigationBundle']));
         $isCalled = false;
         $container->expects($this->any())
             ->method('setParameter')

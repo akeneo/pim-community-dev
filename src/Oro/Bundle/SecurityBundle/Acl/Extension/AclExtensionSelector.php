@@ -20,14 +20,14 @@ class AclExtensionSelector
     /**
      * @var AclExtensionInterface[]
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @var array
      * key = a string unique for each ObjectIdentity
      * value = ACL extension
      */
-    protected $localCache = array();
+    protected $localCache = [];
 
     /**
      * Constructor

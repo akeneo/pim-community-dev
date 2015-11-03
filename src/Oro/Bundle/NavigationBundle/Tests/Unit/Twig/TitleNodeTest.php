@@ -41,7 +41,7 @@ class TitleNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFailedCompile()
     {
-        $this->node->expects($this->once())->method('getIterator')->will($this->returnValue(array()));
+        $this->node->expects($this->once())->method('getIterator')->will($this->returnValue([]));
 
         $this->titleNode->compile($this->compiler);
     }
@@ -55,7 +55,7 @@ class TitleNodeTest extends \PHPUnit_Framework_TestCase
 
         $this->node->expects($this->once())
             ->method('getIterator')
-            ->will($this->returnValue(array($exprMock)));
+            ->will($this->returnValue([$exprMock]));
 
         $this->compiler->expects($this->at(0))
             ->method('raw')

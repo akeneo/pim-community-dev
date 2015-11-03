@@ -38,7 +38,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
      *
      * @var array
      */
-    protected $pendingUpdates = array();
+    protected $pendingUpdates = [];
 
     /**
      * @param ManagerRegistry $registry
@@ -108,6 +108,6 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
             }
         }
 
-        $this->pendingUpdates = array();
+        $this->pendingUpdates = [];
     }
 }

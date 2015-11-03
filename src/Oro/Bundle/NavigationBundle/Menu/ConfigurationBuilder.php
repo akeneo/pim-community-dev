@@ -34,7 +34,7 @@ class ConfigurationBuilder implements BuilderInterface
      * @param array                   $options
      * @param string|null             $alias
      */
-    public function build(ItemInterface $menu, array $options = array(), $alias = null)
+    public function build(ItemInterface $menu, array $options = [], $alias = null)
     {
         $menuConfig = $this->container->getParameter('oro_menu_config');
 
@@ -63,7 +63,7 @@ class ConfigurationBuilder implements BuilderInterface
      *
      * @return \Knp\Menu\ItemInterface
      */
-    private function createFromArray(ItemInterface $menu, array $data, array &$itemList, array $options = array())
+    private function createFromArray(ItemInterface $menu, array $data, array &$itemList, array $options = [])
     {
         $isAllowed = false;
         foreach ($data as $itemCode => $itemData) {

@@ -13,11 +13,11 @@ class NavigationHistoryItemTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->setEmail('some@email.com');
 
-        $values = array(
+        $values = [
             'title' => 'Some Title',
             'url'   => 'Some Url',
             'user'  => $user,
-        );
+        ];
 
         $item = new NavigationHistoryItem($values);
         $this->assertEquals($values['title'], $item->getTitle());

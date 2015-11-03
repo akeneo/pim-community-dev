@@ -71,12 +71,12 @@ class ProcessorDecorator
      */
     protected function getEmptyFinalArray()
     {
-        $result = array(
+        $result = [
             self::ROOT => array_fill_keys(
-                array(self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT),
-                array()
+                [self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT],
+                []
             )
-        );
+        ];
 
         return $result;
     }

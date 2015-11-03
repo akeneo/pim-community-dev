@@ -76,7 +76,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

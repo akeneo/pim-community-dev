@@ -70,11 +70,11 @@ class AssociationController
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Association:_associations.html.twig',
-            array(
+            [
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
                 'dataLocale'       => $request->get('dataLocale', null)
-            )
+            ]
         );
     }
 

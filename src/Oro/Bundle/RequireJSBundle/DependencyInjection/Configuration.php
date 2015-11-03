@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->enumNode('optimize')
-                            ->values(array('uglify', 'uglify2', 'closure', 'closure.keepLines', 'none'))
+                            ->values(['uglify', 'uglify2', 'closure', 'closure.keepLines', 'none'])
                             ->defaultValue('uglify2')
                         ->end()
                         ->booleanNode('generateSourceMaps')->end()

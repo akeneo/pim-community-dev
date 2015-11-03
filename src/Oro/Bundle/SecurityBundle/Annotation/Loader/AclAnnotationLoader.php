@@ -44,7 +44,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     public function load(AclAnnotationStorage $storage)
     {
         if (!empty($this->subDirs)) {
-            $directories = array();
+            $directories = [];
             foreach ($this->bundleDirectories as $bundleDir) {
                 foreach ($this->subDirs as $subDir) {
                     $dir = $bundleDir . DIRECTORY_SEPARATOR . $subDir;
@@ -154,7 +154,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             ->in($dirs)
             ->ignoreVCS(true);
 
-        $result = array();
+        $result = [];
         /** @var \SplFileInfo $file */
         foreach ($finder as $file) {
             $result[] = $file->getRealPath();

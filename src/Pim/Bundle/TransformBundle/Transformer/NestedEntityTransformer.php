@@ -74,7 +74,7 @@ class NestedEntityTransformer extends EntityTransformer
             return;
         }
         if (!isset($this->errors[$class][$propertyPath])) {
-            $this->errors[$class][$propertyPath] = array();
+            $this->errors[$class][$propertyPath] = [];
         }
         foreach ($errors as $fieldErrors) {
             $this->errors[$class][$propertyPath] = array_merge($this->errors[$class][$propertyPath], $fieldErrors);

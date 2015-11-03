@@ -18,14 +18,14 @@ class SelectRowFilterType extends AbstractChoiceType
             if ($submittedData === null) {
                 return $submittedData;
             } elseif ($submittedData === '') {
-                return array();
+                return [];
             }
 
             return null;
         };
 
-        $builder->add('in', 'hidden', array('empty_data' => $emptyData));
-        $builder->add('out', 'hidden', array('empty_data' => $emptyData));
+        $builder->add('in', 'hidden', ['empty_data' => $emptyData]);
+        $builder->add('out', 'hidden', ['empty_data' => $emptyData]);
     }
 
     /**
@@ -50,15 +50,15 @@ class SelectRowFilterType extends AbstractChoiceType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'    => 'choice',
-                'field_options' => array(
-                    'choices' => array(
+                'field_options' => [
+                    'choices' => [
                         self::NOT_SELECTED_VALUE => $this->translator->trans('oro.filter.form.label_not_selected'),
                         self::SELECTED_VALUE     => $this->translator->trans('oro.filter.form.label_selected')
-                    )
-                ),
-            )
+                    ]
+                ],
+            ]
         );
     }
 }

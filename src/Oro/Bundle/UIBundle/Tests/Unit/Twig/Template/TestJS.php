@@ -11,7 +11,7 @@ class TestJS extends Template
         return 'app.js.twig';
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doDisplay(array $context, array $blocks = [])
     {
         echo 'console.log("test")';
     }

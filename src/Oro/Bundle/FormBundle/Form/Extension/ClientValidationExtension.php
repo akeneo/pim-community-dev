@@ -16,7 +16,7 @@ class ClientValidationExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setOptional(array('client_validation'));
+        $resolver->setOptional(['client_validation']);
     }
 
     /**

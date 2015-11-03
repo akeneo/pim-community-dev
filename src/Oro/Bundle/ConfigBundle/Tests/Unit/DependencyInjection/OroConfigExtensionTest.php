@@ -20,7 +20,7 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $extension = new OroConfigExtension();
-        $configs = array();
+        $configs = [];
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $container->expects($this->any())
@@ -38,7 +38,7 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())
             ->method('getParameter')
             ->with('kernel.bundles')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $extension->load($configs, $container);
     }
@@ -47,12 +47,12 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->configuration = new ContainerBuilder();
 
-        $this->configuration->setParameter('kernel.bundles', array());
+        $this->configuration->setParameter('kernel.bundles', []);
 
         $loader = new OroConfigExtension();
         $config = $this->getEmptyConfig();
 
-        $loader->load(array($config), $this->configuration);
+        $loader->load([$config], $this->configuration);
 
         $this->assertTrue($this->configuration instanceof ContainerBuilder);
     }
@@ -77,13 +77,13 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $this->configuration->getParameter($key), sprintf('%s parameter is correct', $key));
     }
 
-    protected function getContainer(array $config = array())
+    protected function getContainer(array $config = [])
     {
         $container = new ContainerBuilder();
         $loader    = new OroConfigExtension();
 
         $container->addCompilerPass(new Compiler\ConfigPass());
-        $container->setParameter('kernel.bundles', array());
+        $container->setParameter('kernel.bundles', []);
         $loader->load($config, $container);
 
         $container->register(

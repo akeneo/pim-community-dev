@@ -40,7 +40,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      * @param string $label
      * @param string[] $permissions
      */
-    public function __construct($securityType = '', $className = '', $group = '', $label = '', $permissions = array())
+    public function __construct($securityType = '', $className = '', $group = '', $label = '', $permissions = [])
     {
         $this->securityType = $securityType;
         $this->className = $className;
@@ -105,13 +105,13 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
     public function serialize()
     {
         return serialize(
-            array(
+            [
                 $this->securityType,
                 $this->className,
                 $this->group,
                 $this->label,
                 $this->permissions,
-            )
+            ]
         );
     }
 

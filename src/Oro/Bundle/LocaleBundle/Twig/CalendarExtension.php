@@ -24,23 +24,23 @@ class CalendarExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'oro_calendar_month_names',
-                array($this, 'getMonthNames'),
-                array('is_safe' => array('html'))
+                [$this, 'getMonthNames'],
+                ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFunction(
                 'oro_calendar_day_of_week_names',
-                array($this, 'getDayOfWeekNames'),
-                array('is_safe' => array('html'))
+                [$this, 'getDayOfWeekNames'],
+                ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFunction(
                 'oro_calendar_first_day_of_week',
-                array($this, 'getFirstDayOfWeek'),
-                array('is_safe' => array('html'))
+                [$this, 'getFirstDayOfWeek'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     /**

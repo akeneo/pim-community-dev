@@ -22,10 +22,10 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
             ->method('convertBooleans')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array(false, '0'),
-                        array(true, '1'),
-                    )
+                    [
+                        [false, '0'],
+                        [true, '1'],
+                    ]
                 )
             );
         $this->connection = $this->getMockBuilder('Doctrine\DBAL\Connection')
@@ -49,7 +49,7 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
         $this->provider = new MutableAclProvider(
             $this->connection,
             $strategy,
-            array('sid_table_name' => 'acl_security_identities')
+            ['sid_table_name' => 'acl_security_identities']
         );
     }
 
@@ -109,41 +109,41 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
 
     public static function deleteSecurityIdentityProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 new UserSecurityIdentity('test', 'Acme\User'),
                 'DELETE FROM acl_security_identities WHERE identifier = \'Acme\User-test\' AND username = 1'
-            ),
-            array(
+            ],
+            [
                 new RoleSecurityIdentity('ROLE_TEST'),
                 'DELETE FROM acl_security_identities WHERE identifier = \'ROLE_TEST\' AND username = 0'
-            ),
-        );
+            ],
+        ];
     }
 
     public static function updateSecurityIdentityProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 new UserSecurityIdentity('test', 'Acme\User'),
                 'old',
                 'UPDATE acl_security_identities SET identifier = \'Acme\User-test\' WHERE '
                 . 'identifier = \'Acme\User-old\' AND username = 1'
-            ),
-            array(
+            ],
+            [
                 new RoleSecurityIdentity('ROLE_TEST'),
                 'ROLE_OLD',
                 'UPDATE acl_security_identities SET identifier = \'ROLE_TEST\' WHERE '
                 . 'identifier = \'ROLE_OLD\' AND username = 0'
-            ),
-        );
+            ],
+        ];
     }
 
     public static function updateSecurityIdentityNoChangesProvider()
     {
-        return array(
-            array(new UserSecurityIdentity('test', 'Acme\User'), 'test'),
-            array(new RoleSecurityIdentity('ROLE_TEST'), 'ROLE_TEST'),
-        );
+        return [
+            [new UserSecurityIdentity('test', 'Acme\User'), 'test'],
+            [new RoleSecurityIdentity('ROLE_TEST'), 'ROLE_TEST'],
+        ];
     }
 }

@@ -32,18 +32,18 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('oro_locale', array($this->localeSettings, 'getLocale')),
-            new \Twig_SimpleFunction('oro_language', array($this->localeSettings, 'getLanguage')),
-            new \Twig_SimpleFunction('oro_country', array($this->localeSettings, 'getCountry')),
-            new \Twig_SimpleFunction('oro_currency', array($this->localeSettings, 'getCurrency')),
-            new \Twig_SimpleFunction('oro_timezone', array($this->localeSettings, 'getTimeZone')),
-            new \Twig_SimpleFunction('oro_timezone_offset', array($this, 'getTimeZoneOffset')),
+        return [
+            new \Twig_SimpleFunction('oro_locale', [$this->localeSettings, 'getLocale']),
+            new \Twig_SimpleFunction('oro_language', [$this->localeSettings, 'getLanguage']),
+            new \Twig_SimpleFunction('oro_country', [$this->localeSettings, 'getCountry']),
+            new \Twig_SimpleFunction('oro_currency', [$this->localeSettings, 'getCurrency']),
+            new \Twig_SimpleFunction('oro_timezone', [$this->localeSettings, 'getTimeZone']),
+            new \Twig_SimpleFunction('oro_timezone_offset', [$this, 'getTimeZoneOffset']),
             new \Twig_SimpleFunction(
                 'oro_format_address_by_address_country',
-                array($this->localeSettings, 'isFormatAddressByAddressCountry')
+                [$this->localeSettings, 'isFormatAddressByAddressCountry']
             ),
-        );
+        ];
     }
 
     /**

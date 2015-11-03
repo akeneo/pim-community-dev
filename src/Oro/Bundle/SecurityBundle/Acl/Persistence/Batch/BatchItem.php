@@ -98,7 +98,7 @@ class BatchItem
     public function getAces()
     {
         return $this->aces === null
-            ? array()
+            ? []
             : $this->aces;
     }
 
@@ -172,7 +172,7 @@ class BatchItem
     public function removeAces($type, $field, SID $sid)
     {
         if ($this->aces !== null) {
-            $toRemoveKeys = array();
+            $toRemoveKeys = [];
             foreach ($this->aces as $key => $val) {
                 if ($sid->equals($val->getSecurityIdentity())
                     && $type === $val->getType()

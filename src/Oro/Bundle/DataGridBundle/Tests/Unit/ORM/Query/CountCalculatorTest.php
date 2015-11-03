@@ -24,7 +24,7 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getCountDataProvider
      */
-    public function testCalculateCount($dql, array $sqlParameters, array $types, array $queryParameters = array())
+    public function testCalculateCount($dql, array $sqlParameters, array $types, array $queryParameters = [])
     {
         /** @var $entityManager EntityManager|\PHPUnit_Framework_MockObject_MockObject */
         /** @var $connection Connection|\PHPUnit_Framework_MockObject_MockObject */
@@ -54,25 +54,25 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function getCountDataProvider()
     {
-        return array(
-            'empty' => array(
+        return [
+            'empty' => [
                 'dql'           => 'SELECT e FROM Stub:Entity e',
-                'sqlParameters' => array(),
-                'types'         => array(),
-            ),
-            'single parameters' => array(
+                'sqlParameters' => [],
+                'types'         => [],
+            ],
+            'single parameters' => [
                 'dql'             => 'SELECT e FROM Stub:Entity e WHERE e.a = :a AND e.b = :b',
-                'sqlParameters'   => array(1, 2),
-                'types'           => array(Type::INTEGER, Type::INTEGER),
-                'queryParameters' => array('a' => 1, 'b' => 2),
-            ),
-            'multiple parameters' => array(
+                'sqlParameters'   => [1, 2],
+                'types'           => [Type::INTEGER, Type::INTEGER],
+                'queryParameters' => ['a' => 1, 'b' => 2],
+            ],
+            'multiple parameters' => [
                 'dql'             => 'SELECT e FROM Stub:Entity e WHERE e.a = :value AND e.b = :value',
-                'sqlParameters'   => array(3, 3),
-                'types'           => array(Type::INTEGER, Type::INTEGER),
-                'queryParameters' => array('value' => 3),
-            ),
-        );
+                'sqlParameters'   => [3, 3],
+                'types'           => [Type::INTEGER, Type::INTEGER],
+                'queryParameters' => ['value' => 3],
+            ],
+        ];
     }
 
     /**
@@ -85,21 +85,21 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
         $configuration->addEntityNamespace('Stub', 'Oro\Bundle\DataGridBundle\Tests\Unit\ORM\Query\Stub');
 
         $classMetadata = new ClassMetadata('Entity');
-        $classMetadata->mapField(array('fieldName' => 'a', 'columnName' => 'a'));
-        $classMetadata->mapField(array('fieldName' => 'b', 'columnName' => 'b'));
+        $classMetadata->mapField(['fieldName' => 'a', 'columnName' => 'a']);
+        $classMetadata->mapField(['fieldName' => 'b', 'columnName' => 'b']);
 
         $platform = $this->getMockBuilder('Doctrine\DBAL\Platforms\AbstractPlatform')
-            ->setMethods(array())
+            ->setMethods([])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
         $statement = $this->getMockBuilder('Doctrine\DBAL\Statement')
-            ->setMethods(array('fetchColumn'))
+            ->setMethods(['fetchColumn'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $driverConnection = $this->getMockBuilder('Doctrine\DBAL\Driver\Connection')
-            ->setMethods(array('query'))
+            ->setMethods(['query'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $driverConnection->expects($this->any())
@@ -118,8 +118,8 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($platform));
 
         $connection = $this->getMockBuilder('Doctrine\DBAL\Connection')
-            ->setMethods(array('getDatabasePlatform', 'executeQuery'))
-            ->setConstructorArgs(array(array(), $driver))
+            ->setMethods(['getDatabasePlatform', 'executeQuery'])
+            ->setConstructorArgs([[], $driver])
             ->getMock();
         $connection->expects($this->any())
             ->method('getDatabasePlatform')
@@ -127,12 +127,12 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
 
         /** @var UnitOfWork $unitOfWork */
         $unitOfWork = $this->getMockBuilder('UnitOfWork')
-            ->setMethods(array('getEntityPersister'))
+            ->setMethods(['getEntityPersister'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->setMethods(array('getConfiguration', 'getClassMetadata', 'getConnection', 'getUnitOfWork'))
+            ->setMethods(['getConfiguration', 'getClassMetadata', 'getConnection', 'getUnitOfWork'])
             ->disableOriginalConstructor()
             ->getMock();
         $entityManager->expects($this->any())
@@ -148,6 +148,6 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
             ->method('getUnitOfWork')
             ->will($this->returnValue($unitOfWork));
 
-        return array($entityManager, $connection, $statement);
+        return [$entityManager, $connection, $statement];
     }
 }

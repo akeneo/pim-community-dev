@@ -15,30 +15,30 @@ class OroUIExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->container->expects($this->once())
             ->method('getParameter')
-            ->will($this->returnValue(array('Oro\Bundle\UIBundle\Tests\Unit\Fixture\UnitTestBundle')));
+            ->will($this->returnValue(['Oro\Bundle\UIBundle\Tests\Unit\Fixture\UnitTestBundle']));
 
         $this->container->expects($this->any())
             ->method('setParameter');
 
         $extension = new OroUIExtension();
 
-        $extensionConfig = array(
-            array(
-                'placeholders_items' => array(
-                    'top_block' => array(
-                        'items' => array(
-                            'top_test_template' => array(
+        $extensionConfig = [
+            [
+                'placeholders_items' => [
+                    'top_block' => [
+                        'items' => [
+                            'top_test_template' => [
                                 'remove' => true
-                            ),
-                            'insert_template' => array(
+                            ],
+                            'insert_template' => [
                                 'order' => 100
-                            ),
-                        )
-                    )
+                            ],
+                        ]
+                    ]
 
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $extension->load($extensionConfig, $this->container);
     }

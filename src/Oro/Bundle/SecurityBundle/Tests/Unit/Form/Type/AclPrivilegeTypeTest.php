@@ -22,13 +22,13 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
         $builder->expects($this->at(0))->method('add')->with(
             'identity',
             $this->isInstanceOf('Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType'),
-            array('required' => false)
+            ['required' => false]
         );
-        $options = array(
-            'privileges_config' => array(
+        $options = [
+            'privileges_config' => [
                 'field_type' => 'grid'
-            )
-        );
+            ]
+        ];
         $builder->expects($this->at(1))->method('add')->with(
             'permissions',
             $this->isInstanceOf('Oro\Bundle\SecurityBundle\Form\Type\PermissionCollectionType'),
@@ -50,10 +50,10 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
 
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
-                array(
-                    'privileges_config' => array(),
+                [
+                    'privileges_config' => [],
                     'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-                )
+                ]
             );
         $this->formType->configureOptions($resolver);
     }
@@ -66,10 +66,10 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $privileges_config = array("test");
-        $options = array(
+        $privileges_config = ["test"];
+        $options = [
             'privileges_config' => $privileges_config
-        );
+        ];
         $this->formType->buildView($view, $form, $options);
         $this->assertAttributeContains($privileges_config, 'vars', $view);
     }

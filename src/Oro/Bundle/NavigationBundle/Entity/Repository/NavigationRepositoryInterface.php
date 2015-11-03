@@ -16,5 +16,5 @@ interface NavigationRepositoryInterface
      *
      * @return array
      */
-    public function getNavigationItems($user, $type, $options = array());
+    public function getNavigationItems($user, $type, $options = []);
 }

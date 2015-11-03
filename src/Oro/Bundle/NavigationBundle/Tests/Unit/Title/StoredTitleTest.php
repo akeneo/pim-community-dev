@@ -16,8 +16,8 @@ class StoredTitleTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new StoredTitle();
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        call_user_func_array([$obj, 'set' . ucfirst($property)], [$value]);
+        $this->assertEquals($value, call_user_func_array([$obj, 'get' . ucfirst($property)], []));
     }
 
     /**
@@ -27,11 +27,11 @@ class StoredTitleTest extends \PHPUnit_Framework_TestCase
      */
     public function provider()
     {
-        return array(
-            array('params', array('testKey' => 'testValue')),
-            array('template', 'testValue'),
-            array('prefix', 'testValue'),
-            array('suffix', 'testValue')
-        );
+        return [
+            ['params', ['testKey' => 'testValue']],
+            ['template', 'testValue'],
+            ['prefix', 'testValue'],
+            ['suffix', 'testValue']
+        ];
     }
 }

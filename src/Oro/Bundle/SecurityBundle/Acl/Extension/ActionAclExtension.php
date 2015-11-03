@@ -22,11 +22,11 @@ class ActionAclExtension extends AbstractAclExtension
     {
         $this->actionMetadataProvider = $actionMetadataProvider;
 
-        $this->map = array(
-            'EXECUTE' => array(
+        $this->map = [
+            'EXECUTE' => [
                 ActionMaskBuilder::MASK_EXECUTE,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -94,7 +94,7 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getAllMaskBuilders()
     {
-        return array(new ActionMaskBuilder());
+        return [new ActionMaskBuilder()];
     }
 
     /**
@@ -120,7 +120,7 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getPermissions($mask = null, $setOnly = false)
     {
-        $result = array();
+        $result = [];
         if ($mask === null || $setOnly || $mask !== 0) {
             $result[] = 'EXECUTE';
         }
@@ -133,7 +133,7 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
-        return array('EXECUTE');
+        return ['EXECUTE'];
     }
 
     /**

@@ -13,47 +13,47 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testConfigTree($options, $expects)
     {
         $processor = new Processor();
-        $configuration = new Configuration(array());
-        $result = $processor->processConfiguration($configuration, array($options));
+        $configuration = new Configuration([]);
+        $result = $processor->processConfiguration($configuration, [$options]);
 
         $this->assertEquals($expects, $result);
     }
 
     public function dataProviderConfigTree()
     {
-        return array(
-            array(
-                array(),
-                array(
-                    'js_translation' => array(
-                        'domains' => array('jsmessages', 'validators'),
+        return [
+            [
+                [],
+                [
+                    'js_translation' => [
+                        'domains' => ['jsmessages', 'validators'],
                         'debug'   => '%kernel.debug%',
-                    )
-                )
-            ),
-            array(
-                array('js_translation' => array()),
-                array(
-                    'js_translation' => array(
-                        'domains' => array('jsmessages', 'validators'),
+                    ]
+                ]
+            ],
+            [
+                ['js_translation' => []],
+                [
+                    'js_translation' => [
+                        'domains' => ['jsmessages', 'validators'],
                         'debug'   => '%kernel.debug%',
-                    )
-                )
-            ),
-            array(
-                array(
-                    'js_translation' => array(
-                        'domains' => array('validators'),
+                    ]
+                ]
+            ],
+            [
+                [
+                    'js_translation' => [
+                        'domains' => ['validators'],
                         'debug'   => true,
-                    )
-                ),
-                array(
-                    'js_translation' => array(
-                        'domains' => array('validators'),
+                    ]
+                ],
+                [
+                    'js_translation' => [
+                        'domains' => ['validators'],
                         'debug'   => true,
-                    )
-                )
-            ),
-        );
+                    ]
+                ]
+            ],
+        ];
     }
 }

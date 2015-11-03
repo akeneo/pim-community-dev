@@ -17,7 +17,7 @@ class DateTimeDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if ($data === null || $data === '') {
             return null;

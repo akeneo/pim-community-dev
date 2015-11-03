@@ -30,7 +30,7 @@ class AddDateTimeFormatConverterCompilerPass implements CompilerPassInterface
 
                 $registryDefinition->addMethodCall(
                     'addFormatConverter',
-                    array($eachTag['alias'], $container->getDefinition($id))
+                    [$eachTag['alias'], $container->getDefinition($id)]
                 );
             }
         }

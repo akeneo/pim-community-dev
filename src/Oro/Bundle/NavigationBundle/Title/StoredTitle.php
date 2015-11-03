@@ -27,7 +27,7 @@ class StoredTitle
      * @Type("array")
      * @var array
      */
-    private $params = array();
+    private $params = [];
 
     /**
      * @Type("string")

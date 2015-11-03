@@ -59,7 +59,7 @@ class AclPrivilegeRepository
                 ->getPermissions();
         }
 
-        $result = array();
+        $result = [];
         foreach ($extensionKeyOrKeys as $extensionKey) {
             $extension = $this->manager->getExtensionSelector()->select($this->manager->getRootOid($extensionKey));
             foreach ($extension->getPermissions() as $permission) {
@@ -87,8 +87,8 @@ class AclPrivilegeRepository
             // fill a list of object identities;
             // the root object identity is added to the top of the list (for performance reasons)
             /** @var OID[] $oids */
-            $classes = array();
-            $oids = array();
+            $classes = [];
+            $oids = [];
             foreach ($extension->getClasses() as $class) {
                 $className = $class->getClassName();
                 $oids[] = new OID($extensionKey, $className);
@@ -154,7 +154,7 @@ class AclPrivilegeRepository
          * key = ExtensionKey
          * value = a key in $privilege collection
          */
-        $rootKeys = array();
+        $rootKeys = [];
         // find all root privileges
         foreach ($privileges as $key => $privilege) {
             $identity = $privilege->getIdentity()->getId();
@@ -175,7 +175,7 @@ class AclPrivilegeRepository
          *      'rootMasks' => array of integer
          */
         // init the context
-        $context = array();
+        $context = [];
         $this->initSaveContext($context, $rootKeys, $sid, $privileges);
 
         // set permissions for all root objects and remove all root privileges from $privileges collection
@@ -243,17 +243,17 @@ class AclPrivilegeRepository
         foreach ($this->manager->getAllExtensions() as $extension) {
             $extensionKey = $extension->getExtensionKey();
             /** @var MaskBuilder[] $maskBuilders */
-            $maskBuilders = array();
+            $maskBuilders = [];
             $this->prepareMaskBuilders($maskBuilders, $extension);
-            $context[$extensionKey] = array(
+            $context[$extensionKey] = [
                 'extension'    => $extension,
                 'maskBuilders' => $maskBuilders
-            );
+            ];
             if (isset($rootKeys[$extensionKey])) {
                 $privilege = $privileges[$rootKeys[$extensionKey]];
                 $rootMasks = $this->getPermissionMasks($privilege->getPermissions(), $extension, $maskBuilders);
             } else {
-                $rootMasks = array();
+                $rootMasks = [];
                 $oid = $this->manager->getRootOid($extension->getExtensionKey());
                 foreach ($this->manager->getAces($sid, $oid) as $ace) {
                     if (!$ace->isGranting()) {
@@ -397,7 +397,7 @@ class AclPrivilegeRepository
      */
     protected function getPermissionMasks($permissions, AclExtensionInterface $extension, array $maskBuilders)
     {
-        $masks = array();
+        $masks = [];
 
         foreach ($maskBuilders as $maskBuilder) {
             $maskBuilder->reset();

@@ -9,7 +9,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
     public function testAnnotation()
     {
         $annotation = new Acl(
-            array(
+            [
                 'id'               => 'test_acl',
                 'type'             => 'SomeType',
                 'class'            => 'SomeClass',
@@ -17,7 +17,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
                 'group_name'       => 'SomeGroup',
                 'label'            => 'SomeLabel',
                 'ignore_class_acl' => true
-            )
+            ]
         );
         $this->assertEquals('test_acl', $annotation->getId());
         $this->assertEquals('SomeType', $annotation->getType());
@@ -33,7 +33,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnnotationWithEmptyId()
     {
-        $annotation = new Acl(array('id' => ''));
+        $annotation = new Acl(['id' => '']);
     }
 
     /**
@@ -41,7 +41,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnnotationWithInvalidId()
     {
-        $annotation = new Acl(array('id' => 'test acl'));
+        $annotation = new Acl(['id' => 'test acl']);
     }
 
     /**
@@ -49,7 +49,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnnotationWithMissingId()
     {
-        $annotation = new Acl(array());
+        $annotation = new Acl([]);
     }
 
     /**
@@ -57,7 +57,7 @@ class AclTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnnotationWithEmptyType()
     {
-        $annotation = new Acl(array('id' => 'test', 'type' => ''));
+        $annotation = new Acl(['id' => 'test', 'type' => '']);
     }
 
     /**
@@ -65,6 +65,6 @@ class AclTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnnotationWithMissingType()
     {
-        $annotation = new Acl(array('id' => 'test'));
+        $annotation = new Acl(['id' => 'test']);
     }
 }

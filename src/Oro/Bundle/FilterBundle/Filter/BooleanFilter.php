@@ -71,7 +71,7 @@ class BooleanFilter extends ChoiceFilter
      */
     public function parseData($data)
     {
-        $allowedValues = array(BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO);
+        $allowedValues = [BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO];
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !$data['value']

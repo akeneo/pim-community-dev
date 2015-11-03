@@ -106,7 +106,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
     public function testSetRolesWithArrayArgument()
     {
-        $roles = array(new Role(self::TEST_ROLE));
+        $roles = [new Role(self::TEST_ROLE)];
         $this->assertCount(0, $this->group->getRoles());
         $this->group->setRoles($roles);
         $this->assertEquals($roles, $this->group->getRoles()->toArray());
@@ -114,7 +114,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
     public function testSetRolesWithCollectionArgument()
     {
-        $roles = new ArrayCollection(array(new Role(self::TEST_ROLE)));
+        $roles = new ArrayCollection([new Role(self::TEST_ROLE)]);
         $this->assertCount(0, $this->group->getRoles());
         $this->group->setRoles($roles);
         $this->assertEquals($roles->toArray(), $this->group->getRoles()->toArray());

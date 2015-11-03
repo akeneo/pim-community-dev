@@ -65,10 +65,10 @@ class BreadcrumbManager
      * @return ItemInterface
      *
      */
-    public function getMenu($menu, array $pathName = array(), array $options = array())
+    public function getMenu($menu, array $pathName = [], array $options = [])
     {
         if (!$menu instanceof ItemInterface) {
-            $menu = $this->provider->get((string) $menu, array_merge($options, array('check_access' => false)));
+            $menu = $this->provider->get((string) $menu, array_merge($options, ['check_access' => false]));
         }
         foreach ($pathName as $child) {
             $menu = $menu->getChild($child);
@@ -113,7 +113,7 @@ class BreadcrumbManager
         foreach ($menu as $item) {
             /** @var $item ItemInterface */
 
-            $routes = (array)$item->getExtra('routes', array());
+            $routes = (array)$item->getExtra('routes', []);
             if ($this->match($routes, $route)) {
                 return $item;
             }
@@ -158,7 +158,7 @@ class BreadcrumbManager
      */
     public function getBreadcrumbLabels($menu, $route)
     {
-        $labels = array();
+        $labels = [];
         $menuItem = $this->getMenuItemByRoute($this->getMenu($menu), $route);
         if ($menuItem) {
             $breadcrumb = $this->getBreadcrumbArray($menu, $menuItem, false);

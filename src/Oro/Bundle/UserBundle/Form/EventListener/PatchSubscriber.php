@@ -19,14 +19,14 @@ class PatchSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_BIND => 'preBind');
+        return [FormEvents::PRE_BIND => 'preBind'];
     }
 
     public function preBind(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();
-        $data = array_replace($this->unbind($form), $data ?: array());
+        $data = array_replace($this->unbind($form), $data ?: []);
 
         $event->setData($data);
     }
@@ -40,7 +40,7 @@ class PatchSubscriber implements EventSubscriberInterface
     protected function unbind(FormInterface $form)
     {
         if ($form->count() > 0) {
-            $ary = array();
+            $ary = [];
 
             foreach ($form->all() as $name => $child) {
                 $value = $this->unbind($child);

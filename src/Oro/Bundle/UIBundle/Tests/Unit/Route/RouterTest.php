@@ -35,11 +35,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($testUrl));
 
         $redirect = $this->router->actionRedirect(
-            array(
+            [
                 'route'      => 'test_route',
-                'parameters' => array('id' => 1),
-            ),
-            array()
+                'parameters' => ['id' => 1],
+            ],
+            []
         );
 
         $this->assertEquals($testUrl, $redirect->getTargetUrl());
@@ -60,11 +60,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
          * @var \Symfony\Component\HttpFoundation\RedirectResponse
          */
         $redirect = $this->router->actionRedirect(
-            array(),
-            array(
+            [],
+            [
                 'route'      => 'test_route',
-                'parameters' => array('id' => 1),
-            )
+                'parameters' => ['id' => 1],
+            ]
         );
 
         $this->assertEquals($testUrl, $redirect->getTargetUrl());
@@ -74,8 +74,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\LogicException');
         $this->router->actionRedirect(
-            array(),
-            array()
+            [],
+            []
         );
     }
 }

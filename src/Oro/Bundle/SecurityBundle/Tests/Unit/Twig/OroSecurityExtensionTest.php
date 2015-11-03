@@ -38,9 +38,9 @@ class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFunctions()
     {
-        $expectedFunctions = array(
+        $expectedFunctions = [
             'resource_granted' => 'checkResourceIsGranted',
-        );
+        ];
 
         $actualFunctions = $this->twigExtension->getFunctions();
         $this->assertSameSize($expectedFunctions, $actualFunctions);

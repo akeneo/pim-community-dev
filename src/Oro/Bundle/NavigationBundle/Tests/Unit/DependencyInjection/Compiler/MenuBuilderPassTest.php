@@ -36,21 +36,21 @@ class MenuBuilderPassTest extends \PHPUnit_Framework_TestCase
             ->method('addMethodCall');
         $definition->expects($this->at(0))
             ->method('addMethodCall')
-            ->with('addBuilder', array(new Reference('service1'), 'test'));
+            ->with('addBuilder', [new Reference('service1'), 'test']);
         $definition->expects($this->at(1))
             ->method('addMethodCall')
-            ->with('addBuilder', array(new Reference('service2'), 'test'));
+            ->with('addBuilder', [new Reference('service2'), 'test']);
         $definition->expects($this->at(3))
             ->method('addMethodCall')
-            ->with('addBuilder', array(new Reference('service1')));
+            ->with('addBuilder', [new Reference('service1')]);
         $definition->expects($this->at(5))
             ->method('addMethodCall')
-            ->with('addBuilder', array(new Reference('service2')));
+            ->with('addBuilder', [new Reference('service2')]);
 
-        $serviceIds = array(
-            'service1' => array(array('alias' => 'test')),
-            'service2' => array(array('alias' => 'test'))
-        );
+        $serviceIds = [
+            'service1' => [['alias' => 'test']],
+            'service2' => [['alias' => 'test']]
+        ];
 
         $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->getMock();

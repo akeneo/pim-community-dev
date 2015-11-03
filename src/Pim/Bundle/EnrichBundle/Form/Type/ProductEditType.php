@@ -83,9 +83,9 @@ class ProductEditType extends AbstractType
             ->add(
                 'associations',
                 'collection',
-                array(
+                [
                     'type' => 'pim_enrich_association'
-                )
+                ]
             )
             ->get('associations')
             ->addEventSubscriber(new BindAssociationTargetsSubscriber());
@@ -106,12 +106,12 @@ class ProductEditType extends AbstractType
             ->add(
                 'categories',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => $this->categoryClass,
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
-                )
+                ]
             );
 
         foreach ($this->subscribers as $subscriber) {
@@ -125,10 +125,10 @@ class ProductEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'enable_family' => true,
                 'enable_state'  => true
-            )
+            ]
         );
     }
 

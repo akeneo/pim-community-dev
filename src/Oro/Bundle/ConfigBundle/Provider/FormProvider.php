@@ -17,10 +17,10 @@ abstract class FormProvider implements ProviderInterface
     protected $config;
 
     /** @var array */
-    protected $processedTrees = array();
+    protected $processedTrees = [];
 
     /** @var array */
-    protected $processedSubTrees = array();
+    protected $processedSubTrees = [];
 
     public function __construct($config)
     {

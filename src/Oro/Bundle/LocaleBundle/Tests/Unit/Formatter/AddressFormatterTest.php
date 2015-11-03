@@ -29,19 +29,19 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
         $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->setMethods(
-                array(
+                [
                     'getLocale',
                     'getCountry',
                     'getAddressFormats',
                     'getLocaleByCountry',
                     'isFormatAddressByAddressCountry'
-                )
+                ]
             )
             ->getMock();
 
         $this->nameFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NameFormatter')
             ->disableOriginalConstructor()
-            ->setMethods(array('format'))
+            ->setMethods(['format'])
             ->getMock();
 
         $this->addressFormatter = new AddressFormatter($this->localeSettings, $this->nameFormatter);
@@ -65,11 +65,11 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
         $address = new AddressStub();
         $locale = 'en';
         $country = 'CA';
-        $addressFormats = array(
-            $country => array(
+        $addressFormats = [
+            $country => [
                 LocaleSettings::ADDRESS_FORMAT_KEY => $format
-            ),
-        );
+            ],
+        ];
 
         $this->localeSettings->expects($this->once())
             ->method('getAddressFormats')
@@ -102,32 +102,32 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatDataProvider()
     {
-        return array(
-            'simple street' => array(
+        return [
+            'simple street' => [
                 '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%',
                 "Formatted User NAME\nCompany Ltd.\n1 Tests str. apartment 10\nNEW YORK NY UNITED STATES 12345"
-            ),
-            'complex street' => array(
+            ],
+            'complex street' => [
                 '%name%\n%organization%\n%street1%\n%street2%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%',
                 "Formatted User NAME\nCompany Ltd.\n1 Tests str.\napartment 10\nNEW YORK NY UNITED STATES 12345"
-            ),
-            'unknown field' => array(
+            ],
+            'unknown field' => [
                 '%unknown_data_one% %name%\n'
                 . '%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code% %unknown_data_two%',
                 "Formatted User NAME\nCompany Ltd.\n1 Tests str. apartment 10\nNEW YORK NY UNITED STATES 12345"
-            ),
-            'multi spaces' => array(
+            ],
+            'multi spaces' => [
                 '%unknown_data_one% %name% %unknown_data_one%\n'
                 . '%organization%\n%street%\n'
                 . '%CITY% %unknown_data_one% %REGION_CODE% %COUNTRY% %postal_code% %unknown_data_two%',
                 "Formatted User NAME\nCompany Ltd.\n1 Tests str. apartment 10\nNEW YORK NY UNITED STATES 12345"
-            ),
-            'address country format' => array(
+            ],
+            'address country format' => [
                 '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%',
                 "Formatted User NAME\nCompany Ltd.\n1 Tests str. apartment 10\nNEW YORK NY UNITED STATES 12345",
                 true
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -181,46 +181,46 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function getAddressFormatDataProvider()
     {
-        return array(
-            'direct' => array(
-                'addressFormats' => array(
-                    'US' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
+        return [
+            'direct' => [
+                'addressFormats' => [
+                    'US' => [LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%']
+                ],
                 'localeOrRegion' => 'US',
                 'expectedFormat' => '%address_format%'
-            ),
-            'parse_country' => array(
-                'addressFormats' => array(
-                    'CA' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
+            ],
+            'parse_country' => [
+                'addressFormats' => [
+                    'CA' => [LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%']
+                ],
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%'
-            ),
-            'empty_locale_or_region' => array(
-                'addressFormats' => array(
-                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
+            ],
+            'empty_locale_or_region' => [
+                'addressFormats' => [
+                    'RU' => [LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%']
+                ],
                 'localeOrRegion' => false,
                 'expectedFormat' => '%address_format%',
                 'defaultCountry' => 'RU'
-            ),
-            'default_system_country' => array(
-                'addressFormats' => array(
-                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
+            ],
+            'default_system_country' => [
+                'addressFormats' => [
+                    'RU' => [LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%']
+                ],
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%',
                 'defaultCountry' => 'RU'
-            ),
-            'default_fallback' => array(
-                'addressFormats' => array(
-                    LocaleConfiguration::DEFAULT_COUNTRY => array(
+            ],
+            'default_fallback' => [
+                'addressFormats' => [
+                    LocaleConfiguration::DEFAULT_COUNTRY => [
                         LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%'
-                    )
-                ),
+                    ]
+                ],
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%'
-            ),
-        );
+            ],
+        ];
     }
 }

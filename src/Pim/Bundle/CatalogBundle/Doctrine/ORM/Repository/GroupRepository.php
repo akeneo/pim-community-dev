@@ -24,7 +24,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     {
         $groups = $this->getGroupsByType($type);
 
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getCode();
         }
@@ -43,7 +43,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->getQuery()
             ->getResult();
 
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getId()] = $group->getLabel();
         }
@@ -236,7 +236,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o.id as id, COALESCE(t.label, CONCAT(\'[\', o.code, \']\')) as text')
@@ -264,9 +264,9 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
 
         $results = $qb->getQuery()->getArrayResult();
 
-        return array(
+        return [
             'results' => $results
-        );
+        ];
     }
 
     /**
@@ -328,7 +328,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -336,6 +336,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

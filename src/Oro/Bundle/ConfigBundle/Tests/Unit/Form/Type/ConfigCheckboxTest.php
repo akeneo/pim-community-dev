@@ -51,27 +51,27 @@ class ConfigCheckboxTest extends FormIntegrationTestCase
      */
     public function buildFormDataProvider()
     {
-        return array(
-            'valid true' => array(
+        return [
+            'valid true' => [
                 'source'   => true,
                 'expected' => true,
-            ),
-            'valid false' => array(
+            ],
+            'valid false' => [
                 'source'   => false,
                 'expected' => false,
-            ),
-            'empty string' => array(
+            ],
+            'empty string' => [
                 'source'   => '',
                 'expected' => false,
-            ),
-            'string 0' => array(
+            ],
+            'string 0' => [
                 'source'   => '0',
                 'expected' => false,
-            ),
-            'string 1' => array(
+            ],
+            'string 1' => [
                 'source'   => '1',
                 'expected' => true,
-            ),
-        );
+            ],
+        ];
     }
 }

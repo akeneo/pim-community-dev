@@ -39,10 +39,10 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
     public function testSubscribedEvents()
     {
         $this->assertEquals(
-            array(
+            [
                 FormEvents::POST_SUBMIT  => 'onSubmit',
                 FormEvents::PRE_SUBMIT   => 'preSubmit'
-            ),
+            ],
             $this->subscriber->getSubscribedEvents()
         );
     }
@@ -154,20 +154,24 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
      */
     public function preSubmitProvider()
     {
-        return array(
-            array(true, array(
+        return [
+            [
+                true, [
                 'currentPassword' => null,
-                'plainPassword'   => array(
+                'plainPassword'   => [
                     'first' => null
-                ),
-            )),
-            array(false, array(
+                ],
+            ]
+            ],
+            [
+                false, [
                 'currentPassword' => '123123',
-                'plainPassword'   => array(
+                'plainPassword'   => [
                     'first' => '32321'
-                ),
-            )),
-        );
+                ],
+            ]
+            ],
+        ];
     }
 
     /**

@@ -32,7 +32,7 @@ interface AttributeRepositoryInterface extends
      *
      * @return array
      */
-    public function findWithGroups(array $attributeIds = array(), array $criterias = array());
+    public function findWithGroups(array $attributeIds = [], array $criterias = []);
 
     /**
      * Find all attributes that belongs to the default group

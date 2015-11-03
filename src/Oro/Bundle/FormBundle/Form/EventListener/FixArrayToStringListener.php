@@ -28,6 +28,6 @@ class FixArrayToStringListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_BIND => 'preBind');
+        return [FormEvents::PRE_BIND => 'preBind'];
     }
 }

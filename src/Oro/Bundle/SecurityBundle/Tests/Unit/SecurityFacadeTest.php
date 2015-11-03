@@ -319,10 +319,10 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('findAnnotationById');
         $this->tokenStorage->expects($this->once())
             ->method('isGranted')
-            ->with($this->equalTo(array('TestRole1', 'TestRole2')), $this->equalTo(null))
+            ->with($this->equalTo(['TestRole1', 'TestRole2']), $this->equalTo(null))
             ->will($this->returnValue(true));
 
-        $result = $this->facade->isGranted(array('TestRole1', 'TestRole2'));
+        $result = $this->facade->isGranted(['TestRole1', 'TestRole2']);
         $this->assertTrue($result);
     }
 

@@ -20,13 +20,13 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
     {
         $translator = $this->createMockTranslator();
 
-        $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry', array(), '', false);
+        $registry = $this->getMockForAbstractClass('Doctrine\Common\Persistence\ManagerRegistry', [], '', false);
 
-        $types = array(
+        $types = [
             new FilterType($translator),
             new ChoiceFilterType($translator),
             new EntityType($registry)
-        );
+        ];
 
         $this->formExtensions[] = new CustomFormExtension($types);
 
@@ -58,15 +58,15 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'    => 'entity',
-                    'field_options' => array(),
+                    'field_options' => [],
                     'translatable'  => false,
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -80,7 +80,7 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
         array $bindData,
         array $formData,
         array $viewData,
-        array $customOptions = array()
+        array $customOptions = []
     ) {
         // bind method should be tested in functional test
     }
@@ -90,12 +90,12 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array(),
-                'formData' => array(),
-                'viewData' => array(),
-            ),
-        );
+        return [
+            'empty' => [
+                'bindData' => [],
+                'formData' => [],
+                'viewData' => [],
+            ],
+        ];
     }
 }

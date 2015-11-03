@@ -74,7 +74,7 @@ class AssociationRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('owner', 'associationType');
+        return ['owner', 'associationType'];
     }
 
     /**

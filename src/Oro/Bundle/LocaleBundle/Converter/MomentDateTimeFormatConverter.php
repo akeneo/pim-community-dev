@@ -14,7 +14,7 @@ class MomentDateTimeFormatConverter extends AbstractDateTimeFormatConverter
      *
      * @var array
      */
-    protected $formatMatch = array(
+    protected $formatMatch = [
         'yyyy'   => 'YYYY',
         'yy'     => 'YY',
         'y'      => 'YYYY',
@@ -63,7 +63,7 @@ class MomentDateTimeFormatConverter extends AbstractDateTimeFormatConverter
         'ZZZ'    => 'ZZ',
         'ZZ'     => 'ZZ',
         'Z'      => 'ZZ',
-    );
+    ];
 
     /**
      * {@inheritDoc}

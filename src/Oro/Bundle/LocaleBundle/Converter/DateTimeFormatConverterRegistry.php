@@ -9,7 +9,7 @@ class DateTimeFormatConverterRegistry
     /**
      * @var DateTimeFormatConverterInterface[]
      */
-    protected $converters = array();
+    protected $converters = [];
 
     /**
      * @param string $name

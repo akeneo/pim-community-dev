@@ -33,7 +33,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $ef    = new EncoderFactory(array(static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')));
+        $ef    = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
         $class = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
 
         $this->om         = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
@@ -91,7 +91,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('role' => User::ROLE_DEFAULT)))
+            ->with($this->equalTo(['role' => User::ROLE_DEFAULT]))
             ->will($this->returnValue(new Role(User::ROLE_DEFAULT)));
 
         $this->userManager->updateUser($user);
@@ -101,13 +101,13 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testFindUserBy()
     {
-        $crit = array('id' => 0);
+        $crit = ['id' => 0];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->findUserBy($crit);
     }
@@ -117,46 +117,46 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->repository
             ->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->findUsers();
     }
 
     public function testFindUserByUsername()
     {
-        $crit = array('username' => self::TEST_NAME);
+        $crit = ['username' => self::TEST_NAME];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->findUserByUsernameOrEmail(self::TEST_NAME);
     }
 
     public function testFindUserByEmail()
     {
-        $crit = array('email' => self::TEST_EMAIL);
+        $crit = ['email' => self::TEST_EMAIL];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->findUserByUsernameOrEmail(self::TEST_EMAIL);
     }
 
     public function testFindUserByToken()
     {
-        $crit = array('confirmationToken' => self::TEST_NAME);
+        $crit = ['confirmationToken' => self::TEST_NAME];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->findUserByConfirmationToken(self::TEST_NAME);
     }
@@ -176,13 +176,13 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     public function testRefreshUser()
     {
         $user = $this->getUser();
-        $crit = array('id' => $user->getId());
+        $crit = ['id' => $user->getId()];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->refreshUser($user);
     }
@@ -192,13 +192,13 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadUserByUsername()
     {
-        $crit = array('username' => self::TEST_NAME);
+        $crit = ['username' => self::TEST_NAME];
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($this->equalTo($crit))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->userManager->loadUserByUsername(self::TEST_NAME);
     }

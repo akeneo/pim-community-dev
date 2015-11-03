@@ -20,23 +20,23 @@ class AclPrivilegeType extends AbstractType
         $builder->add(
             'identity',
             new AclPrivilegeIdentityType(),
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
 
         $builder->add(
             'permissions',
             new PermissionCollectionType(),
-            array(
+            [
                 'type'         => new AclPermissionType(),
                 'allow_add'    => true,
                 'prototype'    => false,
                 'allow_delete' => false,
-                'options'      => array(
+                'options'      => [
                     'privileges_config' => $options['privileges_config']
-                ),
-            )
+                ],
+            ]
         );
     }
 
@@ -54,10 +54,10 @@ class AclPrivilegeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'privileges_config' => array(),
+            [
+                'privileges_config' => [],
                 'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-            )
+            ]
         );
     }
 

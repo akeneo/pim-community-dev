@@ -74,11 +74,11 @@ class BaseOrmRelationDatagridListener
                 $dataOut = [0];
             }
 
-            $queryParameters = array(
+            $queryParameters = [
                 $this->paramName => $this->requestParams->get($this->paramName, null),
                 'data_in'        => $dataIn,
                 'data_not_in'    => $dataOut,
-            );
+            ];
 
             if (!$this->isEditMode) {
                 unset($queryParameters['data_in'], $queryParameters['data_not_in']);

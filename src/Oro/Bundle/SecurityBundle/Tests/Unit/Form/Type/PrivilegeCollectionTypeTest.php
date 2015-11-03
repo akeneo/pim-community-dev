@@ -32,12 +32,12 @@ class PrivilegeCollectionTypeTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $privileges_config = array('permissions' => array('VIEW', 'CREATE'));
-        $options = array(
-            'options' => array(
+        $privileges_config = ['permissions' => ['VIEW', 'CREATE']];
+        $options = [
+            'options' => [
                 'privileges_config' => $privileges_config
-            )
-        );
+            ]
+        ];
         $this->formType->buildView($view, $form, $options);
         $this->assertAttributeContains($privileges_config, 'vars', $view);
     }

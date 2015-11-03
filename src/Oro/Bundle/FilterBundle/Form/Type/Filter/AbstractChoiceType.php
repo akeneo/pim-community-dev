@@ -47,7 +47,7 @@ abstract class AbstractChoiceType extends AbstractType
                 foreach ($valueFormView->vars['choices'] as $key => $choiceView) {
                     $choiceView->label = $this->translator->trans(
                         $choiceView->label,
-                        array(),
+                        [],
                         $translationDomain
                     );
                     $valueFormView->vars['choices'][$key] = $choiceView;

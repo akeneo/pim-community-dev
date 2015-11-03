@@ -18,7 +18,7 @@ abstract class AbstractDateTimeFormatConverter implements DateTimeFormatConverte
      *
      * @var array
      */
-    protected $defaultFormatMatch = array(
+    protected $defaultFormatMatch = [
         'GGGGG'  => '',
         'GGGG'   => '',
         'GGG'    => '',
@@ -119,14 +119,14 @@ abstract class AbstractDateTimeFormatConverter implements DateTimeFormatConverte
         'xxx'    => '',
         'xx'     => '',
         'x'      => '',
-    );
+    ];
 
     /**
      * Property should be overridden in descendant classes
      *
      * @var array
      */
-    protected $formatMatch = array();
+    protected $formatMatch = [];
 
     /**
      * @param DateTimeFormatter $formatter

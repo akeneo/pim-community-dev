@@ -46,7 +46,7 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
         if ($entity instanceof VersionableInterface ||
             in_array(ClassUtils::getClass($entity), $this->versionableEntities)
         ) {

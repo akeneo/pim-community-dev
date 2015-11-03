@@ -95,12 +95,12 @@ class Config
         $config['build']['out'] = './' . $config['build_path'];
         $config['build']['mainConfigFile'] = './' . $configPath;
 
-        $paths = array(
+        $paths = [
             // build-in configuration
             'require-config' => '../' . substr($configPath, 0, -3),
             // build-in require.js lib
             'require-lib' => 'ororequirejs/lib/require',
-        );
+        ];
 
         $config['build']['paths'] = array_merge($config['build']['paths'], $paths);
 

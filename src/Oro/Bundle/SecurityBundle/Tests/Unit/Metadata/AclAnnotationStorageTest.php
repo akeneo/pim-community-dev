@@ -16,30 +16,30 @@ class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
         $storage = new AclAnnotationStorage();
 
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation_wo_bindings', 'type' => 'entity'))
+            new AclAnnotation(['id' => 'annotation_wo_bindings', 'type' => 'entity'])
         );
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation_with_class_bindings', 'type' => 'entity')),
+            new AclAnnotation(['id' => 'annotation_with_class_bindings', 'type' => 'entity']),
             'Acme\SomeClass'
         );
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation_with_method_bindings', 'type' => 'entity')),
+            new AclAnnotation(['id' => 'annotation_with_method_bindings', 'type' => 'entity']),
             'Acme\SomeClass',
             'SomeMethod'
         );
 
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation1', 'type' => 'entity'))
+            new AclAnnotation(['id' => 'annotation1', 'type' => 'entity'])
         );
         $storage->addAncestor(
-            new AclAnnotationAncestor(array('value' => 'annotation1')),
+            new AclAnnotationAncestor(['value' => 'annotation1']),
             'Acme\SomeClass1'
         );
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation2', 'type' => 'entity'))
+            new AclAnnotation(['id' => 'annotation2', 'type' => 'entity'])
         );
         $storage->addAncestor(
-            new AclAnnotationAncestor(array('value' => 'annotation2')),
+            new AclAnnotationAncestor(['value' => 'annotation2']),
             'Acme\SomeClass1',
             'SomeMethod'
         );
@@ -94,7 +94,7 @@ class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
             $storage->findById('annotation2')->getType()
         );
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation2', 'type' => 'action'))
+            new AclAnnotation(['id' => 'annotation2', 'type' => 'action'])
         );
         $this->assertEquals(
             'action',
@@ -103,13 +103,13 @@ class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
 
         // test duplicate bindings
         $storage->addAncestor(
-            new AclAnnotationAncestor(array('value' => 'annotation2')),
+            new AclAnnotationAncestor(['value' => 'annotation2']),
             'Acme\SomeClass1',
             'SomeMethod'
         );
         $this->setExpectedException('\RuntimeException');
         $storage->addAncestor(
-            new AclAnnotationAncestor(array('value' => 'annotation1')),
+            new AclAnnotationAncestor(['value' => 'annotation1']),
             'Acme\SomeClass1',
             'SomeMethod'
         );
@@ -119,7 +119,7 @@ class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
     {
         $storage = new AclAnnotationStorage();
         $storage->add(
-            new AclAnnotation(array('id' => 'annotation', 'type' => 'entity')),
+            new AclAnnotation(['id' => 'annotation', 'type' => 'entity']),
             'Acme\SomeClass',
             'SomeMethod'
         );

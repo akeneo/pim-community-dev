@@ -49,54 +49,54 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => '1,234.568',
                 'value'          => 1234.56789,
                 'style'          => \NumberFormatter::DECIMAL,
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'       => '1,234.568',
                 'value'          => 1234.56789,
                 'style'          => 'DECIMAL',
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'   => '1,234.57',
                 'value'      => 1234.56789,
                 'style'      => \NumberFormatter::DECIMAL,
-                'attributes' => array(
+                'attributes' => [
                     'fraction_digits' => 2
-                ),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                ],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => null,
                 'settingsLocale' => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'   => 'MINUS 10.0000,123',
                 'value'      => -100000.123,
                 'style'      => \NumberFormatter::DECIMAL,
-                'attributes' => array(
+                'attributes' => [
                     \NumberFormatter::GROUPING_SIZE => 4,
-                ),
-                'textAttributes' => array(
+                ],
+                'textAttributes' => [
                     \NumberFormatter::NEGATIVE_PREFIX => 'MINUS ',
-                ),
-                'symbols' => array(
+                ],
+                'symbols' => [
                     \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL  => ',',
                     \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => '.',
-                ),
+                ],
                 'locale' => 'en_US'
-            ),
-        );
+            ],
+        ];
     }
 
     public function testFormatWithoutLocale()
@@ -118,9 +118,9 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         $this->formatter->format(
             '123',
             \NumberFormatter::DECIMAL,
-            array('unknown_attribute' => 1),
-            array(),
-            array(),
+            ['unknown_attribute' => 1],
+            [],
+            [],
             'en_US'
         );
     }
@@ -138,31 +138,31 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatDecimalDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => '1,234.568',
                 'value'          => 1234.56789,
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'   => '+12 345,6789000000',
                 'value'      => 12345.6789,
-                'attributes' => array(
+                'attributes' => [
                     'fraction_digits' => 10
-                ),
-                'textAttributes' => array(
+                ],
+                'textAttributes' => [
                     'positive_prefix' => '+',
-                ),
-                'symbols' => array(
+                ],
+                'symbols' => [
                     \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL  => ',',
                     \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => ' ',
-                ),
+                ],
                 'locale' => 'en_US'
-            ),
-        );
+            ],
+        ];
     }
 
     public function testDefaultFormatCurrency()
@@ -186,10 +186,10 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatCurrency($expected, $value, $currency, $attributes, $textAttributes, $symbols, $locale)
     {
-        $currencySymbolMap = array(
-            array('USD', '$'),
-            array('RUB', 'руб.'),
-        );
+        $currencySymbolMap = [
+            ['USD', '$'],
+            ['RUB', 'руб.'],
+        ];
         $this->localeSettings->expects($this->any())
             ->method('getCurrencySymbolByCurrency')
             ->will($this->returnValueMap($currencySymbolMap));
@@ -202,35 +202,35 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatCurrencyDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => '$1,234.57',
                 'value'          => 1234.56789,
                 'currency'       => 'USD',
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'       => 'руб.1,234.57',
                 'value'          => 1234.56789,
                 'currency'       => 'RUB',
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'       => '1 234,57 €',
                 'value'          => 1234.56789,
                 'currency'       => 'EUR',
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'ru_RU'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -246,16 +246,16 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatPercentDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => '123,457%',
                 'value'          => 1234.56789,
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -271,16 +271,16 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatSpelloutDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => 'twenty-one',
                 'value'          => 21,
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -296,31 +296,31 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function formatDurationDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected'       => '1:01:01',
                 'value'          => 3661,
-                'attributes'     => array(),
-                'textAttributes' => array(),
-                'symbols'        => array(),
+                'attributes'     => [],
+                'textAttributes' => [],
+                'symbols'        => [],
                 'locale'         => 'en_US'
-            ),
-            array(
+            ],
+            [
                 'expected'       => '1 hour, 1 minute, 1 second',
                 'value'          => 3661,
-                'attributes'     => array(),
-                'textAttributes' => array(
+                'attributes'     => [],
+                'textAttributes' => [
                     \NumberFormatter::DEFAULT_RULESET => "%with-words"
-                ),
-                'symbols' => array(),
+                ],
+                'symbols' => [],
                 'locale'  => 'en_US'
-            ),
-        );
+            ],
+        ];
     }
 
     public function testFormatOrdinal()
     {
-        $result = $this->formatter->formatOrdinal(1, array(), array(), array(), 'en_US');
+        $result = $this->formatter->formatOrdinal(1, [], [], [], 'en_US');
 
         // expected result is: 1st but in som versions of ICU 1ˢᵗ is also possible
         $this->assertStringStartsWith('1', $result);
@@ -344,30 +344,30 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function getAttributeDataProvider()
     {
-        return array(
-            array('parse_int_only', 'DECIMAL', 'en_US', 0),
-            array('parse_int_only', null, 'en_US', 0),
-            array('GROUPING_USED', 'decimal', 'en_US', 1),
-            array(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::MAX_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 309),
-            array(\NumberFormatter::MIN_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1),
-            array(\NumberFormatter::INTEGER_DIGITS,\NumberFormatter::DECIMAL, 'en_US', 1),
-            array(\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 3),
-            array(\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2),
-            array(\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2),
-            array(\NumberFormatter::FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::MULTIPLIER, \NumberFormatter::DECIMAL, 'en_US', 1),
-            array(\NumberFormatter::GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 3),
-            array(\NumberFormatter::ROUNDING_MODE, \NumberFormatter::DECIMAL, 'en_US', 4),
-            array(\NumberFormatter::ROUNDING_INCREMENT, \NumberFormatter::DECIMAL, 'en_US', 0.0),
-            array(\NumberFormatter::FORMAT_WIDTH, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::PADDING_POSITION, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::SECONDARY_GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::SIGNIFICANT_DIGITS_USED, \NumberFormatter::DECIMAL, 'en_US', 0),
-            array(\NumberFormatter::MIN_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1),
-            array(\NumberFormatter::MAX_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 6),
-        );
+        return [
+            ['parse_int_only', 'DECIMAL', 'en_US', 0],
+            ['parse_int_only', null, 'en_US', 0],
+            ['GROUPING_USED', 'decimal', 'en_US', 1],
+            [\NumberFormatter::DECIMAL_ALWAYS_SHOWN, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::MAX_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 309],
+            [\NumberFormatter::MIN_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1],
+            [\NumberFormatter::INTEGER_DIGITS,\NumberFormatter::DECIMAL, 'en_US', 1],
+            [\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 3],
+            [\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2],
+            [\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2],
+            [\NumberFormatter::FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::MULTIPLIER, \NumberFormatter::DECIMAL, 'en_US', 1],
+            [\NumberFormatter::GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 3],
+            [\NumberFormatter::ROUNDING_MODE, \NumberFormatter::DECIMAL, 'en_US', 4],
+            [\NumberFormatter::ROUNDING_INCREMENT, \NumberFormatter::DECIMAL, 'en_US', 0.0],
+            [\NumberFormatter::FORMAT_WIDTH, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::PADDING_POSITION, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::SECONDARY_GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::SIGNIFICANT_DIGITS_USED, \NumberFormatter::DECIMAL, 'en_US', 0],
+            [\NumberFormatter::MIN_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1],
+            [\NumberFormatter::MAX_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 6],
+        ];
     }
 
     /**
@@ -387,15 +387,15 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function getTextAttributeDataProvider()
     {
-        return array(
-            array('POSITIVE_PREFIX', 'DECIMAL', 'en_US', ''),
-            array('negative_prefix', 'decimal', 'en_US', '-'),
-            array(\NumberFormatter::NEGATIVE_SUFFIX, \NumberFormatter::DECIMAL, 'en_US', ''),
-            array(\NumberFormatter::PADDING_CHARACTER, \NumberFormatter::DECIMAL, 'en_US', '*'),
-            array(\NumberFormatter::CURRENCY_CODE, \NumberFormatter::CURRENCY, 'en_US', 'USD'),
-            array(\NumberFormatter::DEFAULT_RULESET, \NumberFormatter::DECIMAL, 'en_US', false),
-            array(\NumberFormatter::PUBLIC_RULESETS, \NumberFormatter::DECIMAL, 'en_US', false)
-        );
+        return [
+            ['POSITIVE_PREFIX', 'DECIMAL', 'en_US', ''],
+            ['negative_prefix', 'decimal', 'en_US', '-'],
+            [\NumberFormatter::NEGATIVE_SUFFIX, \NumberFormatter::DECIMAL, 'en_US', ''],
+            [\NumberFormatter::PADDING_CHARACTER, \NumberFormatter::DECIMAL, 'en_US', '*'],
+            [\NumberFormatter::CURRENCY_CODE, \NumberFormatter::CURRENCY, 'en_US', 'USD'],
+            [\NumberFormatter::DEFAULT_RULESET, \NumberFormatter::DECIMAL, 'en_US', false],
+            [\NumberFormatter::PUBLIC_RULESETS, \NumberFormatter::DECIMAL, 'en_US', false]
+        ];
     }
 
     /**
@@ -415,26 +415,26 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function getSymbolDataProvider()
     {
-        return array(
-            array('DECIMAL_SEPARATOR_SYMBOL', 'DECIMAL', 'en_US', '.'),
-            array(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', ','),
-            array('pattern_separator_symbol', 'decimal', 'en_US', ';'),
-            array(\NumberFormatter::PERCENT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '%'),
-            array(\NumberFormatter::ZERO_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '0'),
-            array(\NumberFormatter::DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '#'),
-            array(\NumberFormatter::MINUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '-'),
-            array(\NumberFormatter::PLUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '+'),
-            array(\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '$'),
-            array(\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', 'USD'),
-            array(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '.'),
-            array(\NumberFormatter::EXPONENTIAL_SYMBOL, \NumberFormatter::SCIENTIFIC, 'en_US', 'E'),
-            array(\NumberFormatter::PERMILL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '‰'),
-            array(\NumberFormatter::PAD_ESCAPE_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '*'),
-            array(\NumberFormatter::INFINITY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '∞'),
-            array(\NumberFormatter::NAN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', 'NaN'),
-            array(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '@'),
-            array(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', ','),
-        );
+        return [
+            ['DECIMAL_SEPARATOR_SYMBOL', 'DECIMAL', 'en_US', '.'],
+            [\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', ','],
+            ['pattern_separator_symbol', 'decimal', 'en_US', ';'],
+            [\NumberFormatter::PERCENT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '%'],
+            [\NumberFormatter::ZERO_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '0'],
+            [\NumberFormatter::DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '#'],
+            [\NumberFormatter::MINUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '-'],
+            [\NumberFormatter::PLUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '+'],
+            [\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '$'],
+            [\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', 'USD'],
+            [\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '.'],
+            [\NumberFormatter::EXPONENTIAL_SYMBOL, \NumberFormatter::SCIENTIFIC, 'en_US', 'E'],
+            [\NumberFormatter::PERMILL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '‰'],
+            [\NumberFormatter::PAD_ESCAPE_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '*'],
+            [\NumberFormatter::INFINITY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '∞'],
+            [\NumberFormatter::NAN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', 'NaN'],
+            [\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '@'],
+            [\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', ','],
+        ];
     }
 
     /**
@@ -472,18 +472,18 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function isCurrencySymbolPrependDataProvider()
     {
-        return array(
-            'default locale' => array(
+        return [
+            'default locale' => [
                 'expected'      => true,
                 'currency'      => 'USD',
                 'locale'        => null,
                 'defaultLocale' => 'en',
-            ),
-            'custom locale' => array(
+            ],
+            'custom locale' => [
                 'expected' => false,
                 'currency' => 'RUR',
                 'locale'   => 'ru',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -38,19 +38,19 @@ class ProductTransformer extends EntityTransformer
     protected $identifierAttribute;
 
     /** @var array */
-    protected $attributes = array();
+    protected $attributes = [];
 
     /** @var array */
-    protected $propertyColumnsInfo = array();
+    protected $propertyColumnsInfo = [];
 
     /** @var array */
-    protected $attributeColumnsInfo = array();
+    protected $attributeColumnsInfo = [];
 
     /** @var array */
-    protected $assocColumnsInfo = array();
+    protected $assocColumnsInfo = [];
 
     /** @var array */
-    protected $readLabels = array();
+    protected $readLabels = [];
 
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
@@ -108,7 +108,7 @@ class ProductTransformer extends EntityTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
         $this->initializeAttributes($data);
 
@@ -163,7 +163,7 @@ class ProductTransformer extends EntityTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
-                $this->errors[$class][$label] = array($error);
+                $this->errors[$class][$label] = [$error];
             }
         }
     }
@@ -179,7 +179,7 @@ class ProductTransformer extends EntityTransformer
     {
         $reqAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         $flexibleValueClass = $this->productValueClass;
-        $this->transformedColumns[$flexibleValueClass] = array();
+        $this->transformedColumns[$flexibleValueClass] = [];
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             if (!array_key_exists($label, $data)) {
@@ -192,7 +192,7 @@ class ProductTransformer extends EntityTransformer
             ) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
-                    $this->errors[$class][$label] = array($error);
+                    $this->errors[$class][$label] = [$error];
                 }
             }
         }
@@ -222,7 +222,7 @@ class ProductTransformer extends EntityTransformer
             return;
         }
 
-        $associations = array();
+        $associations = [];
         foreach ($this->assocColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             if (!array_key_exists($label, $data) || empty($data[$label])) {
@@ -232,10 +232,10 @@ class ProductTransformer extends EntityTransformer
             $suffixes = $columnInfo->getSuffixes();
             $lastSuffix = array_pop($suffixes);
             if (!isset($associations[$key])) {
-                $associations[$key] = array(
+                $associations[$key] = [
                     'association_type' => $columnInfo->getName(),
                     'owner'            => $entity->getReference(),
-                );
+                ];
             }
             $associations[$key][$lastSuffix] =  $data[$label];
         }
@@ -262,7 +262,7 @@ class ProductTransformer extends EntityTransformer
         $value
     ) {
         if ($transformerInfo[0] instanceof SkipTransformer) {
-            return array();
+            return [];
         }
         $productValue = $this->getProductValue($product, $columnInfo);
 
@@ -312,7 +312,7 @@ class ProductTransformer extends EntityTransformer
             $columnName = $columnInfo->getName();
             $suffixes = $columnInfo->getSuffixes();
             $lastSuffix = array_pop($suffixes);
-            if (in_array($lastSuffix, array('groups', 'products'))) {
+            if (in_array($lastSuffix, ['groups', 'products'])) {
                 $this->assocColumnsInfo[] = $columnInfo;
             } elseif (isset($this->attributes[$columnName])) {
                 $attribute = $this->attributes[$columnName];
@@ -335,11 +335,11 @@ class ProductTransformer extends EntityTransformer
     public function reset()
     {
         $this->identifierAttribute = null;
-        $this->attributes = array();
-        $this->attributeColumnsInfo = array();
-        $this->propertyColumnsInfo = array();
-        $this->assocColumnsInfo = array();
-        $this->readLabels = array();
+        $this->attributes = [];
+        $this->attributeColumnsInfo = [];
+        $this->propertyColumnsInfo = [];
+        $this->assocColumnsInfo = [];
+        $this->readLabels = [];
     }
 
     /**

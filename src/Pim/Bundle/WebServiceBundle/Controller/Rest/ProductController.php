@@ -107,9 +107,9 @@ class ProductController extends FOSRestController
     {
         $url = $this->generateUrl(
             'oro_api_get_product',
-            array(
+            [
                 'identifier' => $product->getIdentifier()->getData()
-            ),
+            ],
             true
         );
         $handler = $this->container->get('pim_webservice.handler.rest.product');

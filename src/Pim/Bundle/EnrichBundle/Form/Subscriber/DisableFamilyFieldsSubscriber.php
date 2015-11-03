@@ -40,9 +40,9 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_SET_DATA => 'postSetData'
-        );
+        ];
     }
 
     /**

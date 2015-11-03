@@ -68,37 +68,37 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function optionsWithResourceIdDataProvider()
     {
-        return array(
-            'allowed' => array(
-                array('aclResourceId' => 'test'), true
-            ),
-            'not allowed' => array(
-                array('aclResourceId' => 'test'), false
-            ),
-            'allowed with uri' => array(
-                array('aclResourceId' => 'test', 'uri' => '#'), true
-            ),
-            'not allowed with uri' => array(
-                array('aclResourceId' => 'test', 'uri' => '#'), false
-            ),
-            'allowed with route' => array(
-                array('aclResourceId' => 'test', 'route' => 'test'), true
-            ),
-            'not allowed with route' => array(
-                array('aclResourceId' => 'test', 'route' => 'test'), false
-            ),
-            'allowed with route and uri' => array(
-                array('aclResourceId' => 'test', 'uri' => '#', 'route' => 'test'), true
-            ),
-            'not allowed with route and uri' => array(
-                array('aclResourceId' => 'test', 'uri' => '#', 'route' => 'test'), false
-            ),
-        );
+        return [
+            'allowed' => [
+                ['aclResourceId' => 'test'], true
+            ],
+            'not allowed' => [
+                ['aclResourceId' => 'test'], false
+            ],
+            'allowed with uri' => [
+                ['aclResourceId' => 'test', 'uri' => '#'], true
+            ],
+            'not allowed with uri' => [
+                ['aclResourceId' => 'test', 'uri' => '#'], false
+            ],
+            'allowed with route' => [
+                ['aclResourceId' => 'test', 'route' => 'test'], true
+            ],
+            'not allowed with route' => [
+                ['aclResourceId' => 'test', 'route' => 'test'], false
+            ],
+            'allowed with route and uri' => [
+                ['aclResourceId' => 'test', 'uri' => '#', 'route' => 'test'], true
+            ],
+            'not allowed with route and uri' => [
+                ['aclResourceId' => 'test', 'uri' => '#', 'route' => 'test'], false
+            ],
+        ];
     }
 
     public function testBuildOptionsWithRouteNotFound()
     {
-        $options = array('route' => 'no-route');
+        $options = ['route' => 'no-route'];
 
         $routeCollection = $this->getMockBuilder('Symfony\Component\Routing\RouteCollection')
             ->getMock();
@@ -122,7 +122,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildOptionsWithUnknownUri()
     {
-        $options = array('uri' => '#');
+        $options = ['uri' => '#'];
 
         $this->router->expects($this->once())
             ->method('match')
@@ -203,20 +203,20 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function optionsWithRouteDataProvider()
     {
-        return array(
-            'allowed with route' => array(
-                array('route' => 'test'), true
-            ),
-            'not allowed with route' => array(
-                array('route' => 'test'), false
-            ),
-            'allowed with route and uri' => array(
-                array('uri' => '#', 'route' => 'test'), true
-            ),
-            'not allowed with route and uri' => array(
-                array('uri' => '#', 'route' => 'test'), false
-            ),
-        );
+        return [
+            'allowed with route' => [
+                ['route' => 'test'], true
+            ],
+            'not allowed with route' => [
+                ['route' => 'test'], false
+            ],
+            'allowed with route and uri' => [
+                ['uri' => '#', 'route' => 'test'], true
+            ],
+            'not allowed with route and uri' => [
+                ['uri' => '#', 'route' => 'test'], false
+            ],
+        ];
     }
 
     /**
@@ -231,7 +231,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->once())
             ->method('match')
-            ->will($this->returnValue(array('_controller' => $class . '::' . $method)));
+            ->will($this->returnValue(['_controller' => $class . '::' . $method]));
 
         $this->securityFacade->expects($this->once())
             ->method('isClassMethodGranted')
@@ -248,19 +248,19 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function optionsWithUriDataProvider()
     {
-        return array(
-            'allowed with route and uri' => array(
-                array('uri' => '/test'), true
-            ),
-            'not allowed with route and uri' => array(
-                array('uri' => '/test'), false
-            ),
-        );
+        return [
+            'allowed with route and uri' => [
+                ['uri' => '/test'], true
+            ],
+            'not allowed with route and uri' => [
+                ['uri' => '/test'], false
+            ],
+        ];
     }
 
     public function testAclCacheByResourceId()
     {
-        $options = array('aclResourceId' => 'resource_id');
+        $options = ['aclResourceId' => 'resource_id'];
         $this->securityFacade->expects($this->once())
             ->method('isGranted')
             ->with($options['aclResourceId'])
@@ -273,12 +273,12 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
-        $this->assertAttributeEquals(array($options['aclResourceId'] => true), 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals([$options['aclResourceId'] => true], 'aclCache', $this->factoryExtension);
     }
 
     public function testAclCacheByKey()
     {
-        $options = array('route' => 'route_name');
+        $options = ['route' => 'route_name'];
 
         $this->assertRouteByRouteNameCalls(true, 'route_name', 'controller', 'action', 2);
 
@@ -289,7 +289,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertAttributeCount(1, 'aclCache', $this->factoryExtension);
-        $this->assertAttributeEquals(array('controller::action' => true), 'aclCache', $this->factoryExtension);
+        $this->assertAttributeEquals(['controller::action' => true], 'aclCache', $this->factoryExtension);
     }
 
     /**
@@ -321,7 +321,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->factoryExtension->setCache($cache);
 
-        $options = array('uri' => '#');
+        $options = ['uri' => '#'];
 
         if ($hasInCache) {
             $this->router->expects($this->never())
@@ -329,7 +329,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->router->expects($this->once())
                 ->method('match')
-                ->will($this->returnValue(array('_controller' => 'controller::action')));
+                ->will($this->returnValue(['_controller' => 'controller::action']));
         }
 
         $this->securityFacade->expects($this->once())
@@ -348,7 +348,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRouteCaching($hasInCache)
     {
-        $params = array('id' => 20);
+        $params = ['id' => 20];
         $uriKey = md5('route_uri:route_name' . serialize($params));
         $aclKey = md5('route_acl:route_name');
 
@@ -359,10 +359,10 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('contains')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array($uriKey, $hasInCache),
-                        array($aclKey, $hasInCache),
-                    )
+                    [
+                        [$uriKey, $hasInCache],
+                        [$aclKey, $hasInCache],
+                    ]
                 )
             );
 
@@ -371,10 +371,10 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
                 ->method('fetch')
                 ->will(
                     $this->returnValueMap(
-                        array(
-                            array($uriKey, '/'),
-                            array($aclKey, 'controller::action'),
-                        )
+                        [
+                            [$uriKey, '/'],
+                            [$aclKey, 'controller::action'],
+                        ]
                     )
                 );
         } else {
@@ -392,7 +392,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->factoryExtension->setCache($cache);
 
-        $options = array('route' => 'route_name', 'routeParameters' => $params);
+        $options = ['route' => 'route_name', 'routeParameters' => $params];
 
         $this->assertRouteByRouteNameCalls(true, 'route_name', 'controller', 'action', (int) !$hasInCache);
 
@@ -406,9 +406,9 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function hasInCacheDataProvider()
     {
-        return array(
-            'in cache'     => array(true),
-            'not in cache' => array(false)
-        );
+        return [
+            'in cache'     => [true],
+            'not in cache' => [false]
+        ];
     }
 }

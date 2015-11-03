@@ -21,16 +21,16 @@ class RepeatedTypeExtension extends AbstractTypeExtension
             unset($view->vars['attr']['data-validation']);
         }
 
-        $secondValue = array();
-        $secondValue['Repeated'] = array(
+        $secondValue = [];
+        $secondValue['Repeated'] = [
             'first_name'                 => $options['first_name'],
             'second_name'                => $options['second_name'],
             'invalid_message'            => $options['invalid_message'],
             'invalid_message_parameters' => $options['invalid_message_parameters'],
-        );
+        ];
 
         if (!isset($second->vars['attr'])) {
-            $second->vars['attr'] = array();
+            $second->vars['attr'] = [];
         }
         $second->vars['attr']['data-validation'] = json_encode($secondValue);
     }

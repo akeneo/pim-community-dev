@@ -98,7 +98,7 @@ class ActionMetadataProvider
                 $data = $this->cache->fetch(self::CACHE_KEY);
             }
             if (!$data) {
-                $data = array();
+                $data = [];
                 foreach ($this->annotationProvider->getAnnotations('action') as $annotation) {
                     $data[$annotation->getId()] = new ActionMetadata(
                         $annotation->getId(),

@@ -5,19 +5,19 @@ use Oro\Bundle\RequireJSBundle\Twig\OroRequireJSExtension;
 
 class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    protected $functions = array(
+    protected $functions = [
         'get_requirejs_config'     => '{"config": "test"}',
         'get_requirejs_build_path' => 'oro.min.js',
-        'requirejs_build_exists'   => array(),
-    );
+        'requirejs_build_exists'   => [],
+    ];
 
-    protected $parameters = array(
-        array('oro_require_js.build_path', 'oro.min.js')
-    );
+    protected $parameters = [
+        ['oro_require_js.build_path', 'oro.min.js']
+    ];
 
     public function testGetFunctions()
     {
-        $configProvider = $this->getMock('Oro\Bundle\RequireJSBundle\Provider\Config', array(), array(), '', false);
+        $configProvider = $this->getMock('Oro\Bundle\RequireJSBundle\Provider\Config', [], [], '', false);
         $configProvider->expects($this->any())
             ->method('getMainConfig')
             ->will($this->returnValue($this->functions['get_requirejs_config']));

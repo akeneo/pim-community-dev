@@ -14,14 +14,14 @@ class TreeUtilsTest extends \PHPUnit_Framework_TestCase
      */
     protected static function getTestGroup()
     {
-        $node1 = new GroupNodeDefinition('node1', array(), array());
+        $node1 = new GroupNodeDefinition('node1', [], []);
         $node1->setLevel(1);
-        $node2 = new GroupNodeDefinition('node2', array(), array());
+        $node2 = new GroupNodeDefinition('node2', [], []);
         $node2->setLevel(2);
-        $node3 = new GroupNodeDefinition('node3', array(), array($node2));
+        $node3 = new GroupNodeDefinition('node3', [], [$node2]);
         $node3->setLevel(1);
 
-        $root = new GroupNodeDefinition('node4', array(), array($node1, $node3));
+        $root = new GroupNodeDefinition('node4', [], [$node1, $node3]);
         $root->setLevel(0);
 
         return $root;

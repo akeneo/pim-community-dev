@@ -25,7 +25,7 @@ class GroupManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->repository = $this->getMock(
             'Doctrine\Common\Persistence\ObjectRepository',
-            array('find', 'findAll', 'findBy', 'findOneBy', 'getClassName', 'getUserQueryBuilder')
+            ['find', 'findAll', 'findBy', 'findOneBy', 'getClassName', 'getUserQueryBuilder']
         );
 
         $this->em->expects($this->any())
@@ -41,7 +41,7 @@ class GroupManagerTest extends \PHPUnit_Framework_TestCase
         $this->repository->expects($this->once())
             ->method('getUserQueryBuilder')
             ->with($this->group)
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->manager->getUserQueryBuilder($this->group);
     }

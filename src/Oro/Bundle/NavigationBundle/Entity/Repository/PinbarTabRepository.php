@@ -19,21 +19,21 @@ class PinbarTabRepository extends EntityRepository implements NavigationReposito
      *
      * @return array
      */
-    public function getNavigationItems($user, $type, $options = array())
+    public function getNavigationItems($user, $type, $options = [])
     {
         $qb = $this->_em->createQueryBuilder();
 
         $qb->add(
             'select',
             new Expr\Select(
-                array(
+                [
                     'pt.id',
                     'ni.url',
                     'ni.title',
                     'ni.type',
                     'ni.id AS parent_id',
                     'pt.maximized'
-                )
+                ]
             )
         )
         ->add('from', new Expr\From('Oro\Bundle\NavigationBundle\Entity\PinbarTab', 'pt'))
@@ -46,7 +46,7 @@ class PinbarTabRepository extends EntityRepository implements NavigationReposito
             )
         )
         ->add('orderBy', new Expr\OrderBy('ni.position', 'ASC'))
-        ->setParameters(array('user' => $user, 'type' => $type));
+        ->setParameters(['user' => $user, 'type' => $type]);
 
         return $qb->getQuery()->getArrayResult();
     }

@@ -20,32 +20,32 @@ class RoleApiType extends AclRoleType
         $builder->add(
             'label',
             'text',
-            array(
+            [
                 'required' => true,
                 'label'    => 'Role'
-            )
+            ]
         );
 
         $builder->add(
             'appendUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
-            )
+            ]
         );
 
         $builder->add(
             'removeUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
-            )
+            ]
         );
     }
 

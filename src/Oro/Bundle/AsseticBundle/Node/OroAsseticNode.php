@@ -25,7 +25,7 @@ class OroAsseticNode extends \Twig_Node
         $filters,
         $inputs,
         \Twig_NodeInterface $body,
-        array $attributes = array(),
+        array $attributes = [],
         $lineno = 0,
         $tag = null
     ) {
@@ -34,12 +34,12 @@ class OroAsseticNode extends \Twig_Node
         $this->compressedAsset = $assets['compress'];
         $this->unCompressAsset = $assets['un_compress'];
 
-        $nodes = array('body' => $body);
+        $nodes = ['body' => $body];
 
         $attributes = array_replace(
-            array('debug' => null, 'combine' => null, 'var_name' => 'asset_url'),
+            ['debug' => null, 'combine' => null, 'var_name' => 'asset_url'],
             $attributes,
-            array('inputs' => $inputs, 'filters' => $filters)
+            ['inputs' => $inputs, 'filters' => $filters]
         );
 
         $this->nodes = $nodes;
@@ -161,7 +161,7 @@ class OroAsseticNode extends \Twig_Node
         return new \Twig_Node_Expression_Function(
             version_compare(\Twig_Environment::VERSION, '1.2.0-DEV', '<')
             ? new \Twig_Node_Expression_Name('path', $this->getLine()) : 'path',
-            new \Twig_Node(array(new \Twig_Node_Expression_Constant('_assetic_' . $name, $this->getLine()))),
+            new \Twig_Node([new \Twig_Node_Expression_Constant('_assetic_' . $name, $this->getLine())]),
             $this->getLine()
         );
     }

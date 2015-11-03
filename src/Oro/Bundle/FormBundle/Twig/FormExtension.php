@@ -13,13 +13,13 @@ class FormExtension extends \Twig_Extension
 {
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'form_data_blocks',
-                array(new DataBlocks, 'render'),
-                array('needs_context' => true, 'needs_environment' => true)
+                [new DataBlocks, 'render'],
+                ['needs_context' => true, 'needs_environment' => true]
             )
-        );
+        ];
     }
 
     /**

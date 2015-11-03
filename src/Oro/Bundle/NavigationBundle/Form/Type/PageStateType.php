@@ -17,16 +17,16 @@ class PageStateType extends AbstractType
             ->add(
                 'pageId',
                 'text',
-                array(
+                [
                     'required' => true,
-                )
+                ]
             )
             ->add(
                 'data',
                 'textarea',
-                array(
+                [
                     'required' => true,
-                )
+                ]
             );
     }
 
@@ -36,11 +36,11 @@ class PageStateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class'      => 'Oro\Bundle\NavigationBundle\Entity\PageState',
                 'intention'       => 'pagestate',
                 'csrf_protection' => false,
-            )
+            ]
         );
     }
 

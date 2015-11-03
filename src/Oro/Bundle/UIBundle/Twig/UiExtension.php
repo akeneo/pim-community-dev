@@ -21,9 +21,9 @@ class UiExtension extends \Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(
+        return [
             new PlaceholderTokenParser($this->placeholders, $this->wrapClassName)
-        );
+        ];
     }
 
     /**

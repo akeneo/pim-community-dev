@@ -13,7 +13,7 @@ class TitleTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testGoodAnnotation()
     {
-        $annotation = new TitleTemplate(array('value' => self::TEST_VALUE));
+        $annotation = new TitleTemplate(['value' => self::TEST_VALUE]);
 
         $this->assertEquals(self::TEST_VALUE, $annotation->getTitleTemplate());
     }
@@ -25,6 +25,6 @@ class TitleTemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadAnnotation()
     {
-        new TitleTemplate(array());
+        new TitleTemplate([]);
     }
 }

@@ -19,13 +19,13 @@ class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $options = array(
-            'privileges_config' => array(
+        $options = [
+            'privileges_config' => [
                 'field_type' => 'grid'
-            )
-        );
-        $builder->expects($this->at(0))->method('add')->with('accessLevel', 'grid', array('required' => false));
-        $builder->expects($this->at(1))->method('add')->with('name', 'hidden', array('required' => false));
+            ]
+        ];
+        $builder->expects($this->at(0))->method('add')->with('accessLevel', 'grid', ['required' => false]);
+        $builder->expects($this->at(1))->method('add')->with('name', 'hidden', ['required' => false]);
         $this->formType->buildForm($builder, $options);
     }
 
@@ -42,10 +42,10 @@ class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
 
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
-                array(
+                [
                     'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
-                    'privileges_config' => array()
-                )
+                    'privileges_config' => []
+                ]
             );
         $this->formType->configureOptions($resolver);
     }

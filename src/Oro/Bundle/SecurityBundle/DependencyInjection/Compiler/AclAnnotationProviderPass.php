@@ -24,7 +24,7 @@ class AclAnnotationProviderPass implements CompilerPassInterface
 
         $loaders = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($loaders as $id => $attributes) {
-            $providerDef->addMethodCall('addLoader', array(new Reference($id)));
+            $providerDef->addMethodCall('addLoader', [new Reference($id)]);
         }
     }
 }

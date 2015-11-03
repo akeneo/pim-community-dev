@@ -13,12 +13,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $parameters = array(
-            'oro_require_js' => array(
+        $parameters = [
+            'oro_require_js' => [
                 'build_path' => 'js/app.min.js'
-            ),
-            'kernel.bundles' => array('Oro\Bundle\RequireJSBundle\Tests\Unit\Fixtures\TestBundle')
-        );
+            ],
+            'kernel.bundles' => ['Oro\Bundle\RequireJSBundle\Tests\Unit\Fixtures\TestBundle']
+        ];
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
@@ -41,18 +41,18 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMainConfig()
     {
-        $expected = array(
-            'config' => array(
-                'paths' => array(
+        $expected = [
+            'config' => [
+                'paths' => [
                     'oro/test' => 'orotest/js/test'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $this->assertEquals($expected, $this->configProvider->getMainConfig());
 
         $expected['config']['paths']['oro/test2'] = 'orotest/js/test2';
 
-        $cache = $this->getMock('\Doctrine\Common\Cache\PhpFileCache', array(), array(), '', false);
+        $cache = $this->getMock('\Doctrine\Common\Cache\PhpFileCache', [], [], '', false);
         $cache->expects($this->any())
             ->method('fetch')
             ->will($this->returnValue($expected));
@@ -64,13 +64,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testGenerateMainConfig()
     {
         $this->assertEquals(
-            array(
-                'config' => array(
-                    'paths' => array(
+            [
+                'config' => [
+                    'paths' => [
                         'oro/test' => 'orotest/js/test'
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $this->configProvider->generateMainConfig()
         );
     }
@@ -78,17 +78,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testGenerateBuildConfig()
     {
         $this->assertEquals(
-            array(
-                'paths' => array(
+            [
+                'paths' => [
                     'oro/test'       => 'empty:',
                     'require-config' => '../main-config',
                     'require-lib'    => 'ororequirejs/lib/require',
-                ),
+                ],
                 'baseUrl'        => './bundles',
                 'out'            => './js/app.min.js',
                 'mainConfigFile' => './main-config.js',
-                'include'        => array('require-config', 'require-lib', 'oro/test')
-            ),
+                'include'        => ['require-config', 'require-lib', 'oro/test']
+            ],
             $this->configProvider->generateBuildConfig('main-config.js')
         );
     }
@@ -96,19 +96,19 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testCollectConfigs()
     {
         $this->assertEquals(
-            array(
+            [
                 'build_path' => 'js/app.min.js',
-                'config'     => array(
-                    'paths' => array(
+                'config'     => [
+                    'paths' => [
                         'oro/test' => 'bundles/orotest/js/test.js'
-                    )
-                ),
-                'build' => array(
-                    'paths' => array(
+                    ]
+                ],
+                'build' => [
+                    'paths' => [
                         'oro/test' => 'empty:'
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $this->configProvider->collectConfigs()
         );
     }

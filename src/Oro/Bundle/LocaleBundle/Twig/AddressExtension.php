@@ -25,13 +25,13 @@ class AddressExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter(
                 'oro_format_address',
-                array($this, 'format'),
-                array('is_safe' => array('html'))
+                [$this, 'format'],
+                ['is_safe' => ['html']]
             )
-        );
+        ];
     }
 
     /**
