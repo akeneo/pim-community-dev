@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
@@ -50,7 +50,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate variant group
      *
-     * @param GroupInterface $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
      * @param Constraint     $constraint
      */
     protected function validateVariantGroup(GroupInterface $variantGroup, Constraint $constraint)
@@ -118,7 +118,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Prepare query criteria for variant group
      *
-     * @param GroupInterface   $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface   $variantGroup
      * @param ProductInterface $product
      * @param Constraint       $constraint
      *
@@ -164,7 +164,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Get matching products
      *
-     * @param GroupInterface   $variantGroup the variant group
+     * @param \Pim\Component\Catalog\Model\GroupInterface   $variantGroup the variant group
      * @param ProductInterface $entity       the product
      * @param array            $criteria     query criterias
      *

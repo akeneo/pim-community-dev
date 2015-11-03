@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +81,7 @@ class GroupHandler implements HandlerInterface
     /**
      * Call when form is valid
      *
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      */
     protected function onSuccess(GroupInterface $group)
     {

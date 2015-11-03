@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -55,7 +55,7 @@ class GroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        /* @var GroupInterface $group */
+        /* @var \Pim\Component\Catalog\Model\GroupInterface $group */
         $this->checkItemData($item);
         $group = $this->findOrCreateGroup($item);
         $this->updateGroup($group, $item);
@@ -79,7 +79,7 @@ class GroupProcessor extends AbstractProcessor
      *
      * @param array $groupData
      *
-     * @return GroupInterface
+     * @return \Pim\Component\Catalog\Model\GroupInterface
      */
     protected function findOrCreateGroup(array $groupData)
     {
@@ -105,10 +105,10 @@ class GroupProcessor extends AbstractProcessor
     /**
      * Update the variant group fields.
      *
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $groupData
      *
-     * @return GroupInterface
+     * @return \Pim\Component\Catalog\Model\GroupInterface
      */
     protected function updateGroup(GroupInterface $group, array $groupData)
     {
@@ -123,7 +123,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $item
      */
     protected function validateGroup(GroupInterface $group, array $item)

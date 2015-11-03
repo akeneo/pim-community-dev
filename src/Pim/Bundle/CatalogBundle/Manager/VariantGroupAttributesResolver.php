@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -29,7 +29,7 @@ class VariantGroupAttributesResolver
     /**
      * Get non eligible attributes to a product template
      *
-     * @param GroupInterface $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
      *
      * @return AttributeInterface[]
      */

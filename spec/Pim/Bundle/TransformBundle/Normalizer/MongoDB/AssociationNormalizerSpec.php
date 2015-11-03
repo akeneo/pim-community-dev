@@ -6,7 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

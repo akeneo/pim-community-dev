@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
@@ -55,7 +55,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $data
      */
     protected function setCode(GroupInterface $group, $data)
@@ -66,7 +66,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $data
      */
     protected function setGroupType(GroupInterface $group, $data)
@@ -85,7 +85,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $data
      */
     protected function setAxis(GroupInterface $group, $data)
@@ -107,7 +107,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $data
      */
     protected function setLabels(GroupInterface $group, $data)

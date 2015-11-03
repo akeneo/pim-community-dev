@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -146,7 +146,7 @@ interface ProductRepositoryInterface
     public function getEligibleProductIdsForVariantGroup($variantGroupId);
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param                $maxResults
      *
      * @return array
@@ -154,7 +154,7 @@ interface ProductRepositoryInterface
     public function getProductsByGroup(GroupInterface $group, $maxResults);
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      *
      * @return int
      */

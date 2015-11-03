@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
@@ -44,7 +44,7 @@ class GroupUpdater implements ObjectUpdaterInterface
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
                 )
             );
@@ -58,7 +58,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param string         $field
      * @param mixed          $data
      *
@@ -80,7 +80,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param string         $code
      */
     protected function setCode(GroupInterface $group, $code)
@@ -105,7 +105,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      * @param array          $labels
      *
      * @throws \InvalidArgumentException

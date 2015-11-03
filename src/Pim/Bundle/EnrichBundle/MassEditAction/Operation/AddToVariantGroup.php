@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Operation to add products to variant groups
@@ -13,11 +13,11 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
  */
 class AddToVariantGroup extends AbstractMassEditOperation
 {
-    /** @var GroupInterface */
+    /** @var \Pim\Component\Catalog\Model\GroupInterface */
     protected $group;
 
     /**
-     * @param GroupInterface $group
+     * @param \Pim\Component\Catalog\Model\GroupInterface $group
      */
     public function setGroup(GroupInterface $group)
     {
@@ -25,7 +25,7 @@ class AddToVariantGroup extends AbstractMassEditOperation
     }
 
     /**
-     * @return GroupInterface
+     * @return \Pim\Component\Catalog\Model\GroupInterface
      */
     public function getGroup()
     {

@@ -325,7 +325,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
+     * @return \Pim\Component\Catalog\Model\GroupInterface
      */
     protected function getVariantGroup($code)
     {

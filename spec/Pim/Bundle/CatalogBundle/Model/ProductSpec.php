@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
@@ -105,7 +105,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
     }
 
-    function it_has_attribute_in_a_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_has_attribute_in_a_variant_group(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);
@@ -117,7 +117,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
     }
 
-    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
+    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(false);
@@ -136,7 +136,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_editable_with_group_containing_attribute(\Pim\Component\Catalog\Model\AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_is_not_attribute_editable_with_group_containing_attribute(\Pim\Component\Catalog\Model\AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);
@@ -175,7 +175,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);

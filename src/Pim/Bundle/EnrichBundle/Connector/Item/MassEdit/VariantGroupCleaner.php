@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -227,7 +227,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     }
 
     /**
-     * @param GroupInterface $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
      *
      * @return array
      */

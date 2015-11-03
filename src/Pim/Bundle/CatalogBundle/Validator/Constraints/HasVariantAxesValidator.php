@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -41,7 +41,7 @@ class HasVariantAxesValidator extends ConstraintValidator
      * Get missing axis codes of a product given a variant group
      *
      * @param \Pim\Component\Catalog\Model\ProductInterface $product
-     * @param GroupInterface   $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface   $variantGroup
      *
      * @return array
      */

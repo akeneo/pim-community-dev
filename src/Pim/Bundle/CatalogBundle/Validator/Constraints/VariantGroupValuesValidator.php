@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -42,7 +42,7 @@ class VariantGroupValuesValidator extends ConstraintValidator
     /**
      * Validate variant group product template values
      *
-     * @param GroupInterface $variantGroup
+     * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
      * @param Constraint     $constraint
      */
     protected function validateProductTemplateValues(GroupInterface $variantGroup, Constraint $constraint)
