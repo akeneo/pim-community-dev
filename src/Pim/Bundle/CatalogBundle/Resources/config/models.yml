@@ -19,4 +19,4 @@ parameters:
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_media.interface:          Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
-    pim_catalog.model.product_template.interface:       Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+    pim_catalog.model.product_template.interface:       Pim\Component\Catalog\Model\ProductTemplateInterface

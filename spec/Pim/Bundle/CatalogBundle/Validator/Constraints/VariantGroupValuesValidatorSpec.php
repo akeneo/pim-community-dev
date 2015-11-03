@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValues;
 use Prophecy\Argument;

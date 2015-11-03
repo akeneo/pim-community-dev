@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;

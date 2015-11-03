@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;

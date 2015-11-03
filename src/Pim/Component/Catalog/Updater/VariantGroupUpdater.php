@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
@@ -240,7 +240,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param \Pim\Component\Catalog\Model\GroupInterface $variantGroup
      *
-     * @return ProductTemplateInterface
+     * @return \Pim\Component\Catalog\Model\ProductTemplateInterface
      */
     protected function getProductTemplate(GroupInterface $variantGroup)
     {

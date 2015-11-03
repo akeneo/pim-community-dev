@@ -44,7 +44,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - refresh
     oneToOne:
         productTemplate:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductTemplateInterface
             cascade:
                 - persist
                 - remove

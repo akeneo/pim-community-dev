@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;

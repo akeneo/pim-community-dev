@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -17,14 +17,14 @@ interface ProductTemplateBuilderInterface
     /**
      * Creates a product template
      *
-     * @return ProductTemplateInterface
+     * @return \Pim\Component\Catalog\Model\ProductTemplateInterface
      */
     public function createProductTemplate();
 
     /**
      * Add required value(s) that link an attribute to a product template
      *
-     * @param ProductTemplateInterface $template
+     * @param \Pim\Component\Catalog\Model\ProductTemplateInterface $template
      * @param AttributeInterface[]     $attributes
      */
     public function addAttributes(ProductTemplateInterface $template, array $attributes);

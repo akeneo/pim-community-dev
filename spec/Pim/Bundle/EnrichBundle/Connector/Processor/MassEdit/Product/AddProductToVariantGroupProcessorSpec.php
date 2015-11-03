@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface ProductTemplateApplierInterface
 {
     /**
-     * @param ProductTemplateInterface $template
+     * @param \Pim\Component\Catalog\Model\ProductTemplateInterface $template
      * @param ProductInterface[]       $products
      *
      * @return array $violations

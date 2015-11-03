@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;

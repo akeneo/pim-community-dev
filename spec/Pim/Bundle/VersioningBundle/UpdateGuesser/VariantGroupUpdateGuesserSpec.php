@@ -6,7 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Prophecy\Argument;
