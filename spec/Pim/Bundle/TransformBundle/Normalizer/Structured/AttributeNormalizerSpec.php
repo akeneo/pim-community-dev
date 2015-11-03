@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
 use Prophecy\Argument;
 

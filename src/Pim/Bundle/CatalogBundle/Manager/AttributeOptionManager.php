@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -57,7 +57,7 @@ class AttributeOptionManager
     /**
      * Create an attribute option value
      *
-     * @return AttributeOptionValueInterface
+     * @return \Pim\Component\Catalog\Model\AttributeOptionValueInterface
      */
     public function createAttributeOptionValue()
     {

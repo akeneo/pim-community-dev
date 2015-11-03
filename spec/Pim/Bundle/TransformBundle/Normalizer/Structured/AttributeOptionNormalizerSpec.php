@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {

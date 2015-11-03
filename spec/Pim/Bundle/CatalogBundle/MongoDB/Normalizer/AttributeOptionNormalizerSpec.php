@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option values
