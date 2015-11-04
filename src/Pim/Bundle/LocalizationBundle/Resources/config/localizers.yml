@@ -46,3 +46,10 @@ services:
         tags:
             - { name: pim_localization.localizer }
             - { name: pim_localization.localizer.product_value }
+
+    pim_localization.localizer.attribute_option.number:
+        class: %pim_localization.localizer.number.class%
+        arguments:
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_localization.localizer.attribute_option }
