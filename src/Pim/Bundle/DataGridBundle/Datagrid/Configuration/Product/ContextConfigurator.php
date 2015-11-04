@@ -39,52 +39,34 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
-    /**
-     * @var DatagridConfiguration
-     */
+    /** @var DatagridConfiguration */
     protected $configuration;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var RequestParameters
-     */
+    /** @var RequestParameters */
     protected $requestParams;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
-
-    /**
-     * @var EntityRepository
-     */
-    protected $gridViewRepository;
 
     /**
      * @param ProductManager    $productManager
      * @param RequestParameters $requestParams
      * @param UserContext       $userContext
-     * @param EntityRepository  $gridViewRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
-        UserContext $userContext,
-        EntityRepository $gridViewRepository
+        UserContext $userContext
     ) {
         $this->productManager     = $productManager;
         $this->requestParams      = $requestParams;
         $this->userContext        = $userContext;
-        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**

@@ -13,7 +13,6 @@ services:
             - '@pim_catalog.manager.product'
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
-            - '@pim_datagrid.repository.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]
 
