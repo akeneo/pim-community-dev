@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5036: Fix metric select2 bug in PEF
+- PIM-5119: Fix the "Manage filters", which was very slow when there was a lot of attributes to display
 
 # 1.4.7 (2015-11-03)
 
