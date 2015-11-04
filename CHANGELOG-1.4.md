@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5036: Fix metric select2 bug in PEF
 - PIM-5119: Fix the "Manage filters", which was very slow when there was a lot of attributes to display
+- PIM-5121: Fix the channel code displayed instead of label
 
 # 1.4.7 (2015-11-03)
 

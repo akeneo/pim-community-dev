@@ -21,6 +21,10 @@ define(
             events: {
                 'click li a': 'changeScope'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
@@ -29,10 +33,12 @@ define(
                             this.getParent().setScope(channels[0].code, {silent: true});
                         }
 
+                        var scope = _.findWhere(channels, { code: this.getParent().getScope() });
+
                         this.$el.html(
                             this.template({
                                 channels: channels,
-                                currentScope: this.getParent().getScope()
+                                currentScope: scope.label
                             })
                         );
                         this.delegateEvents();
@@ -41,6 +47,12 @@ define(
 
                 return this;
             },
+
+            /**
+             * Set the current selected scope
+             *
+             * @param {Event} event
+             */
             changeScope: function (event) {
                 this.getParent().setScope(event.currentTarget.dataset.scope);
                 this.render();
