@@ -71,7 +71,7 @@ define(
              * @return {String}
              */
             getSaveUrl: function () {
-                throw new Exception('This method must be implemented');
+                throw new Error('This method must be implemented');
             },
 
             /**
@@ -96,7 +96,7 @@ define(
                     case 400:
                         mediator.trigger(
                             'pim_enrich:form:entity:bad_request',
-                            {'sentData': product, 'response': response.responseJSON}
+                            {'sentData': this.getFormData(), 'response': response.responseJSON}
                         );
                         break;
                     case 500:

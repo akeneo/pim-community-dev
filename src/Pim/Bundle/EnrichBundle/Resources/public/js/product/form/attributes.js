@@ -151,8 +151,8 @@ define(
                 var product = this.getFormData();
 
                 promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
-                    .then(function(attributeGroups) {
-                        this.getExtension('attribute-group-selector').setElements(attributeGroups)
+                    .then(function (attributeGroups) {
+                        this.getExtension('attribute-group-selector').setElements(attributeGroups);
                     }.bind(this))
                 );
 

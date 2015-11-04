@@ -13,10 +13,9 @@ define(
         'underscore',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/common/group-selector',
-        'pim/user-context'
+        'text!pim/template/form/common/group-selector'
     ],
-    function ($, _, BaseForm, mediator, template, UserContext) {
+    function ($, _, BaseForm, mediator, template) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'nav nav-tabs group-selector',

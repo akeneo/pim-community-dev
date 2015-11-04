@@ -3,7 +3,6 @@
 namespace Oro\Bundle\ConfigBundle\DependencyInjection\Compiler;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
-use Oro\Bundle\ConfigBundle\Provider\FormProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Yaml;
@@ -26,17 +25,6 @@ class SystemConfigurationPass implements CompilerPassInterface
                 $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
 
                 $config = $processor->merge($config, $bundleConfig);
-            }
-        }
-
-        $taggedServices = $container->findTaggedServiceIds(FormProvider::TAG_NAME);
-        if ($taggedServices) {
-            $config = $processor->process($config);
-
-            foreach ($taggedServices as $id => $attributes) {
-                $container
-                    ->getDefinition($id)
-                    ->replaceArgument(0, $config);
             }
         }
     }
