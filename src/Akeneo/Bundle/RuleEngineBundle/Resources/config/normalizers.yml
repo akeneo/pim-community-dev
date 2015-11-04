@@ -11,10 +11,6 @@ services:
 
    akeneo_rule_engine.normalizer.rule_definition:
         class: %akeneo_rule_engine.normalizer.rule_definition.class%
-        arguments:
-            - '@pim_localization.localizer.converter'
-            - '@security.token_storage'
-            - '@pim_localization.provider.number_format'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
