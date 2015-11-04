@@ -1,12 +1,24 @@
 <select id="view-selector" class="hide">
-    <option value="0" data-default="1">
-        {{- 'datagrid_view.default'|trans -}}
-    </option>
-{% for view in views %}
-    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}" data-default="0" data-removable="{{ view.owner.id == app.user.id ? 1 : 0 }}">
-        {{- view.label -}}
-    </option>
-{% endfor %}
+    {% set hasDefaultView = false %}
+
+    {% for view in views %}
+        {% if app.user.defaultProdGridView.id is defined and view.id == app.user.defaultProdGridView.id %}
+            {% set hasDefaultView = true %}
+            {% set dataDefault    = '1' %}
+        {% else %}
+            {% set dataDefault = '0' %}
+        {% endif %}
+
+        <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}" data-default="{{ dataDefault }}" data-removable="{{ view.owner.id == app.user.id ? 1 : 0 }}">
+            {{- view.label -}}
+        </option>
+    {% endfor %}
+
+    {% if not hasDefaultView %}
+        <option value="0" data-default="1">
+            {{- 'datagrid_view.default'|trans -}}
+        </option>
+    {% endif %}
 </select>
 
 <a id="update-view" class="muted hide" href="javascript:void(0);">

@@ -32,6 +32,16 @@
 
     {{ elements.page_header(title, buttons, subtitle) }}
 
+    {% if app.user.defaultProdGridView.id is defined %}
+        {% set defaultView = {
+            'id' : app.user.defaultProdGridView.id,
+            'filters' : app.user.defaultProdGridView.filters,
+            'columns' : app.user.defaultProdGridView.columns,
+        } %}
+    {% else %}
+        {% set defaultView = {} %}
+    {% endif %}
+
     {% if resource_granted('pim_enrich_product_category_list') %}
         <script type="text/javascript">
             require(['jquery', 'jquery.sidebarize'], function ($) {
@@ -46,13 +56,13 @@
         <div class="row-fluid has-sidebar">
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
             <div id="product-grid">
-                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>
     {% else %}
         <div class="row-fluid">
             <div id="product-grid">
-                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>
     {% endif %}
