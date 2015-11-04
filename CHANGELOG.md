@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.4.5 (2015-11-04)
+------------------
+
+### Bug fixes
+
+- PIM-5120: Do not hydrate all JobExecution of a JobInstance during a the creation of a JobExecution
+
 0.4.4 (2015-09-03)
 ------------------
 
@@ -48,7 +55,7 @@ CHANGELOG
 
 - The `--no-log` option is now used instead of the console related `--no-debug` option
 
-0.3.8 (2015-09-03)
+0.3.8 (2015-11-04)
 ------------------
 
 ### Bug fixes
