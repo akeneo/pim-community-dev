@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Prophecy\Argument;

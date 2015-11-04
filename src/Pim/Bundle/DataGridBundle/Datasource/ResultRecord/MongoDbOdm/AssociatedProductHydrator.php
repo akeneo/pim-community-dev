@@ -3,13 +3,13 @@
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Hydrate results of Doctrine MongoDB query as ResultRecord array

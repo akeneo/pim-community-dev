@@ -4,10 +4,10 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -63,7 +63,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
                 )
             );

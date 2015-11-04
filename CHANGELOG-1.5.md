@@ -3,7 +3,8 @@
 ## Technical improvements
 
 - PIM-4964: Use enable / disable import parameter only to create the product
-- Family is not hardcoded anymore
+- Family entity is not hardcoded anymore
+- Fix coupling issues by extracting model interfaces from Catalog Bundle to Catalog component (old interfaces are kept as deprecated to avoid BC Breaks)
 
 ## Bug fixes
 

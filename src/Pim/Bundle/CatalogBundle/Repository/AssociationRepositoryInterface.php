@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Interface for association repository

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -45,7 +45,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new InvalidArgumentException(
-                    'Attribute must be an instance of Pim\Bundle\CatalogBundle\Model\AttributeInterface, string given'
+                    'Attribute must be an instance of Pim\Component\Catalog\Model\AttributeInterface, string given'
                 )
             )
             ->duringDenormalize([], 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', ['attribute' => 'foo']);

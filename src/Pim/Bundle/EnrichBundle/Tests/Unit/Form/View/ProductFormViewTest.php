@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\View;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
  * Test related class
@@ -531,7 +531,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return AttributeInterface
      */
     private function getAttributeMock(array $options)
     {

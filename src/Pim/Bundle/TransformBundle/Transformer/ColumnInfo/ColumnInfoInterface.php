@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Interface for column info

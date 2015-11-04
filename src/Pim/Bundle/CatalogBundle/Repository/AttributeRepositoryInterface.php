@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Repository interface for attribute

@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         entity:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductInterface
             inversedBy: values
         option:
             type: entity
@@ -42,11 +42,11 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         metric:
             embedded: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\MetricInterface
+            targetDocument: Pim\Component\Catalog\Model\MetricInterface
         prices:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductPriceInterface
         media:
             type: entity
             targetEntity: Akeneo\Component\FileStorage\Model\FileInfo

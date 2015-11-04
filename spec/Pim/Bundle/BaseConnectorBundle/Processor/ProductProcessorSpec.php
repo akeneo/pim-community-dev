@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Prophecy\Argument;

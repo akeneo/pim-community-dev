@@ -7,10 +7,10 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -259,7 +259,7 @@ class VariantGroupProcessor extends AbstractProcessor
     /**
      * @param GroupInterface $variantGroup
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+     * @return ProductTemplateInterface
      */
     protected function getProductTemplate(GroupInterface $variantGroup)
     {

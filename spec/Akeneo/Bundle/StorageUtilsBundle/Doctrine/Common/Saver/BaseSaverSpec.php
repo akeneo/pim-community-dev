@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -14,7 +14,7 @@ class BaseSaverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher,'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
+        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher,'Pim\Component\Catalog\Model\GroupTypeInterface');
     }
 
     function it_is_a_saver()
@@ -101,7 +101,7 @@ class BaseSaverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "Pim\Bundle\CatalogBundle\Model\GroupTypeInterface", "%s" provided.',
+                'Expects a "Pim\Component\Catalog\Model\GroupTypeInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

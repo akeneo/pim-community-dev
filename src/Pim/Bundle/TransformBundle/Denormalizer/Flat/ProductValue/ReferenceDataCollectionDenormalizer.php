@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
@@ -39,7 +39,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
 
         if (!$context['value'] instanceof ProductValueInterface) {
             throw new InvalidParameterException(
-                'Value is not an instance of Pim\Bundle\CatalogBundle\Model\ProductValueInterface.'
+                'Value is not an instance of Pim\Component\Catalog\Model\ProductValueInterface.'
             );
         }
 

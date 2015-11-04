@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product category repository interface

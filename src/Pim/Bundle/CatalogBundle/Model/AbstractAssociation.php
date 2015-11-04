@@ -4,6 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Abstract association entity

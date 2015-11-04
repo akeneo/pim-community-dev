@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Factory;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -67,7 +67,7 @@ class FamilyFactorySpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $family = $this->createFamily();
-        $family->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
+        $family->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\FamilyInterface');
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
         $family->getAttributeRequirements()->shouldHaveCount(2);

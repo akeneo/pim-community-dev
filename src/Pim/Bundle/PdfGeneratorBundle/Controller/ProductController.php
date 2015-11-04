@@ -94,7 +94,7 @@ class ProductController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {

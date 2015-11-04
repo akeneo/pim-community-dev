@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Remove one or several groups to a product

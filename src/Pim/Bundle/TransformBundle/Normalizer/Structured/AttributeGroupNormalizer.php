@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

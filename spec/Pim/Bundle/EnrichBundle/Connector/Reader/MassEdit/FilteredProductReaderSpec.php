@@ -10,7 +10,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;

@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>

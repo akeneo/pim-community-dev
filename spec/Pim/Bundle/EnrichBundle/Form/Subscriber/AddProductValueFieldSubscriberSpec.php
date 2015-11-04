@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;

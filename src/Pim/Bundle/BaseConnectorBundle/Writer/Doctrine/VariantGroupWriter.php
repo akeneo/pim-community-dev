@@ -8,8 +8,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job

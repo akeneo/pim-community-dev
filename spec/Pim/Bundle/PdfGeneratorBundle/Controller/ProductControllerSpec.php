@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;

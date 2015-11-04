@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -49,7 +49,7 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
             throw new InvalidArgumentException(
                 sprintf(
                     'Attribute must be an instance of %s, %s given',
-                    'Pim\Bundle\CatalogBundle\Model\AttributeInterface',
+                    'Pim\Component\Catalog\Model\AttributeInterface',
                     is_object($attribute) ? get_class($attribute) : gettype($attribute)
                 )
             );

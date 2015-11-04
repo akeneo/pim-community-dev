@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Sets a value in a product

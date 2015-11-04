@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             nullable: true
     manyToOne:
         category:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
             inversedBy: channels
             joinColumns:
                 category_id:
@@ -49,7 +49,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                         referencedColumnName: id
                         onDelete: CASCADE
         locales:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             inversedBy: channels
             cascade:
                 - persist

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 class GroupSavingOptionsResolverSpec extends ObjectBehavior

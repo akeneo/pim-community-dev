@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Localization\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\DateLocalizer;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Localization\Localizer\NumberLocalizer;

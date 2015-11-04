@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Comparator\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

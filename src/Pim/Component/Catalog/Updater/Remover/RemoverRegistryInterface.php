@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Registry of removers

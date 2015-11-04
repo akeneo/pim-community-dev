@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 /**
  * Association Manager

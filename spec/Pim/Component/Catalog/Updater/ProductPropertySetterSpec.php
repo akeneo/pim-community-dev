@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;

@@ -6,7 +6,7 @@ use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;

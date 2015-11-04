@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Abstract price backend type entity

@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product category manager

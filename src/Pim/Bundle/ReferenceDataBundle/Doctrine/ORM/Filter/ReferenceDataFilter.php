@@ -4,12 +4,12 @@ namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

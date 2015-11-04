@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Form;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Form provider for product

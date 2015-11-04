@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;

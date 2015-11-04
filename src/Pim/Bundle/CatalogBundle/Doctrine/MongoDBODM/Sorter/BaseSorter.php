@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Base sorter

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Attribute factory

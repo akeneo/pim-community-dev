@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 class CategoryFieldAdderSpec extends ObjectBehavior
