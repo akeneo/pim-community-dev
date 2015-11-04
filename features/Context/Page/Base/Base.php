@@ -32,6 +32,23 @@ class Base extends Page
         'Locales dropdown' => ['css' => '#locale-switcher'],
     ];
 
+
+    /**
+     * Clicks link with specified locator.
+     *
+     * @param string $locator link id, title, text or image alt
+     *
+     * @throws ElementNotFoundException
+     */
+    public function clickLink($locator)
+    {
+        $link = $this->spin(function() use ($locator) {
+            return $this->findLink($locator);
+        }, $this->elementNotFound('link', 'id|title|alt|text', $locator)->getMessage());
+
+        $link->click();
+    }
+
     /**
      * {@inheritdoc}
      */
