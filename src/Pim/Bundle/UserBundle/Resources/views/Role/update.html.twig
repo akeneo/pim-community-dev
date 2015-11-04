@@ -1,6 +1,5 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
 
 <script type="text/javascript">
     require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
@@ -11,7 +10,7 @@
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create'),
+        'action': entityId ? path('oro_user_role_update', { 'id': entityId }) : path('oro_user_role_create'),
         'attr': {
             'class': 'form-tabbed',
             'data-updated-title': 'confirmation.leave'|trans,

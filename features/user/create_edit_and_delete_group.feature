@@ -37,9 +37,9 @@ Feature: Create a group
   Scenario: Successfully display validation errors when creating or editing a user group
     Given I am on the user groups creation page
     When I save the group
-    Then I should see "This value should not be blank."
+    Then I should see validation tooltip "This value should not be blank."
     When I edit the "Manager" user group
     When I fill in the following information:
       | Name |  |
     And I save the group
-    Then I should see "This value should not be blank."
+    Then I should see validation tooltip "This value should not be blank."

@@ -14,3 +14,7 @@
     {{ dataGrid.renderGrid('pim-user-group-grid', { }) }}
 
 {% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
