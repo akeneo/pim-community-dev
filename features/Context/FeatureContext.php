@@ -334,7 +334,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $conditions       = [
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
-                "!$.active",                                   // No ajax request is active
+//                "!$.active",                                   // No ajax request is active
                 "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
                 "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading
