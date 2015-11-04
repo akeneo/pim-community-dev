@@ -6,7 +6,6 @@ use Pim\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-
 /**
  * Locale controller
  *

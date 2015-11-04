@@ -49,6 +49,7 @@ define([
                 if (!this.configured) {
                     return this;
                 }
+
                 this.getRoot().trigger('oro_config:form:render:before');
 
                 this.$el.html(
@@ -58,6 +59,8 @@ define([
                 this.renderExtensions();
 
                 this.getRoot().trigger('oro_config:form:render:after');
+
+                return this;
             },
 
             /**

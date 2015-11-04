@@ -7,7 +7,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Configuration rest controller in charge of the system configuration managements
  *
@@ -25,6 +24,7 @@ class ConfigurationController
 
     /**
      * @param ConfigManager $configManager
+     * @param array         $options
      */
     public function __construct(ConfigManager $configManager, array $options = [])
     {
@@ -36,6 +36,8 @@ class ConfigurationController
      * Get the current configuration
      *
      * @AclAncestor("oro_config_system")
+     *
+     * @return JsonResponse
      */
     public function getAction()
     {
@@ -58,6 +60,8 @@ class ConfigurationController
      * Set the current configuration
      *
      * @AclAncestor("oro_config_system")
+     *
+     * @return JsonResponse
      */
     public function postAction(Request $request)
     {

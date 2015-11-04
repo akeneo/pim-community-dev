@@ -101,7 +101,7 @@ define(
                         break;
                     case 500:
                         /* global console */
-                        console.log('Errors:', response.responseJSON);
+                        console.error('Errors:', response.responseJSON);
                         this.getRoot().trigger('pim_enrich:form:entity:error:save', response.responseJSON);
                         break;
                     default:

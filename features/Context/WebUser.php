@@ -2535,7 +2535,9 @@ class WebUser extends RawMinkContext
      */
     public function iSelectLanguage($language)
     {
-        $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+        $this->spin(function () use ($language) {
+            $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+        });
     }
 
     /**

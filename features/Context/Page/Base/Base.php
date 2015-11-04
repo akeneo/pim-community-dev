@@ -42,7 +42,7 @@ class Base extends Page
      */
     public function clickLink($locator)
     {
-        $link = $this->spin(function() use ($locator) {
+        $link = $this->spin(function () use ($locator) {
             return $this->findLink($locator);
         }, $this->elementNotFound('link', 'id|title|alt|text', $locator)->getMessage());
 
@@ -394,10 +394,14 @@ class Base extends Page
      */
     public function hasSelectedLocale($locale)
     {
-        $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
-        if (null === $selectedLocale) {
-            throw new \Exception('Could not find locales in switcher.');
-        }
+        $selectedLocale = $this->spin(function () {
+            $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
+            if (null === $selectedLocale) {
+                throw new \Exception('Could not find locales in switcher.');
+            }
+
+            return $selectedLocale;
+        });
 
         $title = $selectedLocale->getAttribute('title');
         if ($locale !== $title) {
