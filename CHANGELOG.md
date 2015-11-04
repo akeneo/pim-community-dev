@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.3.8 (2015-09-03)
+------------------
+
+### Bug fixes
+
+- PIM-5120: Do not hydrate all JobExecution of a JobInstance during a the creation of a JobExecution
+
 0.3.7 (2015-09-03)
 ------------------
 
