@@ -48,6 +48,20 @@ CHANGELOG
 
 - The `--no-log` option is now used instead of the console related `--no-debug` option
 
+0.3.8 (2015-09-03)
+------------------
+
+### Bug fixes
+
+- PIM-5120: Do not hydrate all JobExecution of a JobInstance during a the creation of a JobExecution
+
+0.3.7 (2015-09-03)
+------------------
+
+### Bug fixes
+
+- Fix composer requirements to minor versions
+
 0.3.6 (2015-08-03)
 ------------------
 
@@ -101,6 +115,7 @@ CHANGELOG
 ### BC Breaks
 
  - Database schema has changed. Please read UPGRADE.md
+
 
 0.2.8 (2015-08-03)
 ------------------

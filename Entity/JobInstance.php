@@ -346,9 +346,7 @@ class JobInstance
      */
     public function addJobExecution(JobExecution $jobExecution)
     {
-        if (!$this->jobExecutions->contains($jobExecution)) {
-            $this->jobExecutions->add($jobExecution);
-        }
+        $this->jobExecutions->add($jobExecution);
 
         return $this;
     }
@@ -360,9 +358,7 @@ class JobInstance
      */
     public function removeJobExecution(JobExecution $jobExecution)
     {
-        if ($this->jobExecutions->contains($jobExecution)) {
-            $this->jobExecutions->removeElement($jobExecution);
-        }
+        $this->jobExecutions->removeElement($jobExecution);
 
         return $this;
     }
