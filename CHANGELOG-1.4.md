@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5036: Fix metric select2 bug in PEF
+
 # 1.4.7 (2015-11-03)
 
 ## Bug fixes
