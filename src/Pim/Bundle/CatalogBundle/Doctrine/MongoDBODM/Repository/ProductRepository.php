@@ -544,8 +544,16 @@ class ProductRepository extends DocumentRepository implements
                 ['associationType' => $associationType->getId()],
                 [
                     '$or' => [
-                        [ 'products' => [ '$ne' => [] ] ],
-                        [ 'groups'   => [ '$ne' => [] ] ]
+                        [
+                            'products' => [
+                                '$ne' => []
+                            ]
+                        ],
+                        [
+                            'groups'   => [
+                                '$ne' => []
+                            ]
+                        ]
                     ]
                 ]
             ]
