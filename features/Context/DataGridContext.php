@@ -74,13 +74,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theGridShouldContainElement($count)
     {
         $count = (int) $count;
-        $this->wait();
 
         if (0 === $count) {
             assertTrue($this->datagrid->isGridEmpty());
 
             return;
         }
+
+        $this->wait('$("table.grid").length > 0');
 
         if ($count > 10) {
             $this->iChangePageSize(100);
