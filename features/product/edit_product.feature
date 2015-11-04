@@ -12,6 +12,9 @@ Feature: Edit a product
       | description | textarea | yes         | yes             | Description | yes      |
       | name        | text     | no          |                 | Name        | no       |
       | other_name  | text     | yes         |                 | Other Name  | yes      |
+    And the following attributes:
+      | code        | label      | type   | metric family | default metric unit |
+      | length      | Shoes size | metric | Length        | CENTIMETER          |
     And the following products:
       | sku    |
       | sandal |
@@ -22,6 +25,7 @@ Feature: Edit a product
       | sandal  | other_name  | My awesome sandals                   | en_US  | ecommerce |
       | sandal  | other_name  | My awesome sandals for mobile        | en_US  | mobile    |
       | sandal  | name        | My sandals name                      |        |           |
+      | sandal  | length      | 29 CENTIMETER                        |        |           |
 
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
@@ -74,3 +78,10 @@ Feature: Edit a product
     And I filter by "Channel" with value "E-Commerce"
     When I am on the "sandal" product page
     Then the product Description should be "My awesome description for ecommerce"
+
+  Scenario: Successfully add a metric attribute to a product
+    Given I am logged in as "Julia"
+    And I am on the "sandal" product page
+    When I change the "Shoes size" to "29 DEKAMETER"
+    And I save the product
+    Then the product Shoes size should be "29 DEKAMETER"
