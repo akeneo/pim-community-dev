@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 
 class ProductValueCompleteSpec extends ObjectBehavior
 {
@@ -25,7 +25,7 @@ class ProductValueCompleteSpec extends ObjectBehavior
             ->shouldThrow(
                 new \LogicException(
                     sprintf(
-                        'Expecting $channel to be an instance of "Pim\Component\Catalog\ChannelInterface", got "%s"',
+                        'Expecting $channel to be an instance of "Pim\Component\Catalog\Model\ChannelInterface", got "%s"',
                         'ecommerce'
                     )
                 )

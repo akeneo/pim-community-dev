@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {

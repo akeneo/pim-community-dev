@@ -7,9 +7,9 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
@@ -571,11 +571,11 @@ interface AttributeInterface extends
     /**
      * Remove available locale
      *
-     * @param \Pim\Component\Catalog\LocaleInterface $availableLocale
+     * @param LocaleInterface $availableLocale
      *
      * @return AttributeInterface
      */
-    public function removeAvailableLocale(\Pim\Component\Catalog\LocaleInterface $availableLocale);
+    public function removeAvailableLocale(LocaleInterface $availableLocale);
 
     /**
      * Set scopable

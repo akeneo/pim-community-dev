@@ -28,14 +28,14 @@ Pim\Bundle\CatalogBundle\Model\Completeness:
             column: required_count
     manyToOne:
         locale:
-            targetEntity: Pim\Component\Catalog\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
         channel:
-            targetEntity: Pim\Component\Catalog\ChannelInterface
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     referencedColumnName: id

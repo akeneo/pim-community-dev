@@ -19,8 +19,8 @@ use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -398,7 +398,7 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * @return \Pim\Component\Catalog\LocaleInterface[]
+     * @return LocaleInterface[]
      */
     protected function getUserLocales()
     {
@@ -422,7 +422,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws \Exception
      *
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     protected function getDataLocale()
     {

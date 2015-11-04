@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -15,7 +15,7 @@ interface ProductValueCompleteCheckerInterface
 {
     /**
      * @param ProductValueInterface $productValue
-     * @param \Pim\Component\Catalog\ChannelInterface|null $channel
+     * @param ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      *
      * @return bool

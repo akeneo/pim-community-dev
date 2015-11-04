@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 
 /**
  * Attribute requirement factory
@@ -20,7 +20,7 @@ class AttributeRequirementFactory
      * Create and configure an attribute requirement instance
      *
      * @param AttributeInterface $attribute
-     * @param \Pim\Component\Catalog\ChannelInterface   $channel
+     * @param ChannelInterface   $channel
      * @param bool               $required
      *
      * @return AttributeRequirementInterface

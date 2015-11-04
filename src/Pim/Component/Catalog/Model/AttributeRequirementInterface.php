@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**

@@ -11,9 +11,9 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -121,10 +121,10 @@ class User implements UserInterface
     /** @var DateTime $updatedAt */
     protected $updatedAt;
 
-    /** @var \Pim\Component\Catalog\LocaleInterface */
+    /** @var LocaleInterface */
     protected $catalogLocale;
 
-    /** @var \Pim\Component\Catalog\LocaleInterface */
+    /** @var LocaleInterface */
     protected $uiLocale;
 
     /** @var Channel */

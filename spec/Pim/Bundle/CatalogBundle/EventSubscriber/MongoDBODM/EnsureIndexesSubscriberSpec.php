@@ -7,9 +7,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

@@ -10,9 +10,9 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -403,19 +403,19 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function preUpdate();
 
     /**
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     public function getCatalogLocale();
 
     /**
-     * @param \Pim\Component\Catalog\LocaleInterface $catalogLocale
+     * @param LocaleInterface $catalogLocale
      *
      * @return UserInterface
      */
     public function setCatalogLocale(LocaleInterface $catalogLocale);
 
     /**
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     public function getUiLocale();
 

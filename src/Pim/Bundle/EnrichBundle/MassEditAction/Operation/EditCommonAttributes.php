@@ -11,8 +11,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\FileStorage;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -31,7 +31,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var ArrayCollection */
     protected $displayedAttributes;
 
-    /** @var \Pim\Component\Catalog\LocaleInterface */
+    /** @var LocaleInterface */
     protected $locale;
 
     /** @var ProductBuilderInterface */
@@ -120,7 +120,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     public function getLocale()
     {

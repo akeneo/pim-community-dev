@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -28,19 +28,19 @@ class ProductValueComplete extends Constraint
     public $messageNotNull  = 'This value should not be null';
 
     /**
-     * @var \Pim\Component\Catalog\ChannelInterface
+     * @var ChannelInterface
      */
     protected $channel;
 
     /**
-     * @return \Pim\Component\Catalog\ChannelInterface
+     * @return ChannelInterface
      */
     public function getChannel()
     {
         if (!$this->channel instanceof ChannelInterface) {
             throw new \LogicException(
                 sprintf(
-                    'Expecting $channel to be an instance of "Pim\Component\Catalog\ChannelInterface", ' .
+                    'Expecting $channel to be an instance of "Pim\Component\Catalog\Model\ChannelInterface", ' .
                     'got "%s"',
                     is_object($this->channel) ? get_class($this->channel) : (string) $this->channel
                 )

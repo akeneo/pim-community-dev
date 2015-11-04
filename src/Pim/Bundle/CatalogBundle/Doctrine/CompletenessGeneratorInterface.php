@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -28,7 +28,7 @@ interface CompletenessGeneratorInterface
     /**
      * Generate completeness for a channel
      *
-     * @param \Pim\Component\Catalog\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 
@@ -57,7 +57,7 @@ interface CompletenessGeneratorInterface
      * of a channel and a locale id
      *
      * @param ChannelInterface $channel
-     * @param \Pim\Component\Catalog\LocaleInterface  $locale
+     * @param LocaleInterface  $locale
      */
     public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale);
 }

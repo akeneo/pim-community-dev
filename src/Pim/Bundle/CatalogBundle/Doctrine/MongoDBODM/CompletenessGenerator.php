@@ -9,10 +9,10 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -91,7 +91,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * if provided. CAUTION: the product must be already flushed to the DB
      *
      * @param ProductInterface $product
-     * @param \Pim\Component\Catalog\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     protected function generate(ProductInterface $product = null, ChannelInterface $channel = null)
     {
@@ -301,7 +301,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * to be defined as complete for channels and family
      * Familyreqs must be indexed by channel code
      *
-     * @param \Pim\Component\Catalog\ChannelInterface[] $channels
+     * @param ChannelInterface[] $channels
      * @param array              $familyReqs
      *
      * @return array
@@ -374,7 +374,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param Builder          $productsQb
      * @param ProductInterface $product
-     * @param \Pim\Component\Catalog\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     protected function applyFindMissingQuery(
         Builder $productsQb,

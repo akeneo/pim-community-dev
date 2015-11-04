@@ -8,10 +8,10 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -80,7 +80,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param \Pim\Component\Catalog\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -124,7 +124,7 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all products
      * of a channel
      *
-     * @param \Pim\Component\Catalog\ChannelInterface $channel
+     * @param ChannelInterface $channel
      *
      * @deprecated To be removed in 1.5
      */

@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Model;
 
 use Pim\Bundle\CatalogBundle\Model\Locale;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

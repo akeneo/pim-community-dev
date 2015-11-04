@@ -8,9 +8,9 @@ use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Catalog\ChannelInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -86,7 +86,7 @@ class UserContext
      *
      * @throws \LogicException When there are no activated locales
      *
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     public function getCurrentLocale()
     {
@@ -122,7 +122,7 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return \Pim\Component\Catalog\LocaleInterface[]
+     * @return LocaleInterface[]
      */
     public function getUserLocales()
     {
@@ -252,7 +252,7 @@ class UserContext
     /**
      * Returns the user locale
      *
-     * @return \Pim\Component\Catalog\LocaleInterface|null
+     * @return LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -264,7 +264,7 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return \Pim\Component\Catalog\LocaleInterface|null
+     * @return LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
@@ -274,7 +274,7 @@ class UserContext
     /**
      * Checks if a locale is activated
      *
-     * @param \Pim\Component\Catalog\LocaleInterface $locale
+     * @param LocaleInterface $locale
      *
      * @return bool
      */

@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Component\Catalog\ChannelInterface;
+use Pim\Component\Catalog\Model;
+use Pim\Component\Catalog\Model\ChannelInterface;
 
 /**
  * Locale interface
@@ -64,7 +65,7 @@ interface LocaleInterface extends ReferableInterface
      *
      * @return bool
      */
-    public function hasChannel(ChannelInterface $channel);
+    public function hasChannel(Model\ChannelInterface $channel);
 
     /**
      * @param ArrayCollection $channels
@@ -78,12 +79,12 @@ interface LocaleInterface extends ReferableInterface
      *
      * @return LocaleInterface
      */
-    public function addChannel(ChannelInterface $channel);
+    public function addChannel(Model\ChannelInterface $channel);
 
     /**
      * @param ChannelInterface $channel
      *
      * @return LocaleInterface
      */
-    public function removeChannel(ChannelInterface $channel);
+    public function removeChannel(Model\ChannelInterface $channel);
 }

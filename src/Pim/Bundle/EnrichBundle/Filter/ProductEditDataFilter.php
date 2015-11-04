@@ -9,8 +9,8 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -40,7 +40,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var AttributeInterface[] */
     protected $attributes = [];
 
-    /** @var \Pim\Component\Catalog\LocaleInterface[] */
+    /** @var LocaleInterface[] */
     protected $locales = [];
 
     /** @var array */
@@ -342,7 +342,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @throws ObjectNotFoundException
      *
-     * @return \Pim\Component\Catalog\LocaleInterface
+     * @return LocaleInterface
      */
     protected function getLocale($code, $activeOnly = true)
     {

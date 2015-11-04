@@ -6,11 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Abstract product attribute
@@ -507,7 +507,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function addAvailableLocale(\Pim\Component\Catalog\LocaleInterface $availableLocale)
+    public function addAvailableLocale(LocaleInterface $availableLocale)
     {
         $this->availableLocales[] = $availableLocale;
 
