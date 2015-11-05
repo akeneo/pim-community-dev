@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block oro_type_multiselect_filter_js %}
-    new (MultiselectFilter.extend({
+    new (MultiSelectFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},

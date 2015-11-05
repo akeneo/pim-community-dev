@@ -20,7 +20,17 @@ function(_, __, SelectFilter) {
             '<div class="btn filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select multiple>' +
-                    '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
+                    '<% _.each(options, function (option) { %>' +
+                        '<% if(_.isObject(option.value)) { %>' +
+                            '<optgroup label="<%= option.label %>">' +
+                                '<% _.each(option.value, function (value) { %>' +
+                                    '<option value="<%= value.value %>"><%= value.label %></option>' +
+                                '<% }); %>' +
+                            '</optgroup>' +
+                        '<% } else { %>' +
+                            '<option value="<%= option.value %>"><%= option.label %></option>' +
+                        '<% } %>' +
+                    '<% }); %>' +
                 '</select>' +
             '</div>' +
             '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
