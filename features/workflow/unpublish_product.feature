@@ -57,7 +57,7 @@ Feature: Unpublish a product
     Then the grid should contain 1 element
     And I should be able to view the "Unpublish the product" action of the row which contains "my-jacket"
     When I am on the "my-jacket" published show page
-    Then I should see "Unpublish"
+    Then I should see the text "Unpublish"
 
   @javascript
   Scenario: Not being able to unpublish a product from the grid and view when I am not the owner
