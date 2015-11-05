@@ -47,7 +47,7 @@ class PriceDenormalizer implements DenormalizerInterface
         $prices = $this->priceDenormalizer->denormalize($data, $class, $format, $context);
 
         foreach ($prices as $price) {
-            $price->setData($this->localizer->convertDefaultToLocalized($price->getData(), $context));
+            $price->setData($this->localizer->localize($price->getData(), $context));
         }
 
         return $prices;

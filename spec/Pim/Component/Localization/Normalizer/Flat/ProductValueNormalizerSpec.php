@@ -48,7 +48,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25.30']);
-        $numberLocalizer->convertDefaultToLocalized('25.30', $options)->willReturn('25,30');
+        $numberLocalizer->localize('25.30', $options)->willReturn('25,30');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['number' => '25,30']);
     }
@@ -67,7 +67,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
-        $numberLocalizer->convertDefaultToLocalized('25', $options)->willReturn('25');
+        $numberLocalizer->localize('25', $options)->willReturn('25');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['number' => '25']);
     }
@@ -86,7 +86,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
-        $numberLocalizer->convertDefaultToLocalized('25', $options)->willReturn('25');
+        $numberLocalizer->localize('25', $options)->willReturn('25');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['number' => '25']);
     }
@@ -105,7 +105,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
-        $numberLocalizer->convertDefaultToLocalized('', $options)->willReturn('');
+        $numberLocalizer->localize('', $options)->willReturn('');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['number' => '']);
     }
@@ -124,7 +124,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
-        $numberLocalizer->convertDefaultToLocalized('', $options)->willReturn('');
+        $numberLocalizer->localize('', $options)->willReturn('');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['number' => '']);
     }
@@ -144,7 +144,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer(Argument::any())->willReturn(null);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['simple-select' => 'shoes']);
-        $numberLocalizer->convertDefaultToLocalized('', $options)->shouldNotBeCalled();
+        $numberLocalizer->localize('', $options)->shouldNotBeCalled();
 
         $this->normalize($productValue, null, $options)->shouldReturn(['simple-select' => 'shoes']);
     }
@@ -163,7 +163,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '2000-10-28']);
-        $dateLocalizer->convertDefaultToLocalized('2000-10-28', $options)->willReturn('28/10/2000');
+        $dateLocalizer->localize('2000-10-28', $options)->willReturn('28/10/2000');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['date' => '28/10/2000']);
     }
@@ -182,7 +182,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '']);
-        $dateLocalizer->convertDefaultToLocalized('', $options)->willReturn('');
+        $dateLocalizer->localize('', $options)->willReturn('');
 
         $this->normalize($productValue, null, $options)->shouldReturn(['date' => '']);
     }

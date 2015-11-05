@@ -11,19 +11,4 @@ namespace Pim\Component\Localization\Localizer;
  */
 class NumberLocalizer extends AbstractNumberLocalizer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid($number, array $options = [], $attributeCode)
-    {
-        return $this->isValidNumber($number, $options, $attributeCode);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function convertLocalizedToDefault($number, array $options = [])
-    {
-        return $this->convertNumberToDefault($number, $options);
-    }
 }

@@ -46,7 +46,7 @@ class MetricNormalizer implements NormalizerInterface
         }
 
         $formattedMetric = ['data' => $metric[$context['field_name']]];
-        $localizedMetric = $this->localizer->convertDefaultToLocalized($formattedMetric, $context);
+        $localizedMetric = $this->localizer->localize($formattedMetric, $context);
         $metric[$context['field_name']] = $localizedMetric['data'];
 
         return $metric;

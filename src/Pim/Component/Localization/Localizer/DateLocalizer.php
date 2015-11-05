@@ -53,51 +53,54 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($date, array $options = [])
+    public function delocalize($date, array $options = [])
     {
-        $this->checkOptions($options);
-
         if (null === $date || '' === $date) {
             return $date;
         }
 
-        $datetime = $this->getDateTime($date, $options);
+        $this->checkOptions($options);
 
-        return $datetime->format(static::DEFAULT_DATE_FORMAT);
+        if (isset($options['date_format'])) {
+            $datetime = $this->getDateTime($date, $options);
+
+            return $datetime->format(static::DEFAULT_DATE_FORMAT);
+        }
+
+        if (isset($options['locale'])) {
+            $format = $this->formatProvider->getFormat($options['locale']);
+
+            $datetime = new \DateTime();
+            $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
+
+            return $datetime->format($format);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($date, array $options = [])
-    {
-        $this->checkOptions($options);
-
-        if (null === $date || '' === $date) {
-            return $date;
-        }
-
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
-
-        return $datetime->format($options['date_format']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function convertDefaultToLocalizedFromLocale($date, $locale)
+    public function localize($date, array $options = [])
     {
         if (null === $date || '' === $date) {
             return $date;
         }
 
-        $format = $this->formatProvider->getFormat($locale);
+        if (isset($options['date_format'])) {
+            $datetime = new \DateTime();
+            $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
 
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
+            return $datetime->format($options['date_format']);
+        }
 
-        return $datetime->format($format);
+        if (isset($options['locale'])) {
+            $format = $this->formatProvider->getFormat($options['locale']);
+
+            $datetime = new \DateTime();
+            $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
+
+            return $datetime->format($format);
+        }
     }
 
     /**

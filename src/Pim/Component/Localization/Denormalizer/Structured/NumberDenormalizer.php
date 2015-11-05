@@ -47,7 +47,7 @@ class NumberDenormalizer implements DenormalizerInterface
         $data = $this->valuesDenormalizer->denormalize($data, $class, $format, $context);
 
         if (null !== $data) {
-            $data = $this->localizer->convertDefaultToLocalized($data, $context);
+            $data = $this->localizer->localize($data, $context);
         }
 
         return $data;

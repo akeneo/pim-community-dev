@@ -20,16 +20,16 @@ class MetricLocalizer extends AbstractNumberLocalizer
             return true;
         }
 
-        return $this->isValidNumber($metric['data'], $options, $attributeCode);
+        return parent::isValid($metric['data'], $options, $attributeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($metric, array $options = [])
+    public function delocalize($metric, array $options = [])
     {
         if (isset($metric['data'])) {
-            $metric['data'] = $this->convertNumberToDefault($metric['data'], $options);
+            $metric['data'] = parent::delocalize($metric['data'], $options);
         }
 
         return $metric;

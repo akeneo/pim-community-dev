@@ -47,7 +47,7 @@ class MetricDenormalizer implements DenormalizerInterface
         $metric = $this->metricDenormalizer->denormalize($data, $class, $format, $context);
 
         if (null !== $metric) {
-            $metric->setData($this->localizer->convertDefaultToLocalized($metric->getData(), $context));
+            $metric->setData($this->localizer->localize($metric->getData(), $context));
         }
 
         return $metric;

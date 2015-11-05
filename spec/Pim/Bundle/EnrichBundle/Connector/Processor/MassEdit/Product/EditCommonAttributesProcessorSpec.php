@@ -135,7 +135,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->isAttributeEditable($attribute)->willReturn(true);
 
         $localizerRegistry->getLocalizer('multi_select')->willReturn($localizer);
-        $localizer->convertLocalizedToDefault(['2,5'], ['decimal_separator' => ','])->willReturn('2.5');
+        $localizer->delocalize(['2,5'], ['decimal_separator' => ','])->willReturn('2.5');
 
         $propertySetter->setData($product, 'categories', '2.5', [])->shouldBeCalled();
 
