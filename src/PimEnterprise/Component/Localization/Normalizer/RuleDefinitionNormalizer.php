@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Provider\Format\DateFormatProvider;
 use Pim\Component\Localization\Provider\Format\NumberFormatProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,22 +40,28 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var NumberFormatProvider */
     protected $numberFormatProvider;
 
+    /** @var DateFormatProvider */
+    protected $dateFormatProvider;
+
     /**
      * @param NormalizerInterface                  $ruleNormalizer
      * @param LocalizedAttributeConverterInterface $converter
      * @param RequestStack                         $requestStack
      * @param NumberFormatProvider                 $numberFormatProvider
+     * @param DateFormatProvider                   $dateFormatProvider
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
         LocalizedAttributeConverterInterface $converter,
         RequestStack $requestStack,
-        NumberFormatProvider $numberFormatProvider
+        NumberFormatProvider $numberFormatProvider,
+        DateFormatProvider $dateFormatProvider
     ) {
         $this->ruleNormalizer       = $ruleNormalizer;
         $this->converter            = $converter;
         $this->requestStack         = $requestStack;
         $this->numberFormatProvider = $numberFormatProvider;
+        $this->dateFormatProvider   = $dateFormatProvider;
     }
 
     /**
@@ -86,15 +93,14 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     protected function convertContent($content)
     {
-        $locale = $this->getLocale();
-        $options = $this->numberFormatProvider->getFormat($locale);
+        $localeOptions = $this->getLocaleOptions();
 
         foreach ($content as $key => $items) {
             foreach ($content[$key] as $index => $action) {
                 $localizedAction = $this->converter->convertDefaultToLocalizedValue(
                     $action['field'],
                     $action['value'],
-                    $options
+                    $localeOptions
                 );
                 $content[$key][$index]['value'] = $localizedAction;
             }
@@ -116,5 +122,20 @@ class RuleDefinitionNormalizer implements NormalizerInterface
         }
 
         return $request->getLocale();
+    }
+
+    /**
+     * Returns the options for the localizers
+     *
+     * @return array
+     */
+    protected function getLocaleOptions()
+    {
+        $locale = $this->getLocale();
+
+        $numberOptions = $this->numberFormatProvider->getFormat($locale);
+        $dateOptions = ['date_format' => $this->dateFormatProvider->getFormat($locale)];
+
+        return array_merge($numberOptions, $dateOptions);
     }
 }

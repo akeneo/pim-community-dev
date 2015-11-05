@@ -303,7 +303,7 @@ Feature: Import rules
       | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
     And the following product rule setter actions:
       | rule                       | field | value |
-      | sony_beautiful_description | price | 3,EUR |
+      | sony_beautiful_description | price | 3 EUR |
     And the following yaml file to import:
     """
     rules:
@@ -348,7 +348,7 @@ Feature: Import rules
       | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
     And the following product rule setter actions:
       | rule                       | field  | value        |
-      | sony_beautiful_description | length | 3,CENTIMETER |
+      | sony_beautiful_description | length | 3 CENTIMETER |
     And the following yaml file to import:
     """
     rules:
@@ -521,7 +521,7 @@ Feature: Import rules
     And I should see "actions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"string\" given (for setter date)."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
-    Then I should see "1970-01-01"
+    Then I should see "1/1/70"
 
   Scenario: Skip rules with unsupported values for attribute of type media in conditions and actions
     Given the following product rules:

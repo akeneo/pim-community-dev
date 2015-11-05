@@ -9,5 +9,6 @@ services:
             - '@pim_localization.localizer.converter'
             - '@request_stack'
             - '@pim_localization.provider.number_format'
+            - '@pim_localization.provider.date_format'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }

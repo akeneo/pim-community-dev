@@ -21,8 +21,8 @@ Feature: Show localized rules
     And the following product rule setter actions:
       | rule    | field                  | value           |
       | my_rule | another_decimal_number | 5.56789         |
-      | my_rule | decimal_price          | 12.5,EUR        |
-      | my_rule | decimal_metric         | 10.5,CENTIMETER |
+      | my_rule | decimal_price          | 12.5 EUR        |
+      | my_rule | decimal_metric         | 10.5 CENTIMETER |
 
   Scenario: Successfully show english rules of an attribute
     Given I am logged in as "Julia"
