@@ -50,12 +50,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function __construct(array $parameters)
     {
-        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
-            static::$timeout = $parameters['timeout'];
-        } else {
-            static::$timeout = self::DEFAULT_TIMEOUT;
-        }
-
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
         $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
@@ -66,6 +60,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+
+        $this->setTimeout();
     }
 
     /**
@@ -431,5 +427,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    protected function setTimeout()
+    {
+        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
+            static::$timeout = $parameters['timeout'];
+        } else {
+            static::$timeout = self::DEFAULT_TIMEOUT;
+        }
     }
 }
