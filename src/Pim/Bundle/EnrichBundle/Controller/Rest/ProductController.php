@@ -186,17 +186,13 @@ class ProductController
         // passed here, so a product is always removed from it's variant group when saved
         unset($data['groups']);
 
+        $data = $this->convertLocalizedAttributes($data);
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
-            $data['values'] = $this->localizedConverter->convert(
-                $data['values'],
-                ['locale' => $this->userContext->getUiLocale()->getCode()]
-            );
-            $this->updateProduct($product, $data);
-
             $this->productSaver->save($product);
 
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api', [
@@ -302,6 +298,21 @@ class ProductController
         }
 
         return $attribute;
+    }
+
+    /**
+     * Convert localized attributes to the default format
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function convertLocalizedAttributes(array $data)
+    {
+        $locale         = $this->userContext->getUiLocale()->getCode();
+        $data['values'] = $this->localizedConverter->convert($data['values'], ['locale' => $locale]);
+
+        return $data;
     }
 
     /**
