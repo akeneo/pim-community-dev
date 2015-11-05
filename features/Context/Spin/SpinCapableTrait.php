@@ -24,7 +24,7 @@ trait SpinCapableTrait
     {
         $lastException = null;
 
-        for ($i = 0; $i < FeatureContext::DEFAULT_TIMEOUT / 1000; ++$i) {
+        for ($i = 0; $i < FeatureContext::getTimeout() / 1000; ++$i) {
             try {
                 if ($result = $callable($this)) {
                     return $result;

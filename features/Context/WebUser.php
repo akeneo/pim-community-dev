@@ -1530,7 +1530,6 @@ class WebUser extends RawMinkContext
 
             return true;
         });
-        $this->wait();
     }
 
     /**

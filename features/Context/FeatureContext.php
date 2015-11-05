@@ -34,7 +34,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     protected static $errorMessages = [];
 
     /** @var int */
-    protected $timeout;
+    protected static $timeout;
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
@@ -51,9 +51,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct(array $parameters)
     {
         if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
-            $this->timeout = $parameters['timeout'];
+            static::$timeout = $parameters['timeout'];
         } else {
-            $this->timeout = self::DEFAULT_TIMEOUT;
+            static::$timeout = self::DEFAULT_TIMEOUT;
         }
 
         $this->useContext('fixtures', new FixturesContext());
@@ -71,9 +71,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @return int the timeout in milliseconds
      */
-    public function getTimeout()
+    public static function getTimeout()
     {
-        return $this->timeout;
+        return static::$timeout;
     }
 
     /**
