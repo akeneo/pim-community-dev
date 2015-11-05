@@ -61,7 +61,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
-        $this->setTimeout();
+        $this->setTimeout($parameters);
     }
 
     /**
@@ -429,7 +429,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
     }
 
-    protected function setTimeout()
+    /**
+     * Set the waiting timeout
+     *
+     * @param $parameters
+     */
+    protected function setTimeout($parameters)
     {
         if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
             static::$timeout = $parameters['timeout'];
