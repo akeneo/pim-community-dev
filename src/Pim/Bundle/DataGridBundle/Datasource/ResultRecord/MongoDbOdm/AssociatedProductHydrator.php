@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
@@ -41,10 +42,10 @@ class AssociatedProductHydrator implements HydratorInterface
         $scope             = $options['scope_code'];
         $config            = $options['attributes_configuration'];
         $groupId           = $options['current_group_id'];
-        $associationTypeId = $options['association_type_id'];
+        $associationTypeId = (int)$options['association_type_id'];
         $currentProduct    = $options['current_product'];
 
-        $query = $queryBuilder->hydrate(false)->getQuery();
+        $query           = $queryBuilder->hydrate(false)->getQuery();
         $queryDefinition = $query->getQuery();
 
         $hasCurrentProduct    = null !== $currentProduct;
@@ -52,11 +53,39 @@ class AssociatedProductHydrator implements HydratorInterface
         $hasResults           = 0 !== $queryDefinition['limit'];
 
         if ($hasCurrentProduct && $sortedByIsAssociated && $hasResults) {
-            $documentManager = $query->getDocumentManager();
-            $productFields   = $documentManager->getClassMetadata($this->productClass)->getFieldNames();
-            $pipeline        = $this->pipelineFromQuery($currentProduct, $queryDefinition, $productFields, $associationTypeId);
-            $collection      = $documentManager->getDocumentCollection($this->productClass);
-            $results         = $collection->aggregate($pipeline)->toArray();
+            $associatedIds     = $this->getAssociatedProductIds($currentProduct, $associationTypeId);
+            $nbTotalAssociated = count($associatedIds);
+
+            $limit    = $queryDefinition['limit'];
+            $skip     = $queryDefinition['skip'];
+            $rawQuery = $queryDefinition['query'];
+
+            $queryDefinition['skip'];
+            $associatedProducts = $this->getAssociatedProducts(
+                $queryBuilder,
+                $associatedIds,
+                $rawQuery,
+                $limit,
+                $skip
+            );
+
+            $nonAssociatedProducts = [];
+            $nbAssociated = count($associatedProducts);
+            if ($limit > $nbAssociated) {
+                $limit -= $nbAssociated;
+                $skip -= $nbTotalAssociated;
+                $skip = ($skip > 0) ? $skip : 0;
+
+                $nonAssociatedProducts = $this->getNonAssociatedProducts(
+                    $queryBuilder,
+                    $associatedIds,
+                    $rawQuery,
+                    $limit,
+                    $skip
+                );
+            }
+
+            $results = $associatedProducts + $nonAssociatedProducts;
         } else {
             $results = $query->execute();
         }
@@ -66,7 +95,7 @@ class AssociatedProductHydrator implements HydratorInterface
             $attributes[$attributeConf['id']] = $attributeConf;
         }
 
-        $rows = [];
+        $rows              = [];
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
@@ -81,6 +110,7 @@ class AssociatedProductHydrator implements HydratorInterface
             $result = $complTransformer->transform($result, $locale, $scope);
             $result = $groupsTransformer->transform($result, $locale, $groupId);
             $result = $assocTransformer->transform($result, $associationTypeId, $currentProduct);
+
             $result['is_checked'] = $result['is_associated'];
 
             $rows[] = new ResultRecord($result);
@@ -90,56 +120,106 @@ class AssociatedProductHydrator implements HydratorInterface
     }
 
     /**
-     * @param ProductInterface $currentProduct
-     * @param array            $queryDefinition
-     * @param string[]         $productFields
+     * Get Mongo Ids of the associated products of the current product
+     *
+     * @param ProductInterface $product
      * @param int              $associationTypeId
      *
-     * @return array
+     * @return \MongoId[]
      */
-    protected function pipelineFromQuery(
-        ProductInterface $currentProduct,
-        array $queryDefinition,
-        array $productFields,
-        $associationTypeId
-    ) {
-        $associationTypeId = (int) $associationTypeId;
-        $or = [];
-        foreach ($currentProduct->getAssociations() as $association) {
+    protected function getAssociatedProductIds(ProductInterface $product, $associationTypeId)
+    {
+        $ids = [];
+        foreach ($product->getAssociations() as $association) {
             if ($association->getAssociationType()->getId() !== $associationTypeId) {
                 continue;
             }
-            foreach ($association->getProducts() as $myProduct) {
-                $or[] = ['$eq' => ['$_id', new \MongoId($myProduct->getId())]];
+            foreach ($association->getProducts() as $associatedProduct) {
+                $ids[] = new \MongoId($associatedProduct->getId());
             }
         }
 
-        $match     = $queryDefinition['query'];
-        $direction = $queryDefinition['sort']['normalizedData.is_associated'];
-        $limit     = $queryDefinition['limit'];
-        $skip      = $queryDefinition['skip'];
+        return $ids;
+    }
 
-        $productFields = array_fill_keys($productFields, 1);
-        $productFields['is_associated'] = [
-            '$cond' => [
-                ['$or' => $or],
-                1,
-                0
-            ]
-        ];
+    /**
+     * Get the associated products for the current page
+     *
+     * @param Builder  $queryBuilder
+     * @param string[] $associatedIds
+     * @param array    $rawQuery
+     * @param int      $limit
+     * @param int      $skip
+     *
+     * @return array
+     */
+    protected function getAssociatedProducts(
+        Builder $queryBuilder,
+        array $associatedIds,
+        array $rawQuery,
+        $limit,
+        $skip
+    ) {
+        $in = ['_id' => ['$in' => $associatedIds]];
+        $rawQuery['$and'][] = $in;
 
-        $pipeline = [
-            ['$match'   => $match],
-            ['$project' => $productFields],
-            [
-                '$sort' => [
-                    'is_associated' => $direction
-                ]
-            ],
-            ['$skip'  => $skip],
-            ['$limit' => $limit],
-        ];
+        return $this->getProductsAsArray($queryBuilder, $rawQuery, $limit, $skip, true);
+    }
 
-        return $pipeline;
+    /**
+     * Get the non associated products for the current page
+     *
+     * @param Builder  $queryBuilder
+     * @param string[] $associatedIds
+     * @param array    $rawQuery
+     * @param int      $limit
+     * @param int      $skip
+     *
+     * @return array
+     */
+    protected function getNonAssociatedProducts(
+        Builder $queryBuilder,
+        array $associatedIds,
+        array $rawQuery,
+        $limit,
+        $skip
+    ) {
+        $nin = ['_id' => ['$nin' => $associatedIds]];
+        $rawQuery['$and'][] = $nin;
+
+        return $this->getProductsAsArray($queryBuilder, $rawQuery, $limit, $skip, false);
+    }
+
+    /**
+     * Get products as array according to the query, the limit and the skip. The column "is_associated"
+     * is also added.
+     *
+     * @param Builder $queryBuilder
+     * @param array   $rawQuery
+     * @param int     $limit
+     * @param int     $skip
+     * @param bool    $isAssociated
+     *
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     * @return array
+     */
+    protected function getProductsAsArray(
+        Builder $queryBuilder,
+        array $rawQuery,
+        $limit,
+        $skip,
+        $isAssociated
+    ) {
+        $queryBuilder->setQueryArray($rawQuery);
+        $queryBuilder->limit($limit);
+        $queryBuilder->skip($skip);
+
+        $query   = $queryBuilder->getQuery();
+        $results = $query->execute()->toArray();
+        foreach ($results as &$product) {
+            $product['is_associated'] = $isAssociated;
+        }
+
+        return $results;
     }
 }
