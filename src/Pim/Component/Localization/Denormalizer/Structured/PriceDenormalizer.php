@@ -50,7 +50,7 @@ class PriceDenormalizer implements DenormalizerInterface
 
         if (null !== $prices) {
             foreach ($prices as $price) {
-                $price->setData($this->localizer->convertDefaultToLocalized($price->getData(), $context));
+                $price->setData($this->localizer->localize($price->getData(), $context));
             }
         }
 

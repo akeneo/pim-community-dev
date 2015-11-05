@@ -40,7 +40,7 @@ class PriceProperty extends FieldProperty
         foreach ($data as $price) {
             if (isset($price['data']) && $price['data'] !== null) {
                 $formattedPrice = $this->localizer
-                    ->convertDefaultToLocalizedFromLocale($price['data'], $this->translator->getLocale());
+                    ->localize($price['data'], ['locale' => $this->translator->getLocale()]);
                 $prices[] = sprintf(
                     '%s %s',
                     $formattedPrice,

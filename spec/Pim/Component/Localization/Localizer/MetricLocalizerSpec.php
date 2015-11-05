@@ -63,40 +63,40 @@ class MetricLocalizerSpec extends ObjectBehavior
 
     function it_convert_comma_to_dot_separator()
     {
-        $this->convertLocalizedToDefault(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '10.05', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '-10.05', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '10', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '-10', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => 10, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '10.0585', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => ' 10.05 ', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => null, 'unit' => null]);
 
-        $this->convertLocalizedToDefault(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '', 'unit' => '']);
 
-        $this->convertLocalizedToDefault(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => 0, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '0', 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault([], ['decimal_separator' => '.'])
+        $this->delocalize([], ['decimal_separator' => '.'])
             ->shouldReturn([]);
     }
 

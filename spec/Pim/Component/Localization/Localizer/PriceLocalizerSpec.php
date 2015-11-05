@@ -69,7 +69,7 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => '0', 'currency' => 'EUR']
         ];
 
-        $this->convertLocalizedToDefault($prices, ['decimal_separator' => ','])->shouldReturn(
+        $this->delocalize($prices, ['decimal_separator' => ','])->shouldReturn(
             [
                 ['data' => '10.05', 'currency' => 'EUR'],
                 ['data' => '-10.05', 'currency' => 'EUR'],

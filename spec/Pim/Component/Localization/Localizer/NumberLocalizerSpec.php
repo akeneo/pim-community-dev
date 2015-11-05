@@ -52,17 +52,17 @@ class NumberLocalizerSpec extends ObjectBehavior
 
     function it_convert_comma_to_dot_separator()
     {
-        $this->convertLocalizedToDefault('10,05', ['decimal_separator' => '.'])->shouldReturn('10.05');
-        $this->convertLocalizedToDefault('-10,05', ['decimal_separator' => '.'])->shouldReturn('-10.05');
-        $this->convertLocalizedToDefault('10', ['decimal_separator' => '.'])->shouldReturn('10');
-        $this->convertLocalizedToDefault('-10', ['decimal_separator' => '.'])->shouldReturn('-10');
-        $this->convertLocalizedToDefault(10, ['decimal_separator' => '.'])->shouldReturn(10);
-        $this->convertLocalizedToDefault(10.0585, ['decimal_separator' => '.'])->shouldReturn('10.0585');
-        $this->convertLocalizedToDefault(' 10,05 ', ['decimal_separator' => '.'])->shouldReturn(' 10.05 ');
-        $this->convertLocalizedToDefault(null, ['decimal_separator' => '.'])->shouldReturn(null);
-        $this->convertLocalizedToDefault('', ['decimal_separator' => '.'])->shouldReturn('');
-        $this->convertLocalizedToDefault(0, ['decimal_separator' => '.'])->shouldReturn(0);
-        $this->convertLocalizedToDefault('0', ['decimal_separator' => '.'])->shouldReturn('0');
+        $this->delocalize('10,05', ['decimal_separator' => '.'])->shouldReturn('10.05');
+        $this->delocalize('-10,05', ['decimal_separator' => '.'])->shouldReturn('-10.05');
+        $this->delocalize('10', ['decimal_separator' => '.'])->shouldReturn('10');
+        $this->delocalize('-10', ['decimal_separator' => '.'])->shouldReturn('-10');
+        $this->delocalize(10, ['decimal_separator' => '.'])->shouldReturn(10);
+        $this->delocalize(10.0585, ['decimal_separator' => '.'])->shouldReturn('10.0585');
+        $this->delocalize(' 10,05 ', ['decimal_separator' => '.'])->shouldReturn(' 10.05 ');
+        $this->delocalize(null, ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->delocalize('', ['decimal_separator' => '.'])->shouldReturn('');
+        $this->delocalize(0, ['decimal_separator' => '.'])->shouldReturn(0);
+        $this->delocalize('0', ['decimal_separator' => '.'])->shouldReturn('0');
     }
 
     function it_throws_an_exception_if_decimal_separator_is_missing()

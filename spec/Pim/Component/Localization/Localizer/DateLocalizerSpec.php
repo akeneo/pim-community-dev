@@ -50,10 +50,10 @@ class DateLocalizerSpec extends ObjectBehavior
 
     function it_converts()
     {
-        $this->convertLocalizedToDefault('28/10/2015', ['date_format' => 'd/m/Y'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('28-10-2015', ['date_format' => 'd-m-Y'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('2015-10-28', ['date_format' => 'Y-m-d'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('2015/10/28', ['date_format' => 'Y/m/d'])->shouldReturn('2015-10-28');
+        $this->delocalize('28/10/2015', ['date_format' => 'd/m/Y'])->shouldReturn('2015-10-28');
+        $this->delocalize('28-10-2015', ['date_format' => 'd-m-Y'])->shouldReturn('2015-10-28');
+        $this->delocalize('2015-10-28', ['date_format' => 'Y-m-d'])->shouldReturn('2015-10-28');
+        $this->delocalize('2015/10/28', ['date_format' => 'Y/m/d'])->shouldReturn('2015-10-28');
     }
 
     function it_throws_an_exception_if_date_format_is_empty()

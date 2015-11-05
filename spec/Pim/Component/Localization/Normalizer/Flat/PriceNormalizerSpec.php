@@ -35,14 +35,14 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '25.30']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '25.30']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '25.30']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '25,30']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '25,30']);
 
         $options = ['decimal_separator' => '.'];
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '25.30']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '25.30']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '25.30']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '25.30']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '25.30']);
     }
@@ -55,7 +55,7 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '25']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '25']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '25']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '25']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '25']);
     }
@@ -68,7 +68,7 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '25']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '25']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '25']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '25']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '25']);
     }
@@ -81,7 +81,7 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '']);
     }
@@ -94,7 +94,7 @@ class PriceNormalizerSpec extends ObjectBehavior
 
         $priceNormalizer->normalize($price, null, $options)->willReturn(['price-EUR' => '']);
         $localizer
-            ->convertDefaultToLocalized([['currency' => 'price-EUR', 'data' => '']], $options)
+            ->localize([['currency' => 'price-EUR', 'data' => '']], $options)
             ->willReturn([['currency' => 'price-EUR', 'data' => '']]);
         $this->normalize($price, null, $options)->shouldReturn(['price-EUR' => '']);
     }

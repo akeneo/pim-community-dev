@@ -29,7 +29,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
         $localizer->supports('pim_number')->willReturn(true);
         $localizer->isValid('10,45', $options, 'number')->willReturn(true);
-        $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
+        $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
@@ -59,7 +59,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
         $localizer->supports('pim_number')->willReturn(true);
         $localizer->isValid('10,45', $options, 'number')->willThrow(new FormatLocalizerException('number', '.'));
-        $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
+        $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->shouldThrow(new FormatLocalizerException('number', '.'))
             ->during('convertLocalizedToDefaultValues', [['number' => [['data' => '10,45']]], $options]);

@@ -17,7 +17,7 @@ class PriceLocalizer extends AbstractNumberLocalizer
     public function isValid($prices, array $options = [], $attributeCode)
     {
         foreach ($prices as $price) {
-            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options, $attributeCode)) {
+            if (isset($price['data']) && !parent::isValid($price['data'], $options, $attributeCode)) {
                 return false;
             }
         }
@@ -28,11 +28,11 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($prices, array $options = [])
+    public function delocalize($prices, array $options = [])
     {
         foreach ($prices as $index => $price) {
             if (isset($price['data'])) {
-                $prices[$index]['data'] = $this->convertNumberToDefault($price['data'], $options);
+                $prices[$index]['data'] = parent::delocalize($price['data'], $options);
             }
         }
 
@@ -42,10 +42,10 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($prices, array $options = [])
+    public function localize($prices, array $options = [])
     {
         foreach ($prices as $index => $price) {
-            $prices[$index]['data'] = parent::convertDefaultToLocalized($price['data'], $options);
+            $prices[$index]['data'] = parent::localize($price['data'], $options);
         }
 
         return $prices;
