@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -12,15 +13,34 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 abstract class AbstractNumberLocalizer implements LocalizerInterface
 {
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var FormatProviderInterface */
+    protected $formatProvider;
+
+    /** @var Constraint */
+    protected $numberConstraint;
+
     /** @var array */
     protected $attributeTypes;
 
     /**
-     * @param array $attributeTypes
+     * @param ValidatorInterface      $validator
+     * @param FormatProviderInterface $formatProvider
+     * @param Constraint              $numberConstraint
+     * @param array                   $attributeTypes
      */
-    public function __construct(array $attributeTypes)
-    {
+    public function __construct(
+        ValidatorInterface $validator,
+        FormatProviderInterface $formatProvider,
+        Constraint $numberConstraint,
+        array $attributeTypes
+    ) {
+        $this->validator      = $validator;
+        $this->formatProvider = $formatProvider;
         $this->attributeTypes = $attributeTypes;
+        $this->numberConstraint = $numberConstraint;
     }
 
     /**
@@ -32,16 +52,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return $number;
         }
 
-        $this->checkOptions($options);
-
-        if (isset($options['decimal_separator'])) {
-            $matchesNumber = $this->getMatchesNumber($number);
-            if (!isset($matchesNumber['decimal'])) {
-                return $number;
-            }
-
-            return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
-        }
+        $options = $this->checkOptions($options);
 
         if (isset($options['locale'])) {
             $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::DECIMAL);
@@ -55,7 +66,12 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return $numberFormatter->format($number);
         }
 
-        return $number;
+        $matchesNumber = $this->getMatchesNumber($number);
+        if (!isset($matchesNumber['decimal'])) {
+            return $number;
+        }
+
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
     }
 
     /**
@@ -78,20 +94,22 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($number, array $options = [], $attributeCode)
+    public function validate($number, array $options = [], $attributeCode)
     {
         if (null === $number || ''  === $number) {
-            return true;
+            return null;
         }
 
-        $this->checkOptions($options);
+        $options = $this->checkOptions($options);
 
-        $matchesNumber = $this->getMatchesNumber($number);
-        if (isset($matchesNumber['decimal']) && $matchesNumber['decimal'] !== $options['decimal_separator']) {
-            throw new FormatLocalizerException($attributeCode, $options['decimal_separator']);
+        if (isset($options['locale']) && !isset($options['decimal_separator'])) {
+            $options['decimal_separator'] = $this->formatProvider->getFormat($options['locale'])['decimal_separator'];
         }
 
-        return true;
+        $this->numberConstraint->decimalSeparator = $options['decimal_separator'];
+        $this->numberConstraint->path = $attributeCode;
+
+        return $this->validator->validate($number, $this->numberConstraint);
     }
 
     /**
@@ -116,11 +134,15 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
 
     /**
      * @param array $options
+     *
+     * @return array
      */
     protected function checkOptions(array $options)
     {
-        if (!isset($options['decimal_separator']) || '' === $options['decimal_separator']) {
-            throw new MissingOptionsException('The option "decimal_separator" do not exist.');
+        if (isset($options['decimal_separator']) || isset($options['locale'])) {
+            return $options;
         }
+
+        return ['decimal_separator' => LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR];
     }
 }
