@@ -44,5 +44,6 @@ class PimLocalizationExtension extends Extension
         $loader->load('resolvers.yml');
         $loader->load('services.yml');
         $loader->load('twig.yml');
+        $loader->load('validators.yml');
     }
 }
