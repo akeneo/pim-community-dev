@@ -15,7 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -73,8 +73,25 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
-        $qb = $this->createApprovableQueryBuilder($user)
-            ->sort('createdAt', 'desc');
+        $qb = $this->createApprovableQueryBuilder($user)->sort('createdAt', 'desc');
+
+        if (null !== $limit) {
+            $qb->limit($limit);
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findApprovableByUserAndProductId(UserInterface $user, $productId = null, $limit = null)
+    {
+        $qb = $this->createApprovableQueryBuilder($user)->sort('createdAt', 'desc');
+
+        if (null !== $productId) {
+            $qb->field('product.id')->equals($productId);
+        }
 
         if (null !== $limit) {
             $qb->limit($limit);
@@ -144,6 +161,9 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
                 break;
             case Operators::LOWER_THAN:
                 $this->applyFilterLowerThan($qb, $field, $value);
+                break;
+            case Operators::IN_ARRAY_KEYS:
+                $this->applyFilterInArrayKeys($qb, $field, $value);
                 break;
         }
     }
@@ -328,6 +348,23 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     protected function applyFilterLowerThan(Builder $qb, $field, $value)
     {
         $qb->field($field)->lt($this->getDateValue($value));
+    }
+
+    /**
+     * Apply a "in array keys" filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param mixed   $value
+     */
+    protected function applyFilterInArrayKeys(Builder $qb, $field, $value)
+    {
+        $expr = $qb->expr();
+        foreach ($value as $code) {
+            $expr->addOr($qb->expr()->field(sprintf('%s.%s', $field, $code))->exists(true));
+        }
+
+        $qb->addAnd($expr);
     }
 
     /**

@@ -50,6 +50,17 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     public function findApprovableByUser(UserInterface $user, $limit = null);
 
     /**
+     * Return product drafts related to a product that can be approved by the given user
+     *
+     * @param UserInterface $user
+     * @param string        $productId
+     * @param int           $limit
+     *
+     * @return ProductDraftInterface[]|null
+     */
+    public function findApprovableByUserAndProductId(UserInterface $user, $productId = null, $limit = null);
+
+    /**
      * Apply the context of the datagrid to the query
      *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb

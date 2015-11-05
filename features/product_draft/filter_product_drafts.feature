@@ -5,25 +5,35 @@ Feature: Filter product drafts
   I need to be able to filter them
 
   Background:
-    Given a "footwear" catalog configuration
+    Given an "apparel" catalog configuration
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2015_collection  | Redactor   | edit   |
+      | 2015_collection  | Manager    | edit   |
     And the following products:
-      | sku         | family |
-      | black-boots | boots  |
-      | white-boots | boots  |
+      | sku     | family   | categories      |
+      | tshirt  | tshirts  | 2015_collection |
     And the following product drafts:
-      | product     | status      | author |
-      | black-boots | in progress | Sandra |
-      | black-boots | ready       | Mary   |
-      | white-boots | ready       | Sandra |
-    And I am logged in as "Julia"
+      | product | status      | author |
+      | tshirt  | in progress | Sandra |
+    And Mary proposed the following change to "tshirt":
+      | field       | value                      |
+      | Name        | Summer t-shirt             |
+      | Description | Summer t-shirt description |
+    And Julia proposed the following change to "tshirt":
+      | field       | value         | tab     |
+      | Name        | Autumn jacket | General |
+      | Price       | 10 USD        | Sales   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully filter product drafts
-    Given I edit the "black-boots" product
+    Given I am logged in as "admin"
+    And I edit the "tshirt" product
     When I visit the "Proposals" tab
-    Then the grid should contain 2 elements
-    And I should see entities Sandra and Mary
+    Then the grid should contain 3 elements
     And I should be able to use the following filters:
-      | filter | value                | result |
-      | Status | In progress          | Sandra |
-      | Status | Waiting for approval | Mary   |
+      | filter    | value                | result      |
+      | Status    | In progress          | Sandra      |
+      | Status    | Waiting for approval | Mary, Julia |
+      | Attribute | Name                 | Mary, Julia |
+      | Attribute | Price                | Julia       |
