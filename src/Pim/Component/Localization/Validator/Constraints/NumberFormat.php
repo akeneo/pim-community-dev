@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Validator\Constraints;
+namespace Pim\Component\Localization\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationList;
+
 /**
  * Check and convert if price provided respects the format expected
  *
@@ -14,15 +16,16 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($prices, array $options = [], $attributeCode)
+    public function validate($prices, array $options = [], $attributeCode)
     {
+        $violations = new ConstraintViolationList();
         foreach ($prices as $price) {
-            if (isset($price['data']) && !parent::isValid($price['data'], $options, $attributeCode)) {
-                return false;
+            if (isset($price['data']) && $valid = parent::validate($price['data'], $options, $attributeCode)) {
+                $violations->addAll($valid);
             }
         }
 
-        return true;
+        return ($violations->count() > 0) ? $violations : null;
     }
 
     /**
