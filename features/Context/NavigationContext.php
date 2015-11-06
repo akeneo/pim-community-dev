@@ -754,6 +754,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->getMainContext()->spin(function () use ($page, $options) {
             if ($this->loginIfRequired()) {
                 $page = $this->getCurrentPage()->open($options);
+                $this->wait();
             }
 
             return $page->verifyAfterLogin();
