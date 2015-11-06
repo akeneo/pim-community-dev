@@ -38,8 +38,8 @@ config:
                 pim_enrich_attributegroup_edit:              pim/controller/form
                 pim_enrich_attributegroup_edit:              pim/controller/form
                 pim_enrich_categorytree_create:              pim/controller/form
-                pim_enrich_categorytree_edit:                pim/controller/category
-                pim_enrich_categorytree_index:               pim/controller/category
+                pim_enrich_categorytree_edit:                pim/controller/form
+                pim_enrich_categorytree_index:               pim/controller/form
                 pim_enrich_channel_edit:                     pim/controller/channel
                 pim_enrich_family_edit:                      pim/controller/form
                 pim_enrich_group_edit:                       pim/controller/form
@@ -142,7 +142,6 @@ config:
         pim/controller/channel:             pimenrich/js/controller/channel
         pim/controller/product:             pimenrich/js/controller/product
         pim/controller/variant-group:       pimenrich/js/controller/variant-group
-        pim/controller/category:            pimenrich/js/controller/category
         pim/controller/redirect:            pimenrich/js/controller/redirect
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
