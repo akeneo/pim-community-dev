@@ -1289,10 +1289,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = (string) $data;
                     break;
                 case 'pim_catalog_number':
-                    $value = (int) $data;
+                    $value = (float) $data;
                     break;
                 case 'pim_catalog_metric':
-                    $values = explode(',', $data);
+                    $values = explode(' ', $data);
                     $value = ['unit' => $values[1], 'data' => $values[0]];
                     break;
                 case 'pim_catalog_multiselect':
@@ -1300,7 +1300,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = explode(',', str_replace(' ', '', $data));
                     break;
                 case 'pim_catalog_price_collection':
-                    $values = explode(',', $data);
+                    $values = explode(' ', $data);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
                     break;
                 case 'pim_catalog_boolean':

@@ -23,9 +23,9 @@ Feature: Show all rules related to an attribute
       | update_tees_collection | description     | une belle description                                   | fr_FR  | mobile |
       | update_tees_collection | number_in_stock | 800                                                     |        | tablet |
       | update_tees_collection | release_date    | 2015-05-26                                              |        | mobile |
-      | update_tees_collection | price           | 12,EUR                                                  |        |        |
+      | update_tees_collection | price           | 12 EUR                                                  |        |        |
       | update_tees_collection | side_view       | image.jpg,%fixtures%/akeneo.jpg                         |        |        |
-      | update_tees_collection | length          | 10,CENTIMETER                                           |        |        |
+      | update_tees_collection | length          | 10 CENTIMETER                                           |        |        |
     And the following product rule copier actions:
       | rule                   | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | copy_description       | description | description | en_US       | en_US     | mobile     | tablet   |
@@ -48,7 +48,7 @@ Feature: Show all rules related to an attribute
       | copy_description       | rating          | 4                     |        |        |
       | update_tees_collection | description     | une belle description | fr     | mobile |
       | update_tees_collection | number_in_stock | 800                   |        | tablet |
-      | update_tees_collection | release_date    | 2015-05-26            |        | mobile |
+      | update_tees_collection | release_date    | 5/26/15               |        | mobile |
       | update_tees_collection | price           | 12 EUR                |        |        |
       | update_tees_collection | side_view       | image.jpg             |        |        |
       | update_tees_collection | length          | 10 CENTIMETER         |        |        |
