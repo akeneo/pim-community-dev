@@ -14,7 +14,7 @@ Feature: Create a category
       | Code | shoe |
     And I save the category
     Then I should be on the category "shoe" edit page
-    And I should see "Tree successfully created"
+    And I should see the text "Tree successfully created"
 
   Scenario: Create a category node
     Given the following category:
@@ -25,7 +25,7 @@ Feature: Create a category
       | Code | flipflap |
     And I save the category
     Then I should be on the category "flipflap" edit page
-    And I should see "Category successfully created"
+    And I should see the text "Category successfully created"
 
   @skip
   Scenario: Go to category creation page from the category tree right click menu

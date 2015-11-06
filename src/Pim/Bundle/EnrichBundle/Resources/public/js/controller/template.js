@@ -8,16 +8,18 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route, path) {
-                return $.get(path).then(_.bind(this.renderTemplate, this)).promise();
+                return $.get(path)
+                    .then(this.renderTemplate.bind(this))
+                    .promise();
             },
 
             /**
-             * Add the given template to the current container
+             * Add the given content to the current container
              *
-             * @param {String} template
+             * @param {String} content
              */
-            renderTemplate: function (template) {
-                this.$el.html(template);
+            renderTemplate: function (content) {
+                this.$el.html(content);
             }
         });
     }

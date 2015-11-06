@@ -333,7 +333,7 @@ class CategoryTreeController extends Controller
         }
 
         return $this->render(
-            sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            'PimEnrichBundle:CategoryTree:edit.html.twig',
             [
                 'form'           => $form->createView(),
                 'related_entity' => $this->rawConfiguration['related_entity'],
