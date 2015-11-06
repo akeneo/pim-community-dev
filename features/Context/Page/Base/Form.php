@@ -715,10 +715,6 @@ class Form extends Base
             }
         }
 
-        // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
-        // wait for it to completly vanish in order to reopen select list
-        $this->getSession()->wait($this->getTimeout());
-
         $allValues = array_filter($allValues);
 
         if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {

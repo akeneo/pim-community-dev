@@ -1941,7 +1941,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheWidgetsToLoad()
     {
-        $this->wait(false);
+        $this->iWaitSeconds(10);
         $this->wait();
     }
 
@@ -1950,7 +1950,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheOptionsToLoad()
     {
-        $this->wait(false);
+        $this->iWaitSeconds(10);
         $this->wait();
     }
 
@@ -2039,7 +2039,7 @@ class WebUser extends RawMinkContext
         $maxTime = 10000;
 
         while ($maxTime > 0) {
-            $this->wait(false);
+            $this->iWaitSeconds(10);
             $maxTime -= 1000;
             if ($this->getPage('Product edit')->getImagePreview()) {
                 return;
@@ -2249,7 +2249,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitSeconds($seconds)
     {
-        $this->wait(false);
+        sleep($seconds);
     }
 
     /**

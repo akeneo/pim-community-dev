@@ -5,7 +5,7 @@ default:
         class:  Context\FeatureContext
         parameters:
             base_url: http://akeneo-pim-behat.local/
-            timeout: 20000
+            timeout: 30000
             window_width: 1280
             window_height: 1024
     extensions:
@@ -25,7 +25,7 @@ jenkins-1:
     context:
         parameters:
             base_url: http://pim-behat-1.ci/
-            timeout: 20000
+            timeout: 30000
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://pim-behat-1.ci/
@@ -43,7 +43,7 @@ jenkins-2:
     context:
         parameters:
             base_url: http://pim-behat-2.ci/
-            timeout: 20000
+            timeout: 30000
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://pim-behat-2.ci/
@@ -61,7 +61,7 @@ jenkins-3:
     context:
         parameters:
             base_url: http://pim-behat-3.ci/
-            timeout: 20000
+            timeout: 30000
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://pim-behat-3.ci/
@@ -79,7 +79,7 @@ jenkins-4:
     context:
         parameters:
             base_url: http://pim-behat-4.ci/
-            timeout: 20000
+            timeout: 30000
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://pim-behat-4.ci/
