@@ -133,10 +133,16 @@ define(
                 }
             },
             renderField: function (product, attributeCode, values, families) {
-                return FieldManager.getField(attributeCode).then(function (field) {
+                return $.when(
+                    FieldManager.getField(attributeCode),
+                    FetcherRegistry.getFetcher('channel').fetchAll()
+                ).then(function (field, channels) {
+                    var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
-                        scope: UserContext.get('catalogScope'),
+                        scope: scope.code,
+                        scopeLabel: scope.label,
                         uiLocale: UserContext.get('catalogLocale'),
                         optional: AttributeManager.isOptional(field.attribute, product, families),
                         removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')

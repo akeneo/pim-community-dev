@@ -18,7 +18,8 @@ define(
         'pim/product-edit-form/attributes/copyfield',
         'pim/field-manager',
         'pim/attribute-manager',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         $,
@@ -29,7 +30,8 @@ define(
         CopyField,
         FieldManager,
         AttributeManager,
-        UserContext
+        UserContext,
+        FetcherRegistry
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -38,6 +40,7 @@ define(
             copying: false,
             locale: null,
             scope: null,
+            scopeLabel: null,
             events: {
                 'click .start-copying': 'startCopying',
                 'click .stop-copying': 'stopCopying',
@@ -55,6 +58,9 @@ define(
             configure: function () {
                 this.locale = UserContext.get('catalogLocale');
                 this.scope  = UserContext.get('catalogScope');
+                this.getScopeLabel(this.scope).then(function (scopeLabel) {
+                    this.scopeLabel = scopeLabel;
+                }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
@@ -113,7 +119,11 @@ define(
                     var sourceData = this.getSourceData();
                     var copyField = new CopyField(field.attribute);
 
-                    copyField.setContext({locale: this.locale, scope: this.scope});
+                    copyField.setContext({
+                        locale: this.locale,
+                        scope: this.scope,
+                        scopeLabel: this.scopeLabel
+                    });
                     copyField.setValues(sourceData[code]);
                     copyField.setField(field);
 
@@ -194,11 +204,14 @@ define(
             /**
              * Change the scope for copy context
              *
-             * @param {string} scope
+             * @param {string} scopeCode
              */
-            setScope: function (scope) {
-                this.scope = scope;
-                this.triggerContextChange();
+            setScope: function (scopeCode) {
+                this.getScopeLabel(scopeCode).then(function (scopeLabel) {
+                    this.scopeLabel = scopeLabel;
+                    this.scope = scopeCode;
+                    this.triggerContextChange();
+                }.bind(this));
             },
 
             /**
@@ -271,6 +284,21 @@ define(
                 }.bind(this));
 
                 this.trigger('copy:select:after');
+            },
+
+            /**
+             * Get the scope label with the given scope code
+             *
+             * @param {string} scopeCode
+             *
+             * @returns {Promise}
+             */
+            getScopeLabel: function (scopeCode) {
+                return FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
+                    var scope = _.findWhere(channels, { code: scopeCode });
+
+                    return scope.label;
+                });
             }
         });
     }
