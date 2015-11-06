@@ -363,7 +363,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertLocalizedAttributes(array $convertedItem)
     {
-        return $this->localizedConverter->convert($convertedItem, [
+        return $this->localizedConverter->convertLocalizedToDefaultValues($convertedItem, [
             'decimal_separator' => $this->decimalSeparator,
             'date_format'       => $this->dateFormat
         ]);
