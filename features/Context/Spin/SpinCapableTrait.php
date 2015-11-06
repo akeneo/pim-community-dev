@@ -22,36 +22,20 @@ trait SpinCapableTrait
      */
     public function spin($callable, $message = 'no message')
     {
-        $lastException = null;
+        $start = microtime(true);
+        $timeout = FeatureContext::getTimeout();
+        $end   = $start + ($timeout / 1000.0);
 
-        for ($i = 0; $i < FeatureContext::getTimeout() / 1000; ++$i) {
-            try {
-                if ($result = $callable($this)) {
-                    return $result;
-                }
-            } catch (TimeoutException $e) {
-                throw $e;
-            } catch (\Exception $e) {
-                $lastException = $e;
-            }
-
+        do {
+            $result = $callable($this);
             sleep(1);
+        } while (microtime(true) < $end && !$result);
+
+        if (!$result) {
+            $infos = sprintf('Spin : timeout of %d excedeed, with message : %s', $timeout, $message);
+            throw new TimeoutException($infos);
         }
 
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-
-        $infos = sprintf('Timeout thrown by %s::%s()', $backtrace[0]['class'], $backtrace[0]['function']);
-
-        if (isset($backtrace[0]['file']) && isset($backtrace[0]['line'])) {
-            $infos .= PHP_EOL . sprintf('file %s, line %d', $backtrace[0]['file'], $backtrace[0]['line']);
-            $infos .= PHP_EOL . sprintf('message : %s', $message);
-        }
-
-        if (null !== $lastException) {
-            $infos .= PHP_EOL . sprintf('last exception : %s', $lastException->getMessage());
-            $infos .= PHP_EOL . sprintf('file %s, line %d', $lastException->getFile(), $lastException->getLine());
-        }
-
-        throw new TimeoutException($infos);
+        return $result;
     }
 }
