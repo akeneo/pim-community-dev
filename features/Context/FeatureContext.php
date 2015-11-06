@@ -23,8 +23,6 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    const DEFAULT_TIMEOUT = 10000;
-
     use SpinCapableTrait;
 
     /** @var KernelInterface */
@@ -330,7 +328,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $conditions       = [
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
-//                "!$.active",                                   // No ajax request is active
+                "!$.active",                                   // No ajax request is active
                 "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
                 "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading
@@ -436,10 +434,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     protected function setTimeout($parameters)
     {
-        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
-            static::$timeout = $parameters['timeout'];
-        } else {
-            static::$timeout = self::DEFAULT_TIMEOUT;
-        }
+        static::$timeout = $parameters['timeout'];
     }
 }

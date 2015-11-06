@@ -74,15 +74,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theGridShouldContainElement($count)
     {
         $count = (int) $count;
-
-        $this->waitAjaxComplete();
+        $this->wait();
 
         if (0 === $count) {
             assertTrue($this->datagrid->isGridEmpty());
 
             return;
         }
-
 
         if ($count > 10) {
             $this->iChangePageSize(100);
@@ -112,7 +110,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterByPrice($filterName, $action, $value, $currency)
     {
         $this->datagrid->filterPerPrice($filterName, $action, $value, $currency);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -126,7 +124,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterByMetric($filterName, $action, $value, $unit)
     {
         $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -138,7 +136,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterByPriceWithEmptyValue($filterName, $currency)
     {
         $this->datagrid->filterPerPrice($filterName, 'is empty', null, $currency);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -151,7 +149,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterByNumber($filterName, $action, $value)
     {
         $this->datagrid->filterPerNumber($filterName, $action, $value);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -168,7 +166,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->getCurrentPage()->clickCategoryFilterLink($category);
         }
 
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -321,7 +319,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         if (false === strpos(strtolower($filterName), 'category')) {
             $this->wait('$("div.filter-box").length > 0;');
             $this->datagrid->showFilter($filterName);
-            $this->waitAjaxComplete();
+            $this->wait();
             $this->datagrid->assertFilterVisible($filterName);
         }
     }
@@ -422,7 +420,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $action = ucfirst(strtolower($actionName));
         $this->datagrid->clickOnAction($element, $action);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -506,7 +504,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iChangePageSize($size)
     {
         $this->datagrid->changePageSize((int) $size);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -529,7 +527,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->wait(sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
         $this->datagrid->sortBy($columnName, $order);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -633,7 +631,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $date[] = $matches[4];
             }
             $this->filterByDate($filterName, $date, $operator);
-            $this->waitAjaxComplete();
+            $this->wait();
 
             return;
         }
@@ -661,7 +659,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $this->datagrid->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -672,7 +670,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheRow($row)
     {
         $this->datagrid->getRow($row)->click();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -760,7 +758,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iRefrestTheGrid()
     {
         $this->datagrid->clickOnRefreshButton();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -769,7 +767,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickBackToGrid()
     {
         $this->getSession()->getPage()->clickLink('Back to grid');
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -780,9 +778,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iHideTheColumn($column)
     {
         $this->datagrid->openColumnsPopin();
-        $this->waitAjaxComplete();
+        $this->wait();
         $this->datagrid->hideColumn($column);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -794,9 +792,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPutTheColumnBeforeTheOne($source, $target)
     {
         $this->datagrid->openColumnsPopin();
-        $this->waitAjaxComplete();
+        $this->wait();
         $this->datagrid->moveColumn($source, $target);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -821,7 +819,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressMassEditButton()
     {
         $this->getCurrentPage()->massEdit();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -894,7 +892,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressMassDeleteButton()
     {
         $this->getCurrentPage()->massDelete();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -903,7 +901,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressSequentialEditButton()
     {
         $this->getCurrentPage()->sequentialEdit();
-        $this->waitAjaxComplete();
+        $this->wait();
         $this->getNavigationContext()->currentPage = 'Product edit';
     }
 
@@ -915,7 +913,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iApplyTheView($viewLabel)
     {
         $this->datagrid->applyView($viewLabel);
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -924,7 +922,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iDeleteTheView()
     {
         $this->getCurrentPage()->find('css', '#remove-view')->click();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -949,7 +947,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iUpdateTheView()
     {
         $this->getCurrentPage()->find('css', '#update-view')->click();
-        $this->waitAjaxComplete();
+        $this->wait();
     }
 
     /**
@@ -995,14 +993,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     protected function wait($condition = null)
     {
         $this->getMainContext()->wait($condition);
-    }
-
-    /**
-     * Wait for AJAX requests to complete
-     */
-    protected function waitAjaxComplete()
-    {
-        $this->wait('$.active==0');
     }
 
     /**
