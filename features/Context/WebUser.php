@@ -2539,7 +2539,7 @@ class WebUser extends RawMinkContext
             $this->getCurrentPage()->selectFieldOption('system-locale', $language);
 
             return true;
-        });
+        }, 'System locale field was not found');
     }
 
     /**

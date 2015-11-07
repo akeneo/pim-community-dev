@@ -32,7 +32,6 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
-                mediator.clear('oro_config:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
                 if (_.has(module.config(), 'forwarded-events')) {
@@ -52,9 +51,7 @@ define([
 
                 this.getRoot().trigger('oro_config:form:render:before');
 
-                this.$el.html(
-                    this.template({})
-                );
+                this.$el.html(this.template({}));
 
                 this.renderExtensions();
 
