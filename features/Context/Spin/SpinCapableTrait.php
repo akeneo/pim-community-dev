@@ -39,7 +39,7 @@ trait SpinCapableTrait
 
         $elapsed = microtime(true) - $start;
         if ($elapsed >= $logThreshold) {
-            // log long spin
+            printf('[%s] Long spin detected with message : %s', date('y-md H:i:s'), $message);
         }
 
         return $result;
