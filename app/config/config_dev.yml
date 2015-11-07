@@ -28,3 +28,9 @@ swiftmailer:
 
 parameters:
     apy_js_form_validation.yui_js: false
+
+security:
+    firewalls:
+        main:
+            form_login:
+                csrf_provider: form.csrf_provider
