@@ -79,88 +79,8 @@ jobs:
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
-    csv_asset_import:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_import
-        label:     Demo asset import
-        type:      import
-        configuration:
-            filePath:      /tmp/assets.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-    csv_asset_category_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_category_export
-        label:     Demo asset category export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset_category.csv
-    csv_asset_category_import:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_category_import
-        label:     Demo asset category import
-        type:      import
-        configuration:
-            filePath:      /tmp/assets_categories.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-    csv_asset_configuration_import:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_configuration_import
-        label:     Demo asset configuration import
-        type:      import
-        configuration:
-            filePath:      /tmp/assets_configurations.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-    csv_asset_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_export
-        label:     Demo asset export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset.csv
-    csv_asset_variation_export:
-        connector: Akeneo Product Asset Connector
-        alias:     csv_asset_variation_export
-        label:     Demo asset variation export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/asset_variation.csv
     apply_assets_mass_upload:
         connector: Akeneo Product Asset Connector
         alias:     apply_assets_mass_upload
         label:     Process mass uploaded assets
         type:      mass_upload
-    yml_asset_channel_configuration_import:
-        connector: Akeneo Product Asset Connector
-        alias:     yml_asset_channel_configuration_import
-        label:     Demo asset channel configuration import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            filePath:      /tmp/asset_channel_configurations.yml
-    yml_asset_channel_configuration_export:
-        connector: Akeneo Product Asset Connector
-        alias:     yml_asset_channel_configuration_export
-        label:     Demo asset channel configuration export
-        type:      export
-        configuration:
-            filePath:      /tmp/asset_channel_configurations.yml
-            uploadAllowed: true
-            multiple:      false
