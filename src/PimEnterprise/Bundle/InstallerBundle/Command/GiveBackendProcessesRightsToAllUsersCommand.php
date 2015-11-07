@@ -73,7 +73,9 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'set_attribute_requirements',
             'approve_product_draft',
             'refuse_product_draft',
-            'apply_assets_mass_upload'
+            'apply_assets_mass_upload',
+            'csv_product_quick_export',
+            'csv_published_product_quick_export'
         ];
     }
 

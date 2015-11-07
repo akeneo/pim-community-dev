@@ -53,10 +53,6 @@ job_profile_accesses:
     csv_product_proposal_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    csv_product_quick_export:
-        executeJobProfile: [IT support, Manager, Redactor]
-    csv_published_product_quick_export:
-        executeJobProfile: [IT support, Manager, Redactor]
     csv_asset_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
@@ -103,4 +99,8 @@ job_profile_accesses:
     refuse_product_draft:
         executeJobProfile: [All]
     apply_assets_mass_upload:
+        executeJobProfile: [All]
+    csv_product_quick_export:
+        executeJobProfile: [All]
+    csv_published_product_quick_export:
         executeJobProfile: [All]
