@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ConfigurationController extends Controller
 {
     /**
-     * @Template()
      * @AclAncestor("oro_config_system")
      */
     public function systemAction()
