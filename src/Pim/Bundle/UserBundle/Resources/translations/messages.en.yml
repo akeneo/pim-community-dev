@@ -8,6 +8,11 @@ pim_user:
             business_unit.title:         Business Units
             email_synchronization.title: Email synchronization settings
             interfaces.title:            Interfaces
+    group:
+        tab:
+            general.title: General
+            users.title:   Users
+
 # user grids
 oro.user.controller:
     group.message.saved: "Group saved"

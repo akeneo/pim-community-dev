@@ -7,10 +7,11 @@ define(
         'oro/loading-mask',
         'oro/error',
         'pim/ui',
+        'pim/router',
         'jquery.jstree',
         'jstree/jquery.jstree.tree_selector'
     ],
-    function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
+    function ($, _, Backbone, Routing, LoadingMask, OroError, UI, router) {
         'use strict';
 
         return function (elementId, prefixRoute) {
@@ -150,8 +151,8 @@ define(
                         return;
                     }
                     var id  = data.rslt.obj.attr('id').replace('node_', '');
-                    var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id });
-                    if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
+                    var url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
+                    if (url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
                         return;
                     }
@@ -163,7 +164,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                Backbone.history.navigate(url, {trigger: false});
                                 UI($('#category-form'));
                                 loadingMask.hide();
                             }
@@ -193,7 +194,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                router.redirect(url, {trigger: false});
                                 loadingMask.hide();
                             }
                         },

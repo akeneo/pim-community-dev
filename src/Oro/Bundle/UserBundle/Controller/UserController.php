@@ -164,13 +164,10 @@ class UserController extends Controller
                 ];
             }
 
-            return $this->get('oro_ui.router')->actionRedirect(
-                [
-                    'route'      => 'oro_user_update',
-                    'parameters' => ['id' => $user->getId()],
-                ],
-                $closeButtonRoute
-            );
+            return new JsonResponse([
+                'route'  => 'oro_user_update',
+                'params' => ['id' => $user->getId()],
+            ]);
         }
 
         return [

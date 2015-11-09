@@ -33,11 +33,9 @@ class TitleExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return [
-            'oro_title_render'            => new \Twig_Function_Method($this, 'render'),
-            'oro_title_render_short'      => new \Twig_Function_Method($this, 'renderShort'),
-            'oro_title_render_serialized' => new \Twig_Function_Method($this, 'renderSerialized'),
-        ];
+        return array(
+            'oro_title_render' => new \Twig_Function_Method($this, 'render'),
+        );
     }
 
     /**
@@ -63,29 +61,6 @@ class TitleExtension extends \Twig_Extension
         return $this->titleService
             ->setData($this->getTitleData())
             ->render([], $titleData, null, null, true);
-    }
-
-    /**
-     * Renders short title
-     *
-     * @param null $titleData
-     * @return string
-     */
-    public function renderShort($titleData = null)
-    {
-        return $this->titleService
-            ->setData($this->getTitleData())
-            ->render([], $titleData, null, null, true, true);
-    }
-
-    /**
-     * Returns json serialized data
-     *
-     * @return string
-     */
-    public function renderSerialized()
-    {
-        return $this->titleService->setData($this->getTitleData())->getSerialized();
     }
 
     /**

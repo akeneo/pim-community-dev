@@ -232,6 +232,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.resolver.variant_group_attributes'
             - '@pim_catalog.remover.group'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.group_type:
         scope: request

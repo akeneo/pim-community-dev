@@ -46,9 +46,8 @@ Feature: Edit an export
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the export profile if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

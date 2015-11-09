@@ -1,4 +1,4 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
@@ -14,3 +14,7 @@
     {{ dataGrid.renderGrid('pim-role-grid', { }) }}
 
 {% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>

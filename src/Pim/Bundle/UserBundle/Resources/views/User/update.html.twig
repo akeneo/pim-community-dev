@@ -1,9 +1,7 @@
-{% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set fullname = form.vars.value|oro_format_name|default('N/A') %}
-{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
@@ -11,44 +9,10 @@
     {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 {% endif %}
 
-{% block head_script %}
-    <script type="text/javascript">
-        require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function ($, initSelect2, datepicker) {
-            $(function() {
-                $('.navbar-content.pull-left').css('width', '80%')
-
-                $('#{{ form.vars.id }}').find('select').addClass('select2');
-                initSelect2.init($('#{{ form.vars.id }}'));
-
-                _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init(field.getAttribute('id'));
-                });
-
-                {% if form.rolesCollection is defined %}
-                    var $roles = $('#{{ form.rolesCollection.vars.id }}');
-
-                    var checkRoles = function() {
-                        if ($roles.find('input:checked').length) {
-                            $('a[href="#pim_user-user-tab-group_and_role"]').removeClass('error');
-                            $roles.parent().removeClass('validation-error');
-                        } else {
-                            $('a[href="#pim_user-user-tab-group_and_role"]').addClass('error');
-                            $roles.addClass('error').parent().addClass('validation-error');
-                        }
-                    };
-
-                    $roles.on('change', 'input', checkRoles);
-
-                    checkRoles();
-                {% endif %}
-            });
-        });
-    </script>
-{% endblock %}
-
-{% block page_container %}
 {% block content %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'username': '{{ fullname }}'});
+    </script>
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': formAction,
@@ -100,5 +64,38 @@
         </div>
     {{ form_end(form) }}
 
-{% endblock %}
+    <script type="text/javascript">
+        require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function ($, initSelect2, datepicker) {
+            $(function() {
+                $('.navbar-content.pull-left').css('width', '80%')
+
+                $('#{{ form.vars.id }}').find('select').addClass('select2');
+                initSelect2.init($('#{{ form.vars.id }}'));
+
+                _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+                {% if form.rolesCollection is defined %}
+                    var $roles = $('#{{ form.rolesCollection.vars.id }}');
+
+                    var checkRoles = function() {
+                        if ($roles.find('input:checked').length) {
+                            $('a[href="#pim_user-user-tab-group_and_role"]').removeClass('error');
+                            $roles.parent().removeClass('validation-error');
+                        } else {
+                            $('a[href="#pim_user-user-tab-group_and_role"]').addClass('error');
+                            $roles.addClass('error').parent().addClass('validation-error');
+                        }
+                    };
+
+                    $roles.on('change', 'input', checkRoles);
+
+                    checkRoles();
+                {% endif %}
+            });
+        });
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
 {% endblock %}

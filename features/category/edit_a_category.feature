@@ -38,4 +38,25 @@ Feature: Edit a category
     Given I edit the "winter_boots" category
     When I fill in the following information:
       | English (United States) | My winter boots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
+
+  Scenario: Successfully retrieve the last visited tab
+    Given I am on the categories page
+    And I select the "2014 collection" tree
+    And I click on the "Summer collection" category
+    And I visit the "History" tab
+    And I am on the products page
+    Then I am on the categories page
+    And I select the "2014 collection" tree
+    And I click on the "Summer collection" category
+    And I should see "version"
+    And I should see "author"
+
+  Scenario: Successfully retrieve the last visited tab after a save
+    Given I am on the categories page
+    And I select the "2014 collection" tree
+    And I click on the "Summer collection" category
+    And I visit the "History" tab
+    And I save the category
+    And I should see "version"
+    And I should see "author"

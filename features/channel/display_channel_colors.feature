@@ -1,9 +1,10 @@
+@javascript
 Feature: Display the channel colors
   In order to easily know the channel of scopable values
   As an administrator
   I need to be able to use colors for channels
 
-  @javascript @skip
+  @skip
   Scenario: Successfully display channel colors in the product edit form
     Given the "default" catalog configuration
     And the following channels:

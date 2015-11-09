@@ -135,10 +135,6 @@ class ChannelController extends AbstractDoctrineController
     {
         if ($this->channelHandler->process($channel)) {
             $this->addFlash('success', 'flash.channel.saved');
-
-            return $this->redirect(
-                $this->generateUrl('pim_enrich_channel_edit', ['id' => $channel->getId()])
-            );
         }
 
         return ['form' => $this->channelForm->createView()];

@@ -12,11 +12,13 @@ use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -40,6 +42,9 @@ class VariantGroupController extends GroupController
     /** @var VariantGroupAttributesResolver */
     protected $groupAttrResolver;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param Request                        $request
      * @param EngineInterface                $templating
@@ -56,6 +61,7 @@ class VariantGroupController extends GroupController
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
      * @param RemoverInterface               $groupRemover
+     * @param UserContext                    $userContext
      */
     public function __construct(
         Request $request,
@@ -72,7 +78,8 @@ class VariantGroupController extends GroupController
         GroupFactory $groupFactory,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver,
-        RemoverInterface $groupRemover
+        RemoverInterface $groupRemover,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -92,6 +99,7 @@ class VariantGroupController extends GroupController
 
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
+        $this->userContext         = $userContext;
     }
 
     /**
@@ -156,6 +164,11 @@ class VariantGroupController extends GroupController
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.updated');
+
+            return new JsonResponse([
+                'route'  => 'pim_enrich_variant_group_edit',
+                'params' => ['id' => $group->getId(), 'dataLocale' => $this->userContext->getCurrentLocale()->getCode()]
+            ]);
         }
 
         return [

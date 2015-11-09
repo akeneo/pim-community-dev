@@ -4,9 +4,6 @@ twig:
         resources:
             - 'PimUIBundle:Form:pim-fields.html.twig'
     globals:
-        bap:
-            layout:      PimEnrichBundle::base.html.twig
-            start_route: oro_default
         ws:
             port:        %websocket_port%
             host:        %websocket_host%

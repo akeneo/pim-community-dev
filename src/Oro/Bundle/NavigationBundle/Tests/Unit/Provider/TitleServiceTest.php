@@ -135,19 +135,6 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_string($result));
     }
 
-    public function testRenderShort()
-    {
-        $shortTitle = 'short title';
-        $this->translator->expects($this->exactly(1))
-            ->method('trans')
-            ->with($this->equalTo($shortTitle))
-            ->will($this->returnValue($shortTitle));
-        $this->titleService->setShortTemplate($shortTitle);
-        $result = $this->titleService->render([], null, 'Prefix', 'Suffix', true, true);
-        $this->assertTrue(is_string($result));
-        $this->assertEquals($result, $shortTitle);
-    }
-
     public function testSettersAndGetters()
     {
         $testString = 'Test string';

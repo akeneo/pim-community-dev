@@ -222,7 +222,7 @@ class VariantGroupAttributeController
      */
     protected function redirect($url, $status = 302)
     {
-        return new RedirectResponse($url, $status);
+        return new RedirectResponse($this->generateUrl('oro_default') . '#' . $url, $status);
     }
 
     /**
