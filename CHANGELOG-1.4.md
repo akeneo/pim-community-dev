@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5127: Improve products export memory usage
+
 # 1.4.8 (2015-11-09)
 
 ## Bug fixes
