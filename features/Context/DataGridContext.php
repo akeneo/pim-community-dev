@@ -159,7 +159,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterByCategory($code)
     {
-        $this->wait();
         if (strtolower($code) === 'unclassified') {
             $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         } else {
@@ -518,7 +517,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function pageSizeShouldBe($size)
     {
         $this->datagrid->pageSizeIs((int) $size);
-        $this->wait();
     }
 
     /**
@@ -621,10 +619,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
-        if ($filterName === 'Channel') {
-            $this->wait();
-        }
-
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
 
         $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
@@ -774,7 +768,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickBackToGrid()
     {
-        $this->wait();
         $this->getSession()->getPage()->clickLink('Back to grid');
         $this->wait();
     }

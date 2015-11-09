@@ -5,7 +5,7 @@ default:
         class:  Context\FeatureContext
         parameters:
             base_url: http://akeneo-pim-behat.local/
-            timeout: 10000
+            timeout: 10
             window_width: 1280
             window_height: 1024
     extensions:
@@ -21,74 +21,20 @@ default:
                 debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
-jenkins-1:
+ci:
     context:
         parameters:
-            base_url: http://pim-behat-1.ci/
-            timeout: 10000
+            base_url: http://localhost/
+            timeout: 30
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-1.ci/
+            base_url: http://localhost/
         Behat\Symfony2Extension\Extension:
             kernel:
-                env: behat1
+                env: behat
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~skip-pef&&~doc
-
-jenkins-2:
-    context:
-        parameters:
-            base_url: http://pim-behat-2.ci/
-            timeout: 10000
-    extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-2.ci/
-        Behat\Symfony2Extension\Extension:
-            kernel:
-                env: behat2
-    formatter:
-        name: Context\SummaryFormatter,junit
-        parameters:
-            output_path: null,app/build/logs/behat/
-    filters:
-        tags: ~skip&&~skip-pef&&~doc
-
-jenkins-3:
-    context:
-        parameters:
-            base_url: http://pim-behat-3.ci/
-            timeout: 10000
-    extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-3.ci/
-        Behat\Symfony2Extension\Extension:
-            kernel:
-                env: behat3
-    formatter:
-        name: Context\SummaryFormatter,junit
-        parameters:
-            output_path: null,app/build/logs/behat/
-    filters:
-        tags: ~skip&&~skip-pef&&~doc
-
-jenkins-4:
-    context:
-        parameters:
-            base_url: http://pim-behat-4.ci/
-            timeout: 10000
-    extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-4.ci/
-        Behat\Symfony2Extension\Extension:
-            kernel:
-                env: behat4
-    formatter:
-        name: Context\SummaryFormatter,junit
-        parameters:
-            output_path: null,app/build/logs/behat/
-    filters:
-        tags: ~skip&&~skip-pef&&~doc
+        tags: ~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app

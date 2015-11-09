@@ -23,8 +23,6 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    const DEFAULT_TIMEOUT = 10000;
-
     use SpinCapableTrait;
 
     /** @var KernelInterface */
@@ -34,7 +32,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     protected static $errorMessages = [];
 
     /** @var int */
-    protected $timeout;
+    protected static $timeout;
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
@@ -50,12 +48,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function __construct(array $parameters)
     {
-        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
-            $this->timeout = $parameters['timeout'];
-        } else {
-            $this->timeout = self::DEFAULT_TIMEOUT;
-        }
-
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
         $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
@@ -66,14 +58,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+
+        $this->setTimeout($parameters);
     }
 
     /**
      * @return int the timeout in milliseconds
      */
-    public function getTimeout()
+    public static function getTimeout()
     {
-        return $this->timeout;
+        return static::$timeout * 1000;
     }
 
     /**
@@ -139,11 +133,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ];
 
             if ($driver instanceof Selenium2Driver) {
-                $dir      = getenv('WORKSPACE');
                 $buildUrl = getenv('BUILD_URL');
-                if (false !== $dir) {
-                    $dir = sprintf('%s/app/build/screenshots', $dir);
-                } else {
+
+                // this directory exists only when Behat are run from the CI
+                $dir = $this->getContainer()->getParameter('kernel.root_dir') . '/build/screenshots';
+                if (!is_dir($dir)) {
                     $dir = '/tmp/behat/screenshots';
                 }
 
@@ -155,18 +149,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
-                }
+                // TODO: should be fixed later
+                $path = sprintf(
+                    '%s/artifact/app/build/screenshots/%s',
+                    $buildUrl,
+                    $filename
+                );
 
                 $stepStats['screenshot'] = $path;
                 $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
             }
 
+            // TODO: should be fixed later
             if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
                 echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
             }
@@ -431,5 +425,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    /**
+     * Set the waiting timeout
+     *
+     * @param $parameters
+     */
+    protected function setTimeout($parameters)
+    {
+        static::$timeout = $parameters['timeout'];
     }
 }
