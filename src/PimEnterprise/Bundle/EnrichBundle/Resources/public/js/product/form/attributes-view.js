@@ -56,7 +56,7 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
-                this.onExtensions('attribute-group:change', this.render.bind(this));
+                this.onExtensions('group:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -73,7 +73,7 @@ define(
                     ProductManager.getValues(product).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
+                            this.getExtension('attribute-group-selector').getCurrentElement()
                         );
 
                         var fieldPromises = [];
@@ -130,7 +130,11 @@ define(
                 var promises = [];
                 var product = this.getFormData();
 
-                promises.push(this.getExtension('attribute-group-selector').updateAttributeGroups(product));
+                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
+                    .then(function (attributeGroups) {
+                        this.getExtension('attribute-group-selector').setElements(attributeGroups);
+                    }.bind(this))
+                );
 
                 return $.when.apply($, promises).promise();
             },

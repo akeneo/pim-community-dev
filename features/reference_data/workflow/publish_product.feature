@@ -43,7 +43,8 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product red-heels
     Then I am on the "red-heels" published show page
-    And I should see "[red]"
-    And I should see "[spandex]"
-    And I should see "[neoprene]"
-    And I should see "[wool]"
+    And I visit the "Other" group
+    And I should see the text "[red]"
+    And I should see the text "[spandex]"
+    And I should see the text "[neoprene]"
+    And I should see the text "[wool]"
