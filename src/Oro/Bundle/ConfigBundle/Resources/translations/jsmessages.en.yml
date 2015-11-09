@@ -12,3 +12,4 @@ oro_config:
                     system_locale: Language
                 notification:
                     title: Notifications
+                    system_notification: New versions notifications

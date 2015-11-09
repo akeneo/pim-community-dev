@@ -11,7 +11,6 @@ define([
         SaveForm
     ) {
         return SaveForm.extend({
-
             /**
              * {@inheritdoc}
              */

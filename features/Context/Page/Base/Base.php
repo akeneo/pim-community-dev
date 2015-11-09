@@ -32,23 +32,6 @@ class Base extends Page
         'Locales dropdown' => ['css' => '#locale-switcher'],
     ];
 
-
-    /**
-     * Clicks link with specified locator.
-     *
-     * @param string $locator link id, title, text or image alt
-     *
-     * @throws ElementNotFoundException
-     */
-    public function clickLink($locator)
-    {
-        $link = $this->spin(function () use ($locator) {
-            return $this->findLink($locator);
-        }, $this->elementNotFound('link', 'id|title|alt|text', $locator)->getMessage());
-
-        $link->click();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -395,13 +378,8 @@ class Base extends Page
     public function hasSelectedLocale($locale)
     {
         $selectedLocale = $this->spin(function () {
-            $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
-            if (null === $selectedLocale) {
-                throw new \Exception('Could not find locales in switcher.');
-            }
-
-            return $selectedLocale;
-        });
+            return $this->getElement('Locales dropdown')->find('css', 'li.active a');
+        }, 'Could not find locales in switcher.');
 
         $title = $selectedLocale->getAttribute('title');
         if ($locale !== $title) {

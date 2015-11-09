@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Attribute group selector extension
+ * Group selector extension
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Filips Alpe <filips@akeneo.com>
@@ -74,7 +74,7 @@ define(
             /**
              * Get current attribute group
              *
-             * @return {string}
+             * @return {String}
              */
             getCurrent: function () {
                 return sessionStorage.getItem('current_select_group_' + this.code);
@@ -83,7 +83,7 @@ define(
             /**
              * Set current attribute group
              *
-             * @param {srting} current
+             * @param {String} current
              * @param {Object} options
              */
             setCurrent: function (current, options) {
@@ -113,7 +113,7 @@ define(
             /**
              * Get the current attribute group
              *
-             * @return {string}
+             * @return {String}
              */
             getCurrentElement: function () {
                 return this.getElements()[this.getCurrent()];
@@ -131,8 +131,8 @@ define(
             /**
              * Increment count on attribute group for the given code
              *
-             * @param {string} element
-             * @param {string} code
+             * @param {String} element
+             * @param {String} code
              */
             addToBadge: function (element, code) {
                 if (!this.badges[element]) {
@@ -150,8 +150,8 @@ define(
             /**
              * Remove badge for the given attribute group
              *
-             * @param {string} element
-             * @param {string} code
+             * @param {String} element
+             * @param {String} code
              */
             removeBadge: function (element, code) {
                 delete this.badges[element][code];
@@ -162,7 +162,7 @@ define(
             /**
              * Remove badges for all attribute groups
              *
-             * @param {string} code
+             * @param {String} code
              */
             removeBadges: function (code) {
                 if (!code) {
