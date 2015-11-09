@@ -95,8 +95,9 @@ class Form extends Base
             return $this->getElement('Panel selector');
         });
 
-        if (!$elt->find('css', sprintf('button.active:contains("%s")', $panel))) {
-            $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
+        $lowerPanel = strtolower($panel);
+        if (!$elt->find('css', sprintf('button[data-panel=pim-product-edit-form-%s].active', $lowerPanel))) {
+            $elt->find('css', sprintf('button[data-panel=pim-product-edit-form-%s]', $lowerPanel))->click();
         }
     }
 
