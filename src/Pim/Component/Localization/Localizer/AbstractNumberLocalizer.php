@@ -12,8 +12,6 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 abstract class AbstractNumberLocalizer implements LocalizerInterface
 {
-    const DEFAULT_DECIMAL_SEPARATOR = '.';
-
     /** @var array */
     protected $attributeTypes;
 
@@ -41,6 +39,25 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
         }
 
         return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalizedFromLocale($number, $locale)
+    {
+        if (null === $number || ''  === $number) {
+            return $number;
+        }
+
+        $numberFormatter = new \NumberFormatter($locale, \NumberFormatter::DECIMAL);
+
+        if (is_numeric($number) && floor($number) != $number) {
+            $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
+        }
+
+        return $numberFormatter->format($number);
     }
 
     /**

@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Provider\DateFormatProviderInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -29,9 +29,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         ChannelManager $channelManager,
         StepExecution $stepExecution,
-        DateFormatProviderInterface $provider
+        FormatProviderInterface $dateformatProvider,
+        FormatProviderInterface $numberFormatProvider
     ) {
-        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, $provider, 'upload/path/');
+        $this->beConstructedWith(
+            $jobConfigurationRepo,
+            $serializer,
+            $channelManager,
+            $dateformatProvider,
+            $numberFormatProvider,
+            'upload/path/'
+        );
         $this->setStepExecution($stepExecution);
     }
 
@@ -103,16 +111,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_media(
         $serializer,
         $channelManager,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductMediaInterface $media1,
         ProductMediaInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
-        AttributeInterface $attribute,
-        DateFormatProviderInterface $provider
+        AttributeInterface $attribute
     ) {
-        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
 
         $media1->getFilename()->willReturn('media_name');
@@ -155,13 +165,15 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
-        Serializer $serializer,
-        DateFormatProviderInterface $provider
+        Serializer $serializer
     ) {
-        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
         $product->getValues()->willReturn([]);
 
@@ -214,6 +226,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_english_attributes(
         $channelManager,
         $serializer,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -223,10 +237,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ProductValueInterface $priceValue,
         AttributeInterface $date,
-        ProductValueInterface $dateValue,
-        DateFormatProviderInterface $provider
+        ProductValueInterface $dateValue
     ) {
-        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
@@ -275,6 +289,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_french_attribute(
         $channelManager,
         $serializer,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -282,10 +298,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         MetricInterface $metric,
         ProductValueInterface $metricValue,
         ProductPriceInterface $price,
-        ProductValueInterface $priceValue,
-        DateFormatProviderInterface $provider
+        ProductValueInterface $priceValue
     ) {
-        $provider->getDateFormat('fr_FR')->willReturn('d/m/Y');
+        $dateformatProvider->getFormat('fr_FR')->willReturn('d/m/Y');
+        $numberFormatProvider->getFormat('fr_FR')->willReturn(['decimal_separator' => ',']);
         $this->configureOptions('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');

@@ -25,19 +25,25 @@ class FamilyFactory
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var string */
+    protected $familyClass;
+
     /**
      * @param ChannelManager               $channelManager
      * @param AttributeRequirementFactory  $factory
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $familyClass
      */
     public function __construct(
         ChannelManager $channelManager,
         AttributeRequirementFactory $factory,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        $familyClass
     ) {
         $this->channelManager      = $channelManager;
         $this->factory             = $factory;
         $this->attributeRepository = $attributeRepository;
+        $this->familyClass         = $familyClass;
     }
 
     /**
@@ -45,7 +51,7 @@ class FamilyFactory
      */
     public function createFamily()
     {
-        $family     = new Family();
+        $family     = new $this->familyClass();
         $identifier = $this->attributeRepository->getIdentifier();
 
         $family->addAttribute($identifier);

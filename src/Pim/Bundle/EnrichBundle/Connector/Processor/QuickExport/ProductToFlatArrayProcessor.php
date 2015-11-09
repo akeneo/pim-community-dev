@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Provider\DateFormatProviderInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -31,8 +31,11 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var DateFormatProviderInterface */
+    /** @var FormatProviderInterface */
     protected $dateFormatProvider;
+
+    /** @var FormatProviderInterface */
+    protected $numberFormatProvider;
 
     /** @var string */
     protected $uploadDirectory;
@@ -53,22 +56,25 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
-     * @param DateFormatProviderInterface         $dateFormatProvider
+     * @param FormatProviderInterface             $dateFormatProvider
+     * @param FormatProviderInterface             $numberFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        DateFormatProviderInterface $dateFormatProvider,
+        FormatProviderInterface $dateFormatProvider,
+        FormatProviderInterface $numberFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer         = $serializer;
-        $this->channelManager     = $channelManager;
-        $this->dateFormatProvider = $dateFormatProvider;
-        $this->uploadDirectory    = $uploadDirectory;
+        $this->serializer           = $serializer;
+        $this->channelManager       = $channelManager;
+        $this->dateFormatProvider   = $dateFormatProvider;
+        $this->numberFormatProvider = $numberFormatProvider;
+        $this->uploadDirectory      = $uploadDirectory;
     }
 
     /**
@@ -131,10 +137,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     public function configureOptions($uiLocale)
     {
-        $number = new \NumberFormatter($uiLocale, \NumberFormatter::DECIMAL);
-        $this->decimalSeparator = $number->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-
-        $this->dateFormat = $this->dateFormatProvider->getDateFormat($uiLocale);
+        $this->decimalSeparator = $this->numberFormatProvider->getFormat($uiLocale)['decimal_separator'];
+        $this->dateFormat       = $this->dateFormatProvider->getFormat($uiLocale);
     }
 
     /**

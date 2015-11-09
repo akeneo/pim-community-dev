@@ -114,6 +114,7 @@ services:
             - '@pim_catalog.saver.family'
             - '@pim_catalog.remover.family'
             - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.family.class%
 
     pim_enrich.controller.locale:
         scope: request

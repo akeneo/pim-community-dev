@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Component\Localization\Formatter\FormatterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -15,20 +15,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PriceProperty extends FieldProperty
 {
-    /** @var FormatterInterface */
-    protected $formatter;
+    /** @var LocalizerInterface */
+    protected $localizer;
 
     /**
-     * {@inheritdoc}
-     *
      * @param TranslatorInterface $translator
-     * @param FormatterInterface  $formatter
+     * @param LocalizerInterface  $localizer
      */
-    public function __construct(TranslatorInterface $translator, FormatterInterface $formatter)
+    public function __construct(TranslatorInterface $translator, LocalizerInterface $localizer)
     {
         parent::__construct($translator);
 
-        $this->formatter = $formatter;
+        $this->localizer = $localizer;
     }
 
     /**
@@ -41,7 +39,8 @@ class PriceProperty extends FieldProperty
         $prices = [];
         foreach ($data as $price) {
             if (isset($price['data']) && $price['data'] !== null) {
-                $formattedPrice = $this->formatter->format($price['data']);
+                $formattedPrice = $this->localizer
+                    ->convertDefaultToLocalizedFromLocale($price['data'], $this->translator->getLocale());
                 $prices[] = sprintf(
                     '%s %s',
                     $formattedPrice,

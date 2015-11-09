@@ -12,11 +12,11 @@ Feature: Localize numbers in the datagrid
     And the following products:
       | sku     | big_price   | rate_sale    | weight             |
       | sandals | 1000.12 USD | 1000.1234    | 1000.3456 KILOGRAM |
-    And I am logged in as "Julia"
 
   Scenario: Successfully show English format numbers for English UI
-    Given I am on the products page
-    When I display the columns sku, big_price, rate_sale and weight
+    Given I am logged in as "Julia"
+    When I am on the products page
+    And I display the columns sku, big_price, rate_sale and weight
     Then the row "sandals" should contain:
       | column       | value               |
       | big_price    | 1,000.12 $          |
@@ -24,11 +24,7 @@ Feature: Localize numbers in the datagrid
       | weight       | 1,000.3456 Kilogram |
 
   Scenario: Successfully show French format numbers for French UI
-    Given I edit my profile
-    And I visit the "Interfaces" tab
-    And I fill in the following information:
-      | Ui locale | French (France) |
-    And I save the user
+    Given I am logged in as "Julien"
     When I am on the products page
     And I display the columns sku, big_price, rate_sale and weight
     Then the row "sandals" should contain:
@@ -38,7 +34,8 @@ Feature: Localize numbers in the datagrid
       | weight       | 1 000,3456 KILOGRAM |
 
   Scenario: Successfully show English format numbers for French catalog
-    Given I add the "french" locale to the "mobile" channel
+    Given I am logged in as "Julia"
+    And I add the "french" locale to the "mobile" channel
     And I am on the products page
     And I display the columns sku, big_price, rate_sale and weight
     When I switch the locale to "French (France)"
