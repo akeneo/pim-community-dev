@@ -67,7 +67,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public static function getTimeout()
     {
-        return static::$timeout;
+        return static::$timeout * 1000;
     }
 
     /**
