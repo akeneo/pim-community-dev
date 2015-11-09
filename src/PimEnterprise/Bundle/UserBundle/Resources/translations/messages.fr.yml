@@ -1,5 +1,15 @@
 user:
   email:
     notifications: Notifications par email
+  proposals:
+    notifications:
+      to_review: "Lors d'une nouvelle proposition à examiner"
+      state: "Lorsqu'une proposition est acceptée ou rejetée"
+      "yes": true
+      "no": false
   asset_delay_reminder: "Rappel de la date d'utilisation limite des ressources (en jours)"
 Default asset tree: Arborescence par défaut des ressources
+pimee_user:
+  user:
+    tab:
+      notifications.title: Notifications

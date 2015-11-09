@@ -31,7 +31,6 @@ pimee_enrich:
         product_published: Produkt erfolgreich veröffentlicht
         product_not_published: Fehler beim Veröffentlichen des Produkts
         product_not_unpublished: Fehler beim Entziehen der Veröffentlichung für dieses Produkt
-        product_reverted: Produkt erfolgreich zurückgesetzt
       meta:
         published: Veröffentlichte Version
         owner_groups: Eigentümer-Gruppen
@@ -47,9 +46,6 @@ pimee_enrich:
             reject:
               success: Der Vorschlag wurde abgelehnt.
       confirmation:
-        revert:
-          title: Zurücksetzen bestätigen
-          content: Sind Sie sicher, dass die das Produkt auf diese Version zurücksetzen möchten?
         publish:
           title: Dieses Produkt veröffentlichen
           content: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
