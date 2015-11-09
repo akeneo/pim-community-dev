@@ -11,3 +11,9 @@ pimee_workflow:
         original_product: Editer la copie de travail
     proposal:
       modal.title: 'Laisser un commentaire (facultatif - 255 caractères max.)'
+  proposal:
+    partial_accept:
+      modal.title: Approuver des informations partielles
+      modal.label: Laisser un commentaire (facultatif)
+      modal.error: "Une erreur s'est produite, la proposition n'a pas été partiellement approuvée"
+      modal.success: La proposition partielle a été validée avec succès
