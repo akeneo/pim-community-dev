@@ -101,6 +101,9 @@ pim_base_connector:
     decimalSeparator:
       label: Séparateur de décimale
       help: Détermine le séparateur de décimale
+    dateFormat:
+      label: Format de date
+      help: Déterminer le format des champs de type date
   import:
     enabled:
       label: Activer le produit
