@@ -49,11 +49,10 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         ArrayIterator $productsIterator,
         ArrayCollection $associationsCollection,
         ArrayIterator $associationsIterator,
-        DocumentManager $documentManager,
-        ClassMetadata $metadata,
-        Collection $collection,
         ArrayIterator $arrayIterator
     ) {
+        $product->getId()->willReturn('110ae6b98ead0ee8778b46bb');
+
         $options = [
             'locale_code'              => 'en_US',
             'scope_code'               => 'print',
@@ -65,6 +64,9 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
 
         $builder->getQuery()->willReturn($query);
         $builder->hydrate(false)->willReturn($builder);
+        $builder->setQueryArray(Argument::any())->willReturn($builder);
+        $builder->limit(Argument::any())->willReturn($builder);
+        $builder->skip(Argument::any())->willReturn($builder);
 
         $product->getAssociations()->willReturn($associationsCollection);
         $associationsCollection->getIterator()->willReturn($associationsIterator);
@@ -83,8 +85,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 
-        $associatedProduct1->getId()->willReturn('550ae6b98ead0ed7778b46bb');
-        $associatedProduct2->getId()->willReturn('550ae6b98abd0ec8778b46bb');
+        $associatedProduct1->getId()->willReturn('220ae6b98ead0ed7778b46bb');
+        $associatedProduct2->getId()->willReturn('330ae6b98abd0ec8778b46bb');
         $association->getProducts()->willReturn($productsCollection);
         $productsCollection->getIterator()->willReturn($productsIterator);
         $productsIterator->rewind()->shouldBeCalled();
@@ -98,8 +100,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         $productsIterator->current()->will(new ReturnPromise([$associatedProduct1, $associatedProduct2]));
         $productsCollection->map(Argument::any())->willReturn($productIdsCollection);
         $productIdsCollection->toArray()->willReturn([
-            '550ae6b98ead0ed7778b46bb',
-            '550ae6b98abd0ec8778b46bb'
+            '220ae6b98ead0ed7778b46bb',
+            '330ae6b98abd0ec8778b46bb'
         ]);
 
         $queryDefinition = [
@@ -112,101 +114,13 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             'skip'   => 0,
             'query'  => [
                 '_id' => [
-                    '$ne' => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb']),
+                    '$ne' => \MongoId::__set_state(['$id' => '110ae6b98ead0ee8778b46bb']),
                 ],
             ],
             'newObj' => [],
         ];
 
         $query->getQuery()->willReturn($queryDefinition);
-
-        $query->getDocumentManager()->willReturn($documentManager);
-        $documentManager->getDocumentCollection(Argument::any())->willReturn($collection);
-        $documentManager->getClassMetadata(Argument::any())->willReturn($metadata);
-        $metadata->getFieldNames()->willReturn([
-            'id',
-            'created',
-            'updated',
-            'locale',
-            'scope',
-            'values',
-            'indexedValues',
-            'indexedValuesOutdated',
-            'family',
-            'familyId',
-            'categories',
-            'categoryIds',
-            'enabled',
-            'groups',
-            'groupIds',
-            'associations',
-            'completenesses',
-            'normalizedData',
-        ]);
-
-        $pipeline = [
-            [
-                '$match' => [
-                    '_id' => [
-                        '$ne' => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb']),
-                    ],
-                ],
-            ],
-            [
-                '$project' => [
-                    'id'                    => 1,
-                    'created'               => 1,
-                    'updated'               => 1,
-                    'locale'                => 1,
-                    'scope'                 => 1,
-                    'values'                => 1,
-                    'indexedValues'         => 1,
-                    'indexedValuesOutdated' => 1,
-                    'family'                => 1,
-                    'familyId'              => 1,
-                    'categories'            => 1,
-                    'categoryIds'           => 1,
-                    'enabled'               => 1,
-                    'groups'                => 1,
-                    'groupIds'              => 1,
-                    'associations'          => 1,
-                    'completenesses'        => 1,
-                    'normalizedData'        => 1,
-                    'is_associated'         => [
-                        '$cond' => [
-                            [
-                                '$or' => [
-                                    [
-                                        '$eq' => [
-                                            '$_id',
-                                            \MongoId::__set_state(['$id' => '550ae6b98ead0ed7778b46bb']),
-                                        ],
-                                    ],
-                                    [
-                                        '$eq' => [
-                                            '$_id',
-                                            \MongoId::__set_state(['$id' => '550ae6b98abd0ec8778b46bb']),
-                                        ],
-                                    ],
-                                ],
-                            ],
-                            1,
-                            0,
-                        ],
-                    ],
-                ],
-            ],
-            [
-                '$sort' => [
-                    'is_associated' => -1,
-                ]
-            ],
-            ['$skip' => 0],
-            ['$limit' => 10],
-        ];
-
-        $collection->aggregate($pipeline)
-            ->willReturn($arrayIterator);
 
         $fixture = [
             '_id'            => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb']),
@@ -230,6 +144,7 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             'is_associated'  => 1,
         ];
 
+        $query->execute()->willReturn($arrayIterator);
         $arrayIterator->toArray()->willReturn([$fixture]);
 
         $rows = $this->hydrate($builder, $options);
