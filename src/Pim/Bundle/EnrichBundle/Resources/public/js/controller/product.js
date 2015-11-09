@@ -2,7 +2,6 @@
 
 define(
     [
-        'jquery',
         'underscore',
         'pim/controller/base',
         'pim/form-builder',
@@ -12,15 +11,14 @@ define(
         'pim/page-title',
         'pim/error'
     ],
-    function ($, _, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle, Error) {
+    function (_, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle, Error) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderRoute: function (route) {
                 return ProductManager.get(route.params.id)
-                    .then(_.bind(function (product) {
-                        PageTitle.set({'product.sku': _.escape(product.meta.label[UserContext.get('catalogLocale')]) });
+                    .then(function (product) {
                         PageTitle.set({'product.sku': _.escape(product.meta.label[UserContext.get('catalogLocale')]) });
 
                         FormBuilder.build(product.meta.form)
@@ -29,7 +27,7 @@ define(
                                 form.trigger('pim_enrich:form:entity:post_fetch', product);
                                 form.setElement(this.$el).render();
                             }.bind(this));
-                    }, this))
+                    }.bind(this))
                 .fail(function (response) {
                     var errorView = new Error(response.responseJSON.message, response.status);
                     errorView.setElement(this.$el).render();

@@ -7,10 +7,11 @@ define(
         'oro/loading-mask',
         'oro/error',
         'pim/ui',
+        'pim/router',
         'jquery.jstree',
         'jstree/jquery.jstree.tree_selector'
     ],
-    function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
+    function ($, _, Backbone, Routing, LoadingMask, OroError, UI, router) {
         'use strict';
 
         return function (elementId, prefixRoute) {
@@ -193,7 +194,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate(url, {trigger: false});
+                                router.redirect(url, {trigger: false});
                                 loadingMask.hide();
                             }
                         },
