@@ -774,7 +774,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickBackToGrid()
     {
-        $this->getSession()->getPage()->clickLink('Back to grid');
+        $this->spin(function () {
+            $this->getSession()->getPage()->clickLink('Back to grid');
+
+            return true;
+        });
     }
 
     /**
