@@ -6,7 +6,7 @@ define(
     function (CommonSave, SaveForm, Routing, module) {
         describe('Save form', function () {
             var saveForm = new SaveForm();
-            it('extends base form', function () {
+            it('extends save form', function () {
                 expect(saveForm instanceof CommonSave).toBeTruthy()
             });
 
