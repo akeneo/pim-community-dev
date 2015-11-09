@@ -1,0 +1,9 @@
+<div class="system-locale-field">
+    <label for="system-locale"><%- _.__('oro_config.form.config.group.localization.system_locale') %></label>
+
+    <select class="select2" name="system-locale">
+    <% _.each(locales, function(label, code) { %>
+        <option value="<%- code %>" <%- code === selected ? 'selected' : '' %>><%- label %></option>
+    <% }); %>
+    </select>
+</div>

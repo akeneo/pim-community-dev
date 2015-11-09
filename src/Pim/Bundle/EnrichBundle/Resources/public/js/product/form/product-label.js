@@ -11,7 +11,7 @@ define(
     ['pim/form', 'pim/user-context'],
     function (BaseForm, UserContext) {
         return BaseForm.extend({
-            tagName: 'span',
+            tagName: 'h1',
             className: 'product-label',
             configure: function () {
                 UserContext.off('change:catalogLocale', this.render);

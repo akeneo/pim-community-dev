@@ -180,7 +180,6 @@ define(
                 this.initializeDropZones();
 
                 _.each(this.extensions, function (extension) {
-                    this.getZone(extension.targetZone).appendChild(extension.el);
                     this.renderExtension(extension);
                 }.bind(this));
 
@@ -197,6 +196,7 @@ define(
             renderExtension: function (extension) {
                 /* global console */
                 console.log(extension.parent.code, 'triggered the rendering of', extension.code);
+                this.getZone(extension.targetZone).appendChild(extension.el);
                 return extension.render();
             },
 

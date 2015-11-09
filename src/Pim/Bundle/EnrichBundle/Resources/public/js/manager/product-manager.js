@@ -30,7 +30,6 @@ define([
                         return this.generateMissing(product);
                     }.bind(this))
                     .then(function (product) {
-
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;

@@ -2535,7 +2535,11 @@ class WebUser extends RawMinkContext
      */
     public function iSelectLanguage($language)
     {
-        $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+        $this->spin(function () use ($language) {
+            $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+
+            return true;
+        }, 'System locale field was not found');
     }
 
     /**
@@ -2550,7 +2554,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeLocaleOption($not, $locale)
     {
-        $selectNames = ['localization[oro_locale___language][value]', 'pim_user_user_form[uiLocale]'];
+        $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
         $field = null;
         foreach ($selectNames as $selectName) {
             $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
