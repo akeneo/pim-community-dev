@@ -20,7 +20,10 @@ pimee_workflow:
       approve: Accepter
       refuse: Refuser
       remove: Supprimer
+      partial_approve: "Approuver les modifications sur l'attribut %attribute% du produit %product%"
     notification:
+      partial_approve:
+        "%owner% has accepted the value for %attribute% for the product": '%product%'
       approve: '%owner% a accepté votre proposition pour le produit %product%'
       refuse: '%owner% a rejeté votre proposition pour le produit %product%'
       remove: '%owner% a supprimé votre proposition pour le produit %product%'
@@ -34,6 +37,8 @@ pimee_workflow:
         invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
   proposal:
     to_review: '%author.firstname% %author.lastname% a envoyé une proposition à examiner pour le produit %product.label%'
+    original_value: Original
+    new_value: Nouveau
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -60,6 +65,7 @@ pimee_workflow:
 pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
 btn.publish: Publier
 btn.unpublish: Dépublier
+pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
 pimee_workflow_product_draft_notification_approve: Proposition approuvée
 pimee_workflow_product_draft_notification_refuse: Proposition rejetée
 pimee_workflow_product_draft_notification_remove: Proposition supprimée
