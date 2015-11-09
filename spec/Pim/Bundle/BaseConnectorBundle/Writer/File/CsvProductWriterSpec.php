@@ -17,7 +17,7 @@ class CsvProductWriterSpec extends ObjectBehavior
         $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
         $media = ['filePath' => $file->getPathname(), 'exportPath' => 'test.csv'];
 
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write([['product' => ['sku' => 'my-product'], 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn(['/tmp/test.csv' => 'test.csv']);
         $stepExecution->addWarning()->shouldNotBeCalled();
     }
@@ -26,7 +26,7 @@ class CsvProductWriterSpec extends ObjectBehavior
     {
         $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv'];
 
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write([['product' =>  ['sku' => 'my-product'], 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
         $stepExecution->addWarning('csv_product_writer', 'The media has not been found or is not currently available', [], $media)
             ->shouldBeCalled();
@@ -40,7 +40,7 @@ class CsvProductWriterSpec extends ObjectBehavior
         $previousReporting = error_reporting();
         error_reporting(0);
 
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write([['product' =>  ['sku' => 'my-product'], 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
         $stepExecution->addWarning('csv_product_writer', 'The media has not been copied', [], $media)
             ->shouldBeCalled();
