@@ -31,7 +31,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizer->isValid('10,45', $options, 'number')->willReturn(true);
         $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
 
-        $this->convert(['number' => [['data' => '10,45']]], $options)
+        $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
     }
 
@@ -45,7 +45,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizerRegistry->getLocalizer('pim_family')->willReturn($localizer);
         $localizer->supports('pim_family')->willReturn(false);
 
-        $this->convert(['family' => [['data' => 'boots']]], $options)
+        $this->convertLocalizedToDefaultValues(['family' => [['data' => 'boots']]], $options)
             ->shouldReturn(['family' => [['data' => 'boots']]]);
     }
 
@@ -62,6 +62,6 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
 
         $this->shouldThrow(new FormatLocalizerException('number', '.'))
-            ->during('convert', [['number' => [['data' => '10,45']]], $options]);
+            ->during('convertLocalizedToDefaultValues', [['number' => [['data' => '10,45']]], $options]);
     }
 }

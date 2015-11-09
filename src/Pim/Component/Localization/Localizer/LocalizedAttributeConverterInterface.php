@@ -19,5 +19,16 @@ interface LocalizedAttributeConverterInterface
      *
      * @return mixed
      */
-    public function convert(array $items, array $options = []);
+    public function convertLocalizedToDefaultValues(array $items, array $options = []);
+
+    /**
+     * Localize an attribute value
+     *
+     * @param string $code
+     * @param mixed  $value
+     * @param array  $options
+     *
+     * @return mixed
+     */
+    public function convertDefaultToLocalizedValue($code, $value, $options = []);
 }

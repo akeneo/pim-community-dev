@@ -4,6 +4,7 @@
 
 - PIM-4964: Use enable / disable import parameter only to create the product
 - Family is not hardcoded anymore
+- PIM-4743: Added the possibility to use optgroup in Oro ChoiceFilter
 
 ## Bug fixes
 

@@ -34,7 +34,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
     /**
      * {@inheritdoc}
      */
-    public function convert(array $items, array $options = [])
+    public function convertLocalizedToDefaultValues(array $items, array $options = [])
     {
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
 
@@ -44,13 +44,36 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
 
                 if (null !== $localizer) {
                     foreach ($item as $i => $data) {
-                        $items[$code][$i] = $this->convertAttribute($localizer, $data, $options, $code);
+                        $items[$code][$i] = $this->convertLocalizedToDefaultValue($localizer, $data, $options, $code);
                     }
                 }
             }
         }
 
         return $items;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalizedValue($code, $data, $options = [])
+    {
+        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        if (null === $attribute) {
+            return $data;
+        }
+
+        $attributeType = $attribute->getAttributeType();
+        if (null === $attributeType) {
+            return $data;
+        }
+
+        $localizer = $this->localizerRegistry->getLocalizer($attributeType);
+        if (null === $localizer) {
+            return $data;
+        }
+
+        return $localizer->convertDefaultToLocalized($data, $options);
     }
 
     /**
@@ -65,7 +88,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      *
      * @return array
      */
-    protected function convertAttribute(LocalizerInterface $localizer, array $item, array $options, $code)
+    protected function convertLocalizedToDefaultValue(LocalizerInterface $localizer, array $item, array $options, $code)
     {
         if ($localizer->isValid($item['data'], $options, $code)) {
             $item['data'] = $localizer->convertLocalizedToDefault($item['data'], $options);

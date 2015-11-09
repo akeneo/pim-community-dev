@@ -30,10 +30,22 @@ class PriceLocalizer extends AbstractNumberLocalizer
      */
     public function convertLocalizedToDefault($prices, array $options = [])
     {
-        foreach ($prices as $i => $price) {
+        foreach ($prices as $index => $price) {
             if (isset($price['data'])) {
-                $prices[$i]['data'] = $this->convertNumberToDefault($price['data'], $options);
+                $prices[$index]['data'] = $this->convertNumberToDefault($price['data'], $options);
             }
+        }
+
+        return $prices;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalized($prices, array $options = [])
+    {
+        foreach ($prices as $index => $price) {
+            $prices[$index]['data'] = parent::convertDefaultToLocalized($price['data'], $options);
         }
 
         return $prices;

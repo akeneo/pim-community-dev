@@ -44,4 +44,20 @@ interface LocalizerRegistryInterface
      * @param LocalizerInterface $localizer
      */
     public function addProductValueLocalizer(LocalizerInterface $localizer);
+
+    /**
+     * Get localizer for an attribute option name
+     *
+     * @param string $optionName
+     *
+     * @return LocalizerInterface|null
+     */
+    public function getAttributeOptionLocalizer($optionName);
+
+    /**
+     * Add a localizer for a product value
+     *
+     * @param LocalizerInterface $localizer
+     */
+    public function addAttributeOptionLocalizer(LocalizerInterface $localizer);
 }

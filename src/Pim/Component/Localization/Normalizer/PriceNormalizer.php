@@ -42,7 +42,9 @@ class PriceNormalizer implements NormalizerInterface
         $price = $this->priceNormalizer->normalize($price, $format, $context);
 
         foreach ($price as $currency => $data) {
-            $price[$currency] = $this->localizer->convertDefaultToLocalized($data, $context);
+            $formattedPrice = [['currency' => $currency, 'data' => $data]];
+            $localizedPrice = $this->localizer->convertDefaultToLocalized($formattedPrice, $context);
+            $price[$currency] = $localizedPrice[0]['data'];
         }
 
         return $price;
