@@ -71,14 +71,13 @@ class Edit extends Form
         });
     }
 
-    public function verifyAfterLogin()
+    public function verifyPage()
     {
-        $formContainer = $this->find('css', 'div.product-edit-form');
-        if (!$formContainer) {
-            return false;
-        }
+        $formContainer = $this->spin(function () {
+            return $this->find('css', 'div#product-edit-form');
+        }, 'Verify product edit page');
 
-        return true;
+        return null !== $formContainer;
     }
 
     /**

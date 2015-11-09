@@ -120,6 +120,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->password = $username;
 
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+        $this->openPage('user login');
+        $this->login();
     }
 
     /**
@@ -182,7 +184,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
         if (!$not) {
-            return $this->iAmOnThePage($page);
+            $this->iAmOnThePage($page);
+            return null;
         }
 
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
@@ -738,28 +741,23 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param string $page
+     * @param string $pagename
      * @param array  $options
+     *
+     * @throws \Exception
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($page, array $options = [])
+    public function openPage($pagename, array $options = [])
     {
-        $this->currentPage = $page;
+        $this->currentPage = $pagename;
 
-        /** @var Base $page */
-        $page = $this->getCurrentPage()->open($options);
+        /** @var \Context\Page\Base\Base $page */
+        $page = $this->getMainContext()->spin(function () use ($options) {
+            $page = $this->getCurrentPage()->open($options);
 
-        // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page, $options) {
-            if ($this->loginIfRequired()) {
-                $page = $this->getCurrentPage()->open($options);
-                $this->wait();
-            }
-
-            return $page->verifyAfterLogin();
-        }, 'Trying to open page ' . $this->currentPage);
-        $this->wait();
+            return $page;
+        }, 'Trying to opening page ' . $this->currentPage);
 
         return $page;
     }
@@ -830,7 +828,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @return bool true if login was required, false if not
      */
-    protected function loginIfRequired()
+    protected function login()
     {
         $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
         if ($loginForm) {
@@ -858,5 +856,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * @return FeatureContext
+     */
+    public function getMainContext()
+    {
+        return parent::getMainContext();
     }
 }
