@@ -166,7 +166,7 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.updated');
 
             return new JsonResponse([
-                'route'  => 'pim_enrich_variant_group_edit_localized',
+                'route'  => 'pim_enrich_variant_group_edit',
                 'params' => ['id' => $group->getId(), 'dataLocale' => $this->userContext->getCurrentLocale()->getCode()]
             ]);
         }
