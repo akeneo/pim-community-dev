@@ -1,20 +1,20 @@
-{% if form %}
-    {% form_theme form with ['OroConfigBundle:Form:fields.html.twig', 'PimUIBundle:Form:pim-fields.html.twig'] %}
-{% endif %}
-{% import 'OroConfigBundle::macros.html.twig' as configUI %}
-
-{% set pageTitle = 'Configuration' %}
+{% extends 'PimEnrichBundle::layout.html.twig' %}
 
 {% block content %}
-    {{ configUI.renderTitle(pageTitle, []) }}
-    {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
+    <div id="oro_system_config_form"></div>
 
     <script type="text/javascript">
-        /* jshint browser:true, devel:true */
-        /* global require */
-        require(['oro/form/state'], function (formState) {
+        require(['pim/fetcher-registry', 'pim/form-builder', 'routing'], function (FetcherRegistry, FormBuilder, Routing) {
             'use strict';
-            new formState();
+            FetcherRegistry.initialize().done(function () {
+                $.when(
+                    FormBuilder.build('oro-system-config-form'),
+                    $.get(Routing.generate('oro_config_configuration_system_get'))
+                ).then(function(form, response) {
+                    form.setData(response[0]);
+                    form.setElement('#oro_system_config_form').render();
+                });
+            });
         });
     </script>
 {% endblock content %}

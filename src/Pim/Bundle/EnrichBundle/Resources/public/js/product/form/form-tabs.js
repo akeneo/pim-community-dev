@@ -89,15 +89,12 @@ define(
                 this.ensureDefault();
                 var currentTab = this.getExtension(this.getCurrentTab());
                 if (currentTab) {
-                    var zone = this.getZone('container');
-                    zone.appendChild(currentTab.el);
                     this.renderExtension(currentTab);
                     this.resize();
                 }
 
                 var panelsExtension = this.getExtension('panels');
                 if (panelsExtension) {
-                    this.getZone('panels').appendChild(panelsExtension.el);
                     this.renderExtension(panelsExtension);
                 }
 

@@ -152,6 +152,11 @@ pim_enrich:
         link:
             back_to_grid: Back to grid
     entity:
+        save:
+            label: Save
+        info:
+            update_failed: Update failed
+            update_successful: Successfully updated
         product:
             title: product
             btn:
@@ -293,6 +298,10 @@ pim_enrich:
                 title: Add attribute option
                 confirm: Add
                 cancel: Cancel
+        entity:
+            switch:
+                no: No
+                yes: Yes
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

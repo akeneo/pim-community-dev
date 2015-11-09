@@ -1,10 +1,10 @@
 <li class="header"></li>
-<% _.each(attributeGroups, function (attributeGroup) { %>
-    <li data-attribute-group="<%- attributeGroup.code %>" class="<%- current === attributeGroup.code ? 'active' : '' %>">
+<% _.each(elements, function (element) { %>
+    <li data-element="<%- element.code %>" class="<%- current === element.code ? 'active' : '' %>">
         <a>
-            <span class="attribute-group-label"><%- i18n.getLabel(attributeGroup.label, locale, attributeGroup.code) %></span>
+            <span class="group-label"><%- i18n.getLabel(element.label, locale, element.code) %></span>
             <span class="badge-elements-container">
-                <% _.each(badges[attributeGroup.code], function(badge, type) { %>
+                <% _.each(badges[element.code], function(badge, type) { %>
                     <span class="<%- type %>-badge label"><%- badge %></span>
                 <% }) %>
             </span>
