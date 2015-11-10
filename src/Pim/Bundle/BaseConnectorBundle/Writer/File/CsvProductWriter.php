@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
+use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Pim\Bundle\ConnectorBundle\Writer\File\ContextableCsvWriter;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
@@ -18,6 +19,12 @@ class CsvProductWriter extends ContextableCsvWriter
     /** @var FileExporterInterface */
     protected $fileExporter;
 
+    /** @var string */
+    protected $bufferFile;
+
+    /** @var array */
+    protected $headers = [];
+
     /**
      * @param FileExporterInterface $fileExporter
      */
@@ -33,23 +40,59 @@ class CsvProductWriter extends ContextableCsvWriter
      */
     public function write(array $items)
     {
-        $products = [];
-
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
         }
 
         foreach ($items as $item) {
-            $products[] = $item['product'];
+            $this->writeProductToBuffer($item['product']);
+
             foreach ($item['media'] as $media) {
                 if ($media && isset($media['filePath']) && $media['filePath']) {
                     $this->copyMedia($media);
                 }
             }
         }
+    }
 
-        $this->items = array_merge($this->items, $products);
+    /**
+     * {@inheritdoc}
+     *
+     * Override of CsvWriter flush method to use the file buffer
+     */
+    public function flush()
+    {
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
+
+        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+
+        if (false === $csvFile = fopen($this->getPath(), 'w')) {
+            throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPath()]);
+        }
+
+        $header = $this->isWithHeader() ? $this->headers : [];
+        if (false === fputcsv($csvFile, $header, $this->delimiter)) {
+            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+        }
+
+        $bufferHandle = fopen($this->bufferFile, 'r');
+        $hollowProduct = array_fill_keys($this->headers, '');
+        while (null !== $bufferedProduct = $this->readProductFromBuffer($bufferHandle)) {
+            $fullProduct = array_replace($hollowProduct, $bufferedProduct);
+            if (false === fputcsv($csvFile, $fullProduct, $this->delimiter, $this->enclosure)) {
+                throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+            } elseif (null !== $this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
+        }
+
+        fclose($bufferHandle);
+        unlink($this->bufferFile);
+        fclose($csvFile);
     }
 
     /**
@@ -81,5 +124,38 @@ class CsvProductWriter extends ContextableCsvWriter
                 $media
             );
         }
+    }
+
+    /**
+     * Write the product data to the file buffer, and collect the headers
+     *
+     * @param array $product
+     */
+    protected function writeProductToBuffer(array $product)
+    {
+        if (!$this->bufferFile) {
+            $this->bufferFile = tempnam(sys_get_temp_dir(), 'pim_products_buffer_');
+        }
+
+        file_put_contents($this->bufferFile, json_encode($product) . "\n", FILE_APPEND);
+
+        $this->headers = $this->getAllKeys([
+            array_flip($this->headers),
+            $product
+        ]);
+    }
+
+    /**
+     * Read the next line from the products buffer
+     *
+     * @param resource $bufferHandle
+     *
+     * @return array|null
+     */
+    protected function readProductFromBuffer($bufferHandle)
+    {
+        $rawLine = fgets($bufferHandle);
+
+        return false !== $rawLine ? json_decode($rawLine, true) : null;
     }
 }
