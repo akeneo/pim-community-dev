@@ -38,6 +38,7 @@ services:
             - '@pimee_enrich.filter.product_edit_data'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+            - '@pim_localization.localizer.converter'
 
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%
