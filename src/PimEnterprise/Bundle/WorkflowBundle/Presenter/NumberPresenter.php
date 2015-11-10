@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,27 +16,25 @@ use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 
 /**
- * Present change on metric data
+ * Present changes on numbers
  *
- * @author Gildas Quemener <gildas@akeneo.com>
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class MetricPresenter extends AbstractProductValuePresenter implements TranslatorAwareInterface
+class NumberPresenter extends AbstractProductValuePresenter
 {
-    use TranslatorAware;
-
     /** @var LocalizerInterface */
-    protected $metricLocalizer;
+    protected $numberLocalizer;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param LocalizerInterface $metricLocalizer
+     * @param LocalizerInterface $numberLocalizer
      * @param LocaleResolver     $localeResolver
      */
-    public function __construct(LocalizerInterface $metricLocalizer, LocaleResolver $localeResolver)
+    public function __construct(LocalizerInterface $numberLocalizer, LocaleResolver $localeResolver)
     {
-        $this->metricLocalizer = $metricLocalizer;
+        $this->numberLocalizer = $numberLocalizer;
         $this->localeResolver  = $localeResolver;
     }
 
@@ -45,7 +43,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     public function supportsChange($attributeType)
     {
-        return AttributeTypes::METRIC === $attributeType;
+        return AttributeTypes::NUMBER === $attributeType;
     }
 
     /**
@@ -53,14 +51,9 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     protected function normalizeData($data)
     {
-        if (null === $data) {
-            return '';
-        }
-
         $locale = $this->localeResolver->getCurrentLocale();
-        $localizedData = $this->metricLocalizer->localize($data->getData(), ['locale' => $locale]);
 
-        return sprintf('%s %s', $localizedData, $this->translator->trans($data->getUnit()));
+        return $this->numberLocalizer->localize($data, ['locale' => $locale]);
     }
 
     /**
@@ -69,8 +62,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     protected function normalizeChange(array $change)
     {
         $locale = $this->localeResolver->getCurrentLocale();
-        $localizedData = $this->metricLocalizer->localize($change['data']['data'], ['locale' => $locale]);
 
-        return sprintf('%s %s', $localizedData, $this->translator->trans($change['data']['unit']));
+        return $this->numberLocalizer->localize(array_pop($change), ['locale' => $locale]);
     }
 }
