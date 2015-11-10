@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
+
 # 1.3.36 (2016-01-15)
 
 ## Bug fixes
