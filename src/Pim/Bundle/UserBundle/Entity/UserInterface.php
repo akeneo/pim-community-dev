@@ -476,14 +476,24 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setEmailNotifications($emailNotifications);
 
     /**
+     * @param string the view alias
+     *
      * @return DatagridView|null
      */
-    public function getDefaultProdGridView();
+    public function getDefaultGridView($alias);
 
     /**
-     * @param DatagridView|null $defaultProdGridView
+     * Get all default datagrid views
+     *
+     * @return DatagridView[]
+     */
+    public function getDefaultGridViews();
+
+    /**
+     * @param string            $alias
+     * @param DatagridView|null $defaultGridView
      *
      * @return UserInterface
      */
-    public function setDefaultProdGridView($defaultProdGridView);
+    public function setDefaultGridView($alias, $defaultGridView);
 }

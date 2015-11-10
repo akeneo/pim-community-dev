@@ -15,7 +15,7 @@ Feature: Datagrid views
     And I am on the products page
 
   Scenario: Successfully display the default view
-    Then I should see "Views My default view"
+    Then I should see the text "Views Default view"
 
   Scenario: Successfully create a new view
     Given I filter by "Family" with value "Sneakers"
@@ -23,7 +23,7 @@ Feature: Datagrid views
       | label | Sneakers only |
     Then I should be on the products page
     And I should see a flash message "Datagrid view successfully created"
-    And I should see "Views Sneakers only"
+    And I should see the text "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
@@ -31,7 +31,7 @@ Feature: Datagrid views
     Given I filter by "Family" with value "Boots"
     Then I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
-    When I apply the "My default view" view
+    When I apply the "Default view" view
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Successfully update a view
@@ -40,7 +40,7 @@ Feature: Datagrid views
       | label | Some shoes |
     Then I should be on the products page
     And I should see a flash message "Datagrid view successfully created"
-    And I should see "Views Some shoes"
+    And I should see the text "Views Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I hide the filter "Family"
@@ -49,7 +49,7 @@ Feature: Datagrid views
     And I update the view
     And I apply the "Some shoes" view
     Then I should be on the products page
-    And I should see "Views Some shoes"
+    And I should see the text "Views Some shoes"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
@@ -59,14 +59,14 @@ Feature: Datagrid views
       | label | Boots only |
     Then I should be on the products page
     And I should see a flash message "Datagrid view successfully created"
-    And I should see "Views Boots only"
+    And I should see the text "Views Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see "Datagrid view successfully removed"
-    And I should see "Views My default view"
+    And I should see the text "Datagrid view successfully removed"
+    And I should see the text "Views Default view"
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
 
@@ -88,7 +88,7 @@ Feature: Datagrid views
     When I am on my profile page
     And I press the "Edit" button
     And I visit the "Additional" tab
-    Then I should see "Default product grid view"
+    Then I should see the text "Default product grid view"
     And I fill in the following information:
       | Default product grid view | Sneakers only |
     And I press the "Save" button
@@ -99,8 +99,30 @@ Feature: Datagrid views
     Then I logout
     And I am logged in as "Mary"
     And I am on the products page
-    Then I should see "Views Sneakers only"
+    Then I should see the text "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
     Then I press the "Reset" button
     Then I should see products black-boots, purple-sneakers and black-sneakers
+
+  Scenario: Successfully remove my default view
+    Given I filter by "Family" with value "Sneakers"
+    And I create the view:
+      | label | Sneakers only |
+    Then I should be on the products page
+    And I should see a flash message "Datagrid view successfully created"
+    When I am on my profile page
+    And I press the "Edit" button
+    And I visit the "Additional" tab
+    Then I should see the text "Default product grid view"
+    And I fill in the following information:
+      | Default product grid view | Sneakers only |
+    And I press the "Save" button
+    And I am on the products page
+    Then I should see the text "Views Sneakers only"
+    When I delete the view
+    And I confirm the deletion
+    Then I should be on the products page
+    And I should see the text "Datagrid view successfully removed"
+    And I should see the text "Views Default view"
+    But I should not see the text "Sneakers only"

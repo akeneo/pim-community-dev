@@ -2,7 +2,7 @@
     {% set hasDefaultView = false %}
 
     {% for view in views %}
-        {% if app.user.defaultProdGridView.id is defined and view.id == app.user.defaultProdGridView.id %}
+        {% if app.user.getDefaultGridView(alias) is not null and view.id == app.user.getDefaultGridView(alias).id %}
             {% set hasDefaultView = true %}
             {% set dataDefault    = '1' %}
         {% else %}

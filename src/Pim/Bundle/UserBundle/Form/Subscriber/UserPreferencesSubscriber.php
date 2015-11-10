@@ -65,7 +65,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
         $this->updateUiLocale($form);
-        $this->addDatagridDefaultView($form, $user);
     }
 
     /**
@@ -142,36 +141,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                         ->where('l.code IN (:locales)')
                         ->setParameter('locales', array_keys($locales));
                 }
-            ]
-        );
-    }
-
-    /**
-     * Add the product datagrid default view for the user
-     *
-     * @param FormInterface $form
-     * @param UserInterface $user
-     */
-    protected function addDatagridDefaultView(FormInterface $form, UserInterface $user)
-    {
-        $form->add(
-            'defaultProdGridView',
-            'entity',
-            [
-                'class'         => 'PimDataGridBundle:DatagridView',
-                'choice_label'  => 'label',
-                'label'         => 'user.default_product_grid_view.label',
-                'query_builder' => function (EntityRepository $gridViewRepository) use ($user) {
-                    return $gridViewRepository
-                        ->createQueryBuilder('v')
-                        ->where('v.owner = :user_id')
-                        ->andWhere('v.datagridAlias = :published')
-                        ->setParameters([
-                            'user_id'   => $user->getId(),
-                            'published' => 'product-grid'
-                        ]);
-                },
-                'required'      => false,
             ]
         );
     }

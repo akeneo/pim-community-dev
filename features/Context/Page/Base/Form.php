@@ -724,21 +724,17 @@ class Form extends Base
 
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
-
         foreach ($remainingValues as $value) {
             if (trim($value)) {
-                $label->getParent()->find('css', 'input[type="text"]')->click();
-                $this->getSession()->wait($this->getTimeout(), "$('div:contains(\"Searching\")').length == 0");
-                $option = $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
-                );
+                $label->click();
+                $label->click();
 
-                if (!$option) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
+                $option = $this->spin(function () use ($value) {
+                    return $this->find(
+                        'css',
+                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
                     );
-                }
+                }, sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText()));
 
                 $option->click();
             }
@@ -758,7 +754,6 @@ class Form extends Base
         if (trim($value)) {
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
                 $link->click();
-
                 $this->getSession()->wait($this->getTimeout(), '!$.active');
 
                 $field = $this->spin(function () use ($value) {
