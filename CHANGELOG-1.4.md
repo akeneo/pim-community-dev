@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5127: Improve products export memory usage
 - PIM-5148: IE11 wrong display on multiple select attributes
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
 
 # 1.4.8 (2015-11-09)
 

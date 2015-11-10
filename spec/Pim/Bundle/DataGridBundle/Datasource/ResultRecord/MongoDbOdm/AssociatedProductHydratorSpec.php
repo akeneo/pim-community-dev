@@ -62,6 +62,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             'current_product'          => $product,
         ];
 
+        $builder->find()->willReturn($builder);
+        $builder->count()->willReturn($builder);
         $builder->getQuery()->willReturn($query);
         $builder->hydrate(false)->willReturn($builder);
         $builder->setQueryArray(Argument::any())->willReturn($builder);
