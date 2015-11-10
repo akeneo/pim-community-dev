@@ -20,12 +20,6 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function __construct(array $parameters = [])
     {
-        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
-            $this->timeout = $parameters['timeout'];
-        } else {
-            $this->timeout = FeatureContext::DEFAULT_TIMEOUT;
-        }
-
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
         $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
@@ -38,6 +32,8 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
+
+        $this->setTimeout($parameters);
     }
 
     /**
