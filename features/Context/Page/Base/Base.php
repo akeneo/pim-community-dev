@@ -394,7 +394,6 @@ class Base extends Page
      */
     protected function getTimeout()
     {
-        // no way to retrieve the timeout from behat.yml at the moment
-        return FeatureContext::DEFAULT_TIMEOUT;
+        return FeatureContext::getTimeout();
     }
 }
