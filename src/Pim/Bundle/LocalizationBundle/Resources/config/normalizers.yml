@@ -7,6 +7,8 @@ parameters:
     pim_localization.normalizer.structured.price.class:         Pim\Component\Localization\Normalizer\Structured\PriceNormalizer
     pim_localization.normalizer.structured.product_value.class: Pim\Component\Localization\Normalizer\Structured\ProductValueNormalizer
 
+    pim_localization.normalizer.version.class: Pim\Bundle\LocalizationBundle\Normalizer\VersionNormalizer
+
 services:
     # flat normalizers
     pim_localization.normalizer.flat.metric:
@@ -17,6 +19,7 @@ services:
             - '@pim_localization.localizer.metric'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
     pim_localization.normalizer.flat.price:
         public: false
@@ -26,6 +29,7 @@ services:
             - '@pim_localization.localizer.price'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
     pim_localization.normalizer.flat.product_value:
         public: false
@@ -35,6 +39,7 @@ services:
             - '@pim_localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
     # structured normalizers
     pim_localization.normalizer.structured.metric:
@@ -63,3 +68,15 @@ services:
             - '@pim_localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
+
+    # others
+    pim_localization.normalizer.version:
+        decorates: pim_enrich.normalizer.version
+        decoration_inner_name: pim_localization.normalizer.version.inner
+        class: %pim_localization.normalizer.version.class%
+        arguments:
+            - '@pim_localization.normalizer.version.inner'
+            - '@pim_localization.localizer.converter'
+            - '@pim_localization.resolver.locale'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }

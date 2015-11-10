@@ -42,8 +42,10 @@ class MetricLocalizer extends AbstractNumberLocalizer
     {
         if (isset($metric['data'])) {
             $metric['data'] = parent::localize($metric['data'], $options);
+
+            return $metric;
         }
 
-        return $metric;
+        return parent::localize($metric, $options);
     }
 }
