@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
@@ -29,6 +30,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        LocalizerRegistryInterface $localizerRegistry,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -39,6 +41,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
+            $localizerRegistry,
             $userManager,
             $tokenStorage,
             $authorizationChecker

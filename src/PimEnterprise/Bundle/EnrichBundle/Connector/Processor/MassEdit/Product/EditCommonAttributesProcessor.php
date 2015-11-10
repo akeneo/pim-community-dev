@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -38,6 +39,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param LocalizerRegistryInterface           $localizerRegistry
      * @param UserManager                          $userManager
      * @param TokenStorageInterface                $tokenStorage
      * @param AuthorizationCheckerInterface        $authorizationChecker
@@ -48,6 +50,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        LocalizerRegistryInterface $localizerRegistry,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -57,7 +60,8 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $validator,
             $massActionRepository,
             $attributeRepository,
-            $jobConfigurationRepo
+            $jobConfigurationRepo,
+            $localizerRegistry
         );
 
         $this->tokenStorage         = $tokenStorage;
