@@ -26,10 +26,10 @@ class AttributeColumnsResolver
     protected $valuesResolver;
 
     /** @var array */
-    protected $attributesFields = null;
+    protected $attributesFields;
 
     /** @var string */
-    protected $identifierField = null;
+    protected $identifierField;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
@@ -51,7 +51,7 @@ class AttributeColumnsResolver
      */
     public function resolveIdentifierField()
     {
-        if (null === $this->identifierField) {
+        if (empty($this->identifierField)) {
             $attribute = $this->attributeRepository->getIdentifier();
             $this->identifierField = $attribute->getCode();
         }
@@ -64,7 +64,7 @@ class AttributeColumnsResolver
      */
     public function resolveAttributeColumns()
     {
-        if (null === $this->attributesFields) {
+        if (empty($this->attributesFields)) {
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
@@ -92,7 +92,6 @@ class AttributeColumnsResolver
                     $field = $value['attribute'];
                 }
 
-                $this->attributesFields = [];
                 if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
                     $this->attributesFields[] = $field;
                     foreach ($currencyCodes as $currencyCode) {
