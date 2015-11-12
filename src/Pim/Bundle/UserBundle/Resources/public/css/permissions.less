@@ -1,3 +1,5 @@
+@import '../../pimui/css/less/variables';
+
 /** Role form ********************************************************************************************************/
 .acl-group {
   margin-left: 20px;
@@ -11,7 +13,7 @@
 .acl-permission-toggle {
   padding: 5px;
   cursor: pointer;
-  font-size: 1.5em;
+  font-size: @font-size-15em;
   &.granted {
     color: #33be00;
   }
@@ -22,11 +24,11 @@
 }
 .acl-group-permission-toggle {
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: @font-size-12em;
   margin: 0;
   &.icon-circle {
     padding: 1px 7px 0 6px;
-    font-size: 1em;
+    font-size: @font-size-10em;
     color: #b9b9b9;
   }
   &.icon-ok {
