@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -64,19 +63,13 @@ class AvailableAttributesType extends BaseAvailableAttributesType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $revokedAttributeIds = $this->attGroupAccessRepo->getRevokedAttributeIds(
-            $this->userContext->getUser(),
-            Attributes::VIEW_ATTRIBUTES
-        );
-        $excludedAttributeIds = array_unique(array_merge($options['excluded_attributes'], $revokedAttributeIds));
-
         $builder->add(
             'attributes',
             'light_entity',
             [
                 'repository'         => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => $excludedAttributeIds,
+                    'excluded_attribute_ids' => $options['excluded_attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
