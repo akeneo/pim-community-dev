@@ -1,3 +1,5 @@
+@import '../../../css/less/variables';
+
 /*!
  * Bootstrap v2.3.2
  *
@@ -223,7 +225,7 @@ textarea {
 
 body {
   margin: 0;
-  font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: @sansFontFamily;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
@@ -739,7 +741,6 @@ h4,
 h5,
 h6 {
   margin: 10px 0;
-  font-family: inherit;
   font-weight: bold;
   line-height: 20px;
   color: inherit;
@@ -1065,7 +1066,7 @@ input,
 button,
 select,
 textarea {
-  font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: @sansFontFamily;
 }
 
 label {
@@ -4513,7 +4514,6 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   padding: 4px 14px;
   margin-bottom: 0;
-  font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;

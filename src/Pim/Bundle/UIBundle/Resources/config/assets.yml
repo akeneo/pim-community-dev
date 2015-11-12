@@ -1,6 +1,6 @@
 css:
     lib:
-        - bundles/pimui/lib/bootstrap/css/bootstrap.css
+        - bundles/pimui/lib/bootstrap/css/bootstrap.less
         # - bundles/pimui/lib/bootstrap/css/bootstrap-responsive.css
         - bundles/pimui/lib/font-awesome/css/font-awesome.css
         - bundles/pimui/lib/bootstrap-switch/bootstrap.switch.css
