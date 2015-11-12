@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 
@@ -27,6 +28,9 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var array */
+    protected $attrCodesByFamily;
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
@@ -40,6 +44,8 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+
+        $this->attrCodesByFamily = [];
     }
 
     /**
@@ -192,7 +198,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     protected function updateProductValues(ProductInterface $product, $attributeCode, array $values)
     {
         $family = $product->getFamily();
-        $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
+        $authorizedCodes = (null !== $family) ? $this->getAttributeCodesFromFamily($family) : [];
         $isFamilyAttribute = in_array($attributeCode, $authorizedCodes);
 
         foreach ($values as $value) {
@@ -228,5 +234,24 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
                 $this->templateUpdater->update($template, [$product]);
             }
         }
+    }
+
+    /**
+     * Get the attribute codes from the family and keep them available without
+     * regenerating the full list
+     *
+     * @param Family $family
+     *
+     * @return array
+     */
+    protected function getAttributeCodesFromFamily(Family $family)
+    {
+        $familyCode = $family->getCode();
+
+        if (!isset($this->attrCodesByFamily[$familyCode])) {
+            $this->attrCodesByFamily[$familyCode] = $family->getAttributeCodes();
+        }
+
+        return $this->attrCodesByFamily[$familyCode];
     }
 }

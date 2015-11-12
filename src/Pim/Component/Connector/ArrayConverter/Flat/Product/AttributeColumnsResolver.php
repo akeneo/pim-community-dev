@@ -68,6 +68,7 @@ class AttributeColumnsResolver
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
+            $this->attributesFields = [];
             foreach ($values as $value) {
                 if (null !== $value['locale'] && null !== $value['scope']) {
                     $field = sprintf(
@@ -92,7 +93,6 @@ class AttributeColumnsResolver
                     $field = $value['attribute'];
                 }
 
-                $this->attributesFields = [];
                 if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
                     $this->attributesFields[] = $field;
                     foreach ($currencyCodes as $currencyCode) {
