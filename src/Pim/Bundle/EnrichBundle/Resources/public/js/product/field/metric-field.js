@@ -47,7 +47,7 @@ define([
                 data = numericValue;
             }
 
-            var unit = this.$('.field-input:first .unit').val();
+            var unit = this.$('.field-input:first .unit').select2('val');
 
             this.setCurrentValue({
                 unit: '' !== unit ? unit : this.attribute.default_metric_unit,

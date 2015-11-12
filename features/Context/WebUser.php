@@ -2408,6 +2408,7 @@ class WebUser extends RawMinkContext
         unset($expectedLines[0]);
 
         foreach ($expectedLines as $expectedLine) {
+            $originalExpectedLine = $expectedLine;
             sort($expectedLine);
             $found = false;
             foreach ($actualLines as $index => $actualLine) {
@@ -2433,7 +2434,7 @@ class WebUser extends RawMinkContext
                 throw new \Exception(
                     sprintf(
                         'Could not find a line containing "%s" in %s',
-                        implode(' | ', $expectedLine),
+                        implode(' | ', $originalExpectedLine),
                         $path
                     )
                 );

@@ -5,7 +5,7 @@
 <ul class="dropdown-menu">
     <% _.each(channels, function (scope) { %>
         <li>
-            <a data-scope="<%- scope.code %>"><%- scope.label %></a>
+            <a data-scope="<%- scope.code %>" data-label="<%- scope.label %>"><%- scope.label %></a>
         </li>
     <% }); %>
 </ul>

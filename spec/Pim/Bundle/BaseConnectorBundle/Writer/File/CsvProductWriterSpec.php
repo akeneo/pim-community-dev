@@ -94,7 +94,17 @@ class CsvProductWriterSpec extends ObjectBehavior
         $fileExporter->export('1/2/3/4/1234-the-file.csv', '/tmp/test.csv', FileStorage::CATALOG_STORAGE_ALIAS)->shouldBeCalled();
 
         $this->getPath();
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write(
+            [
+                [
+                    'product' => [
+                        'sku'  => '001',
+                        'name' => 'Michel'
+                    ],
+                    'media'   => [$media]
+                ]
+            ]
+        );
         $this->getWrittenFiles()->shouldReturn(['/tmp/test.csv' => 'test.csv']);
         $stepExecution->addWarning()->shouldNotBeCalled();
     }
@@ -104,7 +114,17 @@ class CsvProductWriterSpec extends ObjectBehavior
         $media = ['filePath' => 'not-found.jpg', 'exportPath' => 'test.jpg', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
         $fileExporter->export('not-found.jpg', '/tmp/test.jpg', FileStorage::CATALOG_STORAGE_ALIAS)->willThrow(new FileTransferException());
 
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write(
+            [
+                [
+                    'product' => [
+                        'sku'  => '002',
+                        'name' => 'Mireille'
+                    ],
+                    'media'   => [$media]
+                ]
+            ]
+        );
         $this->getWrittenFiles()->shouldReturn([]);
         $stepExecution->addWarning('csv_product_writer', 'The media has not been found or is not currently available', [], $media)
             ->shouldBeCalled();
@@ -115,7 +135,17 @@ class CsvProductWriterSpec extends ObjectBehavior
         $media = ['filePath' => 'copy-error.jpg', 'exportPath' => 'test.jpg', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
         $fileExporter->export('copy-error.jpg', '/tmp/test.jpg', FileStorage::CATALOG_STORAGE_ALIAS)->willThrow(new \LogicException('Copy error.'));
 
-        $this->write([['product' => 'my-product', 'media' => [$media]]]);
+        $this->write(
+            [
+                [
+                    'product' => [
+                        'sku'  => '003',
+                        'name' => 'Monique'
+                    ],
+                    'media'   => [$media]
+                ]
+            ]
+        );
         $this->getWrittenFiles()->shouldReturn([]);
         $stepExecution->addWarning('csv_product_writer', 'The media has not been copied. Copy error.', [], $media)
             ->shouldBeCalled();

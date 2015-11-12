@@ -12,6 +12,9 @@ Feature: Edit a product
       | description | textarea | yes         | yes             | Description | yes      |
       | name        | text     | no          |                 | Name        | no       |
       | other_name  | text     | yes         |                 | Other Name  | yes      |
+    And the following attributes:
+      | code        | label      | type   | metric family | default metric unit |
+      | length      | Shoes size | metric | Length        | CENTIMETER          |
     And the following products:
       | sku    |
       | sandal |
@@ -22,6 +25,7 @@ Feature: Edit a product
       | sandal  | other_name  | My awesome sandals                   | en_US  | ecommerce |
       | sandal  | other_name  | My awesome sandals for mobile        | en_US  | mobile    |
       | sandal  | name        | My sandals name                      |        |           |
+      | sandal  | length      | 29 CENTIMETER                        |        |           |
 
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
@@ -32,7 +36,6 @@ Feature: Edit a product
     Then I should be on the product "sandal" edit page
     Then the product Name should be "My Sandal"
 
-  @javascript
   Scenario: Successfully updates the updated date of the product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
@@ -43,7 +46,6 @@ Feature: Edit a product
     And I press the "Save" button
     And the product "sandal" updated date should be close to "now"
 
-  @javascript
   Scenario: Don't see the attributes tab when the user can't edit a product
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
@@ -74,3 +76,24 @@ Feature: Edit a product
     And I filter by "Channel" with value "E-Commerce"
     When I am on the "sandal" product page
     Then the product Description should be "My awesome description for ecommerce"
+
+  Scenario: Successfully add a metric attribute to a product
+    Given I am logged in as "Julia"
+    And I am on the "sandal" product page
+    When I change the "Shoes size" to "29 DEKAMETER"
+    And I save the product
+    Then the product Shoes size should be "29 DEKAMETER"
+
+  Scenario: Successfully switch the product scope
+    And I am logged in as "Peter"
+    When I am on the channel creation page
+    And I fill in the following information:
+      | Code          | channel_code      |
+      | Default label | The channel label |
+      | Category tree | Master catalog    |
+      | Currencies    | EUR               |
+      | Locales       | French            |
+    And I press the "Save" button
+    And I am on the "sandal" product page
+    Then I switch the scope to "channel_code"
+    And I should see the text "The channel label"

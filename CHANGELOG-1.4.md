@@ -1,3 +1,19 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5127: Improve products export memory usage
+- PIM-5148: IE11 wrong display on multiple select attributes
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
+- PIM-5150: Improve the product grid loading performance when a lot of attribute filters are available
+
+# 1.4.8 (2015-11-09)
+
+## Bug fixes
+- PIM-5036: Fix metric select2 bug in PEF
+- PIM-5119: Fix the "Manage filters", which was very slow when there was a lot of attributes to display
+- PIM-5121: Fix the channel code displayed instead of label
+- PIM-5139: Fix association grid performance and sorting issues
+ 
 # 1.4.7 (2015-11-03)
 
 ## Bug fixes

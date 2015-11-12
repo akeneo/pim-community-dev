@@ -42,34 +42,38 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'groupOrder'          => 1
             ]
         ];
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $configuration->offsetGetByPath($path)->willReturn($attributes);
+
+        $attributesConf = [ContextConfigurator::USEABLE_ATTRIBUTES_KEY => $attributes];
+        $configuration->offsetGet(ContextConfigurator::SOURCE_KEY)->willReturn($attributesConf);
+        $configuration->offsetGet(FilterConfiguration::FILTERS_KEY)->willReturn([]);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
         $registry->getConfiguration('pim_catalog_text')->willReturn(['filter' => ['text_config']]);
 
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
         $expectedConf = [
-            0            => 'identifier_config',
-            'data_name'  => 'sku',
-            'label'      => 'Sku',
-            'enabled'    => true,
-            'order'      => 1,
-            'group'      => 'General',
-            'groupOrder' => 1
+            'sku' => [
+                0            => 'identifier_config',
+                'data_name'  => 'sku',
+                'label'      => 'Sku',
+                'enabled'    => true,
+                'order'      => 1,
+                'group'      => 'General',
+                'groupOrder' => 1
+            ],
+            'name' => [
+                0            => 'text_config',
+                'data_name'  => 'name',
+                'label'      => 'Name',
+                'enabled'    => false,
+                'order'      => 2,
+                'group'      => 'General',
+                'groupOrder' => 1
+            ]
         ];
-        $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'name');
-        $expectedConf = [
-            0            => 'text_config',
-            'data_name'  => 'name',
-            'label'      => 'Name',
-            'enabled'    => false,
-            'order'      => 2,
-            'group'      => 'General',
-            'groupOrder' => 1
-        ];
-        $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
+
+        $configuration->offsetSet(FilterConfiguration::FILTERS_KEY, [
+            'columns' => $expectedConf
+        ])->shouldBeCalled();
 
         $this->configure($configuration);
     }
@@ -96,8 +100,9 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'groupOrder'          => 5
             ]
         ];
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $configuration->offsetGetByPath($path)->willReturn($attributes);
+
+        $attributesConf = [ContextConfigurator::USEABLE_ATTRIBUTES_KEY => $attributes];
+        $configuration->offsetGet(ContextConfigurator::SOURCE_KEY)->willReturn($attributesConf);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
         $registry->getConfiguration('pim_catalog_text')->willReturn([]);
