@@ -23,7 +23,7 @@ class AssociationColumnsResolver
     protected $associationTypeRepo;
 
     /** @var array */
-    protected $associationFieldsCache;
+    protected $associationFieldsCache = null;
 
     /**
      * @param AssociationTypeRepositoryInterface $repository
@@ -31,7 +31,6 @@ class AssociationColumnsResolver
     public function __construct(AssociationTypeRepositoryInterface $repository)
     {
         $this->associationTypeRepo = $repository;
-        $this->associationFieldsCache = [];
     }
 
     /**
@@ -41,7 +40,7 @@ class AssociationColumnsResolver
      */
     public function resolveAssociationColumns()
     {
-        if (empty($this->associationFieldsCache)) {
+        if (null === $this->associationFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->associationTypeRepo->findAll();
             foreach ($assocTypes as $assocType) {
