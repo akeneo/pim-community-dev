@@ -1,3 +1,8 @@
+# 1.3.31 (2015-11-12)
+
+## Technical improvements
+- Bump BatchBundle to not hydrate all JobExecution of a JobInstance during a the creation of a JobExecution
+
 # 1.3.30 (2015-11-03)
 
 ## Bug fixes
