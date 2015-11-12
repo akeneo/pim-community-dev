@@ -26,8 +26,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         FileStorerInterface $fileStorer,
-        ProductMassActionManager $massActionManager,
-        UserLocaleResolver $userLocaleResolver
+        ProductMassActionManager $massActionManager
     ) {
         $this->beConstructedWith(
             $productBuilder,
@@ -36,8 +35,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $attributeRepository,
             $normalizer,
             $fileStorer,
-            $massActionManager,
-            $userLocaleResolver
+            $massActionManager
         );
     }
 
@@ -181,9 +179,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getAllAttributes()->shouldReturn([$attr1, $attr2]);
     }
 
-    function it_gets_configuration($userLocaleResolver)
+    function it_gets_configuration($userContext)
     {
-        $userLocaleResolver->getOptions()->willReturn(['decimal_separator' => ',']);
-        $this->getBatchConfig()->shouldReturn('{\"filters\":null,\"actions\":[],\"decimal_separator\":\",\"}');
+        $userContext->getUiLocale()->willReturn('fr_FR');
+        $this->getBatchConfig()->shouldReturn('{\"filters\":null,\"actions\":[],\"locale\":\"fr_FR\"}');
     }
 }

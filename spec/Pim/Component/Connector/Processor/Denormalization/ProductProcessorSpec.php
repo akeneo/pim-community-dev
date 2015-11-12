@@ -144,6 +144,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -222,6 +223,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
@@ -325,6 +327,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -430,6 +433,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -469,8 +473,12 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_when_identifier_is_empty($arrayConverter, $productRepository, $localizedConverter)
-    {
+    function it_skips_a_product_when_identifier_is_empty(
+        $arrayConverter,
+        $productRepository,
+        $localizedConverter,
+        ConstraintViolationListInterface $violationList
+    ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
         $originalData = [
@@ -501,6 +509,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -518,7 +527,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $localizedConverter,
-        ProductInterface $product
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
@@ -574,6 +584,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -623,7 +634,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $localizedConverter,
-        ProductInterface $product
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
@@ -679,6 +691,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -731,7 +744,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productFilter,
         $localizedConverter,
-        ProductInterface $product
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
@@ -786,6 +800,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -896,6 +911,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'd/m/Y'
         ])->willReturn($postConverterData);
+        $localizedConverter->getViolations()->willReturn($violationList);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -950,10 +967,16 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
+        $data = $convertedData;
+        $data['number'][0]['data'] = '10.45';
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
-        ])->willThrow(new FormatLocalizerException('number', '.'));
+        ])->willReturn($data);
+
+        $violation = new ConstraintViolation(Argument::any(), Argument::any(), [], $product, 'number', '10,45');
+        $violations = new ConstraintViolationList([$violation]);
+        $localizedConverter->getViolations()->willReturn($violations);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -970,7 +993,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productFilter,
         $localizedConverter,
-        ProductInterface $product
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
@@ -1014,6 +1038,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'Y-m-d'
         ])->willReturn($postConvertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'number' => [
@@ -1122,6 +1147,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater

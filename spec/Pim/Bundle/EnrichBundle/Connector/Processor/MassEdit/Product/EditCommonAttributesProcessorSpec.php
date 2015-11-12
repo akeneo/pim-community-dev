@@ -122,7 +122,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                             'options' => []
                         ]
                     ],
-                    'decimal_separator' => ','
+                    'locale' => 'fr_FR'
                 ]
             )
         );
@@ -135,7 +135,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->isAttributeEditable($attribute)->willReturn(true);
 
         $localizerRegistry->getLocalizer('multi_select')->willReturn($localizer);
-        $localizer->delocalize(['2,5'], ['decimal_separator' => ','])->willReturn('2.5');
+        $localizer->delocalize(['2,5'], ['locale' => 'fr_FR'])->willReturn('2.5');
 
         $propertySetter->setData($product, 'categories', '2.5', [])->shouldBeCalled();
 
