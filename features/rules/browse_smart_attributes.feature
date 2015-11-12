@@ -28,3 +28,19 @@ Feature: Browse smart attributes in the attribute grid
       | filter | value | result  |
       | Smart  | yes   | name    |
       | Smart  | no    | 123, comment |
+
+  @info https://akeneo.atlassian.net/browse/PIM-5056
+  Scenario: Successfully display the correct amount of smart attribute on grid
+    Given the following product rule setter actions:
+      | rule  | field           | value         | locale | scope  |
+      | rule1 | comment         | Foo           |        |        |
+      | rule1 | description     | Foo           |en_US   | mobile |
+      | rule1 | handmade        | true          |        |        |
+      | rule1 | length          | 10,CENTIMETER |        |        |
+      | rule1 | price           | 2,EUR         |        |        |
+      | rule1 | number_in_stock | 2             |        |        |
+      | rule1 | destocking_date | 2015-05-26    |        |        |
+    And I am on the attributes page
+    And the product rule "rule1" is executed
+    When I filter by "Smart" with value "yes"
+    Then the grid should contain 8 elements

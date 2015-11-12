@@ -47,14 +47,15 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'groupOrder'          => 1
             ]
         ];
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $configuration->offsetGetByPath($path)->willReturn($attributes);
+        $key = 'source';
+        $configuration->offsetGet($key)->willReturn([
+            ContextConfigurator::USEABLE_ATTRIBUTES_KEY => $attributes
+        ]);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
         $registry->getConfiguration('pim_catalog_text')->willReturn(['filter' => ['text_config']]);
 
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
-        $expectedConf = [
+        $expectedConf1 = [
             0            => 'identifier_config',
             'data_name'  => 'sku',
             'label'      => 'Sku',
@@ -63,9 +64,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
             'group'      => 'General',
             'groupOrder' => 1
         ];
-        $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'name');
-        $expectedConf = [
+        $expectedConf2 = [
             0            => 'text_config',
             'data_name'  => 'name',
             'label'      => 'Name',
@@ -74,7 +73,13 @@ class FiltersConfiguratorSpec extends ObjectBehavior
             'group'      => 'General',
             'groupOrder' => 1
         ];
-        $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
+        $configuration->offsetSet(FilterConfiguration::FILTERS_KEY, [
+            'columns' => [
+                'sku' => $expectedConf1,
+                'name' => $expectedConf2
+            ]
+        ])->willReturn($configuration);
+        $configuration->offsetGet(FilterConfiguration::FILTERS_KEY)->willReturn([]);
 
         // and it adds the is owner filter
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission');

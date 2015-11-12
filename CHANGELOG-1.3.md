@@ -1,4 +1,11 @@
+# 1.3.x
+
+## Bug fixes
+PIM-5056: Fix issue on smart filter attribute grid
+
 # 1.3.29 (2015-10-27)
+
+# 1.3.30 (2015-11-03)
 
 ## Technical improvements
 - PIM-5028: Fix log levels in prod environment

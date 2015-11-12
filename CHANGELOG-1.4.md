@@ -1,3 +1,9 @@
+# 1.4.8 (2015-11-09)
+
+## Bug fixes
+- PIM-5044: Fix rule priority not taken into account in rule command
+- PIM-5149: Problem to access to mass edit executions in process tracker
+
 # 1.4.7 (2015-11-03)
 
 # 1.4.6 (2015-10-27)

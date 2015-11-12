@@ -75,18 +75,18 @@ class RunCommand extends ContainerAwareCommand
     /**
      * Run a single rule
      *
-     * @param DryRunnerInterface $runnerRegistry
-     * @param OutputInterface    $output
-     * @param RuleDefinition     $rule
-     * @param bool               $dryRun
-     * @param bool               $stopOnError
+     * @param DryRunnerInterface      $runnerRegistry
+     * @param OutputInterface         $output
+     * @param RuleDefinitionInterface $rule
+     * @param bool                    $dryRun
+     * @param bool                    $stopOnError
      *
      * @throws \Exception
      */
     protected function runRule(
         DryRunnerInterface $runnerRegistry,
         OutputInterface $output,
-        RuleDefinition $rule,
+        RuleDefinitionInterface $rule,
         $dryRun,
         $stopOnError
     ) {
@@ -128,7 +128,7 @@ class RunCommand extends ContainerAwareCommand
 
             $rules = [$rule];
         } else {
-            $rules = $repository->findAll();
+            $rules = $repository->findAllOrderedByPriority();
         }
 
         return $rules;
