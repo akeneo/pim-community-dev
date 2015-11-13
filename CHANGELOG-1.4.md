@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5147: do not apply permission restrictions on attribute groups for families
+
 # 1.4.9 (2015-11-12)
 
 # 1.4.8 (2015-11-09)
