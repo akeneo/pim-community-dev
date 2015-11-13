@@ -291,7 +291,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getActions()
     {
         $actions = [];
-        $options = ['entity' => 'product', 'locale' => $this->userContext->getUiLocale()];
+        $options = [
+            'entity'                     => 'product',
+            'locale'                     => $this->userContext->getUiLocale(),
+            'disable_grouping_separator' => true
+        ];
 
         foreach ($this->values as $value) {
             $rawData = $this->normalizer->normalize($value->getData(), 'json', $options);

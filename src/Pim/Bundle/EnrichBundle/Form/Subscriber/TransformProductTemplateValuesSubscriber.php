@@ -70,7 +70,8 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             'ProductValue[]',
             'json',
             [
-                'locale' => $this->localeResolver->getCurrentLocale(),
+                'locale'                     => $this->localeResolver->getCurrentLocale(),
+                'disable_grouping_separator' => true
             ]
         );
         $data->setValues($values);
@@ -88,8 +89,9 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
         }
 
         $options = [
-            'entity' => 'product',
-            'locale' => $this->localeResolver->getCurrentLocale(),
+            'entity'                     => 'product',
+            'locale'                     => $this->localeResolver->getCurrentLocale(),
+            'disable_grouping_separator' => true
         ];
         $valuesData = $this->normalizer->normalize($data->getValues(), 'json', $options);
         $data->setValuesData($valuesData);

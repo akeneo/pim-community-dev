@@ -56,7 +56,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $colorValue->getAttribute()->willReturn($color);
         $colorValue->setEntity(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))->willReturn($colorValue);
 
-        $options = ['locale' => 'en_US'];
+        $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $template->getValuesData()->willReturn(['color' => 'bar']);
         $denormalizer
@@ -72,8 +72,9 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
 
         $normalizer
             ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'json', [
-                'entity' => 'product',
-                'locale' => 'en_US',
+                'entity'                     => 'product',
+                'locale'                     => 'en_US',
+                'disable_grouping_separator' => true
             ])
             ->shouldBeCalled()
             ->willReturn(['name' => 'foo', 'color' => 'bar']);

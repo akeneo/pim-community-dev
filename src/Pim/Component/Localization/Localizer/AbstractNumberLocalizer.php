@@ -56,7 +56,10 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
 
         if (isset($options['locale'])) {
             $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::DECIMAL);
-            $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+
+            if (isset($options['disable_grouping_separator']) && true === $options['disable_grouping_separator']) {
+                $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+            }
 
             if (floor($number) != $number) {
                 $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);

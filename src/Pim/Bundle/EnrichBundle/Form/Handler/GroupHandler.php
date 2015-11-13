@@ -117,7 +117,7 @@ class GroupHandler implements HandlerInterface
         }
 
         $template   = $group->getProductTemplate();
-        $options    = ['locale' => $this->request->getLocale()];
+        $options    = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
         $valuesData = $this->localizedConverter->convert($template->getValuesData(), $options);
 
         $template->setValuesData($valuesData);

@@ -149,10 +149,11 @@ class ProductController
                 $product,
                 'internal_api',
                 [
-                    'locales'     => $locales,
-                    'channels'    => $channels,
-                    'filter_type' => 'pim.internal_api.product_value.view',
-                    'locale'      => $this->userContext->getUiLocale()->getCode()
+                    'locales'                    => $locales,
+                    'channels'                   => $channels,
+                    'filter_type'                => 'pim.internal_api.product_value.view',
+                    'locale'                     => $this->userContext->getUiLocale()->getCode(),
+                    'disable_grouping_separator' => true
                 ]
             )
         );
@@ -196,7 +197,8 @@ class ProductController
             $this->productSaver->save($product);
 
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api', [
-                'locale' => $this->userContext->getUiLocale()->getCode()
+                'locale'                     => $this->userContext->getUiLocale()->getCode(),
+                'disable_grouping_separator' => true,
             ]));
         } else {
             $errors = $this->transformViolations($violations, $product);
