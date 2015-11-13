@@ -73,7 +73,11 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      */
     public function addAttributes(ProductTemplateInterface $template, array $attributes)
     {
-        $options    = ['entity' => 'product', 'locale' => $this->localeResolver->getCurrentLocale()];
+        $options = [
+            'entity'                     => 'product',
+            'locale'                     => $this->localeResolver->getCurrentLocale(),
+            'disable_grouping_separator' => true
+        ];
         $values     = $this->buildProductValuesFromTemplateValuesData($template, $attributes);
         $valuesData = $this->normalizer->normalize($values, 'json', $options);
         $template->setValuesData($valuesData);
@@ -101,7 +105,10 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      */
     protected function buildProductValuesFromTemplateValuesData(ProductTemplateInterface $template, array $attributes)
     {
-        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $options = [
+            'locale'                     => $this->localeResolver->getCurrentLocale(),
+            'disable_grouping_separator' => true
+        ];
         $values  = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'json', $options);
         $product = new $this->productClass();
 

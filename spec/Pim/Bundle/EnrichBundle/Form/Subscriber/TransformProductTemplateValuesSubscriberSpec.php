@@ -52,7 +52,7 @@ class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
         $template->getValuesData()->willReturn(['foo' => 'bar']);
         $collection = new ArrayCollection([$value]);
 
-        $options = ['locale' => 'en_US'];
+        $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $localeResolver->getCurrentLocale()->willReturn('en_US');
 
         $denormalizer->denormalize(['foo' => 'bar'], 'ProductValue[]', 'json', $options)
@@ -76,8 +76,9 @@ class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
         $localeResolver->getCurrentLocale()->willReturn('en_US');
 
         $normalizer->normalize([$value], 'json', [
-            'entity' => 'product',
-            'locale' => 'en_US',
+            'entity'                     => 'product',
+            'locale'                     => 'en_US',
+            'disable_grouping_separator' => true
         ])->willReturn(['foo' => 'bar']);
 
         $template->setValuesData(['foo' => 'bar'])->shouldBeCalled();
