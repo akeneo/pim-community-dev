@@ -13,10 +13,11 @@
 - PIM-5119: Fix the "Manage filters", which was very slow when there was a lot of attributes to display
 - PIM-5121: Fix the channel code displayed instead of label
 - PIM-5139: Fix association grid performance and sorting issues
- 
+
 # 1.4.7 (2015-11-03)
 
 ## Bug fixes
+- PIM-5079: Add batch jobs script for 1.3 to 1.4 migration
 - PIM-5078: Fix category move action
 - PIM-4925: Fix dashboard patch available information
 - PIM-5082: Fix variant group modal display in product edit form (in mongo storage)
@@ -28,7 +29,8 @@
 # 1.4.6 (2015-10-27)
 
 ## Bug fixes
-- PIM-5051: Fix mass delete products error on versionning 
+- PIM-5051: Fix mass delete products error on versionning
+- PIM-5055: Fix medias migration for removed medias in product values
 
 # 1.4.5 (2015-10-23)
 
@@ -41,6 +43,7 @@
 
 ## Bug fixes
 - PIM-5016: Fix import product with only sku and family columns
+- PIM-5017: Fix media migration with lots of files
 - PIM-5000: Fix the products on which mass actions are applied
 - PIM-5006: Fix the API key generation
 
@@ -67,6 +70,7 @@
 - PIM-4458: Fix name display in pinbar for product edit pages
 
 ## BC breaks
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\MassEditActionController`, added `$gridNameRouteMapping` as the last argument.
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
 
 # 1.4.1 (2015-09-24)
