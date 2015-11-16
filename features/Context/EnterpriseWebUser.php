@@ -440,4 +440,15 @@ class EnterpriseWebUser extends BaseWebUser
             return $this->getCurrentPage()->find('css', $locator);
         });
     }
+
+    /**
+     * @param string $label
+     * @param string $expected
+     *
+     * @Then /^the compared field ([^"]*) should contain "([^"]*)"$/
+     */
+    public function theComparedFieldShouldContain($label, $expected)
+    {
+        return $this->theFieldShouldContain($label, $expected, true);
+    }
 }
