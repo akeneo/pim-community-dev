@@ -168,7 +168,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheRelativePath($path, $referer)
     {
         $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+        $uri      = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
 
         $this->getSession()->visit($uri);
     }
@@ -759,7 +759,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             }
 
             return $page->verifyAfterLogin();
-        });
+        }, 'Trying to open page ' . $this->currentPage);
         $this->wait();
 
         return $page;

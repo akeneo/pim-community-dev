@@ -1,0 +1,15 @@
+parameters:
+    oro_config.controller.configuration.class: Oro\Bundle\ConfigBundle\Controller\Rest\ConfigurationController
+
+services:
+    oro_config.controller.configuration:
+        class: %oro_config.controller.configuration.class%
+        arguments:
+            - '@oro_config.global'
+            -
+                -
+                    section: oro_locale
+                    name: language
+                -
+                    section: pim_analytics
+                    name: version_update

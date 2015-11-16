@@ -15,12 +15,15 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /** @var LocalizerInterface[] */
     protected $valueLocalizers = [];
 
+    /** @var LocalizerInterface[] */
+    protected $optionLocalizers = [];
+
     /**
      * {@inheritdoc}
      */
     public function getLocalizer($attributeType)
     {
-        return $this->getSupporterLocalizer($this->localizers, $attributeType);
+        return $this->getSupportingLocalizer($this->localizers, $attributeType);
     }
 
     /**
@@ -38,7 +41,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      */
     public function getProductValueLocalizer($attributeType)
     {
-        return $this->getSupporterLocalizer($this->valueLocalizers, $attributeType);
+        return $this->getSupportingLocalizer($this->valueLocalizers, $attributeType);
     }
 
     /**
@@ -52,18 +55,36 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     }
 
     /**
-     * Returns a LocalizerInterface supporting an attributeType.
+     * {@inheritdoc}
+     */
+    public function getAttributeOptionLocalizer($optionName)
+    {
+        return $this->getSupportingLocalizer($this->optionLocalizers, $optionName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAttributeOptionLocalizer(LocalizerInterface $localizer)
+    {
+        $this->optionLocalizers[] = $localizer;
+
+        return $this;
+    }
+
+    /**
+     * Returns a LocalizerInterface supporting a value.
      *
      * @param LocalizerInterface[] $localizers
-     * @param string               $attributeType
+     * @param string               $value
      *
      * @return LocalizerInterface|null
      */
-    protected function getSupporterLocalizer(array $localizers, $attributeType)
+    protected function getSupportingLocalizer(array $localizers, $value)
     {
         if (!empty($localizers)) {
             foreach ($localizers as $localizer) {
-                if ($localizer->supports($attributeType)) {
+                if ($localizer->supports($value)) {
                     return $localizer;
                 }
             }

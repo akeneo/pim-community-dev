@@ -139,9 +139,14 @@ config:
         pim/media-url-generator:            pimenrich/js/generator/media-url-generator
 
         # Form
-        pim/form-builder:                                          pimenrich/js/form/builder
-        pim/form-registry:                                         pimenrich/js/form/registry
-        pim/form-config-provider:                                  pimenrich/js/form/config-provider
+        pim/form-builder:                   pimenrich/js/form/builder
+        pim/form-registry:                  pimenrich/js/form/registry
+        pim/form-config-provider:           pimenrich/js/form/config-provider
+        pim/form/common/group-selector:     pimenrich/js/form/common/group-selector
+        pim/form/common/save:               pimenrich/js/form/common/save
+
+        pim/form:                           pimenrich/js/product/form
+
         pim/product-edit-form/cache-invalidator:                   pimenrich/js/form/cache-invalidator
         pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
@@ -158,7 +163,6 @@ config:
         pim/product-edit-form/associations:                        pimenrich/js/product/form/associations
         pim/product-edit-form/panel/panels:                        pimenrich/js/product/form/panel/panels
         pim/product-edit-form/panel/selector:                      pimenrich/js/product/form/panel/selector
-        pim/form:                                                  pimenrich/js/product/form
         pim/product-edit-form/locale-switcher:                     pimenrich/js/product/form/locale-switcher
         pim/product-edit-form/scope-switcher:                      pimenrich/js/product/form/scope-switcher
         pim/product-edit-form/form-tabs:                           pimenrich/js/product/form/form-tabs
@@ -203,6 +207,9 @@ config:
         pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
         # Templates
+        pim/template/form/common/group-selector: pimenrich/templates/form/common/group-selector.html
+        pim/template/form/common/save:           pimenrich/templates/form/common/save.html
+
         pim/template/product/form:                                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:                         pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attributes:                         pimenrich/templates/product/tab/attributes.html

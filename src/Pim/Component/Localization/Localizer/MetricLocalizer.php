@@ -34,4 +34,14 @@ class MetricLocalizer extends AbstractNumberLocalizer
 
         return $metric;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalized($metric, array $options = [])
+    {
+        $metric['data'] = parent::convertDefaultToLocalized($metric['data'], $options);
+
+        return $metric;
+    }
 }

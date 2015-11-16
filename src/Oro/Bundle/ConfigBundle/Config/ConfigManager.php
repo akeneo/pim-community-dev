@@ -88,10 +88,6 @@ class ConfigManager
 
         list($updated, $removed) = $this->getChanged($newSettings);
 
-        if (!empty($removed)) {
-            $repository->removeValues($config->getId(), $removed);
-        }
-
         foreach ($updated as $newItemKey => $newItemValue) {
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
             $newItemValue = is_array($newItemValue) ? $newItemValue['value'] : $newItemValue;

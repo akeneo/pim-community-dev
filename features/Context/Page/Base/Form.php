@@ -34,7 +34,7 @@ class Form extends Base
                 'Panel selector'                  => ['css' => '.panel-selector'],
                 'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
-                'Form Groups'                     => ['css' => '.attribute-group-selector'],
+                'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -176,7 +176,7 @@ class Form extends Base
             $groups = $this->getElement('Form Groups');
 
             $groupsContainer = $groups
-                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+                ->find('css', sprintf('.group-label:contains("%s")', $group));
 
             $button = null;
 
@@ -710,10 +710,6 @@ class Form extends Base
                 $closeButton->click();
             }
         }
-
-        // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
-        // wait for it to completly vanish in order to reopen select list
-        $this->getSession()->wait($this->getTimeout());
 
         $allValues = array_filter($allValues);
 

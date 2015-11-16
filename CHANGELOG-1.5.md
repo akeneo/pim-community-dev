@@ -3,6 +3,8 @@
 ## Technical improvements
 
 - PIM-4964: Use enable / disable import parameter only to create the product
+- Family is not hardcoded anymore
+- PIM-4743: Added the possibility to use optgroup in Oro ChoiceFilter
 
 ## Bug fixes
 
@@ -39,3 +41,6 @@
 - Change constructor of `Pim\Component\Localization\Normalizer\ProductValueNormalizer`. Add `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor`. Add `array` of available decimal separators and `array` of available date formats as third and fourth parameter.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Add `Pim\Component\Localization\Provider\DateFormatProviderInterface` as third parameter.
+- Change constructor of `Pim\Bundle\CatalogBundle\Factory\FamilyFactory`. Add family classname as last parameter.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController`. Add family classname as last parameter.
+- Change `Pim\Bundle\EnrichBundle\Controller\FamilyController` methods parameters for `editAction`, `removeAction`, `historyAction` and `addAttributesAction` changing Family by integer (id).

@@ -10,7 +10,6 @@ Feature: Change system locale
 
   Scenario: Successfully change pim locale without changing current user locales
     Given I edit the system configuration
-    When I uncheck the "Default" switch
     And I select French locale
     And I save the configuration
     Then the user "Peter" should have "en" locale
@@ -18,6 +17,5 @@ Feature: Change system locale
 
   Scenario: Should only see translated locales
     Given I edit the system configuration
-    When I uncheck the "Default" switch
     Then I should see English locale option
     And I should not see Breton locale option

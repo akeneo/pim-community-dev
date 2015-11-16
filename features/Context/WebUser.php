@@ -1933,7 +1933,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheWidgetsToLoad()
     {
-        $this->wait(false);
+        $this->iWaitSeconds(10);
         $this->wait();
     }
 
@@ -1942,7 +1942,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheOptionsToLoad()
     {
-        $this->wait(false);
+        $this->iWaitSeconds(10);
         $this->wait();
     }
 
@@ -2031,7 +2031,7 @@ class WebUser extends RawMinkContext
         $maxTime = 10000;
 
         while ($maxTime > 0) {
-            $this->wait(false);
+            $this->iWaitSeconds(10);
             $maxTime -= 1000;
             if ($this->getPage('Product edit')->getImagePreview()) {
                 return;
@@ -2241,7 +2241,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitSeconds($seconds)
     {
-        $this->wait(false);
+        sleep($seconds);
     }
 
     /**
@@ -2528,7 +2528,11 @@ class WebUser extends RawMinkContext
      */
     public function iSelectLanguage($language)
     {
-        $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+        $this->spin(function () use ($language) {
+            $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+
+            return true;
+        }, 'System locale field was not found');
     }
 
     /**
@@ -2543,7 +2547,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeLocaleOption($not, $locale)
     {
-        $selectNames = ['localization[oro_locale___language][value]', 'pim_user_user_form[uiLocale]'];
+        $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
         $field = null;
         foreach ($selectNames as $selectName) {
             $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);

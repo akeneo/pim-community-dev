@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Component\Localization\Formatter\FormatterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -14,18 +14,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class NumberProperty extends FieldProperty
 {
-    /** @var FormatterInterface */
-    protected $formatter;
+    /** @var LocalizerInterface */
+    protected $localizer;
 
     /**
      * @param TranslatorInterface $translator
-     * @param FormatterInterface  $formatter
+     * @param LocalizerInterface  $localizer
      */
-    public function __construct(TranslatorInterface $translator, FormatterInterface $formatter)
+    public function __construct(TranslatorInterface $translator, LocalizerInterface $localizer)
     {
         parent::__construct($translator);
 
-        $this->formatter = $formatter;
+        $this->localizer = $localizer;
     }
 
     /**
@@ -34,7 +34,7 @@ class NumberProperty extends FieldProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        
-        return $this->formatter->format($result);
+
+        return $this->localizer->convertDefaultToLocalizedFromLocale($result, $this->translator->getLocale());
     }
 }

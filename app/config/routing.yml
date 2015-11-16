@@ -32,6 +32,9 @@ pim_pdf_generator:
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
 
+pim_localization:
+    resource: "@PimLocalizationBundle/Resources/config/routing.yml"
+
 pim_reference_data:
     resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 

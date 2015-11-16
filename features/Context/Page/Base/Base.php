@@ -377,10 +377,9 @@ class Base extends Page
      */
     public function hasSelectedLocale($locale)
     {
-        $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
-        if (null === $selectedLocale) {
-            throw new \Exception('Could not find locales in switcher.');
-        }
+        $selectedLocale = $this->spin(function () {
+            return $this->getElement('Locales dropdown')->find('css', 'li.active a');
+        }, 'Could not find locales in switcher.');
 
         $title = $selectedLocale->getAttribute('title');
         if ($locale !== $title) {
@@ -395,8 +394,7 @@ class Base extends Page
      */
     protected function getTimeout()
     {
-        // no way to retrieve the timeout from behat.yml at the moment
-        return FeatureContext::DEFAULT_TIMEOUT;
+        return FeatureContext::getTimeout();
     }
 
     /**

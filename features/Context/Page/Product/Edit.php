@@ -1649,7 +1649,7 @@ class Edit extends Form
         $groups = $this->getElement('Form Groups');
 
         $groupNode = $this->spin(function () use ($groups, $group) {
-            return $groups->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+            return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
         }, sprintf("Can't find attribute group '%s'", $group));
 
         return $groupNode->getParent()->getParent();

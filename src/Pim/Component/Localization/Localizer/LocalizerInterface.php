@@ -18,6 +18,8 @@ interface LocalizerInterface
 {
     const DEFAULT_DATE_FORMAT = 'Y-m-d';
 
+    const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     /**
      * Data provided respects the expected format ?
      *
@@ -42,7 +44,7 @@ interface LocalizerInterface
     public function convertLocalizedToDefault($data, array $options = []);
 
     /**
-     * Convert a default value to a localized format
+     * Convert a default value to a localized format depending on options
      *
      * @param mixed $data
      * @param array $options
@@ -50,6 +52,16 @@ interface LocalizerInterface
      * @return mixed
      */
     public function convertDefaultToLocalized($data, array $options = []);
+
+    /**
+     * Convert a default value to a localized format depending on a locale
+     *
+     * @param mixed  $data
+     * @param string $locale
+     *
+     * @return mixed
+     */
+    public function convertDefaultToLocalizedFromLocale($data, $locale);
 
     /**
      * Whether or not the class supports the localizer
