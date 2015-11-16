@@ -8,7 +8,7 @@
     {{ parent() }}
 
     {{ JSFV(form) }}
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operationAlias })) }) }}
+    {{ form_start(form, {'attr': {'class': operationAlias}, 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
         <div class="row">
             <div class="offset1 span12">
