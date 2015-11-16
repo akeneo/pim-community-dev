@@ -10,7 +10,12 @@
 
 ## BC breaks
 
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add `Pim\Component\Localization\LocaleConfiguration` 
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver`, `Pim\Component\Localization\Localizer\LocalizerInterface` and `Symfony\Component\Validator\Constraint`.
 - Add `Pim\Component\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Add an array `$decimalSeparators` to `Pim\Component\Connector\Reader\File\CsvProductReader`
 - Column 'comment' has been added on the `pim_notification_notification` table.
