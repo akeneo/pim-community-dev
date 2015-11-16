@@ -19,7 +19,9 @@
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Added argument `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Changed constructor of `PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer`, we now inject two renderer instead of one.
 - Changed constructor of `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension`, added AttributeRepositoryInterface as argument.
+- Changed constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`, added ProductDraftGrantedAttributeProvider and RequestStack as arguments.
 - Interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` have changed in order to add `hasChanges`, `getChangeForAttribute` and `removeChangeForAttribute` functions.
+- Interface `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface` have changed in order to add method `findApprovableByUserAndProductId`.
 - Added an argument to the `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` constructor.
 - Updated `PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface`, removed present method, added presentOriginal and presentNew.
 - Updated `PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface`, removed renderDiff method, added renderOriginalDiff and renderNewDiff.

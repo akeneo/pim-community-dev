@@ -29,10 +29,10 @@ class User extends BaseUser implements UserInterface
     protected $defaultAssetTree;
 
     /** @var bool Be notified when the user receives a proposal to review */
-    protected $proposalsToReviewNotification;
+    protected $proposalsToReviewNotification = true;
 
     /** @var bool Be notified when the user's proposal has been accepted or rejected */
-    protected $proposalsStateNotification;
+    protected $proposalsStateNotification = true;
 
     /**
      * {@inheritdoc}

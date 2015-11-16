@@ -8,6 +8,8 @@ user:
             yes: Yes
             no: No
     asset_delay_reminder: Asset delay reminder (in days)
+    default_published_product_grid_view:
+        label: Default published product grid view
 Default asset tree: Default asset tree
 pimee_user:
     user:

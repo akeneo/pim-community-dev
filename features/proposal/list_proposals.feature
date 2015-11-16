@@ -19,14 +19,16 @@ Feature: List proposals
       | hoodie  | jackets  | 2014_collection |
       | jacket  | jackets  | 2015_collection |
     And Mary proposed the following change to "tshirt":
-      | field | value          |
-      | Name  | Summer t-shirt |
+      | field       | value                      |
+      | Name        | Summer t-shirt             |
+      | Description | Summer t-shirt description |
     And Sandra proposed the following change to "sweater":
       | field | value          |
       | Name  | Winter sweater |
     And Julia proposed the following change to "jacket":
-      | field | value         |
-      | Name  | Autumn jacket |
+      | field       | value         | tab     |
+      | Name        | Autumn jacket | General |
+      | Price       | 10 USD        | Sales   |
     And Mary proposed the following change to "hoodie":
       | field | value              |
       | Name  | Hoodie for hackers |
@@ -38,11 +40,15 @@ Feature: List proposals
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
     And I should be able to use the following filters:
-      | filter        | value         | result          |
-      | Author        | Julia         | jacket          |
-      | Author        | Sandra,Mary   | sweater, tshirt |
-      | Product label | tshirt        | tshirt          |
-      | Product label | tshirt,jacket | tshirt, jacket  |
+      | filter        | value             | result                  |
+      | Author        | Julia             | jacket                  |
+      | Author        | Sandra,Mary       | sweater, tshirt         |
+      | Product label | tshirt            | tshirt                  |
+      | Product label | tshirt,jacket     | tshirt, jacket          |
+      | Attribute     | Name              | tshirt, sweater, jacket |
+      | Attribute     | Description       | tshirt                  |
+      | Attribute     | Price             | jacket                  |
+      | Attribute     | Description,Price | tshirt, jacket          |
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "admin"

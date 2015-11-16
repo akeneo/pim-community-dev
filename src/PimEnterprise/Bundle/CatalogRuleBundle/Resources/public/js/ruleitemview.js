@@ -24,7 +24,7 @@ define(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
-                        '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
+                        '<span class="rule-item-emphasize action-type set-value"><%= set_value_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
@@ -38,7 +38,7 @@ define(
                             '<%= rulePart.from_field %>' +
                             '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize action-type"><%= copy_value_label %></span>' +
+                        '<span class="rule-item-emphasize action-type copy-value"><%= copy_value_label %></span>' +
                         '<span class="action-field to-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +

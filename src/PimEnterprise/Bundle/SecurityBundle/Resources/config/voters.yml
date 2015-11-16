@@ -1,4 +1,5 @@
 parameters:
+    pimee_security.voter.attribute.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeVoter
     pimee_security.voter.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter
     pimee_security.voter.category.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
     pimee_security.voter.product.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter
@@ -9,6 +10,13 @@ parameters:
     pimee_security.voter.category_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryOwnerVoter
 
 services:
+    pimee_security.voter.attribute:
+        class: %pimee_security.voter.attribute.class%
+        arguments:
+            - @pimee_security.voter.attribute_group
+        tags:
+            - { name: security.voter }
+
     pimee_security.voter.attribute_group:
         class: %pimee_security.voter.attribute_group.class%
         arguments:

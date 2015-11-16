@@ -98,6 +98,15 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getProductChoices'
+                attribute:
+                    type:        product_draft_attribute_choice
+                    ftype:       choice
+                    data_name:   changes.values
+                    label:       pimee_workflow.product_draft.attribute.label
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getAttributeChoices'
         sorters:
             columns:
                 author:

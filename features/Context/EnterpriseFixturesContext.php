@@ -832,7 +832,15 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         if (in_array($type, ['product category', 'asset category', 'locale'])) {
-            return ($action === 'edit') ? Attributes::EDIT_ITEMS : Attributes::VIEW_ITEMS;
+            switch ($action) {
+                case 'own':
+                    return Attributes::OWN_PRODUCTS;
+                case 'edit':
+                    return Attributes::EDIT_ITEMS;
+                case 'view':
+                default:
+                    return Attributes::VIEW_ITEMS;
+            }
         }
 
         throw new \Exception('Undefined access type');
@@ -1281,10 +1289,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = (string) $data;
                     break;
                 case 'pim_catalog_number':
-                    $value = (int) $data;
+                    $value = (float) $data;
                     break;
                 case 'pim_catalog_metric':
-                    $values = explode(',', $data);
+                    $values = explode(' ', $data);
                     $value = ['unit' => $values[1], 'data' => $values[0]];
                     break;
                 case 'pim_catalog_multiselect':
@@ -1292,7 +1300,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = explode(',', str_replace(' ', '', $data));
                     break;
                 case 'pim_catalog_price_collection':
-                    $values = explode(',', $data);
+                    $values = explode(' ', $data);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
                     break;
                 case 'pim_catalog_boolean':

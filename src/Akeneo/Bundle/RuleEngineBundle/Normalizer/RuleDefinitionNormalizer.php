@@ -27,14 +27,14 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($ruleDefinition, $format = null, array $context = [])
     {
         return [
-            'id'       => $object->getId(),
-            'code'     => $object->getCode(),
-            'type'     => $object->getType(),
-            'priority' => $object->getPriority(),
-            'content'  => $object->getContent(),
+            'id'       => $ruleDefinition->getId(),
+            'code'     => $ruleDefinition->getCode(),
+            'type'     => $ruleDefinition->getType(),
+            'priority' => $ruleDefinition->getPriority(),
+            'content'  => $ruleDefinition->getContent(),
         ];
     }
 
@@ -43,7 +43,6 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof RuleDefinitionInterface &&
-            in_array($format, $this->supportedFormats);
+        return $data instanceof RuleDefinitionInterface && in_array($format, $this->supportedFormats);
     }
 }
