@@ -87,11 +87,13 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
         }
 
         $matchesNumber = $this->getMatchesNumber($number);
-        if (!isset($matchesNumber['decimal'])) {
-            return $number;
+        if (!isset($matchesNumber['decimal']) && is_numeric($number)) {
+            return (float) $number;
+        } else if (isset($matchesNumber['decimal'])) {
+            return (float) str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
         }
 
-        return str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
+        return $number;
     }
 
     /**
