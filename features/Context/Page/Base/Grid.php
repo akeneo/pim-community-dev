@@ -319,7 +319,13 @@ class Grid extends Index
     public function pageSizeIs($num)
     {
         assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
+        $toolbar = $this->getElement('Grid toolbar');
+        $element = $this->spin(
+            function () use ($toolbar) {
+                return $toolbar->find('css', '.page-size');
+            },
+            'Cannot find page-size element'
+        );
         assertNotNull($element->find('css', sprintf('button:contains("%d")', $num)));
     }
 
