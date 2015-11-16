@@ -5,6 +5,9 @@ namespace Akeneo\Component\Buffer;
 use Akeneo\Component\Buffer\Exception\UnsupportedItemTypeException;
 
 /**
+ * A buffer is an object able to read and write items. It is a simple iterator with an additional write() method.
+ * The behavior of the buffer (FIFO / LIFO) and how the items are stocked must be defined by the implementation.
+ *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -12,9 +15,9 @@ use Akeneo\Component\Buffer\Exception\UnsupportedItemTypeException;
 interface BufferInterface extends \Iterator
 {
     /**
-     * @param mixed $item
+     * @param mixed $item                   The item to write in the buffer
      *
-     * @throws UnsupportedItemTypeException
+     * @throws UnsupportedItemTypeException If the buffer implementation does not support item of this type
      */
     public function write($item);
 }

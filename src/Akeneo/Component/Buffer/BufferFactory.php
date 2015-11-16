@@ -14,7 +14,7 @@ use Akeneo\Component\Buffer\Exception\InvalidClassNameException;
 class BufferFactory implements BufferFactoryInterface
 {
     /** @var string */
-    private $className;
+    protected $className;
 
     /**
      * @param string $className
