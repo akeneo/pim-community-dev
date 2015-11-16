@@ -1180,7 +1180,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'Tshirt',
         ];
 
-        $localizedConverter->convert($convertedData, [
+        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);

@@ -649,13 +649,11 @@ class Grid extends Index
      */
     public function applyView($viewLabel)
     {
-        try {
-            $this->findView($viewLabel)->click();
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to apply view "%s"', $viewLabel)
-            );
-        }
+        $view = $this->spin(function () use ($viewLabel) {
+            return $this->findView($viewLabel);
+        }, sprintf('Impossible to find view "%s"', $viewLabel));
+
+        $view->click();
     }
 
     /**

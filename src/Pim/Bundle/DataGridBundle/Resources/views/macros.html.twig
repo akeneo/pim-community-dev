@@ -21,7 +21,7 @@
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderStatefulGrid(name, params = {}, renderParams = {}, categoryBaseRoute = null) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
@@ -29,25 +29,27 @@
             function ($, Routing, datagridBuilder, PageableCollection, DatagridState, CategoryFilter) {
                 'use strict';
                 $(function() {
-                    var urlParams = {{ params|json_encode|raw }};
-                    urlParams.alias = '{{ name }}';
+                    var urlParams    = {{ params|json_encode|raw }};
+                    urlParams.alias  = '{{ name }}';
                     urlParams.params = {{ params|json_encode|raw }};
 
-                    var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+                    {% set hasDefaultView = defaultView is not empty %}
+                    var hasDefaultView = {% if hasDefaultView %}true{% else %}false{% endif %};
+                    var state          = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
 
-                    if (state.view) {
-                        urlParams['{{ name }}[_parameters][view][id]'] = state.view;
-                    }
+                    var applyView = function (viewId) {
+                        urlParams['{{ name }}[_parameters][view][id]'] = viewId;
+                    };
 
-                    if (state.filters) {
+                    var applyFilters = function (rawFilters) {
                         var collection = new PageableCollection();
+                        var filters    = collection.decodeStateData(rawFilters);
 
-                        var filters = collection.decodeStateData(state.filters);
                         collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
 
                         for (var column in filters.sorters) {
                             urlParams['{{ name }}[_sort_by][' + column + ']'] =
-                                parseInt(filters.sorters[column]) === 1 ?
+                                1 === parseInt(filters.sorters[column]) ?
                                     'DESC' :
                                     'ASC';
                         }
@@ -55,10 +57,37 @@
                         if (undefined != filters.pageSize) {
                             urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
                         }
-                    }
+                    };
 
-                    if (state.columns) {
-                        urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
+                    var applyColumns = function (columns) {
+                        if (_.isArray(columns)) {
+                            columns = columns.join();
+                        }
+                        urlParams['{{ name }}[_parameters][view][columns]'] = columns;
+                    };
+
+                    if (hasDefaultView &&
+                        null === state.view &&
+                        null === state.filters &&
+                        null === state.columns
+                    ) {
+                        {% if hasDefaultView %}
+                            applyView({{ defaultView.id }});
+                            applyFilters('{{ defaultView.filters|raw }}');
+                            applyColumns({{ defaultView.columns|json_encode|raw }});
+                        {% endif %}
+                    } else {
+                        if (state.view) {
+                            applyView(state.view);
+                        }
+
+                        if (state.filters) {
+                            applyFilters(state.filters);
+                        }
+
+                        if (state.columns) {
+                            applyColumns(state.columns);
+                        }
                     }
 
                     {% if categoryBaseRoute is not null %}

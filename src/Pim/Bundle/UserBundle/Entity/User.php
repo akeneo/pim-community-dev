@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -133,6 +134,9 @@ class User implements UserInterface
     /** @var CategoryInterface */
     protected $defaultTree;
 
+    /** @var ArrayCollection */
+    protected $defaultGridViews;
+
     /** @var bool */
     protected $emailNotifications = false;
 
@@ -141,9 +145,10 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->salt   = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles  = new ArrayCollection();
-        $this->groups = new ArrayCollection();
+        $this->salt             = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles            = new ArrayCollection();
+        $this->groups           = new ArrayCollection();
+        $this->defaultGridViews = new ArrayCollection();
     }
 
     /**
@@ -979,6 +984,49 @@ class User implements UserInterface
     public function setProductGridFilters(array $productGridFilters = [])
     {
         $this->productGridFilters = $productGridFilters;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultGridView($alias)
+    {
+        foreach ($this->defaultGridViews as $datagridView) {
+            if ($datagridView->getDatagridAlias() === $alias) {
+                return $datagridView;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultGridViews()
+    {
+        $views = [];
+        foreach ($this->defaultGridViews as $datagridView) {
+            $views[$datagridView->getDatagridAlias()] = $datagridView;
+        }
+
+        return $views;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultGridView($alias, $defaultGridView)
+    {
+        if (null !== $gridView = $this->getDefaultGridView($alias)) {
+            $this->defaultGridViews->removeElement($gridView);
+        }
+
+        if (null !== $defaultGridView) {
+            $this->defaultGridViews->set($alias, $defaultGridView);
+        }
 
         return $this;
     }
