@@ -5,7 +5,9 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
+use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -32,6 +34,9 @@ class UserType extends AbstractType
     /** @var GroupRepository  */
     protected $groupRepository;
 
+    /** @var EventDispatcherInterface  */
+    protected $eventDispatcher;
+
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
@@ -44,19 +49,22 @@ class UserType extends AbstractType
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
+     * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         Request $request,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
-        GroupRepository $groupRepository
+        GroupRepository $groupRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->isMyProfilePage = $request->attributes->get('_route') === 'oro_user_profile_update';
-        $this->subscriber = $subscriber;
-        $this->roleRepository = $roleRepository;
-        $this->groupRepository = $groupRepository;
+        $this->tokenStorage     = $tokenStorage;
+        $this->isMyProfilePage  = $request->attributes->get('_route') === 'oro_user_profile_update';
+        $this->subscriber       = $subscriber;
+        $this->roleRepository   = $roleRepository;
+        $this->groupRepository  = $groupRepository;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -66,6 +74,7 @@ class UserType extends AbstractType
     {
         $this->addEntityFields($builder);
 
+        $this->eventDispatcher->dispatch(UserFormBuilderEvent::POST_BUILD, new UserFormBuilderEvent($builder));
         $builder->addEventSubscriber($this->subscriber);
     }
 

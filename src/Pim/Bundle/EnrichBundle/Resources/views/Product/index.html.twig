@@ -20,17 +20,27 @@
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
     {% endset %}
-
+    {% set gridAlias = 'product-grid' %}
     {% set subtitle %}
         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
             'locales':           locales,
             'currentLocaleCode': dataLocale.code,
             'routeName':         'pim_enrich_product_index'
         } only %}
-        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'product-grid' })) }}
+        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': gridAlias })) }}
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle) }}
+
+    {% if app.user.getDefaultGridView(gridAlias) is not null %}
+        {% set defaultView = {
+            'id' : app.user.getDefaultGridView(gridAlias).id,
+            'filters' : app.user.getDefaultGridView(gridAlias).filters,
+            'columns' : app.user.getDefaultGridView(gridAlias).columns,
+        } %}
+    {% else %}
+        {% set defaultView = {} %}
+    {% endif %}
 
     {% if resource_granted('pim_enrich_product_category_list') %}
         <script type="text/javascript">
@@ -46,13 +56,13 @@
         <div class="row-fluid has-sidebar">
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
             <div id="product-grid">
-                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+                {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>
     {% else %}
         <div class="row-fluid">
             <div id="product-grid">
-                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+                {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>
     {% endif %}

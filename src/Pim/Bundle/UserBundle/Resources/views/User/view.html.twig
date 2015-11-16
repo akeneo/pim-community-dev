@@ -110,6 +110,22 @@
       {% set filters = filters|merge([filter_label(filter)]) %}
     {% endfor %}
 
+    {% set additionalData = [
+        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
+        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
+        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', '))
+    ] %}
+
+    {% for view in entity.getDefaultGridViews() %}
+        {% set additionalData = additionalData|merge([
+            UI.attibuteRow(
+                'user.default_' ~ view.datagridAlias|replace('-', '_') ~ '_view.label'|trans,
+                view.label|default('user.default_grid_view.none'|trans)
+            )
+        ]) %}
+    {% endfor %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -117,12 +133,7 @@
             'subblocks': [
                 {
                     'title': '',
-                    'data': [
-                        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
-                        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
-                        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', ')),
-                    ]
+                    'data': additionalData
                 },
                 {
                     'title': '',

@@ -81,7 +81,12 @@ API key: API key
 Generate key: Generate key
 Primary: primary
 Removed user: Removed user
-user.product_grid_filters: Product grid filters
+user:
+    product_grid_filters: Product grid filters
+    default_product_grid_view:
+        label: Default product grid view
+    default_grid_view:
+        none: None
 
 # Role
 Role: Role

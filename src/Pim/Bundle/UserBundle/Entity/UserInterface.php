@@ -13,6 +13,7 @@ use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -473,4 +474,26 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function setEmailNotifications($emailNotifications);
+
+    /**
+     * @param string the view alias
+     *
+     * @return DatagridView|null
+     */
+    public function getDefaultGridView($alias);
+
+    /**
+     * Get all default datagrid views
+     *
+     * @return DatagridView[]
+     */
+    public function getDefaultGridViews();
+
+    /**
+     * @param string            $alias
+     * @param DatagridView|null $defaultGridView
+     *
+     * @return UserInterface
+     */
+    public function setDefaultGridView($alias, $defaultGridView);
 }
