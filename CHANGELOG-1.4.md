@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5163: Fix the VersionRepository on MongoDB to take the most recent entry for product resources
+
 # 1.4.9 (2015-11-12)
 
 ## Bug fixes
