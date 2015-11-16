@@ -13,21 +13,33 @@
         });
     </script>
 
+    {% set gridAlias = 'published-product-grid' %}
+
     {% set subtitle %}
         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
             'locales':           locales,
             'currentLocaleCode': dataLocale,
             'routeName':         'pimee_workflow_published_product_index'
         } only %}
-        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'published-product-grid' })) }}
+        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': gridAlias })) }}
     {% endset %}
 
     {{ elements.page_header(title, [], subtitle) }}
 
+    {% if app.user.getDefaultGridView(gridAlias) is not null %}
+        {% set defaultView = {
+            'id' : app.user.getDefaultGridView(gridAlias).id,
+            'filters' : app.user.getDefaultGridView(gridAlias).filters,
+            'columns' : app.user.getDefaultGridView(gridAlias).columns,
+        } %}
+    {% else %}
+        {% set defaultView = {} %}
+    {% endif %}
+
     <div class="row-fluid has-sidebar">
         <div id="tree" data-datalocale="{{ dataLocale }}" data-relatedentity="product"></div>
         <div id="published-product-grid">
-            {{ dataGrid.renderStatefulGrid('published-product-grid', { dataLocale: dataLocale }, {}, 'pim_enrich_published_product_categorytree') }}
+            {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale }, {}, defaultView, 'pim_enrich_published_product_categorytree') }}
         </div>
     </div>
 

@@ -45,7 +45,7 @@
             <div id="tree" data-datalocale="{{ locale_code() }}" data-relatedentity="asset"></div>
         {% endif %}
         <div id="product-grid">
-            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, 'pimee_asset_categorytree') }}
+            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, {}, 'pimee_asset_categorytree') }}
         </div>
     </div>
 {% endblock %}
