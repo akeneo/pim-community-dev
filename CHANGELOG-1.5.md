@@ -27,3 +27,5 @@
 - Updated `PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface`, removed renderDiff method, added renderOriginalDiff and renderNewDiff.
 - Replaced renderer `pimee_workflow.renderer.html.simple_list` by `pimee_workflow.renderer.html.base_only` and `pimee_workflow.renderer.html.changed_only`.
 - Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type`. Add argument `PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`.
+- Remove ProductValue repository from container
+- Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
