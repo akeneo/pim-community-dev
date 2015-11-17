@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -19,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductRepositoryInterface
+interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
      * Load a product entity with related attribute values
@@ -135,6 +136,8 @@ interface ProductRepositoryInterface
      * @param string|int $id
      *
      * @return ProductInterface|null
+     *
+     * @deprecated
      */
     public function findOneById($id);
 
