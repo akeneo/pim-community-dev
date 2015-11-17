@@ -92,3 +92,23 @@ jenkins-4:
             output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~skip-pef&&~doc
+
+ci:
+    context:
+        parameters:
+            base_url: http://localhost/
+            timeout: 30000
+            window_width: 1280
+            window_height: 1024
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://localhost/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app
