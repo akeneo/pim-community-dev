@@ -79,4 +79,18 @@ interface FamilyRepositoryInterface extends
      * @return int
      */
     public function countAll();
+
+    /**
+     * Returns an array of families with code and label
+     *
+     * @return array
+     */
+    public function getFamiliesTranslationsAsArray();
+
+    /**
+     * Returns an array of families with concatenated attributes code
+     *
+     * @return array
+     */
+    public function getFamiliesAttributeCodesAsArray();
 }
