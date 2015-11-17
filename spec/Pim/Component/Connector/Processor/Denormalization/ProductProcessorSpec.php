@@ -1211,6 +1211,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'decimal_separator' => '.',
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
+        $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
 
         $productUpdater

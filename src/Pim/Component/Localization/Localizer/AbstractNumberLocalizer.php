@@ -46,7 +46,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return $number;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
             $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::DECIMAL);
@@ -83,7 +83,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
         $matchesNumber = $this->getMatchesNumber($number);
         if (!isset($matchesNumber['decimal']) && is_numeric($number)) {
             return (float) $number;
-        } else if (isset($matchesNumber['decimal'])) {
+        } elseif (isset($matchesNumber['decimal'])) {
             return (float) str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
         }
 
@@ -99,7 +99,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return null;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale']) && !isset($options['decimal_separator'])) {
             $options['decimal_separator'] = $this->formatProvider->getFormat($options['locale'])['decimal_separator'];
@@ -137,7 +137,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
      *
      * @return array
      */
-    protected function checkOptions(array $options)
+    protected function getOptions(array $options)
     {
         if (isset($options['decimal_separator']) || isset($options['locale'])) {
             return $options;

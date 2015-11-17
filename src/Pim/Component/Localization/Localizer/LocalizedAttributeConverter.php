@@ -92,7 +92,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
             return $data;
         }
 
-        return $localizer->convertDefaultToLocalized($data, $options);
+        return $localizer->localize($data, $options);
     }
 
     /**

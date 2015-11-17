@@ -38,9 +38,15 @@ class MetricLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($metric, array $options = [])
+    public function localize($metric, array $options = [])
     {
-        $metric['data'] = parent::convertDefaultToLocalized($metric['data'], $options);
+        if (!is_array($metric)) {
+            return parent::localize($metric, $options);
+        }
+
+        if (isset($metric['data'])) {
+            $metric['data'] = parent::localize($metric['data'], $options);
+        }
 
         return $metric;
     }
