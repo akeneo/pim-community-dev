@@ -63,6 +63,8 @@ class GroupManager
     /**
      * Get available axis
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface[]
      */
     public function getAvailableAxis()
@@ -72,6 +74,8 @@ class GroupManager
 
     /**
      * Get axis as choice list
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
