@@ -22,10 +22,10 @@ trait SpinCapableTrait
     public function spin($callable, $message = 'no message')
     {
         $start   = microtime(true);
-        $timeout = FeatureContext::getTimeout();
-        $end     = $start + ($timeout / 1000.0);
+        $timeout = FeatureContext::getTimeout() / 1000.0;
+        $end     = $start + $timeout;
 
-        $logThreshold      = (int) $timeout * 0.8;
+        $logThreshold      = (int) $timeout * 0.5;
         $previousException = null;
         $result            = null;
 
@@ -43,7 +43,7 @@ trait SpinCapableTrait
         );
 
         if (!$result) {
-            $infos = sprintf('Spin : timeout of %d excedeed, with message : %s', $timeout, $message);
+            $infos = sprintf('Spin : timeout of %d sec excedeed, with message : %s', $timeout, $message);
             throw new TimeoutException($infos, 0, $previousException);
         }
 
