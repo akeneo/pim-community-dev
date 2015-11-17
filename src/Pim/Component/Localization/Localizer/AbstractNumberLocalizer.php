@@ -52,7 +52,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return $number;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
             $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::DECIMAL);
@@ -105,7 +105,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
             return null;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale']) && !isset($options['decimal_separator'])) {
             $options['decimal_separator'] = $this->formatProvider->getFormat($options['locale'])['decimal_separator'];
@@ -142,7 +142,7 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
      *
      * @return array
      */
-    protected function checkOptions(array $options)
+    protected function getOptions(array $options)
     {
         if (isset($options['decimal_separator']) || isset($options['locale'])) {
             return $options;

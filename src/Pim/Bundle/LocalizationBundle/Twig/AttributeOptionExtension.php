@@ -67,7 +67,7 @@ class AttributeOptionExtension extends \Twig_Extension
             $locale = $this->getLocale();
 
             if (null !== $locale) {
-                return $localizer->convertDefaultToLocalizedFromLocale($value, $locale);
+                return $localizer->localize($value, ['locale' => $locale]);
             }
         }
 

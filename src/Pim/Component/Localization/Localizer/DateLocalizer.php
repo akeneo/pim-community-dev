@@ -54,7 +54,7 @@ class DateLocalizer implements LocalizerInterface
             return null;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
             $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
@@ -75,7 +75,7 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
             $options['date_format'] = 'Y-m-d';
@@ -99,7 +99,7 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options = $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
             $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
@@ -139,7 +139,7 @@ class DateLocalizer implements LocalizerInterface
      *
      * @return array
      */
-    protected function checkOptions(array $options)
+    protected function getOptions(array $options)
     {
         if (isset($options['locale']) || isset($options['date_format'])) {
             return $options;

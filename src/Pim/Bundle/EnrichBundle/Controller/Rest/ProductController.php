@@ -312,7 +312,8 @@ class ProductController
     protected function convertLocalizedAttributes(array $data)
     {
         $locale         = $this->userContext->getUiLocale()->getCode();
-        $data['values'] = $this->localizedConverter->convert($data['values'], ['locale' => $locale]);
+        $data['values'] = $this->localizedConverter
+            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
 
         return $data;
     }

@@ -61,6 +61,9 @@ services:
     pim_localization.localizer.attribute_option.number:
         class: %pim_localization.localizer.number.class%
         arguments:
+            - '@validator'
+            - '@pim_localization.provider.number_format'
+            - '@pim_localization.constraint.number_format'
             - ['number_min', 'number_max']
         tags:
             - { name: pim_localization.localizer.attribute_option }
