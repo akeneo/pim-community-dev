@@ -32,6 +32,7 @@ jenkins-1:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat1
+                debug: false
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
@@ -50,6 +51,7 @@ jenkins-2:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat2
+                debug: false
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
@@ -68,6 +70,7 @@ jenkins-3:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat3
+                debug: false
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
@@ -86,6 +89,7 @@ jenkins-4:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat4
+                debug: false
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
@@ -106,6 +110,7 @@ ci:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
+                debug: false
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
