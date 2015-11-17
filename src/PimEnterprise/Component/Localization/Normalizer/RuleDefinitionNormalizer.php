@@ -87,22 +87,23 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /**
      * Convert a RuleDefinition content
      *
-     * @param  mixed $content
+     * @param array $content
      *
-     * @return mixed
+     * @return array
      */
-    protected function convertContent($content)
+    protected function convertContent(array $content)
     {
         $localeOptions = $this->getLocaleOptions();
 
         foreach ($content as $key => $items) {
-            foreach ($content[$key] as $index => $action) {
-                $localizedAction = $this->converter->convertDefaultToLocalizedValue(
-                    $action['field'],
-                    $action['value'],
-                    $localeOptions
-                );
-                $content[$key][$index]['value'] = $localizedAction;
+            foreach ($items as $index => $action) {
+                if (isset($action['field']) && isset($action['value'])) {
+                    $content[$key][$index]['value'] = $this->converter->convertDefaultToLocalizedValue(
+                        $action['field'],
+                        $action['value'],
+                        $localeOptions
+                    );
+                }
             }
         }
 
