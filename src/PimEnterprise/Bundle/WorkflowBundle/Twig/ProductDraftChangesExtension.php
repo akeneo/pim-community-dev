@@ -30,9 +30,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {
-    /** @var ObjectRepository */
-    protected $valueRepository;
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
@@ -55,7 +52,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected $twig;
 
     /**
-     * @param ObjectRepository                      $valueRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
@@ -63,14 +59,12 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
-        ObjectRepository $valueRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         ProductBuilderInterface $productBuilder,
         AttributeFactory $attributeFactory
     ) {
-        $this->valueRepository     = $valueRepository;
         $this->attributeRepository = $attributeRepository;
         $this->renderer            = $renderer;
         $this->translator          = $translator;

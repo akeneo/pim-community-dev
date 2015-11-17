@@ -27,7 +27,6 @@ services:
     pimee_workflow.twig.extension.product_draft_changes:
         class: %pimee_workflow.twig.extension.product_draft_changes.class%
         arguments:
-            - '@pim_catalog.repository.product_value'
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
