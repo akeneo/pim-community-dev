@@ -2,7 +2,9 @@
 
 namespace Context\Spin;
 
+use Behat\Mink\Exception\ExpectationException;
 use Context\FeatureContext;
+use PHPUnit_Framework_ExpectationFailedException;
 
 trait SpinCapableTrait
 {
@@ -22,8 +24,8 @@ trait SpinCapableTrait
     public function spin($callable, $message = 'no message')
     {
         $start   = microtime(true);
-        $timeout = FeatureContext::getTimeout();
-        $end     = $start + ($timeout / 1000.0);
+        $timeout = FeatureContext::getTimeout() / 1000.0;
+        $end     = $start + $timeout;
 
         $logThreshold      = (int) $timeout * 0.8;
         $previousException = null;
@@ -34,22 +36,24 @@ trait SpinCapableTrait
                 $result = $callable($this);
                 sleep(1);
             } catch (\Exception $e) {
+                printf("[%s] Exception %s thrown\n", date('y-md H:i:s'), $message);
                 $previousException = $e;
+                $result = null;
             }
         } while (
             microtime(true) < $end &&
             !$result &&
-            !$previousException instanceof TimeoutException
+            null === $previousException
         );
 
-        if (!$result) {
-            $infos = sprintf('Spin : timeout of %d excedeed, with message : %s', $timeout, $message);
+        if (!$result || $previousException) {
+            $infos = sprintf('Spin : timeout of %d sec excedeed, with message : %s', $timeout, $message);
             throw new TimeoutException($infos, 0, $previousException);
         }
 
         $elapsed = microtime(true) - $start;
         if ($elapsed >= $logThreshold) {
-            printf('[%s] Long spin detected with message : %s', date('y-md H:i:s'), $message);
+            printf("[%s] Long spin (%d sec) with message : %s\n", date('y-md H:i:s'), $elapsed, $message);
         }
 
         return $result;

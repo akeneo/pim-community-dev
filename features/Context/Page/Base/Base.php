@@ -35,8 +35,12 @@ class Base extends Page
     /**
      * {@inheritdoc}
      */
-    public function getElement($name, $message = 'no message')
+    public function getElement($name, $message = '')
     {
+        if (!$message) {
+            $message = sprintf('Get element %s', $name);
+        }
+
         return $this->spin(function () use ($name) {
             return parent::getElement($name);
         }, $message);

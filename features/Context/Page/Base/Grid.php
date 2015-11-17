@@ -55,24 +55,25 @@ class Grid extends Index
      */
     public function getGrid()
     {
-        try {
-            $grid = $this->spin(function () {
-                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']) +
-                    $this->getElement('Dialog')->findAll('css', $this->elements['Grid']['css']);
+        $grid = null;
 
-                foreach ($grids as $grid) {
-                    if ($grid->isVisible()) {
-                        return $grid;
-                    }
-                }
+        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
 
-                return false;
-            });
-
-            return $grid;
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('No visible grids found');
+        if (!$grids) {
+            $grids = $this->getElement('Dialog')->findAll('css', $this->elements['Grid']['css']);
         }
+
+        foreach ($grids as $grid) {
+            if ($grid->isVisible()) {
+                break;
+            }
+        }
+
+        if (null === $grid) {
+            throw new \InvalidArgumentException('No visible grid found');
+        }
+
+        return $grid;
     }
 
     /**
@@ -783,31 +784,34 @@ class Grid extends Index
     {
         try {
             /** @var NodeElement $checkbox */
-            $checkbox = $this->spin(function () use ($value, $check) {
-                $row = $this->getRow($value);
+            $checkbox = $this->spin(
+                function () use ($value, $check) {
+                    $row = $this->getRow($value);
 
-                if (!$row) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Couldn\'t find row for "%s"', $value)
-                    );
-                }
+                    if (!$row) {
+                        throw new \InvalidArgumentException(
+                            sprintf('Couldn\'t find row for "%s"', $value)
+                        );
+                    }
 
-                $checkbox = $row->find('css', 'input[type="checkbox"]');
+                    $checkbox = $row->find('css', 'input[type="checkbox"]');
 
-                if (!$checkbox) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Couldn\'t find a checkbox for row "%s"', $value)
-                    );
-                }
+                    if (!$checkbox) {
+                        throw new \InvalidArgumentException(
+                            sprintf('Couldn\'t find a checkbox for row "%s"', $value)
+                        );
+                    }
 
-                if ($check) {
-                    $checkbox->check();
-                } else {
-                    $checkbox->uncheck();
-                }
+                    if ($check) {
+                        $checkbox->check();
+                    } else {
+                        $checkbox->uncheck();
+                    }
 
-                return $checkbox;
-            });
+                    return $checkbox;
+                },
+                sprintf('Selecting row %s', $value)
+            );
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Couldn\'t find a checkbox for row "%s"', $value)

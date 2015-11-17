@@ -331,7 +331,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 "!$.active",                                   // No ajax request is active
                 "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
                 // Page is not loading (no black mask loading page)
-                "($('.loading-mask').length == 0 || $('.loading-mask').css('display') == 'none')",
+                "$('.loading-mask').css('display') == 'none'",
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading
             ];
 
