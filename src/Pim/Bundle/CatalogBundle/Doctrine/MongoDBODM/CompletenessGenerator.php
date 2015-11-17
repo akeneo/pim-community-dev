@@ -42,10 +42,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Constructor
      *
-     * @param DocumentManager           $documentManager
-     * @param string                    $productClass
-     * @param ChannelManager            $channelRepository
-     * @param FamilyRepositoryInterface $familyRepository
+     * @param DocumentManager            $documentManager
+     * @param string                     $productClass
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param FamilyRepositoryInterface  $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
@@ -139,7 +139,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $normalizedData = array_filter(
             $normalizedData,
             function ($value) {
-                return (null !== $value);
+                //TODO: should be dropped on master as we don't normalize anymore empty medias in the normalized data
+                $nullNormalizedMedia = ['filename' => null, 'originalFilename' => null];
+
+                return (null !== $value && $nullNormalizedMedia !== $value);
             }
         );
 
