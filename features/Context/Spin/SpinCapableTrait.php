@@ -2,7 +2,9 @@
 
 namespace Context\Spin;
 
+use Behat\Mink\Exception\ExpectationException;
 use Context\FeatureContext;
+use PHPUnit_Framework_ExpectationFailedException;
 
 trait SpinCapableTrait
 {
@@ -25,7 +27,7 @@ trait SpinCapableTrait
         $timeout = FeatureContext::getTimeout() / 1000.0;
         $end     = $start + $timeout;
 
-        $logThreshold      = (int) $timeout * 0.5;
+        $logThreshold      = (int) $timeout * 0.8;
         $previousException = null;
         $result            = null;
 
@@ -39,7 +41,10 @@ trait SpinCapableTrait
         } while (
             microtime(true) < $end &&
             !$result &&
-            !$previousException instanceof TimeoutException
+            !$previousException instanceof TimeoutException &&
+            !$previousException instanceof ExpectationException &&
+            // todo : should we be dependant of PHPUnit ?
+            !$previousException instanceof PHPUnit_Framework_ExpectationFailedException
         );
 
         if (!$result) {
