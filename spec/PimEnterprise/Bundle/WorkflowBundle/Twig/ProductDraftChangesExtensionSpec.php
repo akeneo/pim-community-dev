@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
@@ -18,7 +17,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ProductDraftChangesExtensionSpec extends ObjectBehavior
 {
     function let(
-        ObjectRepository $valueRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
@@ -26,7 +24,6 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         AttributeFactory $attributeFactory
     ) {
         $this->beConstructedWith(
-            $valueRepository,
             $attributeRepository,
             $renderer,
             $translator,
