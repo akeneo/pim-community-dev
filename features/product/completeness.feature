@@ -42,6 +42,28 @@ Feature: Display the completeness of a product
       | tablet  | English (United States) | warning | 6 missing values | 25%   |
       | tablet  | French (France)         | warning | 4 missing values | 50%   |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-5190
+  Scenario: Successfully display the completeness of the products with medias after a save
+    Given I am on the "sneakers" product page
+    And I save the product
+    When I visit the "Completeness" tab
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale                  | state   | message          | ratio |
+      | mobile  | English (United States) | success | Complete         | 100%  |
+      | mobile  | French (France)         | success | Complete         | 100%  |
+      | tablet  | English (United States) | warning | 1 missing value  | 89%   |
+      | tablet  | French (France)         | warning | 2 missing values | 78%   |
+    When I am on the "sandals" product page
+    And I visit the "Completeness" tab
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale                  | state   | message          | ratio |
+      | mobile  | English (United States) | warning | 3 missing values | 40%   |
+      | mobile  | French (France)         | warning | 2 missing values | 60%   |
+      | tablet  | English (United States) | warning | 6 missing values | 25%   |
+      | tablet  | French (France)         | warning | 4 missing values | 50%   |
+
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
     And I switch the locale to "English (United States)"
