@@ -11,11 +11,11 @@
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as EEUserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
+use PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as EEUserPreferencesSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
