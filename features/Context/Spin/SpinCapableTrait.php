@@ -36,18 +36,17 @@ trait SpinCapableTrait
                 $result = $callable($this);
                 sleep(1);
             } catch (\Exception $e) {
+                printf("[%s] Exception %s thrown\n", date('y-md H:i:s'), $message);
                 $previousException = $e;
+                $result = null;
             }
         } while (
             microtime(true) < $end &&
             !$result &&
-            !$previousException instanceof TimeoutException &&
-            !$previousException instanceof ExpectationException &&
-            // todo : should we be dependant of PHPUnit ?
-            !$previousException instanceof PHPUnit_Framework_ExpectationFailedException
+            null === $previousException
         );
 
-        if (!$result) {
+        if (!$result || $previousException) {
             $infos = sprintf('Spin : timeout of %d sec excedeed, with message : %s', $timeout, $message);
             throw new TimeoutException($infos, 0, $previousException);
         }
