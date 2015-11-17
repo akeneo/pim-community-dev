@@ -15,18 +15,16 @@ Feature: Show localized attributes in compare mode
       | sku     | decimal_number-en_US | decimal_price-fr_FR  | decimal_number-fr_FR | decimal_metric-fr_FR |
       | sandals | 1                    | 10.12 USD, 10.12 EUR | 12.1234              | 10.3456 CENTIMETER   |
 
-  Scenario:
+  Scenario: Successfully show English format numbers for English UI
     Given I am logged in as "Mary"
-    And I edit the "sandals" product
-    When I compare values with the "fr_FR" translation
-    Then the compared field decimal_price should contain "10.12"
-    And the compared field decimal_number should contain "12.1234"
-    And the compared field decimal_metric should contain "10.3456"
+    When I edit the "sandals" product
+    Then the decimal_price copy value for scope "ecommerce" and locale "fr_FR" should be "10.12"
+    And the decimal_number copy value for scope "ecommerce" and locale "fr_FR" should be "12.1234"
+    And the decimal_metric copy value for scope "ecommerce" and locale "fr_FR" should be "10.3456 CENTIMETER"
 
-  Scenario:
+  Scenario: Successfully show French format numbers for French UI
     Given I am logged in as "Julien"
-    And I edit the "sandals" product
-    When I compare values with the "fr_FR" translation
-    Then the compared field decimal_price should contain "10,12"
-    And the compared field decimal_number should contain "12,1234"
-    And the compared field decimal_metric should contain "10,3456"
+    When I edit the "sandals" product
+    Then the decimal_price copy value for scope "ecommerce" and locale "fr_FR" should be "10,12"
+    And the decimal_number copy value for scope "ecommerce" and locale "fr_FR" should be "12,1234"
+    And the decimal_metric copy value for scope "ecommerce" and locale "fr_FR" should be "10,3456 CENTIMETER"
