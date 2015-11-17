@@ -32,6 +32,11 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
 
+    function it_is_an_object_repository()
+    {
+        $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
+    }
+
     function it_aggregate_attributes_to_export($dm, Collection $collection, Cursor $cursor)
     {
         $dm->getDocumentCollection('foobar')->willReturn($collection);
