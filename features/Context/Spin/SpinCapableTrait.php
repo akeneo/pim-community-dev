@@ -22,20 +22,24 @@ trait SpinCapableTrait
     public function spin($callable, $message = 'no message')
     {
         $start   = microtime(true);
-        $timeout = FeatureContext::getTimeout();
-        $end     = $start + ($timeout / 1000.0);
+        $timeout = FeatureContext::getTimeout() / 1000.0;
+        $end     = $start + $timeout;
 
         $logThreshold      = (int) $timeout * 0.8;
         $previousException = null;
         $result            = null;
+        $looping           = false;
 
         do {
+            if ($looping) {
+                sleep(1);
+            }
             try {
                 $result = $callable($this);
-                sleep(1);
             } catch (\Exception $e) {
                 $previousException = $e;
             }
+            $looping = true;
         } while (
             microtime(true) < $end &&
             !$result &&
@@ -49,7 +53,7 @@ trait SpinCapableTrait
 
         $elapsed = microtime(true) - $start;
         if ($elapsed >= $logThreshold) {
-            printf('[%s] Long spin detected with message : %s', date('y-md H:i:s'), $message);
+            printf('[%s] Long spin (%d seconds) with message : %s', date('y-md H:i:s'), $elapsed, $message);
         }
 
         return $result;
