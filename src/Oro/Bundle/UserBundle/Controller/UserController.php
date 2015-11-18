@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends Controller
@@ -50,9 +51,16 @@ class UserController extends Controller
 
     /**
      * @AclAncestor("pim_user_user_edit")
+     *
+     * @param int $id
+     *
+     * @return JsonResponse|Response
      */
-    public function apigenAction(User $user)
+    public function apigenAction($id)
     {
+        $userRepository = $this->container->get('pim_user.repository.user');
+        $user           = $userRepository->findOneBy(['id' => $id]);
+
         if (!$api = $user->getApi()) {
             $api = new UserApi();
         }
