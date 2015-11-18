@@ -43,9 +43,11 @@ class Base extends Page
     }
 
     /**
-     * Verify that page is loaded after login
+     * Verify that page is loaded
+     *
+     * @return bool
      */
-    public function verifyAfterLogin()
+    public function verifyPage()
     {
         return true;
     }

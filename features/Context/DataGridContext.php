@@ -600,6 +600,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $entities = $this->getMainContext()->listToArray($entities);
 
+        sleep(FeatureContext::getTimeout() / 1000);
+
         foreach ($entities as $entity) {
             try {
                 $this->datagrid->getRow($entity);

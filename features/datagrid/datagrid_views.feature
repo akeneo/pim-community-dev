@@ -65,7 +65,7 @@ Feature: Datagrid views
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the text "Datagrid view successfully removed"
+    And I should see a flash message "Datagrid view successfully removed"
     And I should see the text "Views Default view"
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
