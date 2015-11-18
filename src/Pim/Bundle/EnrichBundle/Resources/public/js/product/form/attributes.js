@@ -159,7 +159,7 @@ define(
                 promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
                     .then(function (attributeGroups) {
                         this.getExtension('attribute-group-selector').setElements(
-                            _.sortBy(attributeGroups, 'sortOrder')
+                            _.indexBy(_.sortBy(attributeGroups, 'sortOrder'), 'code')
                         );
                     }.bind(this))
                 );
