@@ -7,6 +7,7 @@ parameters:
     pimee_product_asset.form.transformer.ajax_asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AjaxAssetTagTransformer
     pimee_product_asset.form.type.category.class:              PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryType
     pimee_product_asset.form.type.category_permissions.class:  PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType
+    pimee_product_asset.form.type.asset_collection.class:      PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetCollectionType
 
 services:
     pimee_product_asset.form.type.asset:
@@ -62,3 +63,11 @@ services:
         class: %pimee_product_asset.form.type.category_permissions.class%
         tags:
             - { name: form.type, alias: pimee_product_asset_category_permissions }
+
+    pimee_product_asset.form.type.asset_collection:
+        class: %pimee_product_asset.form.type.asset_collection.class%
+        arguments:
+            - '@pimee_product_asset.data_transformer.asset_to_string'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_assets_collection }

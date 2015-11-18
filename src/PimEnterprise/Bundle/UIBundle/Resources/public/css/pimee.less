@@ -218,7 +218,15 @@
   }
 }
 
-.akeneo-asset-collection-field.view {
+.legacy-asset-collection-field {
+  display: flex;
+
+  .asset-collection-picker {
+    flex: 1;
+  }
+}
+
+.akeneo-asset-collection-field.view, .disabled-fields {
   .asset-gallery {
     background-color: #eee;
 

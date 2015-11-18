@@ -9,7 +9,7 @@ define(
         'oro/messenger',
         'oro/mediator'
     ],
-    function(
+    function (
         $,
         _,
         FormModal,
@@ -26,7 +26,7 @@ define(
              *
              * @return {Object}
              */
-            init: function(gridElement, gridName) {
+            init: function (gridElement, gridName) {
                 var modal = new FormModal(
                     'pimee-workflow-partial-approve-proposal-comment',
                     function () {
@@ -44,7 +44,7 @@ define(
 
                     modal
                         .open()
-                        .then(function(myFormData) {
+                        .then(function (myFormData) {
                             var $this = $(this);
                             $.post(Routing.generate('pimee_workflow_product_draft_rest_partial_approve', {
                                 id: $this.data('product-draft'),

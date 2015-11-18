@@ -527,11 +527,13 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iStartToManageAssetsFor($field)
     {
-        $manageAssets = $this->spin(function () use ($field) {
-            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent()
-                ->find('css', '.add-asset');
-        });
+        $assetCollectionPicker = $this->spin(function () use ($field) {
+            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent();
+        }, 'Did not find the asset collection picker');
 
+        $manageAssets = $this->spin(function () use ($assetCollectionPicker) {
+            return $assetCollectionPicker->find('css', '.add-asset');
+        }, 'Did not find the manage asset button');
         $manageAssets->click();
 
         $this->spin(function () {

@@ -1,0 +1,7 @@
+parameters:
+    pimee_product_asset.data_transformer.asset_to_string.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AssetCollectionToStringTransformer
+services:
+    pimee_product_asset.data_transformer.asset_to_string:
+        class: %pimee_product_asset.data_transformer.asset_to_string.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'

@@ -42,9 +42,9 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('datagrid/attribute_types.yml');
         $loader->load('datagrid/configurators.yml');
         $loader->load('datagrid/data_sources.yml');
-        $loader->load('datagrid/hydrators.yml');
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
+        $loader->load('datagrid/hydrators.yml');
         $loader->load('datagrid/listeners.yml');
         $loader->load('datagrid/selectors.yml');
         $loader->load('denormalizers.yml');
@@ -67,15 +67,16 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('services.yml');
         $loader->load('steps.yml');
         $loader->load('subscribers.yml');
+        $loader->load('transformers.yml');
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
+        $loader->load('versioning/guessers.yml');
         $loader->load('view_elements/asset.yml');
         $loader->load('view_elements/category.yml');
-        $loader->load('versioning/guessers.yml');
         $loader->load('voters.yml');
-        $loader->load('writers.yml');
         $loader->load('workflow/presenters.yml');
+        $loader->load('writers.yml');
 
         $this->loadStorageDriver($container);
     }

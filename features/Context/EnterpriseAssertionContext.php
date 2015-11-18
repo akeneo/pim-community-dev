@@ -170,7 +170,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         return $this->spin(function () use ($code, $fieldContainer) {
             return $fieldContainer->find('css', sprintf('.asset-gallery li[data-asset="%s"]', $code));
-        });
+        }, sprintf('Cannot find the gallery item %s', $code));
     }
 
     /**
