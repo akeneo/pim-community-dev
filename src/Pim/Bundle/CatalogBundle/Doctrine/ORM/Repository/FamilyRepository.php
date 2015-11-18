@@ -229,4 +229,41 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         return $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamiliesTranslationsAsArray()
+    {
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->select('f.code AS code, ft.label, ft.locale')
+            ->join('f.translations', 'ft');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamiliesAttributeCodesAsArray()
+    {
+        $sql = 'SELECT f.code AS code, GROUP_CONCAT(a.code) AS attributes ' .
+               'FROM %s f ' .
+               'INNER JOIN pim_catalog_family_attribute fa ON f.id = fa.family_id ' .
+               'INNER JOIN pim_catalog_attribute a ON a.id = fa.attribute_id ' .
+               'GROUP BY f.id';
+
+        $metadata = $this->_em->getClassMetadata($this->_entityName);
+        $tableName = $metadata->getTableName();
+
+        $sql = sprintf($sql, $tableName);
+
+        $query = $this->getEntityManager()
+            ->getConnection()
+            ->prepare($sql);
+
+        $query->execute();
+
+        return $query->fetchAll();
+    }
 }
