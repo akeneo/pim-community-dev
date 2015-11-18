@@ -27,6 +27,10 @@ services:
 
     pim_ui.form.type.number:
         class: %pim_ui.form.type.number.class%
+        arguments:
+            - '@pim_localization.localizer.number'
+            - '@pim_localization.resolver.locale'
+            - '@pim_localization.constraint.number_format'
         tags:
             - { name: form.type, alias: pim_number }
 

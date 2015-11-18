@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Check if date provided respects the format expected and convert it
@@ -15,53 +15,77 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 class DateLocalizer implements LocalizerInterface
 {
-    /** @var array */
-    protected $attributeTypes;
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /** @var FormatProviderInterface */
     protected $formatProvider;
 
+    /** @var Constraint */
+    protected $dateConstraint;
+
+    /** @var array */
+    protected $attributeTypes;
+
     /**
+     * @param ValidatorInterface      $validator
      * @param FormatProviderInterface $formatProvider
+     * @param Constraint              $dateConstraint
      * @param array                   $attributeTypes
      */
-    public function __construct(FormatProviderInterface $formatProvider, array $attributeTypes)
-    {
+    public function __construct(
+        ValidatorInterface $validator,
+        FormatProviderInterface $formatProvider,
+        Constraint $dateConstraint,
+        array $attributeTypes
+    ) {
+        $this->validator      = $validator;
         $this->formatProvider = $formatProvider;
         $this->attributeTypes = $attributeTypes;
+        $this->dateConstraint = $dateConstraint;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValid($date, array $options = [], $attributeCode)
+    public function validate($date, array $options = [], $attributeCode)
     {
         if (null === $date || '' === $date) {
-            return true;
+            return null;
         }
 
-        $this->checkOptions($options);
+        $options = $this->getOptions($options);
 
-        $datetime = $this->getDateTime($date, $options);
-        if (false === $datetime) {
-            throw new FormatLocalizerException($attributeCode, $options['date_format']);
+        if (isset($options['locale'])) {
+            $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
         }
 
-        return true;
+        $this->dateConstraint->dateFormat = $options['date_format'];
+        $this->dateConstraint->path = $attributeCode;
+
+        return $this->validator->validate($date, $this->dateConstraint);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($date, array $options = [])
+    public function delocalize($date, array $options = [])
     {
-        $this->checkOptions($options);
-
         if (null === $date || '' === $date) {
             return $date;
         }
 
+        $options = $this->getOptions($options);
+
+        if (isset($options['locale'])) {
+            $options['date_format'] = 'Y-m-d';
+        }
+
         $datetime = $this->getDateTime($date, $options);
+
+        if (false === $datetime) {
+            return $date;
+        }
 
         return $datetime->format(static::DEFAULT_DATE_FORMAT);
     }
@@ -69,35 +93,22 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($date, array $options = [])
+    public function localize($date, array $options = [])
     {
-        $this->checkOptions($options);
-
         if (null === $date || '' === $date) {
             return $date;
+        }
+
+        $options = $this->getOptions($options);
+
+        if (isset($options['locale'])) {
+            $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
         }
 
         $datetime = new \DateTime();
         $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
 
         return $datetime->format($options['date_format']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function convertDefaultToLocalizedFromLocale($date, $locale)
-    {
-        if (null === $date || '' === $date) {
-            return $date;
-        }
-
-        $format = $this->formatProvider->getFormat($locale);
-
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
-
-        return $datetime->format($format);
     }
 
     /**
@@ -125,11 +136,15 @@ class DateLocalizer implements LocalizerInterface
 
     /**
      * @param array $options
+     *
+     * @return array
      */
-    protected function checkOptions(array $options)
+    protected function getOptions(array $options)
     {
-        if (!isset($options['date_format']) || '' === $options['date_format']) {
-            throw new MissingOptionsException('The option "date_format" do not exist.');
+        if (isset($options['locale']) || isset($options['date_format'])) {
+            return $options;
         }
+
+        return ['date_format' => LocalizerInterface::DEFAULT_DATE_FORMAT];
     }
 }

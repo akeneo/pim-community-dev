@@ -18,6 +18,7 @@ class Operation extends Wizard
     protected $steps = array(
         'Change status (enable / disable)' => 'Batch ChangeStatus',
         'Edit common attributes'           => 'Batch EditCommonAttributes',
+        'Modifier les attributs communs'   => 'Batch EditCommonAttributes',
         'Change the family of products'    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
         'Add to a variant group'           => 'Batch AddToVariantGroup',

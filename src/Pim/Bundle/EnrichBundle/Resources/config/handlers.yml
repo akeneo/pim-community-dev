@@ -44,6 +44,7 @@ services:
             - '@request'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.product'
+            - '@pim_localization.localizer.converter'
 
     pim_enrich.form.handler.group_type:
         class: %pim_enrich.form.handler.base.class%

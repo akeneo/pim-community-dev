@@ -14,8 +14,8 @@ use Context\Page\Base\Wizard;
 class EditCommonAttributes extends Wizard
 {
     protected $elements = array(
-        'Available attributes button'     => array('css' => 'button:contains("Select attributes")'),
-        'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Select")'),
+        'Available attributes button'     => array('css' => 'button.pimmultiselect'),
+        'Available attributes add button' => array('css' => '.pimmultiselect .ui-multiselect-footer a'),
         'Available attributes form'       => array(
             'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
         ),

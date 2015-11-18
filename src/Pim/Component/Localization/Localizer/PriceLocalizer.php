@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationList;
+
 /**
  * Check and convert if price provided respects the format expected
  *
@@ -14,25 +16,26 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($prices, array $options = [], $attributeCode)
+    public function validate($prices, array $options = [], $attributeCode)
     {
+        $violations = new ConstraintViolationList();
         foreach ($prices as $price) {
-            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options, $attributeCode)) {
-                return false;
+            if (isset($price['data']) && $valid = parent::validate($price['data'], $options, $attributeCode)) {
+                $violations->addAll($valid);
             }
         }
 
-        return true;
+        return ($violations->count() > 0) ? $violations : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($prices, array $options = [])
+    public function delocalize($prices, array $options = [])
     {
         foreach ($prices as $index => $price) {
             if (isset($price['data'])) {
-                $prices[$index]['data'] = $this->convertNumberToDefault($price['data'], $options);
+                $prices[$index]['data'] = parent::delocalize($price['data'], $options);
             }
         }
 
@@ -42,10 +45,14 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($prices, array $options = [])
+    public function localize($prices, array $options = [])
     {
+        if (!is_array($prices)) {
+            return parent::localize($prices, $options);
+        }
+
         foreach ($prices as $index => $price) {
-            $prices[$index]['data'] = parent::convertDefaultToLocalized($price['data'], $options);
+            $prices[$index]['data'] = parent::localize($price['data'], $options);
         }
 
         return $prices;

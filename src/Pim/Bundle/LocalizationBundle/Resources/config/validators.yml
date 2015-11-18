@@ -1,0 +1,22 @@
+parameters:
+    pim_localization.constraint.number_format.class:           Pim\Bundle\LocalizationBundle\Validator\Constraints\NumberFormat
+    pim_localization.constraint.date_format.class:             Pim\Bundle\LocalizationBundle\Validator\Constraints\DateFormat
+    pim_localization.validator.constraint.number_format.class: Pim\Component\Localization\Validator\Constraints\NumberFormatValidator
+    pim_localization.validator.constraint.date_format.class:   Pim\Component\Localization\Validator\Constraints\DateFormatValidator
+
+services:
+    pim_localization.constraint.number_format:
+        class: %pim_localization.constraint.number_format.class%
+
+    pim_localization.constraint.date_format:
+        class: %pim_localization.constraint.date_format.class%
+
+    pim_localization.validator.constraint.number_format:
+        class: %pim_localization.validator.constraint.number_format.class%
+        tags:
+          - { name: validator.constraint_validator, alias: pim_localization_number_format }
+
+    pim_localization.validator.constraint.date_format:
+        class: %pim_localization.validator.constraint.date_format.class%
+        tags:
+          - { name: validator.constraint_validator, alias: pim_localization_date_format }

@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,18 +68,22 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param PropertySetterInterface      $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param RemoverInterface             $productRemover
-     * @param ProductBuilderInterface      $productBuilder
+     * @param ProductRepositoryInterface           $productRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param PropertySetterInterface              $productUpdater
+     * @param SaverInterface                       $productSaver
+     * @param NormalizerInterface                  $normalizer
+     * @param ValidatorInterface                   $validator
+     * @param UserContext                          $userContext
+     * @param ObjectFilterInterface                $objectFilter
+     * @param CollectionFilterInterface            $productEditDataFilter
+     * @param RemoverInterface                     $productRemover
+     * @param ProductBuilderInterface              $productBuilder
+     * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -91,7 +96,8 @@ class ProductController
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -104,6 +110,7 @@ class ProductController
         $this->productEditDataFilter = $productEditDataFilter;
         $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
+        $this->localizedConverter    = $localizedConverter;
     }
 
     /**
@@ -142,9 +149,11 @@ class ProductController
                 $product,
                 'internal_api',
                 [
-                    'locales'     => $locales,
-                    'channels'    => $channels,
-                    'filter_type' => 'pim.internal_api.product_value.view'
+                    'locales'                    => $locales,
+                    'channels'                   => $channels,
+                    'filter_type'                => 'pim.internal_api.product_value.view',
+                    'locale'                     => $this->userContext->getUiLocale()->getCode(),
+                    'disable_grouping_separator' => true
                 ]
             )
         );
@@ -178,14 +187,19 @@ class ProductController
         // passed here, so a product is always removed from it's variant group when saved
         unset($data['groups']);
 
+        $data = $this->convertLocalizedAttributes($data);
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+            return new JsonResponse($this->normalizer->normalize($product, 'internal_api', [
+                'locale'                     => $this->userContext->getUiLocale()->getCode(),
+                'disable_grouping_separator' => true,
+            ]));
         } else {
             $errors = $this->transformViolations($violations, $product);
 
@@ -286,6 +300,22 @@ class ProductController
         }
 
         return $attribute;
+    }
+
+    /**
+     * Convert localized attributes to the default format
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function convertLocalizedAttributes(array $data)
+    {
+        $locale         = $this->userContext->getUiLocale()->getCode();
+        $data['values'] = $this->localizedConverter
+            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
+
+        return $data;
     }
 
     /**

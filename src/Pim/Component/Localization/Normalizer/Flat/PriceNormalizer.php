@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Normalizer;
+namespace Pim\Component\Localization\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
@@ -43,7 +43,7 @@ class PriceNormalizer implements NormalizerInterface
 
         foreach ($price as $currency => $data) {
             $formattedPrice = [['currency' => $currency, 'data' => $data]];
-            $localizedPrice = $this->localizer->convertDefaultToLocalized($formattedPrice, $context);
+            $localizedPrice = $this->localizer->localize($formattedPrice, $context);
             $price[$currency] = $localizedPrice[0]['data'];
         }
 

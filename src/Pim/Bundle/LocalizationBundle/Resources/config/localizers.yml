@@ -19,6 +19,9 @@ services:
     pim_localization.localizer.number:
         class: %pim_localization.localizer.number.class%
         arguments:
+            - '@validator'
+            - '@pim_localization.provider.number_format'
+            - '@pim_localization.constraint.number_format'
             - ['pim_catalog_number']
         tags:
             - { name: pim_localization.localizer }
@@ -27,6 +30,9 @@ services:
     pim_localization.localizer.price:
         class: %pim_localization.localizer.price.class%
         arguments:
+            - '@validator'
+            - '@pim_localization.provider.number_format'
+            - '@pim_localization.constraint.number_format'
             - ['pim_catalog_price_collection']
         tags:
             - { name: pim_localization.localizer }
@@ -34,6 +40,9 @@ services:
     pim_localization.localizer.metric:
         class: %pim_localization.localizer.metric.class%
         arguments:
+            - '@validator'
+            - '@pim_localization.provider.number_format'
+            - '@pim_localization.constraint.number_format'
             - ['pim_catalog_metric']
         tags:
             - { name: pim_localization.localizer }
@@ -41,7 +50,9 @@ services:
     pim_localization.localizer.date:
         class: %pim_localization.localizer.date.class%
         arguments:
+            - '@validator'
             - '@pim_localization.provider.date_format'
+            - '@pim_localization.constraint.date_format'
             - ['pim_catalog_date']
         tags:
             - { name: pim_localization.localizer }
@@ -50,6 +61,9 @@ services:
     pim_localization.localizer.attribute_option.number:
         class: %pim_localization.localizer.number.class%
         arguments:
+            - '@validator'
+            - '@pim_localization.provider.number_format'
+            - '@pim_localization.constraint.number_format'
             - ['number_min', 'number_max']
         tags:
             - { name: pim_localization.localizer.attribute_option }

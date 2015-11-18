@@ -3,6 +3,8 @@
 namespace Pim\Component\Localization\Localizer;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Convert localized attributes to default format
@@ -18,6 +20,9 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var ConstraintViolationListInterface */
+    protected $violations;
 
     /**
      * @param LocalizerRegistryInterface   $localizerRegistry
@@ -36,6 +41,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      */
     public function convertLocalizedToDefaultValues(array $items, array $options = [])
     {
+        $this->violations = new ConstraintViolationList();
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
 
         foreach ($items as $code => $item) {
@@ -43,14 +49,27 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
                 $localizer = $this->localizerRegistry->getLocalizer($attributeTypes[$code]);
 
                 if (null !== $localizer) {
-                    foreach ($item as $i => $data) {
-                        $items[$code][$i] = $this->convertLocalizedToDefaultValue($localizer, $data, $options, $code);
+                    foreach ($item as $index => $data) {
+                        $items[$code][$index] = $this->convertLocalizedToDefaultValue(
+                            $localizer,
+                            $data,
+                            $options,
+                            $this->buildPropertyPath($data, $code)
+                        );
                     }
                 }
             }
         }
 
         return $items;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getViolations()
+    {
+        return $this->violations;
     }
 
     /**
@@ -82,18 +101,41 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      * @param LocalizerInterface $localizer
      * @param array              $item
      * @param array              $options
-     * @param string             $code
-     *
-     * @throws \LogicException
+     * @param string             $path
      *
      * @return array
      */
-    protected function convertLocalizedToDefaultValue(LocalizerInterface $localizer, array $item, array $options, $code)
+    protected function convertLocalizedToDefaultValue(LocalizerInterface $localizer, array $item, array $options, $path)
     {
-        if ($localizer->isValid($item['data'], $options, $code)) {
-            $item['data'] = $localizer->convertLocalizedToDefault($item['data'], $options);
-
-            return $item;
+        $violations = $localizer->validate($item['data'], $options, $path);
+        if (null !== $violations) {
+            $this->violations->addAll($violations);
         }
+
+        $item['data'] = $localizer->delocalize($item['data'], $options);
+
+        return $item;
+    }
+
+    /**
+     * Build the property path of the attribute
+     *
+     * @param array  $data
+     * @param string $code
+     *
+     * @return string
+     */
+    protected function buildPropertyPath(array $data, $code)
+    {
+        $path = $code;
+        if (isset($data['locale']) && '' !== $data['locale']) {
+            $path.= sprintf('-%s', $data['locale']);
+        }
+
+        if (isset($data['scope']) && '' !== $data['scope']) {
+            $path.= sprintf('-%s', $data['scope']);
+        }
+
+        return sprintf('values[%s]', $path);
     }
 }

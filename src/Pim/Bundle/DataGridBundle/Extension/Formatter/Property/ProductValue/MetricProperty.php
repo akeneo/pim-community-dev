@@ -43,8 +43,7 @@ class MetricProperty extends TwigProperty
         $unit   = $result['unit'];
 
         if ($data && $unit) {
-            $formattedData = $this->localizer
-                ->convertDefaultToLocalizedFromLocale($data, $this->translator->getLocale());
+            $formattedData = $this->localizer->localize($data, ['locale' => $this->translator->getLocale()]);
             return $this->getTemplate()->render(
                 [
                     'data' => $formattedData,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Normalizer;
+namespace Pim\Component\Localization\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class MetricNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['json', 'xml'];
 
     /** @var NormalizerInterface */
     protected $metricNormalizer;
@@ -41,13 +41,7 @@ class MetricNormalizer implements NormalizerInterface
     {
         $metric = $this->metricNormalizer->normalize($metric, $format, $context);
 
-        if (!isset($context['field_name']) || !isset($metric[$context['field_name']])) {
-            return $metric;
-        }
-
-        $formattedMetric = ['data' => $metric[$context['field_name']]];
-        $localizedMetric = $this->localizer->convertDefaultToLocalized($formattedMetric, $context);
-        $metric[$context['field_name']] = $localizedMetric['data'];
+        $metric['data'] = $this->localizer->localize($metric['data'], $context);
 
         return $metric;
     }

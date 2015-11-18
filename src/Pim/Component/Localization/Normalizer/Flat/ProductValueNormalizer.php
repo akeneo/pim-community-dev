@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Normalizer;
+namespace Pim\Component\Localization\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
@@ -48,7 +48,7 @@ class ProductValueNormalizer implements NormalizerInterface
         $localizer = $this->localizerRegistry->getProductValueLocalizer($type);
         if (null !== $localizer) {
             foreach ($result as $field => $data) {
-                $result[$field] = $localizer->convertDefaultToLocalized($data, $context);
+                $result[$field] = $localizer->localize($data, $context);
             }
         }
 

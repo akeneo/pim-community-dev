@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Localization\Normalizer;
+namespace spec\Pim\Component\Localization\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
@@ -31,14 +31,14 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric', 'metric_format' => 'multiple_fields'];
         $metric->getData()->willReturn(25.3);
-        $localizer->convertDefaultToLocalized(['data' => '25.30'], $options)->willReturn(['data' => '25,30']);
+        $localizer->localize(['data' => '25.30'], $options)->willReturn(['data' => '25,30']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25.30', 'unit' => 'GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25,30', 'unit' => 'GRAM']);
 
         $options['decimal_separator'] ='.';;
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25.30', 'unit' => 'GRAM']);
-        $localizer->convertDefaultToLocalized(['data' => '25.30'], $options)->willReturn(['data' => '25.30']);
+        $localizer->localize(['data' => '25.30'], $options)->willReturn(['data' => '25.30']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25.30', 'unit' => 'GRAM']);
     }
 
@@ -46,12 +46,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric'];
         $metric->getData()->willReturn(25.3);
-        $localizer->convertDefaultToLocalized(['data' => '25.30 GRAM'], $options)->willReturn(['data' => '25,30 GRAM']);
+        $localizer->localize(['data' => '25.30 GRAM'], $options)->willReturn(['data' => '25,30 GRAM']);
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25.30 GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25,30 GRAM']);
 
         $options['decimal_separator'] = '.';
-        $localizer->convertDefaultToLocalized(['data' => '25.30 GRAM'], $options)->willReturn(['data' => '25.30 GRAM']);
+        $localizer->localize(['data' => '25.30 GRAM'], $options)->willReturn(['data' => '25.30 GRAM']);
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25.30 GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25.30 GRAM']);
     }
@@ -60,7 +60,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric', 'metric_format' => 'multiple_fields'];
         $metric->getData()->willReturn(25);
-        $localizer->convertDefaultToLocalized(['data' => '25'], $options)->willReturn(['data' => '25']);
+        $localizer->localize(['data' => '25'], $options)->willReturn(['data' => '25']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25', 'unit' => 'GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25', 'unit' => 'GRAM']);
@@ -70,7 +70,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric'];
         $metric->getData()->willReturn(25);
-        $localizer->convertDefaultToLocalized(['data' => '25 GRAM'], $options)->willReturn(['data' => '25 GRAM']);
+        $localizer->localize(['data' => '25 GRAM'], $options)->willReturn(['data' => '25 GRAM']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25 GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25 GRAM']);
@@ -85,7 +85,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metric->getData()->willReturn('25');
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25', 'unit' => 'GRAM']);
 
-        $localizer->convertDefaultToLocalized(['data' => '25'], $options)->willReturn(['data' => '25']);
+        $localizer->localize(['data' => '25'], $options)->willReturn(['data' => '25']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25', 'unit' => 'GRAM']);
     }
 
@@ -96,7 +96,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     ) {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric'];
         $metric->getData()->willReturn('25');
-        $localizer->convertDefaultToLocalized(['data' => '25 GRAM'], $options)->willReturn(['data' => '25 GRAM']);
+        $localizer->localize(['data' => '25 GRAM'], $options)->willReturn(['data' => '25 GRAM']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '25 GRAM']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '25 GRAM']);
@@ -106,7 +106,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric', 'metric_format' => 'multiple_fields'];
         $metric->getData()->willReturn(null);
-        $localizer->convertDefaultToLocalized(['data' => ''], $options)->willReturn(['data' => '']);
+        $localizer->localize(['data' => ''], $options)->willReturn(['data' => '']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '', 'unit' => '']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '', 'unit' => '']);
@@ -116,7 +116,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric'];
         $metric->getData()->willReturn(null);
-        $localizer->convertDefaultToLocalized(['data' => ''], $options)->willReturn(['data' => '']);
+        $localizer->localize(['data' => ''], $options)->willReturn(['data' => '']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '']);
@@ -126,7 +126,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric', 'metric_format' => 'multiple_fields'];
         $metric->getData()->willReturn('');
-        $localizer->convertDefaultToLocalized(['data' => ''], $options)->willReturn(['data' => '']);
+        $localizer->localize(['data' => ''], $options)->willReturn(['data' => '']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '', 'unit' => '']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '', 'unit' => '']);
@@ -136,7 +136,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $options = ['decimal_separator' => ',', 'field_name' => 'metric'];
         $metric->getData()->willReturn('');
-        $localizer->convertDefaultToLocalized(['data' => ''], $options)->willReturn(['data' => '']);
+        $localizer->localize(['data' => ''], $options)->willReturn(['data' => '']);
 
         $metricNormalizer->normalize($metric, null, $options)->willReturn(['metric' => '']);
         $this->normalize($metric, null, $options)->shouldReturn(['metric' => '']);

@@ -112,10 +112,11 @@ class ProductProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
 
-        try {
-            $convertedItem = $this->convertLocalizedAttributes($convertedItem);
-        } catch (FormatLocalizerException $exception) {
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+        $convertedItem = $this->convertLocalizedAttributes($convertedItem);
+        $violations = $this->localizedConverter->getViolations();
+
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
         $identifier = $this->getIdentifier($convertedItem);
@@ -151,6 +152,7 @@ class ProductProcessor extends AbstractProcessor
         }
 
         $violations = $this->validateProduct($product);
+
         if ($violations->count() > 0) {
             $this->detachProduct($product);
             $this->skipItemWithConstraintViolations($item, $violations);

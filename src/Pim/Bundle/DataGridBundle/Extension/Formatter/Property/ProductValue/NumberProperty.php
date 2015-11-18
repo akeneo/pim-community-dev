@@ -35,6 +35,6 @@ class NumberProperty extends FieldProperty
     {
         $result = $this->getBackendData($value);
 
-        return $this->localizer->convertDefaultToLocalizedFromLocale($result, $this->translator->getLocale());
+        return $this->localizer->localize($result, ['locale' => $this->translator->getLocale()]);
     }
 }

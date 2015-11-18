@@ -3,17 +3,18 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Bundle\LocalizationBundle\Validator\Constraints\NumberFormat;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceLocalizerSpec extends ObjectBehavior
 {
-    function let()
+    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider, NumberFormat $numberContraint)
     {
-        $this->beConstructedWith(
-            ['pim_catalog_price_collection']
-        );
+        $this->beConstructedWith($validator, $formatProvider, $numberContraint, ['pim_catalog_price_collection']);
     }
 
     function it_is_a_localizer()
@@ -42,15 +43,24 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => 0, 'currency' => 'PES'],
             ['data' => '0', 'currency' => 'PES'],
         ];
-        $this->isValid($prices, ['decimal_separator' => '.'], 'prices')->shouldReturn(true);
+        $this->validate($prices, ['decimal_separator' => '.'], 'prices')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_decimal_separator_is_not_valid()
+
+    function it_returns_a_constraint_if_the_decimal_separator_is_not_valid($validator)
     {
-        $prices = [['data' => '10.00', 'currency' => 'EUR'], ['data' => '10,05', 'currency' => 'USD']];
-        $exception = new FormatLocalizerException('prices', ',');
-        $this->shouldThrow($exception)
-            ->during('isValid', [$prices, ['decimal_separator' => ','], 'prices']);
+        $constraintUSD = new ConstraintViolation('Error on number validator', '', [], '', '', '');
+        $constraintEUR = new ConstraintViolation('Error on number validator', '', [], '', '', '');
+        $constraints = new ConstraintViolationList([$constraintEUR, $constraintUSD]);
+        $validator->validate('10,00', Argument::any())->willReturn($constraints);
+        $validator->validate('10,05', Argument::any())->willReturn(null);
+
+        $prices = [['data' => '10,00', 'currency' => 'EUR'], ['data' => '10,05', 'currency' => 'USD']];
+
+        $allConstraints = new ConstraintViolationList();
+        $allConstraints->addAll($constraints);
+        $this->validate($prices, ['decimal_separator' => ','], 'prices')
+            ->shouldHaveCount(2);
     }
 
     function it_converts()
@@ -66,36 +76,31 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => null, 'currency' => null],
             ['data' => '', 'currency' => ''],
             ['data' => 0, 'currency' => 'EUR'],
-            ['data' => '0', 'currency' => 'EUR']
+            ['data' => '0', 'currency' => 'EUR'],
+            ['data' => 'gruik', 'currency' => 'EUR']
         ];
 
-        $this->convertLocalizedToDefault($prices, ['decimal_separator' => ','])->shouldReturn(
+        $this->delocalize($prices, ['decimal_separator' => ','])->shouldReturn(
             [
-                ['data' => '10.05', 'currency' => 'EUR'],
-                ['data' => '-10.05', 'currency' => 'EUR'],
-                ['data' => '10', 'currency' => 'PES'],
-                ['data' => '-10', 'currency' => 'PES'],
-                ['data' => 10, 'currency' => 'PES'],
-                ['data' => '10.05', 'currency' => 'PES'],
-                ['data' => ' 10.05 ', 'currency' => 'PES'],
+                ['data' => 10.05, 'currency' => 'EUR'],
+                ['data' => -10.05, 'currency' => 'EUR'],
+                ['data' => 10.00, 'currency' => 'PES'],
+                ['data' => -10.00, 'currency' => 'PES'],
+                ['data' => 10.00, 'currency' => 'PES'],
+                ['data' => 10.05, 'currency' => 'PES'],
+                ['data' => 10.05, 'currency' => 'PES'],
                 ['data' => null, 'currency' => null],
                 ['data' => '', 'currency' => ''],
-                ['data' => 0, 'currency' => 'EUR'],
-                ['data' => '0', 'currency' => 'EUR']
+                ['data' => 0.00, 'currency' => 'EUR'],
+                ['data' => 0.00, 'currency' => 'EUR'],
+                ['data' => 'gruik', 'currency' => 'EUR']
             ]
         );
-    }
 
-    function it_throws_an_exception_if_decimal_separator_is_missing()
-    {
-        $exception = new MissingOptionsException('The option "decimal_separator" do not exist.');
-        $this->shouldThrow($exception)
-            ->during('isValid', [[['data' => '10.00']], [], 'prices']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', [[['data' => '10.00']], ['decimal_separator' => null], 'prices']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', [[['data' => '10.00']], ['decimal_separator' => ''], 'prices']);
+        $this->delocalize([['data' => '10,00']], [], 'prices')->shouldReturn([['data' => 10.00]]);
+        $this->delocalize([['data' => '10,00']], ['decimal_separator' => null], 'prices')
+            ->shouldReturn([['data' => 10.00]]);
+        $this->delocalize([['data' => '10,00']], ['decimal_separator' => ''], 'prices')
+            ->shouldReturn([['data' => 10.00]]);
     }
 }
