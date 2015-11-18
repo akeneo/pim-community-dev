@@ -6,6 +6,7 @@
 
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
+- PIM-5170: Fixes memory leak on MongoDB at association import time
 
 # 1.4.12 (2015-12-03)
 
@@ -38,6 +39,7 @@
 ## Bug fixes
 - PIM-5163: Fix the VersionRepository on MongoDB to take the most recent entry for product resources
 - PIM-5169: Fix mass edit attribute selection while using a small screen resolution
+- PIM-5194: Fix performance issue on family json generation
 
 # 1.4.9 (2015-11-12)
 
