@@ -27,8 +27,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         code:
             - NotBlank: ~
             - Regex:
-                pattern: /^[a-zA-Z0-9_]*[a-zA-Z_]+[a-zA-Z0-9_]*$/
-                message: Attribute code may contain only letters (at least one), numbers and underscores
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Attribute code may contain only letters, numbers and underscores
             - Length:
                 max: 255
             - Regex:
@@ -164,8 +164,8 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         code:
             - NotBlank: ~
             - Regex:
-                pattern: /^[a-zA-Z0-9_]*[a-zA-Z_]+[a-zA-Z0-9_]*$/
-                message: Option code may contain only letters (at least one), numbers and underscores
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Option code may contain only letters, numbers and underscores
             - Length:
                 max: 255
         attribute:

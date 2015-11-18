@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -22,8 +23,11 @@ class ChoiceFilterSpec extends ObjectBehavior
         $this->shouldHaveType('Oro\Bundle\FilterBundle\Filter\FilterInterface');
     }
 
-    function it_gives_metadata($factory, $util, FormInterface $form)
+    function it_gives_metadata($factory, $util, FormBuilderInterface $builder, FormInterface $form)
     {
+        $builder->get('type')->willReturn($builder);
+        $builder->getOption('choices')->willReturn(['foo', 'bar']);
+        $factory->createBuilder('oro_type_choice_filter', [], ['csrf_protection' => false])->willReturn($builder);
         $factory->create('oro_type_choice_filter', [], ['csrf_protection' => false])->willReturn($form);
         $util->getExcludeParams()->willReturn([]);
         $util->getParamMap()->willReturn([]);

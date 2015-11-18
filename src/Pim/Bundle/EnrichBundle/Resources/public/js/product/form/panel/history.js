@@ -106,7 +106,7 @@ define(
             getVersions: function () {
                 return FetcherRegistry.getFetcher('product-history').fetch(
                     this.getFormData().meta.id,
-                    {entityId: this.getFormData().meta.id}
+                    { entityId: this.getFormData().meta.id }
                 ).then(this.addAttributesLabelToVersions.bind(this));
             },
 
@@ -116,17 +116,38 @@ define(
              * @param {Array} versions
              */
             addAttributesLabelToVersions: function (versions) {
-                return FetcherRegistry.getFetcher('attribute').fetchAll().then(function (attributes) {
-                    _.each(versions, function (version) {
-                        _.each(version.changeset, function (data, index) {
-                            var code = index.split('-').shift();
-                            var attribute = _.findWhere(attributes, { code: code });
-                            data.label = attribute ? this.getAttributeLabel(attribute, index) : index;
-                        }.bind(this));
-                    }.bind(this));
+                var codes = this.getAttributeCodesInVersions(versions);
 
-                    return versions;
-                }.bind(this));
+                return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
+                    .then(function (attributes) {
+                        _.each(versions, function (version) {
+                            _.each(version.changeset, function (data, index) {
+                                var code      = index.split('-')[0];
+                                var attribute = _.findWhere(attributes, { code: code });
+                                data.label    = attribute ? this.getAttributeLabel(attribute, index) : index;
+                            }.bind(this));
+                        }.bind(this));
+
+                        return versions;
+                    }.bind(this));
+            },
+
+            /**
+             * Return the list of unique attribute codes found in all versions
+             *
+             * @param {Array} versions
+             *
+             * @returns {Array}
+             */
+            getAttributeCodesInVersions: function (versions) {
+                var codes = [];
+                _.each(versions, function (version) {
+                    _.each(version.changeset, function (data, index) {
+                        codes.push(index.split('-')[0]);
+                    });
+                });
+
+                return _.uniq(codes);
             },
 
             /**

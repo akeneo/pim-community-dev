@@ -119,3 +119,29 @@ Feature: Import options
     And I wait for the "option_import" job to finish
     Then I should see "Status: FAILED"
     And I should see "Field \"label-fr_CA\" is provided, authorized fields are: \"attribute, code, sort_order, label-de_DE, label-en_GB, label-en_US, label-fr_FR\""
+
+  Scenario: Import options with full numeric codes
+    Given the "footwear" catalog configuration
+    And the following attributes:
+      | code  | label | type         |
+      | brand | Brand | simpleselect |
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      attribute;code;label-en_US
+      brand;1;Converse
+      brand;22;TimberLand
+      brand;30;Nike
+      brand;04;Caterpillar
+      """
+    And the following job "footwear_option_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_option_import" job to finish
+    Then there should be the following options:
+      | attribute | code | label-en_US |
+      | brand     | 1    | Converse    |
+      | brand     | 22   | TimberLand  |
+      | brand     | 30   | Nike        |
+      | brand     | 04   | Caterpillar |

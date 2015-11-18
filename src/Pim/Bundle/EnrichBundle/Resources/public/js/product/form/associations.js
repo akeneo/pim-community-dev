@@ -114,13 +114,13 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.configured) {
+                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
                     return;
                 }
 
                 $.when(
                     this.loadAssociationTypes(),
-                    FetcherRegistry.getFetcher('attribute').getIdentifierField()
+                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (associationTypes, identifierAttribute) {
                     this.state.set(
                         'currentAssociationType',

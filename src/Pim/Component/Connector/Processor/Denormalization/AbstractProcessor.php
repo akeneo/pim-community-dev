@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -123,7 +124,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             // TODO re-format the message, property path doesn't exist for class constraint
             // for instance cf VariantGroupAxis
             $invalidValue = $violation->getInvalidValue();
-            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
+            if ($invalidValue instanceof ProductPriceInterface) {
+                $invalidValue = sprintf('%s %s', $invalidValue->getData(), $invalidValue->getCurrency());
+            } elseif (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
                 $invalidValue = (string) $invalidValue;
             } elseif (is_object($invalidValue)) {
                 $invalidValue = get_class($invalidValue);

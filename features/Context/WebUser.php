@@ -1567,18 +1567,10 @@ class WebUser extends RawMinkContext
     public function iPressTheButtonInThePopin($buttonLabel)
     {
         $buttonElement = $this->spin(function () use ($buttonLabel) {
-            $node = $this
+            return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
-
-            if (null === $node) {
-                $node = $this
-                    ->getCurrentPage()
-                    ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
-            }
-
-            return $node;
-        }, 20, sprintf('Button or link containing "%s" not found in the modal.', $buttonLabel));
+                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
+        });
 
         $buttonElement->press();
         $this->wait();
@@ -1722,13 +1714,13 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeUpdate($count)
     {
-        $this->spin(function () use ($count) {
-            if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
-                throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
-            }
-
-            return true;
+        $historyRows = $this->spin(function () use ($count) {
+            return $this->getCurrentPage()->getHistoryRows();
         });
+
+        if ((int) $count !== $actualCount = count($historyRows)) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
+        }
     }
 
     /**
@@ -2416,6 +2408,7 @@ class WebUser extends RawMinkContext
         unset($expectedLines[0]);
 
         foreach ($expectedLines as $expectedLine) {
+            $originalExpectedLine = $expectedLine;
             sort($expectedLine);
             $found = false;
             foreach ($actualLines as $index => $actualLine) {
@@ -2441,7 +2434,7 @@ class WebUser extends RawMinkContext
                 throw new \Exception(
                     sprintf(
                         'Could not find a line containing "%s" in %s',
-                        implode(' | ', $expectedLine),
+                        implode(' | ', $originalExpectedLine),
                         $path
                     )
                 );
@@ -2968,6 +2961,26 @@ class WebUser extends RawMinkContext
         } else {
             if (!$statusSwitcher || !$statusSwitcher->isVisible()) {
                 throw $this->createExpectationException('Status switcher should be visible');
+            }
+        }
+    }
+
+    /**
+     * Check the user API key
+     *
+     * @Then /^The API key should (not )?be (.+)$/
+     */
+    public function theApiKeyShouldBe($not, $value)
+    {
+        $apiKey = $this->getCurrentPage()->getApiKey();
+
+        if ($not) {
+            if ($apiKey === $value) {
+                throw $this->createExpectationException('API key should not be ' . $apiKey);
+            }
+        } else {
+            if ($apiKey !== $value) {
+                throw $this->createExpectationException('API key should be ' . $apiKey);
             }
         }
     }

@@ -19,18 +19,28 @@ Feature: Execute a job
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
       SKU-003;invalid
+      SKU-004;"gruik EUR, 90 USD"
+      SKU-005;"25 EUR, 90 gruik"
+      SKU-006;"25.gruik EUR, 90 USD"
+      SKU-007;"25 EUR, 90.gruik USD"
+      SKU-008; EUR
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
-    And there should be 2 products
+    Then I should see "skipped 5"
+    And there should be 3 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "SKU-002" should have the following value:
       | price | 50.00 EUR |
+    And the product "SKU-008" should have the following value:
+      | price |  |
+    And I should see "Please specify a valid currency: invalid"
+    And I should see "This value should be a valid number.: gruik EUR"
+    And I should see "Please specify a valid currency: 90 gruik"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
@@ -39,26 +49,49 @@ Feature: Execute a job
       | SKU-001 | 99 EUR |
       | SKU-002 | 45 EUR |
       | SKU-003 | 12 EUR |
+      | SKU-004 | 98 EUR |
+      | SKU-005 | 32 USD |
+      | SKU-006 | 77 USD |
+      | SKU-007 | 08 EUR |
+      | SKU-008 | 33 EUR |
     And the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
       SKU-003;invalid
+      SKU-004;"gruik EUR, 90 USD"
+      SKU-005;"25 EUR, 90 gruik"
+      SKU-006;"25.gruik EUR, 90 USD"
+      SKU-007;"25 EUR, 90.gruik USD"
+      SKU-008; EUR
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
-    And there should be 3 products
+    Then I should see "skipped 5"
+    And there should be 8 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "SKU-002" should have the following value:
       | price | 50.00 EUR |
     And the product "SKU-003" should have the following value:
       | price | 12.00 EUR |
+    And the product "SKU-004" should have the following value:
+      | price | 98.00 EUR |
+    And the product "SKU-005" should have the following value:
+      | price | 32.00 USD |
+    And the product "SKU-006" should have the following value:
+      | price | 77.00 USD |
+    And the product "SKU-007" should have the following value:
+      | price | 8.00 EUR |
+    And the product "SKU-008" should have the following value:
+      | price |  |
+    And I should see "Please specify a valid currency: invalid"
+    And I should see "This value should be a valid number.: gruik EUR"
+    And I should see "Please specify a valid currency: 90 gruik"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid metrics during an import
@@ -291,12 +324,14 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And there should be 2 products
+    Then I should see "skipped 2"
+    And there should be 3 products
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "honda-civic" should have the following value:
       | length | 2.0000 METER |
+    And the product "fiat-panda" should have the following value:
+      | length | |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:
@@ -312,10 +347,12 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And there should be 1 product
+    Then I should see "skipped 2"
+    And there should be 2 product
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
+    And the product "fiat-500" should have the following value:
+      | length | |
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:
@@ -347,16 +384,19 @@ Feature: Execute a job
       sku;publicPrice-EUR
       renault-kangoo;20000
       honda-civic;gruik
+      porsche-911;gruik.25
+      astonmartin-db9;25.gruik
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see "skipped 3"
     And there should be 1 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
+    And I should see "This value should be a valid number.: gruik EUR"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4810
   Scenario: Correctly detach association reference when transformation fails (PIM-4810)

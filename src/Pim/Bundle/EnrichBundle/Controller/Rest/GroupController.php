@@ -85,7 +85,7 @@ class GroupController
         }
 
         return new JsonResponse($this->normalizer->normalize([
-            'products'     => $this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS),
+            'products'     => array_values($this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS)),
             'productCount' => $this->productRepository->getProductCountByGroup($group)
         ], 'internal_api'));
     }

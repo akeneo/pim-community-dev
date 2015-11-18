@@ -196,6 +196,40 @@ Feature: Execute a job
     Then there should be 1 product
     And I should see "skipped product (no differences) 1"
 
+  Scenario: Successfully import products with attributes with full numeric codes
+    Given the following CSV file to import:
+      """
+      sku;123;family;groups;categories;name-en_US;description-en_US-tablet
+      SKU-001;aaa;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;bbb;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 product
+    And the product "SKU-001" should have the following values:
+      | name-en_US | Donec |
+      | 123        | aaa   |
+    And the product "SKU-002" should have the following values:
+      | name-en_US | Donex |
+      | 123        | bbb   |
+
+  Scenario: Successfully import a csv file with sku and family column
+    Given the following CSV file to import:
+      """
+      sku;family
+      SKU-001;boots
+      SKU-002;sneakers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 products
+
   Scenario: Successfully import a csv file of products without enabled column
     Given the following product:
       | sku     | name-en_US | description-en_US-tablet                    | enabled |

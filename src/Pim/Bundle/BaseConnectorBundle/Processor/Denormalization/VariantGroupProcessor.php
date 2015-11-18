@@ -82,11 +82,11 @@ class VariantGroupProcessor extends AbstractProcessor
         $format
     ) {
         parent::__construct($groupRepository, $denormalizer, $validator, $detacher, $groupClass);
-        $this->normalizer = $normalizer;
+        $this->normalizer           = $normalizer;
         $this->templateMediaManager = $templateMediaManager;
-        $this->fieldNameBuilder = $fieldNameBuilder;
-        $this->templateClass = $templateClass;
-        $this->format = $format;
+        $this->fieldNameBuilder     = $fieldNameBuilder;
+        $this->templateClass        = $templateClass;
+        $this->format               = $format;
     }
 
     /**
@@ -95,7 +95,7 @@ class VariantGroupProcessor extends AbstractProcessor
     public function process($item)
     {
         $item[self::TYPE_FIELD] = 'VARIANT';
-        $variantGroup = $this->findOrCreateVariantGroup($item);
+        $variantGroup           = $this->findOrCreateVariantGroup($item);
         $this->updateVariantGroup($variantGroup, $item);
         $this->updateVariantGroupValues($variantGroup, $item);
         $this->validateVariantGroup($variantGroup, $item);
@@ -104,7 +104,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Find or create the variant group.
+     * Find or create the variant group
      *
      * @param array $groupData
      *
@@ -112,7 +112,7 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function findOrCreateVariantGroup(array $groupData)
     {
-        $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
+        $variantGroup    = $this->findOrCreateObject($this->repository, $groupData, $this->class);
         $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
@@ -125,7 +125,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group fields.
+     * Update the variant group fields
      *
      * @param GroupInterface $variantGroup
      * @param array          $groupData
@@ -135,7 +135,7 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function updateVariantGroup(GroupInterface $variantGroup, array $groupData)
     {
         $variantGroupData = $this->filterVariantGroupData($groupData, true);
-        $variantGroup = $this->denormalizer->denormalize(
+        $variantGroup     = $this->denormalizer->denormalize(
             $variantGroupData,
             $this->class,
             $this->format,
@@ -146,7 +146,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group values.
+     * Update the variant group values
      *
      * @param GroupInterface $variantGroup
      * @param array          $groupData
@@ -159,9 +159,13 @@ class VariantGroupProcessor extends AbstractProcessor
             $this->validateValues($variantGroup, $values, $groupData);
             $template = $this->getProductTemplate($variantGroup);
             $template->setValues($values);
+
             $this->templateMediaManager->handleProductTemplateMedia($template);
+
             $structuredValuesData = $this->normalizeValuesToStructuredData($template->getValues());
-            $template->setValuesData($structuredValuesData);
+            $originalValuesData   = $template->getValuesData();
+            $newValuesData        = array_merge($originalValuesData, $structuredValuesData);
+            $template->setValuesData($newValuesData);
         }
     }
 
@@ -181,7 +185,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values.
+     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
      * @param array $groupData
      * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
@@ -192,7 +196,7 @@ class VariantGroupProcessor extends AbstractProcessor
     {
         foreach (array_keys($groupData) as $field) {
             $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::TYPE_FIELD, self::AXIS_FIELD]);
-            $isLabel = 0 === strpos($field, self::LABEL_PATTERN);
+            $isLabel      = 0 === strpos($field, self::LABEL_PATTERN);
             if ($keepOnlyFields && !$isCodeOrAxis && !$isLabel) {
                 unset($groupData[$field]);
             } elseif (!$keepOnlyFields && ($isCodeOrAxis || $isLabel)) {
@@ -205,7 +209,7 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param GroupInterface  $variantGroup
-     * @param ArrayCollection $values       Collection of ProductValueInterface
+     * @param ArrayCollection $values Collection of ProductValueInterface
      * @param array           $groupData
      *
      * @throw InvalidItemException
@@ -222,7 +226,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filter empty values that are not used in a template then denormalize the product values objects from CSV fields.
+     * Filter empty values that are not used in a template then denormalize the product values objects from CSV fields
      *
      * @param array                    $rawProductValues
      * @param ProductTemplateInterface $template
@@ -235,7 +239,7 @@ class VariantGroupProcessor extends AbstractProcessor
 
         foreach ($rawProductValues as $index => $data) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($index);
-            $attribute = $attributeInfos['attribute'];
+            $attribute      = $attributeInfos['attribute'];
             if ('' === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
                 unset($rawProductValues[$index]);
             }
@@ -245,7 +249,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Normalize product value objects to JSON format.
+     * Normalize product value objects to JSON format
      *
      * @param ArrayCollection $values Collection of ProductValueInterface
      *

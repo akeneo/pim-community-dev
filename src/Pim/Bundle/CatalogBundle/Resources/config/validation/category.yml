@@ -8,8 +8,8 @@ Pim\Bundle\CatalogBundle\Entity\Category:
         code:
             - NotBlank: ~
             - Regex:
-                pattern: /^[a-zA-Z0-9_]*[a-zA-Z_]+[a-zA-Z0-9_]*$/
-                message: Category code may contain only letters (at least one), numbers and underscores
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Category code may contain only letters, numbers and underscores
             - Length:
                 max: 100
         translations:

@@ -37,6 +37,13 @@ function($, _, mediator) {
         contextSearch: true,
 
         /**
+         * Minimum width of this multiselect
+         *
+         * @property {int}
+         */
+        minimumWidth: null,
+
+        /**
          * Initialize all required properties
          */
         initialize: function(options) {
@@ -114,32 +121,21 @@ function($, _, mediator) {
          * @return {Number}
          */
         getMinimumDropdownWidth: function() {
-            var minimumWidth = 0;
-            var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-            _.each(elements, function(element) {
-                var width = this._getTextWidth($(element).find('label'));
-                if (width > minimumWidth) {
-                    minimumWidth = width;
-                }
-            }, this);
+            if (_.isNull(this.minimumWidth)) {
+                var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
+                var margin = 26;
 
-            return minimumWidth;
-        },
+                var longestElement = _.max(elements, function (element) {
+                    var htmlContent = $(element).find('span:first').html();
+                    var length = htmlContent ? htmlContent.length : 0;
 
-        /**
-         * Get element width
-         *
-         * @param {Object} element
-         * @return {Integer}
-         * @protected
-         */
-        _getTextWidth: function(element) {
-            var html_org = element.html();
-            var html_calc = '<span>' + html_org + '</span>';
-            element.html(html_calc);
-            var width = element.find('span:first').width();
-            element.html(html_org);
-            return width;
+                    return length;
+                });
+
+                this.minimumWidth = $(longestElement).find('span:first').width() + margin;
+            }
+
+            return this.minimumWidth;
         },
 
         /**

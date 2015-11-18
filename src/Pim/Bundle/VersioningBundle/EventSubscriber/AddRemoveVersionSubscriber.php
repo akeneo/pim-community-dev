@@ -97,6 +97,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
             ->setSnapshot(null !== $previousVersion ? $previousVersion->getSnapshot(): [])
             ->setChangeset([]);
 
-        $this->versionSaver->save($version);
+        $options = $event->getArguments();
+        $this->versionSaver->save($version, $options);
     }
 }

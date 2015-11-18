@@ -25,10 +25,11 @@ class ReferenceDataTransformer
     public function transform(array $result, array $attribute, $locale, $scope)
     {
         $attributeCode = $attribute['code'];
-        $normalizedData = $result['normalizedData'];
-        $fromNormData = ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect'];
+        $properties = $attribute['properties'];
 
-        if (in_array($attribute['attributeType'], $fromNormData)) {
+        if (isset($properties['reference_data_name']) && '' !== $properties['reference_data_name']) {
+            $normalizedData = $result['normalizedData'];
+
             $fieldCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,
                 $attribute['localizable'],

@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeController
 {
-    /** @var EntityRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var NormalizerInterface */
@@ -26,12 +27,12 @@ class AttributeController
     protected $collectionFilter;
 
     /**
-     * @param EntityRepository          $attributeRepository
-     * @param NormalizerInterface       $normalizer
-     * @param CollectionFilterInterface $collectionFilter
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param NormalizerInterface          $normalizer
+     * @param CollectionFilterInterface    $collectionFilter
      */
     public function __construct(
-        EntityRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         CollectionFilterInterface $collectionFilter
     ) {
@@ -45,10 +46,18 @@ class AttributeController
      *
      * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $attributes           = $this->attributeRepository->findAll();
-        $filteredAttributes   = $this->collectionFilter
+        $criteria = [];
+        if ($request->query->has('identifiers')) {
+            $criteria['code'] = explode(',', $request->query->get('identifiers'));
+        }
+        if ($request->query->has('types')) {
+            $criteria['attributeType'] = explode(',', $request->query->get('types'));
+        }
+
+        $attributes         = $this->attributeRepository->findBy($criteria);
+        $filteredAttributes = $this->collectionFilter
             ->filterCollection($attributes, 'pim.internal_api.attribute.view');
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
 

@@ -25,81 +25,21 @@ this repository and submit a pull request.
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
 
-Requirements
-------------
-## System
- - PHP 5.4.* above 5.4.4
- - PHP Modules:
-    - php5-curl
-    - php5-gd
-    - php5-intl
-    - php5-mysql
-    - php5-mcrypt
-    - php-apc for PHP 5.4 (opcode and data cache)
-    - php5-apcu for PHP 5.5 (for data cache, as opcode cache usually included)
- - PHP memory_limit at least at 256 MB on Apache side and 728 MB on CLI side (needed for installation, can be lowered to 512MB after installation for PHP-CLI)
- - MySQL 5.1 or above
- - Apache mod rewrite enabled
+Application Technical Information
+---------------------------------
 
-## Web browsers
- - tested: Chrome & Firefox
- - should work: IE 10, Safari
- - will not work: IE < 10
+The following documentation is designed for both clients and partners and provides all technical information required to define required server(s) to run Akeneo PIM application and check that end users workstation is compatible with Akeneo PIM application:
+http://docs.akeneo.com/1.4/reference/technical_information/index.html
 
 Installation instructions
 -------------------------
+
 To install Akeneo PIM for a PIM project or for evaluation, please follow:
-http://docs.akeneo.com/latest/developer_guide/installation/installation_workstation.html
+http://docs.akeneo.com/1.4/developer_guide/installation/installation_workstation.html
 
-The following installation overview is for contributing to Akeneo PIM, not for project purpose.
+Upgrade instructions
+--------------------
 
-## Installation overview
-* Make sure all requirements are fullfilled
-* Install files and DB content:
-
-````
-    $ curl -s https://getcomposer.org/installer | php
-    $ git clone git@github.com:akeneo/pim-community-dev.git
-    $ cd pim-community-dev
-    $ php ../composer.phar install
-    $ php app/console pim:install --env=dev
-    $ php app/console cache:clear --env=dev
-````
-
-* Create a VirtualHost pointing to your pim-community-dev/web directory and a matching hostname
-* Go to http://<my-hostname>/app_dev.php to access your dev environment
-
-Note: using the "--prefer-dist" option on composer install can speed up
-the installation by looking into your local Composer cache.
-
-Note: The pim:install command can be executed several times. You just have to use the `--force` option.
-If you want to reinit your db or redeploy your assets, you can launch specific installer commands:
-`pim:installer:db` and `pim:installer:assets`.
-By default, this script initializes the dev environment.
-
-### Add translation packs (optional)
-
-You can download translation packs from crowdin: http://crowdin.net/project/akeneo
-
-The Akeneo PIM archive contains a 'Community' directory.
-
-To add a pack you have to :
-* rename the directories by following the rule 'src/Pim/Bundle/EnrichBundle' to 'PimEnrichBundle'
-* move those directories to app/Resources/translations
-* run php app/console oro:translation:dump fr de en (if you use en, fr and de locales)
-
-To use a pack :
-* go to System > Configuration and select your language
-
-Write permission for the HTTP server
-------------------------------------
-
-You must give write permission to the Apache user on the following directories:
-- app/cache
-- app/logs
-- app/entities
-- app/emails
-- web/bundles
-- app/uploads/product
-- app/archive
+To upgrade Akeneo PIM to a newer version, please follow:
+http://docs.akeneo.com/1.4/developer_guide/migration/index.html
 

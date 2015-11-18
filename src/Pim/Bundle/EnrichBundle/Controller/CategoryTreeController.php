@@ -149,6 +149,8 @@ class CategoryTreeController extends Controller
         $category->setParent($parent);
 
         $prevSiblingId = $request->get('prev_sibling');
+        $prevSibling = null;
+
         if (!empty($prevSiblingId)) {
             $prevSibling = $this->categoryRepository->find($prevSiblingId);
         }
@@ -158,6 +160,8 @@ class CategoryTreeController extends Controller
         } else {
             $this->categoryRepository->persistAsFirstChildOf($category, $parent);
         }
+
+        $this->categorySaver->save($category, ['flush' => true]);
 
         return new JsonResponse(['status' => 1]);
     }

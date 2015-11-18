@@ -73,6 +73,7 @@ Feature: Associate a product
     Then the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
+    And I should be able to sort the rows by SKU
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4670
   Scenario: Keep association selection between tabs
@@ -129,3 +130,40 @@ Feature: Associate a product
     # Wait for the fade-out of the message
     And I wait 1 seconds
     Then I should not see the text "There are unsaved changes."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5161
+  Scenario: Grid is sorted by default by "is associated"
+    Given the following products:
+      | sku          |
+      | red-boots    |
+      | purple-boots |
+      | yellow-boots |
+      | orange-boots |
+      | white-boots  |
+    And the following associations for the product "red-boots":
+      | type   | product     |
+      | X_SELL | black-boots |
+      | X_SELL | gray-boots  |
+    And I edit the "red-boots" product
+    When I visit the "Associations" tab
+    Then I should see the text "black-boots"
+    And I should see the text "gray-boots"
+    And the rows "black-boots and gray-boots" should be checked
+    And the rows should be sorted descending by Is associated
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5161
+  Scenario: Grid is sortable by "is associated"
+    Given the following products:
+      | sku          |
+      | red-boots    |
+      | purple-boots |
+      | yellow-boots |
+      | orange-boots |
+      | white-boots  |
+    And the following associations for the product "red-boots":
+      | type   | product     |
+      | X_SELL | black-boots |
+      | X_SELL | gray-boots  |
+    And I edit the "red-boots" product
+    When I visit the "Associations" tab
+    Then I should be able to sort the rows by Is associated

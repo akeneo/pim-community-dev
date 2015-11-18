@@ -17,6 +17,9 @@ interface ConfiguratorInterface
     const SOURCE_PATH = '[source][%s]';
 
     /** @staticvar string */
+    const SOURCE_KEY = 'source';
+
+    /** @staticvar string */
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
     /** @staticvar string */

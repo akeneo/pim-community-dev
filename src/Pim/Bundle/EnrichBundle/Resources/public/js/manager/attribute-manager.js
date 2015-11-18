@@ -12,9 +12,10 @@ define([
         return {
             /**
              * Get the attributes of the given product
-             * @param  Object product
              *
-             * @return Array
+             * @param  {Object} product
+             *
+             * @return {Array}
              */
             getAttributesForProduct: function (product) {
                 if (!product.family) {
@@ -30,9 +31,10 @@ define([
 
             /**
              * Get all optional attributes available for a product
-             * @param Object product
              *
-             * @return Array
+             * @param {Object} product
+             *
+             * @return {Array}
              */
             getAvailableOptionalAttributes: function (product) {
                 return $.when(
@@ -42,7 +44,7 @@ define([
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
                         function (attributeCode) {
-                            return _.findWhere(attributes, {code: attributeCode});
+                            return _.findWhere(attributes, { code: attributeCode });
                         }
                     );
 
@@ -52,11 +54,12 @@ define([
 
             /**
              * Check if an attribute is optional
-             * @param Object attribute
-             * @param Object product
-             * @param Array  families
              *
-             * @return boolean
+             * @param {Object} attribute
+             * @param {Object} product
+             * @param {Array}  families
+             *
+             * @return {boolean}
              */
             isOptional: function (attribute, product, families) {
                 return 'pim_catalog_identifier' !== attribute.type &&
@@ -65,27 +68,29 @@ define([
 
             /**
              * Get the value in the given collection for the given locale and scope
-             * @param Array  values
-             * @param Object attribute
-             * @param String locale
-             * @param String scope
              *
-             * @return {*}
+             * @param {Array}  values
+             * @param {Object} attribute
+             * @param {string} locale
+             * @param {string} scope
+             *
+             * @return {Object}
              */
             getValue: function (values, attribute, locale, scope) {
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
-                return _.findWhere(values, {scope: scope, locale: locale});
+                return _.findWhere(values, { scope: scope, locale: locale });
             },
 
             /**
              * Generate a single value for the given attribute, scope and lcoale
-             * @param Object attribute
-             * @param String locale
-             * @param String scope
              *
-             * @return {*}
+             * @param {Object} attribute
+             * @param {string} locale
+             * @param {string} scope
+             *
+             * @return {Object}
              */
             generateValue: function (attribute, locale, scope) {
                 locale = attribute.localizable ? locale : null;
@@ -100,13 +105,14 @@ define([
 
             /**
              * Generate all missing values for an attribute
-             * @param values
-             * @param attribute
-             * @param locales
-             * @param channels
-             * @param currencies
              *
-             * @return {*}
+             * @param {Array}  values
+             * @param {Object} attribute
+             * @param {Array}  locales
+             * @param {Array}  channels
+             * @param {Array}  currencies
+             *
+             * @return {Array}
              */
             generateMissingValues: function (values, attribute, locales, channels, currencies) {
                 _.each(locales, function (locale) {
@@ -134,18 +140,19 @@ define([
 
             /**
              * Generate missing prices in the given collection for the given currencies
-             * @param Array prices
-             * @param Array currencies
              *
-             * @return Array
+             * @param {Array} prices
+             * @param {Array} currencies
+             *
+             * @return {Array}
              */
             generateMissingPrices: function (prices, currencies) {
                 prices = prices || [];
                 _.each(currencies, function (currency) {
-                    var price = _.findWhere(prices, {currency: currency.code});
+                    var price = _.findWhere(prices, { currency: currency.code });
 
                     if (!price) {
-                        price = {data: null, currency: currency.code};
+                        price = { data: null, currency: currency.code };
                         prices.push(price);
                     }
 

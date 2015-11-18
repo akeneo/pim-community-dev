@@ -27,6 +27,7 @@ Feature: Validate number attributes of a product
       | bar | baz    | 4                 | 4                    | 2      |
     And I am logged in as "Mary"
     And I am on the "foo" product page
+    And I visit the "Other" group
 
   Scenario: Validate the unique constraint of number attribute
     Given I change the Reference to "111"

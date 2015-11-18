@@ -1,8 +1,56 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-5127: Improve products export memory usage
+- PIM-5148: IE11 wrong display on multiple select attributes
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
+- PIM-5150: Improve the product grid loading performance when a lot of attribute filters are available
+
+# 1.4.8 (2015-11-09)
+
+## Bug fixes
+- PIM-5036: Fix metric select2 bug in PEF
+- PIM-5119: Fix the "Manage filters", which was very slow when there was a lot of attributes to display
+- PIM-5121: Fix the channel code displayed instead of label
+- PIM-5139: Fix association grid performance and sorting issues
+ 
+# 1.4.7 (2015-11-03)
+
+## Bug fixes
+- PIM-5078: Fix category move action
+- PIM-4925: Fix dashboard patch available information
+- PIM-5082: Fix variant group modal display in product edit form (in mongo storage)
+- PIM-5084: Fix attribute groups order in product edit form
+- PIM-5008: Optimize product edit form when lots of attributes are used
+- PIM-5041: Add cache warmup for product edit form
+- PIM-5039: Fix missing translation key for boolean attribute switch
+
+# 1.4.6 (2015-10-27)
+
+## Bug fixes
+- PIM-5051: Fix mass delete products error on versionning 
+
+# 1.4.5 (2015-10-23)
+
+## Bug fixes
+- PIM-4794: Fix static attributes types for reference data
+- PIM-5035: Fix products sorting in associations grid
+- PIM-5046: Fix identifier attribute not unique on creation
+
+# 1.4.4 (2015-10-16)
+
+## Bug fixes
+- PIM-5016: Fix import product with only sku and family columns
+- PIM-5000: Fix the products on which mass actions are applied
+- PIM-5006: Fix the API key generation
+
+# 1.4.3 (2015-10-09)
+
+## Bug fixes
 - PIM-4955: Fixed regression on completeness computation when locales are removed from a channel
 - PIM-4622: Fix CSS for product comments
+- PIM-4973: Fix product removal from edit form (in mongo storage)
+- PIM-4977: Revert PIM-4443 by re-allowing full numeric entity codes
 
 # 1.4.2 (2015-10-01)
 

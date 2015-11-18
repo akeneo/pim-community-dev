@@ -8,6 +8,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Prophecy\Argument;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -48,7 +49,7 @@ class BooleanFilterSpec extends ObjectBehavior
     ) {
         $utility->applyFilter($datasource, 'bar', '=', true)->shouldBeCalled();
 
-        $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
+        $this->apply($datasource, ['value' => BooleanFilterType::TYPE_YES])->shouldReturn(true);
     }
 
     function it_does_not_apply_boolean_flexible_filter_on_unparsable_data(
@@ -57,9 +58,9 @@ class BooleanFilterSpec extends ObjectBehavior
     ) {
         $utility->applyFilter(Argument::cetera())->shouldNotBeCalled();
 
-        $this->apply($datasource, array('value' => 'foo'))->shouldReturn(false);
-        $this->apply($datasource, array('value' => null))->shouldReturn(false);
-        $this->apply($datasource, array())->shouldReturn(false);
+        $this->apply($datasource, ['value' => 'foo'])->shouldReturn(false);
+        $this->apply($datasource, ['value' => null])->shouldReturn(false);
+        $this->apply($datasource, [])->shouldReturn(false);
         $this->apply($datasource, BooleanFilterType::TYPE_NO)->shouldReturn(false);
     }
 
@@ -71,6 +72,8 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_generates_choices_metadata(
+        FormBuilderInterface $formBuilder,
+        FormBuilderInterface $typeFormBuilder,
         FormInterface $form,
         FormView $formView,
         FormView $fieldView,
@@ -84,8 +87,11 @@ class BooleanFilterSpec extends ObjectBehavior
         $utility->getParamMap()->willReturn([]);
         $utility->getExcludeParams()->willReturn([]);
         $factory->create(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
+        $factory->createBuilder(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($formBuilder);
         $form->createView()->willReturn($formView);
 
+        $formBuilder->get('type')->willReturn($typeFormBuilder);
+        $typeFormBuilder->getOption('choices')->willReturn([$noChoice, $yesChoice]);
         $formView->children = array('value' => $fieldView, 'type' => $typeView);
         $formView->vars     = array('populate_default' => true);
         $fieldView->vars    = array('multiple' => true, 'choices' => array($yesChoice, $noChoice));
