@@ -685,8 +685,9 @@ class ProductAssetController extends Controller
 
             return $this->redirectAfterEdit($request, ['id' => $id]);
         } elseif ($assetForm->isSubmitted()) {
-            $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            // TODO find a better way
+            foreach ($assetForm->getErrors(true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
@@ -777,7 +778,8 @@ class ProductAssetController extends Controller
      */
     protected function addFlashMessage($type, $message, array $parameters = [])
     {
-        $this->container->get('session')->getFlashBag()->add($type, new Message($message, $parameters));
+        $message = new Message($message, $parameters);
+        parent::addFlash($type, $message);
     }
 
     /**

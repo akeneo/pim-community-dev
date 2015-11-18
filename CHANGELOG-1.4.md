@@ -1,7 +1,30 @@
-# 1.4.x
+# 1.4.8 (2015-11-09)
+
+## Bug fixes
+- PIM-5044: Fix rule priority not taken into account in rule command
+- PIM-5149: Problem to access to mass edit executions in process tracker
+
+# 1.4.7 (2015-11-03)
+
+# 1.4.6 (2015-10-27)
+
+# 1.4.5 (2015-10-23)
+
+## Bug fixes
+- PIM-4970: Asset mass upload - Do not remove uploaded asset if not deleted from server
+- PIM-5028: Fix log levels for prod environment
+
+# 1.4.4 (2015-10-19)
+
+## Bug fixes
+- PIM-4971: Fix flash messages for asset edit form
+
+# 1.4.3 (2015-10-09)
 
 ## Bug fixes
 - PIM-4794: Add contextualized thumbnails support for assets collections in product grid
+- PIM-4717: Use the raw filename to move the file to the temporary file folder
+- PIM-4977: Revert PIM-4443 by re-allowing full numeric entity codes
 
 # 1.4.2 (2015-10-01)
 

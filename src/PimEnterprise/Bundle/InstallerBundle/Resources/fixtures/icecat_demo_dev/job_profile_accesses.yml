@@ -53,34 +53,6 @@ job_profile_accesses:
     csv_product_proposal_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    update_product_value:
-        executeJobProfile: [IT support, Manager, Redactor]
-    add_product_value:
-        executeJobProfile: [IT support, Manager, Redactor]
-    add_product_value_with_permission:
-        executeJobProfile: [IT support, Manager, Redactor]
-    update_product_value_with_permission:
-        executeJobProfile: [IT support, Manager, Redactor]
-    publish_product:
-        executeJobProfile: [IT support, Manager, Redactor]
-    unpublish_product:
-        executeJobProfile: [IT support, Manager, Redactor]
-    edit_common_attributes:
-        executeJobProfile: [IT support, Manager, Redactor]
-    edit_common_attributes_with_permission:
-        executeJobProfile: [IT support, Manager, Redactor]
-    add_to_variant_group:
-        executeJobProfile: [IT support, Manager, Redactor]
-    set_attribute_requirements:
-        executeJobProfile: [IT support, Manager, Redactor]
-    csv_product_quick_export:
-        executeJobProfile: [IT support, Manager, Redactor]
-    csv_published_product_quick_export:
-        executeJobProfile: [IT support, Manager, Redactor]
-    approve_product_draft:
-        executeJobProfile: [IT support, Manager]
-    refuse_product_draft:
-        executeJobProfile: [IT support, Manager]
     csv_asset_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
@@ -96,15 +68,42 @@ job_profile_accesses:
     csv_asset_variation_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    apply_assets_mass_upload:
-        executeJobProfile: [IT support, Manager, Redactor]
-        editJobProfile: [IT support, Manager]
     yml_asset_channel_configuration_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
     yml_asset_channel_configuration_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    update_product_value:
+        executeJobProfile: [All]
+    add_product_value:
+        executeJobProfile: [All]
+    add_product_value_with_permission:
+        executeJobProfile: [All]
+    update_product_value_with_permission:
+        executeJobProfile: [All]
+    publish_product:
+        executeJobProfile: [All]
+    unpublish_product:
+        executeJobProfile: [All]
+    edit_common_attributes:
+        executeJobProfile: [All]
+    edit_common_attributes_with_permission:
+        executeJobProfile: [All]
+    add_to_variant_group:
+        executeJobProfile: [All]
+    set_attribute_requirements:
+        executeJobProfile: [All]
+    approve_product_draft:
+        executeJobProfile: [All]
+    refuse_product_draft:
+        executeJobProfile: [All]
+    apply_assets_mass_upload:
+        executeJobProfile: [All]
+    csv_product_quick_export:
+        executeJobProfile: [All]
+    csv_published_product_quick_export:
+        executeJobProfile: [All]
     csv_family_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]

@@ -19,6 +19,8 @@ use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -133,7 +135,7 @@ class MassUploadController
             $originalFilename = $file->getClientOriginalName();
             $parsedFilename   = $this->uploadChecker->getParsedFilename($originalFilename);
             $targetDir        = $this->getUploadContext()->getTemporaryUploadDirectory();
-            $uploaded         = $file->move($targetDir, $parsedFilename->getCleanFilename());
+            $uploaded         = $file->move($targetDir, $parsedFilename->getRawFilename());
         }
 
         if (null === $uploaded) {
@@ -158,11 +160,16 @@ class MassUploadController
         $filepath = $this->getUploadContext()->getTemporaryUploadDirectory()
             . DIRECTORY_SEPARATOR . $this->cleanFilename($filename);
 
-        if (is_file($filepath)) {
-            unlink($filepath);
+        $response = new JsonResponse();
+
+        try {
+            $fs = new Filesystem();
+            $fs->remove($filepath);
+        } catch (IOException $e) {
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        return new JsonResponse();
+        return $response;
     }
 
     /**
