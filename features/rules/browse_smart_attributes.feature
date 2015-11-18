@@ -36,8 +36,8 @@ Feature: Browse smart attributes in the attribute grid
       | rule1 | comment         | Foo           |        |        |
       | rule1 | description     | Foo           |en_US   | mobile |
       | rule1 | handmade        | true          |        |        |
-      | rule1 | length          | 10,CENTIMETER |        |        |
-      | rule1 | price           | 2,EUR         |        |        |
+      | rule1 | length          | 10 CENTIMETER |        |        |
+      | rule1 | price           | 2 EUR         |        |        |
       | rule1 | number_in_stock | 2             |        |        |
       | rule1 | destocking_date | 2015-05-26    |        |        |
     And I am on the attributes page
