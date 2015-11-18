@@ -312,7 +312,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAxisAttributes(array $newAttributes = array())
+    public function setAxisAttributes(array $newAttributes = [])
     {
         foreach ($this->attributes as $attribute) {
             if (!in_array($attribute, $newAttributes)) {
@@ -329,7 +329,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributes(array $attributes = array())
+    public function setAttributes(array $attributes = [])
     {
         return $this->setAxisAttributes($attributes);
     }
@@ -341,7 +341,7 @@ class Group implements GroupInterface
      */
     public function getGroupSequence()
     {
-        return array('Group', strtolower($this->getType()->getCode()));
+        return ['Group', strtolower($this->getType()->getCode())];
     }
 
     /**

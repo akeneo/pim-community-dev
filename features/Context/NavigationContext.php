@@ -168,7 +168,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheRelativePath($path, $referer)
     {
         $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+        $uri      = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
 
         $this->getSession()->visit($uri);
     }
@@ -246,6 +246,30 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
         $this->wait();
+    }
+
+    /**
+     * @Given /^I edit my profile$/
+     */
+    public function iAmOnMyProfileEditPage()
+    {
+        $this->openPage('User profile edit');
+    }
+
+    /**
+     * @Given /^I am on my profile page$/
+     */
+    public function iAmOnMyProfilePage()
+    {
+        $this->openPage('User profile show');
+    }
+
+    /**
+     * @Given /^I edit the system configuration$/
+     */
+    public function iAmOnTheSystemEditPage()
+    {
+        $this->openPage('System index');
     }
 
     /**
@@ -695,7 +719,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $pinButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 10);
+        });
 
         $pinButton->click();
     }
@@ -709,7 +733,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $pinnedItem = $this->spin(function () use ($label) {
             return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        }, 10);
+        });
 
         $pinnedItem->click();
     }
@@ -735,7 +759,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             }
 
             return $page->verifyAfterLogin();
-        }, 30);
+        }, 'Trying to open page ' . $this->currentPage);
         $this->wait();
 
         return $page;
@@ -791,6 +815,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             $filteredUrl = $urlWithoutLocale;
         }
 
+        if (false !== $urlWithoutRedirect = strstr($filteredUrl, '?redirectTab=', true)) {
+            $filteredUrl = $urlWithoutRedirect;
+        }
+
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {
             $filteredUrl = $urlWithoutGrid;
         }
@@ -818,12 +846,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 10000, $condition = null)
+    protected function wait($condition = null)
     {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($condition);
     }
 
     /**

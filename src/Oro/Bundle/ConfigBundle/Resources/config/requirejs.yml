@@ -1,0 +1,26 @@
+config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                ui-locale:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_localization_locale_index
+        oro/form/system/config/save:
+            route: oro_config_configuration_system_post
+
+    paths:
+        # Forms
+        oro/form/system/config:                    oroconfig/js/form/system/config
+        oro/form/system/config/system:             oroconfig/js/form/system/tab/system
+        oro/form/system/config/group/localization: oroconfig/js/form/system/group/localization
+        oro/form/system/config/group/notification: oroconfig/js/form/system/group/notification
+        oro/form/system/config/save:               oroconfig/js/form/system/save
+
+
+        # Templates
+        oro/template/system/config:             oroconfig/js/templates/system/config.html
+        oro/template/system/tab/system:         oroconfig/js/templates/system/tab/system.html
+        oro/template/system/group/localization: oroconfig/js/templates/system/group/localization.html
+        oro/template/system/group/notification: oroconfig/js/templates/system/group/notification.html

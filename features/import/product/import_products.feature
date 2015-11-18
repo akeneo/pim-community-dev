@@ -229,3 +229,55 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
+
+  Scenario: Successfully import a csv file of products without enabled column
+    Given the following product:
+      | sku     | name-en_US | description-en_US-tablet                    | enabled |
+      | SKU-001 | John Deere | Best of tractors                            | no      |
+      | SKU-002 | Class      | Leader in agricultural harvesting equipment | yes     |
+      | SKU-003 | Renault    | French Tractors                             | no      |
+    Given the following CSV file to import:
+      """
+      sku;name-en_US;description-en_US-tablet
+      SKU-001;John Deere;Go fast with John Deere
+      SKU-002;Class;Ride with Class
+      SKU-003;Renault;French touch for tractors
+      SKU-004;New Holland;Faster tractors
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+      | enabled  | yes              |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 4 products
+    And product "SKU-001" should be disabled
+    And product "SKU-002" should be enabled
+    And product "SKU-003" should be disabled
+    And product "SKU-004" should be enabled
+
+  Scenario: Successfully import a csv file of products without enabled column
+    Given the following product:
+      | sku     | name-en_US | description-en_US-tablet                    | enabled |
+      | SKU-001 | John Deere | Best of tractors                            | no      |
+      | SKU-002 | Class      | Leader in agricultural harvesting equipment | yes     |
+      | SKU-003 | Renault    | French Tractors                             | no      |
+    Given the following CSV file to import:
+      """
+      sku;name-en_US;description-en_US-tablet
+      SKU-001;John Deere;Go fast with John Deere
+      SKU-002;Class;Ride with Class
+      SKU-003;Renault;French touch for tractors
+      SKU-004;New Holland;Faster tractors
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+      | enabled  | no               |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 4 products
+    And product "SKU-001" should be disabled
+    And product "SKU-002" should be enabled
+    And product "SKU-003" should be disabled
+    And product "SKU-004" should be disabled

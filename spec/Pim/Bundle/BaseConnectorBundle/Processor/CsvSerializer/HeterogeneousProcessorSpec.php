@@ -4,15 +4,18 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class HeterogeneousProcessorSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, LocaleManager $localeManager, StepExecution $stepExecution)
-    {
-        $this->beConstructedWith($serializer, $localeManager);
+    function let(
+        SerializerInterface $serializer,
+        LocaleRepositoryInterface $localeRepository,
+        StepExecution $stepExecution
+    ) {
+        $this->beConstructedWith($serializer, $localeRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -71,36 +74,36 @@ class HeterogeneousProcessorSpec extends ObjectBehavior
         $this->isWithHeader()->shouldReturn(false);
     }
 
-    function it_increments_summary_info_including_header($stepExecution, $serializer, $localeManager)
+    function it_increments_summary_info_including_header($stepExecution, $serializer, $localeRepository)
     {
         $items = [['item1' => ['attr10']], ['item2'], ['item3' => ['attr30', 'attr31']]];
 
         $stepExecution->addSummaryInfo('write', 2)->shouldBeCalled();
 
-        $localeManager->getActiveCodes()->willReturn([]);
+        $localeRepository->getActivatedLocaleCodes()->willReturn([]);
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
 
         $this->process($items);
     }
 
-    function it_increments_summary_info_excluding_header($stepExecution, $serializer, $localeManager)
+    function it_increments_summary_info_excluding_header($stepExecution, $serializer, $localeRepository)
     {
         $items = [['item1' => ['attr10']], ['item2'], ['item3' => ['attr30', 'attr31']]];
 
         $stepExecution->addSummaryInfo('write', 3)->shouldBeCalled();
 
-        $localeManager->getActiveCodes()->willReturn([]);
+        $localeRepository->getActivatedLocaleCodes()->willReturn([]);
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
 
         $this->setWithHeader(false);
         $this->process($items);
     }
 
-    function it_processes_an_heterogeneous_item($serializer, $localeManager)
+    function it_processes_an_heterogeneous_item($serializer, $localeRepository)
     {
         $items = [['item1' => ['attr10']], ['item2'], ['item3' => ['attr30', 'attr31']]];
 
-        $localeManager->getActiveCodes()->willReturn([]);
+        $localeRepository->getActivatedLocaleCodes()->willReturn([]);
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
 
         $this->process($items)->shouldReturn('those;items;in;csv;format;');

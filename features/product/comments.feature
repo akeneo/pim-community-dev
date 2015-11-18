@@ -1,3 +1,4 @@
+@javascript
 Feature: Leave a comment on a product
   In order to discuss about a product with my team mates
   As a product manager or a contributor
@@ -18,7 +19,6 @@ Feature: Leave a comment on a product
       | high-heels | 4 | Julia  | Does not belong to the Summer Collection anymore.              |        | 25-Aug-14  |
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        | 28-Aug-14  |
 
-  @javascript
   Scenario: Successfully add a new comment on a product
     Given I am on the "rangers" product page
     And I open the "Comments" panel
@@ -29,7 +29,6 @@ Feature: Leave a comment on a product
       | product | # | author | message    | parent |
       | rangers | 1 | Julia  | My comment |        |
 
-  @javascript
   Scenario: View the list of comments on a product
     Given I am on the "high-heels" product page
     And I open the "Comments" panel
@@ -41,7 +40,6 @@ Feature: Leave a comment on a product
       | high-heels | 4 | Julia  | Does not belong to the Summer Collection anymore.              |        |
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        |
 
-  @javascript
   Scenario: Successfully reply to an existing comment
     Given I am on the "high-heels" product page
     And I open the "Comments" panel
@@ -55,7 +53,6 @@ Feature: Leave a comment on a product
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        |
       | high-heels | 6 | Julia  | No, with black heels.                                          | 5      |
 
-  @javascript
   Scenario: Successfully remove my own comments
     Given I am on the "rangers" product page
     And I open the "Comments" panel
@@ -65,13 +62,11 @@ Feature: Leave a comment on a product
     And I confirm the removal
     Then I should not see "My comment"
 
-  @javascript
   Scenario: Not being able to remove a comment that is not mine
     Given I am on the "high-heels" product page
     And I open the "Comments" panel
     Then I should not see the link to delete the "Should be associated with red heel." comment of "Mary"
 
-  @javascript
   Scenario: Not being able to view comments if I don't have the permission
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page

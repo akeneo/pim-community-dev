@@ -14,7 +14,7 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInte
 class MassActionHandlerRegistry
 {
     /** @var array $handlers */
-    protected $handlers = array();
+    protected $handlers = [];
 
     /**
      * Add handler service in registry

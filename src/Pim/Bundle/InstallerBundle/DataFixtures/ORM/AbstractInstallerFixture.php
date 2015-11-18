@@ -57,7 +57,7 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
         $validator = $this->container->get('validator');
         $violations = $validator->validate($entity);
         if ($violations->count() > 0) {
-            $messages = array();
+            $messages = [];
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }

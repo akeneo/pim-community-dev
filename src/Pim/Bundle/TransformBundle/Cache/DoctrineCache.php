@@ -23,7 +23,7 @@ class DoctrineCache
     protected $referenceRepository;
 
     /** @var array */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * @param ManagerRegistry $doctrine
@@ -80,10 +80,10 @@ class DoctrineCache
      *
      * @param array $unclearableEntities
      */
-    public function clear(array $unclearableEntities = array())
+    public function clear(array $unclearableEntities = [])
     {
         if (empty($unclearableEntities)) {
-            $this->cache = array();
+            $this->cache = [];
         } else {
             foreach (array_keys($this->cache) as $class) {
                 if (!in_array($class, $unclearableEntities)) {

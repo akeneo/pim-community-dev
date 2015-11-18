@@ -36,11 +36,11 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetEntity',
-                array(
+                [
                     $interface,
                     new Parameter($parameterName),
-                    array()
-                )
+                    []
+                ]
             );
         }
     }
@@ -60,11 +60,11 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetDocument',
-                array(
+                [
                     $interface,
                     new Parameter($parameterName),
-                    array()
-                )
+                    []
+                ]
             );
         }
     }

@@ -30,6 +30,11 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
 
+    function it_is_an_object_repository()
+    {
+        $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
+    }
+
     function it_returns_eligible_products_for_variant_group($em, $class, Statement $statement, Connection $connection)
     {
         $em->getClassMetadata(Argument::any())->willReturn($class);

@@ -49,7 +49,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!isset($context['part']) || !in_array($context['part'], ['groups', 'products'])) {
             throw new \Exception(

@@ -16,7 +16,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     /**
      * @var UpdateGuesserInterface[]
      */
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * {@inheritdoc}
@@ -31,7 +31,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $updates = array();
+        $updates = [];
 
         foreach ($this->guessers as $guesser) {
             if ($guesser->supportAction($action)) {

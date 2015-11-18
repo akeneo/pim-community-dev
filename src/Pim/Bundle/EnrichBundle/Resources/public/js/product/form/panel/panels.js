@@ -61,11 +61,10 @@ define(
                 if (this.state.get('currentPanel')) {
                     currentPanel = this.getExtension(this.state.get('currentPanel'));
                     this.renderExtension(currentPanel);
-                    this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 
                 var selectorExtension = this.getExtension('selector');
-                this.renderExtension(selectorExtension);
+                selectorExtension.render();
                 this.getParent().$('>header').append(selectorExtension.$el);
 
                 this.delegateEvents();

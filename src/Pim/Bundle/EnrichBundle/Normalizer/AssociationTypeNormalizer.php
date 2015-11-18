@@ -31,7 +31,7 @@ class AssociationTypeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $result = $this->normalizer->normalize($object, 'json', $context);
         $result['id'] = $object->getId();

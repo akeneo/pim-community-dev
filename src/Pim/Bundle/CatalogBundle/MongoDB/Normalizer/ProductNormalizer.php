@@ -43,7 +43,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -73,7 +73,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             }
         }
 
-        $completenesses = array();
+        $completenesses = [];
         foreach ($object->getCompletenesses() as $completeness) {
             $completenesses = array_merge(
                 $completenesses,

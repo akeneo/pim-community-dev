@@ -16,15 +16,15 @@ class Edit extends Creation
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Attribute list' => array('css' => '#attributes-sortable'),
-            )
+            [
+                'Attribute list' => ['css' => '#attributes-sortable'],
+            ]
         );
     }
 

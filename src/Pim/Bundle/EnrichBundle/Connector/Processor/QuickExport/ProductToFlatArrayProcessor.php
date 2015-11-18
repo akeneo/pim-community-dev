@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -30,11 +31,23 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
+    /** @var FormatProviderInterface */
+    protected $dateFormatProvider;
+
+    /** @var FormatProviderInterface */
+    protected $numberFormatProvider;
+
     /** @var string */
     protected $uploadDirectory;
 
     /** @var string */
     protected $channelCode;
+
+    /** @var string */
+    protected $decimalSeparator;
+
+    /** @var string */
+    protected $dateFormat;
 
     /** @var array Normalizer context */
     protected $normalizerContext;
@@ -43,19 +56,25 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
+     * @param FormatProviderInterface             $dateFormatProvider
+     * @param FormatProviderInterface             $numberFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
+        FormatProviderInterface $dateFormatProvider,
+        FormatProviderInterface $numberFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer      = $serializer;
-        $this->channelManager  = $channelManager;
-        $this->uploadDirectory = $uploadDirectory;
+        $this->serializer           = $serializer;
+        $this->channelManager       = $channelManager;
+        $this->dateFormatProvider   = $dateFormatProvider;
+        $this->numberFormatProvider = $numberFormatProvider;
+        $this->uploadDirectory      = $uploadDirectory;
     }
 
     /**
@@ -114,14 +133,33 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * @param string $uiLocale
+     */
+    public function configureOptions($uiLocale)
+    {
+        $this->decimalSeparator = $this->numberFormatProvider->getFormat($uiLocale)['decimal_separator'];
+        $this->dateFormat       = $this->dateFormatProvider->getFormat($uiLocale);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'   => $this->channelCode,
-                'localeCodes' => $this->getLocaleCodes($this->channelCode)
+                'scopeCode'         => $this->channelCode,
+                'localeCodes'       => $this->getLocaleCodes($this->channelCode),
+                'decimal_separator' => $this->decimalSeparator,
+                'date_format'       => $this->dateFormat,
             ];
         }
 
@@ -173,6 +211,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');
         }
+
+        if (!isset($configuration['mainContext']['ui_locale'])) {
+            throw new InvalidArgumentException('No UI locale found');
+        }
+
         $this->setChannelCode($configuration['mainContext']['scope']);
+        $this->configureOptions($configuration['mainContext']['ui_locale']);
     }
 }

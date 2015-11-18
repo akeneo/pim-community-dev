@@ -23,5 +23,5 @@ interface PropertyTransformerInterface
      *
      * @return mixed
      */
-    public function transform($value, array $options = array());
+    public function transform($value, array $options = []);
 }

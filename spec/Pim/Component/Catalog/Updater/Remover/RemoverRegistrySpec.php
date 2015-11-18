@@ -4,11 +4,16 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 use Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface;
 
 class RemoverRegistrySpec extends ObjectBehavior
 {
+    function let(AttributeRepositoryInterface $attributeRepository) {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_a_remover_registry()
     {
         $this->shouldImplement('\Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface');

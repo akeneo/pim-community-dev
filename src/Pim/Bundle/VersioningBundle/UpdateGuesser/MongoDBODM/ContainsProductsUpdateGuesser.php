@@ -45,7 +45,7 @@ class ContainsProductsUpdateGuesser extends BaseContainsProductsUpdateGuesser
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
 
         if ($entity instanceof GroupInterface && $entity->getId()) {
             $products = $this->registry->getRepository($this->productClass)->findAllForGroup($entity);

@@ -83,7 +83,7 @@ class CurrencyController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**

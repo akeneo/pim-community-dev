@@ -62,6 +62,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_localization.localizer.converter'
 
     pim_connector.processor.denormalization.product_association.flat:
         class: %pim_connector.processor.denormalization.product_association.class%

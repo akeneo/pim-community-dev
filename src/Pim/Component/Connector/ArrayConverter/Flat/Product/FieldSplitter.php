@@ -28,7 +28,7 @@ class FieldSplitter
     /**
      * Split a collection in a flat value :
      *
-     * '10 EUR, 24 USD' => ['10 EUR', '24 USD']
+     * 'boots, sandals' => ['boots', 'sandals']
      *
      * @param string $value Raw value
      *
@@ -45,6 +45,43 @@ class FieldSplitter
         }
 
         return $tokens;
+    }
+
+    /**
+     * Split a price collection in a flat value :
+     *
+     * '10 EUR, 24 USD' => ['10 EUR', '24 USD']
+     *
+     * @param string $value Raw value
+     *
+     * @return array
+     */
+    public function splitPrices($value)
+    {
+        $prices = [];
+        if ('' !== $value) {
+            preg_match_all('/
+                (?P<prices>
+                    ([a-z0-9]+)    # int or blank (if there is no price defined)
+                    (?:[^0-9]\d+)? # decimal separator and decimal
+                    [a-z\s]+       # currency
+                )/ix', $value, $matches);
+
+            if (empty($matches['prices'])) {
+                if (!is_array($value)) {
+                    return [$value];
+                }
+
+                return $value;
+            }
+
+            $prices = $matches['prices'];
+            array_walk($prices, function (&$price) {
+                $price = trim($price);
+            });
+        }
+
+        return $prices;
     }
 
     /**

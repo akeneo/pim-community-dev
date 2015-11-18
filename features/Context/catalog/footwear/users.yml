@@ -1,12 +1,14 @@
 users:
     admin:
         catalogLocale: en_US
+        uiLocale :     en_US
         catalogScope:  mobile
         defaultTree:   2014_collection
         roles:         [ ROLE_ADMINISTRATOR ]
         groups:        [ IT support ]
     Julia:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  tablet
         defaultTree:   2014_collection
         last_name:     Stark
@@ -14,6 +16,7 @@ users:
         groups:        [ Manager ]
     Peter:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  mobile
         defaultTree:   2014_collection
         last_name:     Williams
@@ -21,6 +24,7 @@ users:
         groups:        [ IT support ]
     Mary:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  tablet
         defaultTree:   summer_collection
         last_name:     Smith
@@ -28,8 +32,17 @@ users:
         groups:        [ Redactor ]
     Sandra:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  mobile
         defaultTree:   winter_collection
         last_name:     Harvey
+        roles:         [ ROLE_USER ]
+        groups:        [ Redactor ]
+    Julien:
+        catalogLocale: fr_FR
+        uiLocale:      fr_FR
+        catalogScope:  mobile
+        defaultTree:   winter_collection
+        last_name:     Février
         roles:         [ ROLE_USER ]
         groups:        [ Redactor ]

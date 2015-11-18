@@ -1,0 +1,15 @@
+'You have unsaved changes, are you sure that you want to leave?': 'You have unsaved changes, are you sure that you want to leave?'
+oro_config:
+    form:
+        config:
+            title: System configuration
+            tab:
+                system:
+                    title: System
+            group:
+                localization:
+                    title: Localization
+                    system_locale: Language
+                notification:
+                    title: Notifications
+                    system_notification: New versions notifications

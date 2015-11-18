@@ -1,0 +1,28 @@
+config:
+    shim:
+        'moment':
+            exports:
+                - 'moment'
+        'numeral':
+            exports:
+                - 'numeral'
+        'oro/formatter/number':
+            deps:
+                - 'numeral'
+                - 'oro/locale-settings'
+    map:
+        '*':
+            'moment': 'oro/moment-l10n'
+        'oro/moment-l10n':
+            'moment': 'moment'
+
+    paths:
+        'moment': 'bundles/orolocale/lib/moment.js'
+        'numeral': 'bundles/orolocale/lib/numeral.js'
+        'oro/locale-settings': 'bundles/orolocale/js/locale-settings.js'
+        'oro/locale-settings/data': '../js/oro.locale_data.js'
+        'oro/formatter/name': 'bundles/orolocale/js/formatter/name.js'
+        'oro/formatter/address': 'bundles/orolocale/js/formatter/address.js'
+        'oro/formatter/number': 'bundles/orolocale/js/formatter/number.js'
+        'oro/formatter/datetime': 'bundles/orolocale/js/formatter/datetime.js'
+        'oro/moment-l10n': 'bundles/orolocale/js/moment-l10n.js'

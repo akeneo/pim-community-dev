@@ -52,4 +52,6 @@ services:
             - '@pim_connector.repository.job_configuration'
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
+            - '@pim_localization.provider.date_format'
+            - '@pim_localization.provider.number_format'
             - %upload_dir%

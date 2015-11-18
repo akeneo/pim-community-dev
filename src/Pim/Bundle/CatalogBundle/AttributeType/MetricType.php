@@ -68,13 +68,13 @@ class MetricType extends AbstractAttributeType
 
         $options = array_merge(
             parent::prepareValueFormOptions($value),
-            array(
+            [
                 'units'        => $units,
                 'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
                 'family'       => $value->getAttribute()->getMetricFamily()
-            )
+            ]
         );
-        $options['default_unit'] = array($options['default_unit']);
+        $options['default_unit'] = [$options['default_unit']];
 
         return $options;
     }

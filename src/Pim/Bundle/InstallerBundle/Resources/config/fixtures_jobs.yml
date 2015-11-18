@@ -93,6 +93,7 @@ jobs:
         configuration:
             filePath: variant_groups.csv
             multiple: false
+            decimalSeparator: .
 
     fixtures_group_csv:
         order: 70
@@ -124,6 +125,8 @@ jobs:
                 - 'pdf_description'
                 - 'picture'
             enabledComparison: true
+            decimalSeparator: .
+            dateFormat: Y-m-d
 
     fixtures_job_yml:
         order: 100

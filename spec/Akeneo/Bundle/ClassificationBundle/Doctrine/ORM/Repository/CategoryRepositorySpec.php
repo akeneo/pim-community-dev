@@ -56,24 +56,4 @@ class CategoryRepositorySpec extends ObjectBehavior
     {
         $this->shouldImplement('Akeneo\Component\Classification\Repository\CategoryRepositoryInterface');
     }
-
-    function it_commits_data_when_moving_node_as_next_sibling(
-        CategoryInterface $node,
-        CategoryInterface $prevSibling,
-        $em
-    ) {
-        $em->persist($node)->shouldBeCalled();
-        $em->flush($node)->shouldBeCalled();
-        $this->persistAsNextSiblingOf($node, $prevSibling);
-    }
-
-    function it_commits_data_when_moving_node_as_first_child(
-        CategoryInterface $node,
-        CategoryInterface $parent,
-        $em
-    ) {
-        $em->persist($node)->shouldBeCalled();
-        $em->flush($node)->shouldBeCalled();
-        $this->persistAsFirstChildOf($node, $parent);
-    }
 }

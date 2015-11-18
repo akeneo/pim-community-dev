@@ -98,7 +98,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
      */
     public function getColumnChoices($alias, $displayedColumns = false)
     {
-        $choices = array();
+        $choices = [];
 
         $path = (true === $displayedColumns) ?
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY) :

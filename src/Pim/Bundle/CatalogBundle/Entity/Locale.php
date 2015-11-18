@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Intl\Intl;
 
 /**
  * Locale entity
@@ -99,6 +100,14 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
+    public function getLanguage()
+    {
+        return (null === $this->code) ? null : substr($this->code, 0, 2);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isActivated()
     {
         return $this->activated;
@@ -167,5 +176,15 @@ class Locale implements LocaleInterface, VersionableInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        $localeNames = Intl::getLocaleBundle()->getLocaleNames();
+
+        return array_key_exists($this->code, $localeNames) ? $localeNames[$this->code] : null;
     }
 }

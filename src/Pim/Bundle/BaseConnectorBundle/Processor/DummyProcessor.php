@@ -29,6 +29,6 @@ class DummyProcessor extends AbstractConfigurableStepElement implements ItemProc
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

@@ -620,17 +620,6 @@ body {
 @max-field-width: 500px;
 @min-field-width: 300px;
 
-.product-values {
-  &.tab-pane {
-    padding-top: 15px;
-    padding-right: 20px;
-  }
-
-  margin-left: 20px;
-  box-sizing: border-box;
-  overflow: auto;
-}
-
 header.tab-header {
   height: 44px;
   border-left: none;
@@ -717,6 +706,16 @@ h3.tab-header {
   letter-spacing: 0.03em;
   font-weight: 300;
 
+  .tabs-left > .sidebar > .nav-tabs a {
+    padding: 8px 15px 8px 15px;
+
+    .green {
+      color: @fern-green;
+    }
+  }
+}
+
+.edit-form {
   & > .content > .tabbable {
     padding: 10px 10px 0 10px;
 
@@ -735,61 +734,6 @@ h3.tab-header {
 
     .green {
       color: @fern-green;
-    }
-  }
-
-  & > header {
-    margin: 0 0 7px 0;
-    padding: 15px 10px 15px 20px;
-    background: #f7f7f9;
-
-    & > div {
-      .display-flex();
-    }
-
-    .product-title {
-      margin-bottom: 5px;
-      .flex();
-      .display-flex();
-      .align-items(center);
-
-      .product-label {
-        font-size: 18px;
-        font-weight: 400;
-        color: @color-new-purple-medium;
-      }
-    }
-  }
-
-  .baseline {
-    .display-flex();
-    .align-items(flex-end);
-
-    .meta {
-      white-space: nowrap;
-      margin-right: 20px;
-      .display-flex();
-      .flex(1);
-
-      > span {
-        font-size: 11px;
-        color: @color-form-info;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        &:not(:first-child) {
-          > *:first-child {
-            &:before {
-              margin: 0 10px;
-              content: "|";
-            }
-          }
-        }
-      }
-    }
-
-    .state {
-      .flex-shrink(0);
     }
   }
 
@@ -823,6 +767,73 @@ h3.tab-header {
 
     & > .tab-content {
       .flex();
+
+      & > .tab-pane {
+        padding-top: 15px;
+        padding-right: 20px;
+        margin-left: 20px;
+        box-sizing: border-box;
+        display: block;
+        overflow: auto;
+      }
+    }
+  }
+
+  & > header {
+    margin: 0 0 7px 0;
+    padding: 15px 10px 15px 20px;
+    background: #f7f7f9;
+
+    & > div {
+      .display-flex();
+    }
+
+    .title {
+      margin-bottom: 5px;
+      .flex();
+      .display-flex();
+      .align-items(center);
+
+      h1 {
+        font-size: 18px;
+        font-weight: 400;
+        color: @color-new-purple-medium;
+        margin: 0;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .baseline {
+    .display-flex();
+    .align-items(flex-end);
+
+    .meta {
+      white-space: nowrap;
+      margin-right: 20px;
+      .display-flex();
+      .flex(1);
+
+      > span {
+        font-size: 11px;
+        color: @color-form-info;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:not(:first-child) {
+          > *:first-child {
+            &:before {
+              margin: 0 10px;
+              content: "|";
+            }
+          }
+        }
+      }
+    }
+
+    .state {
+      .flex-shrink(0);
+      align-self: flex-end;
     }
   }
 }
@@ -1354,12 +1365,12 @@ h3.tab-header {
   border-radius: 2px;
 }
 
-.attribute-group-selector {
+.group-selector {
   li > a {
     .display-flex();
     width: 150px;
 
-    .attribute-group-label {
+    .group-label {
       .flex(1);
     }
   }
@@ -1703,5 +1714,11 @@ h3.tab-header {
   img {
     float: left;
     margin: 0 20px 0 0;
+  }
+}
+
+.oro-config-system {
+  .select2-container {
+    min-width: 300px;
   }
 }

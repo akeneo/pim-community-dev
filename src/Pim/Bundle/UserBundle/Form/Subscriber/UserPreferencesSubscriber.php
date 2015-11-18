@@ -3,10 +3,14 @@
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Subscriber to override additional user fields with regular entity fields and use custom query builders
@@ -17,17 +21,20 @@ use Symfony\Component\Form\FormEvents;
  */
 class UserPreferencesSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $categoryClass;
 
+    /** @var LocaleProviderInterface */
+    protected $localeProvider;
+
     /**
-     * @param string $categoryClass
+     * @param LocaleProviderInterface $localeProvider
+     * @param string                  $categoryClass
      */
-    public function __construct($categoryClass)
+    public function __construct(LocaleProviderInterface $localeProvider, $categoryClass)
     {
-        $this->categoryClass = $categoryClass;
+        $this->localeProvider = $localeProvider;
+        $this->categoryClass  = $categoryClass;
     }
 
     /**
@@ -35,9 +42,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
@@ -47,7 +54,8 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        if (null === $event->getData()) {
+        $user = $event->getData();
+        if (!$user instanceof UserInterface) {
             return;
         }
 
@@ -56,59 +64,84 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
+        $this->updateUiLocale($form);
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateCatalogLocale(Form $form)
+    protected function updateCatalogLocale(FormInterface $form)
     {
         $form->add(
             'catalogLocale',
             'entity',
-            array(
+            [
                 'class'         => 'PimCatalogBundle:Locale',
                 'property'      => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
-            )
+            ]
         );
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateCatalogScope(Form $form)
+    protected function updateCatalogScope(FormInterface $form)
     {
         $form->add(
             'catalogScope',
             'entity',
-            array(
+            [
                 'class'    => 'PimCatalogBundle:Channel',
                 'property' => 'label',
                 'select2'  => true
-            )
+            ]
         );
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateDefaultTree(Form $form)
+    protected function updateDefaultTree(FormInterface $form)
     {
         $form->add(
             'defaultTree',
             'entity',
-            array(
+            [
                 'class'         => $this->categoryClass,
                 'property'      => 'label',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getTreesQB();
                 }
-            )
+            ]
+        );
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    protected function updateUiLocale(FormInterface $form)
+    {
+        $localeProvider = $this->localeProvider;
+        $form->add(
+            'uiLocale',
+            'entity',
+            [
+                'class'         => 'PimCatalogBundle:Locale',
+                'property'      => 'getName',
+                'select2'       => true,
+                'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
+                    $locales = $localeProvider->getLocales();
+
+                    return $repository->createQueryBuilder('l')
+                        ->where('l.code IN (:locales)')
+                        ->setParameter('locales', array_keys($locales));
+                }
+            ]
         );
     }
 }

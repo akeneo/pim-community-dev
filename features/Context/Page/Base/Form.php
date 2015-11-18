@@ -34,7 +34,7 @@ class Form extends Base
                 'Panel selector'                  => ['css' => '.panel-selector'],
                 'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
-                'Form Groups'                     => ['css' => '.attribute-group-selector'],
+                'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -54,7 +54,7 @@ class Form extends Base
     {
         $this->pressButton('Save');
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $this->getSession()->wait(10000, '!$.active');
+            $this->getSession()->wait($this->getTimeout(), '!$.active');
         }
     }
 
@@ -143,7 +143,7 @@ class Form extends Base
         try {
             $node = $this->spin(function () use ($tab) {
                 return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
-            }, 5);
+            });
         } catch (\Exception $e) {
             $node = null;
         }
@@ -176,7 +176,7 @@ class Form extends Base
             $groups = $this->getElement('Form Groups');
 
             $groupsContainer = $groups
-                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+                ->find('css', sprintf('.group-label:contains("%s")', $group));
 
             $button = null;
 
@@ -270,7 +270,6 @@ class Form extends Base
                 function () use ($list, $attributeLabel) {
                     return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
                 },
-                20,
                 sprintf('Could not find available attribute "%s".', $attributeLabel)
             );
 
@@ -504,7 +503,7 @@ class Form extends Base
 
                 return $choices;
             }
-        }, 10);
+        });
 
         if ($isExpected) {
             foreach ($choices as $choice) {
@@ -712,10 +711,6 @@ class Form extends Base
             }
         }
 
-        // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
-        // wait for it to completly vanish in order to reopen select list
-        $this->getSession()->wait(2000);
-
         $allValues = array_filter($allValues);
 
         if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
@@ -725,21 +720,17 @@ class Form extends Base
 
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
-
         foreach ($remainingValues as $value) {
             if (trim($value)) {
-                $label->getParent()->find('css', 'input[type="text"]')->click();
-                $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
-                $option = $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
-                );
+                $label->click();
+                $label->click();
 
-                if (!$option) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
+                $option = $this->spin(function () use ($value) {
+                    return $this->find(
+                        'css',
+                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
                     );
-                }
+                }, sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText()));
 
                 $option->click();
             }
@@ -759,8 +750,7 @@ class Form extends Base
         if (trim($value)) {
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
                 $link->click();
-
-                $this->getSession()->wait(5000, '!$.active');
+                $this->getSession()->wait($this->getTimeout(), '!$.active');
 
                 $field = $this->spin(function () use ($value) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));

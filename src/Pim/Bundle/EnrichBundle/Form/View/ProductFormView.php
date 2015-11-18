@@ -24,10 +24,10 @@ class ProductFormView implements ProductFormViewInterface
      *
      * @var array
      */
-    protected $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = [
         AttributeTypes::OPTION_MULTI_SELECT,
         AttributeTypes::OPTION_SIMPLE_SELECT
-    );
+    ];
 
     /** @var FormView|array */
     protected $view = [];
@@ -97,10 +97,10 @@ class ProductFormView implements ProductFormViewInterface
      */
     protected function initializeGroup(AttributeGroupInterface $group)
     {
-        $this->view[$group->getId()] = array(
+        $this->view[$group->getId()] = [
             'label'      => $group->getLabel(),
-            'attributes' => array()
-        );
+            'attributes' => []
+        ];
     }
 
     /**
@@ -110,7 +110,7 @@ class ProductFormView implements ProductFormViewInterface
      */
     protected function getAttributeClasses(AttributeInterface $attribute)
     {
-        $classes = array();
+        $classes = [];
         if ($attribute->isScopable()) {
             $classes['scopable'] = true;
         }
@@ -154,7 +154,7 @@ class ProductFormView implements ProductFormViewInterface
      */
     protected function prepareAttributeView(AttributeInterface $attribute, ProductValueInterface $value, FormView $view)
     {
-        $attributeView = array(
+        $attributeView = [
             'id'                 => $attribute->getId(),
             'isRemovable'        => $value->isRemovable(),
             'code'               => $attribute->getCode(),
@@ -162,12 +162,12 @@ class ProductFormView implements ProductFormViewInterface
             'sortOrder'          => $attribute->getSortOrder(),
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
             'locale'             => $value->getLocale(),
-        );
+        ];
 
         if ($attribute->isScopable()) {
             $attributeView['values'] = array_merge(
                 $this->getAttributeValues($attribute, $value->getLocale()),
-                array($value->getScope() => $view)
+                [$value->getScope() => $view]
             );
             ksort($attributeView['values']);
         } else {
@@ -210,7 +210,7 @@ class ProductFormView implements ProductFormViewInterface
             $key .= '_' . $locale;
         }
         if (!isset($this->view[$group->getId()]['attributes'][$key]['values'])) {
-            return array();
+            return [];
         }
 
         return $this->view[$group->getId()]['attributes'][$key]['values'];

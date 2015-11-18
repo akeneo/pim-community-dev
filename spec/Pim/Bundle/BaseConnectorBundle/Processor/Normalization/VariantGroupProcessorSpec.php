@@ -5,6 +5,9 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -18,7 +21,17 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
-        $this->beConstructedWith($normalizer, $denormalizer, 'upload/path/', 'csv');
+        $this->beConstructedWith(
+            $normalizer,
+            $denormalizer,
+            ['.', ','],
+            [
+                ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+            ],
+            'upload/path/',
+            'csv'
+        );
     }
 
     function it_is_initializable()
@@ -33,7 +46,33 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_provides_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(
+            [
+                'decimalSeparator' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['.', ','],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                        'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    ]
+                ],
+                'dateFormat' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.dateFormat.label',
+                        'help'     => 'pim_base_connector.export.dateFormat.help'
+                    ]
+                ],
+            ]
+        );
     }
 
     function it_processes_variant_group_without_product_template(
@@ -48,7 +87,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -82,7 +123,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -131,7 +174,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 

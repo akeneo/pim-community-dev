@@ -2,8 +2,6 @@ twig:
     exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
     form:
         resources:
-            - 'OroUIBundle:Form:fields.html.twig'
-            - 'OroFormBundle:Form:fields.html.twig'
             - 'PimUIBundle:Form:pim-fields.html.twig'
     globals:
         bap:

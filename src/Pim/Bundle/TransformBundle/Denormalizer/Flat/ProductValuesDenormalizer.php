@@ -31,7 +31,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     protected $valueClass;
 
     /** @var string[] */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * @param DenormalizerInterface        $valueDenormalizer
@@ -51,7 +51,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         $productValues = [];
         foreach ($data as $attFieldName => $dataValue) {

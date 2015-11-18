@@ -11,7 +11,7 @@ class CsvProductReaderSpec extends ObjectBehavior
     function let(AttributeRepositoryInterface $attributeRepository)
     {
         $attributeRepository->findMediaAttributeCodes()->willReturn(['view', 'manual']);
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($attributeRepository, ['.', ','], ['Y-m-d', 'd-m-Y']);
     }
 
     function it_is_initializable()

@@ -16,7 +16,7 @@ abstract class AbstractProductValueDataNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         return [
             $this->getFieldName($object, $context) => $this->doNormalize($object, $format, $context),
@@ -56,5 +56,5 @@ abstract class AbstractProductValueDataNormalizer implements NormalizerInterface
      *
      * @return array|scalar
      */
-    abstract protected function doNormalize($object, $format = null, array $context = array());
+    abstract protected function doNormalize($object, $format = null, array $context = []);
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,6 +20,17 @@ class RemoverRegistry implements RemoverRegistryInterface
     /** @var FieldRemoverInterface[] priorized field removers */
     protected $fieldRemovers = [];
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $repository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    {
+        $this->attributeRepository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,21 @@ class RemoverRegistry implements RemoverRegistryInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRemover($property)
+    {
+        $attribute = $this->getAttribute($property);
+        if (null !== $attribute) {
+            $remover = $this->getAttributeRemover($attribute);
+        } else {
+            $remover = $this->getFieldRemover($property);
+        }
+
+        return $remover;
     }
 
     /**
@@ -60,5 +87,15 @@ class RemoverRegistry implements RemoverRegistryInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getAttribute($code)
+    {
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

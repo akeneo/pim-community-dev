@@ -119,9 +119,26 @@ Pim\Bundle\UserBundle\Entity\User:
                     group_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+        defaultGridViews:
+            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+            joinTable:
+                name: pim_user_default_datagrid_view
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    view_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+        uiLocale:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            joinColumn:
+              name: ui_locale_id
+              nullable: false
         catalogScope:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
         defaultTree:

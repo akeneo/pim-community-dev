@@ -21,6 +21,7 @@ define(
             className: 'tabbable tabs-top',
             tabs: [],
             fullPanel: false,
+            urlParsed: false,
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
             },
@@ -88,15 +89,12 @@ define(
                 this.ensureDefault();
                 var currentTab = this.getExtension(this.getCurrentTab());
                 if (currentTab) {
-                    var zone = this.getZone('container');
-                    zone.appendChild(currentTab.el);
                     this.renderExtension(currentTab);
                     this.resize();
                 }
 
                 var panelsExtension = this.getExtension('panels');
                 if (panelsExtension) {
-                    this.getZone('panels').appendChild(panelsExtension.el);
                     this.renderExtension(panelsExtension);
                 }
 
@@ -192,9 +190,18 @@ define(
             },
 
             /**
-             * Ensure default value for the current tab
+             * Ensure default value for the current tab.
+             * We'll check tab redirection from URL & from SessionsStorage.
              */
             ensureDefault: function () {
+                var regex = /redirectTab(=[A-Za-z-]+)/gi;
+                var fromUrl = regex.exec(location.href);
+
+                if (!this.urlParsed && fromUrl && fromUrl[1]) {
+                    sessionStorage.setItem('redirectTab', fromUrl[1]);
+                    this.urlParsed = true;
+                }
+
                 if (!_.isNull(sessionStorage.getItem('redirectTab')) &&
                     _.findWhere(this.tabs, {code: sessionStorage.getItem('redirectTab').substring(1)})
                 ) {

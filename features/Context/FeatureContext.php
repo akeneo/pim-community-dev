@@ -31,6 +31,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var string[] */
     protected static $errorMessages = [];
 
+    /** @var int */
+    protected static $timeout;
+
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
      *
@@ -55,6 +58,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+
+        $this->setTimeout($parameters);
+    }
+
+    /**
+     * @return int the timeout in milliseconds
+     */
+    public static function getTimeout()
+    {
+        return static::$timeout;
     }
 
     /**
@@ -295,19 +308,20 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Wait
      *
-     * @param int    $time
      * @param string $condition
      *
-     * @throws BehaviorException If timeout is reached
+     * @throws BehaviorException
      */
-    public function wait($time = 30000, $condition = null)
+    public function wait($condition = null)
     {
         if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
             return;
         }
 
+        $timeout = $this->getTimeout();
+
         $start = microtime(true);
-        $end   = $start + $time / 1000.0;
+        $end   = $start + $timeout / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
@@ -316,7 +330,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
                 "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
-                "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
+                // Page is not loading (no black mask loading page)
+                "($('.loading-mask').length == 0 || $('.loading-mask').css('display') == 'none')",
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading
             ];
 
@@ -329,7 +344,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         // Make sure the AJAX calls are fired up before checking the condition
         $this->getSession()->wait(100, false);
 
-        $this->getSession()->wait($time, $condition);
+        $this->getSession()->wait($timeout, $condition);
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
@@ -340,14 +355,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                         throw new BehaviorException(
                             sprintf(
                                 'Timeout of %d reached when checking on "%s"',
-                                $time,
+                                $timeout,
                                 $condition
                             )
                         );
                     }
                 }
             } else {
-                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
+                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $timeout, $condition));
             }
         }
     }
@@ -411,5 +426,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    /**
+     * Set the waiting timeout
+     *
+     * @param $parameters
+     */
+    protected function setTimeout($parameters)
+    {
+        static::$timeout = $parameters['timeout'];
     }
 }

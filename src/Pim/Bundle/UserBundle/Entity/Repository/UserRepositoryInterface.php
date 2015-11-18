@@ -4,6 +4,7 @@ namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * User repository interface
@@ -20,4 +21,13 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
      * @return int
      */
     public function countAll();
+
+    /**
+     * Return users who are AT LEAST in one of the given $groupIds
+     *
+     * @param array $groupIds
+     *
+     * @return UserInterface[]
+     */
+    public function findByGroups($groupIds);
 }

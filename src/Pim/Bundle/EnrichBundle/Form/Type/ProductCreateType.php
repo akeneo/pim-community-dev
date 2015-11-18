@@ -23,26 +23,26 @@ class ProductCreateType extends AbstractType
             ->add(
                 'values',
                 'collection',
-                array(
+                [
                     'type'               => 'pim_product_value',
                     'allow_add'          => true,
                     'allow_delete'       => true,
                     'by_reference'       => false,
                     'cascade_validation' => true,
-                )
+                ]
             )
             ->add(
                 'family',
                 'entity',
-                array(
+                [
                     'class'       => 'Pim\Bundle\CatalogBundle\Entity\Family',
                     'required'    => false,
                     'empty_value' => "",
                     'select2'     => true,
-                    'attr'        => array(
+                    'attr'        => [
                         'data-placeholder' => 'Choose a family'
-                    )
-                )
+                    ]
+                ]
             );
     }
 

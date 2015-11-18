@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Price field property, able to render price attribute type
@@ -13,6 +15,20 @@ use Symfony\Component\Intl\Intl;
  */
 class PriceProperty extends FieldProperty
 {
+    /** @var LocalizerInterface */
+    protected $localizer;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param LocalizerInterface  $localizer
+     */
+    public function __construct(TranslatorInterface $translator, LocalizerInterface $localizer)
+    {
+        parent::__construct($translator);
+
+        $this->localizer = $localizer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +39,13 @@ class PriceProperty extends FieldProperty
         $prices = [];
         foreach ($data as $price) {
             if (isset($price['data']) && $price['data'] !== null) {
-                $prices[] = $price['data'].' '. Intl::getCurrencyBundle()->getCurrencySymbol($price['currency']);
+                $formattedPrice = $this->localizer
+                    ->convertDefaultToLocalizedFromLocale($price['data'], $this->translator->getLocale());
+                $prices[] = sprintf(
+                    '%s %s',
+                    $formattedPrice,
+                    Intl::getCurrencyBundle()->getCurrencySymbol($price['currency'])
+                );
             }
         }
 

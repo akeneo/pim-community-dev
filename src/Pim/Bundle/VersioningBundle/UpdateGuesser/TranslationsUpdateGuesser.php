@@ -46,7 +46,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
         if ($entity instanceof AbstractTranslation) {
             $translatedEntity = $entity->getForeignKey();
             if ($translatedEntity instanceof VersionableInterface ||

@@ -68,7 +68,7 @@ define(
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
-                this.onExtensions('attribute-group:change', this.render.bind(this));
+                this.onExtensions('group:change', this.render.bind(this));
                 this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
@@ -91,7 +91,7 @@ define(
                     ).then(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
+                            this.getExtension('attribute-group-selector').getCurrentElement()
                         );
 
                         var fieldPromises = [];
@@ -156,7 +156,13 @@ define(
                 var promises = [];
                 var product = this.getFormData();
 
-                promises.push(this.getExtension('attribute-group-selector').updateAttributeGroups(product));
+                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
+                    .then(function (attributeGroups) {
+                        this.getExtension('attribute-group-selector').setElements(
+                            _.indexBy(_.sortBy(attributeGroups, 'sortOrder'), 'code')
+                        );
+                    }.bind(this))
+                );
 
                 return $.when.apply($, promises).promise();
             },

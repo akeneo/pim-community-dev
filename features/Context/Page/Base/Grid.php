@@ -649,13 +649,11 @@ class Grid extends Index
      */
     public function applyView($viewLabel)
     {
-        try {
-            $this->findView($viewLabel)->click();
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to apply view "%s"', $viewLabel)
-            );
-        }
+        $view = $this->spin(function () use ($viewLabel) {
+            return $this->findView($viewLabel);
+        }, sprintf('Impossible to find view "%s"', $viewLabel));
+
+        $view->click();
     }
 
     /**
@@ -841,7 +839,7 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
-        $cells = $row->findAll('css', 'td');
+        $cells = $row->findAll('xpath', '/td');
 
         $visibleCells = [];
         foreach ($cells as $cell) {
@@ -929,7 +927,7 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getGridContent()->findAll('css', 'tr');
+        return $this->getGridContent()->findAll('xpath', '/tr');
     }
 
     /**

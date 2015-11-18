@@ -1,0 +1,55 @@
+parameters:
+    pim_localization.localizer.registry.class:  Pim\Component\Localization\Localizer\LocalizerRegistry
+    pim_localization.localizer.number.class:    Pim\Component\Localization\Localizer\NumberLocalizer
+    pim_localization.localizer.price.class:     Pim\Component\Localization\Localizer\PriceLocalizer
+    pim_localization.localizer.metric.class:    Pim\Component\Localization\Localizer\MetricLocalizer
+    pim_localization.localizer.date.class:      Pim\Component\Localization\Localizer\DateLocalizer
+    pim_localization.localizer.converter.class: Pim\Component\Localization\Localizer\LocalizedAttributeConverter
+
+services:
+    pim_localization.localizer.registry:
+        class: %pim_localization.localizer.registry.class%
+
+    pim_localization.localizer.converter:
+        class: %pim_localization.localizer.converter.class%
+        arguments:
+            - '@pim_localization.localizer.registry'
+            - '@pim_catalog.repository.attribute'
+
+    pim_localization.localizer.number:
+        class: %pim_localization.localizer.number.class%
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_localization.localizer }
+            - { name: pim_localization.localizer.product_value }
+
+    pim_localization.localizer.price:
+        class: %pim_localization.localizer.price.class%
+        arguments:
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_localization.localizer }
+
+    pim_localization.localizer.metric:
+        class: %pim_localization.localizer.metric.class%
+        arguments:
+            - ['pim_catalog_metric']
+        tags:
+            - { name: pim_localization.localizer }
+
+    pim_localization.localizer.date:
+        class: %pim_localization.localizer.date.class%
+        arguments:
+            - '@pim_localization.provider.date_format'
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_localization.localizer }
+            - { name: pim_localization.localizer.product_value }
+
+    pim_localization.localizer.attribute_option.number:
+        class: %pim_localization.localizer.number.class%
+        arguments:
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_localization.localizer.attribute_option }

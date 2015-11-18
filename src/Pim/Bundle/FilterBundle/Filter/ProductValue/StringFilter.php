@@ -19,7 +19,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 class StringFilter extends OroStringFilter
 {
     /** @var array */
-    protected $operatorTypes = array(
+    protected $operatorTypes = [
         TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
         TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
         TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
@@ -27,7 +27,7 @@ class StringFilter extends OroStringFilter
         TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
         FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
         FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
-    );
+    ];
 
     /**
      * {@inheritdoc}

@@ -19,7 +19,9 @@ define(
                 type:              'success',
                 createdAt:         null,
                 actionType:        null,
-                actionTypeMessage: null
+                actionTypeMessage: null,
+                showReportButton:  true,
+                comment:           null
             }
         });
 
@@ -90,7 +92,9 @@ define(
                         icon: this.getIcon(this.model.get('type')),
                         createdAt: this.model.get('createdAt'),
                         actionType: this.model.get('actionType'),
-                        actionTypeMessage: this.model.get('actionTypeMessage')
+                        actionTypeMessage: this.model.get('actionTypeMessage'),
+                        showReportButton: this.model.get('showReportButton'),
+                        comment: this.model.get('comment')
                     }
                 ));
 
@@ -98,7 +102,14 @@ define(
             },
 
             getIcon: function (type) {
-                return 'success' === type ? 'ok' : ('warning' === type ? 'warning-sign' : 'remove');
+                var icons = {
+                    'success': 'ok',
+                    'warning': 'warning-sign',
+                    'error':   'remove',
+                    'add':     'plus'
+                };
+
+                return _.result(icons, type, 'remove');
             }
         });
 

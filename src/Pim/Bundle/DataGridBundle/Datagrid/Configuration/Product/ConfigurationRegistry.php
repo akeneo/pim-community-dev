@@ -22,7 +22,7 @@ class ConfigurationRegistry
      */
     public function __construct()
     {
-        $this->configurations = array();
+        $this->configurations = [];
     }
 
     /**

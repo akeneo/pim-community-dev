@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Updater\Copier\CopierInterface;
 
 /**
  * Registry of copiers
@@ -21,6 +22,16 @@ interface CopierRegistryInterface
      * @return CopierRegistryInterface
      */
     public function register(CopierInterface $copier);
+
+    /**
+     * Get a copier compatible with the given properties
+     *
+     * @param string $fromProperty
+     * @param string $toProperty
+     *
+     * @return CopierInterface
+     */
+    public function getCopier($fromProperty, $toProperty);
 
     /**
      * @param string $fromField

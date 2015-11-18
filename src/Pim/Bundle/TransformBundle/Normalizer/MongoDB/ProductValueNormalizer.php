@@ -101,7 +101,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         $targetData = null;
 
         if (is_array($data) || $data instanceof Collection) {
-            $targetData = array();
+            $targetData = [];
             foreach ($data as $dataItem) {
                 if (is_object($dataItem)) {
                     $targetData[] = $this->normalizer->normalize($dataItem, ProductNormalizer::FORMAT, $context);

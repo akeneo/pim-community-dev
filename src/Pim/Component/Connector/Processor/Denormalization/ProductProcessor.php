@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -10,12 +9,16 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product import processor, allows to,
  *  - create / update
+ *  - convert localized attributes
  *  - validate
  *  - skip invalid ones and detach it
  *  - return the valid ones
@@ -44,6 +47,9 @@ class ProductProcessor extends AbstractProcessor
     /** @var bool */
     protected $enabled = true;
 
+    /** @var bool */
+    protected $itemHasStatus = false;
+
     /** @var string */
     protected $categoriesColumn = 'categories';
 
@@ -56,17 +62,27 @@ class ProductProcessor extends AbstractProcessor
     /** @var bool */
     protected $enabledComparison = true;
 
+    /** @var string */
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var string */
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
+
     /** @var ProductFilterInterface */
     protected $productFilter;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter array converter
-     * @param IdentifiableObjectRepositoryInterface $repository     product repository
-     * @param ProductBuilderInterface               $builder        product builder
-     * @param ObjectUpdaterInterface                $updater        product updater
-     * @param ValidatorInterface                    $validator      product validator
-     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter  product filter
+     * @param StandardArrayConverterInterface       $arrayConverter     array converter
+     * @param IdentifiableObjectRepositoryInterface $repository         product repository
+     * @param ProductBuilderInterface               $builder            product builder
+     * @param ObjectUpdaterInterface                $updater            product updater
+     * @param ValidatorInterface                    $validator          product validator
+     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
+     * @param ProductFilterInterface                $productFilter      product filter
+     * @param LocalizedAttributeConverterInterface  $localizedConverter attributes localized converter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -75,16 +91,18 @@ class ProductProcessor extends AbstractProcessor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductFilterInterface $productFilter
+        ProductFilterInterface $productFilter,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter  = $arrayConverter;
-        $this->builder         = $builder;
-        $this->updater         = $updater;
-        $this->validator       = $validator;
-        $this->detacher        = $detacher;
-        $this->productFilter   = $productFilter;
+        $this->arrayConverter     = $arrayConverter;
+        $this->builder            = $builder;
+        $this->updater            = $updater;
+        $this->validator          = $validator;
+        $this->detacher           = $detacher;
+        $this->productFilter      = $productFilter;
+        $this->localizedConverter = $localizedConverter;
     }
 
     /**
@@ -93,7 +111,14 @@ class ProductProcessor extends AbstractProcessor
     public function process($item)
     {
         $convertedItem = $this->convertItemData($item);
-        $identifier    = $this->getIdentifier($convertedItem);
+
+        try {
+            $convertedItem = $this->convertLocalizedAttributes($convertedItem);
+        } catch (FormatLocalizerException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+        }
+
+        $identifier = $this->getIdentifier($convertedItem);
 
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
@@ -103,6 +128,10 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
+
+        if (false === $this->itemHasStatus && null !== $product->getId()) {
+            unset($filteredItem['enabled']);
+        }
 
         if ($this->enabledComparison && null !== $product->getId()) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
@@ -128,17 +157,6 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $filteredItem
-     *
-     * @return array
-     */
-    protected function filterIdenticalData(ProductInterface $product, array $filteredItem)
-    {
-        return $this->productFilter->filter($product, $filteredItem);
     }
 
     /**
@@ -242,6 +260,46 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the format for date field
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the format for the date field
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -279,7 +337,47 @@ class ProductProcessor extends AbstractProcessor
                     'help'  => 'pim_connector.import.enabledComparison.help'
                 ]
             ],
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.decimalSeparator.label',
+                    'help'  => 'pim_connector.import.decimalSeparator.help'
+                ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.dateFormat.label',
+                    'help'  => 'pim_connector.import.dateFormat.help'
+                ]
+            ]
         ];
+    }
+
+    /**
+     * Check and convert localized attributes to default format
+     *
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function convertLocalizedAttributes(array $convertedItem)
+    {
+        return $this->localizedConverter->convertLocalizedToDefaultValues($convertedItem, [
+            'decimal_separator' => $this->decimalSeparator,
+            'date_format'       => $this->dateFormat
+        ]);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $filteredItem
+     *
+     * @return array
+     */
+    protected function filterIdenticalData(ProductInterface $product, array $filteredItem)
+    {
+        return $this->productFilter->filter($product, $filteredItem);
     }
 
     /**
@@ -289,6 +387,8 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
+        $this->itemHasStatus = array_key_exists('enabled', $item);
+
         return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
     }
 

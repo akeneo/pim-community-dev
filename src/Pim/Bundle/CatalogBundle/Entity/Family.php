@@ -215,7 +215,7 @@ class Family implements FamilyInterface
      */
     public function getGroupedAttributes()
     {
-        $result = array();
+        $result = [];
         foreach ($this->attributes as $attribute) {
             $result[(string) $attribute->getGroup()][] = $attribute;
         }
@@ -410,7 +410,7 @@ class Family implements FamilyInterface
      */
     public function getAttributeRequirements()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->requirements as $requirement) {
             $key = $this->getAttributeRequirementKey($requirement);

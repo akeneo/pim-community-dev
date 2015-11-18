@@ -28,7 +28,7 @@ class ColumnInfoTransformer implements ColumnInfoTransformerInterface
     /**
      * @var array
      */
-    protected $labels = array();
+    protected $labels = [];
 
     /**
      * {@inheritdoc}
@@ -38,7 +38,7 @@ class ColumnInfoTransformer implements ColumnInfoTransformerInterface
         $transform = function ($label) use ($class) {
             if (!isset($this->labels[$class][$label])) {
                 if (!isset($this->labels[$class])) {
-                    $this->labels[$class] = array();
+                    $this->labels[$class] = [];
                 }
                 $this->labels[$class][$label] = new $this->columnInfoClass($label);
             }

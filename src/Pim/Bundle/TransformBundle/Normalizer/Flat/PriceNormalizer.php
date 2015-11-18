@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 class PriceNormalizer extends AbstractProductValueDataNormalizer
 {
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class PriceNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function doNormalize($object, $format = null, array $context = array())
+    protected function doNormalize($object, $format = null, array $context = [])
     {
         $data = $object->getData();
         if (null !== $data && '' !== $data) {

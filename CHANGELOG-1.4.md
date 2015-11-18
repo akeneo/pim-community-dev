@@ -79,6 +79,7 @@
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\MassEditActionController`, added `$gridNameRouteMapping` as the last argument.
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
+- Renoved `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver` in favor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver` 
 
 # 1.4.1 (2015-09-24)
 
