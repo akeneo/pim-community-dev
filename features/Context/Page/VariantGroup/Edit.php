@@ -71,6 +71,22 @@ class Edit extends Form
     }
 
     /**
+     * Find field container
+     *
+     * @param string $label
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement
+     */
+    public function findFieldContainer($label)
+    {
+        $field = $this->findField($label);
+
+        return $field->getParent();
+    }
+
+    /**
      * @param string $field
      *
      * @return NodeElement

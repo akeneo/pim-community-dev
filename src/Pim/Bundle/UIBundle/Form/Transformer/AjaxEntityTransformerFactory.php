@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AjaxEntityTransformerFactory
+class AjaxEntityTransformerFactory implements TransformerFactoryInterface
 {
     /**
      * @var RegistryInterface
@@ -36,11 +36,7 @@ class AjaxEntityTransformerFactory
     }
 
     /**
-     * Creates a transformer for the given options
-     *
-     * @param array $options
-     *
-     * @return \Symfony\Component\Form\DataTransformerInterface
+     * {@inheritdoc}
      */
     public function create(array $options)
     {
