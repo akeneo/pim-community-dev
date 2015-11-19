@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.32 (2015-11-19)
 
 ## Technical improvements
 - Introduction of a command to purge completenesses: `pim:completeness:purge`
