@@ -17,11 +17,15 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
 {
     /**
      * @return AttributeGroupInterface
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function findAllWithTranslations();
 
     /**
      * Find all ordered by label with fallback to default mechanism
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -29,6 +33,8 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
 
     /**
      * Get the attribute group choices
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
