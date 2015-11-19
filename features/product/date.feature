@@ -35,5 +35,5 @@ Feature: Check that imported date is properly displayed
       | version | property | before | after       |
       | 2       | SKU      | postit | nice_postit |
       | 1       | SKU      |        | postit      |
-      | 1       | release  |        | 2014-05-01  |
+      | 1       | release  |        | 5/1/14      |
       | 1       | enabled  |        | 1           |
