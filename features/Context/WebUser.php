@@ -742,6 +742,7 @@ class WebUser extends RawMinkContext
     /**
      * @param string $label
      * @param string $expected
+     * @param bool   $comparePanel
      *
      * @Then /^the field ([^"]*) should contain "([^"]*)"$/
      *
@@ -750,10 +751,10 @@ class WebUser extends RawMinkContext
      *
      * TODO: should be moved to a page context and theProductFieldValueShouldBe() method should be merged with this one
      */
-    public function theFieldShouldContain($label, $expected)
+    public function theFieldShouldContain($label, $expected, $comparePanel = false)
     {
         $this->wait();
-        $field = $this->getCurrentPage()->findField($label);
+        $field = $this->getCurrentPage()->findField($label, $comparePanel);
 
         if ($field->hasClass('select2-focusser')) {
             for ($i = 0; $i < 2; ++$i) {
