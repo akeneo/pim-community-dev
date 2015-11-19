@@ -30,11 +30,6 @@ define(
     ) {
         var FormView = BaseForm.extend({
             template: _.template(template),
-            initialize: function () {
-                this.model = new Backbone.Model();
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
             configure: function () {
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
