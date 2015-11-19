@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -36,8 +36,8 @@ class AssociationTypeController extends AbstractDoctrineController
     /** @var Form */
     protected $assocTypeForm;
 
-    /** @var AssociationManager */
-    protected $assocManager;
+    /** @var AssociationRepositoryInterface */
+    protected $assocRepository;
 
     /** @var RemoverInterface */
     protected $assocTypeRemover;
@@ -45,19 +45,19 @@ class AssociationTypeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param AssociationManager       $assocManager
-     * @param HandlerInterface         $assocTypeHandler
-     * @param Form                     $assocTypeForm
-     * @param RemoverInterface         $assocTypeRemover
+     * @param Request                        $request
+     * @param EngineInterface                $templating
+     * @param RouterInterface                $router
+     * @param TokenStorageInterface          $tokenStorage
+     * @param FormFactoryInterface           $formFactory
+     * @param ValidatorInterface             $validator
+     * @param TranslatorInterface            $translator
+     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ManagerRegistry                $doctrine
+     * @param AssociationRepositoryInterface $assocRepository
+     * @param HandlerInterface               $assocTypeHandler
+     * @param Form                           $assocTypeForm
+     * @param RemoverInterface               $assocTypeRemover
      */
     public function __construct(
         Request $request,
@@ -69,7 +69,7 @@ class AssociationTypeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        AssociationManager $assocManager,
+        AssociationRepositoryInterface $assocRepository,
         HandlerInterface $assocTypeHandler,
         Form $assocTypeForm,
         RemoverInterface $assocTypeRemover
@@ -86,7 +86,7 @@ class AssociationTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->assocManager     = $assocManager;
+        $this->assocRepository  = $assocRepository;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
@@ -161,7 +161,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             return $this->redirectToRoute('pim_enrich_associationtype_edit', ['id' => $id]);
         }
-        $usageCount = $this->assocManager->countForAssociationType($associationType);
+        $usageCount = $this->assocRepository->countForAssociationType($associationType);
 
         return [
             'form'       => $this->assocTypeForm->createView(),

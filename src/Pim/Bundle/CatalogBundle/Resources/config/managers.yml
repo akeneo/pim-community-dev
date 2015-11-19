@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
