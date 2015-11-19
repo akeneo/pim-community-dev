@@ -6,11 +6,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
@@ -19,7 +19,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductManagerInterface $productManager,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         ProductRepositoryInterface $productRepository,
         ObjectRepository $attributeRepository
@@ -31,7 +31,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $productManager,
             $localeRepository,
             $currencyManager,
-            $assocTypeManager,
+            $assocTypeRepo,
             $catalogContext
         );
     }
@@ -46,7 +46,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
     function it_retrieves_field_list_with_product_with_attributes(
         $productRepository,
         $attributeRepository,
-        $assocTypeManager,
+        $assocTypeRepo,
         AttributeInterface $bar,
         AttributeInterface $baz,
         AssociationTypeInterface $association
@@ -63,7 +63,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
 
         $association->getCode()->willReturn('association-type-code');
 
-        $assocTypeManager->getAssociationTypes()->willReturn([$association]);
+        $assocTypeRepo->findAll()->willReturn([$association]);
         $productRepository->getAvailableAttributeIdsToExport(['foo'])->willReturn(['bar', 'baz']);
         $attributeRepository->findBy(['id' => ['bar', 'baz']])->willReturn([$bar, $baz]);
 

@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -37,9 +36,6 @@ class AssociationTypeController extends AbstractDoctrineController
     /** @var Form */
     protected $assocTypeForm;
 
-    /** @var AssociationTypeManager */
-    protected $assocTypeManager;
-
     /** @var AssociationManager */
     protected $assocManager;
 
@@ -58,7 +54,6 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param AssociationTypeManager   $assocTypeManager
      * @param AssociationManager       $assocManager
      * @param HandlerInterface         $assocTypeHandler
      * @param Form                     $assocTypeForm
@@ -74,7 +69,6 @@ class AssociationTypeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        AssociationTypeManager $assocTypeManager,
         AssociationManager $assocManager,
         HandlerInterface $assocTypeHandler,
         Form $assocTypeForm,
@@ -92,7 +86,6 @@ class AssociationTypeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->assocTypeManager = $assocTypeManager;
         $this->assocManager     = $assocManager;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;

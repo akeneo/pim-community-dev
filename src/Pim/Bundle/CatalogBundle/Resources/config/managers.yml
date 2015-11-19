@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
-    pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
@@ -118,12 +117,6 @@ services:
             - '@pim_catalog.doctrine.completeness_generator'
             - '@pim_catalog.completeness.checker.chained'
             - %pim_catalog.entity.completeness.class%
-
-    pim_catalog.manager.association_type:
-        class: %pim_catalog.manager.association_type.class%
-        arguments:
-            - '@pim_catalog.repository.association_type'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.manager.product_template_media:
         class: %pim_catalog.manager.product_template_media.class%
