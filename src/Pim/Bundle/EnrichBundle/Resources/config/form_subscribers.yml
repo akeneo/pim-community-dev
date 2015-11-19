@@ -49,6 +49,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
+            - '@pim_localization.resolver.locale'
 
     pim_enrich.form.subscriber.add_variant_group_template:
         class: %pim_enrich.form.subscriber.add_variant_group_template.class%

@@ -1,6 +1,8 @@
 function Range(field, params)
 {
     var value = field && field.nodeName ? {{ getJsFormElementValue('field') }} : field;
+    var regex = /(\d+)([^0-9]+)(\d+)/;
+    value = value.replace(regex, "$1.$3");
 
     if (isNotDefined(value)) {
         return true;

@@ -41,12 +41,6 @@ define([
         },
         updateModel: function () {
             var data = this.$('.field-input:first .data').val();
-            var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
-
-            if (!_.isNaN(numericValue)) {
-                data = numericValue;
-            }
-
             var unit = this.$('.field-input:first .unit').select2('val');
 
             this.setCurrentValue({

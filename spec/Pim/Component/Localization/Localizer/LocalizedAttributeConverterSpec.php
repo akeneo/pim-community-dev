@@ -4,10 +4,11 @@ namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class LocalizedAttributeConverterSpec extends ObjectBehavior
 {
@@ -28,8 +29,8 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
         $localizer->supports('pim_number')->willReturn(true);
-        $localizer->isValid('10,45', $options, 'number')->willReturn(true);
-        $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
+        $localizer->validate('10,45', $options, 'values[number]')->willReturn(null);
+        $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
@@ -49,7 +50,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
             ->shouldReturn(['family' => [['data' => 'boots']]]);
     }
 
-    function it_throws_an_exception_if_decimal_separator_is_not_expected(
+    function it_returns_a_constraint_validation_if_decimal_separator_is_not_expected(
         $localizerRegistry,
         $attributeRepository,
         LocalizerInterface $localizer
@@ -57,11 +58,15 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $options = ['decimal_separator' => '.'];
         $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
-        $localizer->supports('pim_number')->willReturn(true);
-        $localizer->isValid('10,45', $options, 'number')->willThrow(new FormatLocalizerException('number', '.'));
-        $localizer->convertLocalizedToDefault('10,45', $options)->willReturn('10.45');
 
-        $this->shouldThrow(new FormatLocalizerException('number', '.'))
-            ->during('convertLocalizedToDefaultValues', [['number' => [['data' => '10,45']]], $options]);
+        $constraint = new ConstraintViolation('Error with attribute', '', [], '', 'values[number]', '10,45');
+        $constraints = new ConstraintViolationList([$constraint]);
+        $localizer->supports('pim_number')->willReturn(true);
+        $localizer->validate('10,45', $options, 'values[number]')->willReturn($constraints);
+        $localizer->delocalize('10,45', $options)->willReturn('10.45');
+
+        $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
+            ->shouldReturn(['number' => [['data' => '10.45']]]);
+        $this->getViolations()->shouldNotBeNull();
     }
 }

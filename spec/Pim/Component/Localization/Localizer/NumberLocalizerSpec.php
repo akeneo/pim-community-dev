@@ -3,17 +3,16 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NumberLocalizerSpec extends ObjectBehavior
 {
-    function let()
+    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
     {
-        $this->beConstructedWith(
-            ['pim_catalog_number']
-        );
+        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_number']);
     }
 
     function it_is_a_localizer()
@@ -30,51 +29,44 @@ class NumberLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->isValid('10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid('-10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid('10', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid('-10', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid(10, ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid(10.0585, ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid(' 10.05 ', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid(null, ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid('', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid('0', ['decimal_separator' => '.'], 'number')->shouldReturn(true);
-        $this->isValid(0, ['decimal_separator' => '.'], 'number')->shouldReturn(true);
+        $this->validate('10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('-10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('10', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('-10', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate(10, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate(10.0585, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate(' 10.05 ', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate(null, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('0', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate(0, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_decimal_separator_is_not_valid()
-    {
-        $exception = new FormatLocalizerException('number', ',');
-        $this->shouldThrow($exception)
-            ->during('isValid', ['10.00', ['decimal_separator' => ','], 'number']);
+    function it_returns_a_constraint_if_the_decimal_separator_is_not_valid(
+        $validator,
+        ConstraintViolationListInterface $constraints
+    ) {
+        $validator->validate('10.00', Argument::any())->willReturn($constraints);
+
+        $this->validate('10.00', ['decimal_separator' => ','], 'number')->shouldReturn($constraints);
     }
 
     function it_convert_comma_to_dot_separator()
     {
-        $this->convertLocalizedToDefault('10,05', ['decimal_separator' => '.'])->shouldReturn('10.05');
-        $this->convertLocalizedToDefault('-10,05', ['decimal_separator' => '.'])->shouldReturn('-10.05');
-        $this->convertLocalizedToDefault('10', ['decimal_separator' => '.'])->shouldReturn('10');
-        $this->convertLocalizedToDefault('-10', ['decimal_separator' => '.'])->shouldReturn('-10');
-        $this->convertLocalizedToDefault(10, ['decimal_separator' => '.'])->shouldReturn(10);
-        $this->convertLocalizedToDefault(10.0585, ['decimal_separator' => '.'])->shouldReturn('10.0585');
-        $this->convertLocalizedToDefault(' 10,05 ', ['decimal_separator' => '.'])->shouldReturn(' 10.05 ');
-        $this->convertLocalizedToDefault(null, ['decimal_separator' => '.'])->shouldReturn(null);
-        $this->convertLocalizedToDefault('', ['decimal_separator' => '.'])->shouldReturn('');
-        $this->convertLocalizedToDefault(0, ['decimal_separator' => '.'])->shouldReturn(0);
-        $this->convertLocalizedToDefault('0', ['decimal_separator' => '.'])->shouldReturn('0');
-    }
-
-    function it_throws_an_exception_if_decimal_separator_is_missing()
-    {
-        $exception = new MissingOptionsException('The option "decimal_separator" do not exist.');
-        $this->shouldThrow($exception)
-            ->during('isValid', ['10.00', [], 'number']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', ['10.00', ['decimal_separator' => null], 'number']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', ['10.00', ['decimal_separator' => ''], 'number']);
+        $this->delocalize('10,05', ['decimal_separator' => '.'])->shouldReturn(10.05);
+        $this->delocalize('-10,05', ['decimal_separator' => '.'])->shouldReturn(-10.05);
+        $this->delocalize('10', ['decimal_separator' => '.'])->shouldReturn(10.00);
+        $this->delocalize('-10', ['decimal_separator' => '.'])->shouldReturn(-10.00);
+        $this->delocalize(10, ['decimal_separator' => '.'])->shouldReturn(10.00);
+        $this->delocalize(10.0585, ['decimal_separator' => '.'])->shouldReturn(10.0585);
+        $this->delocalize(' 10,05 ', ['decimal_separator' => '.'])->shouldReturn(10.05);
+        $this->delocalize(null, ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->delocalize('', ['decimal_separator' => '.'])->shouldReturn('');
+        $this->delocalize(0, ['decimal_separator' => '.'])->shouldReturn(0.00);
+        $this->delocalize('0', ['decimal_separator' => '.'])->shouldReturn(0.00);
+        $this->delocalize('10,00', [])->shouldReturn(10.00);
+        $this->delocalize('10,00', ['decimal_separator' => null])->shouldReturn(10.00);
+        $this->delocalize('10,00', ['decimal_separator' => ''])->shouldReturn(10.00);
+        $this->delocalize('gruik', ['decimal_separator' => ''])->shouldReturn('gruik');
     }
 }

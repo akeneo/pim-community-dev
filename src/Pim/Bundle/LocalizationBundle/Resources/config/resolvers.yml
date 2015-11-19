@@ -1,0 +1,11 @@
+parameters:
+    pim_localization.resolver.locale.class: Pim\Component\Localization\LocaleResolver
+
+services:
+    pim_localization.resolver.locale:
+        class: %pim_localization.resolver.locale.class%
+        arguments:
+            - '@request_stack'
+            - '@pim_localization.provider.date_format'
+            - '@pim_localization.provider.number_format'
+            - %locale%

@@ -14,22 +14,22 @@ class MetricLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($metric, array $options = [], $attributeCode)
+    public function validate($metric, array $options = [], $attributeCode)
     {
         if (!isset($metric['data'])) {
-            return true;
+            return null;
         }
 
-        return $this->isValidNumber($metric['data'], $options, $attributeCode);
+        return parent::validate($metric['data'], $options, $attributeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($metric, array $options = [])
+    public function delocalize($metric, array $options = [])
     {
         if (isset($metric['data'])) {
-            $metric['data'] = $this->convertNumberToDefault($metric['data'], $options);
+            $metric['data'] = parent::delocalize($metric['data'], $options);
         }
 
         return $metric;
@@ -38,9 +38,15 @@ class MetricLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertDefaultToLocalized($metric, array $options = [])
+    public function localize($metric, array $options = [])
     {
-        $metric['data'] = parent::convertDefaultToLocalized($metric['data'], $options);
+        if (!is_array($metric)) {
+            return parent::localize($metric, $options);
+        }
+
+        if (isset($metric['data'])) {
+            $metric['data'] = parent::localize($metric['data'], $options);
+        }
 
         return $metric;
     }

@@ -22,14 +22,14 @@ class Edit extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Locales dropdown' => array('css' => '#locale-switcher')
-            )
+            [
+                'Locales dropdown' => ['css' => '#locale-switcher'],
+            ]
         );
     }
 

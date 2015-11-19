@@ -52,7 +52,8 @@ class Edit extends Form
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
-                'Progress bar'            => ['css' => '.progress-bar']
+                'Progress bar'            => ['css' => '.progress-bar'],
+                'Save'                    => ['css' => 'button.save-product']
             ]
         );
     }
@@ -62,7 +63,7 @@ class Edit extends Form
      */
     public function save()
     {
-        $this->pressButton('Save');
+        $this->getElement('Save')->click();
         $this->spin(function () {
             return null === $this->find(
                 'css',

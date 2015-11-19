@@ -8,14 +8,21 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class GroupHandlerSpec extends ObjectBehavior
 {
-    function let(FormInterface $form, Request $request, SaverInterface $saver, ProductRepositoryInterface $repository)
+    function let(
+        FormInterface $form,
+        Request $request,
+        SaverInterface $saver,
+        ProductRepositoryInterface $repository,
+        LocalizedAttributeConverterInterface $localizedConverter
+    )
     {
-        $this->beConstructedWith($form, $request, $saver, $repository);
+        $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter);
     }
 
     function it_is_a_handler()
@@ -68,6 +75,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
+        $group->getProductTemplate()->willReturn(null);
         $groupType->isVariant()->willReturn(true);
 
         $form->submit($request)->shouldBeCalled();

@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,24 +30,30 @@ class GroupHandler implements HandlerInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
      * Constructor for handler
      *
-     * @param FormInterface              $form
-     * @param Request                    $request
-     * @param SaverInterface             $groupSaver
-     * @param ProductRepositoryInterface $productRepository
+     * @param FormInterface                        $form
+     * @param Request                              $request
+     * @param SaverInterface                       $groupSaver
+     * @param ProductRepositoryInterface           $productRepository
+     * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         SaverInterface $groupSaver,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
-        $this->form       = $form;
-        $this->request    = $request;
-        $this->groupSaver = $groupSaver;
-        $this->productRepository = $productRepository;
+        $this->form               = $form;
+        $this->request            = $request;
+        $this->groupSaver         = $groupSaver;
+        $this->productRepository  = $productRepository;
+        $this->localizedConverter = $localizedConverter;
     }
 
     /**
@@ -93,7 +100,27 @@ class GroupHandler implements HandlerInterface
         ];
         if ($group->getType()->isVariant()) {
             $options['copy_values_to_products'] = true;
+            $this->convertLocalizedValues($group);
         }
         $this->groupSaver->save($group, $options);
+    }
+
+    /**
+     * Convert localized values in template of a variant group
+     *
+     * @param GroupInterface $group
+     */
+    protected function convertLocalizedValues(GroupInterface $group)
+    {
+        $template = $group->getProductTemplate();
+
+        if (null === $template) {
+            return;
+        }
+
+        $options    = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
+        $valuesData = $this->localizedConverter->convertLocalizedToDefaultValues($template->getValuesData(), $options);
+
+        $template->setValuesData($valuesData);
     }
 }

@@ -3,16 +3,16 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DateLocalizerSpec extends ObjectBehavior
 {
-    function let(FormatProviderInterface $formatProvider)
+    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
     {
-        $this->beConstructedWith($formatProvider, ['pim_catalog_date']);
+        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_date']);
     }
 
     function it_is_a_localizer()
@@ -28,44 +28,30 @@ class DateLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->isValid('28/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(true);
-        $this->isValid('01/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(true);
-        $this->isValid('2015/10/25', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(true);
-        $this->isValid('2015/10/01', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(true);
-        $this->isValid('2015-10-25', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(true);
-        $this->isValid('2015-10-01', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(true);
-        $this->isValid('', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(true);
-        $this->isValid(null, ['date_format' => 'Y-m-d'], 'date')->shouldReturn(true);
+        $this->validate('28/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(null);
+        $this->validate('01/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(null);
+        $this->validate('2015/10/25', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(null);
+        $this->validate('2015/10/01', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(null);
+        $this->validate('2015-10-25', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
+        $this->validate('2015-10-01', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
+        $this->validate('', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
+        $this->validate(null, ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_format_is_not_valid()
-    {
-        $exception = new FormatLocalizerException('date', 'd-m-Y');
-        $this->shouldThrow($exception)->during('isValid', ['28/10/2015', ['date_format' => 'd-m-Y'], 'date']);
-        $this->shouldThrow($exception)->during('isValid', ['1/10/2015', ['date_format' => 'd-m-Y'], 'date']);
-        $this->shouldThrow($exception)->during('isValid', ['/10/2015', ['date_format' => 'd-m-Y'], 'date']);
-        $this->shouldThrow($exception)->during('isValid', ['2015/10/28', ['date_format' => 'd-m-Y'], 'date']);
-        $this->shouldThrow($exception)->during('isValid', ['2015/28/10', ['date_format' => 'd-m-Y'], 'date']);
+    function it_returns_a_constraint_if_the_format_is_not_valid(
+        $validator,
+        ConstraintViolationListInterface $constraints
+    ) {
+        $validator->validate('28/10/2015', Argument::any())->willReturn($constraints);
+
+        $this->validate('28/10/2015', ['date_format' => 'd-m-Y'], 'date')->shouldReturn($constraints);
     }
 
-    function it_converts()
+    function it_delocalize_with_date_format_option()
     {
-        $this->convertLocalizedToDefault('28/10/2015', ['date_format' => 'd/m/Y'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('28-10-2015', ['date_format' => 'd-m-Y'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('2015-10-28', ['date_format' => 'Y-m-d'])->shouldReturn('2015-10-28');
-        $this->convertLocalizedToDefault('2015/10/28', ['date_format' => 'Y/m/d'])->shouldReturn('2015-10-28');
-    }
-
-    function it_throws_an_exception_if_date_format_is_empty()
-    {
-        $exception = new MissingOptionsException('The option "date_format" do not exist.');
-        $this->shouldThrow($exception)
-            ->during('isValid', ['28/10/2015', [], 'date']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', ['28/10/2015', ['date_format' => null], 'date']);
-
-        $this->shouldThrow($exception)
-            ->during('isValid', ['28/10/2015', ['date_format' => ''], 'date']);
+        $this->delocalize('28/10/2015', ['date_format' => 'd/m/Y'])->shouldReturn('2015-10-28');
+        $this->delocalize('28-10-2015', ['date_format' => 'd-m-Y'])->shouldReturn('2015-10-28');
+        $this->delocalize('2015-10-28', ['date_format' => 'Y-m-d'])->shouldReturn('2015-10-28');
+        $this->delocalize('2015/10/28', ['date_format' => 'Y/m/d'])->shouldReturn('2015-10-28');
     }
 }

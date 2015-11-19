@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * A localizer ;
@@ -27,21 +27,19 @@ interface LocalizerInterface
      * @param array  $options
      * @param string $attributeCode
      *
-     * @throws FormatLocalizerException
-     *
-     * @return bool
+     * @return ConstraintViolationListInterface|null
      */
-    public function isValid($data, array $options = [], $attributeCode);
+    public function validate($data, array $options = [], $attributeCode);
 
     /**
-     * Convert a localized value to the default format
+     * Convert a localized value to the default format depending on options
      *
      * @param mixed $data
      * @param array $options
      *
      * @return mixed
      */
-    public function convertLocalizedToDefault($data, array $options = []);
+    public function delocalize($data, array $options = []);
 
     /**
      * Convert a default value to a localized format depending on options
@@ -51,17 +49,7 @@ interface LocalizerInterface
      *
      * @return mixed
      */
-    public function convertDefaultToLocalized($data, array $options = []);
-
-    /**
-     * Convert a default value to a localized format depending on a locale
-     *
-     * @param mixed  $data
-     * @param string $locale
-     *
-     * @return mixed
-     */
-    public function convertDefaultToLocalizedFromLocale($data, $locale);
+    public function localize($data, array $options = []);
 
     /**
      * Whether or not the class supports the localizer

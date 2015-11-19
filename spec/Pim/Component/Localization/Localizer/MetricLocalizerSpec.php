@@ -3,17 +3,16 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MetricLocalizerSpec extends ObjectBehavior
 {
-    function let()
+    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
     {
-        $this->beConstructedWith(
-            ['pim_catalog_metric']
-        );
+        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_metric']);
     }
 
     function it_is_a_localizer()
@@ -30,86 +29,88 @@ class MetricLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->isValid(['data' => '10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => '-10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => 10.05, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => null, 'unit' => null], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => '', 'unit' => ''], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
-        $this->isValid(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
-            ->shouldReturn(true);
+        $this->validate(['data' => '10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => '-10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => 10.05, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => null, 'unit' => null], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => '', 'unit' => ''], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
+        $this->validate(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+            ->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_decimal_separator_is_not_valid()
-    {
-        $exception = new FormatLocalizerException('metric', ',');
-        $this->shouldThrow($exception)
-            ->during('isValid', [['data' => '10.00', 'unit' => 'GRAM'], ['decimal_separator' => ','], 'metric']);
+    function it_returns_a_constraint_if_the_decimal_separator_is_not_valid(
+        $validator,
+        ConstraintViolationListInterface $constraints
+    ) {
+        $validator->validate(Argument::any(), Argument::any())->willReturn($constraints);
+
+        $this->validate(['data' => '10.00', 'unit' => 'GRAM'], ['decimal_separator' => ','], 'metric')
+            ->shouldReturn($constraints);
     }
 
     function it_convert_comma_to_dot_separator()
     {
-        $this->convertLocalizedToDefault(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10.05', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => '10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 10.05, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '-10.05', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => '-10,05', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => -10.05, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '-10', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => -10.00, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 10, 'unit' => 'GRAM']);
+        $this->delocalize(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '10.0585', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => 10.0585, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 10.0585, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => ' 10.05 ', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 10.05, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => null, 'unit' => null], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => null, 'unit' => null]);
 
-        $this->convertLocalizedToDefault(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => '', 'unit' => ''], ['decimal_separator' => '.'])
             ->shouldReturn(['data' => '', 'unit' => '']);
 
-        $this->convertLocalizedToDefault(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => 0, 'unit' => 'GRAM']);
+        $this->delocalize(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 0.00, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
-            ->shouldReturn(['data' => '0', 'unit' => 'GRAM']);
+        $this->delocalize(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 0.00, 'unit' => 'GRAM']);
 
-        $this->convertLocalizedToDefault([], ['decimal_separator' => '.'])
+        $this->delocalize(['data' => 'gruik', 'unit' => 'GRAM'], ['decimal_separator' => '.'])
+            ->shouldReturn(['data' => 'gruik', 'unit' => 'GRAM']);
+
+        $this->delocalize([], ['decimal_separator' => '.'])
             ->shouldReturn([]);
-    }
 
-    function it_throws_an_exception_if_decimal_separator_is_missing()
-    {
-        $exception = new MissingOptionsException('The option "decimal_separator" do not exist.');
-        $this->shouldThrow($exception)
-            ->during('isValid', [['data' => '10.00'], [], 'metric']);
+        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], [])
+            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
 
-        $this->shouldThrow($exception)
-            ->during('isValid', [['data' => '10.00'], ['decimal_separator' => null], 'metric']);
+        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => null])
+            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
 
-        $this->shouldThrow($exception)
-            ->during('isValid', [['data' => '10.00'], ['decimal_separator' => ''], 'metric']);
+        $this->delocalize(['data' => '10,00', 'unit' => 'GRAM'], ['decimal_separator' => ''])
+            ->shouldReturn(['data' => 10.00, 'unit' => 'GRAM']);
     }
 }

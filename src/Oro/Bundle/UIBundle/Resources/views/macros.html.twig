@@ -132,7 +132,7 @@
 
 {% macro saveAndStayButton(acl = '', label = 'Save') %}
     {% if acl is empty or resource_granted(acl) %}
-    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
+    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary btn-submit icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
     {% endif %}
 {% endmacro %}
 

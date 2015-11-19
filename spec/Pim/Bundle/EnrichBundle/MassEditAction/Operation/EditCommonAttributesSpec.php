@@ -178,4 +178,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $this->getAllAttributes()->shouldReturn([$attr1, $attr2]);
     }
+
+    function it_gets_configuration($userContext)
+    {
+        $userContext->getUiLocale()->willReturn('fr_FR');
+        $this->getBatchConfig()->shouldReturn('{\"filters\":null,\"actions\":[],\"locale\":\"fr_FR\"}');
+    }
 }
