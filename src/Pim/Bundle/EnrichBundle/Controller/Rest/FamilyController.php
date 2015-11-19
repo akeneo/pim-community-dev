@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyController
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var EntityRepository */
     protected $familyRepository;
 
     /** @var NormalizerInterface */
@@ -39,29 +38,11 @@ class FamilyController
      */
     public function indexAction()
     {
-        $rawFamiliesTrans = $this->familyRepository->getFamiliesTranslationsAsArray();
-        $rawFamiliesAttr  = $this->familyRepository->getFamiliesAttributeCodesAsArray();
+        $families = $this->familyRepository->findAll();
 
         $normalizedFamilies = [];
-        foreach ($rawFamiliesTrans as $familyTranslation) {
-            $normalizedFamilies[$familyTranslation['code']]['label'][$familyTranslation['locale']] =
-                $familyTranslation['label'];
-            $normalizedFamilies[$familyTranslation['code']]['code'] = $familyTranslation['code'];
-        }
-
-        foreach ($rawFamiliesAttr as $familyAttributes) {
-            $normalizedFamilies[$familyAttributes['code']]['attributes'] = explode(
-                ',',
-                $familyAttributes['attributes']
-            );
-
-            if (!isset($normalizedFamilies[$familyAttributes['code']]['label'])) {
-                $normalizedFamilies[$familyAttributes['code']]['label'] = [];
-            }
-
-            if (!isset($normalizedFamilies[$familyAttributes['code']]['code'])) {
-                $normalizedFamilies[$familyAttributes['code']]['code'] = $familyAttributes['code'];
-            }
+        foreach ($families as $family) {
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'json');
         }
 
         return new JsonResponse($normalizedFamilies);
