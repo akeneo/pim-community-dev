@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -36,6 +37,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController extends AbstractDoctrineController
 {
+    /** @var FamilyManager */
+    protected $familyManager;
+
     /** @var ChannelManager */
     protected $channelManager;
 
@@ -72,6 +76,7 @@ class FamilyController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
+     * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $familyFactory
      * @param HandlerInterface         $familyHandler
@@ -91,6 +96,7 @@ class FamilyController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
+        FamilyManager $familyManager,
         ChannelManager $channelManager,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
@@ -112,6 +118,7 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
+        $this->familyManager  = $familyManager;
         $this->channelManager = $channelManager;
         $this->familyFactory  = $familyFactory;
         $this->familyHandler  = $familyHandler;
