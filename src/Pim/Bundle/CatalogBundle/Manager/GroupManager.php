@@ -95,6 +95,8 @@ class GroupManager
     /**
      * Get choices
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return array
      */
     public function getChoices()
@@ -128,6 +130,8 @@ class GroupManager
     /**
      * Returns the entity repository
      *
+     * @deprecated not used anymore from the outside of this class, will be passed to protected in 1.5
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepository()
@@ -137,6 +141,8 @@ class GroupManager
 
     /**
      * Returns the group type repository
+     *
+     * @deprecated not used anymore from the outside of this class, will be passed to protected in 1.5
      *
      * @return \Doctrine\ORM\EntityRepository
      */
@@ -151,7 +157,7 @@ class GroupManager
      * @param GroupInterface $group
      * @param int            $maxResults
      *
-     * @deprecated will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -165,7 +171,9 @@ class GroupManager
 
     /**
      * Get the attribute repository
-
+     *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
