@@ -29,6 +29,8 @@ class CurrencyManager
     /**
      * Get active currencies
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return \Doctrine\Common\Persistence\mixed
      */
     public function getActiveCurrencies()
@@ -42,6 +44,8 @@ class CurrencyManager
      * Get currencies with criterias
      *
      * @param array $criterias
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
