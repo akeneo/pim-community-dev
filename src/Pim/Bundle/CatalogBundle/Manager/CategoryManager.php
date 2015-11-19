@@ -56,8 +56,6 @@ class CategoryManager
      * @return ObjectManager
      *
      * @deprecated Will be removed in 1.5
-     *
-     * TODO: To REMOVE.
      */
     public function getObjectManager()
     {
@@ -69,7 +67,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated Please use CategoryFactory::create() instead
+     * @deprecated Please use CategoryFactory::create() instead, will be removed in 1.5
      */
     public function getCategoryInstance()
     {
@@ -78,6 +76,8 @@ class CategoryManager
 
     /**
      * Return category class name (mainly used in Doctrine context)
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return string category class name
      *
@@ -102,6 +102,8 @@ class CategoryManager
 
     /**
      * Get a new tree instance
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return CategoryInterface
      *
@@ -152,7 +154,7 @@ class CategoryManager
     /**
      * @return array
      *
-     * TODO: See what to do about it.
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function getTreeChoices()
     {
@@ -218,7 +220,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated Please use CategoryRepositoryInterface::findOneBy() instead
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function getTreeByCode($code)
     {
@@ -234,7 +236,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated Please use CategoryRepositoryInterface::findOneBy() instead
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function getCategoryByCode($code)
     {
@@ -252,7 +254,7 @@ class CategoryManager
      * @param int $parentId
      * @param int $prevSiblingId
      *
-     * TODO: To MOVE in a CategoryMover, NO ID.
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
@@ -286,7 +288,7 @@ class CategoryManager
      *
      * @return bool
      *
-     * @deprecated Please use CategoryRepositoryInterface::isAncestor() instead
+     * @deprecated not used anymore, will be removed in 1.5
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
