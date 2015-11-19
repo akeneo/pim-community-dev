@@ -5,6 +5,7 @@
 
 ## Bug fixes
 - PIM-5190: Fix calculation error for MongoDB completeness with empty media attributes
+- PIM-5197: Improve products export memory usage (backport PIM-5127 into 1.3)
 
 # 1.3.31 (2015-11-12)
 
