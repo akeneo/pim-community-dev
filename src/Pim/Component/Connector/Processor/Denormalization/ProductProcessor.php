@@ -108,6 +108,7 @@ class ProductProcessor extends AbstractProcessor
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem)) {
+                $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
