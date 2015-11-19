@@ -4,6 +4,12 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Pim\Component\Localization\Localizer\LocalizerInterface`.
 - Rename service `pimee_product_asset.extension.formatter.property.product_value.product_asset_property` to `pimee_product_asset.datagrid.extension.formatter.property.product_value.product_asset_property`
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Columns 'proposalsToReviewNotification' and 'proposalsStateNotification' has been added on the `oro_user` table (only EE).
