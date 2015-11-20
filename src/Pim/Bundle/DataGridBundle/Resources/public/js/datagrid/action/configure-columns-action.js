@@ -254,7 +254,7 @@ define(
                     var columnList = new ColumnList();
                     _.each(columns, function(column) {
                         var displayedCode = _.findWhere(displayedCodes, {code: column.code});
-                        if (displayedCode) {
+                        if (!_.isUndefined(displayedCode)) {
                             column.displayed = true;
                             column.position = displayedCode.position;
                         }
