@@ -41,6 +41,17 @@ services:
             - { name: pim_serializer.normalizer, priority: 95 }
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
+    pim_localization.normalizer.version:
+        decorates: pim_enrich.normalizer.version
+        decoration_inner_name: pim_localization.normalizer.version.inner
+        class: %pim_localization.normalizer.version.class%
+        arguments:
+            - '@pim_localization.normalizer.version.inner'
+            - '@pim_localization.localizer.converter'
+            - '@pim_localization.resolver.locale'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
+
     # structured normalizers
     pim_localization.normalizer.structured.metric:
         public: false
@@ -69,14 +80,3 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
 
-    # others
-    pim_localization.normalizer.version:
-        decorates: pim_enrich.normalizer.version
-        decoration_inner_name: pim_localization.normalizer.version.inner
-        class: %pim_localization.normalizer.version.class%
-        arguments:
-            - '@pim_localization.normalizer.version.inner'
-            - '@pim_localization.localizer.converter'
-            - '@pim_localization.resolver.locale'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer, priority: 110 }

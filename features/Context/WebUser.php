@@ -1529,7 +1529,7 @@ class WebUser extends RawMinkContext
             $this->getCurrentPage()->pressButton($button);
 
             return true;
-        });
+        }, sprintf("Can not find any '%s' button", $button));
         $this->wait();
     }
 

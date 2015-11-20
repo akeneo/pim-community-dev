@@ -75,7 +75,7 @@ class VersionNormalizer implements NormalizerInterface
 
         foreach ($changeset as $attribute => $changes) {
             $attributeName = $attribute;
-            if (preg_match('/^(?<attribute>[a-zA-Z0-9_]*[a-zA-Z_]+[a-zA-Z0-9_]*)-.+$/', $attribute, $matches)) {
+            if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
                 $attributeName = $matches['attribute'];
             }
 

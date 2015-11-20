@@ -16,7 +16,7 @@ Feature: Display the localized product history
       | boots    | 20.80 EUR, 25.35 USD | 12.1234 GRAM | 98.7654 |
     And the history of the product "boots" has been built
 
-  Scenario: Display english-format product history numbers
+  Scenario: Display french-format product history numbers
     Given I am logged in as "Julien"
     And I edit the "boots" product
     When I open the history
@@ -29,7 +29,7 @@ Feature: Display the localized product history
       | 1       | Prix EUR | 20,80   |
       | 1       | Prix USD | 25,35   |
 
-  Scenario: Display french-format product history numbers
+  Scenario: Display english-format product history numbers
     Given I am logged in as "Julia"
     And I edit the "boots" product
     When I open the history
