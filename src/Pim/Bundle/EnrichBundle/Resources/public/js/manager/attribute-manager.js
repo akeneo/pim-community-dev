@@ -57,13 +57,23 @@ define([
              *
              * @param {Object} attribute
              * @param {Object} product
-             * @param {Array}  families
              *
-             * @return {boolean}
+             * @return {Promise}
              */
-            isOptional: function (attribute, product, families) {
-                return 'pim_catalog_identifier' !== attribute.type &&
-                    (!product.family ? true : !_.contains(families[product.family].attributes, attribute.code));
+            isOptional: function (attribute, product) {
+                var promise = new $.Deferred();
+
+                if ('pim_catalog_identifier' === attribute.type) {
+                    promise.resolve(false);
+                } else if (undefined !== product.family && null !== product.family) {
+                    promise = FetcherRegistry.getFetcher('family').fetch(product.family).then(function (family) {
+                        return !_.contains(family.attributes, attribute.code);
+                    });
+                } else {
+                    promise.resolve(true);
+                }
+
+                return promise;
             },
 
             /**
@@ -84,7 +94,7 @@ define([
             },
 
             /**
-             * Generate a single value for the given attribute, scope and lcoale
+             * Generate a single value for the given attribute, scope and locale
              *
              * @param {Object} attribute
              * @param {string} locale

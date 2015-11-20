@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.repository.sequential_edit.class: Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
+    pim_enrich.repository.family.search.class:   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
 
 services:
     pim_enrich.repository.sequential_edit:
@@ -9,3 +10,7 @@ services:
         arguments: [%pim_enrich.entity.sequential_edit.class%]
         tags:
             - { name: 'pim_repository' }
+
+    pim_enrich.repository.family.search:
+        class: %pim_enrich.repository.family.search.class%
+        arguments: [@doctrine.orm.entity_manager, %pim_catalog.entity.family.class%]
