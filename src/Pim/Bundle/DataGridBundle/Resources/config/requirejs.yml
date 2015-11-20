@@ -96,3 +96,5 @@ config:
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
+
+        pim/template/datagrid/configure-columns-action: pimdatagrid/templates/configure-columns-action.html
