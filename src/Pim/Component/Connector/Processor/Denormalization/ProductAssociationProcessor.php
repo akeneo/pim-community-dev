@@ -72,7 +72,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $identifier    = $this->getIdentifier($item);
+        $identifier = $this->getIdentifier($item);
 
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
