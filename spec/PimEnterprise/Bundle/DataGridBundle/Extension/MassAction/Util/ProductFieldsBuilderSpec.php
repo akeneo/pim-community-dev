@@ -5,11 +5,11 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -24,7 +24,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductManagerInterface $productManager,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
         SecurityContextInterface $securityContext,
@@ -42,7 +42,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $productManager,
             $localeRepository,
             $currencyManager,
-            $assocTypeManager,
+            $assocTypeRepo,
             $catalogContext,
             $accessRepository,
             $securityContext
@@ -62,7 +62,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $accessRepository,
         $attributeRepository,
         $user,
-        $assocTypeManager,
+        $assocTypeRepo,
         AttributeInterface $attribute,
         AssociationTypeInterface $association
     ) {
@@ -72,7 +72,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn(null);
         $attribute->getCode()->willReturn('attribute-code');
 
-        $assocTypeManager->getAssociationTypes()->willReturn([$association]);
+        $assocTypeRepo->findAll()->willReturn([$association]);
         $attributeRepository->findBy(['id' => ['baz']])->willReturn([$attribute]);
         $productRepository->getAvailableAttributeIdsToExport(['foo', 'bar'])->willReturn(['fooz', 'baz']);
         $accessRepository->getGrantedAttributeIds($user, Attributes::VIEW_ATTRIBUTES, ['fooz', 'baz'])

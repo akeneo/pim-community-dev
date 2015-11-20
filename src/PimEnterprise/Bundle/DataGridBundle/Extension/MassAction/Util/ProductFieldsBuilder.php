@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -37,24 +37,24 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface        $productManager
-     * @param LocaleRepositoryInterface      $localeRepository
-     * @param CurrencyManager                $currencyManager
-     * @param AssociationTypeManager         $assocTypeManager
-     * @param CatalogContext                 $catalogContext
-     * @param AttributeGroupAccessRepository $accessRepository
-     * @param TokenStorageInterface          $tokenStorage
+     * @param ProductManagerInterface            $productManager
+     * @param LocaleRepositoryInterface          $localeRepository
+     * @param CurrencyManager                    $currencyManager
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
+     * @param CatalogContext                     $catalogContext
+     * @param AttributeGroupAccessRepository     $accessRepository
+     * @param TokenStorageInterface              $tokenStorage
      */
     public function __construct(
         ProductManagerInterface $productManager,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($productManager, $localeRepository, $currencyManager, $assocTypeManager, $catalogContext);
+        parent::__construct($productManager, $localeRepository, $currencyManager, $assocTypeRepo, $catalogContext);
 
         $this->accessRepository = $accessRepository;
         $this->tokenStorage     = $tokenStorage;
