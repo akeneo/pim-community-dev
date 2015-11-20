@@ -46,23 +46,24 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products with medias after a save
     Given I am on the "sneakers" product page
     And I save the product
-    When I visit the "Completeness" tab
+    When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | success | Complete         | 100%  |
-      | mobile  | French (France)         | success | Complete         | 100%  |
-      | tablet  | English (United States) | warning | 1 missing value  | 89%   |
-      | tablet  | French (France)         | warning | 2 missing values | 78%   |
+      | channel | locale | state   | missing_values        | ratio |
+      | mobile  | en_US  | success |                       | 100%  |
+      | mobile  | fr_FR  | success |                       | 100%  |
+      | tablet  | en_US  | warning | side_view             | 89%   |
+      | tablet  | fr_FR  | warning | description side_view | 78%   |
     When I am on the "sandals" product page
-    And I visit the "Completeness" tab
+    And I save the product
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | warning | 3 missing values | 40%   |
-      | mobile  | French (France)         | warning | 2 missing values | 60%   |
-      | tablet  | English (United States) | warning | 6 missing values | 25%   |
-      | tablet  | French (France)         | warning | 4 missing values | 50%   |
+      | channel | locale | state   | missing_values                               | ratio |
+      | mobile  | en_US  | warning | name price size                              | 40%   |
+      | mobile  | fr_FR  | warning | price size                                   | 60%   |
+      | tablet  | en_US  | warning | name description price rating side_view size | 25%   |
+      | tablet  | fr_FR  | warning | price rating side_view size                  | 50%   |
 
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
