@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -21,28 +20,22 @@ class FamilyManager
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /**
      * Constructor
      *
      * @param FamilyRepositoryInterface $repository
      * @param UserContext               $userContext
-     * @param ObjectManager             $objectManager
      */
     public function __construct(
         FamilyRepositoryInterface $repository,
-        UserContext $userContext,
-        ObjectManager $objectManager
+        UserContext $userContext
     ) {
         $this->repository      = $repository;
         $this->userContext     = $userContext;
-        $this->objectManager   = $objectManager;
     }
 
     /**
-     * Get choices
+     * Get choices, only used by datagrids, should be moved
      *
      * @return array
      */

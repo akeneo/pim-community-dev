@@ -107,5 +107,5 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.manager.currency'
-            - '@pim_catalog.manager.association_type'
+            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.context.catalog'

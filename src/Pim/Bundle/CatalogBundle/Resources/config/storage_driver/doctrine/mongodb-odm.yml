@@ -220,11 +220,6 @@ services:
     pim_catalog.repository.association:
         alias: pim_catalog.repository.product
 
-    pim_catalog.manager.association:
-        class: %pim_catalog.manager.association.class%
-        arguments:
-            - '@pim_catalog.repository.product'
-
     pim_catalog.doctrine.smart_manager_registry:
         alias: akeneo_storage_utils.doctrine.smart_manager_registry
 

@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
  * @author    Clement Gautier <clement.gautier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 interface ProductManagerInterface
 {

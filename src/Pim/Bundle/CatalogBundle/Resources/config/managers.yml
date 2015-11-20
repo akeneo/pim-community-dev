@@ -1,6 +1,4 @@
 parameters:
-    pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
-    pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
@@ -23,19 +21,9 @@ services:
     pim_catalog.manager.product:
         class: %pim_catalog.manager.product.class%
         arguments:
-            -
-                  product_class:                %pim_catalog.entity.product.class%
-                  product_value_class:          %pim_catalog.entity.product_value.class%
-                  attribute_class:              %pim_catalog.entity.attribute.class%
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.saver.product'
-            - '@event_dispatcher'
-            - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
 
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%
@@ -107,7 +95,6 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
@@ -118,12 +105,6 @@ services:
             - '@pim_catalog.doctrine.completeness_generator'
             - '@pim_catalog.completeness.checker.chained'
             - %pim_catalog.entity.completeness.class%
-
-    pim_catalog.manager.association_type:
-        class: %pim_catalog.manager.association_type.class%
-        arguments:
-            - '@pim_catalog.repository.association_type'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.manager.product_template_media:
         class: %pim_catalog.manager.product_template_media.class%

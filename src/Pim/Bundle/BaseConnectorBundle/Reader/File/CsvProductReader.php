@@ -21,7 +21,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtra
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be remove in 1.5, please use Pim\Component\Connector\Reader\File\CsvProductReader, btw the logic
+ * @deprecated will be remove in 1.6, please use Pim\Component\Connector\Reader\File\CsvProductReader, btw the logic
  *             of checkAttributesInHeader is now handled by the AttributeColumnInfoExtractor
  */
 class CsvProductReader extends CsvReader

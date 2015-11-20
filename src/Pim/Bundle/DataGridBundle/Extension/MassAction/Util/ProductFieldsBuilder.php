@@ -4,9 +4,9 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 
@@ -28,8 +28,8 @@ class ProductFieldsBuilder
     /** @var CurrencyManager */
     protected $currencyManager;
 
-    /** @var AssociationTypeManager */
-    protected $assocTypeManager;
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepo;
 
     /** @var CatalogContext */
     protected $catalogContext;
@@ -40,23 +40,23 @@ class ProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface   $productManager
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param CurrencyManager           $currencyManager
-     * @param AssociationTypeManager    $assocTypeManager
-     * @param CatalogContext            $catalogContext
+     * @param ProductManagerInterface            $productManager
+     * @param LocaleRepositoryInterface          $localeRepository
+     * @param CurrencyManager                    $currencyManager
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
+     * @param CatalogContext                     $catalogContext
      */
     public function __construct(
         ProductManagerInterface $productManager,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
         $this->productManager   = $productManager;
         $this->localeRepository = $localeRepository;
         $this->currencyManager  = $currencyManager;
-        $this->assocTypeManager = $assocTypeManager;
+        $this->assocTypeRepo    = $assocTypeRepo;
         $this->catalogContext   = $catalogContext;
     }
 
@@ -118,7 +118,7 @@ class ProductFieldsBuilder
         $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
 
-        $associationTypes = $this->assocTypeManager->getAssociationTypes();
+        $associationTypes = $this->assocTypeRepo->findAll();
         foreach ($associationTypes as $associationType) {
             $fieldsList[] = sprintf('%s-groups', $associationType->getCode());
             $fieldsList[] = sprintf('%s-products', $associationType->getCode());

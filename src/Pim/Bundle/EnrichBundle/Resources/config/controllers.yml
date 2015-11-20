@@ -106,7 +106,6 @@ services:
         class: %pim_enrich.controller.family.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
@@ -204,8 +203,7 @@ services:
         class: %pim_enrich.controller.association_type.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.association_type'
-            - '@pim_catalog.manager.association'
+            - '@pim_catalog.repository.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
