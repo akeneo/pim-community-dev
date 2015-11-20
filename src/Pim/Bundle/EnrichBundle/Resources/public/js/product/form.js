@@ -22,15 +22,16 @@ define(
     ) {
         return Backbone.View.extend({
             code: 'form',
+            parent: null,
 
             /**
              * {@inheritdoc}
              */
             initialize: function () {
-                this.extensions   = {};
-                this.zones        = {};
-                this.targetZone   = '';
-                this.configured   = false;
+                this.extensions = {};
+                this.zones      = {};
+                this.targetZone = '';
+                this.configured = false;
             },
 
             /**
@@ -39,6 +40,10 @@ define(
              * @return {Promise}
              */
             configure: function () {
+                if (null === this.parent) {
+                    this.model = new Backbone.Model();
+                }
+
                 var extensionPromises = _.map(this.extensions, function (extension) {
                     return extension.configure();
                 });
