@@ -26,6 +26,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @staticvar string */
     const MONGO_COLLECTION_NAME = 'collection_name';
 
+    /** @staticvar string */
+    const MONGO_DATABASE_NAME = 'database_name';
+
     /** @var NormalizerInterface */
     protected $normalizer;
 

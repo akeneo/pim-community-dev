@@ -20,6 +20,8 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
+     *
      * @return AttributeInterface[]
      */
     public function findAllWithTranslations();
@@ -36,6 +38,8 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Find all attributes that belongs to the default group
+     *
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
      *
      * @return AttributeInterface[]
      */
@@ -69,12 +73,16 @@ interface AttributeRepositoryInterface extends
      *
      * @see findAllAxisQB
      *
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
+     *
      * @return array
      */
     public function findAllAxis();
 
     /**
      * Get available attributes as label as a choice
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -105,6 +113,8 @@ interface AttributeRepositoryInterface extends
      * Get ids from codes
      *
      * @param mixed $codes the attribute codes
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */

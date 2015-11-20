@@ -52,6 +52,8 @@ class LocaleManager
      *
      * @param array $criterias
      *
+     * @deprecated not used anymore, only internaly in this class, will be removed in 1.5
+     *
      * @return LocaleInterface[]
      */
     public function getLocales($criterias = [])
