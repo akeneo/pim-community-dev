@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use League\Flysystem\Filesystem;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button

@@ -7,8 +7,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
  * Archive job execution files into conventional directories

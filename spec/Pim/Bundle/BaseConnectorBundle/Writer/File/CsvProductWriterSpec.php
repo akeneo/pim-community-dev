@@ -39,7 +39,7 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_is_an_archivable_writer()
     {
-        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface');
+        $this->shouldHaveType('\Pim\Component\Connector\Writer\File\ArchivableWriterInterface');
     }
 
     function it_provides_configuration_fields()
