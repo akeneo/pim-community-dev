@@ -4,13 +4,12 @@ namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,25 +41,25 @@ class ProductImportValidator extends ImportValidator
     protected $uniqueValues = [];
 
     /**
-     * @var ProductManager
+     * @var ProductRepositoryInterface
      */
-    protected $productManager;
+    protected $productRepository;
 
     /**
      * Constructor
      *
      * @param ValidatorInterface         $validator
      * @param ConstraintGuesserInterface $constraintGuesser
-     * @param ProductManager             $productManager
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager
+        ProductRepositoryInterface $productRepository
     ) {
         parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
-        $this->productManager    = $productManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -131,7 +130,7 @@ class ProductImportValidator extends ImportValidator
                     $code      = $value->getAttribute()->getCode();
                     $valueData = (string) $value;
                     if ($valueData !== '') {
-                        if ($this->productManager->valueExists($value)) {
+                        if ($this->productRepository->valueExists($value)) {
                             throw new DuplicateProductValueException($code, $valueData, $data);
                         }
                         $this->uniqueValues[$code] =

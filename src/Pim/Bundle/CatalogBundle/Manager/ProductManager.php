@@ -85,18 +85,4 @@ class ProductManager implements ProductManagerInterface
     {
         return $this->objectManager;
     }
-
-    /**
-     * Check if a product value with a specific value already exists
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return bool
-     *
-     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::valueExists
-     */
-    public function valueExists(ProductValueInterface $value)
-    {
-        return $this->productRepository->valueExists($value);
-    }
 }

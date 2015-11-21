@@ -32,13 +32,4 @@ class ProductManagerSpec extends ObjectBehavior
     {
         $this->getProductRepository()->shouldReturn($productRepository);
     }
-
-    function it_checks_value_existence(ProductRepositoryInterface $productRepository, ProductValueInterface $value)
-    {
-        $productRepository->valueExists($value)->willReturn(true);
-        $this->valueExists($value)->shouldReturn(true);
-
-        $productRepository->valueExists($value)->willReturn(false);
-        $this->valueExists($value)->shouldReturn(false);
-    }
 }
