@@ -65,7 +65,7 @@ class ProductManager implements ProductManagerInterface
      */
     public function find($id)
     {
-        $product = $this->getProductRepository()->findOneByWithValues($id);
+        $product = $this->productRepository->findOneByWithValues($id);
 
         return $product;
     }

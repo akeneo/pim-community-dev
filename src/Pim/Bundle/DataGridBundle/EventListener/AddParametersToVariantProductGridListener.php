@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
@@ -16,27 +16,27 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class AddParametersToVariantProductGridListener extends AddParametersToProductGridListener
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /**
-     * @param array             $paramNames     Parameter name that should be binded to query
-     * @param RequestParameters $requestParams  Request params
-     * @param CatalogContext    $catalogContext The catalog context
-     * @param UserContext       $userContext    User context
-     * @param ProductManager    $productManager The product manager
-     * @param bool              $isEditMode     Whether or not to add data_in, data_not_in params to query
+     * @param array                      $paramNames     Parameter name that should be binded to query
+     * @param RequestParameters          $requestParams  Request params
+     * @param CatalogContext             $catalogContext The catalog context
+     * @param UserContext                $userContext    User context
+     * @param ProductRepositoryInterface $productRepository The product manager
+     * @param bool                       $isEditMode     Whether or not to add data_in, data_not_in params to query
      */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
         CatalogContext $catalogContext,
         UserContext $userContext,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         $isEditMode = false
     ) {
         parent::__construct($paramNames, $requestParams, $catalogContext, $userContext, $isEditMode);
-        $this->productManager = $productManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -49,8 +49,7 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
         $variantGroupId = $queryParameters['currentGroup'];
 
         if (null !== $variantGroupId) {
-            $productIds = $this->productManager
-                ->getProductRepository()
+            $productIds = $this->productRepository
                 ->getEligibleProductIdsForVariantGroup($variantGroupId);
             if (count($productIds) === 0) {
                 $productIds = [0];
