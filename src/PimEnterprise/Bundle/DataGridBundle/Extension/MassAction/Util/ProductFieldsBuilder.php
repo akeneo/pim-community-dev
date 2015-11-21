@@ -13,9 +13,10 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -37,7 +38,8 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface            $productManager
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AttributeRepositoryInterface       $attributeRepository
      * @param LocaleRepositoryInterface          $localeRepository
      * @param CurrencyManager                    $currencyManager
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
@@ -46,7 +48,8 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      * @param TokenStorageInterface              $tokenStorage
      */
     public function __construct(
-        ProductManagerInterface $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeRepositoryInterface $assocTypeRepo,
@@ -54,7 +57,14 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         AttributeGroupAccessRepository $accessRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($productManager, $localeRepository, $currencyManager, $assocTypeRepo, $catalogContext);
+        parent::__construct(
+            $productRepository,
+            $attributeRepository,
+            $localeRepository,
+            $currencyManager,
+            $assocTypeRepo,
+            $catalogContext
+        );
 
         $this->accessRepository = $accessRepository;
         $this->tokenStorage     = $tokenStorage;
