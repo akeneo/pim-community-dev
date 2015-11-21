@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -28,10 +28,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductManager implements ProductManagerInterface
+class PublishedProductManager
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var PublishedProductRepositoryInterface*/
     protected $repository;
@@ -45,25 +48,34 @@ class PublishedProductManager implements ProductManagerInterface
     /** @var  UnpublisherInterface */
     protected $unpublisher;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /**
-     * @param ProductManager                      $manager         the product manager
-     * @param PublishedProductRepositoryInterface $repository      the published repository
-     * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
-     * @param PublisherInterface                  $publisher       the product publisher
-     * @param UnpublisherInterface                $unpublisher     the product unpublisher
+     * @param ProductRepositoryInterface          $productRepository   the product repository
+     * @param PublishedProductRepositoryInterface $repository          the published repository
+     * @param AttributeRepositoryInterface        $attributeRepository the attribute repository
+     * @param EventDispatcherInterface            $eventDispatcher     the event dispatcher
+     * @param PublisherInterface                  $publisher           the product publisher
+     * @param UnpublisherInterface                $unpublisher         the product unpublisher
+     * @param ObjectManager                       $objectManager       the object manager
      */
     public function __construct(
-        ProductManager $manager,
+        ProductRepositoryInterface $productRepository,
         PublishedProductRepositoryInterface $repository,
+        AttributeRepositoryInterface $attributeRepository,
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
-        UnpublisherInterface $unpublisher
+        UnpublisherInterface $unpublisher,
+        ObjectManager $objectManager
     ) {
-        $this->productManager  = $manager;
-        $this->repository      = $repository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->publisher       = $publisher;
-        $this->unpublisher     = $unpublisher;
+        $this->productRepository   = $productRepository;
+        $this->repository          = $repository;
+        $this->attributeRepository = $attributeRepository;
+        $this->eventDispatcher     = $eventDispatcher;
+        $this->publisher           = $publisher;
+        $this->unpublisher         = $unpublisher;
+        $this->objectManager       = $objectManager;
     }
 
     /**
@@ -81,7 +93,7 @@ class PublishedProductManager implements ProductManagerInterface
     /**
      * Find the published product by its original product
      *
-     * @param ProductInterface $product
+     * @param mixed $productId
      *
      * @return PublishedProductInterface
      */
@@ -111,7 +123,7 @@ class PublishedProductManager implements ProductManagerInterface
      */
     public function findOriginalProduct($productId)
     {
-        return $this->productManager->find($productId);
+        return $this->productRepository->findOneByWithValues($productId);
     }
 
     /**
@@ -238,7 +250,7 @@ class PublishedProductManager implements ProductManagerInterface
      */
     protected function getObjectManager()
     {
-        return $this->productManager->getObjectManager();
+        return $this->objectManager;
     }
 
     /**
@@ -251,21 +263,5 @@ class PublishedProductManager implements ProductManagerInterface
     protected function dispatchEvent($name, ProductInterface $product, PublishedProductInterface $published = null)
     {
         $this->eventDispatcher->dispatch($name, new PublishedProductEvent($product, $published));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductRepository()
-    {
-        return $this->repository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeRepository()
-    {
-        return $this->productManager->getAttributeRepository();
     }
 }

@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
@@ -15,9 +14,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductManager $productManager)
+    function let(ObjectManager $objectManager)
     {
-        $this->beConstructedWith($productManager);
+        $this->beConstructedWith($objectManager);
     }
 
     function it_subscribes_to_post_publish_event()
@@ -28,14 +27,12 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     }
 
     function it_detachs_products_with_metric_value(
-        $productManager,
+        $objectManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
+        $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $metric = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
@@ -64,14 +61,12 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     }
 
     function it_detachs_products_with_media_value(
-        $productManager,
+        $objectManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
+        $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $media = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_MEDIA);
@@ -100,14 +95,11 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     }
 
     function it_detachs_products_with_prices_values(
-        $productManager,
+        $objectManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $price = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);

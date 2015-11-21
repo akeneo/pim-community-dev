@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -28,8 +28,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProductController extends BaseController
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var RendererRegistry */
     protected $rendererRegistry;
@@ -43,18 +43,18 @@ class ProductController extends BaseController
     /**
      * Constructor
      *
-     * @param ProductManager                $productManager
+     * @param ProductRepositoryInterface    $productRepository
      * @param RendererRegistry              $rendererRegistry
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param UserContext                   $userContext
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         RendererRegistry $rendererRegistry,
         AuthorizationCheckerInterface $authorizationChecker,
         UserContext $userContext
     ) {
-        parent::__construct($productManager, $rendererRegistry);
+        parent::__construct($productRepository, $rendererRegistry);
 
         $this->authorizationChecker = $authorizationChecker;
         $this->userContext          = $userContext;

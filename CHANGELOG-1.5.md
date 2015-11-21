@@ -37,3 +37,4 @@
 - Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface

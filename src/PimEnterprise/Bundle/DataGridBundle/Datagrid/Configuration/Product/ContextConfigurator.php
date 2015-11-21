@@ -11,10 +11,11 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -40,20 +41,22 @@ class ContextConfigurator extends BaseContextConfigurator
     protected $userContext;
 
     /**
-     * @param ProductManager                 $productManager
+     * @param ProductRepositoryInterface     $productRepository
+     * @param AttributeRepositoryInterface   $attributeRepository
      * @param RequestParameters              $requestParams
      * @param UserContext                    $userContext
-     * @param EntityRepository               $gridViewRepository
      * @param AttributeGroupAccessRepository $accessRepository
+     * @param ObjectManager                  $objectManager
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
-        EntityRepository $gridViewRepository,
-        AttributeGroupAccessRepository $accessRepository
+        AttributeGroupAccessRepository $accessRepository,
+        ObjectManager $objectManager
     ) {
-        parent::__construct($productManager, $requestParams, $userContext, $gridViewRepository);
+        parent::__construct($productRepository, $attributeRepository, $requestParams, $userContext, $objectManager);
         $this->accessRepository = $accessRepository;
     }
 
@@ -76,9 +79,8 @@ class ContextConfigurator extends BaseContextConfigurator
      */
     protected function getAttributeIds($attributeCodes = null)
     {
-        $repository   = $this->productManager->getAttributeRepository();
         $groupIds     = $this->getGrantedGroupIds();
-        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
+        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
 
         return $attributeIds;
     }

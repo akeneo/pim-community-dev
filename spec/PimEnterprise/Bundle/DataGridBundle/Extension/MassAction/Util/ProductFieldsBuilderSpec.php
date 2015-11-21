@@ -6,10 +6,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -21,7 +21,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {
     function let(
-        ProductManagerInterface $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeRepositoryInterface $assocTypeRepo,
@@ -33,13 +34,12 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user
     ) {
-        $productManager->getProductRepository()->willReturn($productRepository);
-        $productManager->getAttributeRepository()->willReturn($attributeRepository);
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
-            $productManager,
+            $productRepository,
+            $attributeRepository,
             $localeRepository,
             $currencyManager,
             $assocTypeRepo,

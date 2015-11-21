@@ -1275,7 +1275,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function formatActionData($field, $data)
     {
-        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByIdentifier($field);
+        $attribute = $this->getAttributeRepository()->findOneByIdentifier($field);
 
         if (null !== $attribute) {
             // TODO: replace this dirty fix to use the same class than SetValueActionNormalizer
