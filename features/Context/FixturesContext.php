@@ -1320,7 +1320,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductManager()->getProductRepository()->findAll());
+        $total = count($this->getProductRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -2433,14 +2433,6 @@ class FixturesContext extends RawMinkContext
     protected function getRepository($namespace)
     {
         return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
     }
 
     /**
