@@ -189,18 +189,6 @@ class UserContext
     }
 
     /**
-     * Get user category tree
-     *
-     * @return CatalogCategoryInterface
-     *
-     * @deprecated Will be removed in 1.5. Please use getUserProductCategoryTree() instead.
-     */
-    public function getUserTree()
-    {
-        return $this->getUserProductCategoryTree();
-    }
-
-    /**
      * For the given $relatedEntity of category asked, return the default user category.
      *
      * @param string $relatedEntity
