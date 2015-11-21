@@ -108,7 +108,7 @@ services:
             - '@pim_filter.product_utility'
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pim_catalog.repository.association_type'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_is_associated }
 

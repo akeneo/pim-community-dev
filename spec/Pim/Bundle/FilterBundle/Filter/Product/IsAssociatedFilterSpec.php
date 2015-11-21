@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -22,9 +22,9 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         ProductFilterUtility $utility,
         RequestParametersExtractorInterface $extractor,
         CustomAssociationTypeRepository $assocRepository,
-        ProductManager $manager
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->beConstructedWith($factory, $utility, $extractor, $assocRepository, $manager);
+        $this->beConstructedWith($factory, $utility, $extractor, $assocRepository, $productRepository);
     }
 
     function it_is_an_oro_choice_filter()
@@ -38,20 +38,19 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         QueryBuilder $qb,
         $extractor,
         $assocRepository,
-        ProductManager $productManager,
         AssociationTypeInterface $assocType,
         AbstractAssociation $association,
         ProductInterface $productOwner,
         ProductInterface $productAssociatedOne,
         ProductInterface $productAssociatedTwo,
-        $manager
+        $productRepository
     ) {
         $extractor->getDatagridParameter('_parameters', [])->willReturn([]);
         $extractor->getDatagridParameter('associationType')->willReturn(1);
         $assocRepository->findOneBy(Argument::any())->willReturn($assocType);
 
         $extractor->getDatagridParameter('product')->willReturn(11);
-        $manager->find(11)->willReturn($productOwner);
+        $productRepository->findOneByWithValues(11)->willReturn($productOwner);
 
         $productOwner->getAssociationForType($assocType)->willReturn($association);
         $association->getProducts()->willReturn([$productAssociatedOne, $productAssociatedTwo]);
