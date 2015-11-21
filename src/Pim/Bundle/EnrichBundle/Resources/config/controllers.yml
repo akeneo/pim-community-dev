@@ -244,7 +244,7 @@ services:
         class: %pim_enrich.controller.completeness.class%
         arguments:
             - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.channel'
             - '@pim_user.context.user'
             - '@templating'
