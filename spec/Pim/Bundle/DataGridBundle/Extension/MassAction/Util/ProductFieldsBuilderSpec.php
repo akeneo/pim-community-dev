@@ -5,18 +5,19 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {
     function let(
-        ProductManagerInterface $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeRepositoryInterface $assocTypeRepo,
@@ -24,11 +25,9 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ObjectRepository $attributeRepository
     ) {
-        $productManager->getProductRepository()->willReturn($productRepository);
-        $productManager->getAttributeRepository()->willReturn($attributeRepository);
-
         $this->beConstructedWith(
-            $productManager,
+            $productRepository,
+            $attributeRepository,
             $localeRepository,
             $currencyManager,
             $assocTypeRepo,

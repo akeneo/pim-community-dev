@@ -5,9 +5,10 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 
 /**
@@ -19,8 +20,11 @@ use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
  */
 class ProductFieldsBuilder
 {
-    /** @var ProductManagerInterface */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -40,20 +44,23 @@ class ProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface            $productManager
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AttributeRepositoryInterface       $attributeRepository
      * @param LocaleRepositoryInterface          $localeRepository
      * @param CurrencyManager                    $currencyManager
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      * @param CatalogContext                     $catalogContext
      */
     public function __construct(
-        ProductManagerInterface $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
-        $this->productManager   = $productManager;
+        $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyManager  = $currencyManager;
         $this->assocTypeRepo    = $assocTypeRepo;
@@ -77,7 +84,7 @@ class ProductFieldsBuilder
             return [];
         }
 
-        $attributes = $this->productManager->getAttributeRepository()->findBy(['id' => $this->getAttributeIds()]);
+        $attributes = $this->attributeRepository->findBy(['id' => $this->getAttributeIds()]);
 
         return $this->prepareFieldsList($attributes);
     }
@@ -99,8 +106,7 @@ class ProductFieldsBuilder
      */
     protected function prepareAvailableAttributeIds($productIds)
     {
-        $this->attributeIds = $this->productManager
-            ->getProductRepository()
+        $this->attributeIds = $this->productRepository
             ->getAvailableAttributeIdsToExport($productIds);
     }
 

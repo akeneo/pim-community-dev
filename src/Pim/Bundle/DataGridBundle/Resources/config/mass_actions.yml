@@ -104,7 +104,8 @@ services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
         class: %pim_datagrid.extension.mass_action.util.product_fields_builder.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.manager.currency'
             - '@pim_catalog.repository.association_type'
