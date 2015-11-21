@@ -17,12 +17,16 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 interface ProductManagerInterface
 {
     /**
+     * @deprecated will be removed in 1.6
+     *
      * @return ProductRepositoryInterface
      */
     public function getProductRepository();
 
     /**
      * Return related repository
+     *
+     * @deprecated will be removed in 1.6
      *
      * @return ObjectRepository
      */

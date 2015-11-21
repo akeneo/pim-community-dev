@@ -59,6 +59,8 @@ class ProductManager implements ProductManagerInterface
      *
      * @param int $id
      *
+     * @deprecated will be removed in 1.6
+     *
      * @return ProductInterface|null
      */
     public function find($id)
