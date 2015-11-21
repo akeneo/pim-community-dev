@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlWriter extends FileWriter
+class YamlWriter extends AbstractFileWriter
 {
     const INLINE_ARRAY_LEVEL = 8;
 
