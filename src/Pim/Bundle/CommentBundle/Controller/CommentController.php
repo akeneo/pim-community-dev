@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CommentBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,8 +27,8 @@ class CommentController
     /** @var ManagerRegistry */
     protected $doctrine;
 
-    /** @var CommentManager */
-    protected $commentManager;
+    /** @var RemoverInterface */
+    protected $commentRemover;
 
     /** @var string */
     protected $commentClassName;
@@ -36,17 +36,17 @@ class CommentController
     /**
      * @param TokenStorageInterface $tokenStorage
      * @param ManagerRegistry       $doctrine
-     * @param CommentManager        $commentManager
+     * @param RemoverInterface      $commentRemover
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         ManagerRegistry $doctrine,
-        CommentManager $commentManager,
+        RemoverInterface $commentRemover,
         $commentClassName
     ) {
         $this->tokenStorage     = $tokenStorage;
         $this->doctrine         = $doctrine;
-        $this->commentManager   = $commentManager;
+        $this->commentRemover  = $commentRemover;
         $this->commentClassName = $commentClassName;
     }
 
@@ -74,7 +74,7 @@ class CommentController
             throw new AccessDeniedException('You are not allowed to delete this comment.');
         }
 
-        $this->commentManager->remove($comment);
+        $this->commentRemover->remove($comment);
 
         return new JsonResponse();
     }

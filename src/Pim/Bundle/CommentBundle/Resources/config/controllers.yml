@@ -8,5 +8,5 @@ services:
         arguments:
             - '@security.token_storage'
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_comment.manager.comment'
+            - '@pim_comment.remover.comment'
             - %pim_comment.entity.comment.class%
