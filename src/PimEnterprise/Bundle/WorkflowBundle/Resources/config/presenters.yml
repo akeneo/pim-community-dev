@@ -9,6 +9,7 @@ parameters:
     pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
     pimee_workflow.presenter.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
     pimee_workflow.presenter.prices.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter
+    pimee_workflow.presenter.number.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter
     pimee_workflow.presenter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
     pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
     pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
@@ -79,6 +80,9 @@ services:
 
     pimee_workflow.presenter.metric:
         class: %pimee_workflow.presenter.metric.class%
+        arguments:
+            - '@pim_localization.localizer.metric'
+            - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }
 
@@ -89,6 +93,17 @@ services:
 
     pimee_workflow.presenter.prices:
         class: %pimee_workflow.presenter.prices.class%
+        arguments:
+            - '@pim_localization.localizer.price'
+            - '@pim_localization.resolver.locale'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.number:
+        class: %pimee_workflow.presenter.number.class%
+        arguments:
+            - '@pim_localization.localizer.number'
+            - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }
 

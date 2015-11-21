@@ -35,3 +35,5 @@
 - Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type`. Add argument `PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`.
 - Remove ProductValue repository from container
 - Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
