@@ -282,6 +282,22 @@ class Grid extends Index
     }
 
     /**
+     * Get the node in the specified column of the specified row
+     *
+     * @param string $column
+     * @param string $row
+     *
+     * @return NodeElement
+     */
+    public function getColumnNode($column, $row)
+    {
+        return $this->getRowCell(
+            $this->getRow($row),
+            $this->getColumnPosition($column, true, true)
+        );
+    }
+
+    /**
      * Get an array of values in the specified column
      * @param string $column
      *
@@ -440,6 +456,22 @@ class Grid extends Index
         }
 
         return $filter;
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @return bool
+     */
+    public function isFilterAvailable($filterName)
+    {
+        $this->clickFiltersList();
+
+        $filterElement = $this
+            ->getElement('Manage filters')
+            ->find('css', sprintf('label:contains("%s")', $filterName));
+
+        return null !== $filterElement;
     }
 
     /**

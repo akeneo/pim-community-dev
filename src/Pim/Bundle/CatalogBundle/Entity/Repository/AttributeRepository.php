@@ -333,6 +333,9 @@ class AttributeRepository extends EntityRepository implements
             return [];
         }
 
+        $qb->andWhere('att.useableAsGridFilter = :useableInGrid');
+        $qb->setParameter('useableInGrid', 1);
+
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);
