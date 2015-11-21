@@ -365,6 +365,22 @@ class Grid extends Index
     }
 
     /**
+     * Get the node in the specified column of the specified row
+     *
+     * @param string $column
+     * @param string $row
+     *
+     * @return NodeElement
+     */
+    public function getColumnNode($column, $row)
+    {
+        return $this->getRowCell(
+            $this->getRow($row),
+            $this->getColumnPosition($column, true, true)
+        );
+    }
+
+    /**
      * Get an array of values in the specified column
      *
      * @param string $columnName
