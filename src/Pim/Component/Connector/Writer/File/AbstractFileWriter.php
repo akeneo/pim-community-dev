@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Abstract file writer to handle configuration-related logic.
+ * Abstract file writer to handle file naming and configuration-related logic.
  * write() method must be implemented by children.
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -20,19 +20,36 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
+    /** @var FilePathResolverInterface */
+    protected $filePathResolver;
+
     /**
      * @Assert\NotBlank(groups={"Execution"})
      * @WritableDirectory(groups={"Execution"})
      *
      * @var string
      */
-    protected $filePath = '/tmp/export_%datetime%.csv';
+    protected $filePath;
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /** @var string */
     protected $resolvedFilePath;
+
+    /** array */
+    protected $filePathResolverOptions;
+
+    /**
+     * @param FilePathResolverInterface $filePathResolver
+     */
+    public function __construct(FilePathResolverInterface $filePathResolver)
+    {
+        $this->filePathResolver = $filePathResolver;
+        $this->filePathResolverOptions = [
+            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
+        ];
+    }
 
     /**
      * Set the file path
@@ -67,7 +84,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     public function getPath()
     {
         if (null === $this->resolvedFilePath) {
-            $this->resolvedFilePath = strtr($this->filePath, ['%datetime%' => date('Y-m-d_H:i:s')]);
+            $this->resolvedFilePath = $this->filePathResolver->resolve($this->filePath, $this->filePathResolverOptions);
         }
 
         return $this->resolvedFilePath;

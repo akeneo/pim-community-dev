@@ -20,6 +20,9 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /** @var BufferInterface */
     protected $buffer;
 
+    /** @var string */
+    protected $filePath = '/tmp/export_%datetime%.csv';
+
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
@@ -51,8 +54,10 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /**
      * @param BufferFactoryInterface $bufferFactory
      */
-    public function __construct(BufferFactoryInterface $bufferFactory)
+    public function __construct(FilePathResolverInterface $filePathResolver, BufferFactoryInterface $bufferFactory)
     {
+        parent::__construct($filePathResolver);
+
         $this->buffer  = $bufferFactory->create();
         $this->localFs = new Filesystem();
     }
