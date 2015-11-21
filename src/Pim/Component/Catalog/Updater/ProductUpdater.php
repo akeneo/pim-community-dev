@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 
 /**
  * Updates a product
@@ -16,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
+class ProductUpdater implements ObjectUpdaterInterface
 {
     /** @var PropertySetterInterface */
     protected $propertySetter;
@@ -122,47 +121,6 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
             }
         }
         $this->updateProductVariantValues($product, $data);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, please use PropertySetterInterface::setData
-     */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->propertySetter->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, please use PropertySetterInterface::copyData
-     */
-    public function copyValue(
-        array $products,
-        $fromField,
-        $toField,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
-    ) {
-        $options = [
-            'from_locale' => $fromLocale,
-            'to_locale'   => $toLocale,
-            'from_scope'  => $fromScope,
-            'to_scope'    => $toScope,
-        ];
-        foreach ($products as $product) {
-            $this->propertyCopier->copyData($product, $product, $fromField, $toField, $options);
-        }
 
         return $this;
     }

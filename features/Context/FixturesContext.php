@@ -1320,7 +1320,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductManager()->getProductRepository()->findAll());
+        $total = count($this->getProductRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1332,7 +1332,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeAttributes($expectedTotal)
     {
-        $total = count($this->getProductManager()->getAttributeRepository()->findAll());
+        $total = count($this->getAttributeRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -2436,19 +2436,19 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
-    }
-
-    /**
      * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface
+     */
+    protected function getAttributeRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.attribute');
     }
 
     /**

@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -18,11 +19,11 @@ class SequentialEditManagerSpec extends ObjectBehavior
     function let(
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->beConstructedWith($repository, $factory, $productManager, $saver, $remover);
+        $this->beConstructedWith($repository, $factory, $productRepository, $saver, $remover);
     }
 
     function it_saves_a_sequential_edit($saver, SequentialEdit $sequentialEdit)
@@ -72,7 +73,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
     }
 
     function it_find_previous_and_next_products(
-        $productManager,
+        $productRepository,
         SequentialEdit $sequentialEdit,
         ProductInterface $product,
         ProductInterface $previous,
@@ -82,8 +83,8 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $sequentialEdit->countObjectSet()->willReturn(4);
         $product->getId()->willReturn(5);
 
-        $productManager->find(6)->willReturn($previous);
-        $productManager->find(2)->willReturn($next);
+        $productRepository->findOneByWithValues(6)->willReturn($previous);
+        $productRepository->findOneByWithValues(2)->willReturn($next);
 
         $sequentialEdit->setCurrent($product)->shouldBeCalled();
         $sequentialEdit->setPrevious($previous)->shouldBeCalled();

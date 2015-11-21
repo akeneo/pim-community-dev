@@ -10,9 +10,11 @@ services:
     pim_datagrid.datagrid.configuration.product.context_configurator:
         class: %pim_datagrid.datagrid.configuration.product.context_configurator.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
         calls:
             - [setRequest, ['@?request=']]
 

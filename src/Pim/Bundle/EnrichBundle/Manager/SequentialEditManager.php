@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -26,8 +26,8 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /** @var SequentialEditFactory */
     protected $factory;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var SaverInterface */
     protected $saver;
@@ -38,24 +38,24 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /**
      * Constructor
      *
-     * @param SequentialEditRepository $repository
-     * @param SequentialEditFactory    $factory
-     * @param ProductManager           $productManager
-     * @param SaverInterface           $saver
-     * @param RemoverInterface         $remover
+     * @param SequentialEditRepository   $repository
+     * @param SequentialEditFactory      $factory
+     * @param ProductRepositoryInterface $productRepository
+     * @param SaverInterface             $saver
+     * @param RemoverInterface           $remover
      */
     public function __construct(
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->repository     = $repository;
-        $this->factory        = $factory;
-        $this->productManager = $productManager;
-        $this->saver          = $saver;
-        $this->remover        = $remover;
+        $this->repository        = $repository;
+        $this->factory           = $factory;
+        $this->productRepository = $productRepository;
+        $this->saver             = $saver;
+        $this->remover           = $remover;
     }
 
     /**
@@ -149,7 +149,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         $objectSet = $sequentialEdit->getObjectSet();
         $productCount = $sequentialEdit->countObjectSet();
         while (++$currentKey < $productCount && null === $next) {
-            $next = $this->productManager->find($objectSet[$currentKey]);
+            $next = $this->productRepository->findOneByWithValues($objectSet[$currentKey]);
         }
 
         return $next;
@@ -168,7 +168,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         $previous = null;
         $objectSet = $sequentialEdit->getObjectSet();
         while ($currentKey-- > 0 && null === $previous) {
-            $previous = $this->productManager->find($objectSet[$currentKey]);
+            $previous = $this->productRepository->findOneByWithValues($objectSet[$currentKey]);
         }
 
         return $previous;

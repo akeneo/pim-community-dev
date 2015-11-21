@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Prophecy\Argument;
@@ -18,9 +18,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
     function let(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->beConstructedWith($validator, $constraintGuesser, $productManager);
+        $this->beConstructedWith($validator, $constraintGuesser, $productRepository);
     }
 
     function it_is_initializable()

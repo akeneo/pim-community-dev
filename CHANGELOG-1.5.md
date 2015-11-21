@@ -56,3 +56,5 @@
 - Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`. Added EventDispatcher as last parameter.
 - Remove class `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager`
 - Remove class `Pim\Bundle\CatalogBundle\Manager\AssociationManager`
+- Remove deprecated method valueExists from `Pim\Bundle\CatalogBundle\Manager\ProductManager`
+- Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface

@@ -57,41 +57,4 @@ class ProductUpdaterSpec extends ObjectBehavior
 
         $this->update($product, $updates, []);
     }
-
-    function it_sets_a_value($propertySetter, ProductInterface $product1, ProductInterface $product2)
-    {
-        $products = [$product1, $product2];
-
-        $propertySetter
-            ->setData($product1, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
-            ->shouldBeCalled();
-        $propertySetter
-            ->setData($product2, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
-            ->shouldBeCalled();
-
-        $this->setValue($products, 'field', 'data', 'fr_FR', 'ecommerce');
-    }
-
-    function it_copies_a_value(
-        $propertyCopier,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $products = [$product1, $product2];
-        $options = [
-            'from_locale' => 'from_locale',
-            'to_locale' => 'to_locale',
-            'from_scope' => 'from_scope',
-            'to_scope' => 'to_scope',
-        ];
-
-        $propertyCopier
-            ->copyData($product1, $product1, 'from_field', 'to_field', $options)
-            ->shouldBeCalled();
-        $propertyCopier
-            ->copyData($product2, $product2, 'from_field', 'to_field', $options)
-            ->shouldBeCalled();
-
-        $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
-    }
 }

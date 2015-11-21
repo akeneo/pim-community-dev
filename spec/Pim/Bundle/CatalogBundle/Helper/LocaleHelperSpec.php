@@ -52,24 +52,6 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->getCurrencyLabels('fr_FR')->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('fr'));
     }
 
-    function it_provides_a_locale_flag()
-    {
-        $this
-            ->getFlag('en_US')
-            ->shouldReturn(
-                '<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>'
-            );
-
-        $this
-            ->getFlag('en_US', true)
-            ->shouldReturn(
-                sprintf(
-                    '<span class="flag-language"><i class="flag flag-us"></i><span class="language">%s</span></span>',
-                    'English (United States)'
-                )
-            );
-    }
-
     function it_provides_translated_locales_as_choice($localeRepository)
     {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);

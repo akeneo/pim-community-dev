@@ -131,12 +131,12 @@ class UserContextSpec extends ObjectBehavior
     function its_get_user_tree_method_returns_user_tree_if_available(User $user, $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
-        $this->getUserTree()->shouldReturn($secondTree);
+        $this->getUserProductCategoryTree()->shouldReturn($secondTree);
     }
 
     function its_get_user_tree_method_returns_the_first_available_tree_if_user_tree_is_not_available($firstTree)
     {
-        $this->getUserTree()->shouldReturn($firstTree);
+        $this->getUserProductCategoryTree()->shouldReturn($firstTree);
     }
 }
 

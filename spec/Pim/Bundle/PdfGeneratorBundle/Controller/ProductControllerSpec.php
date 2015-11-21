@@ -3,26 +3,26 @@
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductControllerSpec extends ObjectBehavior
 {
-    function let(ProductManager $productManager, RendererRegistry $rendererRegistry)
+    function let(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
-        $this->beConstructedWith($productManager, $rendererRegistry);
+        $this->beConstructedWith($productRepository, $rendererRegistry);
     }
 
     function it_generates_a_pdf_for_a_given_product(
         Request $request,
         ProductInterface $blender,
         $rendererRegistry,
-        $productManager
+        $productRepository
     ) {
-        $productManager->find(12)->willReturn($blender);
+        $productRepository->findOneByWithValues(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -40,9 +40,9 @@ class ProductControllerSpec extends ObjectBehavior
         Request $request,
         ProductInterface $blender,
         $rendererRegistry,
-        $productManager
+        $productRepository
     ) {
-        $productManager->find(12)->willReturn($blender);
+        $productRepository->findOneByWithValues(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -62,9 +62,9 @@ class ProductControllerSpec extends ObjectBehavior
         Request $request,
         ProductInterface $blender,
         $rendererRegistry,
-        $productManager
+        $productRepository
     ) {
-        $productManager->find(12)->willReturn(null);
+        $productRepository->findOneByWithValues(12)->willReturn(null);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')

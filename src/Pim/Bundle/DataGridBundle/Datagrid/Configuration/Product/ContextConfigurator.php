@@ -3,10 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,8 +43,8 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var DatagridConfiguration */
     protected $configuration;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var RequestParameters */
     protected $requestParams;
@@ -54,19 +55,31 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var Request */
     protected $request;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /**
-     * @param ProductManager    $productManager
-     * @param RequestParameters $requestParams
-     * @param UserContext       $userContext
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param RequestParameters            $requestParams
+     * @param UserContext                  $userContext
+     * @param ObjectManager                $objectManager
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
-        UserContext $userContext
+        UserContext $userContext,
+        ObjectManager $objectManager
     ) {
-        $this->productManager     = $productManager;
-        $this->requestParams      = $requestParams;
-        $this->userContext        = $userContext;
+        $this->productRepository   = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->requestParams       = $requestParams;
+        $this->userContext         = $userContext;
+        $this->objectManager       = $objectManager;
     }
 
     /**
@@ -126,8 +139,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributeIds($attributeCodes = null)
     {
-        $repository   = $this->productManager->getAttributeRepository();
-        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
 
         return $attributeIds;
     }
@@ -194,7 +206,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
-        $product = null !== $id ? $this->productManager->find($id) : null;
+        $product = null !== $id ? $this->productRepository->findOneByWithValues($id) : null;
         $this->configuration->offsetSetByPath($path, $product);
     }
 
@@ -245,7 +257,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getProductStorage()
     {
-        $om = $this->productManager->getObjectManager();
+        $om = $this->objectManager;
         if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
             return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
         }
@@ -313,8 +325,7 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         $currentLocale = $this->getCurrentLocaleCode();
-        $repository    = $this->productManager->getAttributeRepository();
-        $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
+        $configuration = $this->attributeRepository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
     }

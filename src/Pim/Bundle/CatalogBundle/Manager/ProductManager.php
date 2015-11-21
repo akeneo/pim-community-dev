@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
  *
  * @deprecated will be removed in 1.6
  */
-class ProductManager implements ProductManagerInterface
+class ProductManager
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -59,17 +59,21 @@ class ProductManager implements ProductManagerInterface
      *
      * @param int $id
      *
+     * @deprecated will be removed in 1.6
+     *
      * @return ProductInterface|null
      */
     public function find($id)
     {
-        $product = $this->getProductRepository()->findOneByWithValues($id);
+        $product = $this->productRepository->findOneByWithValues($id);
 
         return $product;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.6
      */
     public function getAttributeRepository()
     {
@@ -79,24 +83,12 @@ class ProductManager implements ProductManagerInterface
     /**
      * Get object manager
      *
+     * @deprecated will be removed in 1.6
+     *
      * @return ObjectManager
      */
     public function getObjectManager()
     {
         return $this->objectManager;
-    }
-
-    /**
-     * Check if a product value with a specific value already exists
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return bool
-     *
-     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::valueExists
-     */
-    public function valueExists(ProductValueInterface $value)
-    {
-        return $this->productRepository->valueExists($value);
     }
 }
