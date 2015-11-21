@@ -3,7 +3,7 @@
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,26 +20,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductController
 {
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /**
-     * @var RendererRegistry
-     */
+    /** @var RendererRegistry */
     protected $rendererRegistry;
 
     /**
      * Constructor
      *
-     * @param ProductManager   $productManager
-     * @param RendererRegistry $rendererRegistry
+     * @param ProductRepositoryInterface $productRepository
+     * @param RendererRegistry           $rendererRegistry
      */
-    public function __construct(ProductManager $productManager, RendererRegistry $rendererRegistry)
+    public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
-        $this->productManager   = $productManager;
-        $this->rendererRegistry = $rendererRegistry;
+        $this->productRepository = $productRepository;
+        $this->rendererRegistry  = $rendererRegistry;
     }
 
     /**
@@ -98,7 +94,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
+        $product = $this->productRepository->findOneByWithValues($id);
 
         if (null === $product) {
             throw new NotFoundHttpException(
