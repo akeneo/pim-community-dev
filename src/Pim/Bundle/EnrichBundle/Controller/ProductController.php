@@ -12,11 +12,11 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
@@ -49,8 +49,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductController extends AbstractDoctrineController
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var CategoryManager */
     protected $categoryManager;
@@ -110,25 +110,25 @@ class ProductController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param ProductManager           $productManager
-     * @param CategoryManager          $categoryManager
-     * @param UserContext              $userContext
-     * @param VersionManager           $versionManager
-     * @param SecurityFacade           $securityFacade
-     * @param ProductCategoryManager   $prodCatManager
-     * @param SaverInterface           $productSaver
-     * @param SequentialEditManager    $seqEditManager
-     * @param ProductBuilderInterface  $productBuilder
-     * @param CategoryFactory          $categoryFactory
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param TokenStorageInterface      $tokenStorage
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param ManagerRegistry            $doctrine
+     * @param ProductRepositoryInterface $productRepository
+     * @param CategoryManager            $categoryManager
+     * @param UserContext                $userContext
+     * @param VersionManager             $versionManager
+     * @param SecurityFacade             $securityFacade
+     * @param ProductCategoryManager     $prodCatManager
+     * @param SaverInterface             $productSaver
+     * @param SequentialEditManager      $seqEditManager
+     * @param ProductBuilderInterface    $productBuilder
+     * @param CategoryFactory            $categoryFactory
      */
     public function __construct(
         Request $request,
@@ -140,7 +140,7 @@ class ProductController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         CategoryManager $categoryManager,
         UserContext $userContext,
         VersionManager $versionManager,
@@ -163,7 +163,7 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager    = $productManager;
+        $this->productRepository = $productRepository;
         $this->categoryManager   = $categoryManager;
         $this->userContext       = $userContext;
         $this->versionManager    = $versionManager;
@@ -452,7 +452,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
+        $product = $this->productRepository->findOneByWithValues($id);
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
