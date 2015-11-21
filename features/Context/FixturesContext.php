@@ -1332,7 +1332,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeAttributes($expectedTotal)
     {
-        $total = count($this->getProductManager()->getAttributeRepository()->findAll());
+        $total = count($this->getAttributeRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -2449,6 +2449,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface
+     */
+    protected function getAttributeRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.attribute');
     }
 
     /**
