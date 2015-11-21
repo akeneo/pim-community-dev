@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,19 +55,25 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var Request */
     protected $request;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param ProductManager    $productManager
-     * @param RequestParameters $requestParams
-     * @param UserContext       $userContext
+     * @param ProductManager               $productManager
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param RequestParameters            $requestParams
+     * @param UserContext                  $userContext
      */
     public function __construct(
         ProductManager $productManager,
+        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext
     ) {
-        $this->productManager     = $productManager;
-        $this->requestParams      = $requestParams;
-        $this->userContext        = $userContext;
+        $this->productManager      = $productManager;
+        $this->attributeRepository = $attributeRepository;
+        $this->requestParams       = $requestParams;
+        $this->userContext         = $userContext;
     }
 
     /**
@@ -126,8 +133,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributeIds($attributeCodes = null)
     {
-        $repository   = $this->productManager->getAttributeRepository();
-        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
 
         return $attributeIds;
     }
@@ -313,8 +319,7 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         $currentLocale = $this->getCurrentLocaleCode();
-        $repository    = $this->productManager->getAttributeRepository();
-        $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
+        $configuration = $this->attributeRepository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
     }
