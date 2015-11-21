@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
  *
  * @deprecated will be removed in 1.6
  */
-class ProductManager implements ProductManagerInterface
+class ProductManager
 {
     /** @var ObjectManager */
     protected $objectManager;
