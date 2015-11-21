@@ -81,8 +81,8 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
         return [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_base_connector.export.filePath.label',
-                    'help'  => 'pim_base_connector.export.filePath.help'
+                    'label' => 'pim_connector.export.filePath.label',
+                    'help'  => 'pim_connector.export.filePath.help'
                 ]
             ]
         ];
