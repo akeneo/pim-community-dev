@@ -38,18 +38,6 @@ class LocaleHelper
     }
 
     /**
-     * Returns the current locale
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     *
-     * @deprecated Locale object providing is not necessary. Use getCurrentLocaleCode instead. (will be removed in 1.3)
-     */
-    public function getCurrentLocale()
-    {
-        return $this->userContext->getCurrentLocale();
-    }
-
-    /**
      * Returns the current locale code
      *
      * @return string
@@ -119,28 +107,6 @@ class LocaleHelper
         $language = \Locale::getPrimaryLanguage($translateIn);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
-    }
-
-    /**
-     * Returns the flag icon for a locale
-     *
-     * @param string $code
-     * @param bool   $fullLabel
-     * @param string $translateIn
-     *
-     * @return string
-     *
-     * @deprecated Use the flag twig filter. Will be removed in 1.3
-     */
-    public function getFlag($code, $fullLabel = false, $translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-
-        return sprintf(
-            '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',
-            strtolower(\Locale::getRegion($code)),
-            $fullLabel ? $this->getLocaleLabel($code, $translateIn) : \Locale::getPrimaryLanguage($code)
-        );
     }
 
     /**
