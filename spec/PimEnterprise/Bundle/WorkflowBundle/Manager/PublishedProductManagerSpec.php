@@ -43,11 +43,6 @@ class PublishedProductManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_configurable_step_element()
-    {
-        $this->beAnInstanceOf('Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface');
-    }
-
     function it_publishes_a_product(
         $eventDispatcher,
         $publisher,
@@ -174,15 +169,5 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalledTimes(1);
 
         $this->unpublishAll([$published1, $published2]);
-    }
-
-    function it_returns_the_published_repository($repository)
-    {
-        $this->getProductRepository()->shouldReturn($repository);
-    }
-
-    function it_returns_the_product_manager_s_attribute_repository($attributeRepository)
-    {
-        $this->getAttributeRepository()->shouldReturn($attributeRepository);
     }
 }
