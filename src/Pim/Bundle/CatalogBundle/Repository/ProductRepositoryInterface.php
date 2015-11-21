@@ -111,16 +111,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function getAvailableAttributeIdsToExport(array $productIds);
 
     /**
-     * Get full products from product ids
-     *
-     * @param array $productIds
-     * @param array $attributeIds
-     *
-     * @return array
-     */
-    public function getFullProducts(array $productIds, array $attributeIds = []);
-
-    /**
      * @return ObjectManager
      */
     public function getObjectManager();

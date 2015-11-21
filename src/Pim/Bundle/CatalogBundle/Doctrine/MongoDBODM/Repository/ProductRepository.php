@@ -544,8 +544,12 @@ class ProductRepository extends DocumentRepository implements
                 ['associationType' => $associationType->getId()],
                 [
                     '$or' => [
-                        [ 'products' => [ '$ne' => [] ] ],
-                        [ 'groups'   => [ '$ne' => [] ] ]
+                        [
+                            'products' => [ '$ne' => [] ]
+                        ],
+                        [
+                            'groups' => [ '$ne' => [] ]
+                        ]
                     ]
                 ]
             ]
@@ -581,19 +585,6 @@ class ProductRepository extends DocumentRepository implements
         }, $results);
 
         return $ids;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullProducts(array $productIds, array $attributeIds = [])
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->field('_id')->in($productIds);
-
-        $cursor = $qb->getQuery()->execute();
-
-        return $cursor->toArray();
     }
 
     /**
