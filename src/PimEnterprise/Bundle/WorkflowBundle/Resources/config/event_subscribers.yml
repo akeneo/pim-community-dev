@@ -32,7 +32,7 @@ services:
     pimee_workflow.event_subscriber.published_product.detach_product:
         class: %pimee_workflow.event_subscriber.published_product.detach_product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.object_manager.product'
         tags:
             - { name: kernel.event_subscriber }
 
