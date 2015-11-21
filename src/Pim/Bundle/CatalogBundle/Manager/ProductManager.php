@@ -72,6 +72,8 @@ class ProductManager implements ProductManagerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.6
      */
     public function getAttributeRepository()
     {
@@ -80,6 +82,8 @@ class ProductManager implements ProductManagerInterface
 
     /**
      * Get object manager
+     *
+     * @deprecated will be removed in 1.6
      *
      * @return ObjectManager
      */
