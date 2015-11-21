@@ -1695,4 +1695,17 @@ class Edit extends Form
 
         return $this->getElement('Category tree');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function openPanel($panel)
+    {
+        $elt = $this->getElement('Panel selector');
+
+        $lowerPanel = strtolower($panel);
+        if (null === $elt->find('css', sprintf('button[data-panel=pim-product-edit-form-%s].active', $lowerPanel))) {
+            $elt->find('css', sprintf('button[data-panel=pim-product-edit-form-%s]', $lowerPanel))->click();
+        }
+    }
 }

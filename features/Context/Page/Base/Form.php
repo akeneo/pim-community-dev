@@ -93,7 +93,7 @@ class Form extends Base
     {
         $elt = $this->spin(function () {
             return $this->getElement('Panel selector');
-        });
+        }, 'Can not find the Panel selector');
 
         if (!$elt->find('css', sprintf('button.active:contains("%s")', $panel))) {
             $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
@@ -186,7 +186,13 @@ class Form extends Base
             }
 
             if (!$button) {
-                throw new \Exception(sprintf('Could not find group "%s".', $group));
+                $labels = array_map(function ($element) {
+                    return $element->getText();
+                }, $groups->findAll('css', '.group-label'));
+                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                    $group,
+                    implode(', ', $labels)
+                ));
             }
             $button->click();
         } else {
