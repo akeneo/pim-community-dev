@@ -1,0 +1,96 @@
+View the product: Ver el producto
+pimee_enrich.product_history.action.revert: Restaurar a esta versión
+permission-changes:
+  category:
+    grant: 'El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en esta categoría'
+    revoke: 'El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en esta categoría'
+  locale:
+    grant: 'El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en este local'
+    revoke: 'El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en este local'
+  attribute group:
+    grant: 'El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> de este grupo de atributos'
+    revoke: 'El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> de este grupo de atributos'
+  job profile:
+    grant: 'El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong>'
+    revoke: 'El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong>'
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Publicado
+        revert: Restaurar
+      smart_attribute:
+        come_from: 'Este atributo puede ser actualizado por una regla:'
+      btn:
+        publish: Publicar
+        publish_this_version: Publicar esta versión
+        unpublish: Remover publicación
+        save_draft: Guardar borrador
+      flash:
+        product_unpublished: Publicación del producto removida exitosamente
+        product_published: Producto publicado exitosamente
+        product_not_published: Error al publicar este producto
+        product_not_unpublished: Error al remover la publicación de este Producto
+        product_reverted: Producto restaurado con éxito
+      meta:
+        published: Versión publicada
+        owner_groups: Grupos de propietarios
+        draft_status: Estado borrador
+        draft:
+          in_progress: En progreso
+          sent_for_approval: Aguardando aprobación
+          working_copy: Versión de trabajo
+      tab:
+        proposals:
+          title: Propuestas
+          messages:
+            approve:
+              success: La propuesta ha sido aplicada con éxito.
+              error:
+                The proposal can't be applied due to the following error:
+                  - error
+            reject:
+              success: La propuesta ha sido rechazada.
+            remove:
+              success: La propuesta ha sido eliminada.
+      confirmation:
+        revert:
+          title: Confirmar la restauración
+          content: ¿Está usted seguro que desea restaurar el producto a esta versión?
+        publish:
+          title: Publicar este producto
+          content: ¿Está seguro que desea publicar este producto?
+        unpublish:
+          title: Romover la publicación de este producto
+          content: ¿Está seguro que desea remover la publicación de este producto?
+      info:
+        update_successful: La versión de trabajo ha sido actualizada
+      copy:
+        source:
+          working_copy: Versión de trabajo
+          draft: Mi borrador
+    product_draft:
+      info:
+        update_successful: El borrador del producto ha sido guardado con éxito
+        update_failed: El borrador del producto no puede ser actualizado
+        value_modified: Este valor es modificado por el borrador actual
+      flash:
+        sent_for_approval: El borrador del producto ha sido enviado a aprobación
+        draft_not_sendable: No puede enviar este borrador para aprobación
+      btn:
+        send_for_approval: Enviar para aprobación
+        sent_for_approval: Enviado para aprobación
+      modal:
+        accept_proposal: Aceptar propuesta
+        accept_selected_proposal: Aceptar propuesta(s) seleccionada(s)
+        reject_proposal: Rechazar propuesta
+        reject_selected_proposal: Rechazar propuesta(s) seleccionada(s)
+        remove_proposal: Suprimir propuesta
+        send_for_approval: Enviar para aprobación
+        cancel: Cancelar
+        confirm: Enviar
+        title: 'Comentar su propuesta (opcional - 255 caracteres máximo)'
+        characters: caracteres.
+      confirmation:
+        discard_changes: Las modificaciones no guardadas serán perdidas. ¿Está seguro que desea enviar el borrador sin guardar los cambios?
+        discard_changes_title: ¿Está seguro que desea enviar este borrador?

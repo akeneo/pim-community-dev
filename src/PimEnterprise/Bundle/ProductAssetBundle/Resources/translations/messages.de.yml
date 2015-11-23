@@ -1,0 +1,161 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Asset anreichern
+      create: Asset erstellen
+      remove: Asset entfernen
+      categories_view: Kategorien eines Assets durchsuchen
+      mass_upload: Massenupload von Assets
+    category_asset_picker:
+      list: Assetkategorien in der Assetauswahl auflisten
+    category:
+      create: Assetkategorie erstellen
+      edit: Assetkategorie bearbeiten
+      list: Assetkategorien auflisten
+      remove: Assetkategorie entfernen
+      manage: Assetkategorieberechtigungen verwalten
+      history: Assetkategoriehistorie ansehen
+  acl_group:
+    asset: Produktassets
+    category: Assetkategorien
+  enrich_asset:
+    button:
+      upload: Hochladen
+      delete: Löschen
+      download: Herunterladen
+      generate_from_reference: Aus Referenz generieren
+      reset_variations: Variationen zurücksetzen
+    confirmation.remove: 'Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?'
+    grid:
+      edit: Asseteigenschaften bearbeiten
+    view:
+      title: Produktasset
+      code: Code
+      description: Beschreibung
+      end_of_use: 'Gültig bis  '
+      reference: Verwendungszweck
+      filename: Dateiname
+      width: Breite
+      height: Höhe
+      resolution: Auflösung
+      colors: Farbraum
+      filesize: Dateigröße
+      filetype: Dateityp
+      actions: Aktionen
+      download: Herunterladen
+      tag: Stichworte
+      no_reference: Es wurde noch keine Referenzdatei hochgeladen.
+      no_variation: Es wurde noch keine Variationsdatei generiert.
+    flash:
+      update:
+        success: Asset wurde aktualisiert.
+        error: Asset wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
+      create:
+        success: Asset wurde erstellt.
+        error: Asset wurde nicht erstellt. Es ist ein Fehler aufgetreten.
+      remove:
+        success: Asset wurde entfernt.
+  enrich_reference:
+    flash:
+      delete:
+        success: Referenzdatei wurde gelöscht.
+        error: Referenzdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 'Erstellen der Variation %channel% aufgrund ungültiger Optionen nicht möglich.'
+        image_width_error: 'Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Breite aufweist, als die Umwandlung erfordert.'
+        image_height_error: 'Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Höhe aufweist, als die Umwandlung erfordert.'
+        not_applicable: 'Erstellen der Variation %channel% nicht möglich.'
+        non_registered: 'Keine %transformation% Umwandlung für Mime Typ %mimeType% registriert. Erstellen der Variation %channel% nicht möglich.'
+        error: 'Erstellen der Variation %channel% nicht möglich.'
+        success: Variationsdateien wurden erfolgreich generiert.
+      update:
+        success: Variationsdatei wurde aktualisiert.
+        error: Variationsdatei wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
+      delete:
+        success: Variationsdatei wurde gelöscht.
+        error: Variationsdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
+  popin.create:
+    title: Neues Asset erstellen
+    is_localized: Lokalisierbar
+  menu: Assets
+  page_tab:
+    title:
+      view: 'Produktasset %asset.code% | Ansehen'
+      edit: 'Produktasset %asset.code% | Bearbeiten'
+      index: Produktassets
+  code:
+    label: Code
+  thumbnail:
+    label: Miniaturansicht
+  status:
+    label: Status
+  description:
+    label: Beschreibung
+  endOfUse:
+    label: Ende der Nutzung
+  createdAt:
+    label: Erstellt am
+  updatedAt:
+    label: Zuletzt aktualisiert am
+  tags:
+    label: Stichworte
+  tabs:
+    properties.title: Eigenschaften
+    variations.title: Variationen
+    categories.title: Kategorien
+  validation:
+    code:
+      not_empty: Code ist erforderlich. Feld darf nicht leer sein.
+      unique: Code muss eindeutig sein.
+      new_generation: Wir haben einen neuen Code für Sie generiert.
+  jobs:
+    csv_asset_import.title: Asset-Import aus CSV-Datei
+    csv_asset_export.title: Asset-Export in CSV-Datei
+    csv_asset_variation_export.title: Assetvariationen-Export in CSV-Datei
+    csv_tag_import.title: Stichworte-Import aus CSV-Datei
+    csv_asset_category_import.title: Assetkategorie-Import aus CSV-Datei
+    csv_asset_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
+    yml_asset_configuration_export.title: Assetausgabekanalkonfiguration-Export in Yaml
+    csv_asset_category_export.title: Assetkategorie-Export in CSV-Datei
+    yml_asset_channel_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
+  steps:
+    channel_configuration.processor.title: Verarbeite Ausgabekanalkonfigurationen
+  notAvailable:
+    label: nicht verfügbar
+  asset:
+    title: Asset
+  mass_upload:
+    menu: Assets hochladen
+    new: Ein neues Asset wird erstellt
+    add_files: Dateien hinzufügen
+    start: Upload starten
+    cancel: Upload abbrechen
+    schedule: Zeitplan
+    executed: Massenupload ausgeführt
+    error:
+      upload: Während des Hochladens ist ein Fehler aufgetreten
+      code: Ungültiges Code-Format für Asset
+      localizable: Es existiert ein Asset, ist aber nicht lokalisierbar
+      invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
+  category:
+    menu: Assetkategorien
+    permissions:
+      view.label: Berechtigt zum Betrachten von Assets
+      view.help: Erlaube das Betrachten von Assets in dieser Kategorie
+      edit.label: Berechtigt zum Bearbeiten von Assets
+      edit.help: Erlaube das Bearbeiten von Assets in dieser Kategorie (beinhaltet die Berechtigung zum Betrachten)
+      no_access_to_products: SIe haben keinen Zugriff auf Assets eines beliebigen Baumes. Bitte wenden Sie sich an Ihren Administrator
+      apply_on_children.label: Übernehme Änderungen auf Kindelemente
+      apply_on_children.help: Übertragen der Berechtigungen auf alle Kindelemente, bereits bestehende Berechtigungen werden beibehalten
+btn.create.asset: Asset erstellen
+btn.drag_or_upload: 'Drag & Drop einer Datei oder hier klicken'
+job_execution.summary:
+  asset_file_processed: Assetdatei verarbeitet
+  variations_not_generated: Variationen nicht generiert
+  pimee_product_asset.mass_upload.new: Asset aus Datei erzeugt
+  pimee_product_asset.mass_upload.updated: Asset aktualisiert
+assets_mass_upload.steps:
+  asset_mass_upload.title: Massenupload von Assets
+mass_upload: Massenupload von Assets

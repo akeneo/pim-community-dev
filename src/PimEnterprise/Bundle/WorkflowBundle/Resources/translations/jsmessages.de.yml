@@ -4,3 +4,16 @@ Approve: Genehmigen
 Refuse: Ablehen
 Approve selected: Ausgewählte freigeben
 Refuse selected: Ausgewählte ablehnen
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Arbeitskopie bearbeiten
+    proposal:
+      modal.title: 'Kommentar hinterlassen (optional - max. 255 Zeichen)'
+  proposal:
+    partial_accept:
+      modal.title: Teilinformationen genehmigen
+      modal.label: Kommentar hinterlassen (optional)
+      modal.error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
+      modal.success: Der Vorschlag wurde erfolgreich teilweise überprüft
