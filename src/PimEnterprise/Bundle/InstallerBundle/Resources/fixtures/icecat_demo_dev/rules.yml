@@ -9,9 +9,12 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: camera_brand
-              value: canon_brand
+              data: canon_brand
+              options:
+                locale: null
+                scope:  null
     camera_copy_name_to_model:
         conditions:
             - field:    family.code
@@ -19,7 +22,7 @@ rules:
               value:
                 - camcorders
         actions:
-            - type:       copy_value
+            - type:       copy
               from_field: name
               to_field:   camera_model_name
     camera_set_camera_type:
@@ -32,9 +35,12 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: camera_type
-              value: compact
+              data:  compact
+              options:
+                locale: null
+                scope:  null
     camera_set_autofocus:
         conditions:
             - field:    family.code
@@ -45,9 +51,12 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: auto_focus_lock
-              value: true
+              data:  true
+              options:
+                locale: null
+                scope:  null
     camera_set_autofocus_point:
         conditions:
             - field:    family.code
@@ -58,9 +67,12 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: auto_focus_points
-              value: 4
+              data: 4
+              options:
+                locale: null
+                scope:  null
     copy_description_print_us_to_ecommerce_us:
         conditions:
             - field:    family.code
@@ -68,13 +80,14 @@ rules:
               value:
                 - camcorders
         actions:
-            - type:        copy_value
+            - type:        copy
               from_field:  description
-              from_locale: en_US
-              from_scope:  print
               to_field:    description
-              to_locale:   en_US
-              to_scope:    ecommerce
+              options:
+                from_locale: en_US
+                from_scope:  print
+                to_locale:   en_US
+                to_scope:    ecommerce
     set_purple_tshirt_ecommerce_description:
         priority: 100
         conditions:
@@ -86,41 +99,51 @@ rules:
               value:
                 - purple
         actions:
-            - type:   set_value
+            - type:   set
               field:  description
-              locale: en_US
-              scope:  ecommerce
-              value:  My very new description for purple tshirt
+              data:  My very new description for purple tshirt
+              options:
+                locale: en_US
+                scope:  ecommerce
     set_tshirt_price:
         conditions:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: price
-              value:
+              data:
                   - data:     12
                     currency: EUR
+              options:
+                locale: null
+                scope:  null
     set_tshirt_weight:
         conditions:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: weight
-              value:
+              data:
                    data: 500
                    unit: GRAM
+              options:
+                locale: null
+                scope:  null
     set_tshirt_style:
         conditions:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: tshirt_style
-              value:
+              data:
                 - sportwear
                 - vneck
+              options:
+                locale: null
+                scope:  null

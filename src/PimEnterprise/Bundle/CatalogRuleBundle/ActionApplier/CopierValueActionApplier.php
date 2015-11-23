@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\CatalogRule\ActionApplier;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 
 /**
- * Copier action applier
+ * Copier value action applier
  *
  * @author Julien Sanchez <julien@akeneo.com>
+ * @deprecated will be removed in 1.6 please use
+ *             PimEnterprise\Component\CatalogRule\ActionApplier\CopierActionApplier
  */
-class CopierActionApplier implements ActionApplierInterface
+class CopierValueActionApplier implements ActionApplierInterface
 {
     /** @var PropertyCopierInterface */
     protected $propertyCopier;
@@ -45,7 +47,12 @@ class CopierActionApplier implements ActionApplierInterface
                 $product,
                 $action->getFromField(),
                 $action->getToField(),
-                $action->getOptions()
+                [
+                    'from_locale' => $action->getFromLocale(),
+                    'from_scope'  => $action->getFromScope(),
+                    'to_locale'   => $action->getToLocale(),
+                    'to_scope'    => $action->getToScope()
+                ]
             );
         }
     }
@@ -55,6 +62,6 @@ class CopierActionApplier implements ActionApplierInterface
      */
     public function supports(ActionInterface $action)
     {
-        return $action instanceof ProductCopyActionInterface;
+        return $action instanceof ProductCopyValueActionInterface;
     }
 }

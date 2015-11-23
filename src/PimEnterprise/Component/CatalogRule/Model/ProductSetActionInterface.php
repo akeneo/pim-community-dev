@@ -15,17 +15,17 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 
 /**
- * Add action interface used in product rules.
- * An add action is used to add an array of items to an other array of items.
+ * Set action interface used in product rules.
+ * An set action is used to set data to a product value.
  *
- * For example : add ['socks'] to categories
- * or          : add ['red', 'green'] to colors
+ * For example : set ['socks'] to categories
+ * or          : set 'red' to colors
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-interface ProductAddActionInterface extends ActionInterface, FieldImpactActionInterface
+interface ProductSetActionInterface extends ActionInterface, FieldImpactActionInterface
 {
-    const ACTION_TYPE = 'add';
+    const ACTION_TYPE = 'set';
 
     /**
      * @return string
@@ -33,9 +33,9 @@ interface ProductAddActionInterface extends ActionInterface, FieldImpactActionIn
     public function getField();
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getItems();
+    public function getData();
 
     /**
      * @return mixed
@@ -50,11 +50,11 @@ interface ProductAddActionInterface extends ActionInterface, FieldImpactActionIn
     public function setField($field);
 
     /**
-     * @param array $items
+     * @param mixed $data
      *
      * @return ProductAddActionInterface
      */
-    public function setItems(array $items = []);
+    public function setData($data);
 
     /**
      * @param array $options

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 
 /**
  * Set action used in product rules.
@@ -19,6 +20,8 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
  * for a scope and a locale.
  *
  * For example : set description-fr_FR-ecommerce to 'foo'
+ * @deprecated will be removed in 1.6 please use
+ *             PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */

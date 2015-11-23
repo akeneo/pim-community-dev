@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator\Constraints;
 
-use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -39,7 +40,7 @@ class ExistingCopyFieldsValidator extends ConstraintValidator
      */
     public function validate($action, Constraint $constraint)
     {
-        if (!($action instanceof ProductCopyValueActionInterface)) {
+        if (!($action instanceof ProductCopyValueActionInterface || $action instanceof ProductCopyActionInterface)) {
             throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
         }
 

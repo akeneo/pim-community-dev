@@ -15,22 +15,27 @@ use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
- * Denormalize product add rule actions.
+ * Denormalize product rule actions.
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AddActionDenormalizer implements DenormalizerInterface
+class ActionDenormalizer implements DenormalizerInterface
 {
     /** @var string */
-    protected $addActionClass;
+    protected $actionClass;
+
+    /** @var string */
+    protected $actionType;
 
     /**
-     * @param string $addActionClass should implement
-     *     \PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface
+     * @param string $actionClass should implement
+     *     \PimEnterprise\Component\CatalogRule\Model\ActionInterface
+     * @param string $actiontype
      */
-    public function __construct($addActionClass)
+    public function __construct($actionClass, $actionType)
     {
-        $this->addActionClass = $addActionClass;
+        $this->actionClass = $actionClass;
+        $this->actionType  = $actionType;
     }
 
     /**
@@ -38,7 +43,7 @@ class AddActionDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        return new $this->addActionClass($data);
+        return new $this->actionClass($data);
     }
 
     /**
@@ -46,6 +51,6 @@ class AddActionDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return isset($data['type']) && ProductAddActionInterface::ACTION_TYPE === $data['type'];
+        return isset($data['type']) && $this->actionType === $data['type'];
     }
 }

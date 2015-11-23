@@ -1,4 +1,4 @@
-PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
+PimEnterprise\Component\CatalogRule\Model\ProductSetAction:
     constraints:
         - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
     properties:
@@ -8,9 +8,7 @@ PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
            - NotBlank: ~
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField: ~
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingSetField: ~
         data:
-            - Type:
-                type: array
-            - NotBlank:
+           - NotNull:
                 message: The key "data" is missing or empty.

@@ -1,0 +1,19 @@
+PimEnterprise\Component\CatalogRule\Model\ProductCopyAction:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingCopyFields: ~
+    properties:
+        fromField:
+           - Type:
+                type: string
+           - NotBlank:
+                message: The key "from_field" is missing or empty.
+           - Length:
+               max: 255
+        toField:
+           - Type:
+                type: string
+           - NotBlank:
+                message: The key "to_field" is missing or empty.
+           - Length:
+               max: 255
