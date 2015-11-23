@@ -102,6 +102,7 @@ services:
         class: %pim_serializer.normalizer.attribute_group.class%
         arguments:
             - '@pim_serializer.normalizer.label_translation'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
