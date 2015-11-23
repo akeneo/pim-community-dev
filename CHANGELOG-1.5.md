@@ -4,6 +4,7 @@
 
 ## BC breaks
 
+- Remove class `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
 - Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
