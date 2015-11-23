@@ -427,8 +427,9 @@ class Grid extends Index
             }
         }
 
+        $labels = array_map(function ($element) { return $element->getText(); }, $headers);
         throw new \InvalidArgumentException(
-            sprintf('Couldn\'t find a column "%s"', $column)
+            sprintf('Couldn\'t find a column "%s". Available columns are: %s', $column, implode($labels, ', '))
         );
     }
 
