@@ -80,7 +80,7 @@ General: Général
 Entity: Entité
 Capabilities: Capacités
 Save and close: Enregistrer et fermer
-Has role: A un rôle
+Has role: A le rôle
 role:
   title: rôle
   overview: rôle
@@ -128,7 +128,7 @@ oro:
       NONE: Aucun
 Create group: Créer un groupe
 btn.create.user-group: Créer un groupe
-Has group: A un groupe
+Has group: Appartient au groupe
 Save and Close: Enregistrer et fermer
 user-group.overview: Groupes
 Log in: Connexion
