@@ -1,0 +1,6 @@
+parameters:
+    pim_localization.presenter.price.class: Pim\Component\Localization\Presenter\PricePresenter
+
+services:
+    pim_localization.presenter.price:
+        class: %pim_localization.presenter.price.class%
