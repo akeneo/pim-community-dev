@@ -2,3 +2,8 @@ pim_localization_locale_index:
     path: /system/locale/ui
     defaults: { _controller: pim_localization.controller.locale:indexAction, _format: json }
     methods: [GET]
+
+pim_localization_format_date:
+    path: /localization/format/date
+    defaults: { _controller: pim_localization.controller.format:dateAction, _format: json }
+    methods: [GET]
