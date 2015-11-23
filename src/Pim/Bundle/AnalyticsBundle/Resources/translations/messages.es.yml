@@ -1,0 +1,9 @@
+pim_analytics:
+  new_patch_available: Nuevo parche dispoinble
+  system_config:
+    group:
+      notification.title: Notificaciones
+      version_update.title: Actualizaciones de versión
+    form:
+      version_update.label: Notificaciones de nuevas versiones
+      version_update.tooltip: Enviar una solicitud al servidor remoto para recuperar la información sobre la liberación de nuevos parches

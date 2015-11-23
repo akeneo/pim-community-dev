@@ -1,0 +1,14 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Ninguna operación encontrada
+      status: Estado
+      date: Fecha
+      type: Tipo
+      profile name: Nombre del perfil
+      details: Detalles
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edición en masa
+        quick_export: Exportación rápida
