@@ -140,7 +140,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $normalizedData = array_filter(
             $normalizedData,
             function ($value) {
-                return (null !== $value);
+                //TODO: should be dropped on master as we don't normalize anymore empty medias in the normalized data
+                $nullNormalizedMedia = ['filename' => null, 'originalFilename' => null];
+
+                return (null !== $value && $nullNormalizedMedia !== $value);
             }
         );
 
