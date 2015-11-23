@@ -7,103 +7,50 @@
  */
 define(
     [
-        'jquery',
         'pim/field',
-        'underscore',
-        'backbone',
-        'text!pimee/template/product/field/asset-collection',
-        'pim/fetcher-registry',
-        'routing',
-        'pim/form-builder'
+        'pimee/picker/asset-collection'
     ],
     function (
-        $,
         Field,
-        _,
-        Backbone,
-        fieldTemplate,
-        FetcherRegistry,
-        Routing,
-        FormBuilder
+        AssetCollectionPicker
     ) {
         return Field.extend({
-            fieldTemplate: _.template(fieldTemplate),
-            events: {
-                'click .add-asset': 'updateAssets'
-            },
-
             /**
              * {@inheritdoc}
              */
-            getTemplateContext: function () {
-                return $.when(
-                    Field.prototype.getTemplateContext.apply(this, arguments),
-                    FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getCurrentValue().data)
-                ).then(function (templateContext, assets) {
-                    _.extend(templateContext, {
-                        assets: assets,
-                        thumbnailFilter: 'thumbnail'
-                    });
+            initialize: function () {
+                this.assetCollectionPicker = new AssetCollectionPicker();
 
-                    return templateContext;
-                }.bind(this));
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            renderInput: function (context) {
-                return this.fieldTemplate(context);
-            },
-
-            /**
-             * Launch the asset picker and set the assets after update
-             */
-            updateAssets: function () {
-                this.manageAssets().then(function (assets) {
+                this.assetCollectionPicker.on('collection:change', function (assets) {
                     this.setCurrentValue(assets);
-                    this.render();
                 }.bind(this));
+
+                Field.prototype.initialize.apply(this, arguments);
             },
 
             /**
-             * Launch the asset picker
-             *
-             * @return Promise
+             * {@inheritdoc}
              */
-            manageAssets: function () {
-                var deferred = $.Deferred();
+            setValues: function () {
+                Field.prototype.setValues.apply(this, arguments);
 
-                FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
-                    var modal = new Backbone.BootstrapModal({
-                        modalOptions: {
-                            backdrop: 'static',
-                            keyboard: false
-                        },
-                        allowCancel: true,
-                        okCloses: false,
-                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
-                        content: '',
-                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
-                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
-                    });
+                this.assetCollectionPicker.setData(this.getCurrentValue().data);
+            },
 
-                    modal.open();
-                    modal.$el.addClass('modal-asset');
-                    form.setElement(modal.$('.modal-body'))
-                        .render()
-                        .setAssets(this.getCurrentValue().data);
+            /**
+             * {@inheritdoc}
+             */
+            setContext: function () {
+                Field.prototype.setContext.apply(this, arguments);
 
-                    modal.on('cancel', deferred.reject);
-                    modal.on('ok', function () {
-                        var assets = _.sortBy(form.getAssets(), 'code');
-                        modal.close();
+                this.assetCollectionPicker.setContext(this.context);
+            },
 
-                        deferred.resolve(assets);
-                    }.bind(this));
-                }.bind(this));
-
-                return deferred.promise();
+            /**
+             * {@inheritdoc}
+             */
+            renderInput: function () {
+                return this.assetCollectionPicker.render().$el;
             }
         });
     }

@@ -1,0 +1,32 @@
+{% block pim_assets_collection_row %}
+    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+
+        <div class="controls{% if errors|length > 0 %} validation-error{% endif %} legacy-asset-collection-field">
+            {{ form_widget(form) }}
+
+            <script type="text/javascript">
+                require(['pim/fetcher-registry', 'pimee/picker/asset-collection'], function (FetcherRegistry, AssetCollectionPicker) {
+                    'use strict';
+
+                    $(function() {
+                        FetcherRegistry.initialize().then(function () {
+                            var $field = $('#{{ id }}');
+                            var assetCollectionPicker = new AssetCollectionPicker();
+                            assetCollectionPicker.setData($field.val().split(','));
+                            assetCollectionPicker.setContext({
+                                'locale': '{{ attr.locale }}',
+                                'scope': '{{ attr.scope }}'
+                            });
+                            $field.after(assetCollectionPicker.render().$el);
+                            assetCollectionPicker.on('collection:change', function (collection) {
+                                $field.val(collection.join(','));
+                            });
+                        });
+                    });
+                });
+            </script>
+            {{ block('form_info') }}
+        </div>
+    </div>
+{% endblock %}

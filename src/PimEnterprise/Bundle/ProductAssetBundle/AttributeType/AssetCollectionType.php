@@ -57,19 +57,6 @@ class AssetCollectionType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $referenceDataConf   = $this->referenceRegistry->get($value->getAttribute()->getReferenceDataName());
-        $options             = parent::prepareValueFormOptions($value);
-        $options['class']    = $referenceDataConf->getClass();
-        $options['multiple'] = true;
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         $attributes = parent::defineCustomAttributeProperties($attribute);

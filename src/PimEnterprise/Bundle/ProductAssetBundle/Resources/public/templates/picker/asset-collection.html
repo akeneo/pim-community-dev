@@ -1,6 +1,6 @@
 <div class="asset-gallery">
     <header>
-        <button class="btn btn-primary add-asset icons-holder-text"><i class="icon-ok"></i><%- _.__('pimee_product_asset.form.product.asset.manage') %></button>
+        <span class="btn btn-primary add-asset icons-holder-text"><i class="icon-ok"></i><%- _.__('pimee_product_asset.form.product.asset.manage') %></span>
     </header>
     <ul>
         <% _.each(assets, function (asset) { %>
@@ -8,8 +8,8 @@
                 <div class="asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
                         code: asset.code,
                         filter: thumbnailFilter,
-                        channelCode: context.scope,
-                        localeCode: context.locale
+                        channelCode: scope,
+                        localeCode: locale
                      }) %>')">
                 </div>
                 <footer>
