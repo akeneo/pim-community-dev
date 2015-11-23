@@ -7,6 +7,7 @@ pim_user:
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
       email_synchronization.title: Einstellungen für E-Mail Synchronisierung
+      interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Gruppe gespeichert
   role.message.saved: Rolle gespeichert
@@ -63,6 +64,7 @@ Ssl: SSL
 Last logged in: Zuletzt eingeloggt
 Login count: Anzahl der Anmeldungen
 Additional Information: Zusätzliche Informationen
+Interfaces: Interfaces
 Basic Information: Basisinformationen
 Contact Information: Kontaktinformationen
 User name: Benutzername
@@ -71,6 +73,7 @@ API key: API-Schlüssel
 Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
+user.product_grid_filters: Produktübersichtsfilter
 Role: Rolle
 Owner: Eigentümer
 General: Allgemein
