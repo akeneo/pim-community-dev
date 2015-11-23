@@ -23,7 +23,7 @@ Pim\Bundle\VersioningBundle\Model\Version:
             options:
                 background: true
             keys:
-                loggedAt: 1
+                loggedAt: -1
     fields:
         id:
             id: true
