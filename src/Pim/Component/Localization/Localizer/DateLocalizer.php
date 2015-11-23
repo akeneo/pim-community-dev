@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
+use Pim\Component\Localization\Factory\DateFactory;
 use Pim\Component\Localization\Validator\Constraints\DateFormat;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -18,24 +18,24 @@ class DateLocalizer implements LocalizerInterface
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var FormatProviderInterface */
-    protected $formatProvider;
+    /** @var DateFactory */
+    protected $factory;
 
     /** @var array */
     protected $attributeTypes;
 
     /**
-     * @param ValidatorInterface      $validator
-     * @param FormatProviderInterface $formatProvider
-     * @param array                   $attributeTypes
+     * @param ValidatorInterface $validator
+     * @param DateFactory        $factory
+     * @param array              $attributeTypes
      */
     public function __construct(
         ValidatorInterface $validator,
-        FormatProviderInterface $formatProvider,
+        DateFactory $factory,
         array $attributeTypes
     ) {
         $this->validator      = $validator;
-        $this->formatProvider = $formatProvider;
+        $this->factory        = $factory;
         $this->attributeTypes = $attributeTypes;
     }
 
@@ -49,9 +49,9 @@ class DateLocalizer implements LocalizerInterface
         }
 
         $options = $this->getOptions($options);
-
-        if (isset($options['locale'])) {
-            $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
+        if (isset($options['locale']) && !isset($options['date_format'])) {
+            $formatter = $this->factory->create($options);
+            $options['date_format'] = $formatter->getPattern();
         }
 
         $constraint = new DateFormat();
@@ -70,19 +70,13 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options = $this->getOptions($options);
+        $options   = $this->getOptions($options);
+        $formatter = $this->factory->create($options);
 
-        if (isset($options['locale'])) {
-            $options['date_format'] = 'Y-m-d';
-        }
+        $timestamp = $formatter->parse($date);
+        $formatter->setPattern(static::DEFAULT_DATE_FORMAT);
 
-        $datetime = $this->getDateTime($date, $options);
-
-        if (false === $datetime) {
-            return $date;
-        }
-
-        return $datetime->format(static::DEFAULT_DATE_FORMAT);
+        return $formatter->format($timestamp);
     }
 
     /**
@@ -94,16 +88,12 @@ class DateLocalizer implements LocalizerInterface
             return $date;
         }
 
-        $options = $this->getOptions($options);
+        $options   = $this->getOptions($options);
+        $formatter = $this->factory->create($options);
 
-        if (isset($options['locale'])) {
-            $options['date_format'] = 'Y-m-d'; // TODO with PIM-5146
-        }
+        $datetime = new \DateTime($date);
 
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
-
-        return $datetime->format($options['date_format']);
+        return $formatter->format($datetime);
     }
 
     /**
@@ -112,21 +102,6 @@ class DateLocalizer implements LocalizerInterface
     public function supports($attributeType)
     {
         return in_array($attributeType, $this->attributeTypes);
-    }
-
-    /**
-     * Get a \DateTime from date and format date provided
-     *
-     * @param string $date
-     * @param array  $options
-     *
-     * @return \DateTime|false
-     */
-    protected function getDateTime($date, array $options)
-    {
-        $datetime = new \DateTime();
-
-        return $datetime->createFromFormat($options['date_format'], $date);
     }
 
     /**

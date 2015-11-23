@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Validator\Constraints;
 
+use Pim\Component\Localization\Factory\DateFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,15 +15,25 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class DateFormatValidator extends ConstraintValidator
 {
+    /** @var DateFactory */
+    protected $factory;
+
+    /**
+     * @param DateFactory $factory
+     */
+    public function __construct(DateFactory $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function validate($date, Constraint $constraint)
     {
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat($constraint->dateFormat, $date);
+        $formatter = $this->factory->create(['date_format' => $constraint->dateFormat]);
 
-        if (false === $datetime) {
+        if (false === $formatter->parse($date)) {
             $violation = $this->context->buildViolation($constraint->message, [
                 '{{ date_format }}' => $constraint->dateFormat
             ]);

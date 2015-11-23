@@ -6,6 +6,6 @@ services:
         class: %pim_localization.resolver.locale.class%
         arguments:
             - '@request_stack'
-            - '@pim_localization.provider.date_format'
+            - '@pim_localization.factory.date'
             - '@pim_localization.provider.number_format'
             - %locale%

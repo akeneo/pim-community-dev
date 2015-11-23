@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization;
 
+use Pim\Component\Localization\Factory\DateFactory;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -17,8 +18,8 @@ class LocaleResolver
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var FormatProviderInterface */
-    protected $dateFormatProvider;
+    /** @var DateFactory */
+    protected $dateFactory;
 
     /** @var FormatProviderInterface */
     protected $numberFormatProvider;
@@ -28,18 +29,18 @@ class LocaleResolver
 
     /**
      * @param RequestStack            $requestStack
-     * @param FormatProviderInterface $dateFormatProvider
+     * @param DateFactory             $dateFactory
      * @param FormatProviderInterface $numberFormatProvider
      * @param string                  $defaultLocale
      */
     public function __construct(
         RequestStack $requestStack,
-        FormatProviderInterface $dateFormatProvider,
+        DateFactory $dateFactory,
         FormatProviderInterface $numberFormatProvider,
         $defaultLocale
     ) {
         $this->requestStack         = $requestStack;
-        $this->dateFormatProvider   = $dateFormatProvider;
+        $this->dateFactory          = $dateFactory;
         $this->numberFormatProvider = $numberFormatProvider;
         $this->defaultLocale        = $defaultLocale;
     }
@@ -53,7 +54,7 @@ class LocaleResolver
 
         return [
             'decimal_separator' => $this->numberFormatProvider->getFormat($locale)['decimal_separator'],
-            'date_format'       => $this->dateFormatProvider->getFormat($locale),
+            'date_format'       => $this->dateFactory->create(['locale' => $locale])->getPattern(),
         ];
     }
 

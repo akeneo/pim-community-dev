@@ -3,16 +3,18 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Localization\Factory\DateFactory;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
+use Pim\Component\Localization\Validator\Constraints\DateFormat;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DateLocalizerSpec extends ObjectBehavior
 {
-    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
+    function let(ValidatorInterface $validator, DateFactory $dateFactory)
     {
-        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_date']);
+        $this->beConstructedWith($validator, $dateFactory, ['pim_catalog_date']);
     }
 
     function it_is_a_localizer()
@@ -47,11 +49,31 @@ class DateLocalizerSpec extends ObjectBehavior
         $this->validate('28/10/2015', ['date_format' => 'd-m-Y'], 'date')->shouldReturn($constraints);
     }
 
-    function it_delocalize_with_date_format_option()
+    function it_returns_a_constraint_if_date_format_does_not_respect_format_locale(
+        $validator,
+        $dateFactory,
+        ConstraintViolationListInterface $constraints,
+        \IntlDateFormatter $dateFormatter
+    ) {
+        $dateConstraint = new DateFormat();
+        $dateConstraint->dateFormat = 'dd/MM/yyyy';
+        $dateConstraint->path = 'date';
+        $validator->validate('28-10-2015', $dateConstraint)->willReturn($constraints);
+
+        $dateFactory->create(['locale' => 'fr_FR'])->willReturn($dateFormatter);
+        $dateFormatter->getPattern()->willReturn('dd/MM/yyyy');
+        $this->validate('28-10-2015', ['locale' => 'fr_FR'], 'date')->shouldReturn($constraints);
+    }
+
+    function it_delocalize_with_date_format_option($dateFactory, \IntlDateFormatter $dateFormatter)
     {
-        $this->delocalize('28/10/2015', ['date_format' => 'd/m/Y'])->shouldReturn('2015-10-28');
-        $this->delocalize('28-10-2015', ['date_format' => 'd-m-Y'])->shouldReturn('2015-10-28');
-        $this->delocalize('2015-10-28', ['date_format' => 'Y-m-d'])->shouldReturn('2015-10-28');
-        $this->delocalize('2015/10/28', ['date_format' => 'Y/m/d'])->shouldReturn('2015-10-28');
+        $dateFactory->create(['date_format' => 'dd/MM/yyyy'])->willReturn($dateFormatter);
+        $dateFormatter->getPattern()->willReturn('dd/MM/yyyy');
+        $dateFormatter->setLenient(false)->shouldBeCalled();
+        $dateFormatter->parse('28/10/2015')->willReturn(23456789);
+        $dateFormatter->setPattern('yyyy-MM-dd')->shouldBeCalled();
+        $dateFormatter->format(23456789)->willReturn('2015-10-28');
+
+        $this->delocalize('28/10/2015', ['date_format' => 'dd/MM/yyyy'])->shouldReturn('2015-10-28');
     }
 }
