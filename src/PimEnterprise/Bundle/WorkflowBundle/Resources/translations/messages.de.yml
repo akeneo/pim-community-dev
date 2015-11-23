@@ -6,6 +6,8 @@ pimee_workflow:
     locale: Gebietsschemakontext
     product:
       label: Produktbezeichnung
+    attribute:
+      label: Attribut
     status:
       label: Status
       working_copy: Arbeitskopie
@@ -20,6 +22,13 @@ pimee_workflow:
       approve: Genehmigen
       refuse: Ablehnen
       remove: Entfernen
+      partial_approve: 'Änderungen des Attributs %attribute% von Produkt %product% genehmigen'
+    notification:
+      partial_approve:
+        "%owner% has accepted the value for %attribute% for the product": '%product%'
+      approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
+      refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
+      remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
     mass_review_action:
       approve: Ausgewählte genehmigen
       refuse: Ausgewählte ablehnen
@@ -28,6 +37,10 @@ pimee_workflow:
         not_product_owner: Sie besitzen das Produkt welches zu diesem Vorschlag gehört nicht
         cannot_edit_attributes: Sie können die Attribute, welche durch diesen Vorschlag geändert wurden, nicht bearbeiten
         invalid_draft: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+  proposal:
+    to_review: '%author.firstname% %author.lastname% hat einen Vorschlag für das Produkt %product.label% übermittelt'
+    original_value: Original
+    new_value: Neu
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt
@@ -51,8 +64,13 @@ pimee_workflow:
       perform.title: Vorschläge verweigern
   steps:
     product_draft_processor.title: Vorschlag-Prozessor
+pimee_workflow_product_draft_notification_new_proposal: Neuer Vorschlag
 btn.publish: Veröffentlichen
 btn.unpublish: Veröffentlichung entziehen
+pimee_workflow_product_draft_notification_partial_approve: Vorschlag teilweise genehmigt
+pimee_workflow_product_draft_notification_approve: Vorschlag genehmigt
+pimee_workflow_product_draft_notification_refuse: Vorschlag abgelehnt
+pimee_workflow_product_draft_notification_remove: Vorschlag gelöscht
 flash:
   product:
     published: Das Produkt wurde erfolgreich veröffentlicht.
@@ -63,6 +81,8 @@ flash:
       error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
     refuse:
       success: Der Vorschlag wurde abgelehnt.
+    remove:
+      success: Der Vorschlag wurde entfernt.
 pim_menu:
   item:
     published_product: Veröffentlichte Produkte
