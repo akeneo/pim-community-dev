@@ -1,5 +1,15 @@
 user:
+  email:
+    notifications: E-Mail-Benachrichtigungen
   proposals:
     notifications:
+      to_review: Wenn ein neuer Vorschlag zu überprüfen ist
+      state: Wenn der Vorschlag angenommen oder abgelehnt wird
       "yes": true
       "no": false
+  asset_delay_reminder: Wiedervorlage (Tage)
+Default asset tree: Voreingestellte Daten
+pimee_user:
+  user:
+    tab:
+      notifications.title: Benachrichtigungen

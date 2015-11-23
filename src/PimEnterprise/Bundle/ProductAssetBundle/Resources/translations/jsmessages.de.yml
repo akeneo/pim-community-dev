@@ -1,0 +1,69 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Assets verwalten
+        panel:
+          basket:
+            title: Warenkorb
+            empty_basket: Der Warenkorb ist leer
+        manage_asset:
+          title: Assets verwalten
+          cancel: Abbrechen
+          confirm: Bestätigen
+  enrich_asset:
+    grid:
+      edit: Eigenschaften des Assets bearbeiten
+  enrich_variation:
+    popin:
+      delete:
+        title: Löschen bestätigen
+        message: Sind Sie sicher, dass Sie dieses Element löschen möchten?
+      reset:
+        title: Variationen zurücksetzen
+        message: Sind Sie sicher, dass Sie alle Variationen zurücksetzen möchten?
+  mass_upload:
+    menu: Assets hochladen
+    btn:
+      add_files: Dateien hinzufügen
+      cancel: Upload abbrechen
+      delete: Löschen
+      schedule: Einplanen
+      start: Upload starten
+    success:
+      new: Ein neues Asset wird erstellt
+      scheduled: Zur Verarbeitung von Assets eingeplante Dateien
+      canceled: Upload erfolgreich abgebrochen
+      deleted: Hochgeladene Datei erfolgreich gelöscht
+    error:
+      list: Bereits hochgeladene Dateien können nicht gelesen werden
+      upload: Während des Hochladens ist ein Fehler aufgetreten
+      delete: Datei kann nicht vom Server gelöscht werden
+      schedule: Während des Einplanens der Uploadverarbeitung ist ein Fehler aufgetreten
+      filename: Ungültiger Dateiname für Asset
+      code: Ungültiges Code-Format für Asset
+      locale: Ein Asset existiert, ist aber nicht lokalisierbar
+      invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
+      exists: Eine Datei mit gleichem Namen wurde bereits zum Upload eingeplant
+      conflicts: Konflikt der Dateinamen
+    grid:
+      medias: Medien
+      filename: Dateiname
+      filetype: Dateityp
+      status: Status
+      progress: Fortschritt
+      actions: Aktionen
+    action:
+      cancel: Abbrechen
+      delete: Löschen
+    status:
+      added: Hinzugefügt
+      queued: In Warteschlange
+      uploading: Wird hochgeladen
+      error: Fehler
+      success: Abgeschlossen
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Massenupload

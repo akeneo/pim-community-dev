@@ -6,6 +6,7 @@ attribute group.permissions:
   view.label: Berechtigt Attribute anzuzeigen
   view.help: Erlauben, die Produkte in dieser Attributgruppe anzusehen
   edit.label: Berechtigt Attribute zu bearbeiten
+  edit.help: Bearbeitung der Produkte in dieser Attributgruppe erlauben
   no_access_to_attributes: Sie haben keinen Zugriff auf die Attribute dieses Produktes. Bitte kontaktieren Sie Ihren Administrator.
 category.permissions:
   view.label: Berechtigt Produkte anzuzeigen
@@ -59,15 +60,21 @@ pim_enrich:
         fourth: Bestätigen
     unpublish:
       label: Produktveröffentlichungen entziehen
-      description: Die Veröffentlichung der ausgewählten Produkte entziehen, die aktuell veröffentlichten Daten werden gelöscht.
+      description: Die Veröffentlichung den ausgewählten Produkten entziehen, die aktuell veröffentlichten Daten werden gelöscht.
       success_flash: Die Veröffentlichung der ausgewählten Produkte wurde erfolgreich entzogen.
+      launched_flash: Das Entziehen der Produktveröffentlichung wird derzeit ausgeführt.
       message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können deshalb die Veröffentlichung nicht entziehen.
         warning: 'Sie sind nicht der Eigentümer von allen ausgewählten Produkten. Sie können die Veröffentlichung dieser Produkte nicht aufheben: %notGranted%".'
         info: 'Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.'
       not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
     classify:
       message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht klassifizieren.
         warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht klassifizieren: "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht bearbeiten.
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
   product:
@@ -94,9 +101,51 @@ pimee_enrich:
   category:
     tab:
       permission.title: Berechtigungen
+  channel:
+    tab:
+      asset_transformation.title: Assetumwandlungen
   acl.product_ownership.title: Eigentum
   attributes:
     empty: keine
   groups:
     label: Eigentümer-Gruppen
     empty: keine
+  asset_transformation:
+    not_found: Keine Umwandlung gefunden
+    title:
+      transformation: Umwandlung
+      options: Optionen
+    colorspace:
+      title: Farbraum
+      options:
+        colorspace: '%value% Farbraum'
+    resize:
+      title: Größe anpassen
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+    resolution:
+      title: Auflösung
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalierung
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+        ratio: 'Verhältnis %value%%'
+    thumbnail:
+      title: Miniaturansicht
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
+edit_common_attributes_with_permission: Gemeinsame Attribute mit Berechtigung bearbeiten
+job_execution.summary:
+  mass_published: Produkt veröffentlicht
+  mass_unpublished: Produktveröffentlichung entzogen
+  proposal: Vorschlag erstellt
+  proposal_deleted: gelöscht
+pim_assets_collection: Sammlung von Assets
