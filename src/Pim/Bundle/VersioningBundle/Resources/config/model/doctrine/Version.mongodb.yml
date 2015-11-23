@@ -19,6 +19,11 @@ Pim\Bundle\VersioningBundle\Model\Version:
                 background: true
             keys:
                 resourceName: 1
+        logged_at:
+            options:
+                background: true
+            keys:
+                loggedAt: -1
     fields:
         id:
             id: true

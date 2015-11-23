@@ -63,6 +63,10 @@ class CsvProductWriter extends ContextableCsvWriter
      */
     public function flush()
     {
+        if (!is_file($this->bufferFile)) {
+            return;
+        }
+
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
@@ -133,7 +137,7 @@ class CsvProductWriter extends ContextableCsvWriter
      */
     protected function writeProductToBuffer(array $product)
     {
-        if (!$this->bufferFile) {
+        if (!is_file($this->bufferFile)) {
             $this->bufferFile = tempnam(sys_get_temp_dir(), 'pim_products_buffer_');
         }
 
