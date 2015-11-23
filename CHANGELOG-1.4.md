@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5176: Fix customisation of columns not saved in "Column Selection"
+
 # 1.4.10 (2015-11-20)
 
 ## Bug fixes
