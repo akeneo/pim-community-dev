@@ -427,7 +427,7 @@ class Edit extends Form
         try {
             $labelNode = $this->spin(function () use ($label) {
                 return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-            });
+            }, 'Cannot find the field label');
         } catch (\Exception $e) {
             throw new ElementNotFoundException($this->getSession());
         }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
+use Pim\Bundle\UIBundle\Form\Transformer\TransformerFactoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -41,20 +41,20 @@ class AjaxEntityType extends AbstractType
     /** @var RouterInterface */
     protected $router;
 
-    /** @var AjaxEntityTransformerFactory */
+    /** @var TransformerFactoryInterface */
     protected $transformerFactory;
 
     /** @var UserContext */
     protected $userContext;
 
     /**
-     * @param RouterInterface              $router
-     * @param AjaxEntityTransformerFactory $transformerFactory
-     * @param UserContext                  $userContext
+     * @param RouterInterface             $router
+     * @param TransformerFactoryInterface $transformerFactory
+     * @param UserContext                 $userContext
      */
     public function __construct(
         RouterInterface $router,
-        AjaxEntityTransformerFactory $transformerFactory,
+        TransformerFactoryInterface $transformerFactory,
         UserContext $userContext
     ) {
         $this->router             = $router;

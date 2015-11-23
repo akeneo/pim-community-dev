@@ -28,6 +28,7 @@ class Form extends Base
             [
                 'Tabs'                            => ['css' => '#form-navbar'],
                 'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
+                'Dialog'                          => ['css' => 'div.modal'],
                 'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
                 'Associations list'               => ['css' => '#associations-list'],
                 'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
@@ -233,6 +234,30 @@ class Form extends Base
         }
 
         return parent::findField($name);
+    }
+
+    /**
+     * Find field container
+     *
+     * @param string $label
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement
+     */
+    public function findFieldContainer($name)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $field = $label->getParent()->find('css', 'input,textarea');
+        if (!$field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
+        }
+
+        return $field->getParent();
     }
 
     /**
