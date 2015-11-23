@@ -1,0 +1,151 @@
+pim_title.locale:
+  edit: 'Locales %locale.code% | Editar'
+Permissions: Permisiones
+pane.accordion.permissions: Permisiones
+attribute group.permissions:
+  view.label: Autorizado a ver los atributos
+  view.help: Autorizar a ver los productos en este grupo de atributos
+  edit.label: Autorizado a editar los atributos
+  edit.help: Autorizar a editar los producto en este grupo de atributos
+  no_access_to_attributes: Usted no tiene acceso a los atributos de este producto. Por favor contacte a su administrador.
+category.permissions:
+  view.label: Autorizado a ver los productos
+  view.help: Autorizar a ver los productos en esta categoría
+  edit.label: Autorizado a editar los productos
+  edit.help: Autorizar a editar los producto en esta categoría (permiso de lectura implícito)
+  own.label: Autorizado a administrar productos
+  own.help: Autorizado a revisar, publicar, quitar publicación, clasificar y asociar productos en esta categoría (permiso de edición implícito)
+  no_access_to_products: Usted no tiene acceso a productos en ningún árbol. Por favor contacte a su administrador
+  apply_on_children.label: Aplicar cambios a la sub-categoría
+  apply_on_children.help: Copiar los cambios de permisos en todas las sub-categorías, los permisos existentes en sub-categorías son mantenidos
+locale.permissions:
+  view.label: Autorizado a ver la información del producto
+  view.help: Autorizar a ver la información del producto in este locale
+  edit.label: Autorizado a editar la información del producto
+  edit.help: Autorizar a editar la información del producto en este locale (permiso de lectura implícito)
+  no_access_to_products: Usted no tiene acceso a la información del producto en ningún local activo. Por favor contacte a su administrador.
+btn:
+  save working copy: Guardar copia de trabajo
+  save draft: Guardar borrador
+  save working copy and next: Guardar copia de trabajo y avanzar
+  save draft and next: Guardar borrador y avanzar
+  save working copy and finish: Guardar copia de trabajo y finalizar
+  save draft and finish: Guardar borrador y finalizar
+  send for approval: Enviar a aprobar
+  sent for approval: Enviado a aprobar
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
+    publish:
+      label: Productos publicados
+      description: Publicar los productos seleccionados, la presente información publicada será eliminada por la copia de trabajo actual.
+      success_flash: Productos seleccionados han sido publicados con éxito.
+      launched_flash: El trabajo de publicación de productos está ejecutándose.
+      message:
+        error: Usted no es el dueño de este producto, no puede publicarlo.
+        warning: 'Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".'
+        info: 'Los productos %nbProducts% seleccionados serán publicados.'
+      not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
+    published_product:
+      page_title: Productos publicados
+      page_subtitle: 'Edición en masa (1 producto publicado)|Edición en masa (%count% producost publicados)'
+      title: Selecciones una operación
+      subtitle: 'Selecciones la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
+      confirm: 'Está a punto de actualizar un producto Publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos Publicados con la siguiente información, por favor confirme.'
+      steps:
+        first: Seleccione los productos publicados
+        second: Seleccione la operación
+        third: Configuración
+        fourth: Confirmación
+    unpublish:
+      label: Quitar publicación de productos
+      description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
+      success_flash: Se ha quitado la publicación de los productos seleccionados.
+      launched_flash: El trabajo de quitar la publicación de productos está actualmente en ejecución.
+      message:
+        error: Usted no es el dueño del producto, no puede publicarlo.
+        warning: 'Usted no es el dueño de los productos seleccionados. No puede quitar la publicación de los productos "%notGranted%".'
+        info: 'Los %nbProducts% productos seleccionados serán quitados de la publicación.'
+      not_editable: 'No tiene permisos para editar los productos "%identifiers%".'
+    classify:
+      message:
+        error: Usted no es el dueño del producto, no puede clasificarlo.
+        warning: 'Usted no es el dueño de estos productos seleccionados. No puede clasificar los productos "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Usted no es el dueño del producto, no puede editarlo.
+pim_enrich.mass_edit_action:
+  limit_exceeded: 'Por favor seleccione menos de %limit% productos a editar'
+  product:
+    page_title: Productos
+    page_subtitle: 'Edición en masa (1 producto)|Edición en masa (%count% productos)'
+    title: Seleccione una operación
+    subtitle: 'Seleccione la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
+    confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
+    steps:
+      first: Seleccione los productos
+      second: Seleccione la operación
+      third: Configurar
+      fourth: Confirmar
+flash.product.updated: La copia de trabajo del producto ha sido actualizada
+flash.product_draft.updated: El borrador ha sido guardado con éxito
+flash.locale.updated: El local y los permisos han sido actualizados
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permisos
+  product:
+    tab:
+      proposal.title: Propuestas
+  category:
+    tab:
+      permission.title: Permisos
+  channel:
+    tab:
+      asset_transformation.title: Transformaciones de recursos
+  acl.product_ownership.title: Propietario
+  attributes:
+    empty: ninguno
+  groups:
+    label: grupo de propietarios
+    empty: ninguno
+  asset_transformation:
+    not_found: Ninguna transformación encontrada
+    title:
+      transformation: Transformación
+      options: Opciones
+    colorspace:
+      title: Espacio de color
+      options:
+        colorspace: 'Espacio de color %value%'
+    resize:
+      title: Redimensionar
+      options:
+        width: 'Px ancho %value%'
+        height: 'Alto px %value%'
+    resolution:
+      title: Resolución
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: 'Ancho px %value%'
+        height: 'Alto px %value%'
+        ratio: 'Ratio %value%%'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: 'Ancho px %value%'
+        height: 'Alto px %value%'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
+edit_common_attributes_with_permission: Editar los atributos comunes con permisiones
+job_execution.summary:
+  mass_published: Productos publicados
+  mass_unpublished: Productos no publicados
+  proposal: Propuesta creada
+  proposal_deleted: eliminada
+pim_assets_collection: Colección de recursos
