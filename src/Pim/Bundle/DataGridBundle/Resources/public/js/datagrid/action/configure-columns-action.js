@@ -1,6 +1,24 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
-    function($, _, Backbone, Routing, LoadingMask, DatagridState) {
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'routing',
+        'oro/loading-mask',
+        'pim/datagrid/state',
+        'text!pim/template/datagrid/configure-columns-action',
+        'backbone/bootstrap-modal',
+        'jquery-ui-full'
+    ],
+    function(
+        $,
+        _,
+        Backbone,
+        Routing,
+        LoadingMask,
+        DatagridState,
+        template
+    ) {
         'use strict';
 
         var Column = Backbone.Model.extend({
@@ -16,58 +34,7 @@ define(
         var ColumnListView = Backbone.View.extend({
             collection: ColumnList,
 
-            template: _.template(
-                '<div class="span4">' +
-                    '<h4></h4>' +
-                    '<ul class="nav nav-list">' +
-                        '<li class="tab active">' +
-                            '<%= _.__("pim_datagrid.column_configurator.all_groups") %>' +
-                            '<span class="badge badge-transparent pull-right"><%= columns.length %></span>' +
-                        '</li>' +
-                        '<% _.each(groups, function(group) { %>' +
-                            '<li class="tab" data-value="<%= group.name %>">' +
-                                '<%= group.name %>' +
-                                '<span class="badge badge-transparent pull-right"><%= group.itemCount %></span>' +
-                            '</li>' +
-                        '<% }); %>' +
-                    '</ul>' +
-                '</div>' +
-                '<div class="span4">' +
-                    '<h4>' +
-                        '<i class="icon-search"></i>' +
-                        '<input type="search" placeholder="<%= _.__("pim_datagrid.column_configurator.search") %>"/>' +
-                    '</h4>' +
-                    '<ul id="column-list" class="connected-sortable">' +
-                        '<% _.each(_.where(columns, {displayed: false}), function(column) { %>' +
-                            '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
-                                '<i class="icon-th"></i><%= column.label %>' +
-                                '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
-                                    '<i class="icon-trash"></i>' +
-                                '</a>' +
-                            '</li>' +
-                        '<% }); %>' +
-                    '</ul>' +
-                '</div>' +
-                '<div class="span4">' +
-                    '<h4>' +
-                        '<%= _.__("pim_datagrid.column_configurator.displayed_columns") %>' +
-                        '<button class="btn pull-right reset">' +
-                            '<%= _.__("pim_datagrid.column_configurator.clear") %>' +
-                        '</button>' +
-                    '</h4>' +
-                    '<ul id="column-selection" class="connected-sortable">' +
-                        '<% _.each(_.where(columns, {displayed: true}), function(column) { %>' +
-                            '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
-                                '<i class="icon-th"></i><%= column.label %>' +
-                                '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
-                                    '<i class="icon-trash"></i>' +
-                                '</a>' +
-                            '</li>' +
-                        '<% }); %>' +
-                        '<div class="alert alert-error hide"><%= _.__("datagrid_view.columns.min_message") %></div>' +
-                    '</ul>' +
-                '</div>'
-            ),
+            template: _.template(template),
 
             events: {
                 'input input[type="search"]':      'search',
@@ -270,15 +237,28 @@ define(
 
                 $.get(url, _.bind(function (columns) {
                     var displayedCodes = DatagridState.get(this.gridName, 'columns');
+
                     if (displayedCodes) {
                         displayedCodes = displayedCodes.split(',');
                     } else {
                         displayedCodes = _.pluck(this.$gridContainer.data('metadata').columns, 'name');
                     }
 
+                    displayedCodes = _.map(displayedCodes, function(displayedCode, index) {
+                        return {
+                            code: displayedCode,
+                            position: index
+                        }
+                    });
+
                     var columnList = new ColumnList();
                     _.each(columns, function(column) {
-                        column.displayed = _.indexOf(displayedCodes, column.code) !== -1;
+                        var displayedCode = _.findWhere(displayedCodes, {code: column.code});
+                        if (!_.isUndefined(displayedCode)) {
+                            column.displayed = true;
+                            column.position = displayedCode.position;
+                        }
+
                         columnList.add(column);
                     });
 

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5170: Fixes memory leak on MongoDB at import time
+- PIM-5176: Fix customisation of columns not saved in "Column Selection"
 
 # 1.4.10 (2015-11-20)
 

@@ -1,0 +1,46 @@
+Close: Cerrar
+Update: Actualizar
+Selected Rows: Filas seleccionadas
+"Yes": SÍ
+Yes, Delete: Sí, eliminar
+Yes, I Agree: Sí, estoy de acuerdo
+Yes, do it: Sí, hazlo
+"No": 'No'
+Ok, got it.: De acuerdo.
+Cancel: Cancelar
+Delete Confirmation: Confirmación de eliminación
+Edit: Editar
+Unexpected error occured. Please contact system administrator.: Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema.
+Now: Ahora
+Prev: Ant
+Next: Siguiente
+Today: Hoy
+Wk: Smn
+Done: Hecho
+AM: AM
+A: A
+PM: PM
+P: P
+Choose Time: Selecciona Hora
+Time: Tiempo
+Hour: Hora
+Minute: Minuto
+Second: Segundo
+Millisecond: Milisegundo
+Microsecond: Microsegundo
+Time Zone: Zona Horaria
+Localized value: Valor localizado
+Columns: Columnas
+Datagrid Configuration: Configuración de Grilla
+Apply: Aplicar
+Action: Acción
+Unit: Unidad
+Currency: Moneda
+jstree:
+  all: Todos los productos
+  unclassified: Productos sin clasificar
+  product:
+    all: Todos los productos
+    unclassified: Productos sin clasificar
+  no_tree: Ningún árbol disponible
+  include_sub: Incluir subcategorías

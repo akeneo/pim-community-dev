@@ -98,24 +98,32 @@ pim_enrich:
       label: Status ändern (aktivieren / deaktivieren)
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       success_flash: Der Produktstatus wurde geändert
+      launched_flash: 'Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     edit-common-attributes:
       label: Attribute bearbeiten
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
+      success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
+      launched_flash: 'Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
       message:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
+        invalid_attribute: 'Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.'
+        no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify:
       label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
+      launched_flash: 'Die Massenbearbeitung "Klassifikation" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     change-family:
       label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
+      launched_flash: 'Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     add-to-groups:
       label: Zu Gruppen hinzufügen
       description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+      launched_flash: 'Die Massenbearbeitung "zu Gruppen hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
       no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
     add-to-variant-group:
       label: Zu einer Variantengruppe hinzufügen
@@ -126,10 +134,15 @@ pim_enrich:
       no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      launched_flash: 'Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     set-attribute-requirements:
       label: Attribut-Anforderungen festlegen
       description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
       success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
+      launched_flash: 'Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
+    mass_action:
+      quick_export:
+        launched_flash: Der Produkt-Export wird derzeit ausgeführt
   sequential_edit_action:
     product:
       previous: 'Zurück zu "%product%" ohne zu speichern.'
@@ -221,6 +234,8 @@ pim_enrich:
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
       history: Verbindungstypen-Historie ansehen
+    job_tracker:
+      index: Prozess-Tracker ansehen
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -329,6 +344,7 @@ btn:
     variant group: Variantengruppe anlegen
     association type: Verbindungstyp anlegen
     group type: Gruppentyp anlegen
+    drag_or_upload: 'Upload per Drag & Drop oder hier klicken'
   edit: Bearbeiten
   save: Speichern
   save and back: Speichern und zurück zur Übersicht
@@ -344,6 +360,7 @@ btn:
   to grid: Zurück zur Übersicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
+  download: Download
 confirmation:
   confirm: Bestätigung
   delete: Löschbestätigung
@@ -403,6 +420,7 @@ flash:
     not removable: Der letzte Ausgabekanal kann nicht entfernt werden
   currency:
     updated: Währung erfolgreich aktualisiert
+    error.linked_to_channel: Sie können eine Währung, die einem Ausgabekanal zugeordnet ist, nicht deaktivieren.
   family:
     created: Produktfamilie erfolgreich angelegt
     updated: Produktfamilie erfolgreich aktualisiert
@@ -450,6 +468,7 @@ info:
   category:
     remove children: Alle Unterkategorien werden gelöscht.
     keep products: Produkte in diesen Kategorien werden nicht gelöscht.
+    products limit exceeded: 'Diese Kategorie enthält mehr Produkte (maximal %limit%) als für diese Operation zugelassen sind'
   product:
     no available attributes: Es können keine weiteren Attribute hinzugefügt werden
     no family defined: Keine Produktfamilie definiert
@@ -808,6 +827,16 @@ oro.locale:
       timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
       currency: Wählen Sie die Standardwährung
 Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: 'Massenbearbeitung <strong>%label%</strong> fehlgeschlagen'
+      warning: 'Massenbearbeitung <strong>%label%</strong> mit Warnungen abgeschlossen'
+      success: 'Massenbearbeitung <strong>%label%</strong> abgeschlossen'
+    quick_export:
+      error: 'Quick Export <strong>%label%</strong> fehlgeschlagen'
+      warning: 'Quick Export <strong>%label%</strong> mit Warnungen abgeschlossen'
+      success: 'Quick Export <strong>%label%</strong> abgeschlossen'
 job_execution.summary:
   mass_edited: Massenbearbeitet
   skip: Übersprungen
@@ -818,6 +847,9 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame 
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
+add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
+edit_common_attributes: Gemeinsame Attribute bearbeiten
+edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
