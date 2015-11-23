@@ -68,6 +68,8 @@ alert:
   attribute_option:
     error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
+  session_storage:
+    not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Achtung, ungespeicherte Daten werden verloren gehen! Sind Sie sicher, dass Sie die Bearbeitung an der neuen Auswahlmöglichkeit abbrechen möchten ?
@@ -98,14 +100,161 @@ pim_enrich:
     delete:
       confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
       confirm.title: '{{ itemName }} löschen'
+  navigation:
+    link:
+      back_to_grid: Zurück zur Übersicht
   entity:
+    save:
+      label: Speichern
+    info:
+      update_failed: Update fehlgeschlagen
+      update_successful: Update erfolgreich
     product:
+      title: Produkt
+      btn:
+        enable: Aktivieren
+        enabled: Aktiviert
+        disable: Deaktivieren
+        disabled: Deaktiviert
+        download_pdf: PDF
+        compare_translate: Vergleichen / Übersetzen
+        delete: Löschen
+        save: Speichern
+        save_and_back: Speichern und zurück zur Übersicht
+      history:
+        version: Version
+        author: Autor
+        logged_at: Aufgezeichnet am
+        more: Mehr
+        less: Weniger
+        from: Von
+        modified: Bearbeitet
+        property: Eigenschaft
+        old_values: Alte Werte
+        new_values: Neue Werte
+        actions: Aktionen
+      info:
+        deletion_successful: Produkt erfolgreich gelöscht.
+        deletion_failed: Das Produkt konnte nicht gelöscht werden.
+        update_successful: Produkt erfolgreich aktualisiert.
+        update_failed: Das Produkt konnte nicht aktualisiert werden.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - Felder
+        already_in_upload: 'Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen'
+      error:
+        upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
+      meta:
+        created: Erstellt
+        created_by: Von
+        updated_by: Von
+        updated: Letzte Aktualisierung
+        family:
+          title: Produktfamilie
+          none: Keine
+        groups:
+          title: Gruppen
+          modal:
+            title: 'Gruppe {{ group }}'
+            view_group: Gruppe ansehen
+            group_label: Bezeichnung
+            more_products: '{{ count }} weitere Produkte...'
+            close: Schließen
+      copy:
+        select: Auswählen
+        all: Alle
+        all_visible: Alle sichtbaren
+        none: Keine
       variant_group:
+        updated_by: Aktualisiert durch eine Variantengruppe
         switch:
           "yes": true
           "no": false
+      optional_attribute:
+        remove: Dieses Attribut entfernen
+      locale_specific_attribute:
+        unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
+      localizable:
+        channel_locale_unavailable: "Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar"
+      media:
+        upload: 'Upload per Drag & Drop oder hier klicken'
+    attribute_option:
+      code: Code
+      label: Bezeichnung
+  confirmation:
+    leave: Möchten Sie diese Seite wirklich verlassen?
+    discard_changes: 'Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.'
+    delete_item: Löschen bestätigen
+    delete:
+      product_attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+  info:
+    not_applicable: N/A
+    entity:
+      updated: Es gibt ungespeicherte Änderungen.
+  error:
+    upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
+  alert:
+    not_allowed: Sie haben keine Berechtigung für diese Seite
+    error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     product:
+      tab:
+        associations:
+          title: Verbindungen
+          info:
+            none_exist: Es gibt keine Verbindungstypen.
+            show_products: Produkte anzeigen
+            show_groups: Gruppen anzeigen
+            number_of_associations: '{{ productCount }} Produkte und {{ groupCount }} Gruppen'
+        attributes:
+          title: Attribute
+          btn:
+            add: Hinzufügen
+            add_attributes: Attribute hinzufügen
+          info:
+            search_attributes: Suche
+            no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
+        categories:
+          title: Kategorien
+      panel:
+        completeness:
+          title: Vollständigkeit
+          info:
+            no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
+            no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
+        history:
+          title: Historie
       switch:
         "no": false
         "yes": true
+      sequential_edit:
+        info:
+          products: Produkte
+          previous: 'Zurück zu {{ product }} ohne Speichern.'
+          next: 'Weiter zu {{ product }} ohne Speichern.'
+        btn:
+          save_and_next: Speichern und weiter
+          save_and_finish: Speichern und fertigstellen
+      change_family:
+        modal:
+          title: Produktfamilie ändern
+          merge_attributes: Die aktuellen Attribute werden mit denen der neuen Produktfamilie zusammengeführt.
+          keep_attributes: Es werden keine Attribute entfernt.
+          change_family_to: Produktfamilie ändern zu
+          empty_selection: Wählen Sie eine Produktfamilie
+      flash:
+        attribute_deletion_error: Während des Löschens des Attributs ist ein Fehler aufgetreten
+    attribute_option:
+      flash:
+        option_created: Attributoption erfolgreich erstellt
+        error_creating_option: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
+      add_option_modal:
+        title: Attributoption hinzufügen
+        confirm: Hinzufügen
+        cancel: Abbrechen
+    entity:
+      switch:
+        "no": false
+        "yes": true
+pim_enrich.error:
+  exception.title: 'Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...'

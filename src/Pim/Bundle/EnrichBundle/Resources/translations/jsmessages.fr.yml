@@ -104,6 +104,11 @@ pim_enrich:
     link:
       back_to_grid: Retour à la grille
   entity:
+    save:
+      label: Enregistrer
+    info:
+      update_failed: Échec de la mise à jour
+      update_successful: Mise à jour effectuée avec succès
     product:
       title: produit
       btn:
@@ -247,5 +252,9 @@ pim_enrich:
         title: "Ajouter une option d'attribut"
         confirm: Ajouter
         cancel: Annuler
+    entity:
+      switch:
+        "no": false
+        "yes": true
 pim_enrich.error:
   exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
