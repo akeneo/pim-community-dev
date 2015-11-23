@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5176: Fix customisation of columns not saved in "Column Selection"
+- PIM-5201: Fix permission System/Edit a Role
 
 # 1.4.10 (2015-11-20)
 

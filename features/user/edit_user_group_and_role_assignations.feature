@@ -58,3 +58,15 @@ Feature: Edit a user groups and roles
     Then I should see "Role saved"
     And the user "Peter" should have 2 roles
     And the user "Peter" should have the "ROLE_CATALOG_MANAGER" role
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5201
+  Scenario: Successfully remove a role from the group page
+    Given I edit the "User" user role
+    When I visit the "Permissions" tab
+    And I click on the "System" ACL group
+    And I click on the "Edit roles" ACL role
+    Then I save the group
+    When I logout
+    And I am logged in as "Mary"
+    And I am on the userRole index page
+    Then I should not be able to access the edit "User" userRole page
