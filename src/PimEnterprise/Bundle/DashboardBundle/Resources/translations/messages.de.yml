@@ -7,3 +7,6 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine Produktentwürfe zu überprüfen
+  version:
+    community_edition: CE
+    enterprise_edition: EE

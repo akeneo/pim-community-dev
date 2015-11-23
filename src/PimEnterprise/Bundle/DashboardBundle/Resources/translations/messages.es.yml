@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propuesta a revisar
+      date: Fecha
+      author: Autor
+      product: Producto
+      review: 'Revisar 	'
+      empty: No hay borradores de producto para revisar
+  version:
+    community_edition: CE
+    enterprise_edition: EE
