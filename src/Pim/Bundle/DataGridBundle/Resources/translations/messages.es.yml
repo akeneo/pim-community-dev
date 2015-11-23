@@ -1,0 +1,38 @@
+"oro_datagrid.no_data_hint %entityHint%": 'No existe %entityHint% .'
+oro_datagrid.not_found_hint: No se encontraron resultados. Intentar cambiar tu criterio de búsqueda.
+oro_datagrid.label_add_filter: Administrar filtros
+oro_datagrid.label_loading_mask: Cargando...
+oro.grid.mass_action.selected_rows: Filas seleccionadas
+oro.grid.mass_action.confirm_title: Confirmación de acción de masiva
+oro.grid.mass_action.confirm_content: ¿Está seguro de quere hacer esto?
+oro.grid.mass_action.confirm_ok: Sí, hazlo
+oro.grid.mass_action.error_title: Error de acción masiva
+oro.grid.mass_action.error_content: No puede realizar la acción masiva
+oro.grid.mass_action.delete.label: Eliminar
+oro.grid.mass_action.delete.confirm_title: Confirmación de eliminación masiva
+oro.grid.mass_action.delete.confirm_content: ¿Está seguro que desea eliminar los elementos seleccionados?
+oro.grid.datagrid.page_size.all: Todos
+oro.grid.mass_action.delete.success_message: '{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas'
+datagrid_view:
+  views: Vistas
+  default: Mi vista predeterminada
+  create: Crear vista
+  placeholder: Nombre de la nueva vista
+  remove: Eliminar esta vista
+  save_changes: Guardar esta vista
+  choose_label: Elija una etiqueta para la vista
+  columns:
+    min_message: Debe seleccionar al menos una columna de datagrid para mostrar
+  label:
+    unique_message: La etiqueta debe ser única
+    not_blank_message: La etiqueta no debe estar en blanco
+confirmation.remove.datagrid view: ¿Está seguro que desea eliminar este punto de vista del datagrid?
+flash.datagrid view:
+  created: Vista de grilla de datos creada correctamente
+  updated: Vista de grilla de datos actualizada correctamente
+  removed: Vista de grilla de datos eliminada correctamente
+  not removable: No tienes los derechos para eliminar este punto de vista
+quick_export: Exportación rápida
+import: Importación
+export: Exportación
+mass_edit: Edición en masa
