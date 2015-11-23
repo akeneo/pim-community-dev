@@ -20,6 +20,7 @@ pim_base_connector:
       export.title: Exportar grupos
     csv_variant_group_export:
       title: Exportar Grupo de variantes a CSV
+      export.title: Exportación de grupo de variantes
     csv_family_export:
       title: Exportar familias en CSV
       export.title: Exportar familias
@@ -51,6 +52,7 @@ pim_base_connector:
     csv_variant_group_import:
       title: Importar Grupo de variantes de CSV
       validation.title: Validación de archivo
+      import.title: importación de grupo de variantes
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
@@ -65,6 +67,8 @@ pim_base_connector:
     product_processor.title: Creación de productos
     variant_group_processor.title: Creación / actualización de grupo de variantes
     category_processor.title: Creación de categorías
+    association_processor.title: Creación de asociaciones
+    product_association_processor.title: Creación de asociados
     group_processor.title: Creación de grupos
     attribute_processor.title: Creación de atributos
     attribute_option_processor.title: Creación de opciones de atributo
@@ -73,6 +77,10 @@ pim_base_connector:
     transformer_processor.title: Transformación
     dummy_writer.title: Escritor de prueba
     file_writer.title: Salida
+    product_writer.title: Almacenado de productos
+    category_writer.title: Almacenado de categorías
+    variant_group_writer.title: Almacenamiento de grupo de variantes
+    writer.title: Almacenado de entidades
     csv_writer.title: Editor CSV
   export:
     delimiter:
@@ -84,6 +92,9 @@ pim_base_connector:
     withHeader:
       label: Con cabecera
       help: Si desea imprimir el nombre de columna o no
+    filePath:
+      label: Ruta del archivo
+      help: Donde guardar el archivo generado en el sistema de archivos
     channel:
       label: Canal
       help: Canal que desea exportar
@@ -96,6 +107,7 @@ pim_base_connector:
   import:
     enabled:
       label: Activar el producto
+      help: Si el producto importado debe estar habilitado o no
     categoriesColumn:
       label: Columna de categorías
       help: Nombre de la columna de categorías
@@ -107,8 +119,13 @@ pim_base_connector:
       help: Nombre de la columna de grupos
     filePath:
       label: Fichero
+      help: El archivo CSV para importar
     yamlFilePath:
       label: Fichero
+      help: El archivo YAML para importar
+    uploadAllowed:
+      label: Permite la carga de archivos
+      help: Si desea o no permitir cargar el archivo directamente
     delimiter:
       label: Delimitador
       help: Carácter usado para establecer el delimitador de campo
@@ -126,3 +143,4 @@ pim_base_connector:
       help: Significa que el historial de productos se actualiza automáticamente, puede desactivarse para mejorar el rendimiento
     copyValuesToProducts:
       label: Copiar los valores de grupo de variantes a productos
+      help: Significa que los productos se actualizan automáticamente con los valores del grupo de variantes, puede establecerse a sólo actualizar un grupo de variantes
