@@ -35,7 +35,7 @@ class YamlWriter extends AbstractFileWriter
 
         $path = $this->getPath();
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
+            $this->localFs->mkdir(dirname($path));
         }
 
         $yaml = Yaml::dump($data, self::INLINE_ARRAY_LEVEL);

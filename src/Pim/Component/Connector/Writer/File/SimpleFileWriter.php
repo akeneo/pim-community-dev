@@ -24,7 +24,7 @@ class SimpleFileWriter extends AbstractFileWriter
         if (!$this->handler) {
             $path = $this->getPath();
             if (!is_dir(dirname($path))) {
-                mkdir(dirname($path), 0777, true);
+                $this->localFs->mkdir(dirname($path));
             }
             $this->handler = fopen($path, 'w');
         }

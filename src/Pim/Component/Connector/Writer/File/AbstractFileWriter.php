@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,6 +41,9 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** array */
     protected $filePathResolverOptions;
 
+    /** @var Filesystem */
+    protected $localFs;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
      */
@@ -49,6 +53,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
         $this->filePathResolverOptions = [
             'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
         ];
+        $this->localFs = new Filesystem();
     }
 
     /**
