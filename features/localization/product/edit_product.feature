@@ -14,12 +14,13 @@ Feature: Edit a product with localized attributes
       | number | Nombre      | number | no       | no     | yes              | yes              | other |               |                     |
       | weight | Poids       | metric | no       | no     | yes              | yes              | other | Weight        | GRAM                |
       | price  | Prix        | prices | no       | no     | no               | yes              | other |               |                     |
+      | date   | Date        | date   | no       | no     | no               | no               | other |               |                     |
     And the following family:
-      | code | label-en_US | attributes                 |
-      | baz  | Baz         | sku, number, weight, price |
+      | code | label-en_US | attributes                       |
+      | baz  | Baz         | sku, number, weight, price, date |
     And the following products:
-      | sku | family | number  | weight        | price-EUR |
-      | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   |
+      | sku | family | number  | weight        | price-EUR | date       |
+      | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   | 2015-05-28 |
     And I am logged in as "Julien"
     And I am on the "foo" product page
 
@@ -46,3 +47,11 @@ Feature: Edit a product with localized attributes
     Then the field Prix should contain "1200,50"
     And the product "foo" should have the following values:
       | price-EUR | 1200.50 |
+
+  Scenario: Successfully view and edit localized date
+    Given the field Date should contain "28/05/2015"
+    When I change the "Date" to "01/12/2015"
+    And I save the product
+    Then the field Date should contain "01/12/2015"
+    And the product "foo" should have the following values:
+      | date | 2015-12-01 |

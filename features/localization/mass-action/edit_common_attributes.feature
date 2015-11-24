@@ -54,6 +54,15 @@ Feature: Edit common localized attributes of many products at once
     And the product "sandals" should have the following value:
       | time | 25.75 |
 
+  Scenario: Successfully update many date values at once
+    Given I mass-edit products boots and sandals
+    When I choose the "Modifier les attributs communs" operation
+    And I display the Destocking date attribute
+    And I change the "Destocking date" to "28/05/2015"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then the metric "Destocking date" of products boots and sandals should be "2015-05-28"
+
   Scenario: Fail to update many price values at once
     Given I mass-edit products boots and sandals
     When I choose the "Modifier les attributs communs" operation

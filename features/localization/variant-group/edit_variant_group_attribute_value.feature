@@ -7,10 +7,11 @@ Feature: Editing localized attribute values of a variant group also updates prod
   Background:
     Given a "footwear" catalog configuration
     And the following variant group values:
-      | group             | attribute | value     |
-      | caterpillar_boots | weight    | 10 GRAM   |
-      | caterpillar_boots | rate_sale | 1900      |
-      | caterpillar_boots | price     | 39.99 EUR |
+      | group             | attribute       | value      |
+      | caterpillar_boots | weight          | 10 GRAM    |
+      | caterpillar_boots | rate_sale       | 1900       |
+      | caterpillar_boots | price           | 39.99 EUR  |
+      | caterpillar_boots | destocking_date | 2015-05-17 |
     And the following products:
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
@@ -37,6 +38,13 @@ Feature: Editing localized attribute values of a variant group also updates prod
     And I save the variant group
     Then the product "boot" should have the following values:
       | price | 89.27 EUR |
+
+  Scenario: Successfully change a pim_catalog_date attribute of a variant group
+    Given I visit the "Other" group
+    When I change the "Destocking date" to "28/12/2015"
+    And I save the variant group
+    Then the product "boot" should have the following values:
+      | destocking_date | 2015-12-28 |
 
   Scenario: Fail to change a pim_catalog_metric attribute of a variant group
     Given I change the "Weight" to "5.45"
