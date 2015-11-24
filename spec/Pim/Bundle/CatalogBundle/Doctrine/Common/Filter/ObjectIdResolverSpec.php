@@ -5,6 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -14,10 +16,17 @@ class ObjectIdResolverSpec extends ObjectBehavior
     {
         $this->beConstructedWith($managerRegistry);
         $this->addFieldMapping('family', 'familyClass');
+        $this->addFieldMapping('option', 'optionClass');
     }
 
-    function it_gets_ids_from_code($managerRegistry, ObjectManager $manager, ObjectRepository $repository, FamilyInterface $camcorders, FamilyInterface $shirt, FamilyInterface $men)
-    {
+    function it_gets_ids_from_code(
+        $managerRegistry,
+        ObjectManager $manager,
+        ObjectRepository $repository,
+        FamilyInterface $camcorders,
+        FamilyInterface $shirt,
+        FamilyInterface $men
+    ) {
         $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
@@ -32,13 +41,34 @@ class ObjectIdResolverSpec extends ObjectBehavior
         $this->getIdsFromCodes('family', ['camcorders', 'shirt', 'men'])->shouldReturn([2, 12, 32]);
     }
 
+    function it_gets_ids_from_code_with_attribute(
+        $managerRegistry,
+        ObjectManager $manager,
+        ObjectRepository $repository,
+        AttributeOptionInterface $purple,
+        AttributeInterface $attribute
+    ) {
+        $managerRegistry->getManagerForClass('optionClass')->willReturn($manager);
+        $manager->getRepository('optionClass')->willReturn($repository);
+        $attribute->getId()->willReturn(12);
+
+        $repository->findOneBy(['code' => 'purple', 'attribute' => 12])->willReturn($purple);
+        $purple->getId()->willReturn(2);
+
+        $this->getIdsFromCodes('option', ['purple'], $attribute)->shouldReturn([2]);
+    }
+
     function it_throws_an_exception_if_the_call_mapping_is_not_well_set()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('getIdsFromCodes', ['group', ['mug']]);
     }
 
-    function it_throws_an_exception_if_one_of_the_elements_is_not_found($managerRegistry, ObjectManager $manager, ObjectRepository $repository, FamilyInterface $camcorders)
-    {
+    function it_throws_an_exception_if_one_of_the_elements_is_not_found(
+        $managerRegistry,
+        ObjectManager $manager,
+        ObjectRepository $repository,
+        FamilyInterface $camcorders
+    ) {
         $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
@@ -47,6 +77,9 @@ class ObjectIdResolverSpec extends ObjectBehavior
 
         $camcorders->getId()->willReturn(2);
 
-        $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')->during('getIdsFromCodes', ['family', ['camcorders', 'shirt', 'men']]);
+        $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')->during(
+            'getIdsFromCodes',
+            ['family', ['camcorders', 'shirt', 'men']]
+        );
     }
 }

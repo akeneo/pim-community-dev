@@ -100,7 +100,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
 
             $condition .= ' AND ( ' . $this->qb->expr()->in($optionAlias, $value) . ' ) ';
