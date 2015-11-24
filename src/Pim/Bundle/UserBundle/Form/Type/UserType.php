@@ -240,7 +240,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'birthday',
-                'oro_date',
+                'pim_date',
                 [
                     'label'    => 'Date of birth',
                     'required' => false,

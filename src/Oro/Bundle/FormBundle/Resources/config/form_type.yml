@@ -11,12 +11,6 @@ parameters:
     oro_form.extension.js_validation.repeated.class:             Oro\Bundle\FormBundle\Form\Extension\JsValidation\RepeatedTypeExtension
 
 services:
-    # Form types
-    oro_form.type.date:
-        class: %oro_form.type.date.class%
-        tags:
-            - { name: form.type, alias: oro_date }
-
     oro_form.type.entity_identifier:
         class: %oro_form.type.entity_identifier.class%
         arguments: ["@doctrine"]
