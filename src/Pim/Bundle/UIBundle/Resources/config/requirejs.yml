@@ -95,7 +95,6 @@ config:
         jquery.slimbox:                 pimui/lib/slimbox2/slimbox2
         bootstrap.bootstrapswitch:      pimui/lib/bootstrap-switch/bootstrap.switch
         bootstrap.bootstrapsdatepicker: pimui/lib/bootstrap-datepicker/js/bootstrap-datepicker.js
-        tinymce:                        pimui/lib/tinymce/tinymce.min
         wysiwyg:                        pimui/js/pim-wysiwyg
         datepicker:                     pimui/js/pim-datepicker
         jquery.sidebarize:              pimui/js/jquery.sidebarize
