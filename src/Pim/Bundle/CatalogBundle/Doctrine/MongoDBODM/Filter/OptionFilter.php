@@ -90,7 +90,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($options['field'], $value);
 
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
         }
 

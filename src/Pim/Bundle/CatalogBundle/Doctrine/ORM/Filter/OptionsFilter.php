@@ -97,7 +97,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
                 ->andWhere($this->qb->expr()->isNull($backendField));
         } else {
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
 
             $this->qb
