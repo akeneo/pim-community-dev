@@ -10,7 +10,6 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Security\Acl\Dbal\AclProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
@@ -643,7 +642,7 @@ class AclManager extends AbstractAclManager
         if ($this->items[$key]->getState() !== BatchItem::STATE_DELETE) {
             $extension = $this->extensionSelector->select($oid);
             $extension->validateMask($mask, $oid);
-            if ($acl === null && $this->items[$key]->getState() === BatchItem::STATE_CREATE) {
+            if ((null === $acl || 0 === $acl->getId()) && $this->items[$key]->getState() === BatchItem::STATE_CREATE) {
                 $this->items[$key]->addAce($type, $field, $sid, $granting, $mask, $strategy);
             } else {
                 $hasChanges = $this->aceProvider->setPermission(
@@ -973,7 +972,8 @@ class AclManager extends AbstractAclManager
         if (isset($this->items[$key])) {
             $item = $this->items[$key];
             // make sure that a new ACL has a correct state
-            if ($ifNotExist === true && $item->getAcl() === null && $item->getState() === BatchItem::STATE_NONE) {
+            if (true === $ifNotExist && (null === $item->getAcl() || 0 === $item->getAcl()->getId())
+                && $item->getState() === BatchItem::STATE_NONE) {
                 $item->setState(BatchItem::STATE_CREATE);
             }
 
