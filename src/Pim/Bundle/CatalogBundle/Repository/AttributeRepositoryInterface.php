@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
@@ -164,6 +165,15 @@ interface AttributeRepositoryInterface extends
      * @return string[]
      */
     public function getAttributeCodesByType($type);
+
+    /**
+     * Get attribute codes by attribute group
+     *
+     * @param AttributeGroupInterface $group
+     *
+     * @return string[]
+     */
+    public function getAttributeCodesByGroup(AttributeGroupInterface $group);
 
     /**
      * Return the number of existing attributes

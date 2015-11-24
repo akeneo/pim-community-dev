@@ -3,20 +3,13 @@
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AddVersionSubscriberSpec extends ObjectBehavior
 {
-    function let(
-        VersionManager $versionManager,
-        ChainedUpdateGuesser $guesser,
-        NormalizerInterface $normalizer,
-        VersionContext $versionContext
-    ) {
-        $this->beConstructedWith($versionManager, $guesser, $normalizer, $versionContext);
+    function let(ContainerInterface $container)
+    {
+        $this->beConstructedWith($container);
     }
 
     function it_is_a_doctrine_event_listener()
