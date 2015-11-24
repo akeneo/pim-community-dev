@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer as BaseAttributeGroupNormalizer;
 
 /**
  * Flat attribute group normalizer
@@ -12,7 +11,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupNormalizer extends Structured\AttributeGroupNormalizer
+class AttributeGroupNormalizer extends BaseAttributeGroupNormalizer
 {
     /**
      * @var array
@@ -22,10 +21,12 @@ class AttributeGroupNormalizer extends Structured\AttributeGroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(AttributeGroupInterface $group)
+    public function normalize($object, $format = null, array $context = [])
     {
-        $attributes = parent::normalizeAttributes($group);
+        $data = parent::normalize($object, $format, $context);
 
-        return implode(',', $attributes);
+        $data['attributes'] = implode(',', $data['attributes']);
+
+        return $data;
     }
 }

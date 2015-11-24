@@ -1,3 +1,16 @@
+# 1.4.x
+
+## BC Breaks
+- Changed constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` in order to avoid circular reference dependency exceptions.
+
+## Performance improvements
+- PIM-5209: Optimize AttributeGroupNormalizer in order to serialize attributes codes in one request.
+
+## Bug fixes
+- PIM-5176: Fix customisation of columns not saved in "Column Selection"
+- PIM-5201: Fix permission System/Edit a Role
+- PIM-5172: Fix PDF export for text area attribute
+
 # 1.4.10 (2015-11-20)
 
 ## Bug fixes

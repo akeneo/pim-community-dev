@@ -43,16 +43,7 @@
                 margin-bottom: 20px;
             }
 
-            .attribute-group table {
-                width: 100%;
-                border: 1px solid #aaa;
-                border-radius: 5px;
-                margin-top: 0px;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-
-            .attribute-group table h2 {
+            .attribute-groups h2 {
                 width: 100%;
                 background: #7887AB;
                 color: white;
@@ -62,28 +53,25 @@
                 margin: 0px;
             }
 
-            .attribute-group table tr {
-                border-bottom: 1px solid #aaa;
+            .group {
+                border: 1px solid #aaa;
+                margin-bottom: 20px;
             }
 
-            .attribute-group table th {
-                padding: 0px;
-                text-align: left;
+            .attributes {
+                clear:both;
+                position:relative;
             }
 
-            .attribute-group table td {
+            .left-column {
+                position: absolute;
+                left: 0;
                 padding: 5px;
-                text-align: left;
             }
 
-            .attribute-group table .attribute {
-                width: 300px;
-                vertical-align: top;
-            }
-
-            .attribute-group table .value p{
-                margin-top: 0;
-                margin-bottom: 0;
+            .right-column {
+                margin-left: 35%;
+                padding: 5px;
             }
         </style>
     </head>
@@ -102,36 +90,31 @@
                 {% endfor %}
             {% endblock %}
         </div>
-        <div class="attribute-group">
+        <div class="attribute-groups">
             {% for group, attributes in groupedAttributes %}
                 {% block attribute_group %}
-                <table>
-                    <thead>
-                        <tr class="group">
-                            <th colspan="2"><h2>{{ group }}</h2></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <div class="group">
+                        <h2>{{ group }}</h2>
                         {% for attribute in attributes %}
                             {% block attribute %}
-                            <tr>
-                                <td class="attribute">
-                                    {{ attribute.label }}
-                                </td>
-                                <td class="value">
-                                {% if attribute.attributeType == 'pim_catalog_image' and product.getValue(attribute.code, locale, scope).media is not null %}
-                                    {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
-                                {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
-                                    {{ product.getValue(attribute.code, locale, scope)|raw }}
-                                {% else %}
-                                    {{ product.getValue(attribute.code, locale, scope) }}
-                                {% endif %}
-                                </td>
-                            </tr>
+                                <div class="attributes">
+                                    <div class="left-column">
+                                        {{ attribute.label }}
+                                    </div>
+                                    <div class="right-column">
+                                        {% if attribute.attributeType == 'pim_catalog_image' and product.getValue(attribute.code, locale, scope).media is not null %}
+                                            {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
+                                        {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
+                                            {{ product.getValue(attribute.code, locale, scope)|raw }}
+                                        {% else %}
+                                            {{ product.getValue(attribute.code, locale, scope) }}
+                                        {% endif %}
+                                        &nbsp;
+                                    </div>
+                                </div>
                             {% endblock %}
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </div>
                 {% endblock %}
             {% endfor %}
         </div>
