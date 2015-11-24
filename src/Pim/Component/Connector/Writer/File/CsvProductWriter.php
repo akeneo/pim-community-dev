@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Buffer\BufferFactoryInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 
 /**
@@ -19,12 +19,12 @@ class CsvProductWriter extends CsvWriter
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param BufferFactoryInterface    $bufferFactory
+     * @param BufferFactory             $bufferFactory
      * @param FileExporterInterface     $fileExporter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        BufferFactoryInterface $bufferFactory,
+        BufferFactory $bufferFactory,
         FileExporterInterface $fileExporter
     ) {
         parent::__construct($filePathResolver, $bufferFactory);

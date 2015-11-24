@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
-use Akeneo\Component\Buffer\BufferFactoryInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,9 +49,9 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param BufferFactoryInterface    $bufferFactory
+     * @param BufferFactory             $bufferFactory
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, BufferFactoryInterface $bufferFactory)
+    public function __construct(FilePathResolverInterface $filePathResolver, BufferFactory $bufferFactory)
     {
         parent::__construct($filePathResolver);
 

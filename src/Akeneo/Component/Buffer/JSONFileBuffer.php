@@ -28,7 +28,9 @@ class JSONFileBuffer implements BufferInterface
     public function __construct()
     {
         $this->filename = tempnam(sys_get_temp_dir(), self::FILE_PREFIX);
-        $this->file     = new \SplFileObject($this->filename);
+        $this->file     = new \SplFileObject($this->filename, 'r+');
+
+        $this->file->setFlags(\SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
     }
 
     /**
@@ -37,7 +39,9 @@ class JSONFileBuffer implements BufferInterface
     public function __destruct()
     {
         unset($this->file);
-        unlink($this->filename);
+        if (is_file($this->filename)) {
+            unlink($this->filename);
+        }
     }
 
     /**
@@ -47,11 +51,11 @@ class JSONFileBuffer implements BufferInterface
     {
         if (!is_array($item) && !is_scalar($item)) {
             throw new UnsupportedItemTypeException(
-                sprintf('%s supports only items of type scalar or array', __CLASS__)
+                sprintf('%s only supports items of type scalar or array', __CLASS__)
             );
         }
 
-        $this->file->fwrite(json_encode($item) . "\n");
+        $this->file->fwrite(json_encode($item) . PHP_EOL);
     }
 
     /**

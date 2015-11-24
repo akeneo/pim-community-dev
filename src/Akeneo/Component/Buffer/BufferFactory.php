@@ -5,21 +5,26 @@ namespace Akeneo\Component\Buffer;
 use Akeneo\Component\Buffer\Exception\InvalidClassNameException;
 
 /**
- * Basic implementation of BufferFactoryInterface
+ * Creates instances of BufferInterface implementations.
+ * The main goal of this factory is to be injected into any object that needs it then
+ * instanciate a buffer, this way it is impossible that several objects share the same
+ * buffer instance (for obvious unpredictable behavior issues).
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class BufferFactory implements BufferFactoryInterface
+class BufferFactory
 {
     /** @var string */
     protected $className;
 
     /**
-     * @param string $className
+     * Configure the factory with a class name
      *
-     * @throws InvalidClassNameException
+     * @param string $className          The class name
+     *
+     * @throws InvalidClassNameException If the class name is not a implementation of BufferInterface
      */
     public function __construct($className)
     {
@@ -32,7 +37,7 @@ class BufferFactory implements BufferFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Create a buffer instance
      */
     public function create()
     {
