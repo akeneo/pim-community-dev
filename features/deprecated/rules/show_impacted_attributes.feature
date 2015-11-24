@@ -9,6 +9,7 @@ Feature: On a product edit/show display impacted attributes
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
 
+  @deprecated
   Scenario: Successfully create, edit and save a product
     Given the following products:
       | sku       | family  |
@@ -22,7 +23,7 @@ Feature: On a product edit/show display impacted attributes
             operator: =
             value:    my-loafer
         actions:
-          - type:   set
+          - type:   set_value
             field:  name
             value:  My loafer
             locale: en_US

@@ -40,25 +40,4 @@ interface ProductCopyActionInterface extends ActionInterface, FieldImpactActionI
      * @return array
      */
     public function getOptions();
-
-    /**
-     * @param string $fromField
-     *
-     * @return ProductCopyActionInterface
-     */
-    public function setFromField($fromField);
-
-    /**
-     * @param string $toField
-     *
-     * @return ProductCopyActionInterface
-     */
-    public function setToField($toField);
-
-    /**
-     * @param array $options
-     *
-     * @return ProductCopyActionInterface
-     */
-    public function setOptions($toField);
 }

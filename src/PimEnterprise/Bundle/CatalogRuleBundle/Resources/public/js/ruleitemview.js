@@ -48,11 +48,11 @@ define(
                 'set': _.template(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
-                        '<span class="action-value"><%= renderValue(rulePart.data) %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
                         '<span class="rule-item-emphasize action-type set-value"><%= set_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
-                            '<%= renderItemContext(rulePart.options.locale, rulePart.options.scope) %>' +
+                            '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
                     '</div>'
                 ),
@@ -61,12 +61,23 @@ define(
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-field from-field">' +
                             '<%= rulePart.from_field %>' +
-                            '<%= renderItemContext(rulePart.options.from_locale, rulePart.options.from_scope) %>' +
+                            '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
                         '<span class="rule-item-emphasize action-type copy-value"><%= copy_label %></span>' +
                         '<span class="action-field to-field">' +
                             '<%= rulePart.to_field %>' +
-                            '<%= renderItemContext(rulePart.options.to_locale, rulePart.options.to_scope) %>' +
+                            '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'add': _.template(
+                    '<div class="rule-item rule-action add-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.items) %></span>' +
+                        '<span class="rule-item-emphasize action-type add-value"><%= add_label %></span>' +
+                        '<span class="action-field">' +
+                            '<%= rulePart.field %>' +
+                            '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
                     '</div>'
                 )
@@ -177,7 +188,8 @@ define(
                     'if_label': __('pimee_catalog_rule.rule.condition.if.label'),
                     'then_label': __('pimee_catalog_rule.rule.action.then.label'),
                     'set_label': __('pimee_catalog_rule.rule.action.set.label'),
-                    'copy_label': __('pimee_catalog_rule.rule.action.copy.label')
+                    'copy_label': __('pimee_catalog_rule.rule.action.copy.label'),
+                    'add_label': __('pimee_catalog_rule.rule.action.add.label')
                 });
             },
             renderTemplate: function () {

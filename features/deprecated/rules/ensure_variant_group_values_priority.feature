@@ -30,12 +30,13 @@ Feature: Ensure variant group values priority when execute a rule
             operator: CONTAINS
             value: boot
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: Name from rule
             locale: en_US
       """
 
+  @deprecated
   Scenario: Successfully display values coming from variant group
     Given  the product rule "set_name" is executed
     When I am on the "boot" product page
@@ -43,6 +44,7 @@ Feature: Ensure variant group values priority when execute a rule
       | name-en_US | Name from variant group |
     And I should see that Name is inherited from variant group attribute
 
+  @deprecated
   Scenario: Successfully display values coming from rules engine
     Given  the product rule "set_name" is executed
     When I am on the "otherboot" product page

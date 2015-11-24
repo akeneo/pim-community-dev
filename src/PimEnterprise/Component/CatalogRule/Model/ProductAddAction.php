@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
+namespace PimEnterprise\Component\CatalogRule\Model;
 
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 
@@ -27,7 +27,7 @@ class ProductAddAction implements ProductAddActionInterface
     protected $field;
 
     /** @var array */
-    protected $data = [];
+    protected $items = [];
 
     /** @var array */
     protected $options = [];
@@ -38,8 +38,11 @@ class ProductAddAction implements ProductAddActionInterface
     public function __construct(array $data)
     {
         $this->field   = isset($data['field']) ? $data['field'] : null;
-        $this->data    = isset($data['data']) ? $data['data'] : [];
-        $this->options = isset($data['options']) ? $data['options'] : [];
+        $this->items   = isset($data['items']) ? $data['items'] : [];
+        $this->options = [
+            'locale' => isset($data['locale']) ? $data['locale'] : null,
+            'scope'  => isset($data['scope']) ? $data['scope'] : null
+        ];
     }
 
     /**
@@ -53,29 +56,9 @@ class ProductAddAction implements ProductAddActionInterface
     /**
      * {@inheritdoc}
      */
-    public function setField($field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getItems()
     {
-        return $this->data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItems(array $data = [])
-    {
-        $this->data = $data;
-
-        return $this;
+        return $this->items;
     }
 
     /**
@@ -84,16 +67,6 @@ class ProductAddAction implements ProductAddActionInterface
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options = [])
-    {
-        $this->options = $options;
-
-        return $this;
     }
 
     /**

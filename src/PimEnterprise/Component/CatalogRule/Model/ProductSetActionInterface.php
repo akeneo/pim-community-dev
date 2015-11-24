@@ -35,31 +35,10 @@ interface ProductSetActionInterface extends ActionInterface, FieldImpactActionIn
     /**
      * @return mixed
      */
-    public function getData();
+    public function getValue();
 
     /**
      * @return mixed
      */
     public function getOptions();
-
-    /**
-     * @param string $field
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setField($field);
-
-    /**
-     * @param mixed $data
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setData($data);
-
-    /**
-     * @param array $options
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setOptions(array $options = []);
 }

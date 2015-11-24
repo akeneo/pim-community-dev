@@ -16,6 +16,7 @@ Feature: Update product history when rules are executed
       | converse-sneakers | name        | Black sneakers         | en_US  |        |
       | converse-sneakers | description | Classic black sneakers | en_US  | mobile |
 
+  @deprecated
   Scenario: Successfully display history after executing a rule
     And the following product rule definitions:
       """
@@ -26,7 +27,7 @@ Feature: Update product history when rules are executed
             operator: =
             value:    converse-sneakers
         actions:
-          - type:   set
+          - type:   set_value
             field:  description
             value:  Chaussures noires classiques
             locale: fr_FR
@@ -44,7 +45,7 @@ Feature: Update product history when rules are executed
     """
     Applied rule "set_description"
     """
-
+  @deprecated
   Scenario: Successfully display history after executing multiple rules
     And the following product rule definitions:
       """
@@ -55,7 +56,7 @@ Feature: Update product history when rules are executed
             operator: =
             value:    converse-sneakers
         actions:
-          - type:   set
+          - type:   set_value
             field:  description
             value:  Chaussures noires classiques
             locale: fr_FR
@@ -67,7 +68,7 @@ Feature: Update product history when rules are executed
             operator: =
             value:    converse-sneakers
         actions:
-          - type:   set
+          - type:   set_value
             field:  name
             value:  Chaussures noires
             locale: fr_FR

@@ -28,7 +28,7 @@ class ProductSetAction implements ProductSetActionInterface
     protected $field;
 
     /** @var mixed */
-    protected $data;
+    protected $value;
 
     /** @var array */
     protected $options = [];
@@ -39,8 +39,11 @@ class ProductSetAction implements ProductSetActionInterface
     public function __construct(array $data)
     {
         $this->field   = isset($data['field']) ? $data['field'] : null;
-        $this->data    = isset($data['data']) ? $data['data'] : [];
-        $this->options = isset($data['options']) ? $data['options'] : [];
+        $this->value   = isset($data['value']) ? $data['value'] : null;
+        $this->options = [
+            'locale' => isset($data['locale']) ? $data['locale'] : null,
+            'scope'  => isset($data['scope']) ? $data['scope'] : null
+        ];
     }
 
     /**
@@ -54,29 +57,9 @@ class ProductSetAction implements ProductSetActionInterface
     /**
      * {@inheritdoc}
      */
-    public function setField($field)
+    public function getValue()
     {
-        $this->field = $field;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
+        return $this->value;
     }
 
     /**
@@ -85,16 +68,6 @@ class ProductSetAction implements ProductSetActionInterface
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options = [])
-    {
-        $this->options = $options;
-
-        return $this;
     }
 
     /**

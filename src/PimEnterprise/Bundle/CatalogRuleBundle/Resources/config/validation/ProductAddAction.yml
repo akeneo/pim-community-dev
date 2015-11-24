@@ -9,8 +9,8 @@ PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
            - Length:
                max: 255
            - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField: ~
-        data:
+        items:
             - Type:
                 type: array
             - NotBlank:
-                message: The key "data" is missing or empty.
+                message: The key "items" is missing or empty.

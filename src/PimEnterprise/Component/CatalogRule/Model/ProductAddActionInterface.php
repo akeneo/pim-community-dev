@@ -41,25 +41,4 @@ interface ProductAddActionInterface extends ActionInterface, FieldImpactActionIn
      * @return mixed
      */
     public function getOptions();
-
-    /**
-     * @param string $field
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setField($field);
-
-    /**
-     * @param array $items
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setItems(array $items = []);
-
-    /**
-     * @param array $options
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setOptions(array $options = []);
 }

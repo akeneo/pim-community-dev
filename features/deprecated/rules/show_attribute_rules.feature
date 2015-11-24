@@ -25,24 +25,24 @@ Feature: Show all rules related to an attribute
             operator: STARTS WITH
             value:    promo
         actions:
-          - type:   set
+          - type:   set_value
             field:  rating
             value:  "4"
-          - type:        copy
+          - type:        copy_value
             from_field:  description
             to_field:    description
             from_locale: en_US
             to_locale:   en_US
             from_scope:  mobile
             to_scope:    tablet
-          - type:        copy
+          - type:        copy_value
             from_field:  description
             to_field:    description
             from_locale: en_US
             to_locale:   fr_FR
             from_scope:  mobile
             to_scope:    mobile
-          - type:        copy
+          - type:        copy_value
             from_field:  description
             to_field:    description
             from_locale: en_US
@@ -57,46 +57,47 @@ Feature: Show all rules related to an attribute
             value:
               - tees
         actions:
-          - type:   set
+          - type:   set_value
             field:  description
             value:  une belle description
             locale: fr_FR
             scope:  mobile
-          - type:  set
+          - type:  set_value
             field: number_in_stock
             value: 800
             scope: tablet
-          - type:  set
+          - type:  set_value
             field: release_date
             value: "2015-05-26"
             scope:  mobile
-          - type:  set
+          - type:  set_value
             field: price
             value:
               - data: 12
                 currency: EUR
-          - type:  set
+          - type:  set_value
             field: side_view
             value:
               originalFilename: image.jpg
               filePath: %fixtures%/akeneo.jpg
-          - type:  set
+          - type:  set_value
             field: length
             value:
               data: 10
               unit: CENTIMETER
-          - type:        copy
+          - type:        copy_value
             from_field:  name
             to_field:    name
             from_locale: en_US
             to_locale:   fr_FR
-          - type:        copy
+          - type:        copy_value
             from_field:  name
             to_field:    name
             from_locale: en_US
             to_locale:   de_DE
       """
 
+  @deprecated
   Scenario: Successfully show rules of an attribute
     Given I am on the "description" attribute page
     And I visit the "Rules" tab

@@ -11,10 +11,7 @@ rules:
         actions:
             - type:  set
               field: camera_brand
-              data: canon_brand
-              options:
-                locale: null
-                scope:  null
+              value: canon_brand
     camera_copy_name_to_model:
         conditions:
             - field:    family.code
@@ -37,10 +34,7 @@ rules:
         actions:
             - type:  set
               field: camera_type
-              data:  compact
-              options:
-                locale: null
-                scope:  null
+              value:  compact
     camera_set_autofocus:
         conditions:
             - field:    family.code
@@ -53,10 +47,7 @@ rules:
         actions:
             - type:  set
               field: auto_focus_lock
-              data:  true
-              options:
-                locale: null
-                scope:  null
+              value:  true
     camera_set_autofocus_point:
         conditions:
             - field:    family.code
@@ -69,10 +60,7 @@ rules:
         actions:
             - type:  set
               field: auto_focus_points
-              data: 4
-              options:
-                locale: null
-                scope:  null
+              value: 4
     copy_description_print_us_to_ecommerce_us:
         conditions:
             - field:    family.code
@@ -83,11 +71,10 @@ rules:
             - type:        copy
               from_field:  description
               to_field:    description
-              options:
-                from_locale: en_US
-                from_scope:  print
-                to_locale:   en_US
-                to_scope:    ecommerce
+              from_locale: en_US
+              from_scope:  print
+              to_locale:   en_US
+              to_scope:    ecommerce
     set_purple_tshirt_ecommerce_description:
         priority: 100
         conditions:
@@ -101,10 +88,9 @@ rules:
         actions:
             - type:   set
               field:  description
-              data:  My very new description for purple tshirt
-              options:
-                locale: en_US
-                scope:  ecommerce
+              value:  My very new description for purple tshirt
+              locale: en_US
+              scope:  ecommerce
     set_tshirt_price:
         conditions:
             - field:    sku
@@ -113,12 +99,9 @@ rules:
         actions:
             - type:  set
               field: price
-              data:
+              value:
                   - data:     12
                     currency: EUR
-              options:
-                locale: null
-                scope:  null
     set_tshirt_weight:
         conditions:
             - field:    sku
@@ -127,12 +110,9 @@ rules:
         actions:
             - type:  set
               field: weight
-              data:
+              value:
                    data: 500
                    unit: GRAM
-              options:
-                locale: null
-                scope:  null
     set_tshirt_style:
         conditions:
             - field:    sku
@@ -141,9 +121,6 @@ rules:
         actions:
             - type:  set
               field: tshirt_style
-              data:
+              value:
                 - sportwear
                 - vneck
-              options:
-                locale: null
-                scope:  null

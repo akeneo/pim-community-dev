@@ -8,7 +8,7 @@ Feature: Update multiple product by applying rules
     And I add the "french" locale to the "tablet" channel
     And I am logged in as "Julia"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku         | family  |
@@ -34,7 +34,7 @@ Feature: Update multiple product by applying rules
             operator: STARTS WITH
             value:    a-
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: new name
             locale: en_US
@@ -51,7 +51,7 @@ Feature: Update multiple product by applying rules
     When I am on the "mug" product page
     Then the product Name should be "Mug"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku       | family  |
@@ -81,11 +81,13 @@ Feature: Update multiple product by applying rules
             value:    ~
             locale:   fr_FR
         actions:
-          - type:        copy
+          - type:        copy_value
             from_field:  name
             to_field:    name
             from_locale: en_US
             to_locale:   fr_FR
+            from_scope:  ~
+            to_scope:    ~
       """
     Given the product rule "copy_name" is executed
     And I am on the "my-loafer" product page

@@ -4,6 +4,7 @@ Feature: Export rules
   As an administrator
   I need to be able to export rules
 
+  @deprecated
   Scenario: Successfully export rules
     Given a "clothing" catalog configuration
     And the following product rule definitions:
@@ -15,7 +16,7 @@ Feature: Export rules
           operator: '='
           value: my-loafer
       actions:
-        - type: set
+        - type: set_value
           field: name
           value: 'My loafer'
           locale: en_US
@@ -26,7 +27,7 @@ Feature: Export rules
           operator: 'STARTS WITH'
           value: my
       actions:
-        - type: set
+        - type: set_value
           field: description
           value: 'A stylish white loafer'
           locale: en_US
@@ -42,7 +43,7 @@ Feature: Export rules
           operator: '='
           value: my-loafer
       actions:
-        - type: copy
+        - type: copy_value
           from_field: name
           to_field: name
           from_locale: en_US
@@ -66,7 +67,7 @@ Feature: Export rules
                     value: my-loafer
             actions:
                 -
-                    type: set
+                    type: set_value
                     field: name
                     value: 'My loafer'
                     locale: en_US
@@ -79,7 +80,7 @@ Feature: Export rules
                     value: my
             actions:
                 -
-                    type: set
+                    type: set_value
                     field: description
                     value: 'A stylish white loafer'
                     locale: en_US
@@ -97,7 +98,7 @@ Feature: Export rules
                     value: my-loafer
             actions:
                 -
-                    type: copy
+                    type: copy_value
                     from_field: name
                     to_field: name
                     from_locale: en_US

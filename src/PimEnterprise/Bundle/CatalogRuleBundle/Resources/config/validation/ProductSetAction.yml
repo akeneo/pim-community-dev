@@ -9,6 +9,6 @@ PimEnterprise\Component\CatalogRule\Model\ProductSetAction:
            - Length:
                max: 255
            - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingSetField: ~
-        data:
+        value:
            - NotNull:
-                message: The key "data" is missing or empty.
+                message: The key "value" is missing or empty.

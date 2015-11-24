@@ -8,7 +8,7 @@ Feature: Read a single product by applying rules
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
@@ -27,7 +27,7 @@ Feature: Read a single product by applying rules
             operator: =
             value:    my-jacket
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -36,7 +36,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with a "starts with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -55,7 +55,7 @@ Feature: Read a single product by applying rules
             operator: STARTS WITH
             value:    my
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -64,7 +64,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with an "ends with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -83,7 +83,7 @@ Feature: Read a single product by applying rules
             operator: ENDS WITH
             value:    ket
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -92,7 +92,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with a "contains" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -111,7 +111,7 @@ Feature: Read a single product by applying rules
             operator: CONTAINS
             value:    ack
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -120,7 +120,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with a "does not contain" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -139,7 +139,7 @@ Feature: Read a single product by applying rules
             operator: DOES NOT CONTAIN
             value:    not
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -148,7 +148,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
+  @deprecated @javascript
   Scenario: Successfully execute a rule with an "IN" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -168,7 +168,7 @@ Feature: Read a single product by applying rules
             value:
               - my-jacket
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: My jacket
             locale: en_US
@@ -177,6 +177,7 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
+  @deprecated
   Scenario: Successfully execute a rule with setter actions to update non empty values on all kind of fields
     Given the following products:
       | sku       | family  | name-fr_FR | weather_conditions | enabled | categories |
@@ -201,58 +202,58 @@ Feature: Read a single product by applying rules
             operator: =
             value:    my-jacket
         actions:
-          - type:  set
+          - type:  set_value
             field: name
             value: Veste blanche
             locale: fr_FR
-          - type:  set
+          - type:  set_value
             field: handmade
             value: 1
-          - type:  set
+          - type:  set_value
             field: release_date
             value: "2015-08-08"
             scope: tablet
-          - type:  set
+          - type:  set_value
             field: datasheet
             value:
               originalFilename: akeneo.txt
               filePath: %fixtures%/akeneo.txt
-          - type:  set
+          - type:  set_value
             field: side_view
             value:
               originalFilename: akeneo2.jpg
               filePath: %fixtures%/akeneo2.jpg
-          - type:  set
+          - type:  set_value
             field: length
             value:
               data: 50
               unit: CENTIMETER
-          - type:  set
+          - type:  set_value
             field: weather_conditions
             value:
               - dry
               - hot
-          - type:  set
+          - type:  set_value
             field: number_in_stock
             value: 8000
             scope: tablet
-          - type:  set
+          - type:  set_value
             field: size
             value: L
-          - type:  set
+          - type:  set_value
             field: price
             value:
               - data: 180
                 currency: EUR
-          - type:  set
+          - type:  set_value
             field: description
             value: En cuir
             scope: tablet
             locale: fr_FR
-          - type:  set
+          - type:  set_value
             field: enabled
             value: 0
-          - type:  set
+          - type:  set_value
             field: categories
             value:
               - winter_top
@@ -276,7 +277,7 @@ Feature: Read a single product by applying rules
     Then product "my-jacket" should be disabled
     And the category of "my-jacket" should be "winter_top, tshirts"
 
-
+  @deprecated
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
     Given the following attributes:
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
@@ -319,42 +320,42 @@ Feature: Read a single product by applying rules
             operator: =
             value:    my-jacket
         actions:
-          - type:       copy
+          - type:  copy_value
             from_field: handmade
-            to_field:   made_in_france
-          - type:       copy
+            to_field: made_in_france
+          - type:  copy_value
             from_field: release_date
-            to_field:   release_date
-            from_scope: mobile
-            to_scope:   tablet
-          - type:       copy
+            to_field: release_date
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
             from_field: datasheet
-            to_field:   report
-          - type:       copy
+            to_field: report
+          - type:  copy_value
             from_field: side_view
-            to_field:   top_view
-          - type:       copy
+            to_field: top_view
+          - type:  copy_value
             from_field: length
-            to_field:   width
-          - type:       copy
+            to_field: width
+          - type:  copy_value
             from_field: weather_conditions
-            to_field:   climate
-          - type:       copy
+            to_field: climate
+          - type:  copy_value
             from_field: number_in_stock
-            to_field:   number_in_stock
-            from_scope: mobile
-            to_scope:   tablet
-          - type:  copy
+            to_field: number_in_stock
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
             from_field: main_color
             to_field: secondary_color
-          - type:       copy
-            from_field: name
-            to_field:   name
+          - type:        copy_value
+            from_field:  name
+            to_field:    name
             from_locale: en_US
             to_locale:   fr_FR
-          - type:       copy
-            from_field: description
-            to_field:   description
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
             from_locale: en_US
             to_locale:   fr_FR
             from_scope:  mobile
@@ -383,6 +384,7 @@ Feature: Read a single product by applying rules
       | description-en_US-mobile | A stylish white jacket |
       | description-fr_FR-tablet | A stylish white jacket |
 
+  @deprecated
   Scenario: Successfully execute a rule with copier actions to update empty values on all kind of attributes
     Given the following attributes:
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
@@ -425,42 +427,42 @@ Feature: Read a single product by applying rules
             operator: =
             value:    my-jacket
         actions:
-          - type:       copy
+          - type:  copy_value
             from_field: handmade
-            to_field:   made_in_france
-          - type:       copy
+            to_field: made_in_france
+          - type:  copy_value
             from_field: release_date
-            to_field:   release_date
-            from_scope: mobile
-            to_scope:   tablet
-          - type:       copy
+            to_field: release_date
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
             from_field: datasheet
-            to_field:   report
-          - type:       copy
+            to_field: report
+          - type:  copy_value
             from_field: side_view
-            to_field:   top_view
-          - type:       copy
+            to_field: top_view
+          - type:  copy_value
             from_field: length
-            to_field:   width
-          - type:       copy
+            to_field: width
+          - type:  copy_value
             from_field: weather_conditions
-            to_field:   climate
-          - type:       copy
+            to_field: climate
+          - type:  copy_value
             from_field: number_in_stock
-            to_field:   number_in_stock
-            from_scope: mobile
-            to_scope:   tablet
-          - type:       copy
+            to_field: number_in_stock
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
             from_field: main_color
-            to_field:   secondary_color
-          - type:        copy
-            from_field: name
-            to_field:   name
+            to_field: secondary_color
+          - type:        copy_value
+            from_field:  name
+            to_field:    name
             from_locale: en_US
             to_locale:   fr_FR
-          - type:       copy
-            from_field: description
-            to_field:   description
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
             from_locale: en_US
             to_locale:   fr_FR
             from_scope:  mobile
@@ -489,6 +491,7 @@ Feature: Read a single product by applying rules
       | description-en_US-mobile |           |
       | description-fr_FR-tablet |           |
 
+  @deprecated
   Scenario: Successfully execute a rule with adder actions to update non empty values on all kind of fields
     Given the following products:
       | sku       | family  | categories |
@@ -507,14 +510,15 @@ Feature: Read a single product by applying rules
         actions:
           - type:  add
             field: weather_conditions
-            items:
+            data:
               - dry
               - hot
-            locale: null
-            scope: null
+            options:
+              locale: null
+              scope: null
           - type:  add
             field: categories
-            items:
+            data:
               - tshirts
       """
     And the category of "my-jacket" should be "jackets"

@@ -43,7 +43,7 @@ class SetterActionApplier implements ActionApplierInterface
             $this->propertySetter->setData(
                 $product,
                 $action->getField(),
-                $action->getData(),
+                $action->getValue(),
                 $action->getOptions()
             );
         }

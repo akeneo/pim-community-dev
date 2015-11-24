@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 
 /**
  * Copy action interface used in product rules.
