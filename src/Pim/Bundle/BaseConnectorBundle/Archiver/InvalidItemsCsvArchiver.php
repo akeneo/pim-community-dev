@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\CsvWriter;
 
 /**
  * Archiver of invalid items into a csv file

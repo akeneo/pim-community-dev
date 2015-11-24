@@ -7,6 +7,7 @@
 - PIM-4743: Added the possibility to use optgroup in Oro ChoiceFilter
 - PIM-4347: `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` now extends `Doctrine\Common\Persistence\ObjectRepository`
 - PIM-5067: Change the JUnit formatter of behats logs
+- PIM-5217: Create a Buffer component and new file writer implementations that use it
 
 ## Bug fixes
 

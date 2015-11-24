@@ -10,6 +10,8 @@ use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
  * @author    Clement Gautier <clement.gautier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6, this behavior is now handled by Pim\Component\Connector\Writer\File\FilePathResolver
  */
 class ContextableCsvWriter extends CsvWriter
 {

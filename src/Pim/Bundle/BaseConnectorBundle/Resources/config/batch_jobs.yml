@@ -10,7 +10,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.doctrine.product
                         processor: pim_base_connector.processor.product_to_flat_array
-                        writer:    pim_base_connector.writer.file.csv_product
+                        writer:    pim_connector.writer.file.csv_product
                     parameters:
                         batch_size: 10
         csv_category_export:
@@ -22,7 +22,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.category
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_attribute_export:
             title: pim_base_connector.jobs.csv_attribute_export.title
             type:  export
@@ -32,7 +32,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_attribute_option_export:
             title: pim_base_connector.jobs.csv_attribute_option_export.title
             type:  export
@@ -42,7 +42,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute_option
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_association_type_export:
             title: pim_base_connector.jobs.csv_association_type_export.title
             type:  export
@@ -52,7 +52,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.association_type
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_group_export:
             title: pim_base_connector.jobs.csv_group_export.title
             type:  export
@@ -62,7 +62,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.repository.group
                         processor: pim_base_connector.processor.normalization.csv_group
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_variant_group_export:
             title: pim_base_connector.jobs.csv_variant_group_export.title
             type:  export
@@ -82,4 +82,4 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.orm.family
                         processor: pim_base_connector.processor.normalization.family.flat
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
