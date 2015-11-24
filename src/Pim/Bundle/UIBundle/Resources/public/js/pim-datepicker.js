@@ -1,50 +1,18 @@
 define(
-    ['jquery', 'oro/formatter/datetime', 'jquery-ui-full'],
-    function ($, datetimeFormatter) {
+    ['jquery', 'pim/date-context', 'bootstrap.bootstrapsdatepicker'],
+    function ($, DateContext) {
         'use strict';
+
+        var datepickerOptions = {
+            todayHighlight: true,
+            format: DateContext.get('format').toLowerCase(),
+            language: DateContext.get('language')
+        };
 
         var init = function (id) {
             var $field = $('#' + id);
-            if ($field.hasClass('hasPicker')) {
-                return;
-            }
 
-            var pickerId = 'date_selector_' + id;
-            var $picker = $('<input>', {
-                type: 'text',
-                id: pickerId,
-                name: pickerId,
-                placeholder: $field.attr('placeholder')
-            });
-            $picker.insertAfter($field);
-            $field.addClass('hasPicker').wrap($('<span>', { 'class': 'hide' }));
-
-            $field.on('change', function () {
-                $picker.val(datetimeFormatter.formatDate($field.val()));
-            });
-
-            if ($field.val() && $field.val().length) {
-                $picker.val(datetimeFormatter.formatDate($field.val()));
-            }
-
-            $picker.datepicker({
-                altField: '#' + id,
-                altFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '-80:+80',
-                showButtonPanel: true,
-                disabled: $field.is(':disabled')
-            });
-
-            $picker.keyup(function () {
-                var value = $picker.val();
-                if (datetimeFormatter.isDateValid(value)) {
-                    $field.val(datetimeFormatter.convertDateToBackendFormat(value));
-                } else {
-                    $field.val('');
-                }
-            });
+            $field.datepicker(datepickerOptions);
         };
 
         return {

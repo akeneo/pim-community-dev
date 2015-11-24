@@ -4,6 +4,7 @@ namespace Pim\Bundle\LocalizationBundle\Controller;
 
 use Pim\Component\Localization\Factory\DateFactory;
 use Pim\Component\Localization\LocaleResolver;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -43,8 +44,9 @@ class FormatController
 
         return new JsonResponse(
             [
-                'format'   => $formatter->getPattern(),
-                'language' => $locale,
+                'format'        => $formatter->getPattern(),
+                'defaultFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
+                'language'      => $locale,
             ]
         );
     }
