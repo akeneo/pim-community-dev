@@ -22,20 +22,10 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /** @var string */
     protected $filePath = '/tmp/export_%datetime%.csv';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $delimiter = ';';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $enclosure = '"';
 
     /** @var bool */

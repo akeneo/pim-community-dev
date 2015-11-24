@@ -7,7 +7,6 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Abstract file writer to handle file naming and configuration-related logic.
@@ -24,12 +23,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var FilePathResolverInterface */
     protected $filePathResolver;
 
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @WritableDirectory(groups={"Execution"})
-     *
-     * @var string
-     */
+    /** @var string */
     protected $filePath;
 
     /** @var StepExecution */
@@ -38,7 +32,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var string */
     protected $resolvedFilePath;
 
-    /** array */
+    /** @var array */
     protected $filePathResolverOptions;
 
     /** @var Filesystem */
