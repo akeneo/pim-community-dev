@@ -50,9 +50,9 @@ class Edit extends Form
     /**
      * Select the specified $role
      *
-     * @throws ElementNotFoundException
-     *
      * @param string $role
+     *
+     * @throws ElementNotFoundException
      */
     public function selectRole($role)
     {

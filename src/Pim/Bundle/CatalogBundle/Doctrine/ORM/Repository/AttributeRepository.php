@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
@@ -457,6 +458,30 @@ class AttributeRepository extends EntityRepository implements
         } else {
             return array_map('current', $qb->getQuery()->getScalarResult());
         }
+    }
+
+    /**
+     * Get attribute codes by attribute group
+     *
+     * @param AttributeGroupInterface $group
+     *
+     * @return string[]
+     */
+    public function getAttributeCodesByGroup(AttributeGroupInterface $group)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.code')
+            ->where($qb->expr()->eq('a.group', ':group'))
+            ->setParameter(':group', $group);
+
+        $result = $qb->getQuery()->getScalarResult();
+
+        if (null === $result) {
+            return [];
+        }
+
+        return array_map('current', $qb->getQuery()->getScalarResult());
     }
 
     /**

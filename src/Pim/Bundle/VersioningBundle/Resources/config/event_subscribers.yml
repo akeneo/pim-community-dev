@@ -9,10 +9,7 @@ services:
     pim_versioning.event_subscriber.addversion:
         class: %pim_versioning.event_subscriber.addversion.class%
         arguments:
-            - '@pim_versioning.manager.version'
-            - '@pim_versioning.update_guesser.chained'
-            - '@pim_versioning.serializer'
-            - '@pim_versioning.context.version'
+            - '@service_container'
         tags:
             - { name: doctrine.event_subscriber }
 
