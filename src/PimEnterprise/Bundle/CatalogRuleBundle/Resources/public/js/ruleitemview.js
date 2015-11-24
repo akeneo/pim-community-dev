@@ -20,10 +20,10 @@ define(
                 )
             },
             'actions': {
-                'set': _.template(
+                'set_value': _.template(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
-                        '<span class="action-value"><%= renderValue(rulePart.data) %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
                         '<span class="rule-item-emphasize action-type set-value"><%= set_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
@@ -31,7 +31,7 @@ define(
                         '</span>' +
                     '</div>'
                 ),
-                'copy': _.template(
+                'copy_value': _.template(
                     '<div class="rule-item rule-action copy-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-field from-field">' +
@@ -42,6 +42,31 @@ define(
                         '<span class="action-field to-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'set': _.template(
+                    '<div class="rule-item rule-action set-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.data) %></span>' +
+                        '<span class="rule-item-emphasize action-type set-value"><%= set_label %></span>' +
+                        '<span class="action-field">' +
+                            '<%= rulePart.field %>' +
+                            '<%= renderItemContext(rulePart.options.locale, rulePart.options.scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'copy': _.template(
+                    '<div class="rule-item rule-action copy-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-field from-field">' +
+                            '<%= rulePart.from_field %>' +
+                            '<%= renderItemContext(rulePart.options.from_locale, rulePart.options.from_scope) %>' +
+                        '</span>' +
+                        '<span class="rule-item-emphasize action-type copy-value"><%= copy_label %></span>' +
+                        '<span class="action-field to-field">' +
+                            '<%= rulePart.to_field %>' +
+                            '<%= renderItemContext(rulePart.options.to_locale, rulePart.options.to_scope) %>' +
                         '</span>' +
                     '</div>'
                 )

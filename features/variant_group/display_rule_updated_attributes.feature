@@ -11,15 +11,22 @@ Feature: Display warning message on attributes coming from rules on variant attr
       | tshirts | manufacturer | american_apparel |        |           |
       | tshirts | name         | a                | en_US  |           |
       | tshirts | description  | e                | en_US  | ecommerce |
-    And the following product rules:
-      | code            | priority |
-      | set_description | 10       |
-    And the following product rule conditions:
-      | rule            | field | operator | value          | locale | scope |
-      | set_description | name  | =        | My nice tshirt | en_US  |       |
-    And the following product rule setter actions:
-      | rule            | field       | value                 | locale | scope     |
-      | set_description | description | une belle description | fr_FR  | ecommerce |
+    And the following product rule definitions:
+      """
+      set_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: =
+            value:    My nice tshirt
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  une belle description
+            locale: fr_FR
+            scope:  ecommerce
+      """
     And I am logged in as "Julia"
     And I am on the "tshirts" variant group page
     And I visit the "Attributes" tab

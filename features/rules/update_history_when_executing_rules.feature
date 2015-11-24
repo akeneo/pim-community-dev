@@ -17,15 +17,21 @@ Feature: Update product history when rules are executed
       | converse-sneakers | description | Classic black sneakers | en_US  | mobile |
 
   Scenario: Successfully display history after executing a rule
-    Given the following product rules:
-      | code            | priority |
-      | set_description | 10       |
-    And the following product rule conditions:
-      | rule            | field | operator | value             |
-      | set_description | sku   | =        | converse-sneakers |
-    And the following product rule setter actions:
-      | rule            | field       | value                        | locale | scope  |
-      | set_description | description | Chaussures noires classiques | fr_FR  | mobile |
+    And the following product rule definitions:
+      """
+      set_description:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    converse-sneakers
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Chaussures noires classiques
+            locale: fr_FR
+            scope:  mobile
+      """
     When the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
@@ -40,18 +46,32 @@ Feature: Update product history when rules are executed
     """
 
   Scenario: Successfully display history after executing multiple rules
-    Given the following product rules:
-      | code            | priority |
-      | set_description | 10       |
-      | set_name        | 20       |
-    And the following product rule conditions:
-      | rule            | field | operator | value             |
-      | set_description | sku   | =        | converse-sneakers |
-      | set_name        | sku   | =        | converse-sneakers |
-    And the following product rule setter actions:
-      | rule            | field       | value                        | locale | scope  |
-      | set_description | description | Chaussures noires classiques | fr_FR  | mobile |
-      | set_name        | name        | Chaussures noires            | fr_FR  |        |
+    And the following product rule definitions:
+      """
+      set_description:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    converse-sneakers
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Chaussures noires classiques
+            locale: fr_FR
+            scope:  mobile
+      set_name:
+        priority: 20
+        conditions:
+          - field:    sku
+            operator: =
+            value:    converse-sneakers
+        actions:
+          - type:   set_value
+            field:  name
+            value:  Chaussures noires
+            locale: fr_FR
+      """
     When the product rule "set_description" is executed
     And the product rule "set_name" is executed
     And the history of the product "converse-sneakers" has been built

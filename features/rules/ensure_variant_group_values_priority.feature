@@ -21,15 +21,20 @@ Feature: Ensure variant group values priority when execute a rule
     And the following product values:
       | product | attribute | value                   | locale | scope |
       | boot    | name      | Name from variant group | en_US  |       |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value |
-      | set_name | sku   | CONTAINS | boot  |
-    And the following product rule setter actions:
-      | rule     | field | value          | locale | scope |
-      | set_name | name  | Name from rule | en_US  |       |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: CONTAINS
+            value: boot
+        actions:
+          - type:  set_value
+            field: name
+            value: Name from rule
+            locale: en_US
+      """
 
   Scenario: Successfully display values coming from variant group
     Given  the product rule "set_name" is executed

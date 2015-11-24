@@ -40,9 +40,9 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
      */
     public function __construct($ruleClass, $definitionClass, $type)
     {
-        $this->ruleClass = $ruleClass;
+        $this->ruleClass       = $ruleClass;
         $this->definitionClass = $definitionClass;
-        $this->type = $type;
+        $this->type            = $type;
     }
 
     /**
@@ -56,7 +56,7 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
     {
         $this->checkRuleKeys($data);
 
-        $rule = $this->geRuleDefinition($context);
+        $rule = $this->getRuleDefinition($context);
         $rule->setCode($data['code']);
         $rule->setType($this->type);
 
@@ -100,7 +100,7 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
      *
      * @return RuleDefinitionInterface
      */
-    protected function geRuleDefinition(array $context)
+    protected function getRuleDefinition(array $context)
     {
         if (isset($context['object'])) {
             return $context['object'];

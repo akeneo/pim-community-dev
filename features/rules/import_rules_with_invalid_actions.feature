@@ -9,15 +9,22 @@ Feature: Import rules
     And I am logged in as "Peter"
 
   Scenario: Skip rules with missing actions key
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    And the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:  set_value
+            field: description
+            value: Another good description
+            locale: en_US
+            scope: tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -56,15 +63,24 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with missing from_field key for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -101,15 +117,24 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with missing to_field key for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -146,15 +171,22 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with missing value key for set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -191,15 +223,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules without locale key for condition and set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -235,15 +274,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with nonexistent locale key for condition and set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -287,15 +333,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules without scope key for condition and set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -335,15 +388,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with nonexistent scope key for condition and set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -387,15 +447,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with missing type key for copy or set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -433,15 +500,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with invalid type for copy or set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -480,15 +554,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with non existing field for set action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -527,15 +608,24 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with non existing from_field for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -576,15 +666,24 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with non existing to_field for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -625,15 +724,24 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with incompatible fields for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -673,15 +781,24 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with wrong locale fields for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -724,15 +841,24 @@ Feature: Import rules
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
   Scenario: Skip rules with wrong scope fields for copy action
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   en_US
+            from_scope:  mobile
+            to_scope:    tablet
+      """
     And the following yaml file to import:
     """
     rules:

@@ -9,15 +9,21 @@ Feature: Import rules
     And I am logged in as "Peter"
 
   Scenario: Skip rules with unsupported integer value for attribute name in conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field | value      | locale |
-      | sony_beautiful_description | name  | Super Name | en_US  |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  name
+            value:  Super Name
+            locale: en_US
+      """
     And the following yaml file to import:
     """
     rules:
@@ -57,15 +63,22 @@ Feature: Import rules
     Then I should see "Super Name"
 
   Scenario: Skip rules with unsupported integer value for attribute of type textarea in conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -109,15 +122,21 @@ Feature: Import rules
     Then I should see "Another good description"
 
   Scenario: Skip rules with unsupported integer value for attribute of type identifier in conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value |
-      | sony_beautiful_description | SKU   | CONTAINS | 42    |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: CONTAINS
+            value:    "42"
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -158,15 +177,20 @@ Feature: Import rules
     Then I should see "Another good description"
 
   Scenario: Skip rules with unsupported string value for attribute of type simple select in conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field        | value  |
-      | sony_beautiful_description | manufacturer | Volcom |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  manufacturer
+            value:  Volcom
+      """
     And the following yaml file to import:
     """
     rules:
@@ -201,15 +225,22 @@ Feature: Import rules
     Then I should see "Volcom"
 
   Scenario: Skip rules with unsupported string value for the multi select attribute of type multi select in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field              | value   |
-      | sony_beautiful_description | weather_conditions | dry,wet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  weather_conditions
+            value:
+              - dry
+              - wet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -246,15 +277,22 @@ Feature: Import rules
     And I should see "wet"
 
   Scenario: Skip rules with unsupported array values for attribute of type multi select in conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -295,15 +333,22 @@ Feature: Import rules
     Then I should see "Another good description"
 
   Scenario: Skip rules with unsupported values for attribute of type prices collection in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field | value |
-      | sony_beautiful_description | price | 3 EUR |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  price
+            value:
+              - data: 3
+                currency: EUR
+      """
     And the following yaml file to import:
     """
     rules:
@@ -340,15 +385,22 @@ Feature: Import rules
     Then I should see "EUR"
 
   Scenario: Skip rules with unsupported values for attribute of type metric in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field  | value        |
-      | sony_beautiful_description | length | 3 CENTIMETER |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  length
+            value:
+              data: 3
+              unit: CENTIMETER
+      """
     And the following yaml file to import:
     """
     rules:
@@ -385,15 +437,21 @@ Feature: Import rules
     Then I should see "CENTIMETER"
 
   Scenario: Skip rules with unsupported values for attribute of type number in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field           | value | scope  |
-      | sony_beautiful_description | number_in_stock | 42    | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  number_in_stock
+            value:  42
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -432,15 +490,20 @@ Feature: Import rules
     Then I should see "42"
 
   Scenario: Skip rules with unsupported values for attribute of type boolean in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field    | value |
-      | sony_beautiful_description | handmade | true  |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  handmade
+            value:  true
+      """
     And the following yaml file to import:
     """
     rules:
@@ -476,15 +539,21 @@ Feature: Import rules
     Then I should see "true"
 
   Scenario: Skip rules with unsupported values for attribute of type date in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field        | value      | scope  |
-      | sony_beautiful_description | release_date | 1970-01-01 | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  release_date
+            value:  "1970-01-01"
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -524,15 +593,22 @@ Feature: Import rules
     Then I should see "1/1/70"
 
   Scenario: Skip rules with unsupported values for attribute of type media in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field     | value                                |
-      | sony_beautiful_description | side_view | SNKRS-1R.png,%fixtures%/SNKRS-1R.png |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  side_view
+            value:
+              originalFilename: SNKRS-1R.png
+              filePath: %fixtures%/SNKRS-1R.png
+      """
     And the following yaml file to import:
     """
     rules:
@@ -574,15 +650,22 @@ Feature: Import rules
     Then I should see "SNKRS-1R"
 
   Scenario: Skip rules with missing values for attribute of type media in conditions and actions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
-    And the following product rule setter actions:
-      | rule                       | field     | value                                |
-      | sony_beautiful_description | side_view | SNKRS-1R.png,%fixtures%/SNKRS-1R.png |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   fr_FR
+        actions:
+          - type:   set_value
+            field:  side_view
+            value:
+              originalFilename: SNKRS-1R.png
+              filePath: %fixtures%/SNKRS-1R.png
+      """
     And the following yaml file to import:
     """
     rules:
@@ -619,15 +702,22 @@ Feature: Import rules
     Then I should see "SNKRS-1R"
 
   Scenario: Skip rules with missing conditions key
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -668,15 +758,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with missing operator key for conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -714,15 +811,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with missing field key for conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -760,15 +864,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with missing value key for conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -803,15 +914,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with invalid operator for conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:
@@ -849,15 +967,22 @@ Feature: Import rules
     And I should see "Another good description"
 
   Scenario: Skip rules with non existing field for conditions
-    Given the following product rules:
-      | code                       | priority |
-      | sony_beautiful_description | 10       |
-    And the following product rule conditions:
-      | rule                       | field | operator | value | locale |
-      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-    And the following product rule setter actions:
-      | rule                       | field       | value                    | locale | scope  |
-      | sony_beautiful_description | description | Another good description | en_US  | tablet |
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: CONTAINS
+            value:    Canon
+            locale:   en_US
+        actions:
+          - type:   set_value
+            field:  description
+            value:  Another good description
+            locale: en_US
+            scope:  tablet
+      """
     And the following yaml file to import:
     """
     rules:

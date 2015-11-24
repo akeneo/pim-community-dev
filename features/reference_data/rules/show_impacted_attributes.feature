@@ -18,16 +18,31 @@ Feature: On a product edit/show display impacted attributes
     Given the following products:
       | sku       | family |
       | red-heels | heels  |
-    And the following product rules:
-      | code     | priority |
-      | set_rule | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value     |
-      | set_rule | sku   | =        | red-heels |
-    And the following product rule setter actions:
-      | rule     | field           | value                |
-      | set_rule | new_sole_color  | Yellow               |
-      | set_rule | new_sole_fabric | PVC, Nylon, Neoprene |
+    And the following product rule definitions:
+      """
+      set_rule:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: IN
+            value:
+              - red-heels
+          - field:    sole_fabric.code
+            operator: IN
+            value:
+              - PVC
+              - Nylon
+        actions:
+          - type:   set_value
+            field:  new_sole_color
+            value:  Yellow
+          - type:   set_value
+            field:  new_sole_fabric
+            value:
+              - PVC
+              - Nylon
+              - Neoprene
+      """
     When I am on the "red-heels" product page
     And I add available attributes New sole fabric
     And I add available attributes New sole color

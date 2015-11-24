@@ -18,15 +18,20 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value     |
-      | set_name | sku   | =        | my-jacket |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -41,15 +46,20 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator    | value |
-      | set_name | sku   | STARTS WITH | my    |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: STARTS WITH
+            value:    my
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -64,15 +74,20 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator  | value |
-      | set_name | sku   | ENDS WITH | ket   |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: ENDS WITH
+            value:    ket
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -87,15 +102,20 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value |
-      | set_name | sku   | CONTAINS | ack   |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: CONTAINS
+            value:    ack
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -110,15 +130,20 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator         | value |
-      | set_name | sku   | DOES NOT CONTAIN | not   |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: DOES NOT CONTAIN
+            value:    not
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -133,15 +158,21 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | White jacket           | en_US  |        |
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
-    And the following product rules:
-      | code     | priority |
-      | set_name | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value     |
-      | set_name | sku   | IN       | my-jacket |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_name | name  | My jacket | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: IN
+            value:
+              - my-jacket
+        actions:
+          - type:  set_value
+            field: name
+            value: My jacket
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
@@ -161,30 +192,75 @@ Feature: Read a single product by applying rules
       | my-jacket | size               | M              |        |        |
       | my-jacket | price-USD          | 200            |        |        |
       | my-jacket | description        | Leather jacket | en_US  | mobile |
-    And the following product rules:
-      | code            | priority |
-      | rule_sku_jacket | 10       |
-    And the following product rule conditions:
-      | rule            | field | operator | value     |
-      | rule_sku_jacket | sku   | =        | my-jacket |
-    And the following product rule setter actions:
-      | rule            | field              | locale | scope  | value                              |
-      | rule_sku_jacket | name               | fr_FR  |        | Veste blanche                      |
-      | rule_sku_jacket | handmade           |        |        | 1                                  |
-      | rule_sku_jacket | release_date       |        | tablet | 2015-08-08                         |
-      | rule_sku_jacket | datasheet          |        |        | akeneo.txt,%fixtures%/akeneo.txt   |
-      | rule_sku_jacket | side_view          |        |        | akeneo2.jpg,%fixtures%/akeneo2.jpg |
-      | rule_sku_jacket | length             |        |        | 50 CENTIMETER                      |
-      | rule_sku_jacket | weather_conditions |        |        | dry,hot                            |
-      | rule_sku_jacket | number_in_stock    |        | tablet | 8000                               |
-      | rule_sku_jacket | size               |        |        | L                                  |
-      | rule_sku_jacket | price              |        |        | 180 EUR                            |
-      | rule_sku_jacket | description        | fr_FR  | tablet | En cuir                            |
-      | rule_sku_jacket | enabled            |        |        | 0                                  |
-      | rule_sku_jacket | categories         |        |        | winter_top, tshirts                |
+    And the following product rule definitions:
+      """
+      set_jacket:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  set_value
+            field: name
+            value: Veste blanche
+            locale: fr_FR
+          - type:  set_value
+            field: handmade
+            value: 1
+          - type:  set_value
+            field: release_date
+            value: "2015-08-08"
+            scope: tablet
+          - type:  set_value
+            field: datasheet
+            value:
+              originalFilename: akeneo.txt
+              filePath: %fixtures%/akeneo.txt
+          - type:  set_value
+            field: side_view
+            value:
+              originalFilename: akeneo2.jpg
+              filePath: %fixtures%/akeneo2.jpg
+          - type:  set_value
+            field: length
+            value:
+              data: 50
+              unit: CENTIMETER
+          - type:  set_value
+            field: weather_conditions
+            value:
+              - dry
+              - hot
+          - type:  set_value
+            field: number_in_stock
+            value: 8000
+            scope: tablet
+          - type:  set_value
+            field: size
+            value: L
+          - type:  set_value
+            field: price
+            value:
+              - data: 180
+                currency: EUR
+          - type:  set_value
+            field: description
+            value: En cuir
+            scope: tablet
+            locale: fr_FR
+          - type:  set_value
+            field: enabled
+            value: 0
+          - type:  set_value
+            field: categories
+            value:
+              - winter_top
+              - tshirts
+      """
     Then product "my-jacket" should be enabled
     And the category of "my-jacket" should be "jackets"
-    Given the product rule "rule_sku_jacket" is executed
+    Given the product rule "set_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |
       | handmade                 | 1                  |
@@ -234,25 +310,57 @@ Feature: Read a single product by applying rules
       | my-jacket | name               |                        | fr_FR  |        |
       | my-jacket | description        | A stylish white jacket | en_US  | mobile |
       | my-jacket | description        |                        | fr_FR  | tablet |
-    And the following product rules:
-      | code             | priority |
-      | copy_name_jacket | 10       |
-    And the following product rule conditions:
-      | rule             | field | operator | value     |
-      | copy_name_jacket | sku   | =        | my-jacket |
-    And the following product rule copier actions:
-      | rule             | from_field         | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | copy_name_jacket | handmade           | made_in_france  |             |           |            |          |
-      | copy_name_jacket | release_date       | release_date    |             |           | mobile     | tablet   |
-      | copy_name_jacket | datasheet          | report          |             |           |            |          |
-      | copy_name_jacket | side_view          | top_view        |             |           |            |          |
-      | copy_name_jacket | length             | width           |             |           |            |          |
-      | copy_name_jacket | weather_conditions | climate         |             |           |            |          |
-      | copy_name_jacket | number_in_stock    | number_in_stock |             |           | mobile     | tablet   |
-      | copy_name_jacket | main_color         | secondary_color |             |           |            |          |
-      | copy_name_jacket | name               | name            | en_US       | fr_FR     |            |          |
-      | copy_name_jacket | description        | description     | en_US       | fr_FR     | mobile     | tablet   |
-    Given the product rule "copy_name_jacket" is executed
+    And the following product rule definitions:
+      """
+      copy_jacket:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  copy_value
+            from_field: handmade
+            to_field: made_in_france
+          - type:  copy_value
+            from_field: release_date
+            to_field: release_date
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
+            from_field: datasheet
+            to_field: report
+          - type:  copy_value
+            from_field: side_view
+            to_field: top_view
+          - type:  copy_value
+            from_field: length
+            to_field: width
+          - type:  copy_value
+            from_field: weather_conditions
+            to_field: climate
+          - type:  copy_value
+            from_field: number_in_stock
+            to_field: number_in_stock
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
+            from_field: main_color
+            to_field: secondary_color
+          - type:        copy_value
+            from_field:  name
+            to_field:    name
+            from_locale: en_US
+            to_locale:   fr_FR
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   fr_FR
+            from_scope:  mobile
+            to_scope:    tablet
+      """
+    Given the product rule "copy_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | handmade                 | 1                      |
       | made_in_france           | 1                      |
@@ -308,25 +416,57 @@ Feature: Read a single product by applying rules
       | my-jacket | description        | A stylish white jacket | fr_FR  | tablet |
       | my-jacket | length             |                        |        |        |
       | my-jacket | width              | 55 CENTIMETER          |        |        |
-    And the following product rules:
-      | code             | priority |
-      | copy_name_jacket | 10       |
-    And the following product rule conditions:
-      | rule             | field | operator | value     |
-      | copy_name_jacket | sku   | =        | my-jacket |
-    And the following product rule copier actions:
-      | rule             | from_field         | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | copy_name_jacket | handmade           | made_in_france  |             |           |            |          |
-      | copy_name_jacket | release_date       | release_date    |             |           | mobile     | tablet   |
-      | copy_name_jacket | datasheet          | report          |             |           |            |          |
-      | copy_name_jacket | side_view          | top_view        |             |           |            |          |
-      | copy_name_jacket | length             | width           |             |           |            |          |
-      | copy_name_jacket | weather_conditions | climate         |             |           |            |          |
-      | copy_name_jacket | number_in_stock    | number_in_stock |             |           | mobile     | tablet   |
-      | copy_name_jacket | main_color         | secondary_color |             |           |            |          |
-      | copy_name_jacket | name               | name            | en_US       | fr_FR     |            |          |
-      | copy_name_jacket | description        | description     | en_US       | fr_FR     | mobile     | tablet   |
-    And the product rule "copy_name_jacket" is executed
+    And the following product rule definitions:
+      """
+      copy_jacket:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  copy_value
+            from_field: handmade
+            to_field: made_in_france
+          - type:  copy_value
+            from_field: release_date
+            to_field: release_date
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
+            from_field: datasheet
+            to_field: report
+          - type:  copy_value
+            from_field: side_view
+            to_field: top_view
+          - type:  copy_value
+            from_field: length
+            to_field: width
+          - type:  copy_value
+            from_field: weather_conditions
+            to_field: climate
+          - type:  copy_value
+            from_field: number_in_stock
+            to_field: number_in_stock
+            from_scope:  mobile
+            to_scope:    tablet
+          - type:  copy_value
+            from_field: main_color
+            to_field: secondary_color
+          - type:        copy_value
+            from_field:  name
+            to_field:    name
+            from_locale: en_US
+            to_locale:   fr_FR
+          - type:        copy_value
+            from_field:  description
+            to_field:    description
+            from_locale: en_US
+            to_locale:   fr_FR
+            from_scope:  mobile
+            to_scope:    tablet
+      """
+    And the product rule "copy_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | handmade                 |           |
       | made_in_france           |           |
@@ -356,16 +496,28 @@ Feature: Read a single product by applying rules
     And the following product values:
       | product   | attribute          | value          | locale | scope  |
       | my-jacket | weather_conditions | wet,cold       |        |        |
-    And the following product rules:
-      | code            | priority |
-      | rule_sku_jacket | 10       |
-    And the following product rule conditions:
-      | rule            | field | operator | value     |
-      | rule_sku_jacket | sku   | =        | my-jacket |
-    And the following product rule adder actions:
-      | rule            | field              | items    | options                         |
-      | rule_sku_jacket | weather_conditions | dry, hot | {"locale": null, "scope": null} |
-      | rule_sku_jacket | categories         | tshirts  |                                 |
+    And the following product rule definitions:
+      """
+      rule_sku_jacket:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  add
+            field: weather_conditions
+            data:
+              - dry
+              - hot
+            options:
+              locale: null
+              scope: null
+          - type:  add
+            field: categories
+            data:
+              - tshirts
+      """
     And the category of "my-jacket" should be "jackets"
     Given the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:

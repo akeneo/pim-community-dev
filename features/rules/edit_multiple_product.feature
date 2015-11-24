@@ -25,15 +25,20 @@ Feature: Update multiple product by applying rules
     | mug         | name      | Mug                    | en_US  |
     | fork        | name      | Fork                   | en_US  |
     | a-rangers   | name      | Rangers                | en_US  |
-    And the following product rules:
-    | code     | priority |
-    | set_name | 10       |
-    And the following product rule conditions:
-    | rule     | field | operator    | value |
-    | set_name | sku   | STARTS WITH | a-    |
-    And the following product rule setter actions:
-    | rule     | field | value    | locale |
-    | set_name | name  | new name | en_US  |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: STARTS WITH
+            value:    a-
+        actions:
+          - type:  set_value
+            field: name
+            value: new name
+            locale: en_US
+      """
     Given the product rule "set_name" is executed
     And I am on the "a-my-loafer" product page
     Then the product Name should be "new name"
@@ -66,15 +71,24 @@ Feature: Update multiple product by applying rules
     | fork      | name      |                | fr_FR  |
     | rangers   | name      | Rangers        | en_US  |
     | rangers   | name      |                | fr_FR  |
-    And the following product rules:
-    | code      | priority |
-    | copy_name | 10       |
-    And the following product rule conditions:
-    | rule      | field | operator | value | locale |
-    | copy_name | name  | EMPTY    |       | fr_FR  |
-    And the following product rule copier actions:
-      | rule      | from_field | to_field | from_locale | to_locale | from_scope | to_scope |
-      | copy_name | name       | name     | en_US       | fr_FR     |            |          |
+    And the following product rule definitions:
+      """
+      copy_name:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: EMPTY
+            value:    ~
+            locale:   fr_FR
+        actions:
+          - type:        copy_value
+            from_field:  name
+            to_field:    name
+            from_locale: en_US
+            to_locale:   fr_FR
+            from_scope:  ~
+            to_scope:    ~
+      """
     Given the product rule "copy_name" is executed
     And I am on the "my-loafer" product page
     When I switch the locale to "fr_FR"
