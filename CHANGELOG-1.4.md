@@ -4,6 +4,7 @@
 - PIM-5170: Fixes memory leak on MongoDB at import time
 - PIM-5176: Fix customisation of columns not saved in "Column Selection"
 - PIM-5201: Fix permission System/Edit a Role
+- PIM-5172: Fix PDF export for text area attribute
 
 # 1.4.10 (2015-11-20)
 
