@@ -754,8 +754,13 @@ class Form extends Base
         $remainingValues = array_diff($allValues, $selectedTextValues);
         foreach ($remainingValues as $value) {
             if (trim($value)) {
-                $label->click();
-                $label->click();
+                $this->spin(function () use ($label) {
+                    $result = $this->find('css', '.select2-result');
+                    if (null !== $result && $result->isVisible()) {
+                        return true;
+                    }
+                    $label->click();
+                });
 
                 $option = $this->spin(function () use ($value) {
                     return $this->find(
