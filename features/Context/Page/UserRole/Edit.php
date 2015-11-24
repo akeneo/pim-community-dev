@@ -42,7 +42,7 @@ class Edit extends Form
     {
         $element = $this->spin(function () use ($group) {
             return $this->getElement('ACL Group')->find('css', sprintf('a:contains("%s")', $group));
-        }, 5, sprintf('Unable to find the ACL group', $group));
+        }, sprintf('Unable to find the ACL group: "%s"', $group));
 
         $element->click();
     }
@@ -58,7 +58,7 @@ class Edit extends Form
     {
         $node = $this->spin(function () use ($role) {
             return $this->getElement('ACL Role')->find('css', sprintf('strong:contains("%s")', $role));
-        }, 5, sprintf('Unable to find the ACL role', $role));
+        }, sprintf('Unable to find the ACL role: "%s"', $role));
 
         $element = $node->getParent()->getParent()->find('css', 'i');
         if (null === $element) {
