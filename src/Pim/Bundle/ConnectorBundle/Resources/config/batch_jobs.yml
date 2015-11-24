@@ -22,8 +22,6 @@ connector:
                         reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
-                    parameters:
-                        batch_size: 1
         csv_attribute_import:
             title: pim_connector.jobs.csv_attribute_import.title
             type:  import
