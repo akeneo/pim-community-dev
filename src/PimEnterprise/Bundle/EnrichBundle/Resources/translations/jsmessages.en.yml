@@ -70,6 +70,7 @@ pimee_enrich:
                 source:
                     working_copy: Working copy
                     draft: My draft
+                    draft_of: "{{ author }}'s draft"
         product_draft:
             info:
                 update_successful: Product draft has been successfully saved

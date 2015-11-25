@@ -1,8 +1,9 @@
 parameters:
-    pimee_workflow.controller.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
-    pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
+    pimee_workflow.controller.product_draft.class:          PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
+    pimee_workflow.controller.published_product.class:      PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\PublishedProductController
-    pimee_workflow.controller.product_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
+    pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
+    pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -51,3 +52,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+
+    pimee_workflow.controller.rest.product:
+        class: %pimee_workflow.controller.rest.product.class%
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@security.token_storage'
+            - '@pim_catalog.filter.chained'

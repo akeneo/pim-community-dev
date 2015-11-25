@@ -1,11 +1,11 @@
 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-    <%- _.__('pimee_enrich.entity.product.copy.source.' + currentSource) %>
+    <%- currentSource.label %>
     <span class="caret"></span>
 </a>
 <ul class="dropdown-menu">
-    <% _.each(sources, function (sourceCode) { %>
-        <li>
-            <a data-source="<%- sourceCode %>"><%- _.__('pimee_enrich.entity.product.copy.source.' + sourceCode) %></a>
-        </li>
+    <% _.each(sources, function (source) { %>
+    <li>
+        <a data-source="<%- source.code %>"><%- source.label %></a>
+    </li>
     <% }); %>
 </ul>

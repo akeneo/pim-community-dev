@@ -23,3 +23,7 @@ pimee_workflow_product_draft_ready:
 pimee_workflow_categorytree:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/categorytree.yml'
     prefix: /workflow/published-product
+
+pimee_workflow_rest_product:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/product.yml'
+    prefix: /workflow

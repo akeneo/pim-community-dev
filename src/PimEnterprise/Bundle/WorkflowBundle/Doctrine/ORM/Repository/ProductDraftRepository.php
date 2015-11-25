@@ -51,6 +51,20 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     /**
      * {@inheritdoc}
      */
+    public function findByProductExcludingAuthor(ProductInterface $product, UserInterface $user)
+    {
+        return $this->createQueryBuilder('ProductDraft')
+            ->where('ProductDraft.product = :product')
+            ->andWhere('ProductDraft.author <> :author')
+            ->setParameter('product', $product)
+            ->setParameter('author', $user->getUsername())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
         $qb = $this->createApprovableByUserQueryBuilder($user);

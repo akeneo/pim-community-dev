@@ -100,6 +100,16 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     public function findUserProductDraft(ProductInterface $product, $username);
 
     /**
+     * Retrieve all product drafts of a product not authored by the given user
+     *
+     * @param ProductInterface $product
+     * @param UserInterface    $user
+     *
+     * @return ProductDraftInterface[]
+     */
+    public function findByProductExcludingAuthor(ProductInterface $product, UserInterface $user);
+
+    /**
      * Find all by product
      *
      * @param ProductInterface $product
