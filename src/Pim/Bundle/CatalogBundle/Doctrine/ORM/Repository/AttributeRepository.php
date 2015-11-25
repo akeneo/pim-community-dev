@@ -29,18 +29,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithTranslations()
-    {
-        $qb = $this->createQueryBuilder('a')
-            ->addSelect('translation')
-            ->leftJoin('a.translations', 'translation');
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findWithGroups(array $attributeIds = [], array $criterias = [])
     {
         $qb = $this->findWithGroupsQB($attributeIds, $criterias);
@@ -138,21 +126,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllInDefaultGroup()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->innerJoin('a.group', 'g')
-            ->where('g.code != :default_code')
-            ->orderBy('a.code')
-            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueAttributeCodes()
     {
         $codes = $this
@@ -245,21 +218,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAvailableAttributesAsLabelChoice()
-    {
-        $attributes = $this->getAvailableAttributesAsLabel();
-
-        $choices = [];
-        foreach ($attributes as $attribute) {
-            $choices[$attribute->getId()] = $attribute->getLabel();
-        }
-
-        return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
@@ -335,22 +293,6 @@ class AttributeRepository extends EntityRepository implements
         }
 
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
-
-        return array_keys($result);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeIds($codes)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('att.id')
-            ->from($this->_entityName, 'att', 'att.id')
-            ->andWhere('att.code IN (:codes)');
-
-        $parameters = ['codes' => $codes];
-        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);
     }
