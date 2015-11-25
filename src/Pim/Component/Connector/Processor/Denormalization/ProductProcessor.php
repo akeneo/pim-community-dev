@@ -115,7 +115,7 @@ class ProductProcessor extends AbstractProcessor
         }
 
         try {
-            $this->updateProduct($product, $filteredItem);
+            $this->updateProduct($product, $filteredItem, $familyCode);
         } catch (\InvalidArgumentException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
@@ -352,12 +352,22 @@ class ProductProcessor extends AbstractProcessor
     /**
      * @param ProductInterface $product
      * @param array            $filteredItem
+     * @param string|null      $familyCode
      *
      * @throws \InvalidArgumentException
      */
-    protected function updateProduct(ProductInterface $product, array $filteredItem)
+    protected function updateProduct(ProductInterface $product, array $filteredItem, $familyCode = null)
     {
+        $originalFamily = null;
+        if (null !== $familyCode && null !== $product->getId()) {
+            $originalFamily = $product->getFamily();
+        }
+
         $this->updater->update($product, $filteredItem);
+
+        if (null !== $originalFamily && $originalFamily->getCode() !== $familyCode) {
+            $this->builder->addMissingProductValues($product);
+        }
     }
 
     /**
