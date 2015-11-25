@@ -67,7 +67,8 @@ services:
             - '@pim_catalog.manager.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.remover.attribute_group'
-            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.attribute'
 
     pim_enrich.controller.category_tree.product:
         scope: request
