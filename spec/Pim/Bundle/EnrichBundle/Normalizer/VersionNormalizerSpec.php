@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Prophecy\Argument;
@@ -11,9 +11,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class VersionNormalizerSpec extends ObjectBehavior
 {
-    function let(UserManager $userManager, TranslatorInterface $translator)
+    function let(IdentifiableObjectRepositoryInterface $repository, TranslatorInterface $translator)
     {
-        $this->beConstructedWith($userManager, $translator);
+        $this->beConstructedWith($repository, $translator);
     }
 
     function it_supports_versions(Version $version)
@@ -21,7 +21,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($version, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_versions($userManager, Version $version, \DateTime $versionTime, User $steve)
+    function it_normalize_versions($repository, Version $version, \DateTime $versionTime, User $steve)
     {
         $version->getId()->willReturn(12);
         $version->getResourceId()->willReturn(112);
@@ -34,7 +34,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
-        $userManager->findUserByUsername('steve')->willReturn($steve);
+        $repository->findOneByIdentifier('steve')->willReturn($steve);
         $steve->getFirstName()->willReturn('Steve');
         $steve->getLastName()->willReturn('Jobs');
         $steve->getEmail()->willReturn('steve@pear.com');
@@ -52,7 +52,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalize_versions_with_deleted_user($userManager, $translator, Version $version, \DateTime $versionTime)
+    function it_normalize_versions_with_deleted_user($repository, $translator, Version $version, \DateTime $versionTime)
     {
         $version->getId()->willReturn(12);
         $version->getResourceId()->willReturn(112);
@@ -65,7 +65,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
-        $userManager->findUserByUsername('steve')->willReturn(null);
+        $repository->findOneByIdentifier('steve')->willReturn(null);
 
         $translator->trans('Removed user')->willReturn('Utilisateur supprimé');
 

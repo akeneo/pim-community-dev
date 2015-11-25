@@ -1,0 +1,22 @@
+Pim\Bundle\UserBundle\Entity\UserApi:
+    type: entity
+    table: pim_user_api
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        apiKey:
+            type: string
+            name: api_key
+            length: 255
+            unique: true
+            nullable: false
+
+    oneToOne:
+        user:
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            inversedBy: api
+            fetch: LAZY

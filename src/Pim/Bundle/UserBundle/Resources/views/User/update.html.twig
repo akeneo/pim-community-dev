@@ -8,7 +8,7 @@
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
 {% else %}
-    {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
+    {% set formAction = form.vars.value.id ? path('pim_user_update', { id: form.vars.value.id}) : path('pim_user_create') %}
 {% endif %}
 
 {% block head_script %}
@@ -59,13 +59,13 @@
     }) }}
 
         {% set buttons %}
-            {{ elements.backLink(path('oro_user_index')) }}
+            {{ elements.backLink(path('pim_user_index')) }}
 
             {% if form.vars.value.id and form.vars.value.id != app.user.id %}
                 {{ elements.deleteLink(
-                    path('oro_user_user_delete', {'id': form.vars.value.id}),
+                    path('pim_user_user_delete', {'id': form.vars.value.id}),
                     'pim_user_user_remove',
-                    path('oro_user_index'),
+                    path('pim_user_index'),
                     'confirmation.remove.user'|trans({ '%name%': fullname }),
                     'flash.user.removed'|trans
                 ) }}
@@ -91,12 +91,12 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+        {{ elements.form_navbar(view_element_aliases('pim_user_user_form.form_tab')) }}
 
         <div class="row-fluid tab-content buffer-top">
             {{ elements.form_errors(form) }}
 
-            {{ view_elements(form.vars.id ~ '.form_tab') }}
+            {{ view_elements('pim_user_user_form.form_tab') }}
         </div>
     {{ form_end(form) }}
 

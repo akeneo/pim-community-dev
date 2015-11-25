@@ -1,0 +1,22 @@
+pim_user_role_create:
+    path: /user/role/create
+    defaults: { _controller: PimUserBundle:Role:create }
+
+pim_user_role_update:
+    path: /user/role/update/{id}
+    defaults: { _controller: PimUserBundle:Role:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_role_index:
+    path: /user/role/{_format}
+    defaults: { _controller: PimUserBundle:Role:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_user_role_delete:
+    path: /user/role/delete/{id}
+    defaults: { _controller: PimUserBundle:Role:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]

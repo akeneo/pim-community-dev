@@ -30,11 +30,11 @@ Feature: Navigate the application in hash navigation mode
       | pim_importexport_import_profile_index   |
       | pim_importexport_import_execution_index |
       | oro_pinbar_help                         |
-      | oro_user_create                         |
-      | oro_user_group_create                   |
-      | oro_user_group_index                    |
-      | oro_user_index                          |
-      | oro_user_profile_update                 |
-      | oro_user_profile_view                   |
-      | oro_user_role_create                    |
-      | oro_user_role_index                     |
+      | pim_user_create                         |
+      | pim_user_group_create                   |
+      | pim_user_group_index                    |
+      | pim_user_index                          |
+      | pim_user_profile_update                 |
+      | pim_user_profile_view                   |
+      | pim_user_role_create                    |
+      | pim_user_role_index                     |

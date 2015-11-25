@@ -19,7 +19,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Symfony\Component\Security\Core\User\UserInterface'      => 'oro_user.entity.class',
+            'Symfony\Component\Security\Core\User\UserInterface'      => 'pim_user.entity.user.class',
             'Pim\Bundle\CatalogBundle\Model\AssociationInterface'     => 'pim_catalog.entity.association.class',
             'Pim\Bundle\CatalogBundle\Model\AttributeInterface'       => 'pim_catalog.entity.attribute.class',
             'Pim\Bundle\CatalogBundle\Model\CompletenessInterface'    => 'pim_catalog.entity.completeness.class',

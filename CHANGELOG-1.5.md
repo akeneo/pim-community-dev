@@ -23,6 +23,7 @@
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Remove OroEntityBundle
 - Remove OroEntityConfigBundle
+- Remove OroUserBundle
 - Remove PimEntityBundle
 - Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle
 - Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
@@ -61,3 +62,4 @@
 - Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface
 - Added method `getAttributeCodesByGroup` to the `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer`, made AttributeRepository mandatory
+- Every forms / controllers / event subscribers / menu / templates from OroUserBundle are now located inside PimUserBundle

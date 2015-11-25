@@ -20,7 +20,7 @@
     </div>
     {% endif %}
 
-    <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
+    <form action="{{ path('pim_user_security_check') }}" method="post" class="form-signin">
         <div class="title-box">
             <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
@@ -44,7 +44,7 @@
                 <button type="submit" class="btn btn-large btn-primary" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>
             <div class="signin-help">
-                <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+                <a href="{{ path('pim_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
             </div>
         </fieldset>
         <input type="hidden" name="_target_path" value="" />

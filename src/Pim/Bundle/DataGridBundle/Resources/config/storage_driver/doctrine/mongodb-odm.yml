@@ -29,6 +29,6 @@ services:
         class: %pim_datagrid.extension.formatter.property.version.author_property.class%
         arguments:
             - '@translator'
-            - '@oro_user.manager'
+            - '@pim_user.repository.user'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: author_property }

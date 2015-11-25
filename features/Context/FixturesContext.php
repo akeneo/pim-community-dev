@@ -14,7 +14,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -30,6 +29,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -85,8 +85,8 @@ class FixturesContext extends RawMinkContext
         'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
         'User'             => 'PimUserBundle:User',
-        'Role'             => 'OroUserBundle:Role',
-        'UserGroup'        => 'OroUserBundle:Group',
+        'Role'             => 'PimUserBundle:Role',
+        'UserGroup'        => 'PimUserBundle:Group',
         'Locale'           => 'PimCatalogBundle:Locale',
         'GroupType'        => 'PimCatalogBundle:GroupType',
         'Product'          => 'Pim\Bundle\CatalogBundle\Model\Product',
@@ -1472,7 +1472,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $userGroupName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
+     * @return \Pim\Bundle\UserBundle\Entity\Group
      *
      * @Then /^there should be a "([^"]+)" user group$/
      */
@@ -1484,7 +1484,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $userRoleName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return \Pim\Bundle\UserBundle\Entity\Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1496,7 +1496,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $roleLabel
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return \Pim\Bundle\UserBundle\Entity\Role
      */
     public function getRole($roleLabel)
     {

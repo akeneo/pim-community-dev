@@ -5,13 +5,13 @@
 {% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
 {% set gridName = 'pim-group-user-grid' %}
-{% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
+{% set formAction = entityId ? path('pim_user_group_update', { 'id': entityId}) : path('pim_user_group_create') %}
 
 {% block navButtons %}
     {% if entityId and resource_granted('pim_user_group_remove') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_user_group_delete', {'id': entityId}),
-            'dataRedirect': path('oro_user_group_index'),
+            'dataUrl': path('pim_user_group_delete', {'id': entityId}),
+            'dataRedirect': path('pim_user_group_index'),
             'aCss': 'no-hash remove-button',
             'dataId': entityId,
             'id': 'btn-remove-group',
@@ -21,7 +21,7 @@
             'label': 'Delete'
         }) }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_group_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
+    {{ UI.button({'path' : path('pim_user_group_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
@@ -30,7 +30,7 @@
     {% if entityId %}
         {% set breadcrumbs = {
             'entity':      form.vars.value,
-            'indexPath':   path('oro_user_group_index'),
+            'indexPath':   path('pim_user_group_index'),
             'indexLabel': 'Groups'|trans,
             'entityTitle': form.vars.value.name
         }

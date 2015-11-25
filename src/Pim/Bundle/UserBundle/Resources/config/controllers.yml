@@ -13,4 +13,4 @@ services:
         class: %pim_user.controller.security_rest.class%
         arguments:
             - '@oro_security.security_facade'
-            - @oro_security.acl.annotation_provider
+            - '@oro_security.acl.annotation_provider'

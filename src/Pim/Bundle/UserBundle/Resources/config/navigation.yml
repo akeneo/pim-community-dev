@@ -1,5 +1,105 @@
+oro_menu_config:
+    items:
+        system_tab:
+            label: 'System'
+            uri: '#'
+        users_management:
+            label: 'Users Management'
+            uri: '#'
+        user_list:
+            label: 'Users'
+            route: 'pim_user_index'
+            aclResourceId: pim_user_user_index
+            extras:
+                routes: ['/^pim_user_(?!role\w+|group\w+|security\w+|reset\w+)\w+$/']
+                description: List of system users
+        user_create:
+            label: 'Create User'
+            route: 'pim_user_create'
+        user_roles:
+            label: 'Roles'
+            route: 'pim_user_role_index'
+            aclResourceId: pim_user_role_index
+            extras:
+                routes: ['pim_user_role_*']
+                description: List of system roles
+        user_groups:
+            label: 'Groups'
+            route: 'pim_user_group_index'
+            aclResourceId: pim_user_group_index
+            extras:
+                routes: ['pim_user_group_*']
+                description: List of system groups
+        shortcut_new_user:
+            label: Create new user
+            route: pim_user_create
+            extras:
+                description: Create new user instance
+                isCustomAction: true
+        shortcut_list_users:
+            label: Show users list
+            route: pim_user_index
+            extras:
+                description: List of all system users
+                isCustomAction: true
+        shortcut_new_role:
+            label: Create new role
+            route: pim_user_role_create
+            extras:
+                description: Create new role instance
+        shortcut_new_group:
+            label: Create new group
+            route: pim_user_group_create
+            extras:
+                description: Create new group instance
+        pim_user_profile_view:
+            label: 'My User'
+            route: 'pim_user_profile_view'
+            extras:
+                position: 10
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        users_management:
+                            children:
+                                user_list: ~
+                                user_roles: ~
+                                user_groups: ~
+        usermenu:
+            children:
+                pim_user_profile_view: ~
+
+        shortcuts:
+            children:
+                shortcut_new_user: ~
+                shortcut_list_users: ~
+                shortcut_new_role: ~
+                shortcut_new_group: ~
+
 oro_titles:
-    oro_user_index: pim_title.user.index
-    oro_user_role_index: pim_title.user_role.index
-    oro_user_group_index: pim_title.user_group.index
     oro_config_configuration_system: pim_title.system_configuration.index
+
+    pim_user_view: %%username%%
+    pim_user_update: %%username%% - Edit
+    pim_user_create: Create User
+    pim_user_index: pim_title.user.index
+
+    pim_user_profile_view: %%username%%
+    pim_user_profile_update: %%username%% - Edit
+
+    pim_user_role_update: %%role%% - Edit
+    pim_user_role_create: Create Role
+    pim_user_role_index: pim_title.user_role.index
+
+    pim_user_security_login: Login
+
+    pim_user_reset_reset: Password Reset
+    pim_user_reset_request: Forgot Password
+    pim_user_reset_check_email: Password Reset - Check Email
+
+    pim_user_group_create: Create Group
+    pim_user_group_update: %%group%% - Edit
+    pim_user_group_index: pim_title.user_group.index

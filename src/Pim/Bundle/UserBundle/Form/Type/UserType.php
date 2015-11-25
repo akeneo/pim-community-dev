@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
@@ -14,7 +13,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Overriden user form to add a custom subscriber
@@ -44,7 +42,6 @@ class UserType extends AbstractType
     protected $isMyProfilePage;
 
     /**
-     * @param TokenStorageInterface     $tokenStorage
      * @param Request                   $request
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
@@ -52,14 +49,12 @@ class UserType extends AbstractType
      * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
         Request $request,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->tokenStorage     = $tokenStorage;
         $this->isMyProfilePage  = $request->attributes->get('_route') === 'oro_user_profile_update';
         $this->subscriber       = $subscriber;
         $this->roleRepository   = $roleRepository;
@@ -72,68 +67,77 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addEntityFields($builder);
+        $builder
+            ->add('username', 'text', [
+                'required'       => true,
+            ])
+            ->add('email', 'email', [
+                'label'          => 'E-mail',
+                'required'       => true,
+            ])
+            ->add('namePrefix', 'text', [
+                'label'          => 'Name prefix',
+                'required'       => false,
+            ])
+            ->add('firstName', 'text', [
+                'label'          => 'First name',
+                'required'       => true,
+            ])
+            ->add('middleName', 'text', [
+                'label'          => 'Middle name',
+                'required'       => false,
+            ])
+            ->add('lastName', 'text', [
+                'label'          => 'Last name',
+                'required'       => true,
+            ])
+            ->add('nameSuffix', 'text', [
+                'label'          => 'Name suffix',
+                'required'       => false,
+            ])
+            ->add('birthday', 'oro_date', [
+                'label'          => 'Date of birth',
+                'required'       => false,
+            ])
+            ->add('imageFile', 'file', [
+                'label'          => 'Avatar',
+                'required'       => false,
+            ])
+            ->add('rolesCollection', 'entity', [
+                'label'          => 'Roles',
+                'class'          => 'PimUserBundle:Role',
+                'property'       => 'label',
+                'query_builder'  => $this->roleRepository->getAllButAnonymousQB(),
+                'multiple'       => true,
+                'expanded'       => true,
+                'required'       => !$this->isMyProfilePage,
+                'read_only'      => $this->isMyProfilePage,
+                'disabled'       => $this->isMyProfilePage,
+            ])
+            ->add('groups', 'entity', [
+                'class'          => 'PimUserBundle:Group',
+                'property'       => 'name',
+                'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
+                'multiple'       => true,
+                'expanded'       => true,
+                'required'       => false,
+                'read_only'      => $this->isMyProfilePage,
+                'disabled'       => $this->isMyProfilePage
+            ])
+            ->add('plainPassword', 'repeated', [
+                'type'           => 'password',
+                'required'       => true,
+                'first_options'  => ['label' => 'Password'],
+                'second_options' => ['label' => 'Re-enter password'],
+            ])
+            ->add('change_password', 'oro_change_password')
+            ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
+                'multiple'       => true,
+            ]);
 
         $this->eventDispatcher->dispatch(UserFormBuilderEvent::POST_BUILD, new UserFormBuilderEvent($builder));
-        $builder->addEventSubscriber($this->subscriber);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addEntityFields(FormBuilderInterface $builder)
-    {
-        $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->tokenStorage)
-        );
-        $this->setDefaultUserFields($builder);
-        $builder
-            ->add(
-                'rolesCollection',
-                'entity',
-                [
-                    'label'          => 'Roles',
-                    'class'          => 'OroUserBundle:Role',
-                    'property'       => 'label',
-                    'query_builder'  => $this->roleRepository->getAllButAnonymousQB(),
-                    'multiple'       => true,
-                    'expanded'       => true,
-                    'required'       => !$this->isMyProfilePage,
-                    'read_only'      => $this->isMyProfilePage,
-                    'disabled'       => $this->isMyProfilePage,
-                ]
-            )
-            ->add(
-                'groups',
-                'entity',
-                [
-                    'class'          => 'OroUserBundle:Group',
-                    'property'       => 'name',
-                    'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
-                    'multiple'       => true,
-                    'expanded'       => true,
-                    'required'       => false,
-                    'read_only'      => $this->isMyProfilePage,
-                    'disabled'       => $this->isMyProfilePage
-                ]
-            )
-            ->add(
-                'plainPassword',
-                'repeated',
-                [
-                    'type'           => 'password',
-                    'required'       => true,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Re-enter password'],
-                ]
-            )
-            ->add(
-                'change_password',
-                'oro_change_password'
-            )
-            ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
-                'multiple' => true,
-            ]);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -143,9 +147,9 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'        => 'Pim\Bundle\UserBundle\Entity\UserInterface',
-                'intention'         => 'user',
-                'validation_groups' => function ($form) {
+                'data_class'           => 'Pim\Bundle\UserBundle\Entity\UserInterface',
+                'intention'            => 'user',
+                'validation_groups'    => function ($form) {
                     if ($form instanceof FormInterface) {
                         $user = $form->getData();
                     } elseif ($form instanceof FormView) {
@@ -173,86 +177,5 @@ class UserType extends AbstractType
     public function getName()
     {
         return 'pim_user_user';
-    }
-
-    /**
-     * Set user fields
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function setDefaultUserFields(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add(
-                'username',
-                'text',
-                [
-                    'required' => true,
-                ]
-            )
-            ->add(
-                'email',
-                'email',
-                [
-                    'label'    => 'E-mail',
-                    'required' => true,
-                ]
-            )
-            ->add(
-                'namePrefix',
-                'text',
-                [
-                    'label'    => 'Name prefix',
-                    'required' => false,
-                ]
-            )
-            ->add(
-                'firstName',
-                'text',
-                [
-                    'label'    => 'First name',
-                    'required' => true,
-                ]
-            )
-            ->add(
-                'middleName',
-                'text',
-                [
-                    'label'    => 'Middle name',
-                    'required' => false,
-                ]
-            )
-            ->add(
-                'lastName',
-                'text',
-                [
-                    'label'    => 'Last name',
-                    'required' => true,
-                ]
-            )
-            ->add(
-                'nameSuffix',
-                'text',
-                [
-                    'label'    => 'Name suffix',
-                    'required' => false,
-                ]
-            )
-            ->add(
-                'birthday',
-                'oro_date',
-                [
-                    'label'    => 'Date of birth',
-                    'required' => false,
-                ]
-            )
-            ->add(
-                'imageFile',
-                'file',
-                [
-                    'label'    => 'Avatar',
-                    'required' => false,
-                ]
-            );
     }
 }
