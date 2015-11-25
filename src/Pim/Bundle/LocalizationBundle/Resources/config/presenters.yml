@@ -4,3 +4,5 @@ parameters:
 services:
     pim_localization.presenter.price:
         class: %pim_localization.presenter.price.class%
+        arguments:
+            - '@pim_localization.factory.number'

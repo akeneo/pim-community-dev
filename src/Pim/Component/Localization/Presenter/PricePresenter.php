@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Presenter;
 
+use Pim\Component\Localization\Factory\NumberFactory;
 use Symfony\Component\Intl\Intl;
 
 /**
@@ -13,6 +14,17 @@ use Symfony\Component\Intl\Intl;
  */
 class PricePresenter implements PresenterInterface
 {
+    /** @var NumberFactory */
+    protected $numberFactory;
+
+    /**
+     * @param NumberFactory $numberFactory
+     */
+    public function __construct(NumberFactory $numberFactory)
+    {
+        $this->numberFactory = $numberFactory;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -21,14 +33,9 @@ class PricePresenter implements PresenterInterface
      */
     public function present($price, array $options = [])
     {
-        if (isset($options['locale'])) {
-            $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::CURRENCY);
-
-            return $numberFormatter->formatCurrency($price['data'], $price['currency']);
-        }
-
-        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol($price['currency']);
-
-        return sprintf('%s %s', $price['data'], $symbol);
+        return $this
+            ->numberFactory
+            ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]))
+            ->formatCurrency($price['data'], $price['currency']);
     }
 }
