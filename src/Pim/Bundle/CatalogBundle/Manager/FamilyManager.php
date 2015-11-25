@@ -39,7 +39,7 @@ class FamilyManager
     /**
      * Get choices, only used by datagrids, should be moved
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.5
      *
      * @return array
      */

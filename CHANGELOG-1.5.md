@@ -70,3 +70,4 @@
 - Remove deprecated methods findAllInDefaultGroup, getAvailableAttributesAsLabelChoice, getAttributeIds from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Remove deprecated methods getAvailableAxis, getRepository, getGroupTypeRepository, getProductList, getAttributeRepository from `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\GroupManager` to pass `Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Remove deprecated method getAttributeOptionValueClass from `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
