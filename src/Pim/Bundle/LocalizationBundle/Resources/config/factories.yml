@@ -1,6 +1,13 @@
 parameters:
+    pim_localization.factory.date.class: Pim\Component\Localization\Factory\DateFactory
     pim_localization.factory.number.class: Pim\Component\Localization\Factory\NumberFactory
-    pim_localization.factory.number.currency_formats:
+
+    pim_localization.factory.date.formats:
+        en: 'MM/dd/yyyy'
+        en_US: 'MM/dd/yyyy'
+        fr: 'dd/MM/yyyy'
+        fr_FR: 'dd/MM/yyyy'
+    pim_localization.factory.number.formats:
         en_US: '¤#,##0.00'
         fr_FR: '#,##0.00 ¤'
 
@@ -8,4 +15,9 @@ services:
     pim_localization.factory.number:
         class: %pim_localization.factory.number.class%
         arguments:
-            - %pim_localization.factory.number.currency_formats%
+            - %pim_localization.factory.number.formats%
+
+    pim_localization.factory.date:
+        class: %pim_localization.factory.date.class%
+        arguments:
+            - %pim_localization.factory.date.formats%
