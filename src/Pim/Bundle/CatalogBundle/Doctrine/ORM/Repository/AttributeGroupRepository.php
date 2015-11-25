@@ -19,18 +19,6 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function findAllWithTranslations()
-    {
-        $qb = $this->createQueryBuilder('attribute_group')
-            ->addSelect('translation')
-            ->leftJoin('attribute_group.translations', 'translation');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdToLabelOrderedBySortOrder()
     {
         $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();

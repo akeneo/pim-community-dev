@@ -16,16 +16,9 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * @return AttributeGroupInterface
-     *
-     * @deprecated not used anymore, will be removed in 1.5
-     */
-    public function findAllWithTranslations();
-
-    /**
      * Find all ordered by label with fallback to default mechanism
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated only used in a controller, will be removed in 1.5
      *
      * @return array
      */
@@ -34,7 +27,7 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
     /**
      * Get the attribute group choices
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated only used in grid, will be removed in 1.5
      *
      * @return array
      */
