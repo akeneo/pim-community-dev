@@ -37,6 +37,21 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findAllInDefaultGroup()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->innerJoin('a.group', 'g')
+            ->where('g.code != :default_code')
+            ->orderBy('a.code')
+            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Find attributes with related attribute groups QB
      *
      * @param array $attributeIds
@@ -213,6 +228,21 @@ class AttributeRepository extends EntityRepository implements
             );
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributesAsLabelChoice()
+    {
+        $attributes = $this->getAvailableAttributesAsLabel();
+
+        $choices = [];
+        foreach ($attributes as $attribute) {
+            $choices[$attribute->getId()] = $attribute->getLabel();
+        }
+
+        return $choices;
     }
 
     /**

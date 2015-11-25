@@ -67,7 +67,7 @@
 - `Pim\Component\Connector\Writer\File\YamlWriter` now inherits from `Pim\Component\Connector\Writer\File\AbstractFileWriter` therefore needs an instance of `Pim\Component\Connector\Writer\File\FilePathResolverInterface` as first parameter of the constructor
 - Remove deprecated methods findAllWithTranslations, getIdToLabelOrderedBySortOrder, getAttributeGroupChoices from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Remove deprecated methods findAllWithTranslations, getIdToLabelOrderedBySortOrder, getAttributeGroupChoices from `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
-- Remove deprecated methods findAllInDefaultGroup, getAvailableAttributesAsLabelChoice, getAttributeIds from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Remove deprecated methods getAvailableAttributesAsLabelChoice, getAttributeIds from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Remove deprecated methods getAvailableAxis, getRepository, getGroupTypeRepository, getProductList, getAttributeRepository from `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\GroupManager` to pass `Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Remove deprecated method getAttributeOptionValueClass from `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`

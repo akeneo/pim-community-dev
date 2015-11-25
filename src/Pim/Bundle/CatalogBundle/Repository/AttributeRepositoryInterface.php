@@ -31,6 +31,15 @@ interface AttributeRepositoryInterface extends
     public function findWithGroups(array $attributeIds = [], array $criterias = []);
 
     /**
+     * Find all attributes that belongs to the default group
+     *
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.5
+     *
+     * @return AttributeInterface[]
+     */
+    public function findAllInDefaultGroup();
+
+    /**
      * Find all unique attribute codes
      *
      * @return string[]
@@ -63,6 +72,15 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function findAllAxis();
+
+    /**
+     * Get available attributes as label as a choice
+     *
+     * @deprecated only used in grid, will be removed in 1.5
+     *
+     * @return array
+     */
+    public function getAvailableAttributesAsLabelChoice();
 
     /**
      * Get attribute as array indexed by code
