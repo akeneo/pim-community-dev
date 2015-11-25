@@ -94,6 +94,7 @@ services:
             - '@pim_enrich.form.channel'
             - '@pim_catalog.remover.channel'
             - '@pim_catalog.saver.locale'
+            - '@pim_catalog.repository.channel'
 
     pim_enrich.controller.currency:
         scope: request
