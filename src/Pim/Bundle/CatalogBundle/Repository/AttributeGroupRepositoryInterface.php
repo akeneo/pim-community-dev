@@ -16,6 +16,31 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
+     * @return AttributeGroupInterface
+     *
+     * @deprecated not used anymore, will be removed in 1.5
+     */
+    public function findAllWithTranslations();
+
+    /**
+     * Find all ordered by label with fallback to default mechanism
+     *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
+     * @return array
+     */
+    public function getIdToLabelOrderedBySortOrder();
+
+    /**
+     * Get the attribute group choices
+     *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
+     * @return array
+     */
+    public function getAttributeGroupChoices();
+
+    /**
      * Get the default attribute group
      *
      * @return null|AttributeGroupInterface
