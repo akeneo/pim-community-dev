@@ -73,3 +73,4 @@
 - Remove deprecated method getAttributeOptionValueClass from `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
 - Remove deprecated methods getActiveCurrencies, getCurrencies from `Pim\Bundle\CatalogBundle\Manager\CurrencyManager`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeGroupController` to inject `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController` to inject `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`

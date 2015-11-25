@@ -135,6 +135,8 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@pim_catalog.remover.attribute'
             - '@pim_catalog.saver.attribute_option'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.group'
             - %akeneo_measure.measures_config%
 
     pim_enrich.controller.attribute_option:
