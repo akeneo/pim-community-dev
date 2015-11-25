@@ -2,12 +2,6 @@
 'use strict';
 
 define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
-    var getObjects = function (promises) {
-        return $.when.apply($, _.toArray(promises)).then(function () {
-            return 0 !== arguments.length ? _.toArray(arguments) : [];
-        });
-    };
-
     return Backbone.Model.extend({
         entityListPromise: null,
         entityPromises: {},
@@ -95,7 +89,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
             if (0 === uncachedIdentifiers.length) {
-                return getObjects(_.pick(this.entityPromises, identifiers));
+                return this.getObjects(_.pick(this.entityPromises, identifiers));
             }
 
             return $.when(
@@ -107,7 +101,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                         this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
                     }.bind(this));
 
-                    return getObjects(_.pick(this.entityPromises, identifiers));
+                    return this.getObjects(_.pick(this.entityPromises, identifiers));
                 }.bind(this));
         },
 
@@ -132,6 +126,19 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                 this.entityListPromise = null;
                 this.entityPromises    = {};
             }
+        },
+
+        /**
+         * Wait for promises to resolve and return the promises results wrapped in a Promise
+         *
+         * @param {Array|Object} promises
+         *
+         * @return {Promise}
+         */
+        getObjects: function (promises) {
+            return $.when.apply($, _.toArray(promises)).then(function () {
+                return 0 !== arguments.length ? _.toArray(arguments) : [];
+            });
         }
     });
 });
