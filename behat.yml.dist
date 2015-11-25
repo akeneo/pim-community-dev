@@ -33,7 +33,7 @@ jenkins-1:
             kernel:
                 env: behat1
     formatter:
-        name: Context\SummaryFormatter,junit
+        name: Context\SummaryFormatter, Context\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -51,7 +51,7 @@ jenkins-2:
             kernel:
                 env: behat2
     formatter:
-        name: Context\SummaryFormatter,junit
+        name: Context\SummaryFormatter, Context\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -69,7 +69,7 @@ jenkins-3:
             kernel:
                 env: behat3
     formatter:
-        name: Context\SummaryFormatter,junit
+        name: Context\SummaryFormatter, Context\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -87,7 +87,7 @@ jenkins-4:
             kernel:
                 env: behat4
     formatter:
-        name: Context\SummaryFormatter,junit
+        name: Context\SummaryFormatter, Context\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -107,7 +107,7 @@ ci:
             kernel:
                 env: behat
     formatter:
-        name: Context\SummaryFormatter,junit
+        name: Context\SummaryFormatter, Context\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
