@@ -1,3 +1,9 @@
+# 1.3.33 (2015-11-25)
+
+## Bug fixes
+
+- PIM-5224: Fix first matching option on selects during filtering via the pqb
+
 # 1.3.32 (2015-11-19)
 
 ## Technical improvements
