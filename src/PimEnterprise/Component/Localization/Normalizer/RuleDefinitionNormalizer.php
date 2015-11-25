@@ -34,6 +34,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
 
     /** @var LocaleResolver */
     protected $localeResolver;
+
     /**
      * @param NormalizerInterface                  $ruleNormalizer
      * @param LocalizedAttributeConverterInterface $converter
