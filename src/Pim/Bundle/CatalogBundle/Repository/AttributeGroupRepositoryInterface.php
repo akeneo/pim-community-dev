@@ -16,9 +16,12 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
+     * @return AttributeGroupInterface
+     */
+    public function findAllWithTranslations();
+
+    /**
      * Find all ordered by label with fallback to default mechanism
-     *
-     * @deprecated only used in a controller, will be removed in 1.5
      *
      * @return array
      */

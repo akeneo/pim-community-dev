@@ -72,5 +72,4 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\GroupManager` to pass `Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Remove deprecated method getAttributeOptionValueClass from `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
 - Remove deprecated methods getActiveCurrencies, getCurrencies from `Pim\Bundle\CatalogBundle\Manager\CurrencyManager`
-- Remove deprecated method findAllWithTranslations from `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeGroupController` to inject `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
