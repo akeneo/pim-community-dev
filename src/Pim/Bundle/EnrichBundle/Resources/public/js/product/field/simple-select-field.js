@@ -26,6 +26,10 @@ define(
                 'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
                     templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
@@ -33,6 +37,10 @@ define(
                     return templateContext;
                 });
             },
+
+            /**
+             * Create a new option for this simple select field
+             */
             createOption: function () {
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
@@ -47,9 +55,17 @@ define(
                     this.render();
                 }.bind(this));
             },
+
+            /**
+             * {@inheritdoc}
+             */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             postRender: function () {
                 this.$('[data-toggle="tooltip"]').tooltip();
                 this.getChoiceUrl().then(function (choiceUrl) {
@@ -68,7 +84,7 @@ define(
                             var id = $(element).val();
                             if ('' !== id) {
                                 if (null === this.choicePromise) {
-                                    this.choicePromise = $.ajax(choiceUrl);
+                                    this.choicePromise = $.get(choiceUrl);
                                 }
 
                                 this.choicePromise.then(function (response) {
@@ -82,6 +98,12 @@ define(
                     });
                 }.bind(this));
             },
+
+            /**
+             * Get the URL to retrieve the choice list for this select field
+             *
+             * @returns {Promise}
+             */
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
@@ -95,6 +117,10 @@ define(
                     )
                 ).promise();
             },
+
+            /**
+             * {@inheritdoc}
+             */
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="hidden"].select-field').val();
                 data = '' === data ? this.attribute.empty_value : data;
