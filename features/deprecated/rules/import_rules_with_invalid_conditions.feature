@@ -655,7 +655,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for filter media).: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition"
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for filter media).: PimEnterprise\Component\CatalogRule\Model\ProductCondition"
     And I should see "actions[0]: Attribute or field \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given (for setter media).: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab

@@ -643,7 +643,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for filter media).: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition"
+    And I should see the text "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for filter media).: PimEnterprise\Component\CatalogRule\Model\ProductCondition"
     And I should see the text "actions[0]: Attribute or field \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given (for setter media).: PimEnterprise\Component\CatalogRule\Model\ProductSetAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
@@ -738,6 +738,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    Canon
+                  locale:   en_US
             actions:
                 - type:  set
                   field: description
@@ -789,9 +790,10 @@ Feature: Import rules
                   value: A beautiful description
         sony_beautiful_description:
             conditions:
-                - field:       name
+                - field:          name
                   wrong_operator: CONTAINS
-                  value:       Canon
+                  value:          Canon
+                  locale:         en_US
             actions:
                 - type:  set
                   field: description
@@ -845,6 +847,7 @@ Feature: Import rules
                 - wrong_field: name
                   operator:    CONTAINS
                   value:       Canon
+                  locale:      en_US
             actions:
                 - type:  set
                   field: description
@@ -896,6 +899,7 @@ Feature: Import rules
             conditions:
                 - field:    name
                   operator: CONTAINS
+                  locale:   en_US
             actions:
                 - type:  set
                   field: description
@@ -948,6 +952,7 @@ Feature: Import rules
                 - field:    name
                   operator: ANOTHER WRONG
                   value:    Canon
+                  locale:   en_US
             actions:
                 - type:  set
                   field: description
@@ -1001,6 +1006,7 @@ Feature: Import rules
                 - field:    another wrong
                   operator: CONTAINS
                   value:    Canon
+                  locale:   en_US
             actions:
                 - type:  set
                   field: description

@@ -38,3 +38,36 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization\RuleDefinitionProcessor
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine\RuleDefinitionWriter to PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine\RuleDefinitionWriter
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\YamlFile\RuleDefinitionWriter to PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionDenormalizer to PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer to PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder to PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector to PimEnterprise\Component\CatalogRule\Engine\ProductRuleSelector
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface to PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition to PimEnterprise\Component\CatalogRule\Model\ProductCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface to PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface to PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation to PimEnterprise\Component\CatalogRule\Model\RuleRelation
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface to PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner to PimEnterprise\Component\CatalogRule\Runner\ProductRuleRunner
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingAddField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingCopyFields to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingCopyFields
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator to PimEnterprise\Component\CatalogRule\Validator\ExistingFieldValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFilterField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingSetField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingSetField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyActionValidator to PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\SupportedOperatorCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator to PimEnterprise\Component\CatalogRule\Validator\SupportedOperatorConditionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator

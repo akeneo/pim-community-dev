@@ -513,9 +513,6 @@ Feature: Read a single product by applying rules
             data:
               - dry
               - hot
-            options:
-              locale: null
-              scope: null
           - type:  add
             field: categories
             data:

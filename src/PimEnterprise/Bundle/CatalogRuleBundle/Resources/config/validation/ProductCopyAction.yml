@@ -1,7 +1,7 @@
 PimEnterprise\Component\CatalogRule\Model\ProductCopyAction:
     constraints:
-        - \PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\PropertyAction: ~
-        - \PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingCopyFields: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingCopyFields: ~
     properties:
         fromField:
            - Type:

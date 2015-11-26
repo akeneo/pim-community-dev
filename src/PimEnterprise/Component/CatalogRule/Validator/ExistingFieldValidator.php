@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\CatalogRule\Validator\Constraints;
+namespace PimEnterprise\Component\CatalogRule\Validator;
 
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;

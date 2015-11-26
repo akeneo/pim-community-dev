@@ -98,6 +98,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    Canon
+                  locale:   en_US
             actions:
                 - type:     copy
                   to_field: name
@@ -152,6 +153,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    Canon
+                  locale:   en_US
             actions:
                 - type:       copy
                   from_field: camera_model_name

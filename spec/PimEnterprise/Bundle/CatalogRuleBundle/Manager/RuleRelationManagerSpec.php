@@ -12,8 +12,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelation;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use Prophecy\Argument;
 

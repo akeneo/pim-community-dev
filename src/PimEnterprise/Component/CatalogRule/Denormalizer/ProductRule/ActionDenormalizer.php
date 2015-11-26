@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule;
 
-use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
