@@ -8,7 +8,7 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'jquery-ui-full'
+        'jquery-ui'
     ],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';

@@ -1,6 +1,6 @@
 /* global console */
 define(
-    ['jquery', 'oro/mediator', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
+    ['jquery', 'oro/mediator', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui', 'bootstrap'],
     function ($, mediator, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
