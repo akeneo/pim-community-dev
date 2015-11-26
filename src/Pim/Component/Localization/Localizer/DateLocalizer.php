@@ -72,8 +72,13 @@ class DateLocalizer implements LocalizerInterface
 
         $options   = $this->getOptions($options);
         $formatter = $this->factory->create($options);
+        $formatter->setLenient(false);
 
         $timestamp = $formatter->parse($date);
+        if (false === $timestamp) {
+            return $date;
+        }
+
         $formatter->setPattern(static::DEFAULT_DATE_FORMAT);
 
         return $formatter->format($timestamp);

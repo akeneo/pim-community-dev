@@ -32,6 +32,7 @@ class DateFormatValidator extends ConstraintValidator
     public function validate($date, Constraint $constraint)
     {
         $formatter = $this->factory->create(['date_format' => $constraint->dateFormat]);
+        $formatter->setLenient(false);
 
         if (false === $formatter->parse($date)) {
             $violation = $this->context->buildViolation($constraint->message, [
