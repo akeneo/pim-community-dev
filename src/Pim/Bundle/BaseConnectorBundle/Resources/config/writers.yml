@@ -11,15 +11,19 @@ parameters:
     pim_base_connector.writer.file.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter
 
 services:
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.file:
         class: %pim_base_connector.writer.file.class%
 
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%
 
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv:
         class: %pim_base_connector.writer.file.csv.class%
 
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv_product:
         class: %pim_base_connector.writer.file.csv_product.class%
         arguments:
