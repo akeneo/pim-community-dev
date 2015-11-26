@@ -73,10 +73,13 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                 $this->qb->field($fieldCode)->notIn($value);
                 break;
             case Operators::IS_EMPTY:
+                $exists = new Expr();
+                $equals = new Expr();
                 $expr = new Expr();
-                $this->qb->addAnd(
-                    $expr->field($fieldCode)->exists(false)
-                );
+                $exists->field($fieldCode)->exists(false);
+                $equals->field($fieldCode)->equals(null);
+                $expr->addOr($exists)->addOr($equals);
+                $this->qb->addAnd($expr);
                 break;
         }
 
