@@ -12,6 +12,7 @@
 - PIM-5172: Fix PDF export for text area attribute
 - PIM-5171: Apply ACLs on mass edit actions
 - PIM-5240: Fix Mongo normalization that creates a nullable family field
+- PIM-5159: Attribute values appearing/disappearing when you change attribute groups
 
 # 1.4.10 (2015-11-20)
 
