@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,7 +29,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var PresenterAttributeConverter */
     protected $converter;
 
     /** @var LocaleResolver */
@@ -37,12 +37,12 @@ class RuleDefinitionNormalizer implements NormalizerInterface
 
     /**
      * @param NormalizerInterface                  $ruleNormalizer
-     * @param LocalizedAttributeConverterInterface $converter
+     * @param PresenterAttributeConverter          $converter
      * @param LocaleResolver                       $localeResolver
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
-        LocalizedAttributeConverterInterface $converter,
+        PresenterAttributeConverter $converter,
         LocaleResolver $localeResolver
     ) {
         $this->ruleNormalizer = $ruleNormalizer;
@@ -79,7 +79,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     protected function convertContent(array $content)
     {
-        $localeOptions = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($content as $key => $items) {
             foreach ($items as $index => $action) {
@@ -87,7 +87,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
                     $content[$key][$index]['value'] = $this->converter->convertDefaultToLocalizedValue(
                         $action['field'],
                         $action['value'],
-                        $localeOptions
+                        $options
                     );
                 }
             }

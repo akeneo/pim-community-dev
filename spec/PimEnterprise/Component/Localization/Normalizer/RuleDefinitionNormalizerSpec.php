@@ -14,7 +14,9 @@ namespace spec\PimEnterprise\Component\Localization\Normalizer;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
+use Pim\Component\Localization\Provider\Format\DateFormatProvider;
+use Pim\Component\Localization\Provider\Format\NumberFormatProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,10 +24,14 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $ruleNormalizer,
-        LocalizedAttributeConverterInterface $converter,
+        PresenterAttributeConverter $converter,
         LocaleResolver $localeResolver
     ) {
-        $this->beConstructedWith($ruleNormalizer, $converter, $localeResolver);
+        $this->beConstructedWith(
+            $ruleNormalizer,
+            $converter,
+            $localeResolver
+        );
     }
 
     function it_supports_rule_definition_normalization(RuleDefinitionInterface $ruleDefinition)
@@ -34,10 +40,10 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_fr_numbers(
-        RuleDefinitionInterface $ruleDefinition,
-        LocaleResolver $localeResolver,
-        NormalizerInterface $ruleNormalizer,
-        LocalizedAttributeConverterInterface $converter
+        $ruleNormalizer,
+        $converter,
+        $localeResolver,
+        RuleDefinitionInterface $ruleDefinition
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $ruleNormalizer->normalize($ruleDefinition, 'array', [])->willReturn(
@@ -63,23 +69,23 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $localeOptions = ['locale' => 'fr_FR'];
+        $options = ['locale' => 'fr_FR'];
 
         $converter->convertDefaultToLocalizedValue(
             'price',
             [['data' => '12.1234', 'currency' => 'EUR']],
-            $localeOptions
+            $options
         )->willReturn([['data' => '12,1234', 'currency' => 'EUR']]);
 
-        $converter->convertDefaultToLocalizedValue('auto_focus_points', 4.1234, $localeOptions)->willReturn('4,1234');
+        $converter->convertDefaultToLocalizedValue('auto_focus_points', 4.1234, $options)->willReturn('4,1234');
 
         $converter->convertDefaultToLocalizedValue(
             'weight',
             ['data' => 500.1234, 'unit' => 'GRAM'],
-            $localeOptions
+            $options
         )->willReturn(['data' => '500,1234', 'unit' => 'GRAM']);
 
-        $converter->convertDefaultToLocalizedValue('sku', 'AKNTS_PB', $localeOptions)->willReturn('AKNTS_PB');
+        $converter->convertDefaultToLocalizedValue('sku', 'AKNTS_PB', $options)->willReturn('AKNTS_PB');
 
         $this->normalize($ruleDefinition, 'array', [])->shouldReturn(
             [
