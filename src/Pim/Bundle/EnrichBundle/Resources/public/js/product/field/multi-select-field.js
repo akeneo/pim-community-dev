@@ -21,6 +21,7 @@ define(
     function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
+            choicePromise: null,
             events: {
                 'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -43,6 +44,7 @@ define(
                         this.setCurrentValue(value);
                     }
 
+                    this.choicePromise = null;
                     this.render();
                 }.bind(this));
             },
@@ -64,14 +66,18 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            $.ajax(choiceUrl).then(function (response) {
+                            if (null === this.choicePromise) {
+                                this.choicePromise = $.ajax(choiceUrl);
+                            }
+
+                            this.choicePromise.then(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     return _.findWhere(results, {id: choice});
                                 });
                                 callback(choices);
                             });
-                        },
+                        }.bind(this),
                         multiple: true
                     });
                 }.bind(this));
@@ -94,6 +100,9 @@ define(
                 if (1 === data.length && '' === data[0]) {
                     data = [];
                 }
+
+                this.choicePromise = null;
+
                 this.setCurrentValue(data);
             }
         });
