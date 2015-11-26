@@ -20,9 +20,6 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     protected $buffer;
 
     /** @var string */
-    protected $filePath = '/tmp/export_%datetime%.csv';
-
-    /** @var string */
     protected $delimiter = ';';
 
     /** @var string */

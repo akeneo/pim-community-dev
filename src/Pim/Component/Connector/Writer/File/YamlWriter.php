@@ -17,9 +17,6 @@ class YamlWriter extends AbstractFileWriter
     const INLINE_ARRAY_LEVEL = 8;
 
     /** @var string */
-    protected $filePath = '/tmp/export_%datetime%.yml';
-
-    /** @var string */
     protected $header;
 
     /**

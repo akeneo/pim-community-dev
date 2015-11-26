@@ -24,7 +24,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     protected $filePathResolver;
 
     /** @var string */
-    protected $filePath;
+    protected $filePath = '/tmp/export_%datetime%.csv';
 
     /** @var StepExecution */
     protected $stepExecution;

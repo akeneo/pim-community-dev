@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
@@ -62,7 +63,9 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     {
         if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
             return false;
-        } elseif ($writer instanceof FileWriter && is_file($writer->getPath())) {
+        }
+
+        if (($writer instanceof FileWriter || $writer instanceof AbstractFileWriter) && is_file($writer->getPath())) {
             return true;
         }
 
