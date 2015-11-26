@@ -1,16 +1,7 @@
 function Date(field, params)
 {
-    var value = field && field.nodeName ? {{ getJsFormElementValue('field') }} : field;
-
-    if (isNotDefined(value)) {
-        return true;
-    }
-
-    var date = new window.Date(String(value))
-
-    if (!date instanceof window.Date || isNaN(date.getTime()) || date.getSeconds() || date.getMilliseconds()) {
-        return getComputeMessage(params.message);
-    }
-
+    /**
+     * Remove frontend validation for date to valid localized date
+     */
     return true;
 }
