@@ -8,7 +8,7 @@ define(
         'pim/datagrid/state',
         'text!pim/template/datagrid/configure-columns-action',
         'backbone/bootstrap-modal',
-        'jquery-ui-full'
+        'jquery-ui'
     ],
     function(
         $,

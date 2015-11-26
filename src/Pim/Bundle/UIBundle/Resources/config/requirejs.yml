@@ -30,9 +30,6 @@ config:
                 - jquery
                 - underscore
                 - backbone
-        jquery-ui-full:
-            deps:
-                - jquery
         jquery.slimbox:
             deps:
                 - jquery
@@ -56,7 +53,7 @@ config:
         json:                          pimui/lib/json2/json2
         base64:                        pimui/lib/base64/base64
         jquery:                        pimui/lib/jquery/jquery-1.10.2
-        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui.min
+        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
@@ -79,7 +76,6 @@ config:
 
         oro/form/state:                pimui/js/form/state.js
 
-        jquery-ui-full:                 pimui/lib/jquery-ui/jquery-ui-1.10.3.custom.min
         jquery.slimbox:                 pimui/lib/slimbox2/slimbox2
         bootstrap.bootstrapswitch:      pimui/lib/bootstrap-switch/bootstrap.switch
         bootstrap.bootstrapsdatepicker: pimui/lib/bootstrap-datepicker/js/bootstrap-datepicker.js
