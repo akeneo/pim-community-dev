@@ -20,9 +20,9 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
+use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

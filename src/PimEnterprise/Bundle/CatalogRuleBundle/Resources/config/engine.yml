@@ -1,10 +1,10 @@
 parameters:
-    pimee_catalog_rule.applier.product.class:             PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
-    pimee_catalog_rule.applier.product.updater.class:     PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater
-    pimee_catalog_rule.applier.product.validator.class:   PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator
-    pimee_catalog_rule.applier.product.saver.class:       PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver
-    pimee_catalog_rule.builder.product.class:             PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
-    pimee_catalog_rule.selector.product.class:            PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
+    pimee_catalog_rule.applier.product.class:             PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier
+    pimee_catalog_rule.applier.product.updater.class:     PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater
+    pimee_catalog_rule.applier.product.validator.class:   PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsValidator
+    pimee_catalog_rule.applier.product.saver.class:       PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver
+    pimee_catalog_rule.builder.product.class:             PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder
+    pimee_catalog_rule.selector.product.class:            PimEnterprise\Component\CatalogRule\Engine\ProductRuleSelector
     pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
     pimee_catalog_rule.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
 

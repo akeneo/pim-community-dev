@@ -1,6 +1,6 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
+        - \PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\PropertyAction: ~
     properties:
         field:
            - Type:
@@ -8,7 +8,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
            - NotBlank: ~
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingSetField: ~
+           - \PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingSetField: ~
         value:
            - NotNull:
                 message: The key "value" is missing or empty.

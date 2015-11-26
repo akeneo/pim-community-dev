@@ -1,9 +1,9 @@
 parameters:
     pimee_catalog_rule.denormalizer.product_rule.chained.class:   Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.class:           Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.content.class:   PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.content.class:   PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.action.class:    PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.condition.class: PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer
 
     # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.action.class
     pimee_catalog_rule.denormalizer.product_rule.set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\SetValueActionDenormalizer

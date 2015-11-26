@@ -1,12 +1,12 @@
 parameters:
-    pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator
+    pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingFieldValidator
     pimee_catalog_rule.validator.existing_filter_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingFilterFieldValidator
     pimee_catalog_rule.validator.existing_set_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingSetFieldValidator
     pimee_catalog_rule.validator.existing_copy_fields.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingCopyFieldsValidator
     pimee_catalog_rule.validator.existing_add_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingAddFieldValidator
-    pimee_catalog_rule.validator.product_rule.supported_operator_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator
-    pimee_catalog_rule.validator.product_rule.value_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator
-    pimee_catalog_rule.validator.product_rule.property_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyActionValidator
+    pimee_catalog_rule.validator.product_rule.supported_operator_condition.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator
+    pimee_catalog_rule.validator.product_rule.value_condition.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\ValueConditionValidator
+    pimee_catalog_rule.validator.product_rule.property_action.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\PropertyActionValidator
 
 services:
     # deprecated, will be removed in 1.6, please use pimee_catalog_rule.validator.existing_(filter|set|copy|add)_field(s) instead
