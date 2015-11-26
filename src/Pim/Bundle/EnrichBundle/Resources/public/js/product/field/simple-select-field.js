@@ -21,6 +21,7 @@ define(
     function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
+            choicePromise: null,
             events: {
                 'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -42,6 +43,7 @@ define(
                         this.setCurrentValue(option.code);
                     }
 
+                    this.choicePromise = null;
                     this.render();
                 }.bind(this));
             },
@@ -65,12 +67,16 @@ define(
                         initSelection: function (element, callback) {
                             var id = $(element).val();
                             if ('' !== id) {
-                                $.ajax(choiceUrl).then(function (response) {
+                                if (null === this.choicePromise) {
+                                    this.choicePromise = $.ajax(choiceUrl);
+                                }
+
+                                this.choicePromise.then(function (response) {
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
                                 });
                             }
-                        },
+                        }.bind(this),
                         placeholder: ' ',
                         allowClear: true
                     });
@@ -92,6 +98,8 @@ define(
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="hidden"].select-field').val();
                 data = '' === data ? this.attribute.empty_value : data;
+
+                this.choicePromise = null;
 
                 this.setCurrentValue(data);
             }
