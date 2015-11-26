@@ -72,7 +72,7 @@ src/
 └── Pim
     ├── Bundle
     │   ├── AnalyticsBundle         -> -
-    │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) if exports are re-worked in ConnectorBundle
+    │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) once exports re-worked in ConnectorBundle
     │   ├── CatalogBundle           -> ?
     │   ├── CommentBundle           -> split in a Akeneo component + bundle (does not rely on PIM domain)
     │   ├── ConnectorBundle         -> could welcome new classes if we re-work export
@@ -150,6 +150,18 @@ src/
         ├── User                    ?Don't know yet if we'll directly extract from UserBundle(s)?
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
+
+## ConnectorBundle or BaseConnectorBundle?
+
+In 1.4, we re-worked the PIM import system and we've depreciated the old import system.
+
+The new system has been implemented in Connector component and ConnectorBundle and we kept the old system in BaseConnectorBundle (deprecated for imports, still in use for exports).
+
+In 1.5, for performance reason, we re-worked the export writer part, we introduced new classes and services in Connector component and ConnectorBundle.
+
+Old export writer classes and services are still in BaseConnectorBundle and are marked as deprecated.
+
+The strategy is to be able to depreciate entirely the BaseConnectorBundle once we'll have re-worked remaining export parts (mainly reader and processor).
 
 ## Partially fix BC breaks
 
