@@ -11,6 +11,7 @@
 - PIM-5201: Fix permission System/Edit a Role
 - PIM-5172: Fix PDF export for text area attribute
 - PIM-5171: Apply ACLs on mass edit actions
+- PIM-5240: Fix Mongo normalization that creates a nullable family field
 
 # 1.4.10 (2015-11-20)
 
