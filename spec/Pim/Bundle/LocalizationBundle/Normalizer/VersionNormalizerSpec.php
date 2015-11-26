@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\LocalizationBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -13,7 +13,7 @@ class VersionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $versionNormalizer,
-        LocalizedAttributeConverterInterface $converter,
+        PresenterAttributeConverter $converter,
         LocaleResolver $localeResolver
     ) {
         $this->beConstructedWith(

@@ -24,17 +24,6 @@ interface LocalizedAttributeConverterInterface
     public function convertLocalizedToDefaultValues(array $items, array $options = []);
 
     /**
-     * Localize an attribute value
-     *
-     * @param string $code
-     * @param mixed  $value
-     * @param array  $options
-     *
-     * @return mixed
-     */
-    public function convertDefaultToLocalizedValue($code, $value, $options = []);
-
-    /**
      * Get list of violations return by localizers
      *
      * @return ConstraintViolationListInterface
