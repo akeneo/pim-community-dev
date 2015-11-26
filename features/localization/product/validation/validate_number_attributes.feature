@@ -64,5 +64,5 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the decimals separator constraint of number attribute
     Given I change the Classement to "4.5"
     And I save the product
-    Then I should see validation tooltip "This type of value expects the use of , to separate decimals."
+    Then I should see validation tooltip "Ce type de valeur attend , comme séparateur de décimales."
     And there should be 1 error in the "[other]" tab

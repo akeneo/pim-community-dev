@@ -41,16 +41,16 @@ Feature: Editing localized attribute values of a variant group also updates prod
   Scenario: Fail to change a pim_catalog_metric attribute of a variant group
     Given I change the "Weight" to "5.45"
     When I save the variant group
-    Then I should see validation error "This type of value expects the use of , to separate decimals."
+    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
 
   Scenario: Fail to change a pim_catalog_number attribute of a variant group
     Given I visit the "Marketing" group
     When I change the "Rate of sale" to "8000.2"
     And I save the variant group
-    Then I should see validation error "This type of value expects the use of , to separate decimals."
+    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
 
   Scenario: Fail to change a pim_catalog_price_collection attribute of a variant group
     Given I visit the "Marketing" group
     When I change the "€ Price" to "89.27"
     And I save the variant group
-    Then I should see validation error "This type of value expects the use of , to separate decimals."
+    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
