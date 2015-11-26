@@ -21,10 +21,15 @@ define(
     function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
+            choicePromise: null,
             events: {
                 'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
                     templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
@@ -32,6 +37,10 @@ define(
                     return templateContext;
                 });
             },
+
+            /**
+             * Create a new option for this multi select field
+             */
             createOption: function () {
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
@@ -43,12 +52,21 @@ define(
                         this.setCurrentValue(value);
                     }
 
+                    this.choicePromise = null;
                     this.render();
                 }.bind(this));
             },
+
+            /**
+             * {@inheritdoc}
+             */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             postRender: function () {
                 this.$('[data-toggle="tooltip"]').tooltip();
                 this.getChoiceUrl().then(function (choiceUrl) {
@@ -64,18 +82,28 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            $.ajax(choiceUrl).then(function (response) {
+                            if (null === this.choicePromise) {
+                                this.choicePromise = $.get(choiceUrl);
+                            }
+
+                            this.choicePromise.then(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     return _.findWhere(results, {id: choice});
                                 });
                                 callback(choices);
                             });
-                        },
+                        }.bind(this),
                         multiple: true
                     });
                 }.bind(this));
             },
+
+            /**
+             * Get the URL to retrieve the choice list for this select field
+             *
+             * @returns {Promise}
+             */
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
@@ -89,11 +117,18 @@ define(
                     )
                 ).promise();
             },
+
+            /**
+             * {@inheritdoc}
+             */
             updateModel: function () {
                 var data = this.$('.field-input:first input.select-field').val().split(',');
                 if (1 === data.length && '' === data[0]) {
                     data = [];
                 }
+
+                this.choicePromise = null;
+
                 this.setCurrentValue(data);
             }
         });
