@@ -32,7 +32,7 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.category
                         processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         csv_asset_category_import:
             title: pimee_product_asset.jobs.csv_asset_category_import.title
             type:  import
@@ -59,7 +59,7 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         yml_asset_channel_configuration_import:
             title: pimee_product_asset.jobs.yml_asset_channel_configuration_import.title
             type:  import
@@ -93,7 +93,7 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
-                        writer:    pim_base_connector.writer.file
+                        writer:    pim_connector.writer.file.simple_file
         yml_asset_channel_configuration_export:
             title: pimee_product_asset.jobs.yml_asset_configuration_export.title
             type:  export
