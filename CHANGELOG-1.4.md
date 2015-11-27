@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.11 (2015-11-27)
 
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` in order to avoid circular reference dependency exceptions.
