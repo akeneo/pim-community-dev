@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -39,23 +40,29 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var array Normalizer context */
     protected $normalizerContext;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
      * @param string                              $uploadDirectory
+     * @param ProductBuilderInterface             $productBuilder
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        $uploadDirectory
+        $uploadDirectory,
+        ProductBuilderInterface $productBuilder = null
     ) {
         parent::__construct($jobConfigurationRepo);
 
         $this->serializer      = $serializer;
         $this->channelManager  = $channelManager;
         $this->uploadDirectory = $uploadDirectory;
+        $this->productBuilder  = $productBuilder;
     }
 
     /**
@@ -71,6 +78,10 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     public function process($product)
     {
+        if (null !== $this->productBuilder) {
+            $this->productBuilder->addMissingProductValues($product);
+        }
+
         $data['media'] = [];
 
         $productMedias = $this->getProductMedias($product);

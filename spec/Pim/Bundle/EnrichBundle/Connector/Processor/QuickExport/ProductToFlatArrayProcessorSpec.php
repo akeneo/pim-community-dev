@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -25,9 +26,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelManager $channelManager,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ProductBuilderInterface $productBuilder
     ) {
-        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, 'upload/path/');
+        $this->beConstructedWith(
+            $jobConfigurationRepo,
+            $serializer,
+            $channelManager,
+            'upload/path/',
+            $productBuilder
+        );
         $this->setStepExecution($stepExecution);
     }
 
@@ -84,14 +92,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_media(
         ChannelInterface $channel,
         $channelManager,
+        $serializer,
+        $productBuilder,
         ProductInterface $product,
         ProductMediaInterface $media1,
         ProductMediaInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
-        AttributeInterface $attribute,
-        $serializer
+        AttributeInterface $attribute
     ) {
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $media1->getFilename()->willReturn('media_name');
         $media1->getOriginalFilename()->willReturn('media_original_name');
 
@@ -120,11 +131,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
+        $productBuilder,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $product->getValues()->willReturn([]);
 
         $serializer

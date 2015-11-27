@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -15,9 +16,14 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager)
+    function let(Serializer $serializer, ChannelManager $channelManager, ProductBuilderInterface $productBuilder)
     {
-        $this->beConstructedWith($serializer, $channelManager, ['pim_catalog_file', 'pim_catalog_image']);
+        $this->beConstructedWith(
+            $serializer,
+            $channelManager,
+            ['pim_catalog_file', 'pim_catalog_image'],
+            $productBuilder
+        );
     }
 
     function it_is_initializable()
@@ -61,6 +67,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_flat_data_with_media(
         $channelManager,
+        $serializer,
+        $productBuilder,
         Filesystem $filesystem,
         ChannelInterface $channel,
         ProductInterface $product,
@@ -70,9 +78,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute,
         ProductValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
-        $serializer
+        AttributeInterface $identifierAttribute
     ) {
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $media1->getKey()->willReturn('key/to/media1.jpg');
         $media2->getKey()->willReturn('key/to/media2.jpg');
 
@@ -113,11 +122,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
+        $productBuilder,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $product->getValues()->willReturn([]);
 
         $serializer

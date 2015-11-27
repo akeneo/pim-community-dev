@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -40,19 +41,25 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $mediaAttributeTypes;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
-     * @param Serializer     $serializer
-     * @param ChannelManager $channelManager
-     * @param string[]       $mediaAttributeTypes
+     * @param Serializer              $serializer
+     * @param ChannelManager          $channelManager
+     * @param string[]                $mediaAttributeTypes
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
-        array $mediaAttributeTypes
+        array $mediaAttributeTypes,
+        ProductBuilderInterface $productBuilder = null
     ) {
         $this->serializer          = $serializer;
         $this->channelManager      = $channelManager;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
+        $this->productBuilder      = $productBuilder;
     }
 
     /**
@@ -60,6 +67,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
+        if (null !== $this->productBuilder) {
+            $this->productBuilder->addMissingProductValues($product);
+        }
+
         $data['media'] = [];
         $mediaValues   = $this->getMediaProductValues($product);
 
