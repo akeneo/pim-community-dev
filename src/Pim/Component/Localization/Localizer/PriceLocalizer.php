@@ -51,8 +51,12 @@ class PriceLocalizer extends AbstractNumberLocalizer
             return parent::localize($prices, $options);
         }
 
-        foreach ($prices as $index => $price) {
-            $prices[$index]['data'] = parent::localize($price['data'], $options);
+        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
+            $prices['data'] = parent::localize($prices['data'], $options);
+        } else {
+            foreach ($prices as $index => $price) {
+                $prices[$index]['data'] = parent::localize($price['data'], $options);
+            }
         }
 
         return $prices;
