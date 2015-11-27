@@ -1,11 +1,14 @@
 parameters:
-    pimee_catalog_rule.denormalizer.product_rule.chained.class:           Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.class:                   Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.content.class:           PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.chained.class:   Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.class:           Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.content.class:   PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.action.class:    PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.condition.class: PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer
+
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.action.class
     pimee_catalog_rule.denormalizer.product_rule.set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\SetValueActionDenormalizer
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.action.class
     pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\CopyValueActionDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.add_action.class:        PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\AddActionDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.condition.class:         PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionDenormalizer
 
 services:
     pimee_catalog_rule.denormalizer.product_rule.chained:
@@ -19,6 +22,7 @@ services:
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.set_action
     pimee_catalog_rule.denormalizer.product_rule.set_value_action:
         class: %pimee_catalog_rule.denormalizer.product_rule.set_value_action.class%
         arguments:
@@ -26,6 +30,7 @@ services:
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.copy_action
     pimee_catalog_rule.denormalizer.product_rule.copy_value_action:
         class: %pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class%
         arguments:
@@ -33,10 +38,27 @@ services:
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
+    pimee_catalog_rule.denormalizer.product_rule.set_action:
+        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
+        arguments:
+            - %pimee_catalog_rule.model.set_action.class%
+            - 'set'
+        tags:
+            - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
+
+    pimee_catalog_rule.denormalizer.product_rule.copy_action:
+        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
+        arguments:
+            - %pimee_catalog_rule.model.copy_action.class%
+            - 'copy'
+        tags:
+            - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
+
     pimee_catalog_rule.denormalizer.product_rule.add_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.add_action.class%
+        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
         arguments:
             - %pimee_catalog_rule.model.add_action.class%
+            - 'add'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 

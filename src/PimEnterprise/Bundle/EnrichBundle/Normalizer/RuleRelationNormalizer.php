@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

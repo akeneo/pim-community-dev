@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 
 /**
  * Setter action applier
@@ -44,7 +44,7 @@ class SetterActionApplier implements ActionApplierInterface
                 $product,
                 $action->getField(),
                 $action->getValue(),
-                ['locale' => $action->getLocale(), 'scope' => $action->getScope()]
+                $action->getOptions()
             );
         }
     }
@@ -54,6 +54,6 @@ class SetterActionApplier implements ActionApplierInterface
      */
     public function supports(ActionInterface $action)
     {
-        return $action instanceof ProductSetValueActionInterface;
+        return $action instanceof ProductSetActionInterface;
     }
 }

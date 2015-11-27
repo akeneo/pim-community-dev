@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation:
+PimEnterprise\Component\CatalogRule\Model\RuleRelation:
     type: entity
     table: pimee_catalog_rule_rule_relation
     changeTrackingPolicy: DEFERRED_EXPLICIT

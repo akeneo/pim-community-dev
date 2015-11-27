@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\CatalogRule\Model;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;
 
 /**
  * Add action interface used in product rules.
@@ -33,7 +33,7 @@ interface ProductAddActionInterface extends ActionInterface, FieldImpactActionIn
     public function getField();
 
     /**
-     * @return string
+     * @return array
      */
     public function getItems();
 
@@ -41,25 +41,4 @@ interface ProductAddActionInterface extends ActionInterface, FieldImpactActionIn
      * @return mixed
      */
     public function getOptions();
-
-    /**
-     * @param string $field
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setField($field);
-
-    /**
-     * @param array $items
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setItems(array $items = []);
-
-    /**
-     * @param array $options
-     *
-     * @return ProductAddActionInterface
-     */
-    public function setOptions(array $options = []);
 }

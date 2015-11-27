@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductAddAction:
+PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction: ~
     properties:
         field:
            - Type:
@@ -8,7 +8,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductAddAction:
            - NotBlank: ~
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField: ~
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingAddField: ~
         items:
             - Type:
                 type: array

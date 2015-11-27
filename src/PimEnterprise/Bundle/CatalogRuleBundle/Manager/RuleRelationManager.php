@@ -15,9 +15,9 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 
 /**

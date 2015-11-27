@@ -1,6 +1,11 @@
 parameters:
-    pimee_catalog_rule.model.product_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition
+    pimee_catalog_rule.model.product_condition.class: PimEnterprise\Component\CatalogRule\Model\ProductCondition
+    pimee_catalog_rule.model.copy_action.class:       PimEnterprise\Component\CatalogRule\Model\ProductCopyAction
+    pimee_catalog_rule.model.set_action.class:        PimEnterprise\Component\CatalogRule\Model\ProductSetAction
+    pimee_catalog_rule.model.add_action.class:        PimEnterprise\Component\CatalogRule\Model\ProductAddAction
+    pimee_catalog_rule.model.rule_relation.class:     PimEnterprise\Component\CatalogRule\Model\RuleRelation
+
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.model.copy_action.class
     pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.model.set_action.class
     pimee_catalog_rule.model.set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction
-    pimee_catalog_rule.model.add_action.class:        PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductAddAction
-    pimee_catalog_rule.model.rule_relation.class:     PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation

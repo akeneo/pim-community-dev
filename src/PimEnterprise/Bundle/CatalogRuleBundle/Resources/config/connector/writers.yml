@@ -1,8 +1,8 @@
 parameters:
     # import rules
-    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine\RuleDefinitionWriter
+    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine\RuleDefinitionWriter
     # export rules
-    pimee_catalog_rule.writer.yaml_file.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\YamlFile\RuleDefinitionWriter
+    pimee_catalog_rule.writer.yaml_file.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter
 
 services:
     # import rules

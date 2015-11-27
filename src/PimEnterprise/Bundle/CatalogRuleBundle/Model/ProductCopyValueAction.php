@@ -16,6 +16,8 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
  * A copy action value is used to copy a product source value to a product target value.
  *
  * For example : description-fr_FR-ecommerce to description-fr_CH-tablet
+ * @deprecated will be removed in 1.6 please use
+ *             PimEnterprise\Component\CatalogRule\Model\ProductCopyAction
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */

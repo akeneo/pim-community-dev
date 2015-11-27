@@ -33,20 +33,51 @@ Feature: Update a single product by applying rules
       | red-heels | sole_fabric | chiffon, satin |        |        |
       | red-heels | cap_color   | blue           | en_US  | mobile |
       | red-heels | lace_fabric | wool, kevlar   | fr_FR  | tablet |
-    And the following product rules:
-      | code           | priority |
-      | rule_set_heels | 10       |
-    And the following product rule conditions:
-      | rule           | field | operator | value     |
-      | rule_set_heels | sku   | =        | red-heels |
-    And the following product rule setter actions:
-      | rule           | field       | locale | scope  | value                     |
-      | rule_set_heels | sole_color  |        |        | orange                    |
-      | rule_set_heels | sole_fabric |        |        | chiffon, satin, leather   |
-      | rule_set_heels | cap_color   | en_US  | mobile | red                       |
-      | rule_set_heels | lace_fabric | fr_FR  | tablet | cashmere                  |
-      | rule_set_heels | lace_fabric | en_US  | tablet | toile, cashmere           |
-      | rule_set_heels | lace_fabric | en_US  | mobile | gore-tex, toile, cashmere |
+    And the following product rule definitions:
+      """
+      rule_set_heels:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    red-heels
+        actions:
+          - type:   set_value
+            field:  sole_color
+            value:  orange
+          - type:   set_value
+            field:  sole_fabric
+            value:
+              - chiffon
+              - satin
+              - leather
+          - type:   set_value
+            field:  cap_color
+            value:  red
+            locale: en_US
+            scope:  mobile
+          - type:   set_value
+            field:  lace_fabric
+            value:
+              - cashmere
+            locale: fr_FR
+            scope:  tablet
+          - type:   set_value
+            field:  lace_fabric
+            value:
+              - toile
+              - cashmere
+            locale: en_US
+            scope:  tablet
+          - type:   set_value
+            field:  lace_fabric
+            value:
+              - gore-tex
+              - toile
+              - cashmere
+            locale: en_US
+            scope:  mobile
+      """
     Given the product rule "rule_set_heels " is executed
     Then the product "red-heels" should have the following values:
       | sole_color               | [orange]                        |
@@ -66,17 +97,31 @@ Feature: Update a single product by applying rules
       | red-heels | sole_fabric | chiffon, satin |        |        |
       | red-heels | cap_color   | blue           | en_US  | mobile |
       | red-heels | lace_fabric | wool, kevlar   | fr_FR  | tablet |
-    And the following product rules:
-      | code            | priority |
-      | rule_copy_heels | 10       |
-    And the following product rule conditions:
-      | rule            | field | operator | value     |
-      | rule_copy_heels | sku   | =        | red-heels |
-    And the following product rule copier actions:
-      | rule            | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | rule_copy_heels | sole_color  | cap_color   |             | en_US     |            | mobile   |
-      | rule_copy_heels | sole_color  | cap_color   |             | fr_FR     |            | tablet   |
-      | rule_copy_heels | lace_fabric | sole_fabric | fr_FR       |           | tablet     |          |
+    And the following product rule definitions:
+      """
+      rule_copy_heels:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    red-heels
+        actions:
+          - type:       copy_value
+            from_field: sole_color
+            to_field:   cap_color
+            to_scope:   mobile
+            to_locale:  en_US
+          - type:       copy_value
+            from_field: sole_color
+            to_field:   cap_color
+            to_scope:   tablet
+            to_locale:  fr_FR
+          - type:       copy_value
+            from_field: lace_fabric
+            to_field:   sole_fabric
+            from_scope:   tablet
+            from_locale:  fr_FR
+      """
     Given the product rule "rule_copy_heels " is executed
     Then the product "red-heels" should have the following values:
       | sole_color               | [yellow]         |

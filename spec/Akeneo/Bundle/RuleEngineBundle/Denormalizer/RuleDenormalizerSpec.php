@@ -75,7 +75,7 @@ class RuleDenormalizerSpec extends ObjectBehavior
 
     function it_does_not_support_denormalization_for_invalid_data()
     {
-        $type = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
+        $type = 'PimEnterprise\Component\CatalogRule\Model\ProductCondition';
 
         $this->supportsDenormalization(Argument::any(), $type)->shouldReturn(false);
     }

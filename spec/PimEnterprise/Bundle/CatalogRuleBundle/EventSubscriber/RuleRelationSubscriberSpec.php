@@ -11,10 +11,10 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
+use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -33,7 +33,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
             $ruleRelationRemover,
             $ruleRelationRepo,
             $productRuleBuilder,
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation'
+            'PimEnterprise\Component\CatalogRule\Model\RuleRelation'
         );
     }
 

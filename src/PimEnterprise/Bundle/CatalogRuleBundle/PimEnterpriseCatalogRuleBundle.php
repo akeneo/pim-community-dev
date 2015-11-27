@@ -30,7 +30,7 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogRuleBundle\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\CatalogRule\Model'
         ];
 
         $container

@@ -28,7 +28,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
         $class = 'pimee_catalog_rule.model.rule_relation.class';
 
         return [
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface' => $class,
+            'PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface' => $class,
         ];
     }
 }

@@ -20,5 +20,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 interface ChainedDenormalizerAwareInterface
 {
+    /**
+     * Set the chained denormalizer
+     *
+     * @param DenormalizerInterface $denormalizer
+     */
     public function setChainedDenormalizer(DenormalizerInterface $denormalizer);
 }

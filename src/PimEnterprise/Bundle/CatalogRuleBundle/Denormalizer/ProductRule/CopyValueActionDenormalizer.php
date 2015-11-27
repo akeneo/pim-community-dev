@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Denormalize product copy value rule actions
+ * @deprecated will be removed in 1.6 please use
+ *             PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
