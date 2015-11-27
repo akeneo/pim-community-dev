@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.11 (2015-11-27)
 
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` in order to avoid circular reference dependency exceptions.
@@ -10,6 +10,9 @@
 - PIM-5176: Fix customisation of columns not saved in "Column Selection"
 - PIM-5201: Fix permission System/Edit a Role
 - PIM-5172: Fix PDF export for text area attribute
+- PIM-5171: Apply ACLs on mass edit actions
+- PIM-5240: Fix Mongo normalization that creates a nullable family field
+- PIM-5159: Attribute values appearing/disappearing when you change attribute groups
 
 # 1.4.10 (2015-11-20)
 
