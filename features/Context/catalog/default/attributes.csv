@@ -1,2 +1,2 @@
-type;code;label-en_US;label-fr_FR;group;unique;sort_order;useable_as_grid_filter;max_characters;decimals_allowed;negative_allowed;allowed_extensions;metric_family;default_metric_unit;reference_data_name;max_file_size;localizable;scopable
-pim_catalog_identifier;sku;SKU;SKU;other;1;1;1;;0;0;;;;;;0;0
+type;code;label-en_US;label-fr_FR;group;unique;sort_order;available_locales;useable_as_grid_filter;max_characters;decimals_allowed;negative_allowed;allowed_extensions;metric_family;default_metric_unit;reference_data_name;max_file_size;localizable;scopable
+pim_catalog_identifier;sku;SKU;SKU;other;1;1;All;1;0;0;0;;;;;0.00;0;0
