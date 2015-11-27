@@ -21,38 +21,38 @@ Feature: Validate date attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the unique constraint of date attribute
-    Given I change the Release to "2013-02-02"
+    Given I change the Release to "01/01/2013"
     And I save the product
     When I am on the "bar" product page
-    And I change the Release to "2013-02-02"
+    And I change the Release to "01/01/2013"
     And I save the product
-    Then I should see validation tooltip "The value 2013-02-02 is already set on another product for the unique attribute release"
+    Then I should see validation tooltip "The value 2013-01-01 is already set on another product for the unique attribute release"
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of date attribute
-    Given I change the Release to "2011-01-01"
+    Given I change the Release to "01/01/2011"
     And I save the product
     Then I should see validation tooltip "This date should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of scopable date attribute
-    Given I change the Available to "2012-01-01"
+    Given I change the Available to "01/01/2012"
     And I save the product
     Then I should see validation tooltip "This date should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of date attribute
-    Given I change the Release to "2016-01-01"
+    Given I change the Release to "01/01/2016"
     And I save the product
     Then I should see validation tooltip "This date should be 2015-12-12 or before."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of scopable date attribute
-    Given I change the Available to "2017-03-03"
+    Given I change the Available to "03/03/2017"
     And I save the product
     Then I should see validation tooltip "This date should be 2015-12-12 or before."
     And there should be 1 error in the "Other" tab

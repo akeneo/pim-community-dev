@@ -142,7 +142,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
@@ -221,7 +221,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -325,7 +325,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -431,7 +431,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -507,7 +507,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -582,7 +582,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -689,7 +689,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -798,7 +798,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -849,7 +849,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
         $this->setDecimalSeparator(',');
-        $this->setDateFormat('d/m/Y');
+        $this->setDateFormat('dd/MM/yyyy');
 
         $originalData = [
             'sku'    => 'tshirt',
@@ -909,7 +909,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $postConverterData['date'][0]['data'] = '2015-10-20';
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => ',',
-            'date_format'       => 'd/m/Y'
+            'date_format'       => 'dd/MM/yyyy'
         ])->willReturn($postConverterData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -971,7 +971,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $data['number'][0]['data'] = '10.45';
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($data);
 
         $violation = new ConstraintViolation(Argument::any(), Argument::any(), [], $product, 'number', '10,45');
@@ -1036,7 +1036,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $postConvertedData['number'][0]['data'] = '10.45';
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => ',',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($postConvertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -1145,7 +1145,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
@@ -1209,7 +1209,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
             'decimal_separator' => '.',
-            'date_format'       => 'Y-m-d'
+            'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->shouldNotBeCalled();

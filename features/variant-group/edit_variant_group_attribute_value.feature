@@ -52,7 +52,8 @@ Feature: Editing attribute values of a variant group also updates products
       | handmade | 1 |
 
   Scenario: Change a pim_catalog_date attribute of a variant group
-    When I change the "Destocking date" to "2001-01-01"
+    Given I visit the "Other" group
+    When I change the "Destocking date" to "01/01/2001"
     And I save the variant group
     Then the product "boot" should have the following values:
       | destocking_date | 2001-01-01 |

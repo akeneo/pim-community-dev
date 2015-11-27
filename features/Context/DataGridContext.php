@@ -1052,7 +1052,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $datepickers = $filter->findAll('css', '.date-visual-element');
         foreach ($datepickers as $i => $datepicker) {
-            $datepicker->setValue($values[$i]);
+            if ($datepicker->isVisible()) {
+                $datepicker->setValue($values[$i]);
+            }
         }
 
         $filter->find('css', 'button.filter-update')->click();

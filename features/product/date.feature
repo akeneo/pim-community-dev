@@ -23,7 +23,7 @@ Feature: Check that imported date is properly displayed
 
   Scenario: Successfully display a date in the product edit form (PIM-2971)
     Given I am on the "postit" product page
-    Then the field release should contain "2014-05-01"
+    Then the field release should contain "05/01/2014"
 
   Scenario: Do not change date in history if the date has not been changed in the product (PIM-3009)
     Given I am on the "postit" product page
@@ -35,5 +35,5 @@ Feature: Check that imported date is properly displayed
       | version | property | before | after       |
       | 2       | SKU      | postit | nice_postit |
       | 1       | SKU      |        | postit      |
-      | 1       | release  |        | 5/1/14      |
+      | 1       | release  |        | 05/01/2014  |
       | 1       | enabled  |        | 1           |
