@@ -1,0 +1,30 @@
+type;code;label-de_DE;label-en_GB;label-en_US;label-fr_FR;group;unique;sort_order;useable_as_grid_filter;max_characters;decimals_allowed;negative_allowed;allowed_extensions;metric_family;default_metric_unit;reference_data_name;max_file_size;localizable;scopable
+pim_catalog_identifier;sku;SKU;SKU;SKU;SKU;general;1;1;1;;0;0;;;;;;0;0
+pim_catalog_text;name;Name;Name;Name;Nom;general;0;2;1;;0;0;;;;;;1;0
+pim_catalog_textarea;description;Beschreibung;Description;Description;Description;general;0;3;1;1000;0;0;;;;;;1;1
+pim_catalog_image;thumbnail;Miniaturansicht;Thumbnail;Thumbnail;Imagette;media;0;1;0;;0;0;gif,png,jpeg,jpg;;;;1.00;0;0
+pim_catalog_image;image;Bild;Image;Image;Image;media;0;2;0;;0;0;gif,png,jpeg,jpg;;;;2.00;0;0
+pim_catalog_text;legend;Legende;Legend;Legend;Légende;media;0;3;0;;0;0;;;;;;1;0
+pim_catalog_price_collection;price;Preis;Price;Price;Prix;sales;0;1;1;;1;0;;;;;;0;0
+pim_catalog_simpleselect;customer_rating;Kundenbewertung;"Customer rating";"Customer rating";"Évaluation du client";sales;0;2;1;;0;0;;;;;;0;1
+pim_catalog_date;release_date;Erscheinungsdatum;"Release date";"Release date";"Date de sortie";sales;0;3;1;;0;0;;;;;;0;1
+pim_catalog_simpleselect;size;Größe;Size;Size;Taille;sizes;0;1;1;;0;0;;;;;;0;0
+pim_catalog_simpleselect;chest_size;Brustumfang;"Chest size";"Chest size";"Tour de poitrine";sizes;0;2;1;;0;0;;;;;;0;0
+pim_catalog_simpleselect;waist_size;Taillengröße;"Waist size";"Waist size";"Tour de taille";sizes;0;3;1;;0;0;;;;;;0;0
+pim_catalog_simpleselect;color;Farbe;Colour;Color;Couleur;colors;0;1;1;;0;0;;;;;;0;0
+pim_catalog_multiselect;additional_colors;"Zusätzliche Farben";"Additional colours";"Additional colors";"Autres couleurs";colors;0;2;1;;0;0;;;;;;0;0
+pim_catalog_simpleselect;manufacturer;Hersteller;Manufacturer;Manufacturer;Fabricant;additional;0;1;1;;0;0;;;;;;0;0
+pim_catalog_simpleselect;country_of_manufacture;Herstellungsland;"Country of manufacture";"Country of manufacture";"Pays de fabrication";additional;0;2;1;;0;0;;;;;;0;0
+pim_catalog_boolean;handmade;Handgefertigt;Handmade;Handmade;"Fait main";additional;0;3;1;;0;0;;;;;;0;0
+pim_catalog_multiselect;weather_conditions;Wetterverhältnisse;"Weather conditions";"Weather conditions";"Conditions météorologiques";additional;0;4;0;;0;0;;;;;;0;0
+pim_catalog_textarea;care_instructions;Pflegehinweise;"Care instructions";"Care instructions";"Conseils d'entretien";additional;0;5;0;1000;0;0;;;;;;1;1
+pim_catalog_metric;washing_temperature;Waschtemperatur;"Washing temperature";"Washing temperature";"Température de lavage";additional;0;6;0;;0;0;;Temperature;CELSIUS;;;0;0
+pim_catalog_metric;weight;Gewicht;Weight;Weight;Poids;additional;0;7;0;;0;0;;Weight;KILOGRAM;;;0;0
+pim_catalog_simpleselect;material;Material;Material;Material;Matériau;additional;0;8;1;;0;0;;;;;;0;0
+pim_catalog_multiselect;additional_materials;"Zusätzliche Materialien";"Additional materials";"Additional materials";"Matériels supplémentaires";additional;0;9;1;;0;0;;;;;;0;0
+pim_catalog_price_collection;cost;Kosten;Cost;Cost;Coût;internal;0;1;1;;1;0;;;;;;0;0
+pim_catalog_number;number_in_stock;"Anzahl auf Lager";"Number in stock";"Number in stock";"Nombre en stock";internal;0;2;1;;0;0;;;;;;0;1
+pim_catalog_price_collection;customs_tax;Zollsteuer;"Customs tax";"Customs tax";"Taxe de douanes";internal;0;3;1;;1;0;;;;;;1;0
+pim_catalog_boolean;under_european_law;"Nach europäischem Recht";"Under European law";"Under European law";"Sous la loi Européenne";general;0;0;1;;0;0;;;;;;0;0
+pim_catalog_file;datasheet;Datenblatt;Datasheet;Datasheet;"Fiche technique";internal;0;4;0;;0;0;txt,pdf,doc,docx,csv,rtf;;;;10.00;0;0
+pim_catalog_file;attachment;Befestigung;Attachment;Attachment;Attachements;internal;0;5;0;;0;0;zip,rar,7z,txt,pdf,doc,docx,csv,rtf;;;;10.00;0;0

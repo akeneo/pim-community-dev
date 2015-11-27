@@ -1,0 +1,77 @@
+attribute;code;sort_order;label-de_DE;label-en_GB;label-en_US;label-fr_FR
+customer_rating;1;1;"1 Stern";"1 star";"1 star";"1 étoile"
+customer_rating;2;1;"2 Sterne";"2 stars";"2 stars";"2 étoiles"
+customer_rating;3;1;"3 Sterne";"3 stars";"3 stars";"3 étoiles"
+customer_rating;4;1;"4 Sterne";"4 stars";"4 stars";"4 étoiles"
+customer_rating;5;1;"5 Sternen";"5 stars";"5 stars";"5 étoiles"
+size;size_3XL;1;3XL;3XL;3XL;3XL
+size;size_2XL;1;2XL;2XL;2XL;2XL
+size;size_XL;1;XL;XL;XL;XL
+size;size_L;1;L;L;L;L
+size;size_M;1;M;M;M;M
+size;size_S;1;S;S;S;S
+size;size_XS;1;XS;XS;XS;XS
+size;size_XXS;1;XXS;XXS;XXS;XXS
+chest_size;chest_size_3XL;1;3XL;3XL;3XL;3XL
+chest_size;chest_size_2XL;1;2XL;2XL;2XL;2XL
+chest_size;chest_size_XL;1;XL;XL;XL;XL
+chest_size;chest_size_L;1;L;L;L;L
+chest_size;chest_size_M;1;M;M;M;M
+chest_size;chest_size_S;1;S;S;S;S
+chest_size;chest_size_XS;1;XS;XS;XS;XS
+chest_size;chest_size_XXS;1;XXS;XXS;XXS;XXS
+waist_size;waist_size_3XL;1;3XL;3XL;3XL;3XL
+waist_size;waist_size_2XL;1;2XL;2XL;2XL;2XL
+waist_size;waist_size_XL;1;XL;XL;XL;XL
+waist_size;waist_size_L;1;L;L;L;L
+waist_size;waist_size_M;1;M;M;M;M
+waist_size;waist_size_S;1;S;S;S;S
+waist_size;waist_size_XS;1;XS;XS;XS;XS
+waist_size;waist_size_XXS;1;XXS;XXS;XXS;XXS
+color;yellow;1;Gelb;Yellow;Yellow;Jaune
+color;green;1;Grün;Green;Green;Vert
+color;blue;1;Blau;Blue;Blue;Bleu
+color;red;1;Rot;Red;Red;Rouge
+color;gray;1;Grau;Grey;Gray;Gris
+color;white;1;Weiß;White;White;Blanc
+color;black;1;Schwarz;Black;Black;Noir
+additional_colors;additional_black;1;Schwarz;Black;Black;Noir
+additional_colors;additional_white;2;Weiß;White;White;Blanc
+additional_colors;additional_gray;3;Grau;Grey;Gray;Gris
+additional_colors;additional_red;4;Rot;Red;Red;Rouge
+additional_colors;additional_blue;5;Blau;Blue;Blue;Bleu
+additional_colors;additional_green;6;Grün;Green;Green;Vert
+additional_colors;additional_yellow;7;Gelb;Yellow;Yellow;Jaune
+manufacturer;marc_o_polo;1;"Marc O’Polo";"Marc O’Polo";"Marc O’Polo";"Marc O’Polo"
+manufacturer;prada;1;Prada;Prada;Prada;Prada
+manufacturer;diesel;1;Diesel;Diesel;Diesel;Diesel
+manufacturer;levi_strauss;1;"Levi Strauss";"Levi Strauss";"Levi Strauss";"Levi Strauss"
+manufacturer;columbia;1;Columbia;Columbia;Columbia;Columbia
+manufacturer;lacoste;1;Lacoste;Lacoste;Lacoste;Lacoste
+manufacturer;american_apparel;1;"American apparel";"American apparel";"American apparel";"American apparel"
+country_of_manufacture;taiwan;1;Taiwan;Taiwan;Taiwan;Taiwan
+country_of_manufacture;china;1;China;China;China;Chine
+country_of_manufacture;italy;1;Italien;Italy;Italy;Italie
+country_of_manufacture;germany;1;Deutschland;Germany;Germany;Allemagne
+country_of_manufacture;france;1;Frankreich;France;France;France
+country_of_manufacture;usa;1;USA;USA;USA;USA
+country_of_manufacture;vietnam;1;Vietnam;Vietnam;Vietnam;Viêt-Nam
+weather_conditions;dry;1;Trocken;Dry;Dry;Sec
+weather_conditions;wet;2;Nass;Wet;Wet;Humide
+weather_conditions;hot;3;Heiß;Hot;Hot;Chaud
+weather_conditions;cold;4;Kalt;Cold;Cold;Froid
+weather_conditions;snowy;5;Verschneit;Snowy;Snowy;Neigeux
+material;cotton;1;Baumwolle;Cotton;Cotton;Coton
+material;flax;2;Flachs;Flax;Flax;Lin
+material;wool;3;Wolle;Wool;Wool;Laine
+material;silk;4;Seide;Silk;Silk;Soie
+material;denim;5;Denim;Denim;Denim;Toile
+material;leather;6;Leder;Leather;Leather;Cuir
+material;fur;7;Pelz;Fur;Fur;Fourrure
+additional_materials;additional_cotton;1;Baumwolle;Cotton;Cotton;Coton
+additional_materials;additional_flax;2;Flachs;Flax;Flax;Lin
+additional_materials;additional_wool;3;Wolle;Wool;Wool;Laine
+additional_materials;additional_silk;4;Seide;Silk;Silk;Soie
+additional_materials;additional_denim;5;Denim;Denim;Denim;Toile
+additional_materials;additional_leather;6;Leder;Leather;Leather;Cuir
+additional_materials;additional_fur;7;Pelz;Fur;Fur;Fourrure
