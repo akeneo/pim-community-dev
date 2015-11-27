@@ -29,20 +29,6 @@ class CurrencyManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\CurrencyManager');
     }
 
-    function it_provides_active_currencies($eur, $usd)
-    {
-        $this->getActiveCurrencies()->shouldReturn([$eur, $usd]);
-    }
-
-    function it_provides_currencies($repository, $eur, $usd, $gbp)
-    {
-        $this->getCurrencies()->shouldReturn([$eur, $usd, $gbp]);
-
-        $criterias = ['foo' => 'bar'];
-        $repository->findBy($criterias)->willReturn([$eur, $gbp]);
-        $this->getCurrencies($criterias)->shouldReturn([$eur, $gbp]);
-    }
-
     function it_provides_active_currency_codes()
     {
         $this->getActiveCodes()->shouldReturn(['EUR', 'USD']);

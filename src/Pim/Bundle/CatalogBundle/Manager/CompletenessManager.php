@@ -121,25 +121,6 @@ class CompletenessManager
     }
 
     /**
-     * Schedule recalculation of completenesses for all products
-     * of a channel
-     *
-     * @param ChannelInterface $channel
-     *
-     * @deprecated To be removed in 1.5
-     */
-    public function scheduleForChannel(ChannelInterface $channel)
-    {
-        if ($channel->getId()) {
-            $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
-            foreach ($deletedLocaleIds as $deletedLocaleId) {
-                $deletedLocale = $this->localeRepository->find($deletedLocaleId);
-                $this->generator->scheduleForChannelAndLocale($channel, $deletedLocale);
-            }
-        }
-    }
-
-    /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
      * @param ProductInterface                                    $product

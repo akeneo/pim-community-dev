@@ -78,18 +78,6 @@ class AttributeOptionManager
     }
 
     /**
-     * Get the attribute option value FQCN
-     *
-     * @deprecated not used anymore, will be removed in 1.5
-     *
-     * @return string
-     */
-    public function getAttributeOptionValueClass()
-    {
-        return $this->optionValueClass;
-    }
-
-    /**
      * Get an attribute option or throw an exception
      *
      * @param int $id

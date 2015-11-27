@@ -69,6 +69,8 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Returns the Doctrine registry service.
      *
+     * @deprecated never directly manipulate the ObjectManager in the controller
+     *
      * @return ManagerRegistry
      */
     protected function getDoctrine()
@@ -78,6 +80,8 @@ abstract class AbstractDoctrineController extends AbstractController
 
     /**
      * Returns the Doctrine manager
+     *
+     * @deprecated never directly manipulate the ObjectManager in the controller
      *
      * @return ObjectManager
      */
@@ -91,6 +95,8 @@ abstract class AbstractDoctrineController extends AbstractController
      *
      * @param string $class
      *
+     * @deprecated never directly manipulate the ObjectManager in the controller
+     *
      * @return ObjectManager
      */
     protected function getManagerForClass($class)
@@ -100,6 +106,8 @@ abstract class AbstractDoctrineController extends AbstractController
 
     /**
      * @param string $className
+     *
+     * @deprecated prefer inject a repository service in the controller
      *
      * @return ObjectRepository
      */
@@ -113,6 +121,8 @@ abstract class AbstractDoctrineController extends AbstractController
      *
      * @param object $object
      * @param bool   $flush
+     *
+     * @deprecated prefer inject a SaverInterface service in the controller
      */
     protected function persist($object, $flush = true)
     {
@@ -129,6 +139,8 @@ abstract class AbstractDoctrineController extends AbstractController
      *
      * @param object $object
      * @param bool   $flush
+     *
+     * @deprecated prefer inject a RemoverInterface service in the controller
      */
     protected function remove($object, $flush = true)
     {
@@ -147,6 +159,8 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param int    $id        The id of the entity
      *
      * @throws NotFoundHttpException
+     *
+     * @deprecated prefer inject a repository in the controller
      *
      * @return object
      */

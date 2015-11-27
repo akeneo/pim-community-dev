@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -43,22 +44,26 @@ class ChannelController extends AbstractDoctrineController
     /** @var BulkSaverInterface */
     protected $localeSaver;
 
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param HandlerInterface         $channelHandler
-     * @param Form                     $channelForm
-     * @param RemoverInterface         $channelRemover
-     * @param BulkSaverInterface       $localeSaver
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param TokenStorageInterface      $tokenStorage
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param ManagerRegistry            $doctrine
+     * @param HandlerInterface           $channelHandler
+     * @param Form                       $channelForm
+     * @param RemoverInterface           $channelRemover
+     * @param BulkSaverInterface         $localeSaver
+     * @param ChannelRepositoryInterface $channelRepository
      */
     public function __construct(
         Request $request,
@@ -73,7 +78,8 @@ class ChannelController extends AbstractDoctrineController
         HandlerInterface $channelHandler,
         Form $channelForm,
         RemoverInterface $channelRemover,
-        BulkSaverInterface $localeSaver
+        BulkSaverInterface $localeSaver,
+        ChannelRepositoryInterface $channelRepository
     ) {
         parent::__construct(
             $request,
@@ -91,6 +97,7 @@ class ChannelController extends AbstractDoctrineController
         $this->channelHandler = $channelHandler;
         $this->channelRemover = $channelRemover;
         $this->localeSaver    = $localeSaver;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -156,8 +163,8 @@ class ChannelController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, Channel $channel)
     {
-        // @todo This validation should be moved to a validator and that validation trigered by the remover
-        $channelCount = $this->getRepository('PimCatalogBundle:Channel')->countAll();
+        // TODO This validation should be moved to a validator and that validation trigered by the remover
+        $channelCount = $this->channelRepository->countAll();
         if ($channelCount <= 1) {
             throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));
         }
