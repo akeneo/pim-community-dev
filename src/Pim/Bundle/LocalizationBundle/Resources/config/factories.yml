@@ -1,0 +1,11 @@
+parameters:
+    pim_localization.factory.number.class: Pim\Component\Localization\Factory\NumberFactory
+    pim_localization.factory.number.currency_formats:
+        en_US: '¤#,##0.00'
+        fr_FR: '#,##0.00 ¤'
+
+services:
+    pim_localization.factory.number:
+        class: %pim_localization.factory.number.class%
+        arguments:
+            - %pim_localization.factory.number.currency_formats%
