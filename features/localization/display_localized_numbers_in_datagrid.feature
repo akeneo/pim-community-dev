@@ -19,7 +19,7 @@ Feature: Localize numbers in the datagrid
     When I display in the published products grid the columns sku, big_price, rate_sale, weight
     Then the row "sandals" should contain:
       | column       | value               |
-      | big_price    | 1,000.12 $          |
+      | big_price    | $1,000.12           |
       | Rate of Sale | 1,000.1234          |
       | weight       | 1,000.3456 Kilogram |
 
@@ -44,6 +44,6 @@ Feature: Localize numbers in the datagrid
     And I display in the published products grid the columns sku, big_price, rate_sale, weight
     Then the row "sandals" should contain:
       | column       | value               |
-      | big_price    | 1,000.12 $          |
+      | big_price    | $1,000.12           |
       | Rate of Sale | 1,000.1234          |
       | weight       | 1,000.3456 Kilogram |
