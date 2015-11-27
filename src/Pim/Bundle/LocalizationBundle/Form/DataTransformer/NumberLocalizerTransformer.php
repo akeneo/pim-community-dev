@@ -40,7 +40,7 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      */
     public function transform($number)
     {
-        return $number;
+        return $this->localizer->localize($number, $this->options);
     }
 
     /**
