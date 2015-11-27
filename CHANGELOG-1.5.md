@@ -8,6 +8,7 @@
 - PIM-4347: `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` now extends `Doctrine\Common\Persistence\ObjectRepository`
 - PIM-5067: Change the JUnit formatter of behats logs
 - PIM-5217: Create a Buffer component and new file writer implementations that use it
+- PIM-4646: TinyMCE wysiwyg editor is replaced by Summernote in the mass-edit and variant group
 
 ## Bug fixes
 

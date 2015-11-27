@@ -21,7 +21,6 @@ css:
         - bundles/pimui/css/form.less
         - bundles/pimui/css/wizard.less
         - bundles/pimui/css/tree.less
-        - bundles/pimui/css/tinymce.less
         - bundles/pimui/css/dialog.less
         - bundles/pimui/css/modal.less
         - bundles/pimui/css/progress.less

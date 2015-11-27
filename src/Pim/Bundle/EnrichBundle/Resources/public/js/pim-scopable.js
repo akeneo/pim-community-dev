@@ -227,7 +227,6 @@ define(
                 if (!this.expanded) {
                     this.expanded = true;
 
-                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -248,7 +247,6 @@ define(
                 if (this.expanded) {
                     this.expanded = false;
 
-                    this._destroyUI();
                     this._reindexFields();
 
                     var first = true;
@@ -336,17 +334,6 @@ define(
 
             _hideField: function (field) {
                 $(field).hide();
-            },
-
-            _destroyUI: function () {
-                _.each(this.fields, function ($field) {
-                    var $textarea = $field.find('textarea.wysiwyg');
-                    if ($textarea.length) {
-                        wysiwyg.destroy($textarea);
-                    }
-                });
-
-                return this;
             },
 
             _initUI: function () {
