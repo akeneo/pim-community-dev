@@ -101,8 +101,8 @@ pim_localization:
         - { value: '.', label: 'dot (.)' }
         - { value: ',', label: 'comma (,)' }
     date_formats:
-        - { value: 'Y-m-d', label: 'yyyy-mm-dd' }
-        - { value: 'Y/m/d', label: 'yyyy/mm/dd' }
-        - { value: 'm/d/Y', label: 'mm/dd/yyyy' }
-        - { value: 'd/m/Y', label: 'dd/mm/yyyy' }
-        - { value: 'd.m.Y', label: 'dd.mm.yyyy' }
+        - { value: 'yyyy-MM-dd', label: 'yyyy-mm-dd' }
+        - { value: 'yyyy/MM/dd', label: 'yyyy/mm/dd' }
+        - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
+        - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
+        - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }
