@@ -9,11 +9,12 @@
 - PIM-5067: Change the JUnit formatter of behats logs
 - PIM-5217: Create a Buffer component and new file writer implementations that use it
 - PIM-4646: TinyMCE wysiwyg editor is replaced by Summernote in the mass-edit and variant group
+- PIM-4999: jQuery UI datepicker is replaced by bootstrap datepicker in the mass-edit and variant group
 
 ## Bug fixes
 
 ## BC breaks
-
+- Service `oro_form.type.date` is removed and replaced by `pim_form.type.date` (alias `oro_date` is replaced by `pim_date`)
 - Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
