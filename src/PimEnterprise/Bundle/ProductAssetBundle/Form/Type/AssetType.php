@@ -76,7 +76,7 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'endOfUseAt',
-            'oro_date',
+            'pim_date',
             [
                 'required' => false,
                 'label'    => 'pimee_product_asset.enrich_asset.view.end_of_use',
