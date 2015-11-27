@@ -79,5 +79,5 @@ Feature: Validate localized price attributes of a product
   Scenario: Validate the decimal separator constraint of price attribute
     Given I change the "Taxe" to "50.50 EUR"
     And I save the product
-    Then I should see validation tooltip "This type of value expects the use of , to separate decimals."
+    Then I should see validation tooltip "Ce type de valeur attend , comme séparateur de décimales."
     And there should be 1 error in the "[other]" tab
