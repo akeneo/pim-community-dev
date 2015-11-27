@@ -21,24 +21,6 @@ class OperationRegistrySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface');
     }
 
-    function it_registers_a_mass_edit_operation_and_retrieves_it_by_its_alias_legacy(
-        $securityFacade,
-        MassEditOperationInterface $dummyOperation,
-        MassEditOperationInterface $gridOperation,
-        MassEditOperationInterface $aclOperation
-    ) {
-        $this->beConstructedWith(null, $securityFacade);
-
-        $this->register($dummyOperation, 'dummy');
-        $this->get('dummy')->shouldReturn($dummyOperation);
-
-        $this->register($gridOperation, 'grid', null, 'product-grid');
-        $this->get('grid')->shouldReturn($gridOperation);
-
-        $this->register($aclOperation, 'acl', 'mass_edit_grid');
-        $this->get('acl')->shouldReturn($aclOperation);
-    }
-
     function it_registers_a_mass_edit_operation_and_retrieves_it_by_its_alias(
         $securityFacade,
         MassEditOperationInterface $dummyOperation,

@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 class ObjectIdResolverSpec extends ObjectBehavior
