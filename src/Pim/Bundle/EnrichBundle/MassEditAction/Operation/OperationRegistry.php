@@ -29,12 +29,12 @@ class OperationRegistry implements OperationRegistryInterface
     /**
      * OperationRegistry constructor.
      *
-     * @param TokenStorageInterface|null $tokenStorage
-     * @param SecurityFacade|null        $securityFacade
+     * @param TokenStorageInterface $tokenStorage
+     * @param SecurityFacade        $securityFacade
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage = null,
-        SecurityFacade $securityFacade = null
+        TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->securityFacade = $securityFacade;
@@ -53,9 +53,7 @@ class OperationRegistry implements OperationRegistryInterface
             );
         }
 
-        if (null !== $acl && null !== $this->tokenStorage && null !== $this->tokenStorage->getToken() &&
-            (null === $this->securityFacade || !$this->securityFacade->isGranted($acl))
-        ) {
+        if (null !== $acl && null !== $this->tokenStorage->getToken() && !$this->securityFacade->isGranted($acl)) {
             return;
         }
 
