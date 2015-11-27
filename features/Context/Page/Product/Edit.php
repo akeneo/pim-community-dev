@@ -277,7 +277,6 @@ class Edit extends Form
      */
     public function fillField($label, $value, Element $element = null)
     {
-        $this->getSession()->wait($this->getTimeout());
         $isLabel = false;
 
         try {

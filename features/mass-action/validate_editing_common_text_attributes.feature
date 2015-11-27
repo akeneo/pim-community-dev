@@ -40,26 +40,6 @@ Feature: Validate editing common attributes of multiple products
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Successfully mass edit a boolean attribute
-    Given I mass-edit products boots and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Available attribute
-    And I check the "Available" switch
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then attribute Available of "boots" should be "true"
-    And attribute Available of "sneakers" should be "true"
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Available attribute
-    And I uncheck the "Available" switch
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then attribute Available of "boots" should be "false"
-    And attribute Available of "sandals" should be "false"
-    And attribute Available of "sneakers" should be "false"
-
   Scenario: Successfully mass edit a date attribute
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation
@@ -138,32 +118,6 @@ Feature: Validate editing common attributes of multiple products
     Then I should see "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
     And the file "side_view" of products boots, sandals and sneakers should be ""
 
-  Scenario: Successfully mass edit a metric attribute
-    Given I mass-edit products boots and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Length attribute
-    And I change the Length to "10"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the metric "Length" of products boots and sneakers should be "10"
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Length attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the metric "Length" of products boots, sandals and sneakers should be ""
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Length attribute
-    And I change the Length to "foo"
-    And I move on to the next step
-    # @TODO: fix this
-    And I display the Length attribute
-    Then I should see validation error "This value should be a valid number."
-    Then the metric "Length" of products boots, sandals and sneakers should be ""
-
   Scenario: Successfully mass edit a multi select attribute
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation
@@ -200,71 +154,6 @@ Feature: Validate editing common attributes of multiple products
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the option "manufacturer" of products boots, sandals and sneakers should be ""
-
-  Scenario: Successfully mass edit a number attribute
-    Given I mass-edit products boots and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Number in stock attribute
-    And I change the "Number in stock" to "10"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then attribute number_in_stock of "boots" should be "10"
-    And attribute number_in_stock of "sneakers" should be "10"
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Number in stock attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then attribute number_in_stock of "boots" should be ""
-    And attribute number_in_stock of "sandals" should be ""
-    And attribute number_in_stock of "sneakers" should be ""
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Number in stock attribute
-    And I change the "Number in stock" to "-10"
-    And I move on to the next step
-    Then I should see validation error "This value should be 0 or more."
-    And attribute number_in_stock of "boots" should be ""
-    And attribute number_in_stock of "sandals" should be ""
-    And attribute number_in_stock of "sneakers" should be ""
-
-  Scenario: Successfully mass edit a price attribute
-    Given I mass-edit products boots and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Price attribute
-    And I change the "$ Price" to "10"
-    And I change the "€ Price" to "15"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the prices "Price" of products boots and sneakers should be:
-      | amount | currency |
-      | 10     | USD      |
-      | 15     | EUR      |
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Price attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the prices "Price" of products boots, sandals and sneakers should be:
-      | amount | currency |
-      |        | USD      |
-      |        | EUR      |
-    When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I display the Price attribute
-    And I change the "$ Price" to "500"
-    And I move on to the next step
-    # @TODO: fix this
-    And I display the Price attribute
-    Then I should see validation error "This value should be 200 or less."
-    Then the prices "Price" of products boots, sandals and sneakers should be:
-      | amount | currency |
-      |        | USD      |
-      |        | EUR      |
 
   Scenario: Successfully mass edit a text attribute
     Given I mass-edit products boots and sneakers
