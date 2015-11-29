@@ -6,13 +6,13 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 class AttributeManagerSpec extends ObjectBehavior
 {
     const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
-    const PRODUCT_CLASS   = 'Pim\Bundle\CatalogBundle\Model\Product';
+    const PRODUCT_CLASS   = 'Pim\Component\Catalog\Model\Product';
 
     function let(
         AttributeTypeRegistry $registry,

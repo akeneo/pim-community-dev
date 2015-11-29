@@ -4,7 +4,7 @@ namespace Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Sorter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 

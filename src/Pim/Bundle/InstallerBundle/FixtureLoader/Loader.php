@@ -119,7 +119,7 @@ class Loader implements LoaderInterface
     {
         //TODO: make this work without the media manager
 
-        if ($object instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+        if ($object instanceof \Pim\Component\Catalog\Model\ProductInterface) {
             $this->mediaManager->handleProductMedias($object);
         }
         $this->objectManager->persist($object);

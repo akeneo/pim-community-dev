@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
@@ -47,7 +47,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
         if (!$attributeOption instanceof AttributeOptionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AttributeOptionInterface", "%s" provided.',
                     ClassUtils::getClass($attributeOption)
                 )
             );

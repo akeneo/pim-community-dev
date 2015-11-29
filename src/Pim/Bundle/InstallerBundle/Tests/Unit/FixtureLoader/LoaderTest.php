@@ -72,7 +72,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockObject($id)
     {
-        $object = $this->getMock('Pim\Bundle\CatalogBundle\Model\ReferableInterface');
+        $object = $this->getMock('Pim\Component\Catalog\Model\ReferableInterface');
         $object->expects($this->any())
             ->method('getReference')
             ->will($this->returnValue($id));

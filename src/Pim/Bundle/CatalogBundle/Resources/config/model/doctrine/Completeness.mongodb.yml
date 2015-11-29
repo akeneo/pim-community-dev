@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Completeness:
+Pim\Component\Catalog\Model\Completeness:
     type: embeddedDocument
     fields:
         id:

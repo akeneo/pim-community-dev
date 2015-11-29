@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\View;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 
 /**
@@ -507,7 +507,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $value = $this->getMock('Pim\Component\Catalog\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -531,7 +531,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     private function getAttributeMock(array $options)
     {

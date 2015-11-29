@@ -19,7 +19,7 @@ class ProductRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em, ClassMetadata $class, ConfigurationRegistryInterface $registry, ProductQueryBuilderFactory $pqbFactory)
     {
-        $class->name = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $class->name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $class);
         $this->setReferenceDataRegistry($registry);
         $this->setProductQueryBuilderFactory($pqbFactory);
@@ -95,7 +95,7 @@ class ProductRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
-        $queryBuilder->from('Pim\Bundle\CatalogBundle\Model\Product', 'p')->willReturn($queryBuilder);
+        $queryBuilder->from('Pim\Component\Catalog\Model\Product', 'p')->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(p.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);

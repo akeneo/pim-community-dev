@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\ProductPrice:
+Pim\Component\Catalog\Model\ProductPrice:
     type: entity
     table: pim_catalog_product_value_price
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Model\ProductPrice:
             column: currency_code
     manyToOne:
         value:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductValueInterface
             inversedBy: prices
             joinColumns:
                 value_id:

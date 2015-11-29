@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Prophecy\Argument;

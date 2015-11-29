@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class ProductValueChannelFilterSpec extends ObjectBehavior
 {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

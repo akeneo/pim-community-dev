@@ -9,11 +9,11 @@ class MediaFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $this->beConstructedWith('Pim\Component\Catalog\Model\ProductMedia');
     }
 
     function it_creates_a_media(File $file)
     {
-        $this->createMedia($file)->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $this->createMedia($file)->shouldReturnAnInstanceOf('Pim\Component\Catalog\Model\ProductMedia');
     }
 }

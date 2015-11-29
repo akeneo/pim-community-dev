@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 
 /**

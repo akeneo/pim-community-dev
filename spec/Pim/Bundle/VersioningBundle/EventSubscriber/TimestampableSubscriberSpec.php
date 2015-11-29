@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
+use Pim\Component\Catalog\Model\TimestampableInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
@@ -77,7 +77,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);
-        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Bundle\CatalogBundle\Model\TimestampableInterface'));
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
 
         $version->getResourceId()->willReturn('foo');
         $version->getResourceName()->willReturn('bar');
@@ -106,7 +106,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);
-        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Bundle\CatalogBundle\Model\TimestampableInterface'));
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
 
         $version->getResourceId()->willReturn('foo');
         $version->getResourceName()->willReturn('bar');

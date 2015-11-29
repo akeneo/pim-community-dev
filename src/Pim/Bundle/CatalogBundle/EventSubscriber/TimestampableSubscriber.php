@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
+use Pim\Component\Catalog\Model\TimestampableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**

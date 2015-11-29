@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -26,7 +26,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
             $productBuilder,
             $localeResolver,
             'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
-            'Pim\Bundle\CatalogBundle\Model\Product'
+            'Pim\Component\Catalog\Model\Product'
         );
     }
 
@@ -54,7 +54,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
         $colorValue->getAttribute()->willReturn($color);
-        $colorValue->setEntity(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))->willReturn($colorValue);
+        $colorValue->setEntity(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
 
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -64,10 +64,10 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
             ->shouldBeCalled()->willReturn([$colorValue]);
 
         $productBuilder
-            ->addAttributeToProduct(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'), $name)
+            ->addAttributeToProduct(Argument::type('Pim\Component\Catalog\Model\Product'), $name)
             ->shouldBeCalled();
         $productBuilder
-            ->addMissingProductValues(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))
+            ->addMissingProductValues(Argument::type('Pim\Component\Catalog\Model\Product'))
             ->shouldBeCalled();
 
         $normalizer

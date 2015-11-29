@@ -46,7 +46,7 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterCompleteCheckerPass());
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Catalog\Model'
         ];
 
         $container->addCompilerPass(

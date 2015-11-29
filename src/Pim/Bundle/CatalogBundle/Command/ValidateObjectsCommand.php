@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

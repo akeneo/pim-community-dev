@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -53,7 +53,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
                 )
             );

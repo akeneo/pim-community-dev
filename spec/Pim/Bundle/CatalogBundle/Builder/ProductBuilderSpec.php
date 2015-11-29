@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
@@ -19,10 +19,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductBuilderSpec extends ObjectBehavior
 {
-    const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
-    const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+    const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
+    const VALUE_CLASS   = 'Pim\Component\Catalog\Model\ProductValue';
     const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
-    const ASSOCIATION_CLASS = 'Pim\Bundle\CatalogBundle\Model\Association';
+    const ASSOCIATION_CLASS = 'Pim\Component\Catalog\Model\Association';
 
     function let(
         AttributeRepositoryInterface $attributeRepository,

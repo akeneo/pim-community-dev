@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -12,7 +12,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer)
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $this->beConstructedWith('Pim\Component\Catalog\Model\ProductValue');
 
         $serializer->implement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
         $this->setSerializer($serializer);
@@ -31,24 +31,24 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_product_values_from_json()
     {
-        $this->supportsDenormalization([], 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json')->shouldReturn(true);
+        $this->supportsDenormalization([], 'Pim\Component\Catalog\Model\ProductValue', 'json')->shouldReturn(true);
         $this->supportsDenormalization([], 'Product', 'json')->shouldReturn(false);
-        $this->supportsDenormalization([], 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'csv')->shouldReturn(false);
+        $this->supportsDenormalization([], 'Pim\Component\Catalog\Model\ProductValue', 'csv')->shouldReturn(false);
     }
 
     function it_requires_attribute_to_be_passed_in_the_context()
     {
         $this
             ->shouldThrow(new InvalidArgumentException('Attribute must be passed in the context'))
-            ->duringDenormalize([], 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', []);
+            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'json', []);
 
         $this
             ->shouldThrow(
                 new InvalidArgumentException(
-                    'Attribute must be an instance of Pim\Bundle\CatalogBundle\Model\AttributeInterface, string given'
+                    'Attribute must be an instance of Pim\Component\Catalog\Model\AttributeInterface, string given'
                 )
             )
-            ->duringDenormalize([], 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', ['attribute' => 'foo']);
+            ->duringDenormalize([], 'Pim\Component\Catalog\Model\ProductValue', 'json', ['attribute' => 'foo']);
     }
 
     function it_denormalizes_json_into_product_values($serializer, AttributeInterface $attribute)
@@ -64,12 +64,12 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
 
         $value = $this->denormalize(
             [],
-            'Pim\Bundle\CatalogBundle\Model\ProductValue',
+            'Pim\Component\Catalog\Model\ProductValue',
             'json',
             ['attribute' => $attribute]
         );
 
-        $value->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $value->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductValue');
         $value->getData()->shouldReturn('foo');
     }
 
@@ -88,12 +88,12 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
 
         $value = $this->denormalize(
             ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-            'Pim\Bundle\CatalogBundle\Model\ProductValue',
+            'Pim\Component\Catalog\Model\ProductValue',
             'json',
             ['attribute' => $attribute]
         );
 
-        $value->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $value->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductValue');
         $value->getData()->shouldReturn(1);
         $value->getLocale()->shouldReturn('en_US');
         $value->getScope()->shouldReturn('ecommerce');

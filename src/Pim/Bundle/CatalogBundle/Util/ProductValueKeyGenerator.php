@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Util;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Product value key generator

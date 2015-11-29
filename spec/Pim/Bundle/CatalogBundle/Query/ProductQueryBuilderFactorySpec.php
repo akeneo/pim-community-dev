@@ -23,7 +23,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         $this->beConstructedWith(
             'Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder',
             $om,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             $attRepository,
             $filterRegistry,
             $sorterRegistry,

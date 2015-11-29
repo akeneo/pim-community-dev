@@ -10,7 +10,7 @@ class PriceTypeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Model\ProductPrice'
+            'Pim\Component\Catalog\Model\ProductPrice'
         );
     }
 
@@ -30,7 +30,7 @@ class PriceTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
+                'data_class' => 'Pim\Component\Catalog\Model\ProductPrice',
             ]
         )->shouldHaveBeenCalled();
     }

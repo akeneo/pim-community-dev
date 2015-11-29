@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class AttributeConstraintGuesserSpec extends ObjectBehavior
 {

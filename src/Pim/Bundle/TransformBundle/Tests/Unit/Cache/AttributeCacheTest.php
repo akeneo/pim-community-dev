@@ -68,7 +68,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $attributeType
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     public function addAttribute($code, $attributeType = 'default')
     {
@@ -180,7 +180,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param array  $familyAttributeCodes
      * @param array  $categories
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     protected function getProductMock(
         $productId = null,
@@ -189,7 +189,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         array $familyAttributeCodes = [],
         array $categories = []
     ) {
-        $product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
+        $product = $this->getMockBuilder('Pim\Component\Catalog\Model\Product')
             ->setMethods(['getId', 'getValues', 'getFamily', 'getGroups'])
             ->getMock();
         $product->expects($this->any())
@@ -197,7 +197,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($productId));
         $values = [];
         foreach ($attributeCodes as $attributeCode) {
-            $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
+            $value = $this->getMockBuilder('Pim\Component\Catalog\Model\ProductValue')
                 ->setMethods(['getAttribute', '__toString'])
                 ->getMock();
             $value->expects($this->any())

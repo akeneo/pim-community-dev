@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Cache;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**
  * Caches doctrine persisted objects

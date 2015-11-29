@@ -11,8 +11,8 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 

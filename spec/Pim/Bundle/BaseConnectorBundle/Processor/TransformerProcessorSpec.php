@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

@@ -29,7 +29,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
-                'Expects a "Pim\Bundle\CatalogBundle\Model\CategoryInterface", "stdClass" provided.'
+                'Expects a "Pim\Component\Catalog\Model\CategoryInterface", "stdClass" provided.'
             )
         )->during(
             'update',

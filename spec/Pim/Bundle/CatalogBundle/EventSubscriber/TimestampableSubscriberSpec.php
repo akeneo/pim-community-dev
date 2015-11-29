@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
+use Pim\Component\Catalog\Model\TimestampableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Prophecy\Argument;
 
