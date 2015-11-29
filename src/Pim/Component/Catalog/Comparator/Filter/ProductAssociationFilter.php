@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

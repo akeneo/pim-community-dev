@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -12,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

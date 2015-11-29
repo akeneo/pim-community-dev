@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 class AssociationTypeUpdaterSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
-                'Expects a "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "stdClass" provided.'
+                'Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "stdClass" provided.'
             )
         )->during(
             'update',

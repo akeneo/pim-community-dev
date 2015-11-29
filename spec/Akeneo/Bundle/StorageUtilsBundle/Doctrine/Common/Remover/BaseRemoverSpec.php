@@ -5,14 +5,14 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, RemovingOptionsResolverInterface $optionsResolver, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
+        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, 'Pim\Component\Catalog\Model\GroupTypeInterface');
     }
 
     function it_is_a_remover()
@@ -80,7 +80,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "Pim\Bundle\CatalogBundle\Model\GroupTypeInterface", "%s" provided.',
+                'Expects a "Pim\Component\Catalog\Model\GroupTypeInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 class CurrencyManagerSpec extends ObjectBehavior

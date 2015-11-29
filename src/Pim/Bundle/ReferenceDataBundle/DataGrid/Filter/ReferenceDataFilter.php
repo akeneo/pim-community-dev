@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 

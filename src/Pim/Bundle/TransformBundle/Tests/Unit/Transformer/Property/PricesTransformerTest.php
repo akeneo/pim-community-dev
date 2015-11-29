@@ -96,7 +96,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockForPrice($currency, $data = null)
     {
-        $price = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductPrice');
+        $price = $this->getMock('Pim\Component\Catalog\Model\ProductPrice');
         $price->expects($this->any())
             ->method('getCurrency')
             ->will($this->returnValue($currency));
@@ -112,7 +112,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getProductValueMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->getMockBuilder('Pim\Component\Catalog\Model\ProductValueInterface')
             ->setMethods(
                 [
                     'setText',

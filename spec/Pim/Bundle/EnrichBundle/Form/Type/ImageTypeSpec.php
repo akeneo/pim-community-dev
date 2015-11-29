@@ -10,7 +10,7 @@ class ImageTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $this->beConstructedWith('Pim\Component\Catalog\Model\ProductMedia');
     }
 
     function it_is_a_file_type()
@@ -52,7 +52,7 @@ class ImageTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia',
+                'data_class' => 'Pim\Component\Catalog\Model\ProductMedia',
             ]
         )->shouldHaveBeenCalled();
     }

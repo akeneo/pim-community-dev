@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.entity.product.class:                     Pim\Bundle\CatalogBundle\Model\Product
-    pim_catalog.entity.product_value.class:               Pim\Bundle\CatalogBundle\Model\ProductValue
-    pim_catalog.entity.association.class:                 Pim\Bundle\CatalogBundle\Model\Association
-    pim_catalog.entity.completeness.class:                Pim\Bundle\CatalogBundle\Model\Completeness
+    pim_catalog.entity.product.class:                     Pim\Component\Catalog\Model\Product
+    pim_catalog.entity.product_value.class:               Pim\Component\Catalog\Model\ProductValue
+    pim_catalog.entity.association.class:                 Pim\Component\Catalog\Model\Association
+    pim_catalog.entity.completeness.class:                Pim\Component\Catalog\Model\Completeness
     pim_catalog.entity.association_type.class:            Pim\Bundle\CatalogBundle\Entity\AssociationType
     pim_catalog.entity.association_type_translation.class: Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation
     pim_catalog.entity.category.class:                    Pim\Bundle\CatalogBundle\Entity\Category
@@ -23,8 +23,8 @@ parameters:
     pim_catalog.entity.channel.class:                     Pim\Bundle\CatalogBundle\Entity\Channel
     pim_catalog.entity.currency.class:                    Pim\Bundle\CatalogBundle\Entity\Currency
     pim_catalog.entity.locale.class:                      Pim\Bundle\CatalogBundle\Entity\Locale
-    pim_catalog.entity.metric.class:                      Pim\Bundle\CatalogBundle\Model\Metric
-    pim_catalog.entity.product_media.class:               Pim\Bundle\CatalogBundle\Model\ProductMedia
-    pim_catalog.entity.product_price.class:               Pim\Bundle\CatalogBundle\Model\ProductPrice
+    pim_catalog.entity.metric.class:                      Pim\Component\Catalog\Model\Metric
+    pim_catalog.entity.product_media.class:               Pim\Component\Catalog\Model\ProductMedia
+    pim_catalog.entity.product_price.class:               Pim\Component\Catalog\Model\ProductPrice
     pim_catalog.entity.product_template.class:            Pim\Bundle\CatalogBundle\Entity\ProductTemplate
-    pim_catalog.entity.available_attributes.class:        Pim\Bundle\CatalogBundle\Model\AvailableAttributes
+    pim_catalog.entity.available_attributes.class:        Pim\Component\Catalog\Model\AvailableAttributes

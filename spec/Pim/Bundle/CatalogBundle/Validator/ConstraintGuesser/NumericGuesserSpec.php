@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class NumericGuesserSpec extends ObjectBehavior
 {

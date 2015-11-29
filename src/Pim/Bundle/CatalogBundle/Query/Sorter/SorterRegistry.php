@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Sorter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Aims to register and retrieve sorters useable on product query builder

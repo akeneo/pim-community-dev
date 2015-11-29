@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

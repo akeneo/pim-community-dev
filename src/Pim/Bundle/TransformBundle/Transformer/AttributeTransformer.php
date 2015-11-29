@@ -5,10 +5,10 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**

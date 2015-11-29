@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 
 /**
  * Normalize a metric data

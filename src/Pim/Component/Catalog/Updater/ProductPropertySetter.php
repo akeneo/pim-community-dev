@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
 
@@ -45,7 +45,7 @@ class ProductPropertySetter implements PropertySetterInterface
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" provided.',
                     ClassUtils::getClass($product)
                 )
             );

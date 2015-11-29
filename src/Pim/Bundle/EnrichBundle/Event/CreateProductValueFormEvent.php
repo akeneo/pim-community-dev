@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Event;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

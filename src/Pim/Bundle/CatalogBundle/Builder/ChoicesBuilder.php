@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ChosableInterface;
+use Pim\Component\Catalog\Model\ChosableInterface;
 
 /**
  * ChoicesBuilderInterface implementation
@@ -23,7 +23,7 @@ class ChoicesBuilder implements ChoicesBuilderInterface
         foreach ($items as $item) {
             if (!$item instanceof ChosableInterface) {
                 throw new \InvalidArgumentException(sprintf(
-                    '%s must implement Pim\Bundle\CatalogBundle\Model\ChosableInterface',
+                    '%s must implement Pim\Component\Catalog\Model\ChosableInterface',
                     ClassUtils::getClass($item)
                 ));
             }

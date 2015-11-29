@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Product:
+Pim\Component\Catalog\Model\Product:
     type: entity
     table: pim_catalog_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
             type: datetime
     manyToOne:
         family:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
+            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
             joinColumns:
                 family_id:
                     referencedColumnName: id
@@ -37,7 +37,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:
@@ -50,14 +50,14 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AssociationInterface
+            targetEntity: Pim\Component\Catalog\Model\AssociationInterface
             mappedBy: owner
             cascade:
                 - persist
                 - refresh
                 - detach
         values:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductValueInterface
             orphanRemoval: true
             mappedBy: entity
             cascade:
@@ -66,7 +66,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 - refresh
                 - detach
         completenesses:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
             mappedBy: product
             cascade:
                 - remove

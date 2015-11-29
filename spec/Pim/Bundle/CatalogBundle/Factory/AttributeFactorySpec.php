@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 class AttributeFactorySpec extends ObjectBehavior
 {
     const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
-    const PRODUCT_CLASS   = 'Pim\Bundle\CatalogBundle\Model\Product';
+    const PRODUCT_CLASS   = 'Pim\Component\Catalog\Model\Product';
 
     function let(AttributeTypeRegistry $registry)
     {

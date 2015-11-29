@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
 use Pim\Component\Catalog\Updater\Adder\FieldAdderInterface;

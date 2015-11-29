@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -41,7 +41,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
         if (!$associationType instanceof AssociationTypeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "%s" provided.',
                     ClassUtils::getClass($associationType)
                 )
             );

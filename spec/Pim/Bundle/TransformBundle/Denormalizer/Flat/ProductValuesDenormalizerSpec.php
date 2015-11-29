@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Prophecy\Argument;
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
     const FORMAT_CSV  = 'csv';
-    const VALUE_CLASS = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+    const VALUE_CLASS = 'Pim\Component\Catalog\Model\ProductValue';
 
     function let(DenormalizerInterface $valueDenormalizer, AttributeColumnInfoExtractor $fieldExtractor)
     {

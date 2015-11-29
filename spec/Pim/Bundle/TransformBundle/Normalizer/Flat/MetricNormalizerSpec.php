@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {

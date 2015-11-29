@@ -6,7 +6,7 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Component\Catalog\Model\Metric;
 
 /**
  * @require \MongoId

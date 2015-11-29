@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,7 +32,7 @@ class ProductUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_product()
     {
-        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "stdClass" provided.'))->during(
+        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Component\Catalog\Model\ProductInterface", "stdClass" provided.'))->during(
             'update', [new \stdClass(), []]
         );
     }

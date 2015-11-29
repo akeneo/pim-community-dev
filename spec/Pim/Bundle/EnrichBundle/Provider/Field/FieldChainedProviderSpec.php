@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Provider\Field;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 
 class FieldChainedProviderSpec extends ObjectBehavior

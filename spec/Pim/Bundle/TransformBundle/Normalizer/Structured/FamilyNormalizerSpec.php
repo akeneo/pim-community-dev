@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
 use Prophecy\Argument;
 

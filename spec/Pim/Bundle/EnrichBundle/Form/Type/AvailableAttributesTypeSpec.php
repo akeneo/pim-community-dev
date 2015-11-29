@@ -23,7 +23,7 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
             $userContext,
             $translator,
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            'Pim\Bundle\CatalogBundle\Model\AvailableAttributes'
+            'Pim\Component\Catalog\Model\AvailableAttributes'
         );
     }
 
@@ -55,7 +55,7 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
         $resolver->setNormalizer(Argument::any(), Argument::any())->shouldBeCalled();
         $resolver->setDefaults(
             [
-                'data_class'          => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
+                'data_class'          => 'Pim\Component\Catalog\Model\AvailableAttributes',
                 'excluded_attributes' => [],
             ]
         )->shouldBeCalled();
