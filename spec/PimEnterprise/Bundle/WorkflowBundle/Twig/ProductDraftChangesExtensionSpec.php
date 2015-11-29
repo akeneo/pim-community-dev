@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
