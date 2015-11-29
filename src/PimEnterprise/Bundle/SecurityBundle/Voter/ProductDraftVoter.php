@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;

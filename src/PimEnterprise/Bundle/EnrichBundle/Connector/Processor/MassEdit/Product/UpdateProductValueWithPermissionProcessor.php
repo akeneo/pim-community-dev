@@ -5,8 +5,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\EmptyValue;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for asset collections

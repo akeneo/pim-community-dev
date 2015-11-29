@@ -22,11 +22,11 @@ use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\Image
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;

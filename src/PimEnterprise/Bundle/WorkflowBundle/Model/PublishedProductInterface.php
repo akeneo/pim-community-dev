@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Published product interface

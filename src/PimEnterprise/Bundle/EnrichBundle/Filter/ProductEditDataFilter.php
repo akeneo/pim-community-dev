@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
