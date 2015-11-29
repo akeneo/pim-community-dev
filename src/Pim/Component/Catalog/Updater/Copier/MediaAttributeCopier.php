@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use League\Flysystem\MountManager;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;

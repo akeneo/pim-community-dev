@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;

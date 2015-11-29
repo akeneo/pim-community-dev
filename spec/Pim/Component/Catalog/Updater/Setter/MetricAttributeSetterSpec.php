@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;

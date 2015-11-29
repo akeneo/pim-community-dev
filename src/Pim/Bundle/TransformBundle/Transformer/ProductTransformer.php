@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
@@ -79,7 +79,7 @@ class ProductTransformer extends EntityTransformer
      * @param AttributeCache                  $attributeCache
      * @param CachedReader                    $associationReader
      * @param ProductTemplateUpdaterInterface $templateUpdater
-     * @param ProductBuilderInterface         $productBuilder
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface         $productBuilder
      * @param ProductRepositoryInterface      $productRepository
      * @param string                          $productClass
      * @param string                          $productValueClass

@@ -15,7 +15,7 @@ use Doctrine\Common\Util\Inflector;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;

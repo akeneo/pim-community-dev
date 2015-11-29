@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -30,7 +30,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
     protected $resolver;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
     public function __construct(

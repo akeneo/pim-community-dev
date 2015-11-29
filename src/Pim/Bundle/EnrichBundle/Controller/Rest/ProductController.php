@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
@@ -82,7 +82,7 @@ class ProductController
      * @param ObjectFilterInterface                $objectFilter
      * @param CollectionFilterInterface            $productEditDataFilter
      * @param RemoverInterface                     $productRemover
-     * @param ProductBuilderInterface              $productBuilder
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
      * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(

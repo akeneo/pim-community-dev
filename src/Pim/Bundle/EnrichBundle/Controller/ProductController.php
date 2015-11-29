@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -72,7 +72,7 @@ class ProductController extends AbstractDoctrineController
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
-    /** @var ProductBuilderInterface */
+    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var CategoryFactory */
@@ -126,7 +126,7 @@ class ProductController extends AbstractDoctrineController
      * @param ProductCategoryManager     $prodCatManager
      * @param SaverInterface             $productSaver
      * @param SequentialEditManager      $seqEditManager
-     * @param ProductBuilderInterface    $productBuilder
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface    $productBuilder
      * @param CategoryFactory            $categoryFactory
      */
     public function __construct(
