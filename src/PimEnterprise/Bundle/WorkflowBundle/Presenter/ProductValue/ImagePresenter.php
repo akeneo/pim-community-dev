@@ -19,6 +19,8 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * Present an image value
  *
  * @author Filips Alpe <filips@akeneo.com>
+ *
+ * @deprecated since 1.4 should be removed in 1.5
  */
 class ImagePresenter extends FilePresenter
 {

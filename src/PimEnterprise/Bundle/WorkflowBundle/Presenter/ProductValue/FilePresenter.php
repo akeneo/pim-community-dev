@@ -21,6 +21,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
  * Present a file value
  *
  * @author Filips Alpe <filips@akeneo.com>
+ *
+ * @deprecated since 1.4 should be removed in 1.5
  */
 class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterface
 {
