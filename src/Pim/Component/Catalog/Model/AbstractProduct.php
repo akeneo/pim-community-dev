@@ -6,7 +6,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInter
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
+use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 
 /**
  * Abstract product

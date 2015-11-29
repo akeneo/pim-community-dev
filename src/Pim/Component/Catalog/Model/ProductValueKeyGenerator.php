@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Util;
-
-use Pim\Component\Catalog\Model\ProductValueInterface;
+namespace Pim\Component\Catalog\Model;
 
 /**
  * Product value key generator

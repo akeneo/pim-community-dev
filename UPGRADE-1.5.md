@@ -251,4 +251,5 @@ Based on a PIM standard installation, execute the following command in your proj
     # TODO END: should not be moved!?
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\ConnectorBundle\\Writer\\File\\ContextableCsvWriter/Bundle\\BaseConnectorBundle\\Writer\\File\\ContextableCsvWriter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilderInterface/Bundle\\Pim\\Component\\Catalog\\Builder\\ProductBuilderInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Bundle\\Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'
 ```
