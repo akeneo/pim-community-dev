@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 /**
  * Flat association type normalizer

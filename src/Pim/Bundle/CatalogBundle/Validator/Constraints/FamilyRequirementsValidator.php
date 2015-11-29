@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Group factory

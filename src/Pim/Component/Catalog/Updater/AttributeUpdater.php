@@ -4,10 +4,10 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;

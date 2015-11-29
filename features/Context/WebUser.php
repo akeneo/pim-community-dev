@@ -13,9 +13,9 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
+use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**

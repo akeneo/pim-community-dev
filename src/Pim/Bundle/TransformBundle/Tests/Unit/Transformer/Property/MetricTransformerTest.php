@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Component\Catalog\Model\Metric;
 use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
+use Pim\Component\Catalog\Model\Metric;
 
 /**
  * Tests related class

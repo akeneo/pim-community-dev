@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 
 /**
  * Test related class

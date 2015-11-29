@@ -9,12 +9,12 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 

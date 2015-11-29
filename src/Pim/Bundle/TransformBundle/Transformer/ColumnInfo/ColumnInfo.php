@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Represents Column information

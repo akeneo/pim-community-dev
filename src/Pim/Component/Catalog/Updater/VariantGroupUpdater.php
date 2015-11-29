@@ -7,10 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 /**
  * Updates and validates a variant group

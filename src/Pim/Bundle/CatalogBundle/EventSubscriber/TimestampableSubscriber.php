@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Component\Catalog\Model\TimestampableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Component\Catalog\Model\TimestampableInterface;
 
 /**
  * Aims to add timestambable behavior

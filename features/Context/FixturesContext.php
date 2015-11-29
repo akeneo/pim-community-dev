@@ -23,14 +23,14 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Component\Catalog\Model\Association;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 

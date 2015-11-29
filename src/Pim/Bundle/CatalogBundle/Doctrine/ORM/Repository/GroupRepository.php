@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
 /**
  * Group repository

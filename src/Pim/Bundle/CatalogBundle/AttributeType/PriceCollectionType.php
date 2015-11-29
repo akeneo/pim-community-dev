@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
 /**
  * Price attribute type

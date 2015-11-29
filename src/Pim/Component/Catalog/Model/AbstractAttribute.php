@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Abstract product attribute

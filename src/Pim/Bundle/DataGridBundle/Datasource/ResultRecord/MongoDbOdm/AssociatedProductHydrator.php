@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\AssociationTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
@@ -12,6 +11,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyT
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Hydrate results of Doctrine MongoDB query as ResultRecord array

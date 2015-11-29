@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
