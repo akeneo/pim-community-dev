@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 
 /**
  * Product template model, contains common product values as raw data
