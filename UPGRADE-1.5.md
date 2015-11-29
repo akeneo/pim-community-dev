@@ -73,23 +73,23 @@ src/
     ├── Bundle
     │   ├── AnalyticsBundle         -> -
     │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) once exports re-worked in ConnectorBundle
-    │   ├── CatalogBundle           -> ?
-    │   ├── CommentBundle           -> split in a Akeneo component + bundle (does not rely on PIM domain)
+    │   ├── CatalogBundle           -> we continue to extract business code to relevant components
+    │   ├── CommentBundle           -> could be splitted in a Akeneo component + bundle (does not rely on PIM domain)
     │   ├── ConnectorBundle         -> could welcome new classes if we re-work export
     │   ├── DashboardBundle         -> -
     │   ├── DataGridBundle          -> move generic classes to Oro/DataGridBundle, move specific related to product to Pim/EnrichBundle
-    │   ├── EnrichBundle            -> ?could contain all Akeneo PIM UI (except independent bundles as workflow, pam)?
-    │   ├── FilterBundle            -> ?merge in Oro/DataGridBundle?
-    │   ├── ImportExportBundle      -> ?should be merged to EnrichBundle?
+    │   ├── EnrichBundle            -> could contain all Akeneo PIM UI (except independent bundles as workflow, pam)
+    │   ├── FilterBundle            -> merge in Oro/DataGridBundle or Pim/DataGridBundle
+    │   ├── ImportExportBundle      -> could be merged to EnrichBundle it mainly contain UI related classes
     │   ├── InstallerBundle         -> -
     │   ├── JsFormValidationBundle  -> -
     │   ├── NavigationBundle        -> merge from Oro/NavigationBundle during navigation re-work project
     │   ├── NotificationBundle      -> bit re-worked during the collaborative workflow epic
     │   ├── PdfGeneratorBundle      -> -
     │   ├── ReferenceDataBundle     -> -
-    │   ├── TransformBundle         -> ?re-work normalizer/denormalizer part and drop/deprecate other parts?
+    │   ├── TransformBundle         -> re-work normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
     │   ├── TranslationBundle       -> could be deprecated after copying useful classes in new Localization component + bundle (in a BC way)
-    │   ├── UIBundle                -> ?to merge to EnrichBundle? keep it only for third party libraries? we should load them via composer (or other system)
+    │   ├── UIBundle                -> mainly used for js/css third party libraries, we should load them via a dedicated package manager
     │   ├── UserBundle              -> merge used parts of Oro/UserBundle to Pim/UserBundle
     │   ├── VersioningBundle        -> -
     │   └── WebServiceBundle        -> -
@@ -147,11 +147,10 @@ src/
         ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy and backward compatibility reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
         ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
-        ├── User                    ?Don't know yet if we'll directly extract from UserBundle(s)?
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
 
-## ConnectorBundle or BaseConnectorBundle?
+## ConnectorBundle & BaseConnectorBundle
 
 In 1.4, we re-worked the PIM import system and we've depreciated the old import system.
 
