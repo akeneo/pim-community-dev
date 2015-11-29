@@ -78,7 +78,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         originalProduct:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductInterface
         version:
             reference: true
             type: one

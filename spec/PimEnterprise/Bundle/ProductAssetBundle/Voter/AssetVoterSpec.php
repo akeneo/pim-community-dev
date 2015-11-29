@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Voter;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;

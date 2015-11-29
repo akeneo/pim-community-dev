@@ -6,7 +6,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RuleDefinitionSaverSpec extends ObjectBehavior

@@ -15,8 +15,8 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Classification\TagAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

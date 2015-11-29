@@ -23,7 +23,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft:
             nullable: false
     manyToOne:
         product:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
             joinColumn:
                 name: product_id
                 referencedColumnName: id

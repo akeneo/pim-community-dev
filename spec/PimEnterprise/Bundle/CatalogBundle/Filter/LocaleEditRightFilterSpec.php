@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LocaleEditRightFilterSpec extends ObjectBehavior

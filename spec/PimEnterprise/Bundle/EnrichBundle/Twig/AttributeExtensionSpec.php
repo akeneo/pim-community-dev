@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 class AttributeExtensionSpec extends ObjectBehavior

@@ -63,7 +63,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id

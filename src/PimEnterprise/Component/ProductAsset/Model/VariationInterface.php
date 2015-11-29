@@ -12,8 +12,8 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Product asset variation interface

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;

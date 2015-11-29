@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\CatalogRule\Validator;
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

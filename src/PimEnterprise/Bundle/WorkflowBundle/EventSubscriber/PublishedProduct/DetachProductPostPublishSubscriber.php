@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

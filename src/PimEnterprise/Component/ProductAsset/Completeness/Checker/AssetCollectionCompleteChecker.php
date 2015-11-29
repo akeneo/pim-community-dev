@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ProductAsset\Completeness\Checker;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface as EnterpriseProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;

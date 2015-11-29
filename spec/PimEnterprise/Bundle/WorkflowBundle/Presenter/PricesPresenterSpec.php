@@ -5,9 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
@@ -35,9 +36,9 @@ class PricesPresenterSpec extends ObjectBehavior
         RendererInterface $renderer,
         ProductValueInterface $value,
         Collection $collection,
-        Model\ProductPrice $eur,
-        Model\ProductPrice $usd,
-        Model\ProductPrice $gbp
+        ProductPriceInterface $eur,
+        ProductPriceInterface $usd,
+        ProductPriceInterface $gbp
     ) {
         $value->getData()->willReturn($collection);
         $collection->getIterator()->willReturn(new \ArrayIterator([

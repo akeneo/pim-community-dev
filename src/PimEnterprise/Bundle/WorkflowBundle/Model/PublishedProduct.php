@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\AbstractProduct;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class DatePresenterSpec extends ObjectBehavior
@@ -21,7 +21,7 @@ class DatePresenterSpec extends ObjectBehavior
 
     function it_presents_date_change_using_the_injected_renderer(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value,
+        ProductValueInterface $value,
         \DateTime $date
     ) {
         $value->getData()->willReturn($date);
@@ -35,7 +35,7 @@ class DatePresenterSpec extends ObjectBehavior
 
     function it_presents_only_new_date_when_no_previous_date_is_set(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $value->getData()->willReturn(null);
 
@@ -47,7 +47,7 @@ class DatePresenterSpec extends ObjectBehavior
 
     function it_presents_only_old_date_when_no_new_date_is_set(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value,
+        ProductValueInterface $value,
         \DateTime $date
     ) {
         $value->getData()->willReturn($date);

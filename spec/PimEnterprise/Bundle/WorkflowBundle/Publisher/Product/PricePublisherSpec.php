@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 
 class PricePublisherSpec extends ObjectBehavior
 {

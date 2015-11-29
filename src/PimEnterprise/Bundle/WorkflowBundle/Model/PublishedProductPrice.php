@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Component\Catalog\Model\AbstractProductPrice;
 
 /**
  * Published product price

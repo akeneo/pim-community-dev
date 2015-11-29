@@ -21,7 +21,7 @@ class SortProductValuesHelper
     /**
      * Sorts the provided values by attribute group and sort order
      *
-     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface[] $values
      *
      * @return array
      */

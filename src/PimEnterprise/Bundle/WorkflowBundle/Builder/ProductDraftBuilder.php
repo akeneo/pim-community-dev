@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
