@@ -171,6 +171,26 @@ We keep the old interfaces as deprecated to avoid a large BC Break.
 
 This allow us to continue to split our classes in components and bundles to separate business code and framework glue.
 
+To upgrade run following 'sed' commands in your project and change you app/config.yml if you do mapping overrides:
+
+v1.4
+```
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Bundle\CatalogBundle\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
+```
+
+v1.5
+```
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Component\Catalog\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
+```
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
