@@ -18,7 +18,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: datetime
     manyToOne:
         family:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
+            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
             joinColumns:
                 family_id:
                     referencedColumnName: id
@@ -37,7 +37,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
             joinTable:
                 name: pimee_workflow_category_published_product
                 joinColumns:
@@ -80,7 +80,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 version_id:
                     referencedColumnName: id
         originalProduct:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
             joinColumns:
                 original_product_id:
                     referencedColumnName: id

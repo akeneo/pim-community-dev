@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 
 class VariationFactorySpec extends ObjectBehavior
 {

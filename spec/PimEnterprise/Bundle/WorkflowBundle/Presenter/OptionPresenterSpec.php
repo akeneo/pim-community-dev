@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionPresenterSpec extends ObjectBehavior
@@ -28,7 +28,7 @@ class OptionPresenterSpec extends ObjectBehavior
     function it_presents_option_change_using_the_injected_renderer(
         $repository,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value,
+        ProductValueInterface $value,
         AttributeOptionInterface $blue,
         AttributeOptionInterface $red
     ) {

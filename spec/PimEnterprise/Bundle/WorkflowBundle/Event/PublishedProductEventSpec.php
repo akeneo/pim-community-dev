@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Event;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 class PublishedProductEventSpec extends ObjectBehavior

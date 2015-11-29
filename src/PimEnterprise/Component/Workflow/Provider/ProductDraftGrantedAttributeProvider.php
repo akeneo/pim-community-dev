@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Provider;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

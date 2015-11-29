@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
-use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

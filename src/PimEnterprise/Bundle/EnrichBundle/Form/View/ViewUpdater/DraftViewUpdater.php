@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

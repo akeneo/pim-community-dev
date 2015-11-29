@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class CategoryAccessUpdateGuesserSpec extends ObjectBehavior

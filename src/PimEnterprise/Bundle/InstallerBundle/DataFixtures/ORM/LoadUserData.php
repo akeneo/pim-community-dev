@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData as BaseLoadUserData;
+use Pim\Component\Catalog\Model\CategoryInterface;
 
 /**
  * Load fixtures for users

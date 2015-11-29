@@ -16,7 +16,7 @@ PimEnterprise\Component\ProductAsset\Model\Reference:
                 referencedColumnName: id
     manyToOne:
         locale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinColumn:
                 name: locale_id
                 referencedColumnName: id

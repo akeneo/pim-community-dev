@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;

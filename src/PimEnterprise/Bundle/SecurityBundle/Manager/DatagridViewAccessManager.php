@@ -127,7 +127,7 @@ class DatagridViewAccessManager
             return true;
         }
 
-        /** @var \Pim\Bundle\CatalogBundle\Model\CategoryInterface $category */
+        /** @var \Pim\Component\Catalog\Model\CategoryInterface $category */
         if (null === $category = $this->categoryRepository->find($categoryId)) {
             return false;
         }

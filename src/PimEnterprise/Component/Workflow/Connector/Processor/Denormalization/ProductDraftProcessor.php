@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;

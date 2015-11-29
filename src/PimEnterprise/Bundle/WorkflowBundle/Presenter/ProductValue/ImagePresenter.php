@@ -12,13 +12,15 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductMediaInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Present an image value
  *
  * @author Filips Alpe <filips@akeneo.com>
+ *
+ * @deprecated since 1.4 should be removed in 1.5
  */
 class ImagePresenter extends FilePresenter
 {

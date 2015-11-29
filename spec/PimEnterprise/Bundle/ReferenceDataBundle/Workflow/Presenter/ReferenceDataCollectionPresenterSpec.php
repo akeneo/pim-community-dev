@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;

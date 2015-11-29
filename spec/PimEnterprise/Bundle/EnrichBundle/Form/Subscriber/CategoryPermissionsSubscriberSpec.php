@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;

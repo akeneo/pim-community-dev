@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * @see FilenameParserInterface

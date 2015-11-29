@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

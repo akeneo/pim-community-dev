@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -29,7 +29,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         EntityManagerInterface $manager
     ) {
-        $productClass = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
+        $productClass = 'Pim\Component\Catalog\Model\ProductInterface';
 
         $this->beConstructedWith(
             $documentManager,
@@ -57,7 +57,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $documentManager->createQueryBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+        $documentManager->createQueryBuilder('Pim\Component\Catalog\Model\ProductInterface')
             ->willReturn($qb);
 
         $attributeRepository->getAttributeCodesByType('pim_assets_collection')->willReturn(['gallery', 'foobar']);

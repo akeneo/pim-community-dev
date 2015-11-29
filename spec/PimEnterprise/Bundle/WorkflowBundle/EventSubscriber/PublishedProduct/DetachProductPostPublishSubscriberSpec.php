@@ -7,8 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 

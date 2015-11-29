@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Present a date value

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class TextPresenterSpec extends ObjectBehavior
@@ -20,7 +20,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_presents_text_change_using_the_injected_renderer(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $value->getData()->willReturn('bar');
         $renderer->renderOriginalDiff(['bar'], ['foo'])->willReturn('diff between bar and foo');
@@ -31,7 +31,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_before_rendering_diff(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $value->getData()->willReturn('<p>foo</p> <p>bar</p>');
         $renderer->renderOriginalDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
@@ -42,7 +42,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_without_space_before_rendering_diff(
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $value->getData()->willReturn('<p>foo</p><p>bar</p>');
         $renderer->renderOriginalDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');

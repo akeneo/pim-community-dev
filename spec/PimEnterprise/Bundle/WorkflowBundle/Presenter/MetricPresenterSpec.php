@@ -3,7 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
@@ -39,8 +40,8 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricLocalizer,
         $localeResolver,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value,
-        Model\Metric $metric
+        ProductValueInterface $value,
+        MetricInterface $metric
     ) {
         $value->getData()->willReturn($metric);
         $metric->getData()->willReturn(50.123);
@@ -64,7 +65,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricLocalizer,
         $localeResolver,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $value->getData()->willReturn(null);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -84,7 +85,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricLocalizer,
         $localeResolver,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderNewDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");

@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 
 /**

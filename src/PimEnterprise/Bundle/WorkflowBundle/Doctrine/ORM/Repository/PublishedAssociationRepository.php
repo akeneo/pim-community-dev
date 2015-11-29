@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 

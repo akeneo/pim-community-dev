@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
