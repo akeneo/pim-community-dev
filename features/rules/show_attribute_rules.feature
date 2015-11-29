@@ -111,7 +111,7 @@ Feature: Show all rules related to an attribute
       | copy_description       | rating          | 4                     |        |        |
       | update_tees_collection | description     | une belle description | fr     | mobile |
       | update_tees_collection | number_in_stock | 800                   |        | tablet |
-      | update_tees_collection | release_date    | 5/26/15               |        | mobile |
+      | update_tees_collection | release_date    | 05/26/2015            |        | mobile |
       | update_tees_collection | price           | 12 EUR                |        |        |
       | update_tees_collection | side_view       | image.jpg             |        |        |
       | update_tees_collection | length          | 10 CENTIMETER         |        |        |

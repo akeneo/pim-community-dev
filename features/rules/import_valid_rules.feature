@@ -293,7 +293,7 @@ Feature: Import rules
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_date\" as it does not appear to be valid."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "1/1/70"
+    Then I should see "01/01/1970"
 
   Scenario: Import valid rule for "media" attribute in conditions and "set value" actions
     Given the following yaml file to import:

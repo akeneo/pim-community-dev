@@ -121,10 +121,10 @@ Feature: Submit a modification on a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully accept a date attribute modification on a product draft
-    When I change the Release date for scope mobile to "2014-05-20"
+    When I change the Release date for scope mobile to "05/20/2014"
     And I save the product
     Then the english mobile release_date of "my-jacket" should be "2014-05-14"
-    But the product Release date for scope "mobile" should be "2014-05-20"
+    But the product Release date for scope "mobile" should be "05/20/2014"
     And I should see that Release date is a modified value
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
