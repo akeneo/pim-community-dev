@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**

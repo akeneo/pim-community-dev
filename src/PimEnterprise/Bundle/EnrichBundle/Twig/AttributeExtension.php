@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Override Twig extension to allow to add Enterprise icons (as AssetCollectionType)
