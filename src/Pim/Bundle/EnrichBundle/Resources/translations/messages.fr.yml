@@ -838,7 +838,7 @@ Selected products successfully deleted: La sélection de produits a été suppri
 pim_mass_edit:
   notification:
     mass_edit:
-      error: 'Action de masse <strong>%label%</strong>'
+      error: "Echec de l'action de masse <strong>%label%</strong>"
       warning: 'Action de masse <strong>%label%</strong> terminée avec quelques mises en garde'
       success: 'Action de masse <strong>%label%</strong> terminée'
     quick_export:
