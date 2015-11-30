@@ -41,23 +41,23 @@ class VersionNormalizerSpec extends ObjectBehavior
                 'weight'             => ['old' => '', 'new' => '10.1234'],
             ]
         ]);
-        $localeOptions = ['decimal_separator' => ',', 'date_format' => 'Y-m-d'];
-        $localeResolver->getFormats()->willReturn($localeOptions);
+        $options = ['locale' => 'fr_FR'];
+        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
         $converter
-            ->convertDefaultToLocalizedValue('maximum_frame_rate', '200.7890', $localeOptions)
+            ->convertDefaultToLocalizedValue('maximum_frame_rate', '200.7890', $options)
             ->willReturn('200,7890');
         $converter
-            ->convertDefaultToLocalizedValue('price', '5.00', $localeOptions)
+            ->convertDefaultToLocalizedValue('price', '5.00', $options)
             ->willReturn('5,00');
         $converter
-            ->convertDefaultToLocalizedValue('price', '5.15', $localeOptions)
+            ->convertDefaultToLocalizedValue('price', '5.15', $options)
             ->willReturn('5,15');
         $converter
-            ->convertDefaultToLocalizedValue('weight', '10.1234', $localeOptions)
+            ->convertDefaultToLocalizedValue('weight', '10.1234', $options)
             ->willReturn('10,1234');
         $converter
-            ->convertDefaultToLocalizedValue(Argument::any(), '', $localeOptions)
+            ->convertDefaultToLocalizedValue(Argument::any(), '', $options)
             ->willReturn('');
 
         $this->normalize($version, 'internal_api')->shouldReturn([

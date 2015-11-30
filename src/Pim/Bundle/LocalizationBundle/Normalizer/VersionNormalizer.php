@@ -71,7 +71,7 @@ class VersionNormalizer implements NormalizerInterface
      */
     protected function convertChangeset(array $changeset)
     {
-        $formats = $this->localeResolver->getFormats();
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($changeset as $attribute => $changes) {
             $attributeName = $attribute;
@@ -83,7 +83,7 @@ class VersionNormalizer implements NormalizerInterface
                 $changeset[$attribute][$key] = $this->converter->convertDefaultToLocalizedValue(
                     $attributeName,
                     $value,
-                    $formats
+                    $options
                 );
             }
         }
