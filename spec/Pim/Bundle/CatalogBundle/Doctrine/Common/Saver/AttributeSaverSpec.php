@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -109,7 +109,7 @@ class AttributeSaverSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeInterface", "%s" provided.',
+                        'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )

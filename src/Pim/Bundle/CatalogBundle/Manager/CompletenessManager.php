@@ -5,15 +5,15 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Manages completeness
@@ -117,25 +117,6 @@ class CompletenessManager
     {
         if ($family->getId()) {
             $this->generator->scheduleForFamily($family);
-        }
-    }
-
-    /**
-     * Schedule recalculation of completenesses for all products
-     * of a channel
-     *
-     * @param ChannelInterface $channel
-     *
-     * @deprecated To be removed in 1.5
-     */
-    public function scheduleForChannel(ChannelInterface $channel)
-    {
-        if ($channel->getId()) {
-            $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
-            foreach ($deletedLocaleIds as $deletedLocaleId) {
-                $deletedLocale = $this->localeRepository->find($deletedLocaleId);
-                $this->generator->scheduleForChannelAndLocale($channel, $deletedLocale);
-            }
         }
     }
 

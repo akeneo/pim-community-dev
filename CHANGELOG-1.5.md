@@ -8,6 +8,7 @@
 - PIM-4347: `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` now extends `Doctrine\Common\Persistence\ObjectRepository`
 - PIM-5067: Change the JUnit formatter of behats logs
 - PIM-5217: Create a Buffer component and new file writer implementations that use it
+- PIM-4646: TinyMCE wysiwyg editor is replaced by Summernote in the mass-edit and variant group
 
 ## Bug fixes
 
@@ -63,5 +64,15 @@
 - Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface and AttributeRepositoryInterface
 - Added method `getAttributeCodesByGroup` to the `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer`, made AttributeRepository mandatory
+- Remove deprecated method scheduleForChannel from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager`
 - Move `Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface` to `Pim\Component\Connector\Writer\File\ArchivableWriterInterface`
 - `Pim\Component\Connector\Writer\File\YamlWriter` now inherits from `Pim\Component\Connector\Writer\File\AbstractFileWriter` therefore needs an instance of `Pim\Component\Connector\Writer\File\FilePathResolverInterface` as first parameter of the constructor
+- Remove deprecated methods findAllWithTranslations, getIdToLabelOrderedBySortOrder, getAttributeGroupChoices from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Remove deprecated methods findAllWithTranslations, getIdToLabelOrderedBySortOrder, getAttributeGroupChoices from `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
+- Remove deprecated methods getAvailableAttributesAsLabelChoice, getAttributeIds from `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Remove deprecated methods getAvailableAxis, getRepository, getGroupTypeRepository, getProductList, getAttributeRepository from `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\GroupManager` to pass `Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Remove deprecated method getAttributeOptionValueClass from `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
+- Remove deprecated methods getActiveCurrencies, getCurrencies from `Pim\Bundle\CatalogBundle\Manager\CurrencyManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeGroupController` to inject `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController` to inject `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`

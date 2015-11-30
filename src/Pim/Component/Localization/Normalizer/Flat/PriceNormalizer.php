@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

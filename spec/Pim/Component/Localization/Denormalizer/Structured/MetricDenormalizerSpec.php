@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Localization\Denormalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

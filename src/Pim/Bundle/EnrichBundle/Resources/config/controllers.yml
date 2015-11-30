@@ -67,7 +67,8 @@ services:
             - '@pim_catalog.manager.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.remover.attribute_group'
-            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.attribute'
 
     pim_enrich.controller.category_tree.product:
         scope: request
@@ -93,6 +94,7 @@ services:
             - '@pim_enrich.form.channel'
             - '@pim_catalog.remover.channel'
             - '@pim_catalog.saver.locale'
+            - '@pim_catalog.repository.channel'
 
     pim_enrich.controller.currency:
         scope: request
@@ -134,6 +136,8 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@pim_catalog.remover.attribute'
             - '@pim_catalog.saver.attribute_option'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.group'
             - %akeneo_measure.measures_config%
 
     pim_enrich.controller.attribute_option:

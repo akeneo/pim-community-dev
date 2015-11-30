@@ -6,8 +6,8 @@ use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

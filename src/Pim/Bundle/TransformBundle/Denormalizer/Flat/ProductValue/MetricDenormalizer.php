@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -59,7 +59,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param string                $data
      * @param string                $unit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromSingleField(ProductValueInterface $value, $data, $unit)
     {
@@ -78,7 +78,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param ProductValueInterface $value
      * @param string                $dataOrUnit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromManyFields(ProductValueInterface $value, $dataOrUnit)
     {

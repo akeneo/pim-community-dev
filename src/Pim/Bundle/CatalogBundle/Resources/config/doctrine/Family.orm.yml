@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                     on: update
     manyToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             inversedBy: families
             joinTable:
                 name: pim_catalog_family_attribute
@@ -56,7 +56,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 - refresh
     manyToOne:
         attributeAsLabel:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinColumns:
                 label_attribute_id:
                     referencedColumnName: id

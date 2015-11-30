@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -46,7 +46,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
                     'constraints' => array_merge(
                         [
                             new Type(
-                                ['type' => 'Pim\Bundle\CatalogBundle\Model\ProductPriceInterface']
+                                ['type' => 'Pim\Component\Catalog\Model\ProductPriceInterface']
                             ),
                         ],
                         $numericGuesser->guessConstraints($attribute),

@@ -116,8 +116,8 @@ class RelationGuesser implements GuesserInterface
 
             // TODO Remove this hack
             switch ($target) {
-                case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
-                case 'Pim\Bundle\CatalogBundle\Model\Metric':
+                case 'Pim\Component\Catalog\Model\ProductPrice':
+                case 'Pim\Component\Catalog\Model\Metric':
                     return;
             }
 

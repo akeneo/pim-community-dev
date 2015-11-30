@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Repository interface for attribute
@@ -21,13 +21,6 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
-     *
-     * @return AttributeInterface[]
-     */
-    public function findAllWithTranslations();
-
-    /**
      * Find attributes with related attribute groups
      *
      * @param array $attributeIds
@@ -40,7 +33,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.5
      *
      * @return AttributeInterface[]
      */
@@ -83,7 +76,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Get available attributes as label as a choice
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated only used in grid, will be removed in 1.5
      *
      * @return array
      */
@@ -109,17 +102,6 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null);
-
-    /**
-     * Get ids from codes
-     *
-     * @param mixed $codes the attribute codes
-     *
-     * @deprecated not used anymore, will be removed in 1.5
-     *
-     * @return array
-     */
-    public function getAttributeIds($codes);
 
     /**
      * @return mixed a query builder

@@ -318,7 +318,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         if (false === strpos(strtolower($filterName), 'category')) {
-            $this->wait('$("div.filter-box").length > 0;');
             $this->datagrid->showFilter($filterName);
             $this->wait();
             $this->datagrid->assertFilterVisible($filterName);

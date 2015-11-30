@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderInterface;
 
 /**

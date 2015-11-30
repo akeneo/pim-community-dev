@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints;
 
 /**

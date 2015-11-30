@@ -52,5 +52,5 @@ Feature: Validate localized metric attributes of a product
     Given I switch the scope to "ecommerce"
     And I change the Vitesse to "50.1 YARD_PER_HOUR"
     And I save the product
-    Then I should see validation error "This type of value expects the use of , to separate decimals."
+    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
     And there should be 1 error in the "[other]" tab

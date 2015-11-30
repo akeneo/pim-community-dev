@@ -1,5 +1,5 @@
 @javascript
-Feature: Execute an import
+Feature: Execute an import with invalid properties
   In order to update existing product information
   As a product manager
   I need to be able to be notified when I use not valid groups (not know or not variant group)

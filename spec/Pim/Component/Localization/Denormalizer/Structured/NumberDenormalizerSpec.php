@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Localization\Denormalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -41,12 +41,12 @@ class NumberDenormalizerSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $options = ['attribute' => $attribute, 'locale' => 'en_US'];
 
-        $valuesDenormalizer->denormalize(3.85, 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', $options)
+        $valuesDenormalizer->denormalize(3.85, 'Pim\Component\Catalog\Model\ProductValue', 'json', $options)
             ->willReturn(3.85);
 
         $localizer->localize(3.85, $options)->willReturn(3.85);
 
-        $this->denormalize(3.85, 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', $options)
+        $this->denormalize(3.85, 'Pim\Component\Catalog\Model\ProductValue', 'json', $options)
             ->shouldReturn(3.85);
     }
 
@@ -58,12 +58,12 @@ class NumberDenormalizerSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $options = ['attribute' => $attribute, 'locale' => 'fr_FR'];
 
-        $valuesDenormalizer->denormalize(3.85, 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', $options)
+        $valuesDenormalizer->denormalize(3.85, 'Pim\Component\Catalog\Model\ProductValue', 'json', $options)
             ->willReturn(3.85);
 
         $localizer->localize(3.85, $options)->willReturn('3,85');
 
-        $this->denormalize(3.85, 'Pim\Bundle\CatalogBundle\Model\ProductValue', 'json', $options)
+        $this->denormalize(3.85, 'Pim\Component\Catalog\Model\ProductValue', 'json', $options)
             ->shouldReturn('3,85');
     }
 }

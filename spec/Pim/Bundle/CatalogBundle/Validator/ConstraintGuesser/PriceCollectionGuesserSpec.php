@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class PriceCollectionGuesserSpec extends ObjectBehavior
 {
@@ -138,7 +138,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]
             ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
         $constraintsAll->constraints[0]->type
-            ->shouldBe('Pim\Bundle\CatalogBundle\Model\ProductPriceInterface');
+            ->shouldBe('Pim\Component\Catalog\Model\ProductPriceInterface');
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
         $constraintsAll->constraints[2]

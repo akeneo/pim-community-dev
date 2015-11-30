@@ -6,10 +6,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Generate the completeness when Product are in ORM
@@ -487,11 +487,11 @@ MAIN_SQL;
     protected function getClassContentFields($className, $prefix)
     {
         switch ($className) {
-            case 'Pim\Bundle\CatalogBundle\Model\Metric':
+            case 'Pim\Component\Catalog\Model\Metric':
                 return [sprintf('%s.%s', $prefix, 'data')];
-            case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
+            case 'Pim\Component\Catalog\Model\ProductPrice':
                 return [];
-            case 'Pim\Bundle\CatalogBundle\Model\ProductMedia':
+            case 'Pim\Component\Catalog\Model\ProductMedia':
                 return [sprintf('%s.%s', $prefix, 'filename')];
             default:
                 return array_map(
@@ -542,7 +542,7 @@ MAIN_SQL;
             return [];
         }
 
-        if ($mapping['targetEntity'] === 'Pim\Bundle\CatalogBundle\Model\ProductPrice') {
+        if ($mapping['targetEntity'] === 'Pim\Component\Catalog\Model\ProductPrice') {
             return [];
         }
 

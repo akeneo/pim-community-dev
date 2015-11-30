@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Exception;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Exception for missing product identifier

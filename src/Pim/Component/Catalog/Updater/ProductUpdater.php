@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Updates a product
@@ -107,7 +107,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" provided.',
                     ClassUtils::getClass($product)
                 )
             );

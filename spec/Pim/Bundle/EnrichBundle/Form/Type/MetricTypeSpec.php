@@ -10,7 +10,7 @@ class MetricTypeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Model\Metric'
+            'Pim\Component\Catalog\Model\Metric'
         );
     }
 
@@ -30,7 +30,7 @@ class MetricTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
+                'data_class' => 'Pim\Component\Catalog\Model\Metric',
                 'units'        => [],
                 'default_unit' => null,
                 'family'       => null

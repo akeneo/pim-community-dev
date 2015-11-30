@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Product:
+Pim\Component\Catalog\Model\Product:
     type: document
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -65,15 +65,15 @@ Pim\Bundle\CatalogBundle\Model\Product:
         associations:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\AssociationInterface
+            targetDocument: Pim\Component\Catalog\Model\AssociationInterface
         completenesses:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+            targetDocument: Pim\Component\Catalog\Model\CompletenessInterface
         values:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductValueInterface
             mappedBy: entity
         normalizedData:
             type: hash

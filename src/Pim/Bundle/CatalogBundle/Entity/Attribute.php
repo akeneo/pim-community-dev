@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Component\Catalog\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

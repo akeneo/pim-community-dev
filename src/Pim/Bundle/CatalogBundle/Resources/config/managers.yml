@@ -83,12 +83,8 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine'
-            - '@pim_catalog.repository.product'
-            - %pim_catalog.entity.group.class%
-            - %pim_catalog.entity.group_type.class%
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%

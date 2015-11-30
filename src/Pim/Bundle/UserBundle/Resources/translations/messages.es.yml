@@ -73,7 +73,12 @@ API key: Clave de API
 Generate key: Generar clave
 Primary: primaria
 Removed user: Usuario eliminado
-user.product_grid_filters: Filtros de la grilla de productos
+user:
+  product_grid_filters: Filtross de grilla de productos
+  default_product_grid_view:
+    label: Vista de grilla de producto automática
+  default_grid_view:
+    none: Ninguna
 Role: Rol
 Owner: Propietario
 General: General

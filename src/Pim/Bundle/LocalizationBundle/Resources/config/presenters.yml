@@ -1,8 +1,41 @@
 parameters:
-    pim_localization.presenter.price.class: Pim\Component\Localization\Presenter\PricePresenter
+    pim_localization.presenter.registry.class:  Pim\Component\Localization\Presenter\PresenterRegistry
+
+    pim_localization.presenter.prices.class:    Pim\Component\Localization\Presenter\PricesPresenter
+    pim_localization.presenter.metric.class:    Pim\Component\Localization\Presenter\MetricPresenter
+    pim_localization.presenter.number.class:    Pim\Component\Localization\Presenter\NumberPresenter
+    pim_localization.presenter.converter.class: Pim\Component\Localization\Presenter\PresenterAttributeConverter
 
 services:
-    pim_localization.presenter.price:
-        class: %pim_localization.presenter.price.class%
+    pim_localization.presenter.registry:
+        class: %pim_localization.presenter.registry.class%
+
+    pim_localization.presenter.converter:
+        class: %pim_localization.presenter.converter.class%
+        arguments:
+            - '@pim_localization.presenter.registry'
+            - '@pim_catalog.repository.attribute'
+
+    pim_localization.presenter.prices:
+        class: %pim_localization.presenter.prices.class%
         arguments:
             - '@pim_localization.factory.number'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_localization.presenter }
+
+    pim_localization.presenter.metric:
+        class: %pim_localization.presenter.metric.class%
+        arguments:
+            - @pim_localization.localizer.number
+            - ['pim_catalog_metric']
+        tags:
+            - { name: pim_localization.presenter }
+
+    pim_localization.presenter.number:
+        class: %pim_localization.presenter.number.class%
+        arguments:
+            - @pim_localization.localizer.number
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_localization.presenter }

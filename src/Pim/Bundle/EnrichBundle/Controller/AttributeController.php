@@ -10,12 +10,14 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -73,28 +75,36 @@ class AttributeController extends AbstractDoctrineController
     /** @var SaverInterface */
     protected $optionSaver;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
     /**
      * Constructor
      *
-     * @param Request                   $request
-     * @param EngineInterface           $templating
-     * @param RouterInterface           $router
-     * @param TokenStorageInterface     $tokenStorage
-     * @param FormFactoryInterface      $formFactory
-     * @param ValidatorInterface        $validator
-     * @param TranslatorInterface       $translator
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param ManagerRegistry           $doctrine
-     * @param HandlerInterface          $attributeHandler
-     * @param Form                      $attributeForm
-     * @param AttributeManager          $attributeManager
-     * @param AttributeOptionManager    $optionManager
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param VersionManager            $versionManager
-     * @param BulkSaverInterface        $attributeSaver
-     * @param RemoverInterface          $attributeRemover
-     * @param SaverInterface            $optionSaver
-     * @param array                     $measuresConfig
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param TokenStorageInterface        $tokenStorage
+     * @param FormFactoryInterface         $formFactory
+     * @param ValidatorInterface           $validator
+     * @param TranslatorInterface          $translator
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param ManagerRegistry              $doctrine
+     * @param HandlerInterface             $attributeHandler
+     * @param Form                         $attributeForm
+     * @param AttributeManager             $attributeManager
+     * @param AttributeOptionManager       $optionManager
+     * @param LocaleRepositoryInterface    $localeRepository
+     * @param VersionManager               $versionManager
+     * @param BulkSaverInterface           $attributeSaver
+     * @param RemoverInterface             $attributeRemover
+     * @param SaverInterface               $optionSaver
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param GroupRepositoryInterface     $groupRepository
+     * @param array                        $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -115,6 +125,8 @@ class AttributeController extends AbstractDoctrineController
         BulkSaverInterface $attributeSaver,
         RemoverInterface $attributeRemover,
         SaverInterface $optionSaver,
+        AttributeRepositoryInterface $attributeRepository,
+        GroupRepositoryInterface $groupRepository,
         $measuresConfig
     ) {
         parent::__construct(
@@ -139,6 +151,8 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeSaver   = $attributeSaver;
         $this->attributeRemover = $attributeRemover;
         $this->optionSaver      = $optionSaver;
+        $this->attributeRepository = $attributeRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -240,7 +254,7 @@ class AttributeController extends AbstractDoctrineController
         if (!empty($data)) {
             $attributes = [];
             foreach ($data as $id => $sort) {
-                $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
+                $attribute = $this->attributeRepository->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
                     $attributes[] = $attribute;
@@ -359,8 +373,7 @@ class AttributeController extends AbstractDoctrineController
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = [];
         } else {
-            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
-                ->countVariantGroupAxis($attribute);
+            $groupCount = $this->groupRepository->countVariantGroupAxis($attribute);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
                 $messageParameters = ['%count%' => $groupCount];

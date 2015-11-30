@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

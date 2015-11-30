@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 
@@ -50,7 +50,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
         if (!$fromProduct instanceof ProductInterface || !$toProduct instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" and "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" and "%s" provided.',
                     ClassUtils::getClass($fromProduct),
                     ClassUtils::getClass($toProduct)
                 )

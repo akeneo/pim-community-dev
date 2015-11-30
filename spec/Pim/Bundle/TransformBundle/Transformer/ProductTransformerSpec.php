@@ -10,11 +10,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
@@ -26,8 +26,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ProductTransformerSpec extends ObjectBehavior
 {
-    const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
-    const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+    const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
+    const VALUE_CLASS   = 'Pim\Component\Catalog\Model\ProductValue';
 
     function let(
         ManagerRegistry $doctrine,
@@ -94,7 +94,7 @@ class ProductTransformerSpec extends ObjectBehavior
         // initialize attributes
         $columnInfoTransformer
             ->transform(
-                'Pim\Bundle\CatalogBundle\Model\Product',
+                'Pim\Component\Catalog\Model\Product',
                 [
                     'sku',
                     'family',
@@ -185,9 +185,9 @@ class ProductTransformerSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('AKNTS')->willReturn($product);
 
         // set product properties
-        $doctrine->getManagerForClass('Pim\Bundle\CatalogBundle\Model\Product')
+        $doctrine->getManagerForClass('Pim\Component\Catalog\Model\Product')
             ->willReturn($objectManager);
-        $objectManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\Product')
+        $objectManager->getClassMetadata('Pim\Component\Catalog\Model\Product')
             ->willReturn($productMetadata);
 
         $guesser->getTransformerInfo($columnInfoFamily, $productMetadata)
@@ -224,9 +224,9 @@ class ProductTransformerSpec extends ObjectBehavior
         // set product values
         $attributeCache->getRequiredAttributeCodes($product)
             ->willReturn(['sku', 'description']);
-        $doctrine->getManagerForClass('Pim\Bundle\CatalogBundle\Model\ProductValue')
+        $doctrine->getManagerForClass('Pim\Component\Catalog\Model\ProductValue')
             ->willReturn($objectManager);
-        $objectManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\ProductValue')
+        $objectManager->getClassMetadata('Pim\Component\Catalog\Model\ProductValue')
             ->willReturn($productValueMetadata);
 
         $guesser->getTransformerInfo($columnInfoSku, $productValueMetadata)
@@ -272,7 +272,7 @@ class ProductTransformerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->transform(
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             [
                 'sku' => 'AKNTS',
                 'family' => 'tshirts',

@@ -133,16 +133,16 @@ Pim\Bundle\UserBundle\Entity\User:
                         onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
         uiLocale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinColumn:
               name: ui_locale_id
               nullable: false
         catalogScope:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
         defaultTree:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
     oneToOne:
         api:
             targetEntity: Oro\Bundle\UserBundle\Entity\UserApi

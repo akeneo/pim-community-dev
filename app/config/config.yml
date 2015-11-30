@@ -93,7 +93,7 @@ pim_reference_data:
 akeneo_storage_utils:
     mapping_overrides:
         -
-            original: Pim\Bundle\CatalogBundle\Model\ProductValue
+            original: Pim\Component\Catalog\Model\ProductValue
             override: Acme\Bundle\AppBundle\Model\ProductValue
 
 pim_localization:

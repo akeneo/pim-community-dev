@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Model\ChosableInterface;
+use Pim\Component\Catalog\Model\ChosableInterface;
 
 /**
  * Choices builder interface

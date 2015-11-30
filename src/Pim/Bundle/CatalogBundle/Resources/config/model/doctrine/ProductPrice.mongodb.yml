@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\ProductPrice:
+Pim\Component\Catalog\Model\ProductPrice:
     type: embeddedDocument
     fields:
         id:

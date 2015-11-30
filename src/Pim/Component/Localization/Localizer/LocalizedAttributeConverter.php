@@ -73,29 +73,6 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function convertDefaultToLocalizedValue($code, $data, $options = [])
-    {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-        if (null === $attribute) {
-            return $data;
-        }
-
-        $attributeType = $attribute->getAttributeType();
-        if (null === $attributeType) {
-            return $data;
-        }
-
-        $localizer = $this->localizerRegistry->getLocalizer($attributeType);
-        if (null === $localizer) {
-            return $data;
-        }
-
-        return $localizer->localize($data, $options);
-    }
-
-    /**
      * Convert a localized attribute
      *
      * @param LocalizerInterface $localizer

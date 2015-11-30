@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Generate the path of medias to export.
@@ -23,7 +23,7 @@ class MediaExporterPathGenerator implements FileExporterPathGeneratorInterface
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expects an "%s", "%s" provided.',
-                    'Pim\Bundle\CatalogBundle\Model\ProductValueInterface',
+                    'Pim\Component\Catalog\Model\ProductValueInterface',
                     ClassUtils::getClass($value)
                 )
             );

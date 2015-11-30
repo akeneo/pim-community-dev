@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Provider\EmptyValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class BaseEmptyValueProviderSpec extends ObjectBehavior
 {

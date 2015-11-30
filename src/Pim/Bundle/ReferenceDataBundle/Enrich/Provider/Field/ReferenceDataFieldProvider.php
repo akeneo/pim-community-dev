@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Field provider for reference data

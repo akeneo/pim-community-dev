@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Updates and validates a group
@@ -44,7 +44,7 @@ class GroupUpdater implements ObjectUpdaterInterface
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
                 )
             );

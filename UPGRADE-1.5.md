@@ -72,24 +72,24 @@ src/
 └── Pim
     ├── Bundle
     │   ├── AnalyticsBundle         -> -
-    │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) if exports are re-worked in ConnectorBundle
-    │   ├── CatalogBundle           -> ?
-    │   ├── CommentBundle           -> split in a Akeneo component + bundle (does not rely on PIM domain)
+    │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) once exports re-worked in ConnectorBundle
+    │   ├── CatalogBundle           -> we continue to extract business code to relevant components
+    │   ├── CommentBundle           -> could be splitted in a Akeneo component + bundle (does not rely on PIM domain)
     │   ├── ConnectorBundle         -> could welcome new classes if we re-work export
     │   ├── DashboardBundle         -> -
     │   ├── DataGridBundle          -> move generic classes to Oro/DataGridBundle, move specific related to product to Pim/EnrichBundle
-    │   ├── EnrichBundle            -> ?could contain all Akeneo PIM UI (except independent bundles as workflow, pam)?
-    │   ├── FilterBundle            -> ?merge in Oro/DataGridBundle?
-    │   ├── ImportExportBundle      -> ?should be merged to EnrichBundle?
+    │   ├── EnrichBundle            -> could contain all Akeneo PIM UI (except independent bundles as workflow, pam)
+    │   ├── FilterBundle            -> merge in Oro/DataGridBundle or Pim/DataGridBundle
+    │   ├── ImportExportBundle      -> could be merged to EnrichBundle it mainly contain UI related classes
     │   ├── InstallerBundle         -> -
     │   ├── JsFormValidationBundle  -> -
     │   ├── NavigationBundle        -> merge from Oro/NavigationBundle during navigation re-work project
     │   ├── NotificationBundle      -> bit re-worked during the collaborative workflow epic
     │   ├── PdfGeneratorBundle      -> -
     │   ├── ReferenceDataBundle     -> -
-    │   ├── TransformBundle         -> ?re-work normalizer/denormalizer part and drop/deprecate other parts?
+    │   ├── TransformBundle         -> re-work normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
     │   ├── TranslationBundle       -> could be deprecated after copying useful classes in new Localization component + bundle (in a BC way)
-    │   ├── UIBundle                -> ?to merge to EnrichBundle? keep it only for third party libraries? we should load them via composer (or other system)
+    │   ├── UIBundle                -> mainly used for js/css third party libraries, we should load them via a dedicated package manager
     │   ├── UserBundle              -> merge used parts of Oro/UserBundle to Pim/UserBundle
     │   ├── VersioningBundle        -> -
     │   └── WebServiceBundle        -> -
@@ -147,8 +147,47 @@ src/
         ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy and backward compatibility reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
         ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
-        ├── User                    ?Don't know yet if we'll directly extract from UserBundle(s)?
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
+```
+
+## ConnectorBundle & BaseConnectorBundle
+
+In 1.4, we re-worked the PIM import system and we've depreciated the old import system.
+
+The new system has been implemented in Connector component and ConnectorBundle and we kept the old system in BaseConnectorBundle (deprecated for imports, still in use for exports).
+
+In 1.5, for performance reason, we re-worked the export writer part, we introduced new classes and services in Connector component and ConnectorBundle.
+
+Old export writer classes and services are still in BaseConnectorBundle and are marked as deprecated.
+
+The strategy is to be able to depreciate entirely the BaseConnectorBundle once we'll have re-worked remaining export parts (mainly reader and processor).
+
+## Catalog Bundle & Component
+
+We've extracted model interfaces as ProductInterface from the Catalog bundle to the Catalog component.
+
+We keep the old interfaces as deprecated to avoid a large BC Break.
+
+This allow us to continue to split our classes in components and bundles to separate business code and framework glue.
+
+To upgrade run following 'sed' commands in your project and change you app/config.yml if you do mapping overrides:
+
+v1.4
+```
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Bundle\CatalogBundle\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
+```
+
+v1.5
+```
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Component\Catalog\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
 
 ## Partially fix BC breaks
@@ -162,4 +201,52 @@ Based on a PIM standard installation, execute the following command in your proj
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/EntityBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/StorageUtilsBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Writer\\File\\ArchivableWriterInterface/Pim\\Component\\Connector\\Writer\\File\\ArchivableWriterInterface/g'
+
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractAssociation/Component\\Catalog\\Model\\AbstractAssociation/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractAttribute/Component\\Catalog\\Model\\AbstractAttribute/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractCompleteness/Component\\Catalog\\Model\\AbstractCompleteness/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractMetric/Component\\Catalog\\Model\\AbstractMetric/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProduct/Component\\Catalog\\Model\\AbstractProduct/g'
+    # TODO: deprecated, should be removed
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductMedia/Component\\Catalog\\Model\\AbstractProductMedia/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductPrice/Component\\Catalog\\Model\\AbstractProductPrice/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductValue/Component\\Catalog\\Model\\AbstractProductValue/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Association/Component\\Catalog\\Model\\Association/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AssociationInterface/Component\\Catalog\\Model\\AssociationInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AssociationTypeInterface/Component\\Catalog\\Model\\AssociationTypeInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeGroupInterface/Component\\Catalog\\Model\\AttributeGroupInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeInterface/Component\\Catalog\\Model\\AttributeInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeOptionInterface/Component\\Catalog\\Model\\AttributeOptionInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeOptionValueInterface/Component\\Catalog\\Model\\AttributeOptionValueInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AttributeRequirementInterface/Component\\Catalog\\Model\\AttributeRequirementInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\CategoryInterface/Component\\Catalog\\Model\\CategoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChannelInterface/Component\\Catalog\\Model\\ChannelInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Completeness/Component\\Catalog\\Model\\Completeness/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\CompletenessInterface/Component\\Catalog\\Model\\CompletenessInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\CurrencyInterface/Component\\Catalog\\Model\\CurrencyInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\FamilyInterface/Component\\Catalog\\Model\\FamilyInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupInterface/Component\\Catalog\\Model\\GroupInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupTypeInterface/Component\\Catalog\\Model\\GroupTypeInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocaleInterface/Component\\Catalog\\Model\\LocaleInterface/g'
+    # TODO should not be moved here?
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocalizableInterface/Component\\Catalog\\Model\\LocalizableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Metric/Component\\Catalog\\Model\\Metric/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\MetricInterface/Component\\Catalog\\Model\\MetricInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Product/Component\\Catalog\\Model\\Product/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductInterface/Component\\Catalog\\Model\\ProductInterface/g'
+    # TODO: deprecated, should be removed
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMedia/Component\\Catalog\\Model\\ProductMedia/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMediaInterface/Component\\Catalog\\Model\\ProductMediaInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPrice/Component\\Catalog\\Model\\ProductPrice/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPriceInterface/Component\\Catalog\\Model\\ProductPriceInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductTemplateInterface/Component\\Catalog\\Model\\ProductTemplateInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductValue/Component\\Catalog\\Model\\ProductValue/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Model\\ProductValueInterface/Pim\\Component\\Catalog\\Model\\ProductValueInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ReferableInterface/Component\\Catalog\\Model\\ReferableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ScopableInterface/Component\\Catalog\\Model\\ScopableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\TimestampableInterface/Component\\Catalog\\Model\\TimestampableInterface/g'
+    # TODO: should not be moved!?
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AvailableAttributes/Component\\Catalog\\Model\\AvailableAttributes/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChosableInterface/Component\\Catalog\\Model\\ChosableInterface/g'
+    # TODO END: should not be moved!?
 ```

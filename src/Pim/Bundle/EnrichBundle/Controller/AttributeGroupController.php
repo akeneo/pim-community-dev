@@ -9,11 +9,15 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,34 +52,38 @@ class AttributeGroupController extends AbstractDoctrineController
     /** @var AttributeGroupManager */
     protected $manager;
 
-    /** @var string */
-    protected $attributeClass;
-
     /** @var BulkSaverInterface */
     protected $attributeSaver;
 
     /** @var RemoverInterface */
     protected $attrGroupRemover;
 
+    /** @var AttributeGroupRepositoryInterface */
+    protected $attributeGroupRepo;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepo;
+
     /**
      * constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param SecurityFacade           $securityFacade
-     * @param HandlerInterface         $formHandler
-     * @param Form                     $form
-     * @param AttributeGroupManager    $manager
-     * @param BulkSaverInterface       $attributeSaver
-     * @param RemoverInterface         $attrGroupRemover
-     * @param string                   $attributeClass
+     * @param Request                           $request
+     * @param EngineInterface                   $templating
+     * @param RouterInterface                   $router
+     * @param TokenStorageInterface             $tokenStorage
+     * @param FormFactoryInterface              $formFactory
+     * @param ValidatorInterface                $validator
+     * @param TranslatorInterface               $translator
+     * @param EventDispatcherInterface          $eventDispatcher
+     * @param ManagerRegistry                   $doctrine
+     * @param SecurityFacade                    $securityFacade
+     * @param HandlerInterface                  $formHandler
+     * @param Form                              $form
+     * @param AttributeGroupManager             $manager
+     * @param BulkSaverInterface                $attributeSaver
+     * @param RemoverInterface                  $attrGroupRemover
+     * @param AttributeGroupRepositoryInterface $attributeGroupRepo
+     * @param AttributeRepositoryInterface      $attributeRepo
      */
     public function __construct(
         Request $request,
@@ -93,7 +101,8 @@ class AttributeGroupController extends AbstractDoctrineController
         AttributeGroupManager $manager,
         BulkSaverInterface $attributeSaver,
         RemoverInterface $attrGroupRemover,
-        $attributeClass
+        AttributeGroupRepositoryInterface $attributeGroupRepo,
+        AttributeRepositoryInterface $attributeRepo
     ) {
         parent::__construct(
             $request,
@@ -111,9 +120,10 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->formHandler      = $formHandler;
         $this->form             = $form;
         $this->manager          = $manager;
-        $this->attributeClass   = $attributeClass;
         $this->attributeSaver   = $attributeSaver;
         $this->attrGroupRemover = $attrGroupRemover;
+        $this->attributeGroupRepo = $attributeGroupRepo;
+        $this->attributeRepo = $attributeRepo;
     }
 
     /**
@@ -126,7 +136,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
         return [
             'groups' => $groups
@@ -161,7 +171,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $attributesForm = null;
         }
 
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
         return [
             'groups'         => $groups,
@@ -183,7 +193,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
@@ -219,7 +229,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if (!empty($data)) {
             $groups = [];
             foreach ($data as $id => $sort) {
-                $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
+                $group = $this->attributeGroupRepo->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
                     $groups[] = $group;
@@ -303,7 +313,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function addAttributesAction(Request $request, $id)
     {
-        $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
+        $group               = $this->findAttributeGroupOr404($id);
         $availableAttributes = new AvailableAttributes();
 
         $attributesForm      = $this->getAvailableAttributesForm(
@@ -330,8 +340,8 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function removeAttributeAction($groupId, $attributeId)
     {
-        $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
-        $attribute = $this->findOr404($this->attributeClass, $attributeId);
+        $group     = $this->findAttributeGroupOr404($groupId);
+        $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
             throw $this->createNotFoundException(
@@ -359,7 +369,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository($this->attributeClass)->findAllInDefaultGroup();
+        return $this->attributeRepo->findAllInDefaultGroup();
     }
 
     /**
@@ -367,6 +377,38 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getDefaultGroup()
     {
-        return $this->getRepository('PimCatalogBundle:AttributeGroup')->findDefaultAttributeGroup();
+        return $this->attributeGroupRepo->findDefaultAttributeGroup();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return AttributeGroupInterface
+     */
+    protected function findAttributeGroupOr404($id)
+    {
+        $result = $this->attributeGroupRepo->find($id);
+
+        if (!$result) {
+            throw $this->createNotFoundException(sprintf('Attribute group not found'));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return AttributeInterface
+     */
+    protected function findAttributeOr404($id)
+    {
+        $result = $this->attributeRepo->find($id);
+
+        if (!$result) {
+            throw $this->createNotFoundException(sprintf('Attribute not found'));
+        }
+
+        return $result;
     }
 }

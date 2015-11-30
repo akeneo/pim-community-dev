@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
@@ -48,7 +48,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
 
         if (!$attribute instanceof AttributeInterface) {
             throw new InvalidParameterException(
-                sprintf('Attribute is not an instance of Pim\Bundle\CatalogBundle\Model\AttributeInterface.')
+                sprintf('Attribute is not an instance of Pim\Component\Catalog\Model\AttributeInterface.')
             );
         }
 
