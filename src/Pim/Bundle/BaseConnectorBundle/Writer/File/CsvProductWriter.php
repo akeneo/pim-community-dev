@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Pim\Bundle\ConnectorBundle\Writer\File\ContextableCsvWriter;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ContextableCsvWriter;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
 
 /**

@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class AssociationController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var ProductBuilderInterface */
+    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var EngineInterface */

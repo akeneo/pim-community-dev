@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Writer\File;
-
-use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
+namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 /**
  * Used by jobs using ProductExportController, use the mainContext configuration in order to build the file path.
