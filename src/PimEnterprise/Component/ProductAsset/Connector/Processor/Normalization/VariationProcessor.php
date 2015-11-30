@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 

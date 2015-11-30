@@ -10,7 +10,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;

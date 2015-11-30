@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 

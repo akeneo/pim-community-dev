@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

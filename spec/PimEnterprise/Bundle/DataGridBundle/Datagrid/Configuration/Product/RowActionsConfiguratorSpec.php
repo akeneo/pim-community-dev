@@ -8,7 +8,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;

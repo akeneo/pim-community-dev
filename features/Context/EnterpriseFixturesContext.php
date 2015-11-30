@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException;

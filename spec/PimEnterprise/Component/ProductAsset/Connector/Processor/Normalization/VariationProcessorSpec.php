@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**

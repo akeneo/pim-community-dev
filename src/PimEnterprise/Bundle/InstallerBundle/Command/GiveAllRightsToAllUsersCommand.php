@@ -16,7 +16,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
