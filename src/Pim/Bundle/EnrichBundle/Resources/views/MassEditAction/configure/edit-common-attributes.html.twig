@@ -13,25 +13,15 @@
                     'jquery',
                     'pim/fetcher-registry',
                     'pim/form-builder',
-                    'pim/product-manager',
-                    'pim/user-context',
-                    'pim/dialog',
-                    'oro/mediator',
-                    'pim/error',
-                    'oro/navigation'
+                    'oro/mediator'
                 ],
                 function (
                         $,
                         FetcherRegistry,
                         FormBuilder,
-                        ProductManager,
-                        UserContext,
-                        Dialog,
-                        mediator,
-                        Error,
-                        Navigation
+                        mediator
                 ) {
-                    $(function() {
+                    $(function () {
                         var product = {
                             meta: {},
                             values: {}
