@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Repository;
+namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -45,6 +45,8 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
     public function getLocalesQB();
 
     /**
+     * TODO: should be extracted in an enrich bundle repository
+     *
      * @return mixed
      */
     public function createDatagridQueryBuilder();

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class GroupStandardConverterSpec extends ObjectBehavior

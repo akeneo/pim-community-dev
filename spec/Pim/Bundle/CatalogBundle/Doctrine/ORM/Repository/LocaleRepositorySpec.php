@@ -29,7 +29,7 @@ class LocaleRepositorySpec extends ObjectBehavior
 
     function it_is_a_locale_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\LocaleRepositoryInterface');
     }
 
     function it_count_all_activated_locales($em, QueryBuilder $queryBuilder, AbstractQuery $query, Expr $expr)
