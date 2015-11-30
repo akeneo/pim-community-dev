@@ -255,4 +255,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\AttributeRepositoryInterface/Pim\\Component\\Catalog\\Repository\\AttributeRepositoryInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\LocaleRepositoryInterface/Pim\\Component\\Catalog\\Repository\\LocaleRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\ChannelRepositoryInterface/Pim\\Component\\Catalog\\Repository\\ChannelRepositoryInterface/g'
 ```

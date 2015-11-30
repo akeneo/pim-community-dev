@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\File;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;

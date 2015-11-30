@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
