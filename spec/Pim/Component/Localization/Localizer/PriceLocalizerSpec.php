@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\Factory\NumberFactory;
-use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -12,17 +11,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceLocalizerSpec extends ObjectBehavior
 {
-    function let(
-        ValidatorInterface $validator,
-        FormatProviderInterface $formatProvider,
-        NumberFactory $numberFactory
-    ) {
-        $this->beConstructedWith(
-            $validator,
-            $formatProvider,
-            $numberFactory,
-            ['pim_catalog_price_collection']
-        );
+    function let(ValidatorInterface $validator, NumberFactory $numberFactory)
+    {
+        $this->beConstructedWith($validator, $numberFactory, ['pim_catalog_price_collection']);
     }
 
     function it_is_a_localizer()
