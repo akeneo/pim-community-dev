@@ -47,7 +47,7 @@ services:
         class: %pim_localization.normalizer.version.class%
         arguments:
             - '@pim_localization.normalizer.version.inner'
-            - '@pim_localization.localizer.converter'
+            - '@pim_localization.presenter.converter'
             - '@pim_localization.resolver.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }

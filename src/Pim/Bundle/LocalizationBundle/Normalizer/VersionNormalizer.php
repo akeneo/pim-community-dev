@@ -4,7 +4,7 @@ namespace Pim\Bundle\LocalizationBundle\Normalizer;
 
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +19,7 @@ class VersionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var PresenterAttributeConverter */
     protected $converter;
 
     /** @var LocaleResolver */
@@ -29,13 +29,13 @@ class VersionNormalizer implements NormalizerInterface
     protected $supportedFormats = ['internal_api'];
 
     /**
-     * @param NormalizerInterface                  $versionNormalizer
-     * @param LocalizedAttributeConverterInterface $converter
-     * @param LocaleResolver                       $localeResolver
+     * @param NormalizerInterface         $versionNormalizer
+     * @param PresenterAttributeConverter $converter
+     * @param LocaleResolver              $localeResolver
      */
     public function __construct(
         NormalizerInterface $versionNormalizer,
-        LocalizedAttributeConverterInterface $converter,
+        PresenterAttributeConverter $converter,
         LocaleResolver $localeResolver
     ) {
         $this->versionNormalizer = $versionNormalizer;
