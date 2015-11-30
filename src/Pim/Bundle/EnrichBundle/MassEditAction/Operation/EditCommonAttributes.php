@@ -2,20 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\FileStorage;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 /**
  * Edit common attributes of given products
  *
@@ -28,63 +14,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $values;
 
-    /** @var ArrayCollection */
-    protected $displayedAttributes;
-
-    /** @var LocaleInterface */
-    protected $locale;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /** @var array */
-    protected $allAttributes;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var FileStorerInterface */
-    protected $fileStorer;
-
-    /** @var ProductMassActionManager */
-    protected $massActionManager;
-
-    /**
-     * @param ProductBuilderInterface      $productBuilder
-     * @param UserContext                  $userContext
-     * @param CatalogContext               $catalogContext
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param FileStorerInterface          $fileStorer
-     * @param ProductMassActionManager     $massActionManager
-     */
-    public function __construct(
-        ProductBuilderInterface $productBuilder,
-        UserContext $userContext,
-        CatalogContext $catalogContext,
-        AttributeRepositoryInterface $attributeRepository,
-        NormalizerInterface $normalizer,
-        FileStorerInterface $fileStorer,
-        ProductMassActionManager $massActionManager
-    ) {
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
-        $this->catalogContext      = $catalogContext;
-        $this->displayedAttributes = new ArrayCollection();
-        $this->values              = '';
-        $this->normalizer          = $normalizer;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer          = $fileStorer;
-        $this->massActionManager   = $massActionManager;
+    public function __construct()
+    {
+        $this->values = '';
     }
 
     /**
@@ -126,21 +58,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getBatchConfig()
-    {
-        $config = json_decode(stripslashes(parent::getBatchConfig()), true);
-
-        $config['locale'] = $this->userContext->getUiLocale();
-
-        return addslashes(json_encode($config));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
-        $this->values = '{id: 13}';
+        $this->values = '';
     }
 
     /**
