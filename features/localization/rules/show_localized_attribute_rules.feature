@@ -46,8 +46,8 @@ Feature: Show localized rules
     And I should see the following rule setter actions:
       | rule    | field                  | value            |
       | my_rule | another_decimal_number | 5.5679           |
-      | my_rule | decimal_price          | 12.50 EUR        |
-      | my_rule | decimal_metric         | 10.50 CENTIMETER |
+      | my_rule | decimal_price          | €12.50           |
+      | my_rule | decimal_metric         | 10.50 Centimeter |
 
   Scenario: Successfully show french rules of an attribute
     Given I am logged in as "Julien"
@@ -59,5 +59,5 @@ Feature: Show localized rules
     And I should see the following rule setter actions:
       | rule    | field                  | value            |
       | my_rule | another_decimal_number | 5,5679           |
-      | my_rule | decimal_price          | 12,5 €           |
+      | my_rule | decimal_price          | 12,50 €          |
       | my_rule | decimal_metric         | 10,50 CENTIMETER |

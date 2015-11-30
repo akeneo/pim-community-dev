@@ -20,8 +20,21 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
  */
 class DatePresenter extends AbstractProductValuePresenter
 {
-    /** @staticvar string The format that'll be used to compare date in the html diff */
-    const DATE_FORMAT = 'F, d Y';
+    /** @var BaseDatePresenter */
+    protected $datePresenter;
+
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
+    /**
+     * @param BaseDatePresenter $datePresenter
+     * @param LocaleResolver    $localeResolver
+     */
+    public function __construct(BaseDatePresenter $datePresenter, LocaleResolver $localeResolver)
+    {
+        $this->datePresenter  = $datePresenter;
+        $this->localeResolver = $localeResolver;
+    }
 
     /**
      * {@inheritdoc}
