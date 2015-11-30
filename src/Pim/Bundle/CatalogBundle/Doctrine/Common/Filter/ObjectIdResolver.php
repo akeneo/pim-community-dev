@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Object id resolver
@@ -31,7 +32,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdsFromCodes($entityName, array $codes)
+    public function getIdsFromCodes($entityName, array $codes, AttributeInterface $attribute = null)
     {
         if (!isset($this->fieldMapping[$entityName])) {
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
@@ -43,8 +44,13 @@ class ObjectIdResolver implements ObjectIdResolverInterface
 
         $ids = [];
         foreach ($codes as $code) {
+            $criterias = ['code' => $code];
+            if (null !== $attribute) {
+                $criterias['attribute'] = $attribute->getId();
+            }
+
             //TODO: do not hydrate them, use a scalar result
-            $entity = $repository->findOneBy(['code' => $code]);
+            $entity = $repository->findOneBy($criterias);
 
             if (!$entity) {
                 throw new ObjectNotFoundException(
