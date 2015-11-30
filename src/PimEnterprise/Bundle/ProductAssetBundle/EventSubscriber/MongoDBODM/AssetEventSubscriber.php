@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Repository\ProductCascadeRemovalRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

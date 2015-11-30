@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

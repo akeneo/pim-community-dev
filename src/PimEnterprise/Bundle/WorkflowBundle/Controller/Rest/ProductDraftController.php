@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 
 /**

@@ -15,7 +15,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;

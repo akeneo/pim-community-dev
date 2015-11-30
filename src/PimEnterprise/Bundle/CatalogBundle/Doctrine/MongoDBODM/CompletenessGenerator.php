@@ -16,7 +16,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator as CommunityCompletenessGenerator;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
