@@ -1,3 +1,8 @@
+# 1.4.* (2015-**-**)
+
+## Bug fixes
+- PIM-5215: Create empty product values for new family attributes after product import with family change
+
 # 1.4.11 (2015-11-27)
 
 ## BC Breaks

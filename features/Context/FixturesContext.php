@@ -10,6 +10,7 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use League\Flysystem\Filesystem;
@@ -1323,6 +1324,17 @@ class FixturesContext extends RawMinkContext
 
             if ('' === $value) {
                 assertEmpty((string) $productValue);
+            } elseif ('**null**' === $value && 'prices' !== $attribute->getBackendType()) {
+                assertNotNull($productValue);
+
+                if (null !== $productValue) {
+                    $data = $productValue->getData();
+                    if ($data instanceof Collection) {
+                        assertTrue(true === $data->isEmpty());
+                    } else {
+                        assertNull($data);
+                    }
+                }
             } elseif ('media' === $attribute->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
@@ -1331,13 +1343,21 @@ class FixturesContext extends RawMinkContext
                 } else {
                     assertTrue(false !== strpos((string) $productValue, $value));
                 }
-            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                // $priceCurrency can be null if we want to test all the currencies at the same time
-                // in this case, it's a simple string comparison
-                // example: 180.00 EUR, 220.00 USD
+            } elseif ('metric' === $attribute->getBackendType() && '**null**' === $value) {
+                assertNull($productValue->getMetric()->getData());
+            } elseif ('prices' === $attribute->getBackendType()) {
+                if ('**null**' === $value) {
+                    foreach ($productValue->getPrices() as $price) {
+                        assertNull($price->getData());
+                    }
+                } elseif (null !== $priceCurrency) {
+                    // $priceCurrency can be null if we want to test all the currencies at the same time
+                    // in this case, it's a simple string comparison
+                    // example: 180.00 EUR, 220.00 USD
 
-                $price = $productValue->getPrice($priceCurrency);
-                assertEquals($value, $price->getData());
+                    $price = $productValue->getPrice($priceCurrency);
+                    assertEquals($value, $price->getData());
+                }
             } elseif ('date' === $attribute->getBackendType()) {
                 assertEquals($value, $productValue->getDate()->format('Y-m-d'));
             } else {

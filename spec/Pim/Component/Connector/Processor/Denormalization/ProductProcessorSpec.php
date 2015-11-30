@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -59,12 +60,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $productBuilder,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        FamilyInterface $originalFamily
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($originalFamily);
+        $originalFamily->getCode()->willReturn('TShirt');
 
         $originalData = [
             'sku' => 'tshirt',
@@ -140,6 +145,108 @@ class ProductProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->shouldBeCalled();
 
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_updates_an_existing_product_without_changing_its_family(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $productBuilder,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        FamilyInterface $originalFamily
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($originalFamily);
+        $originalFamily->getCode()->willReturn('TShirt');
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productBuilder->addMissingProductValues($product)->shouldNotBeCalled();
+
         $productValidator
             ->validate($product)
             ->willReturn($violationList);
@@ -155,12 +262,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $productBuilder,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        FamilyInterface $originalFamily
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($originalFamily);
+        $originalFamily->getCode()->willReturn('TShirt');
 
         $originalData = [
             'sku' => 'tshirt',
@@ -237,6 +348,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->shouldBeCalled();
 
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $productValidator
             ->validate($product)
             ->willReturn($violationList);
@@ -252,12 +365,16 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $productBuilder,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        FamilyInterface $originalFamily
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($originalFamily);
+        $originalFamily->getCode()->willReturn('TShirt');
 
         $originalData = [
             'sku' => 'tshirt',
@@ -274,7 +391,7 @@ class ProductProcessorSpec extends ObjectBehavior
                     'data' => 'tshirt'
                 ],
             ],
-            'family' => 'Tshirt',
+            'family' => 'TShirt',
             'name' => [
                 [
                     'locale' => 'fr_FR',
@@ -305,7 +422,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($convertedData);
 
         $filteredData = [
-            'family' => 'Tshirt',
+            'family' => 'TShirt',
             'name' => [
                 [
                     'locale' => 'fr_FR',
@@ -332,6 +449,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
+
+        $productBuilder->addMissingProductValues($product)->shouldNotBeCalled();
 
         $productValidator
             ->validate($product)
@@ -818,6 +937,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
+
+        $productBuilder->addMissingProductValues($product)->shouldNotBeCalled();
 
         $productValidator
             ->validate($product)
