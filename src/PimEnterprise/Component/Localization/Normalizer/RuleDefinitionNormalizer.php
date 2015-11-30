@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,7 +29,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
-    /** @var PresenterAttributeConverter */
+    /** @var PresenterAttributeConverterInterface */
     protected $converter;
 
     /** @var LocaleResolver */
@@ -37,12 +37,12 @@ class RuleDefinitionNormalizer implements NormalizerInterface
 
     /**
      * @param NormalizerInterface                  $ruleNormalizer
-     * @param PresenterAttributeConverter          $converter
+     * @param PresenterAttributeConverterInterface $converter
      * @param LocaleResolver                       $localeResolver
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
-        PresenterAttributeConverter $converter,
+        PresenterAttributeConverterInterface $converter,
         LocaleResolver $localeResolver
     ) {
         $this->ruleNormalizer = $ruleNormalizer;
@@ -84,7 +84,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
         foreach ($content as $key => $items) {
             foreach ($items as $index => $action) {
                 if (isset($action['field']) && isset($action['value'])) {
-                    $content[$key][$index]['value'] = $this->converter->convertDefaultToLocalizedValue(
+                    $content[$key][$index]['value'] = $this->converter->convert(
                         $action['field'],
                         $action['value'],
                         $options

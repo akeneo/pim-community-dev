@@ -14,9 +14,7 @@ namespace spec\PimEnterprise\Component\Localization\Normalizer;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
-use Pim\Component\Localization\Provider\Format\DateFormatProvider;
-use Pim\Component\Localization\Provider\Format\NumberFormatProvider;
+use Pim\Component\Localization\Presenter\PresenterAttributeConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,7 +22,7 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $ruleNormalizer,
-        PresenterAttributeConverter $converter,
+        PresenterAttributeConverterInterface $converter,
         LocaleResolver $localeResolver
     ) {
         $this->beConstructedWith(
@@ -71,21 +69,21 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 
         $options = ['locale' => 'fr_FR'];
 
-        $converter->convertDefaultToLocalizedValue(
+        $converter->convert(
             'price',
             [['data' => '12.1234', 'currency' => 'EUR']],
             $options
         )->willReturn([['data' => '12,1234', 'currency' => 'EUR']]);
 
-        $converter->convertDefaultToLocalizedValue('auto_focus_points', 4.1234, $options)->willReturn('4,1234');
+        $converter->convert('auto_focus_points', 4.1234, $options)->willReturn('4,1234');
 
-        $converter->convertDefaultToLocalizedValue(
+        $converter->convert(
             'weight',
             ['data' => 500.1234, 'unit' => 'GRAM'],
             $options
         )->willReturn(['data' => '500,1234', 'unit' => 'GRAM']);
 
-        $converter->convertDefaultToLocalizedValue('sku', 'AKNTS_PB', $options)->willReturn('AKNTS_PB');
+        $converter->convert('sku', 'AKNTS_PB', $options)->willReturn('AKNTS_PB');
 
         $this->normalize($ruleDefinition, 'array', [])->shouldReturn(
             [
