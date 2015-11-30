@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Fecha
+      author: Autor
+      product: Producto
+      review: Revisión
+      empty: Ninguna propuesta a revisar
+      view_all: Ver todo
