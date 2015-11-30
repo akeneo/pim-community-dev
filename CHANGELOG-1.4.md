@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5238: fix scroll on multiselect for mass edit
+- PIM-5177: fix login redirection
 
 # 1.4.11 (2015-11-27)
 
