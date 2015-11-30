@@ -27,7 +27,7 @@ services:
     pim_localization.presenter.metric:
         class: %pim_localization.presenter.metric.class%
         arguments:
-            - @pim_localization.localizer.number
+            - '@pim_localization.factory.number'
             - ['pim_catalog_metric']
         tags:
             - { name: pim_localization.presenter }
@@ -35,7 +35,7 @@ services:
     pim_localization.presenter.number:
         class: %pim_localization.presenter.number.class%
         arguments:
-            - @pim_localization.localizer.number
+            - '@pim_localization.factory.number'
             - ['pim_catalog_number']
         tags:
             - { name: pim_localization.presenter }

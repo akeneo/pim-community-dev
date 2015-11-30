@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Localizer;
 
+use Pim\Component\Localization\Factory\NumberFactory;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Pim\Component\Localization\Validator\Constraints\NumberFormat;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,24 +17,24 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var FormatProviderInterface */
-    protected $formatProvider;
+    /** @var NumberFactory */
+    protected $numberFactory;
 
     /** @var array */
     protected $attributeTypes;
 
     /**
-     * @param ValidatorInterface      $validator
-     * @param FormatProviderInterface $formatProvider
-     * @param array                   $attributeTypes
+     * @param ValidatorInterface $validator
+     * @param NumberFactory      $numberFactory
+     * @param array              $attributeTypes
      */
     public function __construct(
         ValidatorInterface $validator,
-        FormatProviderInterface $formatProvider,
+        NumberFactory $numberFactory,
         array $attributeTypes
     ) {
         $this->validator      = $validator;
-        $this->formatProvider = $formatProvider;
+        $this->numberFactory  = $numberFactory;
         $this->attributeTypes = $attributeTypes;
     }
 
@@ -49,11 +50,9 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
         $options = $this->getOptions($options);
 
         if (isset($options['locale'])) {
-            $numberFormatter = new \NumberFormatter($options['locale'], \NumberFormatter::DECIMAL);
+            $numberFormatter = $this->numberFactory->create($options);
 
-            if (isset($options['disable_grouping_separator']) && true === $options['disable_grouping_separator']) {
-                $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
-            }
+            $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 
             if (floor($number) != $number) {
                 $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
@@ -102,7 +101,8 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
         $options = $this->getOptions($options);
 
         if (isset($options['locale']) && !isset($options['decimal_separator'])) {
-            $options['decimal_separator'] = $this->formatProvider->getFormat($options['locale'])['decimal_separator'];
+            $numberFormatter = $this->numberFactory->create($options);
+            $options['decimal_separator'] = $numberFormatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
         }
 
         $constraint = new NumberFormat();

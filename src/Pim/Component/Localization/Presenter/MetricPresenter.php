@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Presenter;
 
-use Pim\Component\Localization\Localizer\NumberLocalizer;
+use Pim\Component\Localization\Factory\NumberFactory;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -13,20 +13,20 @@ use Pim\Component\Localization\Localizer\NumberLocalizer;
  */
 class MetricPresenter implements PresenterInterface
 {
-    /** @var NumberLocalizer */
-    protected $numberLocalizer;
+    /** @var NumberFactory */
+    protected $numberFactory;
 
     /** @var string[] */
     protected $attributeTypes;
 
     /**
-     * @param NumberLocalizer $numberLocalizer
-     * @param string[]        $attributeTypes
+     * @param NumberFactory $numberFactory
+     * @param string[]      $attributeTypes
      */
-    public function __construct(NumberLocalizer $numberLocalizer, array $attributeTypes)
+    public function __construct(NumberFactory $numberFactory, array $attributeTypes)
     {
-        $this->numberLocalizer = $numberLocalizer;
-        $this->attributeTypes  = $attributeTypes;
+        $this->numberFactory  = $numberFactory;
+        $this->attributeTypes = $attributeTypes;
     }
 
     /**
@@ -34,7 +34,11 @@ class MetricPresenter implements PresenterInterface
      */
     public function present($value, array $options = [])
     {
-        $amount = $this->numberLocalizer->localize($value['data'], $options);
+        $numberFormatter = $this->numberFactory->create($options);
+        if (isset($options['disable_grouping_separator']) && true === $options['disable_grouping_separator']) {
+            $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+        }
+        $amount = $numberFormatter->format($value['data']);
 
         return sprintf('%s %s', $amount, $value['unit']);
     }

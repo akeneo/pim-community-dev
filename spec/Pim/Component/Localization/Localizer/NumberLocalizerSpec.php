@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Localization\Factory\NumberFactory;
 use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -10,9 +11,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NumberLocalizerSpec extends ObjectBehavior
 {
-    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
-    {
-        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_number']);
+    function let(
+        ValidatorInterface $validator,
+        FormatProviderInterface $formatProvider,
+        NumberFactory $numberFactory
+    ) {
+        $this->beConstructedWith($validator, $formatProvider, $numberFactory, ['pim_catalog_number']);
     }
 
     function it_is_a_localizer()
