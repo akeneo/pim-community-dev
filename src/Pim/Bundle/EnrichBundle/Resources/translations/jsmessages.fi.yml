@@ -1,0 +1,16 @@
+pim_enrich:
+  entity:
+    product:
+      variant_group:
+        switch:
+          "yes": true
+          "no": false
+  form:
+    product:
+      switch:
+        "no": false
+        "yes": true
+    entity:
+      switch:
+        "no": false
+        "yes": true
