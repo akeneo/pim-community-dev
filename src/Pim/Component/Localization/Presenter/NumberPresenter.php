@@ -34,9 +34,15 @@ class NumberPresenter implements PresenterInterface
      */
     public function present($value, array $options = [])
     {
+        if (!is_numeric($value)) {
+            return $value;
+        }
+
         $numberFormatter = $this->numberFactory->create($options);
-        if (isset($options['disable_grouping_separator']) && true === $options['disable_grouping_separator']) {
-            $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+
+        if (floor($value) != $value) {
+            $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
         }
 
         return $numberFormatter->format($value);

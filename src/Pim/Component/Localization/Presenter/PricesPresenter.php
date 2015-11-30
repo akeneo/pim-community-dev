@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Localization\Presenter;
 
-use Pim\Component\Localization\Factory\NumberFactory;
-
 /**
  * Price presenter, able to render price readable for a human
  *
@@ -11,24 +9,8 @@ use Pim\Component\Localization\Factory\NumberFactory;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PricesPresenter implements PresenterInterface
+class PricesPresenter extends NumberPresenter
 {
-    /** @var NumberFactory */
-    protected $numberFactory;
-
-    /** @var string[] */
-    protected $attributeTypes;
-
-    /**
-     * @param NumberFactory $numberFactory
-     * @param string[]      $attributeTypes
-     */
-    public function __construct(NumberFactory $numberFactory, array $attributeTypes)
-    {
-        $this->numberFactory  = $numberFactory;
-        $this->attributeTypes = $attributeTypes;
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -37,20 +19,23 @@ class PricesPresenter implements PresenterInterface
      */
     public function present($prices, array $options = [])
     {
-        return array_map(function ($price) use ($options) {
-            return $this
-                ->numberFactory
-                ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]))
-                ->formatCurrency($price['data'], $price['currency']);
-            }, $prices
-        );
-    }
+        if (!is_array($prices)) {
+            return parent::present($prices, $options);
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return in_array($attributeType, $this->attributeTypes);
+        $numberFormatter = $this
+            ->numberFactory
+            ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
+
+        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
+            return $numberFormatter->formatCurrency($prices['data'], $prices['currency']);
+        }
+
+        $presentedPrices = [];
+        foreach ($prices as $price) {
+            $presentedPrices[] = $numberFormatter->formatCurrency($price['data'], $price['currency']);
+        };
+
+        return $presentedPrices;
     }
 }

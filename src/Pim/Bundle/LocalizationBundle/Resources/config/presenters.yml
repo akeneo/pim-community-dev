@@ -20,7 +20,7 @@ services:
     pim_localization.presenter.prices:
         class: %pim_localization.presenter.prices.class%
         arguments:
-            - '@pim_localization.factory.number'
+            - '@pim_localization.factory.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: pim_localization.presenter }
