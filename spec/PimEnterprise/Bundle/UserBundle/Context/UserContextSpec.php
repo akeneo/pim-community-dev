@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
