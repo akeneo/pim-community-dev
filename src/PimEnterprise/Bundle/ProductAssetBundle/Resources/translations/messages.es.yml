@@ -1,0 +1,161 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enriquecer los recursos
+      create: Crear un recurso
+      remove: Quitar un recurso
+      categories_view: Consultar las categorías de un recurso
+      mass_upload: Carga masiva de recursos
+    category_asset_picker:
+      list: Lista de categorías de recursos dentro de un selector de elementos
+    category:
+      create: Crear un categoría de recursos
+      edit: Editar una categoría de recursos
+      list: Lista de categorías de recursos
+      remove: Quitar una categoría de recursos
+      manage: Gestionar los permisos de categoría de recursos
+      history: Revisar el historial de categorías de recursos
+  acl_group:
+    asset: Recursos de productos
+    category: Categorías de recursos
+  enrich_asset:
+    button:
+      upload: Cargar
+      delete: Eliminar
+      download: Descargar
+      generate_from_reference: Generar desde la referencia
+      reset_variations: Reajuste de variaciones
+    confirmation.remove: '¿Está seguro que desea quitar el recurso "%asset%"?'
+    grid:
+      edit: Editar las propiedades de el recurso
+    view:
+      title: Recursos del producto
+      code: Código
+      description: Descripción
+      end_of_use: Caduca el
+      reference: Referencia
+      filename: Nombre de fichero
+      width: Ancho
+      height: Altura
+      resolution: Resolución
+      colors: Espacio colorimétrico
+      filesize: Tamaño del fichero
+      filetype: Tipo de fichero
+      actions: Acciones
+      download: Descargar
+      tag: Etiqueta
+      no_reference: Ningún fichero de referencia ha sido cargado.
+      no_variation: Ningún fichero de variación ha sido generado.
+    flash:
+      update:
+        success: El recurso ha sido actualizado.
+        error: El recurso no ha sido actualizado. Ha ocurrido un error.
+      create:
+        success: El recurso ha sido creado.
+        error: El recurso no ha sido creado. Ha ocurrido un error.
+      remove:
+        success: El recurso ha sido quitado.
+  enrich_reference:
+    flash:
+      delete:
+        success: El fichero de referencia ha sido eliminado.
+        error: El fichero de referencia no se ha podido eliminar. Ha ocurrido un error.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 'Imposible de generar la varación %channel% de debido a opciones inválidas.'
+        image_width_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.'
+        image_height_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.'
+        not_applicable: 'Imposible generar la variación %channel%.'
+        non_registered: 'Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.'
+        error: 'Imposible de generar la variación %channel%.'
+        success: Los ficheros de variaciones han sido creados con éxito.
+      update:
+        success: El fichero de variación ha sido actualizado.
+        error: El fichero de variación no ha sido actualizado. Ha ocurrido un error.
+      delete:
+        success: El fichero de variación ha sido eliminado.
+        error: El fichero de variación no ha sido eliminado. Ha ocurrido un error.
+  popin.create:
+    title: Crear un nuevo recurso
+    is_localized: Localizable
+  menu: Recursos
+  page_tab:
+    title:
+      view: 'Recurso de producto %asset.code% | Ver'
+      edit: 'Recurso de producto %asset.code% | Editar'
+      index: Recursos de productos
+  code:
+    label: Código
+  thumbnail:
+    label: Miniatura
+  status:
+    label: Estado
+  description:
+    label: Descripción
+  endOfUse:
+    label: Caducidad
+  createdAt:
+    label: Creado el
+  updatedAt:
+    label: Ultima actualización el
+  tags:
+    label: Etiquetas
+  tabs:
+    properties.title: Propiedades
+    variations.title: Variaciones
+    categories.title: Ctegorías
+  validation:
+    code:
+      not_empty: Código requerido. No puede estar vacío.
+      unique: El código debe ser único.
+      new_generation: Hemos generado un nuevo código por usted.
+  jobs:
+    csv_asset_import.title: Importar recursos en CSV
+    csv_asset_export.title: Exportar recursos en CSV
+    csv_asset_variation_export.title: Exportar las variaciones de recursos en CSV
+    csv_tag_import.title: Importar etiquetas en CSV
+    csv_asset_category_import.title: Importar categorías de recursos en CSV
+    csv_asset_configuration_import.title: Importar configuración de recursos por canal en CSV
+    yml_asset_configuration_export.title: Exportar configuraciones de recursos por canal en YAML
+    csv_asset_category_export.title: Exportar categoría de recursos en CSV
+    yml_asset_channel_configuration_import.title: Importar la configuración de recursos por canal en CSV
+  steps:
+    channel_configuration.processor.title: Configuración de procesos de canal
+  notAvailable:
+    label: no disponible
+  asset:
+    title: Recurso
+  mass_upload:
+    menu: Cargar recursos
+    new: Un nuevo recurso ha sido creado
+    add_files: agregar ficheros
+    start: Comenzar carga
+    cancel: Cancelar carga
+    schedule: programar
+    executed: Carga en masa iniciada
+    error:
+      upload: Un error ha ocurrido al intentar cargar
+      code: Formato de código no válido para los recursos
+      localizable: Existe un recurso pero no es localizable
+      invalid_locale: El local está inhabilitado o es inválido
+  category:
+    menu: Categorías de recursos
+    permissions:
+      view.label: Permitir de ver los recursos
+      view.help: Permitir ver los recursos en esta categoría
+      edit.label: Permitir editar los recursos
+      edit.help: Permitir editar los recursos en esta categoría (implica el permiso de ver)
+      no_access_to_products: Usted no tiene acceso a recursos en ningún árbol, por favor contacte a su administrador
+      apply_on_children.label: Aplicar cambios en sub categorías
+      apply_on_children.help: Copiar los cambios de permisos en todas las sub categorías, los permisos existentes en las sub categorías son conservados
+btn.create.asset: Crear un recurso
+btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
+job_execution.summary:
+  asset_file_processed: Fichero de recurso procesado
+  variations_not_generated: Variaciones no generadas
+  pimee_product_asset.mass_upload.new: Recurso creado desde el fichero
+  pimee_product_asset.mass_upload.updated: Recurso cargado
+assets_mass_upload.steps:
+  asset_mass_upload.title: Carga masiva de recursos
+mass_upload: Cargar recursos masivamente

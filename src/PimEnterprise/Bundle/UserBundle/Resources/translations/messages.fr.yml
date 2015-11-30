@@ -8,6 +8,8 @@ user:
       "yes": true
       "no": false
   asset_delay_reminder: "Rappel de la date d'utilisation limite des ressources (en jours)"
+  default_published_product_grid_view:
+    label: Vue par défaut de la grille des produits publiés
 Default asset tree: Arborescence par défaut des ressources
 pimee_user:
   user:
