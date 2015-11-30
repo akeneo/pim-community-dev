@@ -157,8 +157,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getActions()
     {
         $actions = [
-            'normalized_values' => $this->getValues(),
-            'product'           => 'lepipou'
+            'normalized_values' => $this->getValues()
         ];
 
         return $actions;

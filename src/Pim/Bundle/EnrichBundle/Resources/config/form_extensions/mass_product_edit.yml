@@ -79,3 +79,8 @@ extensions:
         module: pim/product-edit-form/panel/selector
         parent: pim-mass-product-edit-form-panels
         position: 100
+
+    pim-mass-product-edit-form-hidden-input-updater:
+        module: pim/mass-product-edit-form/hidden-field-updater
+        parent: pim-mass-product-edit-form
+        position: 500
