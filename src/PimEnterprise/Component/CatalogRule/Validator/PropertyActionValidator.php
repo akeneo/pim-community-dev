@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\CatalogRule\Validator;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,8 +37,8 @@ class PropertyActionValidator extends ConstraintValidator
 
     /**
      * @param ActionApplierRegistryInterface $applierRegistry
-     * @param ProductBuilderInterface $productBuilder
-     * @param ValidatorInterface      $validator
+     * @param ProductBuilderInterface        $productBuilder
+     * @param ValidatorInterface             $validator
      */
     public function __construct(
         ActionApplierRegistryInterface $applierRegistry,
