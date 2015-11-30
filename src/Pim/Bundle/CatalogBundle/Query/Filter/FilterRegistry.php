@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**

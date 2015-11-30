@@ -29,7 +29,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
     function it_is_a_attribute_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\AttributeRepositoryInterface');
     }
 
     function it_count_all_attributes($em, QueryBuilder $queryBuilder, AbstractQuery $query)

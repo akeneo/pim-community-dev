@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior

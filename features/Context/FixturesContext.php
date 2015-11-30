@@ -2444,7 +2444,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface
+     * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
     {

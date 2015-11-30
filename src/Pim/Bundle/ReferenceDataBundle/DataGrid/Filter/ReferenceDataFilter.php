@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter;
 use Pim\Bundle\UserBundle\Context\UserContext;

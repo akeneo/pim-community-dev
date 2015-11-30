@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
 use InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
