@@ -1,2 +1,19 @@
+View the product: Ver el producto
+Unpublish the product: Despublicar el producto
 Approve: Aprobar
+Refuse: Rechazar
 Approve selected: Aprobar seleccionados
+Refuse selected: Rechazar elementos seleccionados
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editar copia de trabajo
+    proposal:
+      modal.title: 'Hacer un comentario (opcional - 255 caracteres max.)'
+  proposal:
+    partial_accept:
+      modal.title: Aprobar información parcial
+      modal.label: Hacer un comentario (opcional)
+      modal.error: Ha ocurrido un error, la propuesta no sido aprobada parcialmente
+      modal.success: La propuesta ha sido validada parcialmente con éxito
