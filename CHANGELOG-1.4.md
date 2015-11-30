@@ -1,3 +1,12 @@
+# 1.4.11 (2015-11-27)
+
+## Bug fixes
+- PIM-5147: do not apply permission restrictions on attribute groups for families
+
+# 1.4.10 (2015-11-20)
+
+# 1.4.9 (2015-11-12)
+
 # 1.4.8 (2015-11-09)
 
 ## Bug fixes
@@ -6,7 +15,13 @@
 
 # 1.4.7 (2015-11-03)
 
+## Bug fixes
+- PIM-5079: Add batch jobs script for 1.3 to 1.4 migration
+
 # 1.4.6 (2015-10-27)
+
+## Bug fixes
+- PIM-5055: Fix medias migration for removed medias in product values
 
 # 1.4.5 (2015-10-23)
 
@@ -17,6 +32,8 @@
 # 1.4.4 (2015-10-19)
 
 ## Bug fixes
+- SDS-91 : Published product value migration with MongoDB
+- PIM-5017: Fix media migration with lots of files
 - PIM-4971: Fix flash messages for asset edit form
 
 # 1.4.3 (2015-10-09)
