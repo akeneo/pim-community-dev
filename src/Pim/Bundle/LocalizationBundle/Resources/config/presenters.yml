@@ -1,8 +1,8 @@
 parameters:
-    pim_localization.presenter.price.class: Pim\Component\Localization\Presenter\PricePresenter
+    pim_localization.presenter.prices.class: Pim\Component\Localization\Presenter\PricesPresenter
 
 services:
-    pim_localization.presenter.price:
-        class: %pim_localization.presenter.price.class%
+    pim_localization.presenter.prices:
+        class: %pim_localization.presenter.prices.class%
         arguments:
             - '@pim_localization.factory.number'
