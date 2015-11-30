@@ -1,0 +1,69 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gestionar recursos
+        panel:
+          basket:
+            title: Cesta
+            empty_basket: La cesta está vacía
+        manage_asset:
+          title: Gestionar recursos
+          cancel: Cancelar
+          confirm: Confirmar
+  enrich_asset:
+    grid:
+      edit: Editar prodpiedades del recurso
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirmación de eliminación
+        message: ¿Está seguro que desea eliminar este elemento?
+      reset:
+        title: Reinicializar variaciones
+        message: ¿Está seguro que desea reinicializar todas las variaciones?
+  mass_upload:
+    menu: Cargar recursos
+    btn:
+      add_files: Agregar ficheros
+      cancel: Cancelar carga
+      delete: Eliminar
+      schedule: Programar
+      start: Comenzar la carga
+    success:
+      new: Un nuevo recurso será creado
+      scheduled: Ficheros programados para el tratamiento de recursos
+      canceled: Carga cancelada con éxito
+      deleted: Fichero cargado eliminado con éxito
+    error:
+      list: Imposible de leer los ficheros ya cargados
+      upload: Un error ocurrió al intentar cargar el fichero
+      delete: Imposible eliminar el fichero del servidor
+      schedule: Un error ocurrió al intentar programar el proceso de carga
+      filename: Nombre de fichero inválido para el recurso
+      code: Formato de código inválido para el recurso
+      locale: Un recurso existe pero no se puede traducir
+      invalid_locale: El local está desactivado o es inválido
+      exists: Un fichero con el mismo nombre ya está programado para la carga
+      conflicts: Conflicto de nombre de ficheros
+    grid:
+      medias: medias
+      filename: nombre de fichero
+      filetype: tipo de fichero
+      status: estatus
+      progress: progreso
+      actions: acciones
+    action:
+      cancel: Cancelar
+      delete: Eliminar
+    status:
+      added: Agregar
+      queued: En espera
+      uploading: Cargando
+      error: Error
+      success: Éxito
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Carga masiva
