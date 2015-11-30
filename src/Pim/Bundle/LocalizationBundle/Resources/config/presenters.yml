@@ -4,6 +4,7 @@ parameters:
     pim_localization.presenter.prices.class:    Pim\Component\Localization\Presenter\PricesPresenter
     pim_localization.presenter.metric.class:    Pim\Component\Localization\Presenter\MetricPresenter
     pim_localization.presenter.number.class:    Pim\Component\Localization\Presenter\NumberPresenter
+    pim_localization.presenter.date.class:      Pim\Component\Localization\Presenter\DatePresenter
     pim_localization.presenter.converter.class: Pim\Component\Localization\Presenter\PresenterAttributeConverter
 
 services:
@@ -37,5 +38,13 @@ services:
         arguments:
             - '@pim_localization.factory.number'
             - ['pim_catalog_number']
+        tags:
+            - { name: pim_localization.presenter }
+
+    pim_localization.presenter.date:
+        class: %pim_localization.presenter.date.class%
+        arguments:
+            - '@pim_localization.factory.date'
+            - ['pim_catalog_date']
         tags:
             - { name: pim_localization.presenter }
