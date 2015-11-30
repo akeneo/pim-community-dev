@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5238: fix scroll on multiselect for mass edit
+
 # 1.4.11 (2015-11-27)
 
 ## BC Breaks
