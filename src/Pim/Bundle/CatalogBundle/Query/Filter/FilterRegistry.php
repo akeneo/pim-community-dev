@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Aims to register and retrieve filters useable on product query builder

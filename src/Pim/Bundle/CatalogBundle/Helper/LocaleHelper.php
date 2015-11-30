@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Intl;
 
 /**
