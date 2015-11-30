@@ -5,7 +5,8 @@ namespace spec\Pim\Bundle\LocalizationBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterAttributeConverter;
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -13,12 +14,12 @@ class VersionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $versionNormalizer,
-        PresenterAttributeConverter $converter,
+        PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver
     ) {
         $this->beConstructedWith(
             $versionNormalizer,
-            $converter,
+            $presenterRegistry,
             $localeResolver
         );
     }
@@ -32,7 +33,10 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version,
         $localeResolver,
         $versionNormalizer,
-        $converter
+        $presenterRegistry,
+        PresenterInterface $numberPresenter,
+        PresenterInterface $pricesPresenter,
+        PresenterInterface $metricPresenter
     ) {
         $versionNormalizer->normalize($version, 'internal_api', Argument::any())->willReturn([
             'changeset' => [
@@ -41,24 +45,22 @@ class VersionNormalizerSpec extends ObjectBehavior
                 'weight'             => ['old' => '', 'new' => '10.1234'],
             ]
         ]);
+
         $options = ['locale' => 'fr_FR'];
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
-        $converter
-            ->convertDefaultToLocalizedValue('maximum_frame_rate', '200.7890', $options)
-            ->willReturn('200,7890');
-        $converter
-            ->convertDefaultToLocalizedValue('price', '5.00', $options)
-            ->willReturn('5,00');
-        $converter
-            ->convertDefaultToLocalizedValue('price', '5.15', $options)
-            ->willReturn('5,15');
-        $converter
-            ->convertDefaultToLocalizedValue('weight', '10.1234', $options)
-            ->willReturn('10,1234');
-        $converter
-            ->convertDefaultToLocalizedValue(Argument::any(), '', $options)
-            ->willReturn('');
+        $presenterRegistry->getPresenterByAttributeCode('maximum_frame_rate')->willReturn($numberPresenter);
+        $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricesPresenter);
+        $presenterRegistry->getPresenterByAttributeCode('weight')->willReturn($metricPresenter);
+
+        $numberPresenter->present('200.7890', $options)->willReturn('200,7890');
+        $pricesPresenter->present('5.00', $options)->willReturn('5,00');
+        $pricesPresenter->present('5.15', $options)->willReturn('5,15');
+        $metricPresenter->present('10.1234', $options)->willReturn('10,1234');
+
+        $numberPresenter->present('', $options)->willReturn('');
+        $pricesPresenter->present('', $options)->willReturn('');
+        $metricPresenter->present('', $options)->willReturn('');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'changeset' => [

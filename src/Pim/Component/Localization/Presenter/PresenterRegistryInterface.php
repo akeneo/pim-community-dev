@@ -14,18 +14,28 @@ namespace Pim\Component\Localization\Presenter;
 interface PresenterRegistryInterface
 {
     /**
-     * Adds a Presenter to the registry
+     * Register a Presenter to the registry
      *
      * @param PresenterInterface $presenter
+     * @param string             $type
      */
-    public function addPresenter(PresenterInterface $presenter);
+    public function register(PresenterInterface $presenter, $type);
 
     /**
-     * Get the first matching presenter supporting the attribute type.
+     * Get the first presenter supporting an attribute code
      *
-     * @param string $attributeType
+     * @param string $code
      *
-     * @return null|PresenterInterface
+     * @return PresenterInterface|null
      */
-    public function getPresenter($attributeType);
+    public function getProductValuePresenter($attributeType);
+
+    /**
+     * Get the first presenter supporting an attribute option
+     *
+     * @param string $optionName
+     *
+     * @return PresenterInterface|null
+     */
+    public function getAttributeOptionPresenter($optionName);
 }

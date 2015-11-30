@@ -192,7 +192,7 @@ Feature: Update the product history
     And I should see history:
       | version | property    | value      |
       | 1       | Length      | 30         |
-      | 1       | Length unit | CENTIMETER |
+      | 1       | Length unit | Centimeter |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I change the "Length" to "35 CENTIMETER"

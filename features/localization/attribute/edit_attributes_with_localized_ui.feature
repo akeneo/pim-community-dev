@@ -38,7 +38,7 @@ Feature: Edit attributes with localized ui
     And I fill in "Nombre max" with "12456,789"
     When I press the "Enregistrer" button
     Then I should not see a validation error "Ce type de valeur attend , comme séparateur de décimales."
-    And the field Nombre max should contain "12456,7890"
+    And the field Nombre max should contain "12456,789"
 
   Scenario: Successfully save localized english date
     Given I am logged in as "Julia"
