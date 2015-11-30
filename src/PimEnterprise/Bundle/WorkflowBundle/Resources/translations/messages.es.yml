@@ -1,0 +1,120 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    created: Propuesto en
+    changes: Cambios
+    locale: Configuración regional
+    product:
+      label: Etiqueta del producto
+    attribute:
+      label: Atributo
+    status:
+      label: Estado
+      working_copy: Copia de trabajo
+      in_progress: En progreso
+      ready: Esperando aprobacion
+      can_not_be_approved: No puede ser revisado
+      can_not_be_deleted: No puede ser borrado
+    status_message:
+      can_not_be_approved: Usted no puede aprobar o rechazar esta propuesta debido a que implica cambios en valores que usted no tiene el permiso para editar. Por favor contacte a su administrador para modificar sus permisos.
+      can_not_be_deleted: No puede eliminar esta aprobación debido a que aplica cambios en valores que usted no puede editar. Por favor, contacte a su administrador para cambiar sus permisos.
+    action:
+      approve: Aprobar
+      refuse: Rechazar
+      remove: Eliminar
+      partial_approve: 'Aprobar cambios en atributo %attribute% de el producto %product%'
+    notification:
+      partial_approve:
+        "%owner% has accepted the value for %attribute% for the product": '%product%'
+      approve: '%owner% ha aceptado su propuesta por el producto %product%'
+      refuse: '%owner% ha rechazado su propuesta por el producto %product%'
+      remove: '%owner% ha eliminado su propuesta por el producto %product%'
+    mass_review_action:
+      approve: Aprobar elementos seleccionados
+      refuse: Rechazar elemento seleccionado
+      error:
+        draft_not_ready: Esta propuesta no está lista para ser aprobada
+        not_product_owner: Usted no es propietario del producto asociado a esta proposición
+        cannot_edit_attributes: Usted no puede editar los atributos modificados en esta propuesta
+        invalid_draft: 'Esta propuesta no puede aplicarse debido al siguiente error. %error%'
+  proposal:
+    to_review: '%author.firstname% %author.lastname% ha enviado una propuesta a revisar por el producto %product.label%'
+    original_value: Original
+    new_value: Nuevo
+  published_product:
+    index: Productos publicados
+    title: Producto publicado
+  acl.published_product:
+    index: Gestionar productos publicados
+  product:
+    permission:
+      label: Permisos
+      own: Revisar / publicar
+      edit: Editar
+      view: Vista
+  jobs:
+    csv_product_proposal_import:
+      title: Importación de propuesta de producto en CSV
+      import.title: Importación de propuesta de producto
+    approve_product_draft:
+      title: Aprobar propuesta
+      perform.title: Aprobar propuesta
+    refuse_product_draft:
+      title: Rechazar propuesta
+      perform.title: Rechazar propuestas
+  steps:
+    product_draft_processor.title: Procesador de propuesta
+pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
+btn.publish: Publicar
+btn.unpublish: Despublicar
+pimee_workflow_product_draft_notification_partial_approve: Propuesta aprobada parcialmente
+pimee_workflow_product_draft_notification_approve: Propuesta aprobada
+pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
+pimee_workflow_product_draft_notification_remove: Propuesta eliminada
+flash:
+  product:
+    published: El producto ha sido publicado exitosamente.
+    unpublished: Se ha removido la publicación del producto exitosamente.
+  product_draft:
+    approve:
+      success: La propuesta ha sido aplicada exitosamente.
+      error: 'La propuesta no puede ser aplicada debido al siguiente error. %error%'
+    refuse:
+      success: La propuesta ha sido rechazada.
+    remove:
+      success: La propuesta ha sido removida.
+pim_menu:
+  item:
+    published_product: Productos publicados
+    proposal: Propuestas
+pim_title:
+  published_product:
+    index: Productos publicados
+    view: 'Publicado %product.sku% publicado | Vista'
+  product:
+    dispatch: 'Productos %product.sku%'
+    show: 'Productos %product.sku% | Mostrar'
+  proposal:
+    index: Propuestas
+btn.editworkingcopy: Editar copia de trabajo
+confirmation:
+  product:
+    publish: ¿Está seguro que desea publicar este producto?
+    unpublish: ¿Está seguro que desea quitar la publicación este producto ?
+proposal.overview: Propuestas
+Attributes.title: Atributos
+Completeness.title: Completitud
+publish_product.steps.publish_product_tasklet.title: Publicar producto
+unpublish_product.steps.unpublish_product_tasklet.title: Remover publicación de producto
+approve_product_draft.steps.approve.title: Aprobar la propuesta
+approve_product_draft.steps.refuse.title: Rechazar propuesta
+job_execution.summary:
+  approved: aprobado
+  refused: rechazada
+  mass_published: Producto publicado
+  mass_unpublished: Producto no publicado
+  proposal: Propuesta creada
+  proposal_deleted: propuesta eliminada
+  proposal_updated: propuesta actualizada
+  proposal_created: propuesta creada
+  proposal_skipped: propuesta omitida (sin diferencias)
