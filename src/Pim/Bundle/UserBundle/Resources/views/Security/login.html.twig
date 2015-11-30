@@ -51,4 +51,13 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 </div>
+
+<script type="text/javascript">
+    require(['oro/layout'], function (layout) {
+        $(function () {
+            layout.hideProgressBar();
+            layout.init();
+        });
+    });
+</script>
 {% endblock content %}
