@@ -229,3 +229,35 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5215
+  Scenario: Successfully create null product values when changing the family of a product
+    Given the following product:
+      | sku     | family |
+      | SKU-001 | basics |
+    And the following CSV file to import:
+      """
+      sku;family
+      SKU-001;long_boots
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 1 products
+    And the family of "SKU-001" should be "long_boots"
+    And the product "SKU-001" should have the following values:
+      | name-en_US               | **null** |
+      | manufacturer             | **null** |
+      | description-en_US-tablet | **null** |
+      | description-en_US-mobile | **null** |
+      | weather_conditions       | **null** |
+      | price                    | **null** |
+      | rating                   | **null** |
+      | side_view                | **null** |
+      | top_view                 | **null** |
+      | size                     | **null** |
+      | color                    | **null** |
+      | lace_color               | **null** |
+      | length                   | **null** |

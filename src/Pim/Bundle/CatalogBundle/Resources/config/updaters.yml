@@ -64,6 +64,7 @@ services:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.updater.product_property_copier'
             - '@pim_catalog.updater.product_template'
+            - '@pim_catalog.builder.product'
 
     pim_catalog.updater.product_property_setter:
         class: %pim_catalog.updater.product_property_setter.class%

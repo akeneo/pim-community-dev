@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 
@@ -18,6 +19,9 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
  */
 class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 {
+    /** @var null|ProductBuilderInterface */
+    protected $productBuilder;
+
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
@@ -31,15 +35,18 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ProductBuilderInterface|null    $productBuilder
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ProductBuilderInterface $productBuilder = null
     ) {
-        $this->propertySetter = $propertySetter;
-        $this->propertyCopier = $propertyCopier;
+        $this->propertySetter  = $propertySetter;
+        $this->propertyCopier  = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->productBuilder  = $productBuilder;
     }
 
     /**
@@ -114,14 +121,25 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
             );
         }
 
+        $changeFamily = false;
+        if (isset($data['family']) && $product->getFamily()->getCode() !== $data['family']) {
+            $this->updateProductFields($product, 'family', $data['family']);
+            unset($data['family']);
+            $changeFamily = true;
+        }
+
         foreach ($data as $field => $values) {
-            if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
+            if (in_array($field, ['enabled', 'categories', 'variant_group', 'groups', 'associations'])) {
                 $this->updateProductFields($product, $field, $values);
             } else {
                 $this->updateProductValues($product, $field, $values);
             }
         }
         $this->updateProductVariantValues($product, $data);
+
+        if ($changeFamily) {
+            $this->productBuilder->addMissingProductValues($product);
+        }
 
         return $this;
     }
