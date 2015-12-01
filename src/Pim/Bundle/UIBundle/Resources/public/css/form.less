@@ -504,8 +504,13 @@ table i {
   .input-large {
     width: 350px;
   }
-  .datepicker.input-large {
-    width: 200px;
+  .datepicker {
+    &.input-large {
+      width: 200px;
+    }
+    &.add-on {
+      background-color: @white;
+    }
   }
 }
 
@@ -1251,5 +1256,27 @@ button.view-button {
   font-size: 13px;
   &.hide {
     display: none;
+  }
+}
+
+/** datetimepicker views *********************************************************************************************/
+.bootstrap-datetimepicker-widget {
+  .has-switch {
+    display: table-cell;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      display: block;
+      list-style: none;
+      &.picker-switch {
+        text-align: center;
+      }
+    }
+  }
+  table {
+    text-align: center;
+    width: 100%;
   }
 }
