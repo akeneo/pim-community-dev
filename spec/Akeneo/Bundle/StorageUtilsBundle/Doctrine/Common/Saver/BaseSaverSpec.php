@@ -96,8 +96,12 @@ class BaseSaverSpec extends ObjectBehavior
         $this->saveAll([$type1, $type2], ['flush' => false]);
     }
 
-    function it_throws_exception_when_save_anything_else_than_the_expected_class()
+    function it_throws_exception_when_save_anything_else_than_the_expected_class($optionsResolver)
     {
+        $optionsResolver->resolveSaveAllOptions(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(['flush' => false]);
+
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
