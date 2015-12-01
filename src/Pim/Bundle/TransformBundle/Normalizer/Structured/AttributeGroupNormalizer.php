@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,18 +21,18 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $transNormalizer;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
      * Constructor
      *
-     * @param NormalizerInterface $transNormalizer
-     * @param AttributeRepository $attributeRepository
+     * @param NormalizerInterface          $transNormalizer
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         NormalizerInterface $transNormalizer,
-        AttributeRepository $attributeRepository = null
+        AttributeRepositoryInterface $attributeRepository = null
     ) {
         $this->transNormalizer = $transNormalizer;
         $this->attributeRepository = $attributeRepository;
@@ -67,7 +67,9 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes(AttributeGroupInterface $group)
     {
-        if (null !== $this->attributeRepository) {
+        if (null !== $this->attributeRepository
+            && method_exists($this->attributeRepository, 'getAttributeCodesByGroup')
+        ) {
             return $this->attributeRepository->getAttributeCodesByGroup($group);
         }
 
