@@ -17,7 +17,7 @@
 <div class="span4">
     <h4>
         <i class="icon-search"></i>
-        <input type="search" placeholder="<%= _.__(" pim_datagrid.column_configurator.search") %>"/>
+        <input type="search" placeholder="<%= _.__('pim_datagrid.column_configurator.search') %>"/>
     </h4>
     <ul id="column-list" class="connected-sortable">
         <% _.each(_.where(columns, {displayed: false}), function(column) { %>
