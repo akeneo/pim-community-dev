@@ -17,19 +17,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class FormatController
 {
     /** @var DateFactory */
-    protected $factory;
+    protected $dateFactory;
+
+    /** @var DateFactory */
+    protected $datetimeFactoty;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param DateFactory    $factory
+     * @param DateFactory    $dateFactory
+     * @param DateFactory    $datetimeFactory
      * @param LocaleResolver $localeResolver
      */
-    public function __construct(DateFactory $factory, LocaleResolver $localeResolver)
+    public function __construct(DateFactory $dateFactory, DateFactory $datetimeFactory, LocaleResolver $localeResolver)
     {
-        $this->factory        = $factory;
-        $this->localeResolver = $localeResolver;
+        $this->dateFactory     = $dateFactory;
+        $this->datetimeFactory = $datetimeFactory;
+        $this->localeResolver  = $localeResolver;
     }
 
     /**
@@ -40,13 +45,20 @@ class FormatController
     public function dateAction()
     {
         $locale    = $this->localeResolver->getCurrentLocale();
-        $formatter = $this->factory->create(['locale' => $locale]);
+        $dateFormatter = $this->dateFactory->create(['locale' => $locale]);
+        $timeFormatter = $this->datetimeFactory->create(['locale' => $locale, 'timetype' => \IntlDateFormatter::SHORT]);
 
         return new JsonResponse(
             [
-                'format'        => $formatter->getPattern(),
-                'defaultFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
-                'language'      => $locale,
+                'date'     => [
+                    'format'        => $dateFormatter->getPattern(),
+                    'defaultFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
+                ],
+                'time'     => [
+                    'format'        => $timeFormatter->getPattern(),
+                    'defaultFormat' => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
+                ],
+                'language' => $locale,
             ]
         );
     }

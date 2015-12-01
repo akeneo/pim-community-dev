@@ -13,4 +13,5 @@ services:
         class: %pim_localization.controller.format.class%
         arguments:
             - '@pim_localization.factory.date'
+            - '@pim_localization.factory.datetime'
             - '@pim_localization.resolver.locale'
