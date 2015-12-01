@@ -23,7 +23,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      */
     public function getLocalizer($attributeType)
     {
-        return $this->getSupportingLocalizer($this->localizers, $attributeType);
+        return $this->getSupportedLocalizer($this->localizers, $attributeType);
     }
 
     /**
@@ -41,7 +41,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      */
     public function getProductValueLocalizer($attributeType)
     {
-        return $this->getSupportingLocalizer($this->valueLocalizers, $attributeType);
+        return $this->getSupportedLocalizer($this->valueLocalizers, $attributeType);
     }
 
     /**
@@ -59,7 +59,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      */
     public function getAttributeOptionLocalizer($optionName)
     {
-        return $this->getSupportingLocalizer($this->optionLocalizers, $optionName);
+        return $this->getSupportedLocalizer($this->optionLocalizers, $optionName);
     }
 
     /**
@@ -80,7 +80,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      *
      * @return LocalizerInterface|null
      */
-    protected function getSupportingLocalizer(array $localizers, $value)
+    protected function getSupportedLocalizer(array $localizers, $value)
     {
         if (!empty($localizers)) {
             foreach ($localizers as $localizer) {

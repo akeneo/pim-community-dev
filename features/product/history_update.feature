@@ -152,8 +152,8 @@ Feature: Update the product history
     Then there should be 1 update
     And I should see history:
       | version | property  | value |
-      | 1       | Price EUR | 10.00 |
-      | 1       | Price USD | 20.00 |
+      | 1       | Price EUR | 10    |
+      | 1       | Price USD | 20    |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
@@ -163,7 +163,7 @@ Feature: Update the product history
     Then there should be 2 updates
     And I should see history:
       | version | property  | value |
-      | 2       | Price USD | 19.00 |
+      | 2       | Price USD | 19    |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Marketing" group

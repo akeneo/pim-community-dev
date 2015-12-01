@@ -36,6 +36,14 @@ services:
         tags:
             - { name: pim_localization.presenter }
 
+    pim_localization.presenter.number.attribute_option:
+        class: %pim_localization.presenter.number.class%
+        arguments:
+            - '@pim_localization.factory.number'
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_localization.presenter.attribute_option }
+
     pim_localization.presenter.date:
         class: %pim_localization.presenter.date.class%
         arguments:

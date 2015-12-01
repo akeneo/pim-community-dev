@@ -17,7 +17,9 @@ class RegisterPresentersPass implements CompilerPassInterface
 {
     const LOCALIZATION_PRESENTER_REGISTRY = 'pim_localization.presenter.registry';
 
-    const LOCALIZATION_PRESENTER = 'pim_localization.presenter';
+    const LOCALIZATION_PRESENTER_TAG = 'pim_localization.presenter';
+
+    const LOCALIZATION_PRESENTER_ATTRIBUTE_OPTION_TAG = 'pim_localization.presenter.attribute_option';
 
     /**
      * {@inheritdoc}
@@ -30,10 +32,15 @@ class RegisterPresentersPass implements CompilerPassInterface
 
         $definition = $container->getDefinition(self::LOCALIZATION_PRESENTER_REGISTRY);
 
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_PRESENTER) as $id => $presenter) {
-            $definition->addMethodCall(
-                'addPresenter', [ new Reference($id) ]
-            );
+        $presenterTags = [
+            self::LOCALIZATION_PRESENTER_TAG                  => 'addPresenter',
+            self::LOCALIZATION_PRESENTER_ATTRIBUTE_OPTION_TAG => 'addAttributeOptionPresenter',
+        ];
+
+        foreach ($presenterTags as $tag => $methodName) {
+            foreach ($container->findTaggedServiceIds($tag) as $id => $localizer) {
+                $definition->addMethodCall($methodName, [new Reference($id)]);
+            }
         }
     }
 }

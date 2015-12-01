@@ -4,7 +4,7 @@
         {% if fieldValue.new|length %}
         {% for collKey, collValue in fieldValue.new %}
     <li>
-        <strong>{{ collKey }}:</strong> {{ collValue|localize_attribute_option(collKey) }}
+        <strong>{{ collKey }}:</strong> {{ collValue|present_attribute_option(collKey) }}
     </li>
         {% endfor %}
         {% endif %}
@@ -14,7 +14,7 @@
         {% if fieldValue.new.timestamp is defined %}
             {{ fieldValue.new|oro_format_datetime }}
         {% else %}
-            {{ fieldValue.new|localize_attribute_option(fieldKey) }}
+            {{ fieldValue.new|present_attribute_option(fieldKey) }}
         {% endif %}
     </li>
     {% endif %}
