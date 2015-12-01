@@ -7,8 +7,6 @@ services:
         arguments:
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_localization.localizer.converter'
-            - '@request_stack'
-            - '@pim_localization.provider.number_format'
-            - '@pim_localization.provider.date_format'
+            - '@pim_localization.resolver.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
