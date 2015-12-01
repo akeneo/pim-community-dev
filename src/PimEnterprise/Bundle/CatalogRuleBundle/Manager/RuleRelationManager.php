@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
