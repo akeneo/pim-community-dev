@@ -13,6 +13,9 @@ services:
     # Mass edit action operation registry
     pim_enrich.mass_edit_action.operation.registry:
         class: %pim_enrich.mass_edit_action.operation.registry.class%
+        arguments:
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
 
     pim_enrich.mass_edit_action.form_resolver:
         class: %pim_enrich.mass_edit_action.form_resolver.class%

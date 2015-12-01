@@ -86,8 +86,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data['updated'] = $this->mongoFactory->createMongoDate();
 
-        $data['family']         = $product->getFamily() ? $product->getFamily()->getId() : null;
-        $data['enabled']        = $product->isEnabled();
+        if (null !== $product->getFamily()) {
+            $data['family'] = $product->getFamily()->getId();
+        }
+
+        $data['enabled'] = $product->isEnabled();
 
         $data['groupIds']       = $this->normalizeGroups($product->getGroups());
         $data['categoryIds']    = $this->normalizeCategories($product->getCategories());

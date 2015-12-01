@@ -2,17 +2,27 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class OperationRegistrySpec extends ObjectBehavior
 {
+    function let(TokenStorageInterface $tokenStorage, SecurityFacade $securityFacade, TokenInterface $token)
+    {
+        $tokenStorage->getToken()->willReturn($token);
+        $this->beConstructedWith($tokenStorage, $securityFacade);
+    }
+
     function it_implements_operation_registry_interface()
     {
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface');
     }
 
     function it_registers_a_mass_edit_operation_and_retrieves_it_by_its_alias(
+        $securityFacade,
         MassEditOperationInterface $dummyOperation,
         MassEditOperationInterface $gridOperation,
         MassEditOperationInterface $aclOperation
@@ -23,8 +33,13 @@ class OperationRegistrySpec extends ObjectBehavior
         $this->register($gridOperation, 'grid', null, 'product-grid');
         $this->get('grid')->shouldReturn($gridOperation);
 
-        $this->register($aclOperation, 'acl', 'mass_edit_grid');
-        $this->get('acl')->shouldReturn($aclOperation);
+        $securityFacade->isGranted('acl1')->willReturn(true);
+        $this->register($aclOperation, 'acl1', 'acl1', 'mass_edit_grid');
+        $this->get('acl1')->shouldReturn($aclOperation);
+
+        $securityFacade->isGranted('acl2')->willReturn(false);
+        $this->register($aclOperation, 'acl2', 'acl2', 'mass_edit_grid');
+        $this->shouldThrow('\InvalidArgumentException')->during('get', ['acl2']);
     }
 
     function it_retrieves_all_operation_registered_with_a_gridname(

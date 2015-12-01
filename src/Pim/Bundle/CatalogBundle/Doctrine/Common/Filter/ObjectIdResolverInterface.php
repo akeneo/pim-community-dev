@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
+
 /**
  * Object id resolver interface
  *
@@ -14,12 +16,13 @@ interface ObjectIdResolverInterface
     /**
      * Get ids for the given codes
      *
-     * @param string $field
-     * @param array  $codes
+     * @param string                  $field
+     * @param array                   $codes
+     * @param AttributeInterface|null $attribute
      *
      * @return int[]
      */
-    public function getIdsFromCodes($field, array $codes);
+    public function getIdsFromCodes($field, array $codes, AttributeInterface $attribute = null);
 
     /**
      * Add a mapping to the field mapping

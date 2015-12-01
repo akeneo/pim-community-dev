@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.4.10';
+    const VERSION = '1.4.11';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Rhapsody Rabbit';

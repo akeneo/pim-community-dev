@@ -70,3 +70,7 @@ Feature: Edit a user groups and roles
     And I am logged in as "Mary"
     And I am on the userRole index page
     Then I should not be able to access the edit "User" userRole page
+    When I logout
+    And I am logged in as "Peter"
+    And I am on the userRole index page
+    And I reset the "User" rights
