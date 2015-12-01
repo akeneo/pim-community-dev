@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\ValidatorInterface;
+
 /**
  * Edit common attributes of given products
  *
@@ -14,9 +20,98 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $values;
 
-    public function __construct()
-    {
+    /** @var string */
+    protected $errors;
+    /**
+     * @var ProductBuilderInterface
+     */
+    private $productBuilder;
+    /**
+     * @var ObjectUpdaterInterface
+     */
+    private $productUpdater;
+    /**
+     * @var ValidatorInterface
+     */
+    private $productValidator;
+
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator
+    ) {
         $this->values = '';
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addGetterConstraint('validValues', new IsTrue([
+            'message' => 'There are errors in the attributes form'
+        ]));
+    }
+
+    public function hasValidValues()
+    {
+        $data = json_decode($this->values, true);
+
+        $product = $this->productBuilder->createProduct('0');
+        $this->productUpdater->update($product, $data);
+        $violations = $this->productValidator->validate($product);
+
+        $errors = $this->transformViolations($product, $violations);
+        $this->errors = json_encode($errors);
+
+        return $violations->count() === 0;
+    }
+
+    // COPY PASTE OF \Pim\Bundle\EnrichBundle\Controller\Rest\ProductController::transformViolations
+    protected function transformViolations($product, $violations)
+    {
+        $errors = [];
+        foreach ($violations as $violation) {
+            $path = $violation->getPropertyPath();
+            if (0 === strpos($path, 'values')) {
+                $codeStart  = strpos($path, '[') + 1;
+                $codeLength = strpos($path, ']') - $codeStart;
+
+                $valueIndex = substr($path, $codeStart, $codeLength);
+                $value = $product->getValues()[$valueIndex];
+                $attributeCode = $value->getAttribute()->getCode();
+
+                $currentError = [
+                    'attribute'     => $attributeCode,
+                    'locale'        => $value->getLocale(),
+                    'scope'         => $value->getScope(),
+                    'message'       => $violation->getMessage(),
+                    'invalid_value' => $violation->getInvalidValue()
+                ];
+
+                $errors['values'][$attributeCode] = isset($errors['values'][$attributeCode])
+                    ? $errors['values'][$attributeCode]
+                    : [];
+
+                $identicalErrors = array_filter(
+                    $errors['values'][$attributeCode],
+                    function ($error) use ($currentError) {
+                        return isset($error['message']) && $error['message'] === $currentError['message'];
+                    }
+                );
+
+                if (empty($identicalErrors)) {
+                    $errors['values'][$attributeCode][] = $currentError;
+                }
+            } else {
+                $errors[$path] = [
+                    'message'       => $violation->getMessage(),
+                    'invalid_value' => $violation->getInvalidValue()
+                ];
+            }
+        }
+
+        return $errors;
     }
 
     /**
@@ -101,5 +196,13 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getItemsName()
     {
         return 'product';
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

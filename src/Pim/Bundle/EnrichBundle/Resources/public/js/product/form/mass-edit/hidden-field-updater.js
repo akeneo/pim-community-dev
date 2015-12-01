@@ -15,8 +15,10 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                var data = this.getFormData();
-                $('#pim_enrich_mass_edit_choose_action_operation_values').val(JSON.stringify(data, null, 2));
+                var data = this.getFormData().values;
+                var stringData = JSON.stringify(data, null, 0);
+                $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
+
                 console.log('data =', data);
 
                 return this;

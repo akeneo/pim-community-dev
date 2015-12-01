@@ -16,15 +16,19 @@
                     'oro/mediator'
                 ],
                 function (
-                        $,
-                        FetcherRegistry,
-                        FormBuilder,
-                        mediator
+                    $,
+                    FetcherRegistry,
+                    FormBuilder,
+                    mediator
                 ) {
                     $(function () {
+                        var userData = "{{ form.vars.data.getValues|escape('js') }}";
+                        var errors = "{{ form.vars.data.getErrors|escape('js') }}";
+                        errors = '' !== errors ? JSON.parse(errors) : {};
+
                         var product = {
                             meta: {},
-                            values: {}
+                            values: '' !== userData ? JSON.parse(userData) : {}
                         };
 
                         FetcherRegistry.initialize().done(function () {
@@ -32,6 +36,16 @@
                                 form.setData(product);
                                 mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                                 form.setElement('#product-edit-form').render();
+
+                                var event = {
+                                    sentData: product,
+                                    response: errors
+                                };
+
+                                if (!_.isEmpty(errors)) {
+//                                    form.trigger('pim_enrich:form:entity:validation_error', event);
+                                    form.trigger('pim_enrich:form:entity:bad_request', event);
+                                }
                             });
                         });
                     });

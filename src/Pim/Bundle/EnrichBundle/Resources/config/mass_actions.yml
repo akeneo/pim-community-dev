@@ -34,6 +34,10 @@ services:
                 form_type: pim_enrich_mass_change_status
 
     pim_enrich.mass_edit_action.edit_common_attributes:
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         tags:
