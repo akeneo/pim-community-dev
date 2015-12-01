@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Query\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\TableHelper;

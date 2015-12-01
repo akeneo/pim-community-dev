@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel manager

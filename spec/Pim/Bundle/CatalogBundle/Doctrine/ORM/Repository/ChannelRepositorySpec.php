@@ -29,7 +29,7 @@ class ChannelRepositorySpec extends ObjectBehavior
 
     function it_is_a_channel_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\ChannelRepositoryInterface');
     }
 
     function it_count_all_channels($em, QueryBuilder $queryBuilder, AbstractQuery $query)

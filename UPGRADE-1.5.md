@@ -164,9 +164,10 @@ The strategy is to be able to depreciate entirely the BaseConnectorBundle once w
 
 ## Catalog Bundle & Component
 
-We've extracted model interfaces as ProductInterface from the Catalog bundle to the Catalog component.
-
-We keep the old interfaces as deprecated to avoid a large BC Break.
+We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
+ - model interfaces and classes as ProductInterface
+ - repository interfaces as ProductRepositoryInterface
+ - builder interfaces as ProductBuilderInterface
 
 This allow us to continue to split our classes in components and bundles to separate business code and framework glue.
 
@@ -250,6 +251,9 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChosableInterface/Component\\Catalog\\Model\\ChosableInterface/g'
     # TODO END: should not be moved!?
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\ConnectorBundle\\Writer\\File\\ContextableCsvWriter/Bundle\\BaseConnectorBundle\\Writer\\File\\ContextableCsvWriter/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilderInterface/Bundle\\Pim\\Component\\Catalog\\Builder\\ProductBuilderInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Bundle\\Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilderInterface/Pim\\Component\\Catalog\\Builder\\ProductBuilderInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\AttributeRepositoryInterface/Pim\\Component\\Catalog\\Repository\\AttributeRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\LocaleRepositoryInterface/Pim\\Component\\Catalog\\Repository\\LocaleRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\ChannelRepositoryInterface/Pim\\Component\\Catalog\\Repository\\ChannelRepositoryInterface/g'
 ```

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Repository;
+namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -96,6 +96,8 @@ interface AttributeRepositoryInterface extends
     /**
      * Get ids of attributes usable in grid
      *
+     * TODO: should be extracted in an enrich bundle repository
+     *
      * @param array $codes
      * @param array $groupIds
      *
@@ -104,6 +106,8 @@ interface AttributeRepositoryInterface extends
     public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null);
 
     /**
+     * TODO: should be extracted in an enrich bundle repository
+     *
      * @return mixed a query builder
      */
     public function createDatagridQueryBuilder();

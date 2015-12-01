@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Repository;
+namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -24,6 +24,8 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     public function countAll();
 
     /**
+     * TODO: should be extracted in an enrich bundle repository
+     *
      * @return mixed a query builder
      */
     public function createDatagridQueryBuilder();

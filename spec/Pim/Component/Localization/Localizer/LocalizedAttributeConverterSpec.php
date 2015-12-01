@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
