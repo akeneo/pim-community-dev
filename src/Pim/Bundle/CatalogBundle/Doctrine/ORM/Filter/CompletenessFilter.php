@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 
 /**

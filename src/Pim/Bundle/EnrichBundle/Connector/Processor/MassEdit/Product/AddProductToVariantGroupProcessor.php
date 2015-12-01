@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;

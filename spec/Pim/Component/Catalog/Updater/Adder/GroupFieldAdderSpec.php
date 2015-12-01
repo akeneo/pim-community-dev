@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
