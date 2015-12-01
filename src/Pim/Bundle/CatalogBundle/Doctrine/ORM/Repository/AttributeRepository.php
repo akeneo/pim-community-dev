@@ -461,7 +461,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get attribute codes by attribute group
+     * Gets attribute codes by attribute group
      *
      * @param AttributeGroupInterface $group
      *

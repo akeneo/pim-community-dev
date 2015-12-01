@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -51,7 +50,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator,
         $propertySetter,
         AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
@@ -92,7 +91,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator,
         $propertySetter,
         AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
@@ -126,7 +125,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator,
         $propertySetter,
         AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
