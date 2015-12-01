@@ -7,6 +7,11 @@ parameters:
         en_US: 'MM/dd/yyyy'
         fr: 'dd/MM/yyyy'
         fr_FR: 'dd/MM/yyyy'
+    pim_localization.factory.datetime.formats:
+        en: 'MM/dd/yyyy hh:mm'
+        en_US: 'MM/dd/yyyy hh:mm'
+        fr: 'dd/MM/yyyy hh:mm'
+        fr_FR: 'dd/MM/yyyy hh:mm'
     pim_localization.factory.number.formats:
         en_US: '¤#,##0.00'
         fr_FR: '#,##0.00 ¤'
@@ -21,3 +26,8 @@ services:
         class: %pim_localization.factory.date.class%
         arguments:
             - %pim_localization.factory.date.formats%
+
+    pim_localization.factory.datetime:
+        class: %pim_localization.factory.date.class%
+        arguments:
+            - %pim_localization.factory.datetime.formats%
