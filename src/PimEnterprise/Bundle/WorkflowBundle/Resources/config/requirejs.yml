@@ -6,6 +6,13 @@ config:
         pimee/product-edit-form/original-product:
             urls:
                 product_edit: pim_enrich_product_edit
+        pim/fetcher-registry:
+            fetchers:
+                published-product-completeness:
+                    module: pim/completeness-fetcher
+                    options:
+                        urls:
+                            get: pimee_workflow_completeness_rest_get
 
     paths:
         pimee/published-product-manager: pimenterpriseworkflow/js/manager/published-product-manager
@@ -23,6 +30,7 @@ config:
         pimee/product-edit-form/working-copy:            pimenterpriseworkflow/js/product/form/working-copy
         pimee/product-edit-form/original-product:        pimenterpriseworkflow/js/product/form/original-product
         pimee/published-view-form/back-to-grid:          pimenterpriseworkflow/js/published-product/form/back-to-grid
+        pimee/published-view-form/panel/completeness:    pimenterpriseworkflow/js/published-product/form/panel/completeness
 
         # Templates
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html
