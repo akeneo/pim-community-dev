@@ -25,6 +25,6 @@ Feature: Export products with an assets collection
     And I wait for the "clothing_product_export" job to finish
     Then exported file of "clothing_product_export" should contain:
     """
-    sku;categories;enabled;family;gallery;groups;main_color;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
-    pant;summer_collection;1;pants;dog;;white;Hose;Pant;Pantalon;50.00;70.00;S
+    sku;categories;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;gallery;groups;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;secondary_color;side_view;size;top_view;weather_conditions
+    pant;summer_collection;;;;1;pants;dog;;white;;Hose;Pant;Pantalon;50.00;70.00;;;;S;;
     """
