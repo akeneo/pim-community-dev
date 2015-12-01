@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -22,7 +23,7 @@ interface FieldCopierInterface extends CopierInterface
      * @param string           $toField
      * @param array            $options
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \RuntimeException
      */
     public function copyFieldData(

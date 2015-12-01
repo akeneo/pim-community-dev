@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Exception;
+namespace Pim\Component\Catalog\Exception;
 
+use Exception;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
