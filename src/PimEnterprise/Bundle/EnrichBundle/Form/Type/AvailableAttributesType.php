@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -31,8 +31,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
     /**
      * Construct
      *
-     * @param string                         $attributeClass
-     * @param AttributeRepository            $attributeRepository
+     * @param AttributeRepositoryInterface   $attributeRepository
      * @param UserContext                    $userContext
      * @param TranslatorInterface            $translator
      * @param AttributeGroupAccessRepository $attGroupAccessRepo
@@ -40,7 +39,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
      * @param string                         $dataClass
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator,
         AttributeGroupAccessRepository $attGroupAccessRepo,

@@ -5,9 +5,9 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -17,7 +17,7 @@ class ProductMassActionManagerSpec extends ObjectBehavior
 {
     function let(
         ProductMassActionRepositoryInterface $massActionRepo,
-        AttributeRepository $attRepo,
+        AttributeRepositoryInterface $attRepo,
         AttributeGroupAccessRepository $attGroupAccessRepo,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
