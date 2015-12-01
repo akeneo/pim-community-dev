@@ -13,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -51,7 +50,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
@@ -91,7 +90,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,

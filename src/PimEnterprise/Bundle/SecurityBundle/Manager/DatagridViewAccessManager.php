@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class DatagridViewAccessManager
 {
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var CategoryRepositoryInterface */
@@ -38,13 +38,13 @@ class DatagridViewAccessManager
     protected $catAccessManager;
 
     /**
-     * @param AttributeRepository         $attributeRepository
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param AttributeGroupAccessManager $attGrpAccessManager
-     * @param CategoryAccessManager       $catAccessManager
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param CategoryRepositoryInterface  $categoryRepository
+     * @param AttributeGroupAccessManager  $attGrpAccessManager
+     * @param CategoryAccessManager        $catAccessManager
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attGrpAccessManager,
         CategoryAccessManager $catAccessManager
