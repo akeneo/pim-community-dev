@@ -46,7 +46,8 @@ config:
     map:
         '*':
             jquery: oro/jquery-setup
-            jquery-ui-timepicker: bootstrap.bootstrapsdatepicker
+            jquery-ui-timepicker: bootstrap.datetimepicker
+            bootstrap.bootstrapsdatepicker: bootstrap.datetimepicker
         oro/jquery-setup:
             jquery: jquery
 
@@ -80,7 +81,7 @@ config:
 
         jquery.slimbox:                 pimui/lib/slimbox2/slimbox2
         bootstrap.bootstrapswitch:      pimui/lib/bootstrap-switch/bootstrap.switch
-        bootstrap.bootstrapsdatepicker: pimui/lib/bootstrap-datepicker/js/bootstrap-datepicker.js
+        bootstrap.datetimepicker:       pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker
         tinymce:                        pimui/lib/tinymce/tinymce.min
         wysiwyg:                        pimui/js/pim-wysiwyg
         datepicker:                     pimui/js/pim-datepicker

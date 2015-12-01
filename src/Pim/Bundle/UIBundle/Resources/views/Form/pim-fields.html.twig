@@ -394,7 +394,7 @@
 {% endblock %}
 
 {% block oro_date_widget %}
-    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker', 'data-provide': 'datepicker', 'data-date-format': 'yyyy-mm-dd', 'placeholder': placeholder|trans }) %}
+    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker add-on', 'data-date-format': 'yyyy-MM-dd', 'placeholder': placeholder|trans }) %}
     {% if form.vars.disabled %}
         {% set attr = attr|merge({'disabled': 'disabled'}) %}
     {% endif %}
