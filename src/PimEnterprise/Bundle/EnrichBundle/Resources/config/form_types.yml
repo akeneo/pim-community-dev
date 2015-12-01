@@ -2,7 +2,6 @@ parameters:
     pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pimee_enrich.form.type.locale_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType
-    pim_enrich.form.type.available_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
     pimee_enrich.form.type.publish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType
     pimee_enrich.form.type.classify.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
@@ -48,18 +47,6 @@ services:
         arguments:
             - '@pim_enrich.form.view.view_updater.registry'
             - '@security.authorization_checker'
-
-    pim_enrich.form.type.available_attributes:
-        class: %pim_enrich.form.type.available_attributes.class%
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_user.context.user'
-            - '@translator'
-            - '@pimee_security.repository.attribute_group_access'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.available_attributes.class%
-        tags:
-            - { name: form.type, alias: pim_available_attributes }
 
     pim_enrich.form.type.category:
         class: %pim_enrich.form.type.category.class%

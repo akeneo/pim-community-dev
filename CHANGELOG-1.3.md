@@ -1,4 +1,6 @@
-# 1.3.x
+# 1.3.32 (2015-11-19)
+
+# 1.3.31 (2015-11-12)
 
 ## Bug fixes
 PIM-5056: Fix issue on smart filter attribute grid
