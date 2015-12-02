@@ -35,9 +35,9 @@ class RegisterLocalizersPass implements CompilerPassInterface
         $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
 
         $localizerTags = [
-            self::LOCALIZATION_LOCALIZER_TAG                  => 'addLocalizer',
-            self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE_TAG    => 'addProductValueLocalizer',
-            self::LOCALIZATION_LOCALIZER_ATTRIBUTE_OPTION_TAG => 'addAttributeOptionLocalizer',
+            self::LOCALIZATION_LOCALIZER_TAG                  => 'registerLocalizer',
+            self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE_TAG    => 'registerProductValueLocalizer',
+            self::LOCALIZATION_LOCALIZER_ATTRIBUTE_OPTION_TAG => 'registerAttributeOptionLocalizer',
         ];
 
         foreach ($localizerTags as $tag => $methodName) {

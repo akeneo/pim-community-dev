@@ -23,11 +23,11 @@ interface LocalizerRegistryInterface
     public function getLocalizer($attributeType);
 
     /**
-     * Add a localizer
+     * Register a localizer
      *
      * @param LocalizerInterface $localizer
      */
-    public function addLocalizer(LocalizerInterface $localizer);
+    public function registerLocalizer(LocalizerInterface $localizer);
 
     /**
      * Get localizer for a product value
@@ -39,11 +39,11 @@ interface LocalizerRegistryInterface
     public function getProductValueLocalizer($attributeType);
 
     /**
-     * Add a localizer for a product value
+     * Register a localizer for a product value
      *
      * @param LocalizerInterface $localizer
      */
-    public function addProductValueLocalizer(LocalizerInterface $localizer);
+    public function registerProductValueLocalizer(LocalizerInterface $localizer);
 
     /**
      * Get localizer for an attribute option name
@@ -55,9 +55,9 @@ interface LocalizerRegistryInterface
     public function getAttributeOptionLocalizer($optionName);
 
     /**
-     * Add a localizer for a product value
+     * Register a localizer for a product value
      *
      * @param LocalizerInterface $localizer
      */
-    public function addAttributeOptionLocalizer(LocalizerInterface $localizer);
+    public function registerAttributeOptionLocalizer(LocalizerInterface $localizer);
 }

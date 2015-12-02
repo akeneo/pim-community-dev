@@ -29,7 +29,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addLocalizer(LocalizerInterface $localizer)
+    public function registerLocalizer(LocalizerInterface $localizer)
     {
         $this->localizers[] = $localizer;
 
@@ -47,7 +47,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addProductValueLocalizer(LocalizerInterface $localizer)
+    public function registerProductValueLocalizer(LocalizerInterface $localizer)
     {
         $this->valueLocalizers[] = $localizer;
 
@@ -65,7 +65,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeOptionLocalizer(LocalizerInterface $localizer)
+    public function registerAttributeOptionLocalizer(LocalizerInterface $localizer)
     {
         $this->optionLocalizers[] = $localizer;
 

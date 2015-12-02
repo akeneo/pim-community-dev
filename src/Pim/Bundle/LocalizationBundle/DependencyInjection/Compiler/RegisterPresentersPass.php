@@ -33,8 +33,8 @@ class RegisterPresentersPass implements CompilerPassInterface
         $definition = $container->getDefinition(self::LOCALIZATION_PRESENTER_REGISTRY);
 
         $presenterTags = [
-            self::LOCALIZATION_PRESENTER_TAG                  => 'addPresenter',
-            self::LOCALIZATION_PRESENTER_ATTRIBUTE_OPTION_TAG => 'addAttributeOptionPresenter',
+            self::LOCALIZATION_PRESENTER_TAG                  => 'registerPresenter',
+            self::LOCALIZATION_PRESENTER_ATTRIBUTE_OPTION_TAG => 'registerAttributeOptionPresenter',
         ];
 
         foreach ($presenterTags as $tag => $methodName) {
