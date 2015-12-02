@@ -184,6 +184,10 @@ config:
         pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
 
+        # Mass product edit form
+        pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
+        pim/mass-product-edit-form/attributes: pimenrich/js/product/form/mass-edit/attributes
+
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form
         pim/attribute-option/create:        pimenrich/js/attribute-option/create
