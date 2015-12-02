@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -36,6 +37,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var LocalizerRegistryInterface */
     protected $localizerRegistry;
 
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
     /**
      * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
@@ -50,7 +54,8 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry
+        LocalizerRegistryInterface $localizerRegistry,
+        ObjectUpdaterInterface $productUpdater
     ) {
         parent::__construct($jobConfigurationRepo);
 
@@ -58,6 +63,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
         $this->localizerRegistry   = $localizerRegistry;
+        $this->productUpdater      = $productUpdater;
     }
 
     /**
@@ -94,16 +100,27 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *
      * $actions =
      * [
-     *     [
-     *          'field'   => 'group',
-     *          'value'   => 'summer_clothes',
-     *          'options' => null
-     *      ],
-     *      [
-     *          'field'   => 'category',
-     *          'value'   => 'catalog_2013,catalog_2014',
-     *          'options' => null
-     *      ],
+     *      'normalized_values' => [
+     *          'name' => [
+     *              [
+     *                  'locale' => null,
+     *                  'scope'  => null,
+     *                  'data' => 'The name'
+     *              ]
+     *          ],
+     *          'description' => [
+     *              [
+     *                  'locale' => 'en_US',
+     *                  'scope' => 'ecommerce',
+     *                  'data' => 'The description for ecommerce'
+     *              ],
+     *              [
+     *                  'locale' => 'en_US',
+     *                  'scope' => 'mobile',
+     *                  'data' => 'The description for mobile'
+     *              ]
+     *          ]
+     *      ]
      * ]
      *
      * @param ProductInterface $product
@@ -115,27 +132,40 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $configuration)
     {
-        $modifiedAttributesNb = 0;
-        foreach ($configuration['actions'] as $action) {
-            $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
+//        $modifiedAttributesNb = 0;
+        $normalizedValues = json_decode($configuration['actions']['normalized_values'], true);
+        $filteredValues = [];
 
-            if (null === $attribute) {
-                throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
-            }
+        foreach ($normalizedValues as $attributeCode => $values) {
+            $attribute = $this->attributeRepository->findOneBy(['code' => $attributeCode]);
 
             if ($product->isAttributeEditable($attribute)) {
-                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
-                if (null !== $localizer) {
-                    $action['value'] = $localizer->delocalize($action['value'], [
-                        'locale' => $configuration['locale']
-                    ]);
-                }
-                $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
-                $modifiedAttributesNb++;
+                $filteredValues[$attributeCode] = $values;
             }
         }
 
-        if (0 === $modifiedAttributesNb) {
+//        foreach ($normalizedValues as $attributeCode => $values) {
+//            $attribute = $this->attributeRepository->findOneBy(['code' => $attributeCode]);
+//
+//            if (null === $attribute) {
+//                throw new \LogicException(sprintf('Attribute with code %s does not exist'), $attributeCode);
+//            }
+//
+//            if ($product->isAttributeEditable($attribute)) {
+//                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+//                if (null !== $localizer) {
+//                    $action['value'] = $localizer->delocalize($action['value'], [
+//                        'locale' => $configuration['locale']
+//                    ]);
+//                }
+//                $this->propertySetter->setData($product, $attributeCode, $action['value'], $action['options']);
+//                $modifiedAttributesNb++;
+//            }
+//        }
+
+        if (count($filteredValues) > 0) {
+            $this->productUpdater->update($product, $filteredValues);
+        } else {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),
