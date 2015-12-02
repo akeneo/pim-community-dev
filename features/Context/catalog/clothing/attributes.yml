@@ -377,3 +377,12 @@ attributes:
         group: media
         useableAsGridFilter: false
         sortOrder:           50
+    volume:
+        labels:
+            en_US: Volume
+        type: pim_catalog_metric
+        group: info
+        useableAsGridFilter: true
+        sortOrder: 55
+        metricFamily: Volume
+        defaultMetricUnit: CUBIC_MILLIMETER
