@@ -81,7 +81,7 @@ class BulkVersionSaver
      *
      * @return array
      */
-    public function bulkPersist(array $versionables)
+    public function bulkSave(array $versionables)
     {
         $versions = [];
         $changedDocIds = [];
@@ -98,8 +98,8 @@ class BulkVersionSaver
             $newVersion      = $this->versionBuilder->buildVersion($versionable, $author, $previousVersion, $context);
 
             if (0 < count($newVersion->getChangeSet())) {
-                $versions[]    = $newVersion;
-                $changedDocIds = $versionable->getId();
+                $versions[]      = $newVersion;
+                $changedDocIds[] = $versionable->getId();
             }
 
             if (null !== $previousVersion) {

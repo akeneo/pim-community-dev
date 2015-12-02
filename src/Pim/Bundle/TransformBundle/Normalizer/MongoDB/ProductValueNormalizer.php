@@ -66,8 +66,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
-        $productId = $context[ProductNormalizer::MONGO_ID];
-        $databaseName = $context[ProductNormalizer::MONGO_DATABASE_NAME];
+        $productId         = $context[ProductNormalizer::MONGO_ID];
+        $databaseName      = $context[ProductNormalizer::MONGO_DATABASE_NAME];
 
         $data = [];
         $data['_id'] = $this->mongoFactory->createMongoId();

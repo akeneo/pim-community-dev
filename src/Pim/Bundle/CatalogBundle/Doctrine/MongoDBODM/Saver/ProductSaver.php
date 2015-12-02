@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductSaver extends BaseProductSaver
 {
     /**@var BulkVersionSaver */
-    protected $versionPersister;
+    protected $versionSaver;
 
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -47,7 +47,7 @@ class ProductSaver extends BaseProductSaver
     /**
      * {@inheritdoc}
      *
-     * @param BulkVersionSaver    $versionPersister
+     * @param BulkVersionSaver    $versionSaver
      * @param NormalizerInterface $normalizer
      * @param MongoObjectsFactory $mongoFactory
      * @param string              $productClass
@@ -58,7 +58,7 @@ class ProductSaver extends BaseProductSaver
         CompletenessManager $completenessManager,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
-        BulkVersionSaver $versionPersister,
+        BulkVersionSaver $versionSaver,
         NormalizerInterface $normalizer,
         MongoObjectsFactory $mongoFactory,
         $productClass,
@@ -66,11 +66,11 @@ class ProductSaver extends BaseProductSaver
     ) {
         parent::__construct($documentManager, $completenessManager, $optionsResolver, $eventDispatcher);
 
-        $this->versionPersister = $versionPersister;
-        $this->normalizer       = $normalizer;
-        $this->mongoFactory     = $mongoFactory;
-        $this->productClass     = $productClass;
-        $this->databaseName     = $databaseName;
+        $this->versionSaver = $versionSaver;
+        $this->normalizer   = $normalizer;
+        $this->mongoFactory = $mongoFactory;
+        $this->productClass = $productClass;
+        $this->databaseName = $databaseName;
 
         $this->collection = $this->objectManager->getDocumentCollection($this->productClass);
     }
@@ -115,7 +115,7 @@ class ProductSaver extends BaseProductSaver
             $this->updateDocuments($updateDocs);
         }
 
-        $this->versionPersister->bulkPersist($products);
+        $this->versionSaver->bulkSave($products);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
     }
