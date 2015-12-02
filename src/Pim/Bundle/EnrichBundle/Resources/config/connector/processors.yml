@@ -53,3 +53,4 @@ services:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
             - %upload_dir%
+            - '@pim_catalog.builder.product'

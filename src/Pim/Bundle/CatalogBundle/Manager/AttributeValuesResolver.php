@@ -45,12 +45,17 @@ class AttributeValuesResolver
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys
      *
-     * @param AttributeInterface[] $attributes
+     * @param AttributeInterface[] $attributes Attributes to resolve
+     * @param ChannelInterface[]   $channels   Context channels (all channels by default)
+     * @param LocaleInterface[]    $locales    Context locales (all locales by default)
      *
      * @return array:array
      */
-    public function resolveEligibleValues(array $attributes)
+    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null)
     {
+        $this->channels = $channels;
+        $this->locales  = $locales;
+
         $values = [];
         foreach ($attributes as $attribute) {
             $requiredValues = [];
