@@ -4,16 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\FileStorage;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,75 +24,35 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
-    /** @var ArrayCollection */
-    protected $displayedAttributes;
-
-    /** @var LocaleInterface */
-    protected $locale;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /** @var array */
-    protected $allAttributes;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
 
     /** @var FileStorerInterface */
     protected $fileStorer;
 
-    /** @var ProductMassActionManager */
-    protected $massActionManager;
-    /**
-     * @var ObjectUpdaterInterface
-     */
-    private $productUpdater;
-    /**
-     * @var ValidatorInterface
-     */
-    private $productValidator;
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
+    /** @var ValidatorInterface */
+    protected $productValidator;
 
     /**
-     * @param ProductBuilderInterface      $productBuilder
-     * @param UserContext                  $userContext
-     * @param CatalogContext               $catalogContext
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param FileStorerInterface       $fileStorer
-     * @param ProductMassActionManager     $massActionManager
+     * @param ProductBuilderInterface $productBuilder
+     * @param FileStorerInterface     $fileStorer
+     * @param ObjectUpdaterInterface  $productUpdater
+     * @param ValidatorInterface      $productValidator
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        UserContext $userContext,
-        CatalogContext $catalogContext,
-        AttributeRepositoryInterface $attributeRepository,
-        NormalizerInterface $normalizer,
         FileStorerInterface $fileStorer,
-        ProductMassActionManager $massActionManager,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator
     ) {
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
-        $this->catalogContext      = $catalogContext;
-        $this->displayedAttributes = new ArrayCollection();
-        $this->values              = '';
-        $this->normalizer          = $normalizer;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer          = $fileStorer;
-        $this->massActionManager   = $massActionManager;
-        $this->productUpdater      = $productUpdater;
-        $this->productValidator    = $productValidator;
+        $this->productBuilder   = $productBuilder;
+        $this->fileStorer       = $fileStorer;
+        $this->productUpdater   = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->values           = '';
     }
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
