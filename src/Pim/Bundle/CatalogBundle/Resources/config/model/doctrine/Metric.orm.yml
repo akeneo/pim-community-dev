@@ -10,8 +10,8 @@ Pim\Component\Catalog\Model\Metric:
                 strategy: AUTO
         data:
             type: decimal
-            precision: 14
-            scale: 4
+            precision: 24
+            scale: 12
             nullable: true
         unit:
             type: string
@@ -20,8 +20,8 @@ Pim\Component\Catalog\Model\Metric:
             column: unit
         baseData:
             type: decimal
-            precision: 14
-            scale: 4
+            precision: 24
+            scale: 12
             nullable: true
             column: base_data
         baseUnit:

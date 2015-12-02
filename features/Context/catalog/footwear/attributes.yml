@@ -263,6 +263,14 @@ attributes:
         sortOrder:   10
         metricFamily: Length
         defaultMetricUnit: CENTIMETER
+    volume:
+        labels:
+            en_US: Volume
+        type: pim_catalog_metric
+        group: info
+        sortOrder: 20
+        metricFamily: Volume
+        defaultMetricUnit: CUBIC_MILLIMETER
     number_in_stock:
         labels:
             en_US: Number in stock
