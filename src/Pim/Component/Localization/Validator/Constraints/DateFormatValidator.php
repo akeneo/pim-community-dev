@@ -34,7 +34,9 @@ class DateFormatValidator extends ConstraintValidator
         $formatter = $this->factory->create(['date_format' => $constraint->dateFormat]);
         $formatter->setLenient(false);
 
-        if (false === $formatter->parse($date)) {
+        $hasSameSeparators = $this->hasSameSeparators($date, $constraint->dateFormat);
+
+        if (false === $formatter->parse($date) || !$hasSameSeparators) {
             $violation = $this->context->buildViolation($constraint->message, [
                 '{{ date_format }}' => $constraint->dateFormat
             ]);
@@ -42,5 +44,22 @@ class DateFormatValidator extends ConstraintValidator
 
             $violation->addViolation();
         }
+    }
+
+    /**
+     * As IntlDateFormmatter::parse() checks only values and not separators,
+     * we check if separators of $date match with separators of $pattern
+     *
+     * @param string $date
+     * @param string $pattern
+     *
+     * @return bool
+     */
+    protected function hasSameSeparators($date, $pattern)
+    {
+        preg_match('|(\W)+|', $date, $dateSeparators);
+        preg_match('|(\W)+|', $pattern, $patternSeparators);
+
+        return 0 === count(array_diff($dateSeparators, $patternSeparators));
     }
 }
