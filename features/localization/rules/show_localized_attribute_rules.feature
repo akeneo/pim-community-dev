@@ -42,12 +42,12 @@ Feature: Show localized rules
     When I visit the "Rules" tab
     Then I should see the following rule conditions:
       | rule    | field          | operator | value |
-      | my_rule | decimal_number | =        | 10.5  |
+      | my_rule | decimal_number | =        | 10.50 |
     And I should see the following rule setter actions:
-      | rule    | field                  | value           |
-      | my_rule | another_decimal_number | 5.56789         |
-      | my_rule | decimal_price          | 12.5 EUR        |
-      | my_rule | decimal_metric         | 10.5 CENTIMETER |
+      | rule    | field                  | value            |
+      | my_rule | another_decimal_number | 5.5679           |
+      | my_rule | decimal_price          | 12.50 EUR        |
+      | my_rule | decimal_metric         | 10.50 CENTIMETER |
 
   Scenario: Successfully show french rules of an attribute
     Given I am logged in as "Julien"
@@ -55,9 +55,9 @@ Feature: Show localized rules
     When I visit the "Règles" tab
     Then I should see the following rule conditions:
       | rule    | field          | operator | value |
-      | my_rule | decimal_number | =        | 10,5  |
+      | my_rule | decimal_number | =        | 10,50  |
     And I should see the following rule setter actions:
-      | rule    | field                  | value           |
-      | my_rule | another_decimal_number | 5,56789         |
-      | my_rule | decimal_price          | 12,5 EUR        |
-      | my_rule | decimal_metric         | 10,5 CENTIMETER |
+      | rule    | field                  | value            |
+      | my_rule | another_decimal_number | 5,5679           |
+      | my_rule | decimal_price          | 12,50 EUR        |
+      | my_rule | decimal_metric         | 10,50 CENTIMETER |

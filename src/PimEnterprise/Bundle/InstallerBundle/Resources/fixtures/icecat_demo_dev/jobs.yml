@@ -16,7 +16,7 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator: .
-            dateFormat: Y-m-d
+            dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export

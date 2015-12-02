@@ -13,11 +13,9 @@ namespace spec\PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Provider\Format\DateFormatProvider;
-use Pim\Component\Localization\Provider\Format\NumberFormatProvider;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RuleDefinitionNormalizerSpec extends ObjectBehavior
@@ -25,17 +23,9 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $ruleNormalizer,
         LocalizedAttributeConverterInterface $converter,
-        RequestStack $requestStack,
-        NumberFormatProvider $numberFormatProvider,
-        DateFormatProvider $dateFormatProvider
+        LocaleResolver $localeResolver
     ) {
-        $this->beConstructedWith(
-            $ruleNormalizer,
-            $converter,
-            $requestStack,
-            $numberFormatProvider,
-            $dateFormatProvider
-        );
+        $this->beConstructedWith($ruleNormalizer, $converter, $localeResolver);
     }
 
     function it_supports_rule_definition_normalization(RuleDefinitionInterface $ruleDefinition)
@@ -45,17 +35,11 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_fr_numbers(
         RuleDefinitionInterface $ruleDefinition,
-        NumberFormatProvider $numberFormatProvider,
-        DateFormatProvider $dateFormatProvider,
-        RequestStack $requestStack,
-        Request $currentRequest,
+        LocaleResolver $localeResolver,
         NormalizerInterface $ruleNormalizer,
         LocalizedAttributeConverterInterface $converter
     ) {
-        $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->getLocale()->willReturn('fr_FR');
-        $numberFormatProvider->getFormat('fr_FR')->willReturn(['decimal_separator' => ',']);
-        $dateFormatProvider->getFormat('fr_FR')->willReturn('d/m/Y');
+        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $ruleNormalizer->normalize($ruleDefinition, 'array', [])->willReturn(
             [
                 'id'       => 42,
@@ -79,7 +63,7 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $localeOptions = ['decimal_separator' => ',', 'date_format' => 'd/m/Y'];
+        $localeOptions = ['locale' => 'fr_FR'];
 
         $converter->convertDefaultToLocalizedValue(
             'price',

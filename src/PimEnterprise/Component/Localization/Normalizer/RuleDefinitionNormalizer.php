@@ -12,10 +12,8 @@
 namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Provider\Format\DateFormatProvider;
-use Pim\Component\Localization\Provider\Format\NumberFormatProvider;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -34,34 +32,21 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var LocalizedAttributeConverterInterface */
     protected $converter;
 
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var NumberFormatProvider */
-    protected $numberFormatProvider;
-
-    /** @var DateFormatProvider */
-    protected $dateFormatProvider;
-
+    /** @var LocaleResolver */
+    protected $localeResolver;
     /**
      * @param NormalizerInterface                  $ruleNormalizer
      * @param LocalizedAttributeConverterInterface $converter
-     * @param RequestStack                         $requestStack
-     * @param NumberFormatProvider                 $numberFormatProvider
-     * @param DateFormatProvider                   $dateFormatProvider
+     * @param LocaleResolver                       $localeResolver
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
         LocalizedAttributeConverterInterface $converter,
-        RequestStack $requestStack,
-        NumberFormatProvider $numberFormatProvider,
-        DateFormatProvider $dateFormatProvider
+        LocaleResolver $localeResolver
     ) {
-        $this->ruleNormalizer       = $ruleNormalizer;
-        $this->converter            = $converter;
-        $this->requestStack         = $requestStack;
-        $this->numberFormatProvider = $numberFormatProvider;
-        $this->dateFormatProvider   = $dateFormatProvider;
+        $this->ruleNormalizer = $ruleNormalizer;
+        $this->converter      = $converter;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -93,7 +78,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     protected function convertContent(array $content)
     {
-        $localeOptions = $this->getLocaleOptions();
+        $localeOptions = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($content as $key => $items) {
             foreach ($items as $index => $action) {
@@ -108,35 +93,5 @@ class RuleDefinitionNormalizer implements NormalizerInterface
         }
 
         return $content;
-    }
-
-    /**
-     * Returns current user locale.
-     *
-     * @return string|null
-     */
-    protected function getLocale()
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            return null;
-        }
-
-        return $request->getLocale();
-    }
-
-    /**
-     * Returns the options for the localizers
-     *
-     * @return array
-     */
-    protected function getLocaleOptions()
-    {
-        $locale = $this->getLocale();
-
-        $numberOptions = $this->numberFormatProvider->getFormat($locale);
-        $dateOptions = ['date_format' => $this->dateFormatProvider->getFormat($locale)];
-
-        return array_merge($numberOptions, $dateOptions);
     }
 }

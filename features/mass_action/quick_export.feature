@@ -30,8 +30,8 @@ Feature: Quick export many published products from datagrid
     And exported file of "csv_published_product_quick_export" should contain:
     """
     sku;categories;color;enabled;family;groups;name-en_US;price-EUR;price-USD;size
-    boots;winter_collection;black;1;boots;;"Amazing boots";20.00;25.00;40
-    sneakers;summer_collection;white;1;sneakers;;Sneakers;50.00;60.00;42
-    sandals;summer_collection;red;1;sandals;;Sandals;5.00;5.00;40
-    pump;summer_collection;blue;1;;;Pump;15.00;20.00;41
+    boots;winter_collection;black;1;boots;;"Amazing boots";20;25;40
+    sneakers;summer_collection;white;1;sneakers;;Sneakers;50;60;42
+    sandals;summer_collection;red;1;sandals;;Sandals;5;5;40
+    pump;summer_collection;blue;1;;;Pump;15;20;41
     """

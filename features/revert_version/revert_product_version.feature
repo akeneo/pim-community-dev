@@ -191,7 +191,7 @@ Feature: Revert a product to a previous version
       | akeneo-jacket | jackets |
     When I edit the "akeneo-jacket" product
     And I switch the scope to "mobile"
-    And I change the "Release date" to "2014-05-20"
+    And I change the "Release date" to "05/20/2014"
     And I save the product
     And the history of the product "akeneo-jacket" has been built
     And I open the history
@@ -206,7 +206,7 @@ Feature: Revert a product to a previous version
       | akeneo-jacket | jackets |                     |
     And I am on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
-    When I change the "Release date" to "2001-01-01"
+    When I change the "Release date" to "01/01/2001"
     And I save the product
     And the history of the product "akeneo-jacket" has been built
     And I open the history
@@ -221,7 +221,7 @@ Feature: Revert a product to a previous version
       | akeneo-jacket | jackets | 2011-08-17          |
     And I am on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
-    When I change the "Release date" to "2001-01-01"
+    When I change the "Release date" to "01/01/2001"
     And I save the product
     And the history of the product "akeneo-jacket" has been built
     And I open the history
