@@ -1,5 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'oro/locale-settings'],
+define(
+    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'oro/locale-settings', 'bootstrap.bootstrapsdatepicker'],
 function($, _, __, ChoiceFilter, localeSettings) {
     'use strict';
 
@@ -64,13 +65,12 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @property
          */
         dateWidgetOptions: {
-            changeMonth: true,
-            changeYear:  true,
-            yearRange:  '-80:+80',
-            dateFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
-            altFormat:  'yy-mm-dd',
-            className:      'date-filter-widget',
-            showButtonPanel: true
+            todayHighlight: true,
+            format: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
+            defaultFormat: 'yyyy-mm-dd',
+            language: 'en',
+            todayBtn: true,
+            autoclose: true
         },
 
         /**
@@ -108,7 +108,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
          *
          * @property
          */
-        dateWidgetSelector: 'div#ui-datepicker-div.ui-datepicker',
+        dateWidgetSelector: 'div.datepicker',
 
         /**
          * @inheritDoc
@@ -248,8 +248,8 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _formatDisplayValue: function(value) {
-            var fromFormat = this.dateWidgetOptions.altFormat;
-            var toFormat = this.dateWidgetOptions.dateFormat;
+            var fromFormat = this.dateWidgetOptions.defaultFormat;
+            var toFormat = this.dateWidgetOptions.format;
             return this._formatValueDates(value, fromFormat, toFormat);
         },
 
@@ -257,13 +257,13 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _formatRawValue: function(value) {
-            var fromFormat = this.dateWidgetOptions.dateFormat;
-            var toFormat = this.dateWidgetOptions.altFormat;
+            var fromFormat = this.dateWidgetOptions.format;
+            var toFormat = this.dateWidgetOptions.defaultFormat;
             return this._formatValueDates(value, fromFormat, toFormat);
         },
 
         /**
-         * Format datetes in a valut to another format
+         * Format dates in a valut to another format
          *
          * @param {Object} value
          * @param {String} fromFormat
@@ -291,14 +291,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @protected
          */
         _formatDate: function(value, fromFormat, toFormat) {
-            var fromValue = $.datepicker.parseDate(fromFormat, value);
-            if (!fromValue) {
-                fromValue = $.datepicker.parseDate(toFormat, value);
-                if (!fromValue) {
-                    return value;
-                }
-            }
-            return $.datepicker.formatDate(toFormat, fromValue);
+            var dpg = $.fn.datepicker.DPGlobal;
+
+            return dpg.formatDate(new Date(dpg.parseDate(value, fromFormat)), toFormat, 'en');
         },
 
         /**
@@ -339,21 +334,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _triggerUpdate: function(newValue, oldValue) {
-            if ((newValue.type === 'empty' || oldValue.type === 'empty') && newValue.type !== oldValue.type) {
-                this.trigger('update');
-                return;
-            }
-
-            newValue = newValue.value;
-            oldValue = oldValue.value;
-
-            if ((newValue && (newValue.start || newValue.end)) ||
-                (oldValue && (oldValue.start || oldValue.end))
-            ) {
-                this.trigger('update');
-            }
-        },
+        _triggerUpdate: function(newValue, oldValue) {},
 
         /**
          * @inheritDoc
@@ -365,6 +346,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
             return this;
         },
 
+        /**
+         * @inheritDoc
+         */
         _isValueValid: function(value) {
             if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
                 return true;
@@ -381,6 +365,41 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
             } else {
                 this._displayFilterType(newValue.type);
+            }
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _onClickUpdateCriteria: function(e) {
+            this._hideCriteria();
+            this.setValue(this._formatRawValue(this._readDOMValue()));
+            this.trigger('update');
+        },
+
+        /**
+         * @inheritDoc
+         */
+        reset: function() {
+            this.setValue(this.emptyValue);
+            this.trigger('update');
+
+            return this;
+        },
+
+        _onClickOutsideCriteria: function(e) {
+            var elem = this.$(this.criteriaSelector);
+            var isDatepicker = false;
+            $.each(e.originalEvent.path, function (key, value) {
+               if ($(value).hasClass('datepicker')) {
+                   isDatepicker = true;
+               }
+            });
+
+            if (elem.get(0) !== e.target && !elem.has(e.target).length && false === isDatepicker) {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+                e.stopPropagation();
             }
         }
     });
