@@ -257,6 +257,9 @@ pim_enrich:
                     empty_selection:  Choose a family
             flash:
                 attribute_deletion_error: An error occured during the attribute deletion
+            mass_edit:
+                select_attributes: Select attributes
+                select: Select
         attribute_option:
             flash:
                 option_created: Attribute option successfully created
