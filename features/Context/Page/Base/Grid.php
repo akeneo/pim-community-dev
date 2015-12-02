@@ -559,6 +559,22 @@ class Grid extends Index
     }
 
     /**
+     * @param string $filterName
+     *
+     * @return bool
+     */
+    public function isFilterAvailable($filterName)
+    {
+        $this->clickFiltersList();
+
+        $filterElement = $this
+            ->getElement('Manage filters')
+            ->find('css', sprintf('label:contains("%s")', $filterName));
+
+        return null !== $filterElement;
+    }
+
+    /**
      * Show a filter from the management list
      *
      * @param string $filterName

@@ -71,7 +71,7 @@ config:
                     options:
                         urls:
                             list: pim_enrich_associationtype_rest_index
-                completeness:
+                product-completeness:
                     module: pim/completeness-fetcher
                     options:
                         urls:

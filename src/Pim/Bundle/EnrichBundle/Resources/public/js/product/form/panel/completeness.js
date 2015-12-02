@@ -50,10 +50,7 @@ define(
 
                 if (this.getFormData().meta) {
                     $.when(
-                        FetcherRegistry.getFetcher('completeness').fetchForProduct(
-                            this.getFormData().meta.id,
-                            this.getFormData().family
-                        ),
+                        this.fetchCompleteness(),
                         FetcherRegistry.getFetcher('locale').fetchAll()
                     ).then(function (completeness, locales) {
                         this.$el.html(
@@ -69,6 +66,16 @@ define(
                 }
 
                 return this;
+            },
+
+            /**
+             * @returns {Promise}
+             */
+            fetchCompleteness: function () {
+                return FetcherRegistry.getFetcher('product-completeness').fetchForProduct(
+                    this.getFormData().meta.id,
+                    this.getFormData().family
+                );
             },
 
             /**
@@ -106,7 +113,7 @@ define(
              */
             update: function () {
                 if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('completeness').clear(this.getFormData().meta.id);
+                    FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
                 }
 
                 this.render();

@@ -11,10 +11,11 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | label | localizable | scopable | useable_as_grid_filter |
-      | Name  | yes         | no       | yes                    |
-      | Image | no          | yes      | yes                    |
-      | Info  | yes         | yes      | yes                    |
+      | label       | localizable | scopable | useable_as_grid_filter |
+      | Name        | yes         | no       | yes                    |
+      | Image       | no          | yes      | yes                    |
+      | Info        | yes         | yes      | yes                    |
+      | Description | no          | no       | no                     |
     And the following products:
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
@@ -75,3 +76,10 @@ Feature: Filter products
     And the grid should contain 5 elements
     When I refresh the grid
     Then the grid should contain 5 elements
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5208
+  Scenario: View only attribute filters that are usable as grid filters
+    Given I am on the products page
+    Then I should see the available filters SKU, Family, Status
+    And I should see the available filters Name, Image, Info
+    And I should not see the available filters Description
