@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -26,6 +27,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductSaver extends BaseProductSaver
 {
+    /** @var BulkVersionBuilderInterface */
+    protected $bulkVersionBuilder;
+
     /**@var BulkVersionSaver */
     protected $versionSaver;
 
@@ -58,6 +62,7 @@ class ProductSaver extends BaseProductSaver
         CompletenessManager $completenessManager,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
+        BulkVersionBuilderInterface $bulkVersionBuilder,
         BulkVersionSaver $versionSaver,
         NormalizerInterface $normalizer,
         MongoObjectsFactory $mongoFactory,
@@ -66,11 +71,12 @@ class ProductSaver extends BaseProductSaver
     ) {
         parent::__construct($documentManager, $completenessManager, $optionsResolver, $eventDispatcher);
 
-        $this->versionSaver = $versionSaver;
-        $this->normalizer   = $normalizer;
-        $this->mongoFactory = $mongoFactory;
-        $this->productClass = $productClass;
-        $this->databaseName = $databaseName;
+        $this->bulkVersionBuilder = $bulkVersionBuilder;
+        $this->versionSaver       = $versionSaver;
+        $this->normalizer         = $normalizer;
+        $this->mongoFactory       = $mongoFactory;
+        $this->productClass       = $productClass;
+        $this->databaseName       = $databaseName;
 
         $this->collection = $this->objectManager->getDocumentCollection($this->productClass);
     }
@@ -115,7 +121,8 @@ class ProductSaver extends BaseProductSaver
             $this->updateDocuments($updateDocs);
         }
 
-        $this->versionSaver->bulkSave($products);
+        $versions = $this->bulkVersionBuilder->buildVersions($products);
+        $this->versionSaver->saveAll($versions);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
     }
@@ -148,7 +155,7 @@ class ProductSaver extends BaseProductSaver
      *
      * @param array $docs
      */
-    protected function insertDocuments($docs)
+    protected function insertDocuments(array $docs)
     {
         $this->collection->batchInsert($docs);
     }
@@ -158,7 +165,7 @@ class ProductSaver extends BaseProductSaver
      *
      * @param array $docs
      */
-    protected function updateDocuments($docs)
+    protected function updateDocuments(array $docs)
     {
         foreach ($docs as $doc) {
             $id = $doc['_id'];

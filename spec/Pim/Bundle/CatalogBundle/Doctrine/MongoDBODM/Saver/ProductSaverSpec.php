@@ -10,6 +10,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,6 +23,7 @@ class ProductSaverSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
+        BulkVersionBuilder $bulkVersionBuilder,
         BulkVersionSaver $versionSaver,
         NormalizerInterface $normalizer,
         MongoObjectsFactory $mongoFactory,
@@ -32,6 +34,7 @@ class ProductSaverSpec extends ObjectBehavior
             $completenessManager,
             $optionsResolver,
             $eventDispatcher,
+            $bulkVersionBuilder,
             $versionSaver,
             $normalizer,
             $mongoFactory,
@@ -41,6 +44,8 @@ class ProductSaverSpec extends ObjectBehavior
 
         $documentManager->getDocumentCollection('Pim\Bundle\CatalogBundle\Model\Product')->willReturn($collection);
         $collection->getName()->willReturn('pim_catalog_product');
+
+        $bulkVersionBuilder->buildVersions(Argument::any())->willReturn([]);
 
         $optionsResolver
             ->resolveSaveAllOptions(Argument::any())
@@ -97,7 +102,7 @@ class ProductSaverSpec extends ObjectBehavior
         $collection->update(['_id' => 'id_a'], ['_id' => 'id_a', 'key_a' => 'data_a'])->shouldBeCalled();
         $collection->update(['_id' => 'id_b'], ['_id' => 'id_b', 'key_b' => 'data_b'])->shouldBeCalled();
 
-        $versionSaver->bulkSave($products)->shouldBeCalled();
+        $versionSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->saveAll($products);
     }
