@@ -3,6 +3,7 @@ parameters:
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\PublishedProductController
     pimee_workflow.controller.product_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
+    pimee_workflow.controller.completeness_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\CompletenessController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -48,3 +49,13 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
+
+    pimee_workflow.controller.completeness_rest:
+        class: %pimee_workflow.controller.completeness_rest.class%
+        arguments:
+            - '@pim_catalog.manager.completeness'
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.filter.chained'

@@ -1,0 +1,5 @@
+pimee_workflow_completeness_rest_get:
+    path: /{id}
+    defaults: { _controller: pimee_workflow.controller.completeness_rest:getAction }
+    requirements:
+        _method: GET
