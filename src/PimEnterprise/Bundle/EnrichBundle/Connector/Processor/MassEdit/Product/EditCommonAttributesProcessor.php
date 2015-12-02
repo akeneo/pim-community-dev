@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
@@ -40,6 +41,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param LocalizerRegistryInterface           $localizerRegistry
+     * @param ObjectUpdaterInterface               $productUpdater
      * @param UserManager                          $userManager
      * @param TokenStorageInterface                $tokenStorage
      * @param AuthorizationCheckerInterface        $authorizationChecker
@@ -51,6 +53,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         LocalizerRegistryInterface $localizerRegistry,
+        ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -61,7 +64,8 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
-            $localizerRegistry
+            $localizerRegistry,
+            $productUpdater
         );
 
         $this->tokenStorage         = $tokenStorage;
