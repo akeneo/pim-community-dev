@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5238: fix scroll on multiselect for mass edit
 - PIM-5177: fix login redirection
+- PIM-5235: Fix empty reference data name on attributes import
 
 # 1.4.11 (2015-11-27)
 
