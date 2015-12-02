@@ -191,6 +191,13 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setNameSuffix($nameSuffix);
 
     /**
+     * Get full name with prefix, first, middle, last suffix names
+     *
+     * @return string
+     */
+    public function getFullName();
+
+    /**
      * @param  DateTime $birthday [optional] New birthday value. Null by default.
      *
      * @return UserInterface
