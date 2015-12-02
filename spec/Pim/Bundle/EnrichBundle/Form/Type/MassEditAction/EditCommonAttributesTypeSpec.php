@@ -29,18 +29,4 @@ class EditCommonAttributesTypeSpec extends ObjectBehavior
     {
         $this->getName()->shouldReturn('pim_enrich_mass_edit_common_attributes');
     }
-
-    function it_sets_default_options(OptionsResolver $resolver)
-    {
-        $this->setDefaultOptions($resolver, []);
-
-        $resolver->setDefaults(
-            [
-                'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
-                'locales' => [],
-                'all_attributes' => [],
-                'current_locale'    => null
-            ]
-        )->shouldHaveBeenCalled();
-    }
 }

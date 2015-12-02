@@ -20,6 +20,13 @@
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
   It is required because normalization of reference data in product values is based on Doctrine metadata.
 - In case you wrote your own associations import, please add the parameter `batch_size: 1` to the `import_associations` step element of your `batch_jobs.yml`.
+- Changed constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`.
+  Required, because we now use the standard ProductUpdater to be consistent.
+- Changed constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add 
+    `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`,
+    `Symfony\Component\Validator\Validator\ValidatorInterface`,
+    `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
+  Required to raise errors on the enhanced "mass edit common attributes".
 
 ## Bug fixes
 - PIM-5238: Fix scroll on multiselect for mass edit
