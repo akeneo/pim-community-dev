@@ -29,7 +29,6 @@ before_script:
     - npm install -g grunt-cli
     - npm install
     - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
-    - ./app/console oro:localization:dump
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test

@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/translator', 'oro/formatter/datetime'],
-function (_, __, datetimeFormatter) {
+define(['underscore', 'oro/translator'],
+function (_, __) {
     'use strict';
 
     var defaultParam = {
@@ -13,6 +13,7 @@ function (_, __, datetimeFormatter) {
     return [
         'Date',
         function (value, element) {
+            return value;
             return this.optional(element) || datetimeFormatter.isDateValid(String(value));
         },
         function (param) {

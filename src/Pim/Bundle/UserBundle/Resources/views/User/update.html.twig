@@ -2,7 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% set fullname = form.vars.value|oro_format_name|default('N/A') %}
+{% set fullname = form.vars.value.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
 {% if editRoute %}
@@ -81,9 +81,9 @@
                     </div>
                 </div>
                 <ul class="inline">
-                    <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|oro_format_datetime : 'N/A' }}</li>
-                    <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|oro_format_datetime : 'N/A' }}</li>
-                    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|oro_format_datetime : 'N/A' }}</li>
+                    <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>
+                    <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</li>
+                    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</li>
                     <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
                 </ul>
             {% endif %}

@@ -1,14 +1,21 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
+/**
+ * Stores dates with UTC timezone
+ *
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class UTCDateTimeType extends DateTimeType
 {
-    /** @var null| \DateTimeZone  */
+    /** @var null|\DateTimeZone */
     private static $utc = null;
 
     /**
@@ -16,7 +23,7 @@ class UTCDateTimeType extends DateTimeType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -30,7 +37,7 @@ class UTCDateTimeType extends DateTimeType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -40,8 +47,6 @@ class UTCDateTimeType extends DateTimeType
             (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
 
-        // Dates are stored in UTC timezone
-        // @see PIM-4216
         $serverTimezone = date_default_timezone_get();
         $val->setTimezone(new \DateTimeZone($serverTimezone));
 
@@ -50,8 +55,9 @@ class UTCDateTimeType extends DateTimeType
         }
 
         $errors = $val->getLastErrors();
+
         // date was parsed to completely not valid value
-        if ($errors['warning_count'] > 0 && (int)$val->format('Y') < 0) {
+        if ($errors['warning_count'] > 0 && (int) $val->format('Y') < 0) {
             return null;
         }
 
