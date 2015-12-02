@@ -3,12 +3,14 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -71,6 +73,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         Filesystem $filesystem,
         ChannelInterface $channel,
+        LocaleInterface $locale,
         ProductInterface $product,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
@@ -80,7 +83,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $identifierValue,
         AttributeInterface $identifierAttribute
     ) {
-        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $media1->getKey()->willReturn('key/to/media1.jpg');
         $media2->getKey()->willReturn('key/to/media2.jpg');
@@ -107,7 +112,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
             ->willReturn(['normalized_media2']);
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ['en_US']])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
@@ -124,16 +129,19 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_without_media(
         $productBuilder,
         ChannelInterface $channel,
+        LocaleInterface $locale,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
-        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $product->getValues()->willReturn([]);
 
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ['en_US']])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);

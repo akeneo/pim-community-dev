@@ -68,7 +68,8 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($product)
     {
         if (null !== $this->productBuilder) {
-            $this->productBuilder->addMissingProductValues($product);
+            $contextChannel = $this->channelManager->getChannelByCode($this->channel);
+            $this->productBuilder->addMissingProductValues($product, [$contextChannel], $contextChannel->getLocales()->toArray());
         }
 
         $data['media'] = [];
