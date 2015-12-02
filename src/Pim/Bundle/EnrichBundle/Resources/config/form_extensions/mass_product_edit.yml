@@ -1,0 +1,69 @@
+extensions:
+    pim-mass-product-edit-form:
+        module: pim/product-edit-form
+
+    pim-mass-product-edit-form-cache-invalidator:
+        module: pim/product-edit-form/cache-invalidator
+        parent: pim-mass-product-edit-form
+        position: 1000
+
+    pim-mass-product-edit-form-form-tabs:
+        module: pim/product-edit-form/form-tabs
+        parent: pim-mass-product-edit-form
+        targetZone: content
+        position: 100
+
+    pim-mass-product-edit-form-attributes:
+        module: pim/product-edit-form/attributes
+        parent: pim-mass-product-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 90
+
+    pim-mass-product-edit-form-attribute-group-selector:
+        module: pim/product-edit-form/attributes/attribute-group-selector
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: sidebar
+        position: 100
+
+    pim-mass-product-edit-form-add-attribute:
+        module: pim/product-edit-form/attributes/add-attribute
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: other-actions
+        aclResourceId: pim_enrich_product_add_attribute
+        position: 90
+
+    pim-mass-product-edit-form-attribute-scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: context-selectors
+        position: 100
+
+    pim-mass-product-edit-form-attribute-locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: context-selectors
+        position: 110
+
+    pim-mass-product-edit-form-validation:
+        module: pim/product-edit-form/attributes/validation
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: header
+        position: 100
+
+    pim-mass-product-edit-form-locale-specific:
+        module: pim/product-edit-form/attributes/locale-specific
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-mass-product-edit-form-localizable:
+        module: pim/product-edit-form/attributes/localizable
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 90
+
+    pim-mass-product-edit-form-hidden-input-updater:
+        module: pim/mass-product-edit-form/hidden-field-updater
+        parent: pim-mass-product-edit-form
+        position: 500
