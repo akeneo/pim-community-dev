@@ -5,16 +5,16 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class NumberPresenterSpec extends ObjectBehavior
 {
     function let(
-        LocalizerInterface $numberLocalizer,
+        PresenterInterface $numberPresenter,
         LocaleResolver $localeResolver
     ) {
-        $this->beConstructedWith($numberLocalizer, $localeResolver);
+        $this->beConstructedWith($numberPresenter, $localeResolver);
     }
 
     function it_supports_number()
@@ -23,15 +23,15 @@ class NumberPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_french_format_numbers(
-        $numberLocalizer,
+        $numberPresenter,
         $localeResolver,
         ProductValueInterface $value,
         RendererInterface $renderer
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
-        $numberLocalizer->localize(150.1234, ['locale' => 'fr_FR'])
+        $numberPresenter->present(150.1234, ['locale' => 'fr_FR'])
             ->willReturn('150,1234');
-        $numberLocalizer->localize(null, ['locale' => 'fr_FR'])
+        $numberPresenter->present(null, ['locale' => 'fr_FR'])
             ->willReturn(null);
 
         $this->setRenderer($renderer);

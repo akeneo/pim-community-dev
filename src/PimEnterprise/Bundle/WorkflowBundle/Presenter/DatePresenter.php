@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Localization\LocaleResolver;
+use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present changes on date data
@@ -20,17 +22,17 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
  */
 class DatePresenter extends AbstractProductValuePresenter
 {
-    /** @var BaseDatePresenter */
+    /** @var BasePresenterInterface */
     protected $datePresenter;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param BaseDatePresenter $datePresenter
-     * @param LocaleResolver    $localeResolver
+     * @param BasePresenterInterface $datePresenter
+     * @param LocaleResolver         $localeResolver
      */
-    public function __construct(BaseDatePresenter $datePresenter, LocaleResolver $localeResolver)
+    public function __construct(BasePresenterInterface $datePresenter, LocaleResolver $localeResolver)
     {
         $this->datePresenter  = $datePresenter;
         $this->localeResolver = $localeResolver;
@@ -49,7 +51,9 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $data instanceof \DateTime ? $data->format(self::DATE_FORMAT) : '';
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        return $this->datePresenter->present($data, $options);
     }
 
     /**
@@ -57,6 +61,12 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return !empty($change['data']) ? (new \DateTime($change['data']))->format(self::DATE_FORMAT) : '';
+        if (empty($change['data'])) {
+            return '';
+        }
+
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        return $this->datePresenter->present($change['data'], $options);
     }
 }

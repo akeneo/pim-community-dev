@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present change on metric data
@@ -24,19 +24,19 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
 {
     use TranslatorAware;
 
-    /** @var LocalizerInterface */
-    protected $metricLocalizer;
+    /** @var BasePresenterInterface */
+    protected $metricPresenter;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param LocalizerInterface $metricLocalizer
-     * @param LocaleResolver     $localeResolver
+     * @param BasePresenterInterface $metricPresenter
+     * @param LocaleResolver         $localeResolver
      */
-    public function __construct(LocalizerInterface $metricLocalizer, LocaleResolver $localeResolver)
+    public function __construct(BasePresenterInterface $metricPresenter, LocaleResolver $localeResolver)
     {
-        $this->metricLocalizer = $metricLocalizer;
+        $this->metricPresenter = $metricPresenter;
         $this->localeResolver  = $localeResolver;
     }
 
@@ -57,10 +57,10 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
             return '';
         }
 
-        $locale = $this->localeResolver->getCurrentLocale();
-        $localizedData = $this->metricLocalizer->localize($data->getData(), ['locale' => $locale]);
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $structuredMetric = ['data' => $data->getData(), 'unit' => $data->getUnit()];
 
-        return sprintf('%s %s', $localizedData, $this->translator->trans($data->getUnit()));
+        return $this->metricPresenter->present($structuredMetric, $options);
     }
 
     /**
@@ -68,9 +68,8 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     protected function normalizeChange(array $change)
     {
-        $locale = $this->localeResolver->getCurrentLocale();
-        $localizedData = $this->metricLocalizer->localize($change['data']['data'], ['locale' => $locale]);
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
-        return sprintf('%s %s', $localizedData, $this->translator->trans($change['data']['unit']));
+        return $this->metricPresenter->present($change['data'], $options);
     }
 }

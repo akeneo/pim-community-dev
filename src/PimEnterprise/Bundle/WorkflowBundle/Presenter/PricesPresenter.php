@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present changes on prices
@@ -22,20 +22,20 @@ use Pim\Component\Localization\Localizer\LocalizerInterface;
  */
 class PricesPresenter extends AbstractProductValuePresenter
 {
-    /** @var LocalizerInterface */
-    protected $priceLocalizer;
+    /** @var BasePresenterInterface */
+    protected $pricesPresenter;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param LocalizerInterface $priceLocalizer
-     * @param LocaleResolver     $localeResolver
+     * @param BasePresenterInterface $pricesPresenter
+     * @param LocaleResolver         $localeResolver
      */
-    public function __construct(LocalizerInterface $priceLocalizer, LocaleResolver $localeResolver)
+    public function __construct(BasePresenterInterface $pricesPresenter, LocaleResolver $localeResolver)
     {
-        $this->priceLocalizer = $priceLocalizer;
-        $this->localeResolver = $localeResolver;
+        $this->pricesPresenter = $pricesPresenter;
+        $this->localeResolver  = $localeResolver;
     }
 
     /**
@@ -88,13 +88,15 @@ class PricesPresenter extends AbstractProductValuePresenter
     protected function normalizeData($data)
     {
         $prices = [];
-        $formats = $this->localeResolver->getFormats();
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($data as $price) {
             $amount = $price->getData();
+
             if (null !== $amount) {
-                $localizedAmount = $this->priceLocalizer->localize($amount, $formats);
-                $prices[$price->getCurrency()] = sprintf('%s %s', $localizedAmount, $price->getCurrency());
+
+                $structuredPrice = ['data' => $amount, 'currency' => $price->getCurrency()];
+                $prices[$price->getCurrency()] = $this->pricesPresenter->present($structuredPrice, $options);
             }
         }
 
@@ -106,12 +108,11 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        $formats = $this->localeResolver->getFormats();
-        $localizedPrices = $this->priceLocalizer->localize($change['data'], $formats);
-
         $prices = [];
-        foreach ($localizedPrices as $price) {
-            $prices[$price['currency']] = sprintf('%s %s', $price['data'], $price['currency']);
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        foreach ($change['data'] as $price) {
+            $prices[$price['currency']] = $this->pricesPresenter->present($price, $options);
         }
 
         return $prices;

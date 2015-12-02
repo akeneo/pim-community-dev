@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -15,13 +15,13 @@ class MetricPresenterSpec extends ObjectBehavior
 {
     function let(
         TranslatorInterface $translator,
-        LocalizerInterface $metricLocalizer,
+        PresenterInterface $metricPresenter,
         LocaleResolver $localeResolver
     ) {
         $translator->trans(Argument::type('string'))->will(function ($args) {
             return 'trans_'.strtolower($args[0]);
         });
-        $this->beConstructedWith($metricLocalizer, $localeResolver);
+        $this->beConstructedWith($metricPresenter, $localeResolver);
     }
 
     function it_is_a_translator_aware_presenter()
@@ -37,7 +37,7 @@ class MetricPresenterSpec extends ObjectBehavior
 
     function it_presents_metric_change_using_the_injected_renderer(
         $translator,
-        $metricLocalizer,
+        $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value,
@@ -47,8 +47,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $metric->getData()->willReturn(50.123);
         $metric->getUnit()->willReturn('KILOGRAM');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $metricLocalizer->localize('50.123', ['locale' => 'en_US'])->willReturn('50.123');
-        $metricLocalizer->localize('123.456', ['locale' => 'en_US'])->willReturn('123.456');
+        $metricPresenter
+            ->present(['data' => 50.123, 'unit' => 'KILOGRAM'], ['locale' => 'en_US'])
+            ->willReturn('50.123 trans_kilogram');
+        $metricPresenter
+            ->present(['data' => '123.456', 'unit' => 'MILLIMETER'], ['locale' => 'en_US'])
+            ->willReturn('123.456 trans_millimeter');
 
         $renderer->renderOriginalDiff('50.123 trans_kilogram', '123.456 trans_millimeter')
             ->willReturn('diff between two metrics');
@@ -62,15 +66,17 @@ class MetricPresenterSpec extends ObjectBehavior
 
     function it_presents_metric_new_value_even_if_metric_does_not_have_a_value_yet(
         $translator,
-        $metricLocalizer,
+        $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value
     ) {
         $value->getData()->willReturn(null);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $metricLocalizer->localize(null, ['locale' => 'en_US'])->willReturn(null);
-        $metricLocalizer->localize(123.456, ['locale' => 'en_US'])->willReturn('123.456');
+        $metricPresenter->present(null, ['locale' => 'en_US'])->willReturn(null);
+        $metricPresenter
+            ->present(['data' => 123.456, 'unit' => 'MILLIMETER'], ['locale' => 'en_US'])
+            ->willReturn('123.456 trans_millimeter');
 
         $renderer->renderOriginalDiff('', '123.456 trans_millimeter')->willReturn('a new metric');
 
@@ -82,15 +88,16 @@ class MetricPresenterSpec extends ObjectBehavior
 
     function it_presents_french_format_metrics(
         $translator,
-        $metricLocalizer,
+        $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderNewDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
-        $metricLocalizer->localize(150.123456, ['locale' => 'fr_FR'])
-            ->willReturn("150,123456");
+        $metricPresenter
+            ->present(['data' => 150.123456, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
+            ->willReturn("150,123456 trans_kilogram");
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);

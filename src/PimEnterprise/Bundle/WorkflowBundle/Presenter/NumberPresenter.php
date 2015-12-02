@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present changes on numbers
@@ -22,19 +22,19 @@ use Pim\Component\Localization\Localizer\LocalizerInterface;
  */
 class NumberPresenter extends AbstractProductValuePresenter
 {
-    /** @var LocalizerInterface */
-    protected $numberLocalizer;
+    /** @var BasePresenterInterface */
+    protected $numberPresenter;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param LocalizerInterface $numberLocalizer
-     * @param LocaleResolver     $localeResolver
+     * @param BasePresenterInterface $numberPresenter
+     * @param LocaleResolver         $localeResolver
      */
-    public function __construct(LocalizerInterface $numberLocalizer, LocaleResolver $localeResolver)
+    public function __construct(BasePresenterInterface $numberPresenter, LocaleResolver $localeResolver)
     {
-        $this->numberLocalizer = $numberLocalizer;
+        $this->numberPresenter = $numberPresenter;
         $this->localeResolver  = $localeResolver;
     }
 
@@ -51,9 +51,9 @@ class NumberPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        $locale = $this->localeResolver->getCurrentLocale();
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
-        return $this->numberLocalizer->localize($data, ['locale' => $locale]);
+        return $this->numberPresenter->present($data, $options);
     }
 
     /**
@@ -61,8 +61,8 @@ class NumberPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        $locale = $this->localeResolver->getCurrentLocale();
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
-        return $this->numberLocalizer->localize(array_pop($change), ['locale' => $locale]);
+        return $this->numberPresenter->present(array_pop($change), $options);
     }
 }

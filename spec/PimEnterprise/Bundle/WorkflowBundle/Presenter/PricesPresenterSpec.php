@@ -8,16 +8,16 @@ use Pim\Bundle\CatalogBundle\Model;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
 {
     function let(
-        LocalizerInterface $priceLocalizer,
+        PresenterInterface $pricesPresenter,
         LocaleResolver $localeResolver
     ) {
-        $this->beConstructedWith($priceLocalizer, $localeResolver);
+        $this->beConstructedWith($pricesPresenter, $localeResolver);
     }
 
     function it_is_a_presenter()
@@ -31,7 +31,7 @@ class PricesPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_prices_change_using_the_injected_renderer(
-        $priceLocalizer,
+        $pricesPresenter,
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value,
@@ -53,21 +53,12 @@ class PricesPresenterSpec extends ObjectBehavior
         $gbp->getData()->willReturn(null);
         $gbp->getCurrency()->willReturn('GBP');
 
-        $localeResolver->getFormats()->willReturn(['decimal_separator' => '.']);
-        $priceLocalizer->localize(15.67, ['decimal_separator' => '.'])->willReturn(15.67);
-        $priceLocalizer->localize(22.34, ['decimal_separator' => '.'])->willReturn(22.34);
-        $priceLocalizer->localize(
-            [
-                ["currency" => "EUR", "data" => "12.34"],
-                ["currency" => "GBP", "data" => "25.67"],
-                ["currency" => "USD", "data" => "20.12"]
-            ],
-            ["decimal_separator" => "."]
-        )->willReturn([
-            ["currency" => "EUR", "data" => "12.34"],
-            ["currency" => "GBP", "data" => "25.67"],
-            ["currency" => "USD", "data" => "20.12"]
-        ]);
+        $localeResolver->getCurrentLocale()->willReturn('en_US');
+        $pricesPresenter->present(['data' => 15.67, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('€15.67');
+        $pricesPresenter->present(['data' => 22.34, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$22.34');
+        $pricesPresenter->present(['data' => 12.34, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('£12.34');
+        $pricesPresenter->present(['data' => 25.67, 'currency' => 'GBP'], ['locale' => 'en_US'])->willReturn('€25.67');
+        $pricesPresenter->present(['data' => 20.12, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$20.12');
 
         $change = [
             'data' => [
@@ -78,7 +69,7 @@ class PricesPresenterSpec extends ObjectBehavior
         ];
 
         $renderer
-            ->renderOriginalDiff(['15.67 EUR', '22.34 USD'], ['12.34 EUR', '25.67 GBP', '20.12 USD'])
+            ->renderOriginalDiff(['€15.67', '$22.34'], ['£12.34', '€25.67', '$20.12'])
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
@@ -86,32 +77,23 @@ class PricesPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_french_prices(
-        $priceLocalizer,
+        $pricesPresenter,
         $localeResolver,
         ProductValueInterface $value,
         RendererInterface $renderer
     ) {
         $value->getData()->willReturn([]);
-        $localeResolver->getFormats()->willReturn(['decimal_separator' => ',']);
-        $priceLocalizer->localize(15.67, ['decimal_separator' => ','])->willReturn(15.67);
-        $priceLocalizer->localize(
-            [
-                ["data" => 15.12, "currency" => "EUR"],
-                ["data" => 15.48, "currency" => "USD"]
-            ],
-            ["decimal_separator" => ","]
-        )->willReturn([
-            ["data" => '15,12', "currency" => "EUR"],
-            ["data" => '15,48', "currency" => "USD"]
-        ]);
+        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
-        $renderer->renderNewDiff([], ["15,12 EUR", "15,48 USD"])->willReturn('15,12 EUR<br/>15,48 USD');
+        $pricesPresenter->present(['data' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
+        $pricesPresenter->present(['data' => 15.48, 'currency' => 'USD'], ['locale' => 'fr_FR'])->willReturn('15.48 $');
 
+        $renderer->renderNewDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
         $this->setRenderer($renderer);
 
         $this->presentNew($value, ['data' => [
             ['data' => 15.12, 'currency' => 'EUR'],
             ['data' => 15.48, 'currency' => 'USD'],
-        ]])->shouldReturn('15,12 EUR<br/>15,48 USD');
+        ]])->shouldReturn('15.12 €<br/>15.48 $');
     }
 }

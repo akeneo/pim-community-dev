@@ -29,6 +29,6 @@ Feature: Display localized numbers in proposals
     And I save the user
     And I am on the "tshirt" product page
     When I visit the "Propositions" tab
-    Then I should see "15,25 USD"
+    Then I should see "15,25 $US"
     And I should see "12,1234 KILOGRAM"
     And I should see "98,765"
