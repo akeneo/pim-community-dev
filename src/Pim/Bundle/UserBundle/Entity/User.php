@@ -260,6 +260,20 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function getFullName()
+    {
+        return implode(' ', [
+            $this->namePrefix,
+            $this->firstName,
+            $this->middleName,
+            $this->lastName,
+            $this->nameSuffix
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBirthday()
     {
         return $this->birthday;

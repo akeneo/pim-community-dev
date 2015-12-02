@@ -2,7 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% set fullname = form.vars.value|oro_format_name|default('N/A') %}
+{% set fullname = form.vars.value.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
 {% if editRoute %}
