@@ -3,10 +3,12 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,52 +41,46 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
-    /**
-     * @var DatagridConfiguration
-     */
+    /** @var DatagridConfiguration */
     protected $configuration;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var RequestParameters
-     */
+    /** @var RequestParameters */
     protected $requestParams;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var EntityRepository
-     */
+    /** @var EntityRepository */
     protected $gridViewRepository;
 
+    /** @var GroupRepositoryInterface */
+    protected $productGroupRepository;
+
     /**
-     * @param ProductManager    $productManager
-     * @param RequestParameters $requestParams
-     * @param UserContext       $userContext
-     * @param EntityRepository  $gridViewRepository
+     * @param ProductManager           $productManager
+     * @param RequestParameters        $requestParams
+     * @param UserContext              $userContext
+     * @param EntityRepository         $gridViewRepository
+     * @param GroupRepositoryInterface $productGroupRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
         UserContext $userContext,
-        EntityRepository $gridViewRepository
+        EntityRepository $gridViewRepository,
+        GroupRepositoryInterface $productGroupRepository = null
     ) {
         $this->productManager     = $productManager;
         $this->requestParams      = $requestParams;
         $this->userContext        = $userContext;
         $this->gridViewRepository = $gridViewRepository;
+        $this->productGroupRepository = $productGroupRepository;
     }
 
     /**
@@ -145,7 +141,14 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getAttributeIds($attributeCodes = null)
     {
         $repository   = $this->productManager->getAttributeRepository();
-        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+
+        // as now only attributes usable as grid filters are usable in the grid,
+        // we need to add the variant group axes (even if they are not usable as grid filter)
+        // as usable in the grid (to be displayed in the columns)
+        $attributeIds = array_merge(
+            $repository->getAttributeIdsUseableInGrid($attributeCodes),
+            $this->getAttributeIdsFromProductGroupAxes()
+        );
 
         return $attributeIds;
     }
@@ -287,6 +290,41 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function getProductGroupId()
+    {
+        $productGroupId = null;
+        if (null !== $productGroup = $this->request->get('group', null)) {
+            $productGroupId = $productGroup->getId();
+        }
+        if (null === $productGroupId) {
+            $productGroupId = $this->requestParams->get('currentGroup', null);
+        }
+
+        return $productGroupId;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAttributeIdsFromProductGroupAxes()
+    {
+        $attributeIds = [];
+
+        if ((null !== $productGroupId = $this->getProductGroupId()) && null !== $this->productGroupRepository) {
+            $group = $this->productGroupRepository->find($productGroupId);
+            if ($group->getType()->isVariant()) {
+                foreach ($group->getAxisAttributes() as $axis) {
+                    $attributeIds[] = $axis->getId();
+                }
+            }
+        }
+
+        return $attributeIds;
     }
 
     /**

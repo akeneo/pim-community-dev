@@ -594,7 +594,7 @@ Defaultvalue:                        Default value
 Variant:                             Variant
 Smart:                               Smart
 Useable as grid column:              Usable as grid column
-Useable as grid filter:              Usable as grid filter
+Useable as grid filter:              Usable in grid
 Family:                              Family
 Available locales:                   Available locales
 Locale specific:                     Locale specific

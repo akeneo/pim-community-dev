@@ -261,6 +261,27 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I should( not)? see the available filters (.*)$/
+     */
+    public function iShouldSeeTheAvailableFilters($not, $filters)
+    {
+        $available = !(bool)$not;
+
+        $filters = $this->getMainContext()->listToArray($filters);
+        foreach ($filters as $filter) {
+            if ($available && !$this->datagrid->isFilterAvailable($filter)) {
+                throw $this->createExpectationException(
+                    sprintf('Filter "%s" should be available.', $filter)
+                );
+            } elseif (!$available && $this->datagrid->isFilterAvailable($filter)) {
+                throw $this->createExpectationException(
+                    sprintf('Filter "%s" should not be available.', $filter)
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $filters
      *
      * @Then /^I should not see the filters? (.*)$/
