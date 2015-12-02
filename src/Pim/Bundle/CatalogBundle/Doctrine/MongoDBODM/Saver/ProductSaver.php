@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSa
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionSaver;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -10,7 +10,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionSaver;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

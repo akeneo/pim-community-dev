@@ -2,7 +2,7 @@ parameters:
     pim_versioning.repository.version.class:                          Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
     pim_versioning.update_guesser.contains_products.class:            Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
     pim_versioning.event_subscriber.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
-    pim_versioning.doctrine.mongodb.bulk_saver.version.class:         Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionSaver
+    pim_versioning.doctrine.mongodb.bulk_saver.version.class:         Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver
     pim_versioning.doctrine.mongodb.pending_mass_persister.class:     Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister
 
 services:

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
+namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
+namespace spec\Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver;
 
 use Doctrine\MongoDB\Collection;
 use Doctrine\MongoDB\Query\Query;
