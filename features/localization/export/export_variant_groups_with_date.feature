@@ -11,7 +11,7 @@ Feature: Export variant groups with localized values
       | caterpillar_boots | destocking_date | 1999-12-28 |
     And the following job "footwear_variant_group_export" configuration:
       | filePath   | %tmp%/variant_group_export/variant_group_export.csv |
-      | dateFormat | d/m/Y                                               |
+      | dateFormat | dd/MM/yyyy                                          |
     And I am logged in as "Julien"
     And I am on the "footwear_variant_group_export" export job page
     When I launch the export job

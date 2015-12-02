@@ -1,6 +1,7 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'oro/locale-settings'],
-function($, _, __, ChoiceFilter, localeSettings) {
+define(
+    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'pim/date-context', 'bootstrap.datetimepicker'],
+function($, _, __, ChoiceFilter, DateContext) {
     'use strict';
 
     /**
@@ -18,17 +19,17 @@ function($, _, __, ChoiceFilter, localeSettings) {
          */
         popupCriteriaTemplate: _.template(
             '<div>' +
-                '<div class="horizontal clearfix">' +
+                '<div class="horizontal clearfix type">' +
                     '<select name="<%= name %>" class="filter-select-oro">' +
                         '<% _.each(choices, function (option) { %>' +
-                            '<option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>' +
+                        '<option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>' +
                         '<% }); %>' +
                     '</select>' +
                 '</div>' +
                 '<div>' +
-                    '<input type="text" class="<%= inputClass %>" value="" name="start" placeholder="from">' +
+                    '<span class="start"><input type="text" value="" class="<%= inputClass %> add-on" name="start" placeholder="from"></span>' +
                     '<span class="filter-separator">-</span>' +
-                    '<input type="text" class="<%= inputClass %>" value="" name="end" placeholder="to">' +
+                    '<span class="end"><input type="text" value="" class="<%= inputClass %> add-on" name="end" placeholder="to"></span>' +
                 '</div>' +
                 '<div class="oro-action">' +
                     '<div class="btn-group">' +
@@ -44,10 +45,32 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @property
          */
         criteriaValueSelectors: {
-            type: 'select',
+            type: '.type',
             value: {
-                start: 'input[name="start"]',
-                end:   'input[name="end"]'
+                start: '.start',
+                end: '.end'
+            }
+        },
+
+        /**
+         * Values for filter data
+         *
+         * "format" is used to stock localized date
+         * "defaultFormat" is used to stock the default pattern
+         *
+         * @property
+         */
+        values: {
+            type: null,
+            value: {
+                start: {
+                    format: null,
+                    defaultFormat: null
+                },
+                end: {
+                    format: null,
+                    defaultFormat: null
+                }
             }
         },
 
@@ -63,14 +86,11 @@ function($, _, __, ChoiceFilter, localeSettings) {
          *
          * @property
          */
-        dateWidgetOptions: {
-            changeMonth: true,
-            changeYear:  true,
-            yearRange:  '-80:+80',
-            dateFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
-            altFormat:  'yy-mm-dd',
-            className:      'date-filter-widget',
-            showButtonPanel: true
+        datetimepickerOptions: {
+            format: DateContext.get('date').format,
+            defaultFormat: DateContext.get('date').defaultFormat,
+            locale: DateContext.get('language'),
+            pickTime: false
         },
 
         /**
@@ -108,13 +128,13 @@ function($, _, __, ChoiceFilter, localeSettings) {
          *
          * @property
          */
-        dateWidgetSelector: 'div#ui-datepicker-div.ui-datepicker',
+        dateWidgetSelector: 'div.datepicker',
 
         /**
          * @inheritDoc
          */
         initialize: function () {
-            _.extend(this.dateWidgetOptions, this.externalWidgetOptions);
+            _.extend(this.datetimepickerOptions, this.externalWidgetOptions);
             // init empty value object if it was not initialized so far
             if (_.isUndefined(this.emptyValue)) {
                 this.emptyValue = {
@@ -143,13 +163,15 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @protected
          */
         _displayFilterType: function(type) {
-            this.$el.find('.filter-separator').show().end().find('input').show();
+            this.$el.find('.filter-separator').show().end().find('span').show();
             if (this.typeValues.moreThan == parseInt(type)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
             } else if (this.typeValues.lessThan == parseInt(type)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.start).hide();
             } else if ('empty' === type) {
-                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
+                this.$el.find('.filter-separator').hide().end()
+                    .find(this.criteriaValueSelectors.value.end).hide().end()
+                    .find(this.criteriaValueSelectors.value.start).hide();
             }
         },
 
@@ -176,20 +198,32 @@ function($, _, __, ChoiceFilter, localeSettings) {
         },
 
         /**
-         * Initialize date widget
-         *
-         * @param {String} widgetSelector
-         * @return {*}
-         * @protected
+         * @inheritDoc
          */
         _initializeDateWidget: function(widgetSelector) {
-            this.$(widgetSelector).datepicker(this.dateWidgetOptions);
-            var widget = this.$(widgetSelector).datepicker('widget');
-            widget.addClass(this.dateWidgetOptions.className);
-            $(this.dateWidgetSelector).on('click', function(e) {
-                e.stopImmediatePropagation();
-            });
+            var widget = this.$(widgetSelector);
+            widget.datetimepicker(this.datetimepickerOptions);
+            widget.addClass(this.datetimepickerOptions.className);
+
+            var picker = widget.data('datetimepicker');
+            widget.on('changeDate', function(e) {
+                picker.format = this.datetimepickerOptions.defaultFormat;
+                this.values.value[e.target.className].defaultFormat = picker.formatDate(e.date);
+
+                picker.format = this.datetimepickerOptions.format;
+                this.values.value[e.target.className].format = picker.formatDate(e.date);
+            }.bind(this));
+
             return widget;
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _getInputValue: function(node) {
+            var $select = this.$(node).find('select');
+
+            return $select.val();
         },
 
         /**
@@ -198,13 +232,15 @@ function($, _, __, ChoiceFilter, localeSettings) {
         _getCriteriaHint: function() {
             var hint = '',
                 option, start, end, type,
-                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this.values;
+
             if (value.type === 'empty') {
                 return this._getChoiceOption(value.type).label;
             }
+
             if (value.value) {
-                start = value.value.start;
-                end   = value.value.end;
+                start = value.value.start.format;
+                end   = value.value.end.format;
                 type  = value.type ? value.type.toString() : '';
 
                 switch (type) {
@@ -247,67 +283,11 @@ function($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _formatDisplayValue: function(value) {
-            var fromFormat = this.dateWidgetOptions.altFormat;
-            var toFormat = this.dateWidgetOptions.dateFormat;
-            return this._formatValueDates(value, fromFormat, toFormat);
-        },
-
-        /**
-         * @inheritDoc
-         */
-        _formatRawValue: function(value) {
-            var fromFormat = this.dateWidgetOptions.dateFormat;
-            var toFormat = this.dateWidgetOptions.altFormat;
-            return this._formatValueDates(value, fromFormat, toFormat);
-        },
-
-        /**
-         * Format datetes in a valut to another format
-         *
-         * @param {Object} value
-         * @param {String} fromFormat
-         * @param {String} toFormat
-         * @return {Object}
-         * @protected
-         */
-        _formatValueDates: function(value, fromFormat, toFormat) {
-            if (value.value && value.value.start) {
-                value.value.start = this._formatDate(value.value.start, fromFormat, toFormat);
-            }
-            if (value.value && value.value.end) {
-                value.value.end = this._formatDate(value.value.end, fromFormat, toFormat);
-            }
-            return value;
-        },
-
-        /**
-         * Formats date string to another format
-         *
-         * @param {String} value
-         * @param {String} fromFormat
-         * @param {String} toFormat
-         * @return {String}
-         * @protected
-         */
-        _formatDate: function(value, fromFormat, toFormat) {
-            var fromValue = $.datepicker.parseDate(fromFormat, value);
-            if (!fromValue) {
-                fromValue = $.datepicker.parseDate(toFormat, value);
-                if (!fromValue) {
-                    return value;
-                }
-            }
-            return $.datepicker.formatDate(toFormat, fromValue);
-        },
-
-        /**
-         * @inheritDoc
-         */
         _writeDOMValue: function(value) {
             this._setInputValue(this.criteriaValueSelectors.value.start, value.value.start);
             this._setInputValue(this.criteriaValueSelectors.value.end, value.value.end);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
+
             return this;
         },
 
@@ -318,8 +298,8 @@ function($, _, __, ChoiceFilter, localeSettings) {
             return {
                 type: this._getInputValue(this.criteriaValueSelectors.type),
                 value: {
-                    start: this._getInputValue(this.criteriaValueSelectors.value.start),
-                    end:   this._getInputValue(this.criteriaValueSelectors.value.end)
+                    start: this.values.value.start.defaultFormat,
+                    end:   this.values.value.end.defaultFormat
                 }
             };
         },
@@ -339,21 +319,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _triggerUpdate: function(newValue, oldValue) {
-            if ((newValue.type === 'empty' || oldValue.type === 'empty') && newValue.type !== oldValue.type) {
-                this.trigger('update');
-                return;
-            }
-
-            newValue = newValue.value;
-            oldValue = oldValue.value;
-
-            if ((newValue && (newValue.start || newValue.end)) ||
-                (oldValue && (oldValue.start || oldValue.end))
-            ) {
-                this.trigger('update');
-            }
-        },
+        _triggerUpdate: function(newValue, oldValue) {},
 
         /**
          * @inheritDoc
@@ -365,6 +331,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
             return this;
         },
 
+        /**
+         * @inheritDoc
+         */
         _isValueValid: function(value) {
             if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
                 return true;
@@ -378,10 +347,31 @@ function($, _, __, ChoiceFilter, localeSettings) {
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
             if ('empty' === newValue.type) {
-                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
+                this.$el.find('.filter-separator').hide().end()
+                    .find(this.criteriaValueSelectors.value.end).hide().end()
+                    .find(this.criteriaValueSelectors.value.start).hide();
             } else {
                 this._displayFilterType(newValue.type);
             }
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _onClickUpdateCriteria: function(e) {
+            this._hideCriteria();
+            this.setValue(this._formatRawValue(this._readDOMValue()));
+            this.trigger('update');
+        },
+
+        /**
+         * @inheritDoc
+         */
+        reset: function() {
+            this.setValue(this.emptyValue);
+            this.trigger('update');
+
+            return this;
         }
     });
 });

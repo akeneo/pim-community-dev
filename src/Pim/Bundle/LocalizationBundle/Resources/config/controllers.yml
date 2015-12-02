@@ -1,5 +1,6 @@
 parameters:
     pim_localization.controller.locale.class: Pim\Bundle\LocalizationBundle\Controller\LocaleController
+    pim_localization.controller.format.class: Pim\Bundle\LocalizationBundle\Controller\FormatController
 
 services:
     pim_localization.controller.locale:
@@ -8,3 +9,9 @@ services:
             - '@pim_localization.provider.ui_locale'
             - '@pim_internal_api_serializer'
 
+    pim_localization.controller.format:
+        class: %pim_localization.controller.format.class%
+        arguments:
+            - '@pim_localization.factory.date'
+            - '@pim_localization.factory.datetime'
+            - '@pim_localization.resolver.locale'

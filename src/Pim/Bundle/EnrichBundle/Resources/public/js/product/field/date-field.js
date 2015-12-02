@@ -12,26 +12,35 @@ define(
         'pim/field',
         'underscore',
         'text!pim/template/product/field/date',
-        'bootstrap.bootstrapsdatepicker'
+        'pim/date-context',
+        'bootstrap.datetimepicker'
     ],
     function (
         Field,
         _,
-        fieldTemplate
+        fieldTemplate,
+        DateContext
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            datepickerOptions: {
-                todayHighlight: true
+            datetimepickerOptions: {
+                format: DateContext.get('date').format,
+                language: DateContext.get('language'),
+                pickTime: false
             },
             events: {
-                'change .field-input:first input[type="text"]': 'updateModel'
+                'change .field-input:first input[type="text"]': 'updateModel',
+                'click .field-input:first input[type="text"]': 'click'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            postRender: function () {
-                this.$('.datepicker-field').datepicker(this.datepickerOptions);
+            click: function () {
+                this.$('.datetimepicker').datetimepicker(this.datetimepickerOptions).datetimepicker('show');
+
+                this.$('.datetimepicker').on('changeDate', function (e) {
+                    this.setCurrentValue(this.$(e.target).find('input[type="text"]').val());
+                }.bind(this));
             },
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="text"]').val();

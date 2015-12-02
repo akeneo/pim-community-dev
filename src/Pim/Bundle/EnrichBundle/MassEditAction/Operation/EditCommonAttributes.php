@@ -178,7 +178,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         $config = json_decode(stripslashes(parent::getBatchConfig()), true);
 
-        $config['locale'] = $this->userContext->getUiLocale();
+        $config['locale'] = $this->userContext->getUiLocale()->getCode();
 
         return addslashes(json_encode($config));
     }

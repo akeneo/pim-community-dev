@@ -26,8 +26,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             $denormalizer,
             ['.', ','],
             [
-                ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
-                ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
             ],
             'upload/path/',
             'csv'
@@ -62,8 +62,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                     'type'    => 'choice',
                     'options' => [
                         'choices'  => [
-                            ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
-                            ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
                         ],
                         'required' => true,
                         'select2'  => true,
@@ -89,7 +89,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
                 'decimal_separator'         => '.',
-                'date_format'                => 'Y-m-d',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -125,7 +125,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
                 'decimal_separator'         => '.',
-                'date_format'                => 'Y-m-d',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -176,7 +176,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
                 'decimal_separator'         => '.',
-                'date_format'                => 'Y-m-d',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 

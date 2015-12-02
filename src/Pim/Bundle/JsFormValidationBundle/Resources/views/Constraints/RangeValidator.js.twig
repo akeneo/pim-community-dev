@@ -1,38 +1,7 @@
 function Range(field, params)
 {
-    var value = field && field.nodeName ? {{ getJsFormElementValue('field') }} : field;
-    var regex = /(\d+)([^0-9]+)(\d+)/;
-    value = value.replace(regex, "$1.$3");
-
-    if (isNotDefined(value)) {
-        return true;
-    }
-
-    if (value == parseFloat(value)) {
-        value = parseFloat(value);
-        if (value < parseFloat(params.min)) {
-            return getComputeMessage(params.minMessage, { 'limit' : params.min }, params.min);
-        }
-        if (value > parseFloat(params.max)) {
-            return getComputeMessage(params.maxMessage, { 'limit' : params.max}, params.max);
-        }
-
-        return true;
-    } else {
-        var date = new window.Date(value);
-        var valid = Boolean(date.getTime());
-        if (valid) {
-            // TODO: Compensate for timezone offset and print errors in the right format
-            if (params.min && params.min.date && date < new window.Date(params.min.date)) {
-                return getComputeMessage(params.minMessage, { 'limit' : params.min.date }, params.min.date);
-            }
-            if (params.max && params.max.date && date > new window.Date(params.max.date)) {
-                return getComputeMessage(params.maxMessage, { 'limit' : params.max.date }, params.max.date);
-            }
-
-            return true;
-        }
-    }
-
-    return getComputeMessage(params.invalidMessage);
+    /**
+    * Remove frontend validation for date to valid localized date
+    */
+    return true;
 }

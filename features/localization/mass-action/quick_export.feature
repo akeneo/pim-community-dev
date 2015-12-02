@@ -30,8 +30,8 @@ Feature: Quick export many products with localized attributes from datagrid
     And exported file of "csv_product_quick_export" should contain:
     """
     sku;categories;color;destocking_date;enabled;family;groups;name-en_US;price-EUR;price-USD;rate_sale;size;weight;weight-unit
-    boots;winter_collection;black;28/12/1999;1;boots;;"Amazing boots";20,80;25,35;75,5000;40;250,0000;GRAM
-    sneakers;summer_collection;white;;1;sneakers;;Sneakers;50,00;60,00;75,0000;42;125,5000;GRAM
-    sandals;summer_collection;red;;1;sandals;;Sandals;5,00;5,00;75,0000;40;0,5000;GRAM
-    pump;summer_collection;blue;;1;;;Pump;15,00;20,00;;41;;
+    boots;winter_collection;black;28/12/1999;1;boots;;"Amazing boots";20,80;25,35;75,50;40;250;GRAM
+    sneakers;summer_collection;white;;1;sneakers;;Sneakers;50;60;75;42;125,50;GRAM
+    sandals;summer_collection;red;;1;sandals;;Sandals;5;5;75;40;0,50;GRAM
+    pump;summer_collection;blue;;1;;;Pump;15;20;;41;;
     """

@@ -28,7 +28,7 @@ Feature: Export products with localized dates
   Scenario: Export dates attributes in a specified format
     Given the following job "ecommerce_product_export" configuration:
       | filePath   | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
-      | dateFormat | d/m/Y                                                       |
+      | dateFormat | dd/MM/yyyy                                                  |
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     Then I should see "date format dd/mm/yyyy"

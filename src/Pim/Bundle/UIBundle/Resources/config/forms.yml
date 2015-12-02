@@ -2,6 +2,7 @@ parameters:
     pim_ui.form.type.ajax_entity.class:                Pim\Bundle\UIBundle\Form\Type\AjaxEntityType
     pim_ui.form.type.ajax_reference_data.class:        Pim\Bundle\UIBundle\Form\Type\AjaxReferenceDataType
     pim_ui.form.type.number.class:                     Pim\Bundle\UIBundle\Form\Type\NumberType
+    pim_ui.form.type.date.class:                       Pim\Bundle\UIBundle\Form\Type\DateType
     pim_ui.form.type.switch.class:                     Pim\Bundle\UIBundle\Form\Type\SwitchType
     pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
     pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
@@ -32,6 +33,13 @@ services:
             - '@pim_localization.resolver.locale'
         tags:
             - { name: form.type, alias: pim_number }
+
+    pim_ui.form.type.date:
+        class: %pim_ui.form.type.date.class%
+        arguments:
+            - '@pim_localization.resolver.locale'
+        tags:
+            - { name: form.type, alias: pim_date }
 
     pim_ui.form.type.ajax_entity:
         class: %pim_ui.form.type.ajax_entity.class%

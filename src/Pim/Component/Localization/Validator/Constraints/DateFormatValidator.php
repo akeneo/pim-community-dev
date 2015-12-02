@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Validator\Constraints;
 
+use Pim\Component\Localization\Factory\DateFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,15 +15,28 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class DateFormatValidator extends ConstraintValidator
 {
+    /** @var DateFactory */
+    protected $factory;
+
+    /**
+     * @param DateFactory $factory
+     */
+    public function __construct(DateFactory $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function validate($date, Constraint $constraint)
     {
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat($constraint->dateFormat, $date);
+        $formatter = $this->factory->create(['date_format' => $constraint->dateFormat]);
+        $formatter->setLenient(false);
 
-        if (false === $datetime) {
+        $hasSameSeparators = $this->hasSameSeparators($date, $constraint->dateFormat);
+
+        if (false === $formatter->parse($date) || !$hasSameSeparators) {
             $violation = $this->context->buildViolation($constraint->message, [
                 '{{ date_format }}' => $constraint->dateFormat
             ]);
@@ -30,5 +44,22 @@ class DateFormatValidator extends ConstraintValidator
 
             $violation->addViolation();
         }
+    }
+
+    /**
+     * As IntlDateFormmatter::parse() checks only values and not separators,
+     * we check if separators of $date match with separators of $pattern
+     *
+     * @param string $date
+     * @param string $pattern
+     *
+     * @return bool
+     */
+    protected function hasSameSeparators($date, $pattern)
+    {
+        preg_match('|(\W)+|', $date, $dateSeparators);
+        preg_match('|(\W)+|', $pattern, $patternSeparators);
+
+        return 0 === count(array_diff($dateSeparators, $patternSeparators));
     }
 }

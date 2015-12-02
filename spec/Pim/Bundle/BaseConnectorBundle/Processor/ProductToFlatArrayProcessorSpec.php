@@ -23,8 +23,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ['pim_catalog_file', 'pim_catalog_image'],
             ['.', ','],
             [
-                ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
-                ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
             ]
         );
     }
@@ -69,8 +69,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'type'    => 'choice',
                     'options' => [
                         'choices'  => [
-                            ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
-                            ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy']
+                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy']
                         ],
                         'required' => true,
                         'select2'  => true,
@@ -135,7 +135,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'scopeCode'         => 'foobar',
                     'localeCodes'       => '',
                     'decimal_separator' => '.',
-                    'date_format'       => 'Y-m-d',
+                    'date_format'       => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -166,7 +166,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'scopeCode'         => 'foobar',
                     'localeCodes'       => '',
                     'decimal_separator' => ',',
-                    'date_format'       => 'Y-m-d',
+                    'date_format'       => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);

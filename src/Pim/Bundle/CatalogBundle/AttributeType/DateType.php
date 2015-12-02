@@ -34,14 +34,14 @@ class DateType extends AbstractAttributeType
         $properties = parent::defineCustomAttributeProperties($attribute) + [
             'dateMin' => [
                 'name'      => 'dateMin',
-                'fieldType' => 'oro_date',
+                'fieldType' => 'pim_date',
                 'options'   => [
                     'widget' => 'single_text'
                 ]
             ],
             'dateMax' => [
                 'name'      => 'dateMax',
-                'fieldType' => 'oro_date',
+                'fieldType' => 'pim_date',
                 'options'   => [
                     'widget' => 'single_text'
                 ]

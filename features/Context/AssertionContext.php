@@ -79,8 +79,9 @@ class AssertionContext extends RawMinkContext
     public function iShouldSeeValidationError($error)
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $protectedError = addslashes($error);
             $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
-            $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
+            $found  = $this->getSession()->evaluateScript(sprintf($script, $protectedError));
             if ($found) {
                 return;
             }

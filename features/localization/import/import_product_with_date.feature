@@ -17,7 +17,7 @@ Feature: Import product information with date
       """
     And the following job "footwear_product_import" configuration:
       | filePath   | %file to import% |
-      | dateFormat | d/m/Y            |
+      | dateFormat | dd/MM/yyyy       |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -39,7 +39,7 @@ Feature: Import product information with date
       """
     And the following job "footwear_product_import" configuration:
       | filePath   | %file to import% |
-      | dateFormat | Y-m-d            |
+      | dateFormat | yyyy-MM-dd       |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -49,4 +49,4 @@ Feature: Import product information with date
       | destocking_date | 2014-10-28 |
     Then the product "SKU-005" should have the following values:
       | destocking_date | |
-    And I should see "This type of value expects the use of the format Y-m-d for dates."
+    And I should see "This type of value expects the use of the format yyyy-MM-dd for dates."

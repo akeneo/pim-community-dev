@@ -30,9 +30,9 @@ Feature: Filter products
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "between 2014-08-01 and 2014-08-01"
+    And I filter by "Supply" with value "between 08/01/2014 and 08/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "between 2014-05-01 and 2014-05-01"
+    And I filter by "Delivery" with value "between 05/01/2014 and 05/01/2014"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Supply"
@@ -41,9 +41,9 @@ Feature: Filter products
   Scenario: Successfully filter product without commons attributes
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "between 2014-09-01 and 2014-10-01"
+    And I filter by "Supply" with value "between 09/01/2014 and 10/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "more than 2014-04-01"
+    And I filter by "Delivery" with value "more than 01/04/2014"
     Then the grid should contain 0 elements
     And I hide the filter "Supply"
     And I hide the filter "Delivery"
@@ -51,9 +51,9 @@ Feature: Filter products
   Scenario: Successfully filter only one product
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "less than 2014-02-01"
+    And I filter by "Supply" with value "less than 02/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "between 2014-01-01 and 2014-06-01"
+    And I filter by "Delivery" with value "between 01/01/2014 and 06/01/2014"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
     And I hide the filter "Supply"

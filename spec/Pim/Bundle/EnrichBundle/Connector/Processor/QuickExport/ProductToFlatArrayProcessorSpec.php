@@ -17,7 +17,6 @@ use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -28,16 +27,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelManager $channelManager,
-        StepExecution $stepExecution,
-        FormatProviderInterface $dateformatProvider,
-        FormatProviderInterface $numberFormatProvider
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $serializer,
             $channelManager,
-            $dateformatProvider,
-            $numberFormatProvider,
             'upload/path/'
         );
         $this->setStepExecution($stepExecution);
@@ -111,8 +106,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_media(
         $serializer,
         $channelManager,
-        $dateformatProvider,
-        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductMediaInterface $media1,
@@ -121,9 +114,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute
     ) {
-        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
-        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
-        $this->configureOptions('en_US');
+        $this->setLocale('en_US');
 
         $media1->getFilename()->willReturn('media_name');
         $media1->getOriginalFilename()->willReturn('media_original_name');
@@ -145,10 +136,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer
             ->normalize($product, 'flat',
                 [
-                    'scopeCode'         => 'mobile',
-                    'localeCodes'       => '',
-                    'decimal_separator' => '.',
-                    'date_format'       => 'n/j/y',
+                    'scopeCode'   => 'mobile',
+                    'localeCodes' => '',
+                    'locale'      => 'en_US',
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -165,25 +155,20 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
-        $dateformatProvider,
-        $numberFormatProvider,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
-        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
-        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
-        $this->configureOptions('en_US');
+        $this->setLocale('en_US');
         $product->getValues()->willReturn([]);
 
         $serializer
             ->normalize($product, 'flat',
                 [
-                    'scopeCode'         => 'mobile',
-                    'localeCodes'       => '',
-                    'decimal_separator' => '.',
-                    'date_format'       => 'n/j/y',
+                    'scopeCode'   => 'mobile',
+                    'localeCodes' => '',
+                    'locale'      => 'en_US',
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -226,8 +211,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_english_attributes(
         $channelManager,
         $serializer,
-        $dateformatProvider,
-        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -239,9 +222,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $date,
         ProductValueInterface $dateValue
     ) {
-        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
-        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
-        $this->configureOptions('en_US');
+        $this->setLocale('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
@@ -267,10 +248,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer
             ->normalize($product, 'flat',
                 [
-                    'scopeCode'         => 'mobile',
-                    'localeCodes'       => '',
-                    'decimal_separator' => '.',
-                    'date_format'       => 'n/j/y',
+                    'scopeCode'   => 'mobile',
+                    'localeCodes' => '',
+                    'locale'      => 'en_US',
                 ]
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
@@ -289,8 +269,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_french_attribute(
         $channelManager,
         $serializer,
-        $dateformatProvider,
-        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -300,9 +278,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ProductValueInterface $priceValue
     ) {
-        $dateformatProvider->getFormat('fr_FR')->willReturn('d/m/Y');
-        $numberFormatProvider->getFormat('fr_FR')->willReturn(['decimal_separator' => ',']);
-        $this->configureOptions('fr_FR');
+        $this->setLocale('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
@@ -325,10 +301,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer
             ->normalize($product, 'flat',
                 [
-                    'scopeCode'         => 'mobile',
-                    'localeCodes'       => '',
-                    'decimal_separator' => ',',
-                    'date_format'       => 'd/m/Y'
+                    'scopeCode'   => 'mobile',
+                    'localeCodes' => '',
+                    'locale'      => 'fr_FR'
                 ]
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);

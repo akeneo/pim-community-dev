@@ -31,12 +31,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var FormatProviderInterface */
-    protected $dateFormatProvider;
-
-    /** @var FormatProviderInterface */
-    protected $numberFormatProvider;
-
     /** @var string */
     protected $uploadDirectory;
 
@@ -44,10 +38,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     protected $channelCode;
 
     /** @var string */
-    protected $decimalSeparator;
-
-    /** @var string */
-    protected $dateFormat;
+    protected $locale;
 
     /** @var array Normalizer context */
     protected $normalizerContext;
@@ -56,25 +47,19 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
-     * @param FormatProviderInterface             $dateFormatProvider
-     * @param FormatProviderInterface             $numberFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        FormatProviderInterface $dateFormatProvider,
-        FormatProviderInterface $numberFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer           = $serializer;
-        $this->channelManager       = $channelManager;
-        $this->dateFormatProvider   = $dateFormatProvider;
-        $this->numberFormatProvider = $numberFormatProvider;
-        $this->uploadDirectory      = $uploadDirectory;
+        $this->serializer      = $serializer;
+        $this->channelManager  = $channelManager;
+        $this->uploadDirectory = $uploadDirectory;
     }
 
     /**
@@ -135,18 +120,17 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /**
      * @param string $uiLocale
      */
-    public function configureOptions($uiLocale)
+    public function setLocale($uiLocale)
     {
-        $this->decimalSeparator = $this->numberFormatProvider->getFormat($uiLocale)['decimal_separator'];
-        $this->dateFormat       = $this->dateFormatProvider->getFormat($uiLocale);
+        $this->locale = $uiLocale;
     }
 
     /**
      * @return string
      */
-    public function getDecimalSeparator()
+    public function getLocale()
     {
-        return $this->decimalSeparator;
+        return $this->locale;
     }
 
     /**
@@ -156,10 +140,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'         => $this->channelCode,
-                'localeCodes'       => $this->getLocaleCodes($this->channelCode),
-                'decimal_separator' => $this->decimalSeparator,
-                'date_format'       => $this->dateFormat,
+                'scopeCode'   => $this->channelCode,
+                'localeCodes' => $this->getLocaleCodes($this->channelCode),
+                'locale'      => $this->locale,
             ];
         }
 
@@ -217,6 +200,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         $this->setChannelCode($configuration['mainContext']['scope']);
-        $this->configureOptions($configuration['mainContext']['ui_locale']);
+        $this->setLocale($configuration['mainContext']['ui_locale']);
     }
 }

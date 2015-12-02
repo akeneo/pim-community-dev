@@ -3,9 +3,6 @@ config:
         jquery-ui:
             deps:
                 - jquery
-        jquery-ui-timepicker:
-            deps:
-                - jquery-ui
         jquery.numeric:
             deps:
                 - jquery
@@ -33,16 +30,13 @@ config:
                 - jquery
                 - underscore
                 - backbone
-        jquery-ui-full:
-            deps:
-                - jquery
         jquery.slimbox:
             deps:
                 - jquery
         bootstrap.bootstrapswitch:
             deps:
                 - jquery
-        bootstrap.bootstrapsdatepicker:
+        bootstrap.datetimepicker:
             deps:
                 - jquery
         jquery.sidebarize:
@@ -51,22 +45,15 @@ config:
     map:
         '*':
             jquery: oro/jquery-setup
-            jquery-ui: oro/jquery-ui-datepicker-l10n
-            jquery-ui-timepicker: oro/jquery-ui-timepicker-l10n
         oro/jquery-setup:
             jquery: jquery
-        oro/jquery-ui-datepicker-l10n:
-            jquery-ui: jquery-ui
-        oro/jquery-ui-timepicker-l10n:
-            jquery-ui-timepicker: jquery-ui-timepicker
 
     paths:
         text:                          pimui/lib/text/text
         json:                          pimui/lib/json2/json2
         base64:                        pimui/lib/base64/base64
         jquery:                        pimui/lib/jquery/jquery-1.10.2
-        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui.min
-        jquery-ui-timepicker:          pimui/lib/jquery-ui-timepicker-addon
+        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
@@ -80,8 +67,6 @@ config:
         oro/error:                     pimui/js/error
         oro/init-layout:               pimui/js/init-layout
         oro/jquery-setup:              pimui/js/jquery-setup
-        oro/jquery-ui-datepicker-l10n: pimui/js/jquery-ui-datepicker-l10n
-        oro/jquery-ui-timepicker-l10n: pimui/js/jquery-ui-timepicker-l10n
         oro/layout:                    pimui/js/layout
         oro/mediator:                  pimui/js/mediator
         oro/messenger:                 pimui/js/messenger
@@ -91,19 +76,18 @@ config:
 
         oro/form/state:                pimui/js/form/state.js
 
-        jquery-ui-full:                 pimui/lib/jquery-ui/jquery-ui-1.10.3.custom.min
-        jquery.slimbox:                 pimui/lib/slimbox2/slimbox2
-        bootstrap.bootstrapswitch:      pimui/lib/bootstrap-switch/bootstrap.switch
-        bootstrap.bootstrapsdatepicker: pimui/lib/bootstrap-datepicker/js/bootstrap-datepicker.js
-        wysiwyg:                        pimui/js/pim-wysiwyg
-        datepicker:                     pimui/js/pim-datepicker
-        jquery.sidebarize:              pimui/js/jquery.sidebarize
-        pim/ui:                         pimui/js/pim-ui
-        pim/initselect2:                pimui/js/pim-initselect2
-        pim/dialog:                     pimui/js/pim-dialog
-        pim/formupdatelistener:         pimui/js/pim-formupdatelistener
-        pim/saveformstate:              pimui/js/pim-saveformstate
-        pim/fileinput:                  pimui/js/pim-fileinput
-        pim/dialogform:                 pimui/js/pim-dialogform
-        oro/error:                      pimui/js/pim-error
-        pim/dropzonejs:                 pimui/lib/dropzonejs/dist/dropzone-amd-module.js
+        jquery.slimbox:            pimui/lib/slimbox2/slimbox2
+        bootstrap.bootstrapswitch: pimui/lib/bootstrap-switch/bootstrap.switch
+        bootstrap.datetimepicker:  pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker
+        wysiwyg:                   pimui/js/pim-wysiwyg
+        datepicker:                pimui/js/pim-datepicker
+        jquery.sidebarize:         pimui/js/jquery.sidebarize
+        pim/ui:                    pimui/js/pim-ui
+        pim/initselect2:           pimui/js/pim-initselect2
+        pim/dialog:                pimui/js/pim-dialog
+        pim/formupdatelistener:    pimui/js/pim-formupdatelistener
+        pim/saveformstate:         pimui/js/pim-saveformstate
+        pim/fileinput:             pimui/js/pim-fileinput
+        pim/dialogform:            pimui/js/pim-dialogform
+        oro/error:                 pimui/js/pim-error
+        pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
