@@ -8,34 +8,39 @@ use \Akeneo\CouplingDetector\Domain\RuleInterface;
 $finder = new DefaultFinder();
 $finder->notPath('Oro')->notPath('Akeneo/Bundle/BatchBundle/Tests');
 
+$forbidDoctrineExceptCommonExceptCommon = ['Doctrine\ORM', 'Doctrine\ODM', 'Doctrine\DBAL'];
+$forbidPimAndEnterprise = ['Pim', 'PimEnterprise'];
+$forbidPimEnterprise = ['PimEnterprise'];
+$forbidAnyBundles = ['Bundle'];
+
 $rules = [
     new Rule(
         'Akeneo\Component',
-        ['Pim', 'PimEnterprise', 'Bundle', 'Doctrine\ORM', 'Mongo'],
+        array_merge($forbidAnyBundles, $forbidPimAndEnterprise, $forbidDoctrineExceptCommon),
         RuleInterface::TYPE_FORBIDDEN,
-        'Akeneo components should never use the namespace Pim, PimEnterprise, any Symfony Bundle or Doctrine ORM'
-    ),
-    new Rule(
-        'Akeneo\Bundle',
-        ['Pim', 'PimEnterprise'],
-        RuleInterface::TYPE_FORBIDDEN,
-        'Akeneo bundles should never use the namespace Pim or PimEnterprise'
+        'Akeneo components contain Technical Logic re-useable out of the Pim, they does not depend on Pim, Bundle, Doctrine or Symfony'
     ),
     new Rule(
         'Pim\Component',
-        ['PimEnterprise', 'Bundle', 'Doctrine\ORM', 'Mongo'],
+        array_merge($forbidAnyBundles, $forbidPimEnterprise, $forbidDoctrineExceptCommon),
         RuleInterface::TYPE_FORBIDDEN,
-        'Pim components should never use the namespace Pim, PimEnterprise or Doctrine ORM'
+        'Pim components contain Business Logic, they does not depend on Bundle, Doctrine or Symfony'
     ),
     new Rule(
         'PimEnterprise\Component',
-        ['Bundle', 'Doctrine\ORM'],
+        array_merge($forbidAnyBundles, $forbidDoctrineExceptCommon),
         RuleInterface::TYPE_FORBIDDEN,
-        'Pim components should never use a Symfony Bundle or Doctrine ORM'
+        'PimEnterprise components contain Enterprise Business Logic, they does not depend on Bundle, Doctrine or Symfony'
+    ),
+    new Rule(
+        'Akeneo\Bundle',
+        $forbidPimAndEnterprise, // ????
+        RuleInterface::TYPE_FORBIDDEN,
+        'Akeneo bundles contain Symfony or Doctine glue for Technical Logic or Akeno components, they does not depend on Pim'
     ),
     new Rule(
         'Pim\Bundle',
-        ['PimEnterprise'],
+        $forbidPimEnterprise,
         RuleInterface::TYPE_FORBIDDEN,
         'Pim bundles should never use the namespace PimEnterprise'
     ),
@@ -161,7 +166,8 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory',
         'Pim\Bundle\CatalogBundle\Factory\FamilyFactory',
         'Pim\Bundle\CatalogBundle\Factory\GroupFactory',
-        // Version manager should be exploded with SRP and introduce different interfaces in a component
+        // Version manager should be exploded with SRP and introduce different interfaces in a component, here we use it
+        // to switch real time versionning that should be moved in VersioningContext/VersioningState?
         'Pim\Bundle\VersioningBundle\Manager\VersionManager',
     ],
     // Same issues than catalog component updater classes, same fixes expected
