@@ -12,7 +12,7 @@
     <li>
         <strong>{{ fieldKey }}:</strong>
         {% if fieldValue.new.timestamp is defined %}
-            {{ fieldValue.new|oro_format_datetime }}
+            {{ fieldValue.new|datetime_presenter }}
         {% else %}
             {{ fieldValue.new|localize_attribute_option(fieldKey) }}
         {% endif %}
