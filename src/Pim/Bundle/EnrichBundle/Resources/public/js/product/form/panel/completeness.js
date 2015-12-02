@@ -113,7 +113,7 @@ define(
              */
             update: function () {
                 if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('completeness').clear(this.getFormData().meta.id);
+                    FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
                 }
 
                 this.render();
