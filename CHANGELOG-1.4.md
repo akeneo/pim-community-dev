@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.12 (2015-12-03)
 
 ## Bug fixes
 - PIM-5235: Fix empty reference data name on attributes import
