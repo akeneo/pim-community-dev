@@ -12,24 +12,10 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /** @var LocalizerInterface[] */
     protected $localizers = [];
 
-    /** @var LocalizerInterface[] */
-    protected $valueLocalizers = [];
-
-    /** @var LocalizerInterface[] */
-    protected $optionLocalizers = [];
-
     /**
      * {@inheritdoc}
      */
-    public function getLocalizer($attributeType)
-    {
-        return $this->getSupportedLocalizer($this->localizers, $attributeType);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerLocalizer(LocalizerInterface $localizer)
+    public function register(LocalizerInterface $localizer)
     {
         $this->localizers[] = $localizer;
 
@@ -37,56 +23,17 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getProductValueLocalizer($attributeType)
-    {
-        return $this->getSupportedLocalizer($this->valueLocalizers, $attributeType);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerProductValueLocalizer(LocalizerInterface $localizer)
-    {
-        $this->valueLocalizers[] = $localizer;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeOptionLocalizer($optionName)
-    {
-        return $this->getSupportedLocalizer($this->optionLocalizers, $optionName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerAttributeOptionLocalizer(LocalizerInterface $localizer)
-    {
-        $this->optionLocalizers[] = $localizer;
-
-        return $this;
-    }
-
-    /**
-     * Returns a LocalizerInterface supporting a value.
+     * Get a localizer supported by value
      *
-     * @param LocalizerInterface[] $localizers
-     * @param string               $value
+     * @param string $value
      *
      * @return LocalizerInterface|null
      */
-    protected function getSupportedLocalizer(array $localizers, $value)
+    public function getLocalizer($value)
     {
-        if (!empty($localizers)) {
-            foreach ($localizers as $localizer) {
-                if ($localizer->supports($value)) {
-                    return $localizer;
-                }
+        foreach ($this->localizers as $localizer) {
+            if ($localizer->supports($value)) {
+                return $localizer;
             }
         }
 

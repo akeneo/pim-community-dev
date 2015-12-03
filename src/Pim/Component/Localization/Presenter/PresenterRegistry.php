@@ -2,11 +2,9 @@
 
 namespace Pim\Component\Localization\Presenter;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-
 /**
  * The PresenterRegistry registers the presenters to display attribute values readable information. The matching
- * presenters are returned from an attributeType or an option name.
+ * presenters are returned from an attributeType
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -14,30 +12,18 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class PresenterRegistry implements PresenterRegistryInterface
 {
-    const TYPE_PRODUCT_VALUE = 'product_value';
-
-    const TYPE_ATTRIBUTE_OPTION = 'attribute_option';
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
-    /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-    }
+    /** @var PresenterInterface[] */
+    protected $optionPresenters = [];
 
     /**
      * {@inheritdoc}
      */
-    public function register(PresenterInterface $presenter, $type)
+    public function registerPresenter(PresenterInterface $presenter)
     {
-        $this->presenters[$type][] = $presenter;
+        $this->presenters[] = $presenter;
 
         return $this;
     }
@@ -45,44 +31,42 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPresenterByAttributeCode($code)
+    public function registerAttributeOptionPresenter(PresenterInterface $presenter)
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        if (null === $attribute) {
-            return null;
-        }
+        $this->optionPresenters[] = $presenter;
 
-        $attributeType = $attribute->getAttributeType();
-        if (null === $attributeType) {
-            return null;
-        }
-
-        return $this->getPresenter($attributeType, self::TYPE_PRODUCT_VALUE);
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttributeOptionPresenter($optionName)
+    public function getPresenter($attributeType)
     {
-        return $this->getPresenter($optionName, self::TYPE_ATTRIBUTE_OPTION);
+        return $this->getSupportedPresenter($this->presenters, $attributeType);
     }
 
     /**
-     * Get a presenter supporting value and type
+     * {@inheritdoc}
+     */
+    public function getAttributeOptionPresenter($attributeName)
+    {
+        return $this->getSupportedPresenter($this->optionPresenters, $attributeName);
+    }
+
+    /**
+     * Returning the first presenter supporting the value
      *
-     * @param string $value
-     * @param string $type
+     * @param PresenterInterface[] $presenters
+     * @param string               $value
      *
      * @return PresenterInterface|null
      */
-    protected function getPresenter($value, $type)
+    protected function getSupportedPresenter(array $presenters, $value)
     {
-        if (isset($this->presenters[$type])) {
-            foreach ($this->presenters[$type] as $presenter) {
-                if ($presenter->supports($value)) {
-                    return $presenter;
-                }
+        foreach ($presenters as $presenter) {
+            if ($presenter->supports($value)) {
+                return $presenter;
             }
         }
 

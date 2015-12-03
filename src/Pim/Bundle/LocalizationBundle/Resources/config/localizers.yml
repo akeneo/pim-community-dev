@@ -24,7 +24,6 @@ services:
             - ['pim_catalog_number']
         tags:
             - { name: pim_localization.localizer }
-            - { name: pim_localization.localizer.product_value }
 
     pim_localization.localizer.price:
         class: %pim_localization.localizer.price.class%
@@ -52,13 +51,3 @@ services:
             - ['pim_catalog_date']
         tags:
             - { name: pim_localization.localizer }
-            - { name: pim_localization.localizer.product_value }
-
-    pim_localization.localizer.attribute_option.number:
-        class: %pim_localization.localizer.number.class%
-        arguments:
-            - '@validator'
-            - '@pim_localization.factory.number'
-            - ['number_min', 'number_max']
-        tags:
-            - { name: pim_localization.localizer.attribute_option }

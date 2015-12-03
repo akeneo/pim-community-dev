@@ -45,7 +45,7 @@ class ProductValueNormalizer implements NormalizerInterface
 
         $type = $entity->getAttribute()->getAttributeType();
 
-        $localizer = $this->localizerRegistry->getProductValueLocalizer($type);
+        $localizer = $this->localizerRegistry->getLocalizer($type);
         if (null !== $localizer) {
             foreach ($result as $field => $data) {
                 $result[$field] = $localizer->localize($data, $context);
