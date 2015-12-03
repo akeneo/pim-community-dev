@@ -352,6 +352,7 @@ attributes:
         defaultMetricUnit: GRAM
         negativeAllowed:   false
         decimalsAllowed:   true
+        useableAsGridFilter: true
     123:
         labels:
             en_US: Attribute 123

@@ -6,6 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -61,25 +62,31 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var GroupRepositoryInterface */
+    protected $productGroupRepository;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param RequestParameters            $requestParams
      * @param UserContext                  $userContext
      * @param ObjectManager                $objectManager
+     * @param GroupRepositoryInterface     $productGroupRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        GroupRepositoryInterface $productGroupRepository
     ) {
         $this->productRepository   = $productRepository;
         $this->attributeRepository = $attributeRepository;
         $this->requestParams       = $requestParams;
         $this->userContext         = $userContext;
         $this->objectManager       = $objectManager;
+        $this->productGroupRepository = $productGroupRepository;
     }
 
     /**
@@ -139,7 +146,13 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributeIds($attributeCodes = null)
     {
-        $attributeIds = $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
+        // as now only attributes usable as grid filters are usable in the grid,
+        // we need to add the variant group axes (even if they are not usable as grid filter)
+        // as usable in the grid (to be displayed in the columns)
+        $attributeIds = array_merge(
+            $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes),
+            $this->getAttributeIdsFromProductGroupAxes()
+        );
 
         return $attributeIds;
     }
@@ -281,6 +294,37 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return $dataLocale;
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function getProductGroupId()
+    {
+        if (null !== $productGroup = $this->request->get('group', null)) {
+            return $productGroup->getId();
+        }
+
+        return $this->requestParams->get('currentGroup', null);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAttributeIdsFromProductGroupAxes()
+    {
+        $attributeIds = [];
+
+        if ((null !== $productGroupId = $this->getProductGroupId())) {
+            $group = $this->productGroupRepository->find($productGroupId);
+            if ($group->getType()->isVariant()) {
+                foreach ($group->getAxisAttributes() as $axis) {
+                    $attributeIds[] = $axis->getId();
+                }
+            }
+        }
+
+        return $attributeIds;
     }
 
     /**

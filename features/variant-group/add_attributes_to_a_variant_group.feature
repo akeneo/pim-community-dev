@@ -83,3 +83,28 @@ Feature: Add attributes to a variant group
     And I visit the "Attributes" tab
     When I add available attributes Price
     And I should see "EUR, USD" currencies on the Price price field
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5208
+  Scenario: View only attribute filters that are usable as grid filters and view varient axes in columns
+    Given the following attributes:
+      | code                       | label-en_US                | type         | group  | useable_as_grid_filter |
+      | high_heel_main_color       | High heel main color       | simpleselect | colors | yes                    |
+      | high_heel_main_fabric      | High heel main fabric      | simpleselect | other  | no                     |
+      | high_heel_secondary_color  | High heel secondary color  | simpleselect | colors | no                     |
+      | high_heel_secondary_fabric | High heel secondary fabric | simpleselect | other  | yes                    |
+    And the following "high_heel_main_color" attribute options: Red, Blue
+    And the following "high_heel_main_fabric" attribute options: Leather, Silk
+    And the following family:
+      | code       | requirements-mobile                              | requirements-tablet |
+      | high_heels | sku, high_heel_main_color, high_heel_main_fabric | sku                 |
+    And the following product groups:
+      | code       | label      | axis                                        | type    |
+      | high_heels | High heels | high_heel_main_color, high_heel_main_fabric | VARIANT |
+    And the following product:
+      | sku     | family     | high_heel_main_color | high_heel_main_fabric |
+      | heel001 | high_heels | Red                  | Silk                  |
+    When I am on the "high_heels" variant group page
+    Then I should see the available filters High heel main color and High heel secondary fabric
+    And I should not see the available filters High heel main fabric and High heel secondary color
+    And I should see the columns In group, Sku, High heel main color, High heel main fabric, Label, Family, Status, Complete, Created at and Updated at
+
