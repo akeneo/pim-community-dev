@@ -108,7 +108,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
          *
          * @property
          */
-        dateWidgetSelector: 'div.datepicker',
+        dateWidgetSelector: '.datepicker',
 
         /**
          * @inheritDoc
@@ -293,7 +293,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
         _formatDate: function(value, fromFormat, toFormat) {
             var dpg = $.fn.datepicker.DPGlobal;
 
-            return dpg.formatDate(new Date(dpg.parseDate(value, fromFormat)), toFormat, 'en');
+            return dpg.formatDate(new Date(dpg.parseDate(value, fromFormat, 'en')), toFormat, 'en');
         },
 
         /**

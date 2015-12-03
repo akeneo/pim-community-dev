@@ -267,11 +267,12 @@ function($, _, __, ChoiceFilter, localeSettings) {
         },
 
         /**
-         * Format datetes in a valut to another format
+         * Format dates from a format to another format
          *
          * @param {Object} value
          * @param {String} fromFormat
          * @param {String} toFormat
+         *
          * @return {Object}
          * @protected
          */
@@ -291,6 +292,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @param {String} value
          * @param {String} fromFormat
          * @param {String} toFormat
+         *
          * @return {String}
          * @protected
          */

@@ -10,6 +10,7 @@
 - PIM-5177: Fix login redirection
 - PIM-5276: Fix attribute ordering in the product view
 - PIM-5276: Fix reload freeze
+- PIM-5276: Fix date filter picker
 
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
