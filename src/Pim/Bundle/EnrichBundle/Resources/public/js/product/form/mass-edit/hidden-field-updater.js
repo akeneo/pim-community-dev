@@ -8,6 +8,7 @@ define(
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
