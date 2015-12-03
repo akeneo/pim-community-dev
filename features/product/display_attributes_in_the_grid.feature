@@ -7,9 +7,9 @@ Feature: Display product attributes in the grid
   Scenario: Successfully display values for simple and multi select attributes
     Given the "default" catalog configuration
     And the following attributes:
-      | code               | type         | label-en_US        | group |
-      | manufacturer       | simpleselect | Manufacturer       | other |
-      | weather_conditions | multiselect  | Weather conditions | other |
+      | code               | type         | label-en_US        | group | useable_as_grid_filter |
+      | manufacturer       | simpleselect | Manufacturer       | other | yes                    |
+      | weather_conditions | multiselect  | Weather conditions | other | yes                    |
     And the following "manufacturer" attribute options: Converse, adidas and lacoste
     And the following "weather_conditions" attribute options: dry, hot, cloudy and stormy
     And the following products:
@@ -34,7 +34,11 @@ Feature: Display product attributes in the grid
       | Weather conditions | [cloudy]  |
 
   Scenario: Successfully display image attributes
-    Given the "footwear" catalog configuration
+    Given the "default" catalog configuration
+    And the following attributes:
+      | code      | type  | label-en_US | allowed_extensions | useable_as_grid_filter |
+      | side_view | image | Side view   | gif,png,jpeg,jpg   | yes                    |
+      | top_view  | image | Top view    | gif,png,jpeg,jpg   | yes                    |
     And the following products:
       | sku      | side_view             | top_view               |
       | sneakers | %fixtures%/akeneo.jpg |                        |
