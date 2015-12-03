@@ -68,7 +68,7 @@ doctrine:
                 password:     "%database_password%"
                 charset:      UTF8
         types:
-            datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
+            datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
