@@ -95,9 +95,6 @@ class ProductSaver extends BaseProductSaver
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $allOptions));
 
-        // TODO check the "schedule" options to remove the completeness or not
-        // TODO manage the "recalculate" options
-
         $productsToInsert = [];
         $productsToUpdate = [];
 
@@ -107,6 +104,14 @@ class ProductSaver extends BaseProductSaver
                 $product->setId($this->mongoFactory->createMongoId());
             } else {
                 $productsToUpdate[] = $product;
+            }
+
+            if (true === $allOptions['schedule'] || true === $allOptions['recalculate']) {
+                $this->completenessManager->schedule($product);
+            }
+
+            if (true === $allOptions['recalculate']) {
+                $this->completenessManager->generateMissingForProduct($product);
             }
         }
 
