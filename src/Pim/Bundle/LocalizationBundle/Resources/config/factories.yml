@@ -8,10 +8,10 @@ parameters:
         fr: 'dd/MM/yyyy'
         fr_FR: 'dd/MM/yyyy'
     pim_localization.factory.datetime.formats:
-        en: 'MM/dd/yyyy hh:mm'
-        en_US: 'MM/dd/yyyy hh:mm'
-        fr: 'dd/MM/yyyy hh:mm'
-        fr_FR: 'dd/MM/yyyy hh:mm'
+        en: 'MM/dd/yyyy HH:mm'
+        en_US: 'MM/dd/yyyy HH:mm'
+        fr: 'dd/MM/yyyy HH:mm'
+        fr_FR: 'dd/MM/yyyy HH:mm'
     pim_localization.factory.currency.formats:
         en_US: '¤#,##0.00'
         fr_FR: '#,##0.00 ¤'

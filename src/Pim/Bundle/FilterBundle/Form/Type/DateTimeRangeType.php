@@ -1,27 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Form\Type;
+namespace Pim\Bundle\FilterBundle\Form\Type;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateTimeRangeType extends AbstractType
 {
-    const NAME = 'oro_type_datetime_range';
-
-    /**
-     * @var LocaleSettings
-     */
-    protected $localeSettings;
-
-    /**
-     * @param LocaleSettings $localeSettings
-     */
-    public function __construct(LocaleSettings $localeSettings)
-    {
-        $this->localeSettings = $localeSettings;
-    }
+    const NAME = 'pim_type_datetime_range';
 
     /**
      * {@inheritDoc}
@@ -48,8 +35,8 @@ class DateTimeRangeType extends AbstractType
             [
                 'field_type'    => 'datetime',
                 'field_options' => [
-                    'format'        => 'yyyy-MM-dd HH:mm',
-                    'view_timezone' => $this->localeSettings->getTimeZone(),
+                    'format'        => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
+                    'view_timezone' => null,
                 ],
             ]
         );

@@ -1,7 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Form\Type;
+namespace Pim\Bundle\FilterBundle\Form\Type;
 
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateRangeType extends AbstractType
 {
-    const NAME = 'oro_type_date_range';
+    const NAME = 'pim_type_date_range';
 
     /**
      * {@inheritDoc}
@@ -32,7 +33,7 @@ class DateRangeType extends AbstractType
                 [
                     'required'       => false,
                     'widget'         => 'single_text',
-                    'format'         => 'yyyy-MM-dd',
+                    'format'         => LocalizerInterface::DEFAULT_DATE_FORMAT,
                     'model_timezone' => 'UTC',
                     'view_timezone'  => 'UTC',
                 ],
@@ -48,7 +49,7 @@ class DateRangeType extends AbstractType
                 [
                     'required'       => false,
                     'widget'         => 'single_text',
-                    'format'         => 'yyyy-MM-dd',
+                    'format'         => LocalizerInterface::DEFAULT_DATE_FORMAT,
                     'model_timezone' => 'UTC',
                     'view_timezone'  => 'UTC',
                 ],
