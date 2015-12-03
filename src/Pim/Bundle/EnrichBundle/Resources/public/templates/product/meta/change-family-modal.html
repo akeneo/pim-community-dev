@@ -1,11 +1,4 @@
 <%- _.__('pim_enrich.form.product.change_family.modal.merge_attributes')%><br />
 <%- _.__('pim_enrich.form.product.change_family.modal.keep_attributes')%><br />
 <%- _.__('pim_enrich.form.product.change_family.modal.change_family_to')%>:
-<select class="input-large" data-placeholder="<%- _.__('pim_enrich.form.product.change_family.modal.empty_selection') %>">
-    <option value=""></option>
-    <% _.each(families, function (family) {  %>
-        <option value="<%- family.code %>"<%- family.code === product.family ? ' selected' : '' %>>
-            <%- family.label[locale] || '[' + family.code + ']' %>
-        </option>
-    <% }); %>
-</select>
+<input type="hidden" class="input-large family-select2" value="<%- product.family !== null ? product.family.code : '' %>" <%- product.family ? ' selected' : '' %> data-placeholder="<%- _.__('pim_enrich.form.product.change_family.modal.empty_selection') %>" />
