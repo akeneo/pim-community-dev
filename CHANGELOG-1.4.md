@@ -1,7 +1,6 @@
 # 1.4.x
 
 ## Bug fixes
-- PIM-5177: Fix login redirection
 - PIM-5235: Fix empty reference data name on attributes import
 - PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
 - PIM-5215: Create empty product values for new family attributes after product import with family change
