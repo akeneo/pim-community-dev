@@ -67,11 +67,13 @@
                 position: absolute;
                 left: 0;
                 padding: 5px;
+                width: 35%;
             }
 
             .right-column {
                 margin-left: 35%;
                 padding: 5px;
+                width: 65%;
             }
         </style>
     </head>
@@ -97,17 +99,24 @@
                         <h2>{{ group }}</h2>
                         {% for attribute in attributes %}
                             {% block attribute %}
-                                <div class="attributes">
+
+                                {% if 'pim_catalog_image' == attribute.attributeType and product.getValue(attribute.code, locale, scope).media is not null %}
+                                    {% set content = product.getValue(attribute.code, locale, scope).media.originalFilename %}
+                                    {% set manualHeight = false %}
+                                {% else %}
+                                    {% set content = product.getValue(attribute.code, locale, scope) %}
+                                    {% set manualHeight = attribute.label|length > (content.__toString()|length / 3) %}
+                                {% endif %}
+
+                                <div class="attributes"{% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>
                                     <div class="left-column">
                                         {{ attribute.label }}
                                     </div>
                                     <div class="right-column">
-                                        {% if attribute.attributeType == 'pim_catalog_image' and product.getValue(attribute.code, locale, scope).media is not null %}
-                                            {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
-                                        {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
-                                            {{ product.getValue(attribute.code, locale, scope)|raw }}
+                                        {% if 'pim_catalog_textarea' == attribute.attributeType and attribute.isWysiwygEnabled %}
+                                            {{ content|raw }}
                                         {% else %}
-                                            {{ product.getValue(attribute.code, locale, scope) }}
+                                            {{ content }}
                                         {% endif %}
                                         &nbsp;
                                     </div>

@@ -6,6 +6,7 @@
 - PIM-5235: Fix empty reference data name on attributes import
 - PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
 - PIM-5215: Create empty product values for new family attributes after product import with family change
+- PIM-5268: Fix PDF display to be able to display long attribute name
 
 # 1.4.11 (2015-11-27)
 
