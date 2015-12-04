@@ -14,7 +14,8 @@ namespace spec\PimEnterprise\Component\Localization\Normalizer;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,12 +23,12 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $ruleNormalizer,
-        PresenterAttributeConverterInterface $converter,
+        PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver
     ) {
         $this->beConstructedWith(
             $ruleNormalizer,
-            $converter,
+            $presenterRegistry,
             $localeResolver
         );
     }
@@ -39,9 +40,12 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_fr_numbers(
         $ruleNormalizer,
-        $converter,
+        $presenterRegistry,
         $localeResolver,
-        RuleDefinitionInterface $ruleDefinition
+        RuleDefinitionInterface $ruleDefinition,
+        PresenterInterface $pricesPresenter,
+        PresenterInterface $metricPresenter,
+        PresenterInterface $numberPresenter
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $ruleNormalizer->normalize($ruleDefinition, 'array', [])->willReturn(
@@ -69,21 +73,22 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
 
         $options = ['locale' => 'fr_FR'];
 
-        $converter->convert(
-            'price',
+        $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricesPresenter);
+        $pricesPresenter->present(
             [['data' => '12.1234', 'currency' => 'EUR']],
             $options
         )->willReturn([['data' => '12,1234', 'currency' => 'EUR']]);
 
-        $converter->convert('auto_focus_points', 4.1234, $options)->willReturn('4,1234');
+        $presenterRegistry->getPresenterByAttributeCode('auto_focus_points')->willReturn($numberPresenter);
+        $numberPresenter->present(4.1234, $options)->willReturn('4,1234');
 
-        $converter->convert(
-            'weight',
+        $presenterRegistry->getPresenterByAttributeCode('weight')->willReturn($metricPresenter);
+        $metricPresenter->present(
             ['data' => 500.1234, 'unit' => 'GRAM'],
             $options
         )->willReturn(['data' => '500,1234', 'unit' => 'GRAM']);
 
-        $converter->convert('sku', 'AKNTS_PB', $options)->willReturn('AKNTS_PB');
+        $presenterRegistry->getPresenterByAttributeCode('sku')->willReturn(null);
 
         $this->normalize($ruleDefinition, 'array', [])->shouldReturn(
             [

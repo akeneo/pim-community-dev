@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,25 +29,25 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
-    /** @var PresenterAttributeConverterInterface */
-    protected $converter;
+    /** @var PresenterRegistryInterface */
+    protected $presenterRegistry;
 
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param NormalizerInterface                  $ruleNormalizer
-     * @param PresenterAttributeConverterInterface $converter
-     * @param LocaleResolver                       $localeResolver
+     * @param NormalizerInterface        $ruleNormalizer
+     * @param PresenterRegistryInterface $presenterRegistry
+     * @param LocaleResolver             $localeResolver
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
-        PresenterAttributeConverterInterface $converter,
+        PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver
     ) {
-        $this->ruleNormalizer = $ruleNormalizer;
-        $this->converter      = $converter;
-        $this->localeResolver = $localeResolver;
+        $this->ruleNormalizer    = $ruleNormalizer;
+        $this->presenterRegistry = $presenterRegistry;
+        $this->localeResolver    = $localeResolver;
     }
 
     /**
@@ -84,11 +84,11 @@ class RuleDefinitionNormalizer implements NormalizerInterface
         foreach ($content as $key => $items) {
             foreach ($items as $index => $action) {
                 if (isset($action['field']) && isset($action['value'])) {
-                    $content[$key][$index]['value'] = $this->converter->convert(
-                        $action['field'],
-                        $action['value'],
-                        $options
-                    );
+                    $presenter = $this->presenterRegistry->getPresenterByAttributeCode($action['field']);
+
+                    if (null !== $presenter) {
+                        $content[$key][$index]['value'] = $presenter->present($action['value'], $options);
+                    }
                 }
             }
         }

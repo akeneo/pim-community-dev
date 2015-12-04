@@ -6,7 +6,7 @@ services:
         class: %pimee_rule_engine.normalizer.rule_collection.class%
         arguments:
             - '@akeneo_rule_engine.normalizer.rule_definition'
-            - '@pim_localization.presenter.converter'
+            - '@pim_localization.presenter.registry'
             - '@pim_localization.resolver.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
