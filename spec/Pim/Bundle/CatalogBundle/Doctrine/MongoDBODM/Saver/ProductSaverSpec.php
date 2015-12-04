@@ -11,11 +11,14 @@ use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class ProductSaverSpec extends ObjectBehavior
 {
     function let(
@@ -38,11 +41,11 @@ class ProductSaverSpec extends ObjectBehavior
             $versionSaver,
             $normalizer,
             $mongoFactory,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             'my_db'
         );
 
-        $documentManager->getDocumentCollection('Pim\Bundle\CatalogBundle\Model\Product')->willReturn($collection);
+        $documentManager->getDocumentCollection('Pim\Component\Catalog\Model\Product')->willReturn($collection);
         $collection->getName()->willReturn('pim_catalog_product');
 
         $bulkVersionBuilder->buildVersions(Argument::any())->willReturn([]);

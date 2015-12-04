@@ -6,11 +6,11 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -23,13 +23,13 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $serializer,
             $channelManager,
+            $productBuilder,
             ['pim_catalog_file', 'pim_catalog_image'],
             ['.', ','],
             [
                 ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
                 ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-            ],
-            $productBuilder
+            ]
         );
     }
 
@@ -111,8 +111,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer,
         $productBuilder
     ) {
+        $localeCodes = ['en_US'];
+
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
-        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $channel->getLocaleCodes()->willReturn($localeCodes);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $media1->getKey()->willReturn('key/to/media1.jpg');
@@ -145,7 +147,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 'flat',
                 [
                     'scopeCode'         => 'foobar',
-                    'localeCodes'       => 'en_US',
+                    'localeCodes'       => $localeCodes,
                     'decimal_separator' => '.',
                     'date_format'       => 'yyyy-MM-dd',
                 ]
@@ -171,8 +173,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $localeCodes = ['en_US'];
+
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
-        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $channel->getLocaleCodes()->willReturn($localeCodes);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $product->getValues()->willReturn([]);
@@ -184,7 +188,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 'flat',
                 [
                     'scopeCode' => 'foobar',
-                    'localeCodes' => 'en_US',
+                    'localeCodes' => $localeCodes,
                     'decimal_separator' => ',',
                     'date_format'       => 'yyyy-MM-dd',
                 ]

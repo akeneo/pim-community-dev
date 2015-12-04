@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -68,10 +68,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
+        ProductBuilderInterface $productBuilder,
         array $mediaAttributeTypes,
         array $decimalSeparators,
-        array $dateFormats,
-        ProductBuilderInterface $productBuilder
+        array $dateFormats
     ) {
         $this->serializer          = $serializer;
         $this->channelManager      = $channelManager;

@@ -9,6 +9,9 @@ use Pim\Bundle\VersioningBundle\Model\Version;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class BulkVersionSaverSpec extends ObjectBehavior
 {
     function let(

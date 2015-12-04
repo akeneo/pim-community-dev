@@ -41,8 +41,8 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
-            - ['pim_catalog_file', 'pim_catalog_image']
             - '@pim_catalog.builder.product'
+            - ['pim_catalog_file', 'pim_catalog_image']
             - %pim_localization.decimal_separators%
             - %pim_localization.date_formats%
 

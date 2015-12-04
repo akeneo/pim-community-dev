@@ -14,6 +14,9 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class BulkVersionBuilderSpec extends ObjectBehavior
 {
     const VERSION_CLASS = 'Pim\Bundle\VersioningBundle\Model\Version';
