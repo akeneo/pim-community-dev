@@ -46,6 +46,7 @@ config:
                     options:
                         urls:
                             list: pim_enrich_family_rest_index
+                            get: pim_enrich_family_rest_get
                 channel:
                     module: pim/base-fetcher
                     options:
@@ -71,7 +72,7 @@ config:
                     options:
                         urls:
                             list: pim_enrich_associationtype_rest_index
-                completeness:
+                product-completeness:
                     module: pim/completeness-fetcher
                     options:
                         urls:

@@ -33,15 +33,3 @@ Feature: Filter products by reference data
       | Sole fabric | Silk                  | postit |
       | Sole fabric | Neoprene              |        |
       | Sole fabric | is empty              | mug    |
-
-  Scenario: Successfully filter product with multi reference data filters
-    Given I show the filter "Sole color"
-    And I filter by "Sole color" with value "Red"
-    And I should be able to use the following filters:
-      | filter      | value                 | result |
-      | Sole fabric | Cashmerewool          | postit |
-      | Sole fabric | Silk                  | postit |
-      | Sole fabric | Cashmerewool,Silk     | postit |
-      | Sole fabric | Cashmerewool,Neoprene | postit |
-      | Sole fabric | Neoprene              |        |
-      | Sole fabric | is empty              |        |

@@ -11,6 +11,7 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    # deprecated: will be removed in 1.6
     pim_versioning.doctrine.orm.pending_mass_persister:
         class: %pim_versioning.doctrine.orm.pending_mass_persister.class%
         arguments:

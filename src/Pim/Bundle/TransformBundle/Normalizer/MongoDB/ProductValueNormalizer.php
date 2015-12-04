@@ -4,6 +4,9 @@ namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -24,12 +27,17 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @var MongoObjectsFactory */
     protected $mongoFactory;
 
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
+
     /**
      * @param MongoObjectsFactory $mongoFactory
+     * @param ManagerRegistry     $managerRegistry
      */
-    public function __construct(MongoObjectsFactory $mongoFactory)
+    public function __construct(MongoObjectsFactory $mongoFactory, ManagerRegistry $managerRegistry)
     {
-        $this->mongoFactory = $mongoFactory;
+        $this->mongoFactory    = $mongoFactory;
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
@@ -57,17 +65,14 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        if (null === $value->getData()) {
-            return null;
-        }
-
-        $productId = $context[ProductNormalizer::MONGO_ID];
         $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
+        $productId         = $context[ProductNormalizer::MONGO_ID];
+        $databaseName      = $context[ProductNormalizer::MONGO_DATABASE_NAME];
 
         $data = [];
         $data['_id'] = $this->mongoFactory->createMongoId();
         $data['attribute'] = $value->getAttribute()->getId();
-        $data['entity'] = $this->mongoFactory->createMongoDBRef($productCollection, $productId);
+        $data['entity'] = $this->mongoFactory->createMongoDBRef($productCollection, $productId, $databaseName);
 
         if (null !== $value->getLocale()) {
             $data['locale'] = $value->getLocale();
@@ -76,13 +81,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data['scope'] = $value->getScope();
         }
 
-        $backendType = $value->getAttribute()->getBackendType();
-
-        if ('options' !== $backendType) {
-            $data[$backendType] = $this->normalizeValueData($value->getData(), $backendType, $context);
-        } else {
-            $data['optionIds'] = $this->normalizeValueData($value->getData(), $backendType, $context);
-        }
+        $attribute   = $value->getAttribute();
+        $backendType = $attribute->getBackendType();
+        $key         = $this->getKeyForValue($value, $attribute, $backendType);
+        $data[$key]  = $this->normalizeValueData($value->getData(), $backendType, $context);
 
         return $data;
     }
@@ -116,5 +118,56 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         return $targetData;
+    }
+
+    /**
+     * Decide what is the key used for data inside the normalized product value
+     *
+     * @param ProductValueInterface $value
+     * @param AttributeInterface    $attribute
+     * @param string                $backendType
+     *
+     * @return string
+     */
+    protected function getKeyForValue(ProductValueInterface $value, AttributeInterface $attribute, $backendType)
+    {
+        if ('options' === $backendType) {
+            return 'optionIds';
+        }
+
+        $refDataName = $attribute->getReferenceDataName();
+        if (null === $refDataName) {
+            return $backendType;
+        }
+
+        if ('reference_data_options' === $backendType) {
+            return $this->getReferenceDataFieldName($value, $refDataName);
+        }
+
+        return $refDataName;
+    }
+
+    /**
+     * Search in Doctrine mapping what is the field name defined for the specified reference data
+     *
+     * @param ProductValueInterface $value
+     * @param string                $refDataName
+     *
+     * @throws \LogicException
+     *
+     * @return string
+     */
+    protected function getReferenceDataFieldName(ProductValueInterface $value, $refDataName)
+    {
+        $valueClass = ClassUtils::getClass($value);
+        $manager    = $this->managerRegistry->getManagerForClass($valueClass);
+        $metadata   = $manager->getClassMetadata($valueClass);
+        $fieldName  = $metadata->getFieldMapping($refDataName);
+
+        if (!isset($fieldName['idsField'])) {
+            throw new \LogicException(sprintf('No field name defined for reference data "%s"', $refDataName));
+        }
+
+        return $fieldName['idsField'];
     }
 }

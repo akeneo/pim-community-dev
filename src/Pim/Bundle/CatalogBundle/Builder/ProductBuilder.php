@@ -113,10 +113,10 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addMissingProductValues(ProductInterface $product)
+    public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null)
     {
         $attributes     = $this->getExpectedAttributes($product);
-        $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes);
+        $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes, $channels, $locales);
         $existingValues = $this->getExistingValues($product);
 
         $missingValues = array_filter(

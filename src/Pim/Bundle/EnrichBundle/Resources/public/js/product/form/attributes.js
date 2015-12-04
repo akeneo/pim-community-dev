@@ -86,9 +86,8 @@ define(
                 this.getConfig().then(function () {
                     var product = this.getFormData();
                     $.when(
-                        FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).then(function (families, values) {
+                    ).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.getExtension('attribute-group-selector').getCurrentElement()
@@ -96,7 +95,7 @@ define(
 
                         var fieldPromises = [];
                         _.each(productValues, function (productValue, attributeCode) {
-                            fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
+                            fieldPromises.push(this.renderField(product, attributeCode, productValue));
                         }.bind(this));
 
                         this.rendering = false;
@@ -132,11 +131,14 @@ define(
                     );
                 }
             },
-            renderField: function (product, attributeCode, values, families) {
-                return $.when(
-                    FieldManager.getField(attributeCode),
-                    FetcherRegistry.getFetcher('channel').fetchAll()
-                ).then(function (field, channels) {
+            renderField: function (product, attributeCode, values) {
+                return FieldManager.getField(attributeCode).then(function (field) {
+                    return $.when(
+                        (new $.Deferred().resolve(field)),
+                        FetcherRegistry.getFetcher('channel').fetchAll(),
+                        AttributeManager.isOptional(field.attribute, product)
+                    );
+                }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
 
                     field.setContext({
@@ -144,7 +146,7 @@ define(
                         scope: scope.code,
                         scopeLabel: scope.label,
                         uiLocale: UserContext.get('catalogLocale'),
-                        optional: AttributeManager.isOptional(field.attribute, product, families),
+                        optional: isOptional,
                         removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')
                     });
                     field.setValues(values);

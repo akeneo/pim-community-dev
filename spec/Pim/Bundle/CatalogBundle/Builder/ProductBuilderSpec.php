@@ -107,8 +107,8 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
 
         // get eligible values
-        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc])->willReturn(
-            [
+        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc], null, null)
+            ->willReturn([
                 [
                     'attribute' => 'sku',
                     'type' => 'pim_catalog_identifier',
@@ -151,8 +151,7 @@ class ProductBuilderSpec extends ObjectBehavior
                     'locale' => 'fr_FR',
                     'scope' => 'print'
                 ]
-            ]
-        );
+            ]);
 
         // get existing values
         $skuValue->getAttribute()->willReturn($sku);

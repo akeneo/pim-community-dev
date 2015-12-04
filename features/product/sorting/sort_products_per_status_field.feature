@@ -1,8 +1,8 @@
 @javascript
-Feature: Sort products per fields
+Feature: Sort products per status field
   In order to enrich my catalog
   As a regular user
-  I need to be able to manually sort products per fields
+  I need to be able to manually sort products per status field
 
   Background:
     Given the "default" catalog configuration
@@ -22,31 +22,10 @@ Feature: Sort products per fields
       | Mug        |                  |
     And I am logged in as "Mary"
 
-  Scenario: Successfully sort products by family
-    Given I am on the products page
-    And the grid should contain 7 elements
-    And I should be able to sort the rows by Family
-
   Scenario: Successfully sort products by status
     Given I am on the products page
     And the grid should contain 7 elements
     And I should be able to sort the rows by Status
-
-  # TODO : calculate completeness
-  Scenario: Successfully sort products by complete
-    Given I am on the products page
-    And the grid should contain 7 elements
-    And I should be able to sort the rows by Status
-
-  Scenario: Successfully sort products by created at
-    Given I am on the products page
-    And the grid should contain 7 elements
-    And I should be able to sort the rows by Created at
-
-  Scenario: Successfully sort products by updated at
-    Given I am on the products page
-    And the grid should contain 7 elements
-    And I should be able to sort the rows by Updated at
 
   Scenario: Successfully sort products by status
     Given the following products:

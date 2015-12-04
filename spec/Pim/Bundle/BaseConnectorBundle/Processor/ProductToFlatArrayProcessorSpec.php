@@ -3,11 +3,14 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -15,7 +18,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager)
+    function let(Serializer $serializer, ChannelManager $channelManager, ProductBuilderInterface $productBuilder)
     {
         $this->beConstructedWith(
             $serializer,
@@ -25,7 +28,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             [
                 ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
                 ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-            ]
+            ],
+            $productBuilder
         );
     }
 
@@ -93,9 +97,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_flat_data_with_media(
         $channelManager,
-        $serializer,
         Filesystem $filesystem,
         ChannelInterface $channel,
+        LocaleInterface $locale,
         ProductInterface $product,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
@@ -103,8 +107,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute,
         ProductValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute
+        AttributeInterface $identifierAttribute,
+        $serializer,
+        $productBuilder
     ) {
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+
         $media1->getKey()->willReturn('key/to/media1.jpg');
         $media2->getKey()->willReturn('key/to/media2.jpg');
 
@@ -130,10 +140,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
             ->willReturn(['normalized_media2']);
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'         => 'foobar',
-                    'localeCodes'       => '',
+                    'localeCodes'       => 'en_US',
                     'decimal_separator' => '.',
                     'date_format'       => 'yyyy-MM-dd',
                 ]
@@ -152,19 +164,27 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
+        $productBuilder,
         ChannelInterface $channel,
+        LocaleInterface $locale,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+
         $product->getValues()->willReturn([]);
         $this->setDecimalSeparator(',');
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
-                    'scopeCode'         => 'foobar',
-                    'localeCodes'       => '',
+                    'scopeCode' => 'foobar',
+                    'localeCodes' => 'en_US',
                     'decimal_separator' => ',',
                     'date_format'       => 'yyyy-MM-dd',
                 ]

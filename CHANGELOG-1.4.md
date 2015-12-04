@@ -1,8 +1,20 @@
 # 1.4.x
 
+## BC Breaks
+- Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
+  It is required because normalization of reference data in product values is based on Doctrine metadata.
+
+## Performance improvements
+- PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
+
+# 1.4.12 (2015-12-03)
+
 ## Bug fixes
-- PIM-5238: fix scroll on multiselect for mass edit
-- PIM-5177: fix login redirection
+- PIM-5235: Fix empty reference data name on attributes import
+- PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
+- PIM-5215: Create empty product values for new family attributes after product import with family change
+- PIM-5268: Fix PDF display to be able to display long attribute name
+- PIM-5194: Fix performance issues on families loading in PEF
 
 # 1.4.11 (2015-11-27)
 

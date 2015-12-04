@@ -15,6 +15,7 @@ services:
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
             - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
         calls:
             - [setRequest, ['@?request=']]
 
