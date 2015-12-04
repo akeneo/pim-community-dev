@@ -18,7 +18,7 @@ services:
             - '@pim_localization.factory.currency'
             - ['pim_catalog_price_collection']
         tags:
-            - { name: pim_localization.presenter, type: 'attribute' }
+            - { name: pim_localization.presenter, type: 'product_value' }
 
     pim_localization.presenter.metric:
         class: %pim_localization.presenter.metric.class%
@@ -26,7 +26,7 @@ services:
             - '@pim_localization.factory.number'
             - ['pim_catalog_metric']
         tags:
-            - { name: pim_localization.presenter, type: 'attribute' }
+            - { name: pim_localization.presenter, type: 'product_value' }
 
     pim_localization.presenter.number:
         class: %pim_localization.presenter.number.class%
@@ -34,7 +34,7 @@ services:
             - '@pim_localization.factory.number'
             - ['pim_catalog_number']
         tags:
-            - { name: pim_localization.presenter, type: 'attribute' }
+            - { name: pim_localization.presenter, type: 'product_value' }
 
     pim_localization.presenter.number.attribute_option:
         class: %pim_localization.presenter.number.class%
@@ -50,4 +50,4 @@ services:
             - '@pim_localization.factory.date'
             - ['pim_catalog_date']
         tags:
-            - { name: pim_localization.presenter, type: 'attribute' }
+            - { name: pim_localization.presenter, type: 'product_value' }

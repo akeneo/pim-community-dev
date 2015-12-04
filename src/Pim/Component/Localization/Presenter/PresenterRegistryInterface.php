@@ -22,13 +22,13 @@ interface PresenterRegistryInterface
     public function register(PresenterInterface $presenter, $type);
 
     /**
-     * Get the first presenter supporting an attribute
+     * Get the first presenter supporting an attribute code
      *
-     * @param string $attributeType
+     * @param string $code
      *
      * @return PresenterInterface|null
      */
-    public function getAttributePresenter($attributeType);
+    public function getPresenterByAttributeCode($code);
 
     /**
      * Get the first presenter supporting an attribute option
