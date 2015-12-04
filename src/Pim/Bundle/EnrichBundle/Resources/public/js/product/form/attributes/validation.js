@@ -47,8 +47,10 @@ define(
                 var field = event.field;
                 var valuesErrors = this.validationErrors.values;
 
-                if (valuesErrors && _.has(valuesErrors, field.attribute.code)) {
-                    this.addErrorsToField(field, valuesErrors[field.attribute.code]);
+                var errorsForAttribute = _.where(valuesErrors, {attribute: field.attribute.code});
+
+                if (!_.isEmpty(errorsForAttribute)) {
+                    this.addErrorsToField(field, errorsForAttribute);
                 }
             },
             addErrorsToField: function (field, fieldErrors) {

@@ -63,10 +63,10 @@ define(
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
                         .then(function (attributeGroups) {
-                            _.each(valuesErrors, function (fieldError, attributeCode) {
+                            _.each(valuesErrors, function (error) {
                                 var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                                     attributeGroups,
-                                    attributeCode
+                                    error.attribute
                                 );
                                 this.addToBadge(attributeGroup, 'invalid');
                             }.bind(this));
@@ -74,7 +74,7 @@ define(
                             if (!_.isEmpty(valuesErrors)) {
                                 this.getRoot().trigger(
                                     'pim_enrich:form:show_attribute',
-                                    {attribute: _.first(_.keys(valuesErrors))}
+                                    _.first(valuesErrors)
                                 );
                             }
                         }.bind(this));

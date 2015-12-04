@@ -13,6 +13,7 @@ parameters:
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
+    pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -112,5 +113,10 @@ services:
 
     pim_enrich.normalizer.file:
         class: %pim_enrich.normalizer.file.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_violation:
+        class: %pim_enrich.normalizer.product_violation.class%
         tags:
             - { name: pim_internal_api_serializer.normalizer }
