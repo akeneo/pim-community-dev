@@ -44,6 +44,7 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
+            - '@pim_internal_api_serializer'
         tags:
             -
                 name: pim_enrich.mass_edit_action

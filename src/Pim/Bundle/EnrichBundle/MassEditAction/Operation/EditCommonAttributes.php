@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,6 +37,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var ValidatorInterface */
     protected $productValidator;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param ProductBuilderInterface $productBuilder
      * @param FileStorerInterface     $fileStorer
@@ -46,12 +50,14 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ProductBuilderInterface $productBuilder,
         FileStorerInterface $fileStorer,
         ObjectUpdaterInterface $productUpdater,
-        ValidatorInterface $productValidator
+        ValidatorInterface $productValidator,
+        NormalizerInterface $normalizer
     ) {
         $this->productBuilder   = $productBuilder;
         $this->fileStorer       = $fileStorer;
         $this->productUpdater   = $productUpdater;
         $this->productValidator = $productValidator;
+        $this->normalizer       = $normalizer;
         $this->values           = '';
     }
 
@@ -70,57 +76,10 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->productUpdater->update($product, $data);
         $violations = $this->productValidator->validate($product);
 
-        $errors = $this->transformViolations($product, $violations);
+        $errors = ['values' => $this->normalizer->normalize($violations, 'internal_api')];
         $this->errors = json_encode($errors);
 
         return $violations->count() === 0;
-    }
-
-    // COPY PASTE OF \Pim\Bundle\EnrichBundle\Controller\Rest\ProductController::transformViolations
-    protected function transformViolations($product, $violations)
-    {
-        $errors = [];
-        foreach ($violations as $violation) {
-            $path = $violation->getPropertyPath();
-            if (0 === strpos($path, 'values')) {
-                $codeStart  = strpos($path, '[') + 1;
-                $codeLength = strpos($path, ']') - $codeStart;
-
-                $valueIndex = substr($path, $codeStart, $codeLength);
-                $value = $product->getValues()[$valueIndex];
-                $attributeCode = $value->getAttribute()->getCode();
-
-                $currentError = [
-                    'attribute'     => $attributeCode,
-                    'locale'        => $value->getLocale(),
-                    'scope'         => $value->getScope(),
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-
-                $errors['values'][$attributeCode] = isset($errors['values'][$attributeCode])
-                    ? $errors['values'][$attributeCode]
-                    : [];
-
-                $identicalErrors = array_filter(
-                    $errors['values'][$attributeCode],
-                    function ($error) use ($currentError) {
-                        return isset($error['message']) && $error['message'] === $currentError['message'];
-                    }
-                );
-
-                if (empty($identicalErrors)) {
-                    $errors['values'][$attributeCode][] = $currentError;
-                }
-            } else {
-                $errors[$path] = [
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-            }
-        }
-
-        return $errors;
     }
 
     /**
