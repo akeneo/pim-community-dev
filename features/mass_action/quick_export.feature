@@ -29,9 +29,9 @@ Feature: Quick export many published products from datagrid
     And the path of the exported file of "csv_published_product_quick_export" should be "/tmp/published_products_export_en_US_tablet.csv"
     And exported file of "csv_published_product_quick_export" should contain:
     """
-    sku;categories;color;enabled;family;groups;name-en_US;price-EUR;price-USD;size
-    boots;winter_collection;black;1;boots;;"Amazing boots";20;25;40
-    sneakers;summer_collection;white;1;sneakers;;Sneakers;50;60;42
-    sandals;summer_collection;red;1;sandals;;Sandals;5;5;40
-    pump;summer_collection;blue;1;;;Pump;15;20;41
+    sku;categories;color;description-en_US-tablet;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    boots;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
+    sneakers;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
+    sandals;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
+    pump;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
     """

@@ -7,8 +7,8 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
@@ -22,7 +22,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
     }
 
     function let(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         CategoryAccessManager $categoryAccessManager,

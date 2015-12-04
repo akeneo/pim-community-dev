@@ -93,7 +93,7 @@ extensions:
         position: 110
 
     pimee-published-product-view-completeness:
-        module: pim/product-edit-form/panel/completeness
+        module: pimee/published-view-form/panel/completeness
         parent: pimee-published-product-view-panels
         targetZone: panel-content
         position: 100
