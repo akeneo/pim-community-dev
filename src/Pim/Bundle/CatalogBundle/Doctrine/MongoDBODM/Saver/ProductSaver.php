@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
@@ -13,7 +14,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSa
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,7 +30,7 @@ class ProductSaver extends BaseProductSaver
     /** @var BulkVersionBuilderInterface */
     protected $bulkVersionBuilder;
 
-    /**@var BulkVersionSaver */
+    /**@var BulkSaverInterface */
     protected $versionSaver;
 
     /** @var NormalizerInterface */
@@ -51,7 +51,7 @@ class ProductSaver extends BaseProductSaver
     /**
      * {@inheritdoc}
      *
-     * @param BulkVersionSaver    $versionSaver
+     * @param BulkSaverInterface  $versionSaver
      * @param NormalizerInterface $normalizer
      * @param MongoObjectsFactory $mongoFactory
      * @param string              $productClass
@@ -63,7 +63,7 @@ class ProductSaver extends BaseProductSaver
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         BulkVersionBuilderInterface $bulkVersionBuilder,
-        BulkVersionSaver $versionSaver,
+        BulkSaverInterface $versionSaver,
         NormalizerInterface $normalizer,
         MongoObjectsFactory $mongoFactory,
         $productClass,
@@ -92,8 +92,8 @@ class ProductSaver extends BaseProductSaver
             return;
         }
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $allOptions));
+        $options = $this->optionsResolver->resolveSaveAllOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $productsToInsert = [];
         $productsToUpdate = [];
@@ -106,11 +106,11 @@ class ProductSaver extends BaseProductSaver
                 $productsToUpdate[] = $product;
             }
 
-            if (true === $allOptions['schedule'] || true === $allOptions['recalculate']) {
+            if (true === $options['schedule'] || true === $options['recalculate']) {
                 $this->completenessManager->schedule($product);
             }
 
-            if (true === $allOptions['recalculate']) {
+            if (true === $options['recalculate']) {
                 $this->completenessManager->generateMissingForProduct($product);
             }
         }
@@ -129,7 +129,7 @@ class ProductSaver extends BaseProductSaver
         $versions = $this->bulkVersionBuilder->buildVersions($products);
         $this->versionSaver->saveAll($versions);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
     }
 
     /**

@@ -3,15 +3,15 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,8 +23,8 @@ class ProductSaverSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
-        BulkVersionBuilder $bulkVersionBuilder,
-        BulkVersionSaver $versionSaver,
+        BulkVersionBuilderInterface $bulkVersionBuilder,
+        BulkSaverInterface $versionSaver,
         NormalizerInterface $normalizer,
         MongoObjectsFactory $mongoFactory,
         Collection $collection
@@ -72,25 +72,27 @@ class ProductSaverSpec extends ObjectBehavior
         $versionSaver,
         $normalizer,
         $collection,
-        ProductInterface $product_a,
-        ProductInterface $product_b,
-        ProductInterface $product_c,
-        ProductInterface $product_d
+        ProductInterface $productA,
+        ProductInterface $productB,
+        ProductInterface $productC,
+        ProductInterface $productD
     ) {
-        $products = [$product_a, $product_b, $product_c, $product_d];
+        $products = [$productA, $productB, $productC, $productD];
 
-        $product_a->getId()->willReturn('id_a');
-        $product_b->getId()->willReturn('id_b');
-        $product_c->getId()->willReturn(null);
-        $product_d->getId()->willReturn(null);
+        $productA->getId()->willReturn('id_a');
+        $productB->getId()->willReturn('id_b');
+        $productC->getId()->willReturn(null);
+        $productD->getId()->willReturn(null);
 
-        $product_c->setId(Argument::any())->shouldBeCalled();
-        $product_d->setId(Argument::any())->shouldBeCalled();
+        $productA->setId(Argument::any())->shouldNotBeCalled();
+        $productB->setId(Argument::any())->shouldNotBeCalled();
+        $productC->setId(Argument::any())->shouldBeCalled();
+        $productD->setId(Argument::any())->shouldBeCalled();
 
-        $normalizer->normalize($product_a, Argument::cetera())->willReturn(['_id' => 'id_a', 'key_a' => 'data_a']);
-        $normalizer->normalize($product_b, Argument::cetera())->willReturn(['_id' => 'id_b', 'key_b' => 'data_b']);
-        $normalizer->normalize($product_c, Argument::cetera())->willReturn(['_id' => 'id_c', 'key_c' => 'data_c']);
-        $normalizer->normalize($product_d, Argument::cetera())->willReturn(['_id' => 'id_d', 'key_d' => 'data_d']);
+        $normalizer->normalize($productA, Argument::cetera())->willReturn(['_id' => 'id_a', 'key_a' => 'data_a']);
+        $normalizer->normalize($productB, Argument::cetera())->willReturn(['_id' => 'id_b', 'key_b' => 'data_b']);
+        $normalizer->normalize($productC, Argument::cetera())->willReturn(['_id' => 'id_c', 'key_c' => 'data_c']);
+        $normalizer->normalize($productD, Argument::cetera())->willReturn(['_id' => 'id_d', 'key_d' => 'data_d']);
 
         $collection->batchInsert(
             [
@@ -110,13 +112,13 @@ class ProductSaverSpec extends ObjectBehavior
     function it_dispatches_events_on_save(
         $eventDispatcher,
         $collection,
-        ProductInterface $product_a,
-        ProductInterface $product_b
+        ProductInterface $productA,
+        ProductInterface $productB
     ) {
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $collection->batchInsert(Argument::any())->willReturn(null);
 
-        $this->saveAll([$product_a, $product_b]);
+        $this->saveAll([$productA, $productB]);
     }
 }

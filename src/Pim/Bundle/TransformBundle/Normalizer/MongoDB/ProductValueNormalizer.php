@@ -136,15 +136,15 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         $refDataName = $attribute->getReferenceDataName();
-        if (null !== $refDataName) {
-            if ('reference_data_options' === $backendType) {
-                return $this->getReferenceDataFieldName($value, $refDataName);
-            }
-
-            return $refDataName;
+        if (null === $refDataName) {
+            return $backendType;
         }
 
-        return $backendType;
+        if ('reference_data_options' === $backendType) {
+            return $this->getReferenceDataFieldName($value, $refDataName);
+        }
+
+        return $refDataName;
     }
 
     /**
