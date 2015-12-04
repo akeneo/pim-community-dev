@@ -19,17 +19,14 @@ Feature: Filter products by reference data
     And I am logged in as "Mary"
     And I am on the products page
 
-  Scenario: Successfully filter products by reference data
-    Given I should not see the filter sole_color
-    And the grid should contain 2 elements
+  Scenario: Successfully filter product with multi reference data filters
+    Given I show the filter "Sole color"
+    And I filter by "Sole color" with value "Red"
     And I should be able to use the following filters:
       | filter      | value                 | result |
-      | Sole color  | red                   | postit |
-      | Sole color  | red,blue              | postit |
-      | Sole color  | is empty              | mug    |
-      | Sole color  | Green                 |        |
       | Sole fabric | Cashmerewool          | postit |
-      | Sole fabric | Cashmerewool,Neoprene | postit |
       | Sole fabric | Silk                  | postit |
+      | Sole fabric | Cashmerewool,Silk     | postit |
+      | Sole fabric | Cashmerewool,Neoprene | postit |
       | Sole fabric | Neoprene              |        |
-      | Sole fabric | is empty              | mug    |
+      | Sole fabric | is empty              |        |
