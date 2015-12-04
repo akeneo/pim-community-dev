@@ -5,6 +5,7 @@
 - PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
 - PIM-5215: Create empty product values for new family attributes after product import with family change
 - PIM-5268: Fix PDF display to be able to display long attribute name
+- PIM-5194: Fix performance issues on families loading in PEF
 
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
@@ -35,7 +36,6 @@
 ## Bug fixes
 - PIM-5163: Fix the VersionRepository on MongoDB to take the most recent entry for product resources
 - PIM-5169: Fix mass edit attribute selection while using a small screen resolution
-- PIM-5194: Fix performance issues on families loading in PEF
 
 # 1.4.9 (2015-11-12)
 
