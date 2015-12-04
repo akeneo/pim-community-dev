@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Component\Localization\Presenter;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
