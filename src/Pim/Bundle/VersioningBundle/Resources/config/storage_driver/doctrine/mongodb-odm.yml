@@ -2,6 +2,8 @@ parameters:
     pim_versioning.repository.version.class:                          Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
     pim_versioning.update_guesser.contains_products.class:            Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
     pim_versioning.event_subscriber.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
+    pim_versioning.doctrine.mongodb.bulk_saver.version.class:         Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver
+    pim_versioning.doctrine.mongodb.bulk_builder.version.class:       Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder
     pim_versioning.doctrine.mongodb.pending_mass_persister.class:     Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister
 
 services:
@@ -30,6 +32,7 @@ services:
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
+    # deprecated Will be removed in 1.6
     pim_versioning.doctrine.mongodb.pending_mass_persister:
         class: %pim_versioning.doctrine.mongodb.pending_mass_persister.class%
         arguments:
@@ -39,6 +42,22 @@ services:
             - '@pim_serializer'
             - %pim_versioning.entity.version.class%
             - '@doctrine.odm.mongodb.document_manager'
+
+    pim_versioning.doctrine.mongodb.bulk_saver.version:
+        class: %pim_versioning.doctrine.mongodb.bulk_saver.version.class%
+        arguments:
+            - '@pim_versioning.object_manager.version'
+            - '@pim_serializer'
+            - %pim_versioning.entity.version.class%
+
+    pim_versioning.doctrine.mongodb.bulk_builder.version:
+        class: %pim_versioning.doctrine.mongodb.bulk_builder.version.class%
+        arguments:
+            - '@pim_versioning.builder.version'
+            - '@pim_versioning.context.version'
+            - '@pim_versioning.object_manager.version'
+            - '@event_dispatcher'
+            - %pim_versioning.entity.version.class%
 
     pim_versioning.object_manager.version:
         alias: doctrine.odm.mongodb.document_manager

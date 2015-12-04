@@ -66,9 +66,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product));
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+
 
         $this->objectManager->persist($product);
 
@@ -84,7 +84,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             $this->completenessManager->generateMissingForProduct($product);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
 
     /**
@@ -96,20 +96,20 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products));
+        $options = $this->optionsResolver->resolveSaveAllOptions($options);
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
+        $itemOptions = $options;
         $itemOptions['flush'] = false;
 
         foreach ($products as $product) {
             $this->save($product, $itemOptions);
         }
 
-        if (true === $allOptions['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
     }
 }

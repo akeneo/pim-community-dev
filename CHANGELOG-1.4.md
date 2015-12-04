@@ -6,6 +6,13 @@
 - PIM-5215: Create empty product values for new family attributes after product import with family change
 - PIM-5268: Fix PDF display to be able to display long attribute name
 
+## BC Breaks
+- Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
+  It is required because normalization of reference data in product values is based on Doctrine metadata.
+
+## Performance improvements
+- PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
+
 # 1.4.11 (2015-11-27)
 
 ## BC Breaks
