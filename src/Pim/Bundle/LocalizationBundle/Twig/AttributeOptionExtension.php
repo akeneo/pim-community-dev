@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
+use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Twig extension to present localized attribute options
@@ -17,17 +17,17 @@ class AttributeOptionExtension extends \Twig_Extension
     /** @var PresenterRegistryInterface */
     protected $presenterRegistry;
 
-    /** @var RequestStack */
-    protected $requestStack;
+    /** @var LocaleResolver */
+    protected $localeResolver;
 
     /**
      * @param PresenterRegistryInterface $presenterRegistry
-     * @param RequestStack               $requestStack
+     * @param LocaleResolver             $localeResolver
      */
-    public function __construct(PresenterRegistryInterface $presenterRegistry, RequestStack $requestStack)
+    public function __construct(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
     {
         $this->presenterRegistry = $presenterRegistry;
-        $this->requestStack      = $requestStack;
+        $this->localeResolver    = $localeResolver;
     }
 
     /**
@@ -64,7 +64,7 @@ class AttributeOptionExtension extends \Twig_Extension
     {
         $presenter = $this->presenterRegistry->getAttributeOptionPresenter($optionName);
         if (null !== $presenter) {
-            $locale = $this->getLocale();
+            $locale = $this->localeResolver->getCurrentLocale();
 
             if (null !== $locale) {
                 return $presenter->present($value, ['locale' => $locale]);
@@ -72,20 +72,5 @@ class AttributeOptionExtension extends \Twig_Extension
         }
 
         return $value;
-    }
-
-    /**
-     * Returns current user locale.
-     *
-     * @return string|null
-     */
-    protected function getLocale()
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            return null;
-        }
-
-        return $request->getLocale();
     }
 }
