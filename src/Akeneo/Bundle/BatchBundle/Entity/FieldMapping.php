@@ -14,6 +14,8 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping as FieldMappingMode
  *
  * @ORM\Table(name="akeneo_batch_mapping_field")
  * @ORM\Entity
+ *
+ * @deprecated will be removed in 1.6
  */
 class FieldMapping extends FieldMappingModel
 {

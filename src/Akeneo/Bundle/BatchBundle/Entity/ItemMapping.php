@@ -14,6 +14,8 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
  *
  * @ORM\Table(name="akeneo_batch_mapping_item")
  * @ORM\Entity
+ *
+ * @deprecated will be removed in 1.6
  */
 class ItemMapping extends ItemMappingModel
 {

@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
 /**
  * Test related class
  *
- *
+ * @deprecated will be removed in 1.6
  */
 class FieldMappingTest extends \PHPUnit_Framework_TestCase
 {

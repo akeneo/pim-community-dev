@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Transform\Mapping;
 /**
  * Field mapping
  *
- *
+ * @deprecated will be removed in 1.6
  */
 class FieldMapping
 {

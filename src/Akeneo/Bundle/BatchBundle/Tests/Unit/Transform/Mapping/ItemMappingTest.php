@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping;
 /**
  * Test related class
  *
- *
+ * @deprecated will be removed in 1.6
  */
 class ItemMappingTest extends \PHPUnit_Framework_TestCase
 {

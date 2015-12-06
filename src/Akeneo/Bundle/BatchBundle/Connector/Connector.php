@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @deprecated will be removed in future version
+ * @deprecated will be removed in 1.6
  */
 class Connector extends Bundle
 {
