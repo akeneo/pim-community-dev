@@ -1,0 +1,94 @@
+parameters:
+    akeneo_batch.connectors.class:                            Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
+    akeneo_batch.job_repository.class:                        Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job_factory.class:                           Akeneo\Bundle\BatchBundle\Job\JobFactory
+    akeneo_batch.step_factory.class:                          Akeneo\Bundle\BatchBundle\Step\StepFactory
+    akeneo_batch.job_instance_factory.class:                  Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory
+    akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
+    akeneo_batch.logger.batch_log_handler.class:              Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    akeneo_batch.mail_notifier.class:                         Akeneo\Bundle\BatchBundle\Notification\MailNotifier
+    akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
+    akeneo_batch.manager.job_execution.class:                 Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager
+    akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
+    akeneo_batch.connectors_config:                           ~
+    akeneo_batch.jobs_config:                                 ~
+    akeneo_batch.entity.job_execution.class:                  Akeneo\Bundle\BatchBundle\Entity\JobExecution
+
+services:
+    # connectors registry
+    akeneo_batch.connectors:
+        class: %akeneo_batch.connectors.class%
+        arguments:
+            - @akeneo_batch.job_factory
+            - @akeneo_batch.step_factory
+
+    akeneo_batch.job_repository:
+        class: %akeneo_batch.job_repository.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - '%akeneo_batch.entity.job_execution.class%'
+
+    akeneo_batch.job_factory:
+        class: %akeneo_batch.job_factory.class%
+        arguments:
+            - @event_dispatcher
+            - @akeneo_batch.job_repository
+
+    akeneo_batch.job_instance_factory:
+        class: %akeneo_batch.job_instance_factory.class%
+        arguments:
+            - %akeneo_batch.entity.job_instance.class%
+
+    akeneo_batch.logger_subscriber:
+        class: %akeneo_batch.logger_subscriber.class%
+        arguments:
+            - @logger
+            - @translator
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: batch }
+
+    akeneo_batch.notification_subscriber:
+        class: %akeneo_batch.notification_subscriber.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.mail_notifier:
+        class: %akeneo_batch.mail_notifier.class%
+        arguments:
+            - @akeneo_batch.logger.batch_log_handler
+            - @security.token_storage
+            - @twig
+            - @mailer
+            - %akeneo_batch.mail_notifier.sender_email%
+
+    akeneo_batch.step_factory:
+        class: %akeneo_batch.step_factory.class%
+        arguments:
+            - @event_dispatcher
+            - @akeneo_batch.job_repository
+
+    akeneo_batch.logger.batch_log_handler:
+        class: %akeneo_batch.logger.batch_log_handler.class%
+        arguments:
+            - %kernel.logs_dir%/batch
+
+    akeneo_batch.set_job_execution_log_file_subscriber:
+        class: %akeneo_batch.set_job_execution_log_file_subscriber.class%
+        arguments:
+            - @akeneo_batch.logger.batch_log_handler
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.manager.job_execution:
+        class: %akeneo_batch.manager.job_execution.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    akeneo_batch.launcher.simple_job_launcher:
+        class: %akeneo_batch.launcher.simple_job_launcher.class%
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '%kernel.root_dir%'
+            - '%kernel.environment%'
