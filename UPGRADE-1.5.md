@@ -28,7 +28,7 @@ So, in Akeneo PIM 1.x versions, to reduce the dependencies, ease the maintenance
 
 In the v1.5, we move these bundles from our fork to our main repository to ease the cleanup and make our technical stack more understandable.
 
-## Architecture [WIP still in discussion, can evolve and change]
+## Architecture [WIP]
 
 Once Oro bundles moved, there is the re-work strategy for v1.5.
 
@@ -162,7 +162,7 @@ Old export writer classes and services are still in BaseConnectorBundle and are 
 
 The strategy is to be able to depreciate entirely the BaseConnectorBundle once we'll have re-worked remaining export parts (mainly reader and processor).
 
-## Catalog Bundle & Component
+## Catalog Bundle & Component [WIP]
 
 We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
  - model interfaces and classes as ProductInterface
@@ -190,6 +190,95 @@ akeneo_storage_utils:
             original: Pim\Component\Catalog\Model\ProductValue
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
+
+## Batch Bundle & Component [WIP]
+
+The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
+
+It resides in a dedicated Github repository and it has not been enhanced as much as the other bundles.
+
+It's a shame because this bundle provides the main interfaces and classes to structure the connectors for import/export.
+
+To ease the improvements of this key part of the PIM, we moved it in the pim-community-dev repository.
+
+With the same strategy than for other old bundles, main technical interfaces are extracted in a Akeneo/Batch component.
+
+It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
+
+As usual, we provide upgrade commands (cf next chapters) to easily update projects migrating from 1.4 to 1.5.
+
+## Normalizers & Denormalizers [WIP]
+
+The PIM heavily uses the Serializer component of Symfony http://symfony.com/doc/2.7/components/serializer.html.
+
+Especially, classes which implement,
+ - NormalizerInterface to transform object to array  
+ - DenormalizerInterface to transform array to object
+
+We have a lot of different formats and for backward compatibility reason, we never re-organized them.
+
+Pim/Bundle/CatalogBundle
+└── MongoDB
+    └── Normalizer          -> format "mongodb_json", used to generate the field normalizedData in a product mongo document
+
+Pim/Bundle/TransformBundle
+├── Denormalizer
+│   ├── Flat                -> format "flat", "csv", used to revert versions (legacy, it should use structured format + updater api)
+│   └── Structured          -> format "json", use to denormalize product templates values
+└── Normalizer
+    ├── Flat                -> format "flat", "csv", used to generate csv files and versionning format (legacy, it should use structured format)
+    ├── MongoDB             -> format "mongodb_document", used to transform a whole object to a MongoDB Document
+    └── Structured          -> format "json", "xml", used to generate internal standard format (product template values, product draft values), or for rest api, can also be used with the updater api
+
+Pim/Bundle/EnrichBundle
+└── Normalizer              -> format "internal_api", used by the internal rest api to communicate with new UI Forms (product edit form)
+
+We could have [WIP],
+
+The "structured/json/standard" format could be moved to Catalog component:
+ - Pim/Bundle/TransformBundle/Normalizer/Structured -> Pim/Component/Catalog/Normalizer/Structured
+
+The "flat/csv" format should be only used for import/export and could reside in Connector component:
+Pim/Bundle/TransformBundle/Normalizer/Flat -> Pim/Component/Connector/Normalizer/Flat
+ -> because should only be used for csv import/export (versioning for legacy reasons)
+
+The "mongodb_json" format could be moved in Catalog Bundle (not in component because rely on storage classes):
+ -> Pim/Bundle/CatalogBundle/MongoDB/Normalizer -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/NormalizedData
+
+The "mongodb_document" format could be moved in Catalog Bundle (not in component because rely on storage classes):
+ -> Pim/Bundle/TransformBundle/Normalizer/MongoDB -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/Document
+
+The "internal_api" format could be renamed in Enrich bundle:
+ -> Pim/Bundle/EnrichBundle/Normalizer -> Pim/Bundle/EnrichBundle/Normalizer/InternalRest
+
+Other bundles register normalizers/denormalizers for these formats and could be re-organized:
+├── ImportExportBundle
+│   ├── Normalizer
+├── ReferenceDataBundle
+│   ├── Normalizer
+├── UserBundle
+│   ├── Normalizer
+├── LocalizationBundle
+│   ├── Normalizer
+└── Localization
+    ├── Denormalizer
+    └── Normalizer
+
+## Localization Component & Bundle [WIP]
+
+One key feature of the 1.5 is the proper localization of the PIM for number format, date format and UI translation.
+
+In 1.4, localization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
+
+The 1.5 covers,
+ - UI language per user
+ - Rework of UI components (a single localized date picker for instance)
+ - number and date format in UI and import/export
+ - translations of error messages in import/export
+
+The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
+
+[WIP] The following bundles are removed Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
 
 ## Partially fix BC breaks
 
