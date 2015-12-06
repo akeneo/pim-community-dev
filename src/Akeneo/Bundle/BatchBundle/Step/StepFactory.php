@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Step;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Util\Inflector;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Doctrine\Common\Util\Inflector;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Step instance factory

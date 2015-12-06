@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber;
 
 /**
  * Test related class
@@ -230,7 +230,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             'Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface',
             'batch.invalid_item_reason',
             array('item' => 'foobar'),
-            array('foo' => 'bar')
+            array('foo'  => 'bar')
         );
         $this->subscriber->invalidItem($event);
     }

@@ -53,7 +53,7 @@ class ExitStatus
      */
     const STOPPED = "STOPPED";
 
-    protected static $statusSeverity = array (
+    protected static $statusSeverity = array(
         self::EXECUTING => 1,
         self::COMPLETED => 2,
         self::NOOP      => 3,
@@ -200,7 +200,7 @@ class ExitStatus
      */
     public function isRunning()
     {
-        return ( ("RUNNING" ==  $this->exitCode) || ("UNKNOWN" == $this->exitCode) );
+        return (("RUNNING" ==  $this->exitCode) || ("UNKNOWN" == $this->exitCode));
     }
 
     /**

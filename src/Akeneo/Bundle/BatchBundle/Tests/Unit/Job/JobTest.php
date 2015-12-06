@@ -2,14 +2,14 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Job\Job;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
-use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
+use Akeneo\Bundle\BatchBundle\Job\Job;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
+use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 
 /**
  * Tests related to the Job class
@@ -153,7 +153,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
             $jobExecution->getExitStatus()->getExitDescription(),
             'Exit description'
         );
-
     }
 
     public function testExecuteIncomplete()
@@ -188,9 +187,9 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testGetConfiguration()
     {
         $expectedConfiguration = array(
-            'reader_foo' => 'bar',
+            'reader_foo'    => 'bar',
             'processor_foo' => 'bar',
-            'writer_foo' => 'bar',
+            'writer_foo'    => 'bar',
         );
         $reader    = $this->getReaderMock($expectedConfiguration, array('reader_foo'));
         $processor = $this->getProcessorMock($expectedConfiguration, array('processor_foo'));
@@ -206,9 +205,9 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testSetConfiguration()
     {
         $config =array(
-            'reader_foo' => 'reader_bar',
+            'reader_foo'    => 'reader_bar',
             'processor_foo' => 'processor_bar',
-            'writer_foo' => 'writer_bar',
+            'writer_foo'    => 'writer_bar',
         );
 
         $reader    = $this->getReaderMock(array(), array('reader_foo'));
@@ -278,7 +277,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $this->job->setSteps(array($mockStep1, $mockStep2));
 
-        $this->assertEquals(array('my_mock_step1','my_mock_step2'), $this->job->getStepNames());
+        $this->assertEquals(array('my_mock_step1', 'my_mock_step2'), $this->job->getStepNames());
     }
 
     public function getItemStep($name, $reader, $processor, $writer)

@@ -2,15 +2,15 @@
 
 namespace Akeneo\Bundle\BatchBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Yaml\Parser as YamlParser;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Yaml\Parser as YamlParser;
 
 /**
  * Read the batch_jobs.yml file of the connectors to register the jobs
@@ -72,7 +72,6 @@ class RegisterJobsPass implements CompilerPassInterface
 
         foreach ($config['jobs'] as $alias => $job) {
             foreach ($job['steps'] as $step) {
-
                 $services = array();
                 foreach ($step['services'] as $setter => $serviceId) {
                     $services[$setter]= new Reference($serviceId);

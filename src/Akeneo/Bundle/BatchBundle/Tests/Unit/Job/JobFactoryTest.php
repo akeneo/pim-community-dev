@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Akeneo\Bundle\BatchBundle\Job\JobFactory;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 /**
  * Tests related to the JobFactory class

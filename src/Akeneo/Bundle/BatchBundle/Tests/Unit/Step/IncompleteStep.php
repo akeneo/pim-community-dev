@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 
 /**
  * Step used for test and always declared a incomplete execution

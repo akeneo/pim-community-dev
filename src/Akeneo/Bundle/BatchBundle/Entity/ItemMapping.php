@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping as ItemMappingModel;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Entity ItemMapping

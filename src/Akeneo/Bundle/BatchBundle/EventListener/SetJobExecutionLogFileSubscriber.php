@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Set the job execution log file into the job execution instance

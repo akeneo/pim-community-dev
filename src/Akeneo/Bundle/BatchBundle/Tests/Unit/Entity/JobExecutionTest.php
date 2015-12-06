@@ -2,13 +2,13 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test related class
@@ -221,7 +221,6 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('My step exception 1', $allFailureExceptions[2]['message']);
         $this->assertEquals('100', $allFailureExceptions[2]['code']);
         $this->assertContains(__FUNCTION__, $allFailureExceptions[2]['trace']);
-
     }
 
     public function testSetGetJobInstance()

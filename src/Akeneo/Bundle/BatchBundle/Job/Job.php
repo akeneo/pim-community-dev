@@ -2,13 +2,13 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\Event;
-use Akeneo\Bundle\BatchBundle\Step\StepInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Step\StepInterface;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -303,7 +303,6 @@ class Job implements JobInterface
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
             }
-
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(
@@ -407,7 +406,6 @@ class Job implements JobInterface
 
         if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
             || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             $this->jobRepository->updateJobExecution($jobExecution);
             throw new JobInterruptedException("Job interrupted by step execution");

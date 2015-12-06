@@ -2,13 +2,13 @@
 
 namespace Akeneo\Bundle\BatchBundle\Step;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -186,14 +186,12 @@ class ItemStep extends AbstractStep
 
         $stopExecution = false;
         while (!$stopExecution) {
-
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
                     $stopExecution = true;
                     continue;
                 }
-
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
 
@@ -202,7 +200,6 @@ class ItemStep extends AbstractStep
 
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
-
                 $itemsToWrite[] = $processedItem;
                 $writeCount++;
                 if (0 === $writeCount % $this->batchSize) {
@@ -256,7 +253,6 @@ class ItemStep extends AbstractStep
     {
         try {
             return $this->processor->process($readItem);
-
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->processor, $e);
 
@@ -273,7 +269,6 @@ class ItemStep extends AbstractStep
     {
         try {
             $this->writer->write($processedItems);
-
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->writer, $e);
         }

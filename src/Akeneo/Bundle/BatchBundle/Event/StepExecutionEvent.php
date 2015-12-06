@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event triggered during stepExecution execution

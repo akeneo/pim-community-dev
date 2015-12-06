@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Connector;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 {

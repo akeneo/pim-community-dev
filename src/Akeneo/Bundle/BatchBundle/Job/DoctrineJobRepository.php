@@ -2,11 +2,11 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Class peristing JobExecution and StepExecution states.

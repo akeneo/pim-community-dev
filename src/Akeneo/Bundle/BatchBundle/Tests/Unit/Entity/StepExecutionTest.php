@@ -120,7 +120,6 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('My exception 2', $failureExceptions[1]['message']);
         $this->assertEquals('2', $failureExceptions[1]['code']);
         $this->assertContains(__FUNCTION__, $failureExceptions[1]['trace']);
-
     }
 
     public function testGetSetReadCount()
@@ -182,13 +181,13 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
             'foo',
             '%something% is wrong on line 1',
             array('%something%' => 'Item1'),
-            array('foo' => 'bar')
+            array('foo'         => 'bar')
         );
         $this->stepExecution->addWarning(
             'bar',
             '%something% is wrong on line 2',
             array('%something%' => 'Item2'),
-            array('baz' => false)
+            array('baz'         => false)
         );
         $item = new \stdClass();
         $this->stepExecution->addWarning(
@@ -201,22 +200,22 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    'name'   => 'my_step_execution.steps.foo.title',
-                    'reason' => '%something% is wrong on line 1',
+                    'name'             => 'my_step_execution.steps.foo.title',
+                    'reason'           => '%something% is wrong on line 1',
                     'reasonParameters' => array('%something%' => 'Item1'),
-                    'item'   => array('foo' => 'bar')
+                    'item'             => array('foo'         => 'bar')
                 ),
                 array(
-                    'name'   => 'my_step_execution.steps.bar.title',
-                    'reason' => '%something% is wrong on line 2',
+                    'name'             => 'my_step_execution.steps.bar.title',
+                    'reason'           => '%something% is wrong on line 2',
                     'reasonParameters' => array('%something%' => 'Item2'),
-                    'item'   => array('baz' => false)
+                    'item'             => array('baz'         => false)
                 ),
                 array(
-                    'name'   => 'my_step_execution.steps.baz.title',
-                    'reason' => '%something% is wrong with object 3',
+                    'name'             => 'my_step_execution.steps.baz.title',
+                    'reason'           => '%something% is wrong with object 3',
                     'reasonParameters' => array('%something%' => 'Item3'),
-                    'item'   => array('id' => '[unknown]', 'class' => 'stdClass', 'string' => '[unknown]')
+                    'item'             => array('id'          => '[unknown]', 'class' => 'stdClass', 'string' => '[unknown]')
                 )
             ),
             $getWarnings($this->stepExecution->getWarnings())
@@ -227,29 +226,29 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
             'foo',
             '%something% is wrong on line 1',
             array('%something%' => 'Item1'),
-            array('foo' => 'bar')
+            array('foo'         => 'bar')
         );
         $stepExecution->addWarning(
             'bar',
             '%something% is wrong on line 2',
             array('%something%' => 'Item2'),
-            array('baz' => false)
+            array('baz'         => false)
         );
 
         $this->assertEquals(
             array(
                 array(
-                    'name'   => 'my_step_execution.steps.foo.title',
-                    'reason' => '%something% is wrong on line 1',
+                    'name'             => 'my_step_execution.steps.foo.title',
+                    'reason'           => '%something% is wrong on line 1',
                     'reasonParameters' => array('%something%' => 'Item1'),
-                    'item'   => array('foo' => 'bar')
+                    'item'             => array('foo'         => 'bar')
                 ),
                 array(
-                    'name'   => 'my_step_execution.steps.bar.title',
-                    'reason' => 'something is wrong on line 2',
-                    'reason' => '%something% is wrong on line 2',
+                    'name'             => 'my_step_execution.steps.bar.title',
+                    'reason'           => 'something is wrong on line 2',
+                    'reason'           => '%something% is wrong on line 2',
                     'reasonParameters' => array('%something%' => 'Item2'),
-                    'item'   => array('baz' => false)
+                    'item'             => array('baz'         => false)
                 )
             ),
             $getWarnings($stepExecution->getWarnings())

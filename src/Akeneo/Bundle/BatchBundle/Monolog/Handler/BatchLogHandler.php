@@ -24,7 +24,6 @@ class BatchLogHandler extends StreamHandler
      */
     public function __construct($logDir)
     {
-
         $this->logDir = $logDir;
 
         parent::__construct(false);

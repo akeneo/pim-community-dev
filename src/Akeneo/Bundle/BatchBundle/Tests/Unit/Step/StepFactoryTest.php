@@ -32,7 +32,7 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $services = array ('reader' => $reader, 'processor' => $processor, 'writer' => $writer);
+        $services = array('reader' => $reader, 'processor' => $processor, 'writer' => $writer);
         $class = 'Akeneo\Bundle\BatchBundle\Step\ItemStep';
         $step = $stepFactory->createStep('my_test_job', $class, $services, array());
 

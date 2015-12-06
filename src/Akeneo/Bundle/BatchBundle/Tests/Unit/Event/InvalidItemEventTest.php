@@ -19,12 +19,12 @@ class InvalidItemEventTest extends \PHPUnit_Framework_TestCase
             'Foo\\Bar\\Baz',
             'No special reason.',
             array('%param%' => 'Item1'),
-            array('foo' => 'baz')
+            array('foo'     => 'baz')
         );
 
         $this->assertEquals('Foo\\Bar\\Baz', $event->getClass());
         $this->assertEquals('No special reason.', $event->getReason());
         $this->assertEquals(array('%param%' => 'Item1'), $event->getReasonParameters());
-        $this->assertEquals(array('foo' => 'baz'), $event->getItem());
+        $this->assertEquals(array('foo'     => 'baz'), $event->getItem());
     }
 }

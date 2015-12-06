@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 
 /**
  * Tests related to the ItemStep class
@@ -46,18 +46,18 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfiguration()
     {
-        $reader    = $this->getReaderMock(array('reader_foo' => 'bar'), array('reader_foo'));
+        $reader    = $this->getReaderMock(array('reader_foo'       => 'bar'), array('reader_foo'));
         $processor = $this->getProcessorMock(array('processor_foo' => 'bar'), array('processor_foo'));
-        $writer    = $this->getWriterMock(array('writer_foo' => 'bar'), array('writer_foo'));
+        $writer    = $this->getWriterMock(array('writer_foo'       => 'bar'), array('writer_foo'));
 
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
 
         $expectedConfiguration = array(
-            'reader_foo' => 'bar',
+            'reader_foo'    => 'bar',
             'processor_foo' => 'bar',
-            'writer_foo' => 'bar',
+            'writer_foo'    => 'bar',
         );
 
         $this->assertEquals($expectedConfiguration, $this->itemStep->getConfiguration());
@@ -73,9 +73,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
         $config = array(
-            'reader_foo' => 'reader_bar',
+            'reader_foo'    => 'reader_bar',
             'processor_foo' => 'processor_bar',
-            'writer_foo' => 'writer_bar',
+            'writer_foo'    => 'writer_bar',
         );
 
         $reader->expects($this->once())

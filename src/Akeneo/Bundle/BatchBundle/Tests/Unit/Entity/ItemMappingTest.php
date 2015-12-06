@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Akeneo\Bundle\BatchBundle\Entity\ItemMapping;
 use Akeneo\Bundle\BatchBundle\Entity\FieldMapping;
+use Akeneo\Bundle\BatchBundle\Entity\ItemMapping;
 
 /**
  * Test related class

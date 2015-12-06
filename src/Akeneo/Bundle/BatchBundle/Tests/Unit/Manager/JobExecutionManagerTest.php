@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Manager;
 
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber;
 
 /**
  * Test related class

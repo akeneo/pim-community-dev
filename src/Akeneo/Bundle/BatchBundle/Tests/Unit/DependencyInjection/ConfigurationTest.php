@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
 
+use Akeneo\Bundle\BatchBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
-use Akeneo\Bundle\BatchBundle\DependencyInjection\Configuration;
 
 /**
  * Test related class
