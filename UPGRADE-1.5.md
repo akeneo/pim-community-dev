@@ -195,17 +195,17 @@ akeneo_storage_utils:
 
 The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
 
-It resides in a dedicated Github repository and it has not been enhanced as much as the other bundles.
+It resides in a dedicated Github repository and, due to that, it has not been enhanced as much as the other bundles.
 
 It's a shame because this bundle provides the main interfaces and classes to structure the connectors for import/export.
 
-To ease the improvements of this key part of the PIM, we moved it in the pim-community-dev repository.
+To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
 
 With the same strategy than for other old bundles, main technical interfaces are extracted in a Akeneo/Batch component.
 
 It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
 
-As usual, we provide upgrade commands (cf next chapters) to easily update projects migrating from 1.4 to 1.5.
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
 ## Normalizers & Denormalizers [WIP]
 
@@ -280,6 +280,28 @@ The Pim/Localization component provides classes to deal with localization, the r
 
 [WIP] The following bundles are removed Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
 
+## Versioning Bundle & Component [WIP]
+
+Versioning system has been introduced in a really early version of the PIM and has never been re-worked.
+
+Up to the version 1.3, the saving of an object was done through direct calls to Doctrine persist/flush anywhere in the application.
+
+The versioning system relies on Doctrine events to detect if an object has been changed to write a new version if this object is versionable.
+
+Since the 1.3, we've introduced the SaverInterface and BulkSaverInterface and make all our business code rely on it.
+
+It allows to decouple business code from Doctrine ORM persistence and make the object saving more explicit from business code point of view.
+
+Our future plan for the versioning is to rely on these save calls to create new versions (and avoid to guess if any object has been updated).
+
+This guessing part is very greedy and we expect to enhance the performances by making it more straightforward.
+
+To prepare this shiny future, we've introduced a new Akeneo component which contains only pure business logic related to the versioning.
+
+The versioning process itself will be re-worked in a future, to make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
+
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
@@ -297,7 +319,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractCompleteness/Component\\Catalog\\Model\\AbstractCompleteness/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractMetric/Component\\Catalog\\Model\\AbstractMetric/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProduct/Component\\Catalog\\Model\\AbstractProduct/g'
-    # TODO: deprecated, should be removed
+    # TODO: AbstractProductMedia is deprecated since 1.4, should be removed
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductMedia/Component\\Catalog\\Model\\AbstractProductMedia/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductPrice/Component\\Catalog\\Model\\AbstractProductPrice/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductValue/Component\\Catalog\\Model\\AbstractProductValue/g'
@@ -318,13 +340,13 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupInterface/Component\\Catalog\\Model\\GroupInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupTypeInterface/Component\\Catalog\\Model\\GroupTypeInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocaleInterface/Component\\Catalog\\Model\\LocaleInterface/g'
-    # TODO should not be moved here?
+    # TODO should not be moved here, should be moved in Localization component because other component rely on it!
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocalizableInterface/Component\\Catalog\\Model\\LocalizableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Metric/Component\\Catalog\\Model\\Metric/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\MetricInterface/Component\\Catalog\\Model\\MetricInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Product/Component\\Catalog\\Model\\Product/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductInterface/Component\\Catalog\\Model\\ProductInterface/g'
-    # TODO: deprecated, should be removed
+    # TODO: ProductMedia is deprecated since 1.4, should be removed
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMedia/Component\\Catalog\\Model\\ProductMedia/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMediaInterface/Component\\Catalog\\Model\\ProductMediaInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPrice/Component\\Catalog\\Model\\ProductPrice/g'
@@ -335,10 +357,10 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ReferableInterface/Component\\Catalog\\Model\\ReferableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ScopableInterface/Component\\Catalog\\Model\\ScopableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\TimestampableInterface/Component\\Catalog\\Model\\TimestampableInterface/g'
-    # TODO: should not be moved!?
+    # TODO: should not be moved here but in Enrich because only used here!
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AvailableAttributes/Component\\Catalog\\Model\\AvailableAttributes/g'
+    # TODO: should not be moved here but in Enrich because only used here!
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChosableInterface/Component\\Catalog\\Model\\ChosableInterface/g'
-    # TODO END: should not be moved!?
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\ConnectorBundle\\Writer\\File\\ContextableCsvWriter/Bundle\\BaseConnectorBundle\\Writer\\File\\ContextableCsvWriter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilderInterface/Pim\\Component\\Catalog\\Builder\\ProductBuilderInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'

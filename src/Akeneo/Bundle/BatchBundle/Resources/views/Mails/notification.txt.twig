@@ -1,0 +1,12 @@
+Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
+
+Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s")  }}.
+Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s")  }}.
+
+Results:
+{% for stepExecution in jobExecution.stepExecutions %}
+  - {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
+{% endfor %}
+
+--
+Akeneo Batch
