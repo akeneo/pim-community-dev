@@ -55,11 +55,11 @@ Feature: Export products with localized numbers
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
       """
-      sku;categories;cotton;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD
-      sandal-white;men_2013,men_2014,men_2015;75,5500;"Ein elegantes weißes Sandal";"Une Sandale blanche élégante";1;sandals;;"Weißes Sandal";"Sandale blanche";10,90;9,00;15,00
-      sandal-black;men_2013,men_2014,men_2015;75,0000;"Ein elegantes schwarzes Sandal";"Une Sandale noire élégante";1;sandals;;"Schwarzes Sandal";"Sandale noire";10,90;9,00;15,00
-      sandal-yellow;men_2013,men_2014,men_2015;;"Ein elegantes gelb Sandal";"Une Sandale jaune élégante";1;sandals;;"Gelb Sandal";"Sandale jaune";10,90;9,00;15,00
-      sandal-blue;men_2013,men_2014,men_2015;75,0000;"Ein elegantes blau Sandal";"Un Sandale bleue élégante";1;sandals;;"Blau Sandal";"Sandale bleue";10,90;9,00;15,00
+      sku;categories;cotton;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD
+      sandal-white;men_2013,men_2014,men_2015;75,5500;"Ein elegantes weißes Sandal";;;"Une Sandale blanche élégante";1;sandals;;"Weißes Sandal";;;"Sandale blanche";10,90;9,00;15,00
+      sandal-black;men_2013,men_2014,men_2015;75,0000;"Ein elegantes schwarzes Sandal";;;"Une Sandale noire élégante";1;sandals;;"Schwarzes Sandal";;;"Sandale noire";10,90;9,00;15,00
+      sandal-yellow;men_2013,men_2014,men_2015;;"Ein elegantes gelb Sandal";;;"Une Sandale jaune élégante";1;sandals;;"Gelb Sandal";;;"Sandale jaune";10,90;9,00;15,00
+      sandal-blue;men_2013,men_2014,men_2015;75,0000;"Ein elegantes blau Sandal";;;"Un Sandale bleue élégante";1;sandals;;"Blau Sandal";;;"Sandale bleue";10,90;9,00;15,00
       """
 
   Scenario: Export number attributes with the correct decimals formatting
@@ -78,9 +78,9 @@ Feature: Export products with localized numbers
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
       """
-      sku;categories;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;metric;metric-unit;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD
-      sandal-white;men_2013,men_2014,men_2015;"Ein elegantes weißes Sandal";"Une Sandale blanche élégante";1;sandals;;90,0000;GRAM;"Weißes Sandal";"Sandale blanche";10,90;9,00;15,00
-      sandal-black;men_2013,men_2014,men_2015;"Ein elegantes schwarzes Sandal";"Une Sandale noire élégante";1;sandals;;95,5500;GRAM;"Schwarzes Sandal";"Sandale noire";10,90;9,00;15,00
-      sandal-yellow;men_2013,men_2014,men_2015;"Ein elegantes gelb Sandal";"Une Sandale jaune élégante";1;sandals;;85,0000;GRAM;"Gelb Sandal";"Sandale jaune";10,90;9,00;15,00
-      sandal-blue;men_2013,men_2014,men_2015;"Ein elegantes blau Sandal";"Un Sandale bleue élégante";1;sandals;;-5,0000;GRAM;"Blau Sandal";"Sandale bleue";10,90;9,00;15,00
+      sku;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;metric;metric-unit;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD
+      sandal-white;men_2013,men_2014,men_2015;"Ein elegantes weißes Sandal";;;"Une Sandale blanche élégante";1;sandals;;90,0000;GRAM;"Weißes Sandal";;;"Sandale blanche";10,90;9,00;15,00
+      sandal-black;men_2013,men_2014,men_2015;"Ein elegantes schwarzes Sandal";;;"Une Sandale noire élégante";1;sandals;;95,5500;GRAM;"Schwarzes Sandal";;;"Sandale noire";10,90;9,00;15,00
+      sandal-yellow;men_2013,men_2014,men_2015;"Ein elegantes gelb Sandal";;;"Une Sandale jaune élégante";1;sandals;;85,0000;GRAM;"Gelb Sandal";;;"Sandale jaune";10,90;9,00;15,00
+      sandal-blue;men_2013,men_2014,men_2015;"Ein elegantes blau Sandal";;;"Un Sandale bleue élégante";1;sandals;;-5,0000;GRAM;"Blau Sandal";;;"Sandale bleue";10,90;9,00;15,00
       """
