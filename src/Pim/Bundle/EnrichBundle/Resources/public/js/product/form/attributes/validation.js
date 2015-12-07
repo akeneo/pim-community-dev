@@ -45,7 +45,9 @@ define(
             },
             addFieldExtension: function (event) {
                 var field = event.field;
-                var valuesErrors = this.validationErrors.values;
+                var valuesErrors = _.uniq(this.validationErrors.values, function (error) {
+                    return JSON.stringify(error);
+                });
 
                 var errorsForAttribute = _.where(valuesErrors, {attribute: field.attribute.code});
 

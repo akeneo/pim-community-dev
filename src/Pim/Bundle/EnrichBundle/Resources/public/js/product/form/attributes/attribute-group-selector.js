@@ -59,7 +59,10 @@ define(
                 this.removeBadges();
 
                 var product = event.sentData;
-                var valuesErrors = event.response.values;
+                var valuesErrors = _.uniq(event.response.values, function (error) {
+                    return JSON.stringify(error);
+                });
+
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
                         .then(function (attributeGroups) {
