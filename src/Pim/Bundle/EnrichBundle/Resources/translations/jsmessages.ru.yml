@@ -1,12 +1,260 @@
+confirmation:
+  remove:
+    item: Вы действительно хотите удалить этот элемент?
+    association type: Вы действительно хотите удалить этот тип ассоциации?
+    attribute: Вы действительно хотите удалить этот атрибут?
+    family: Вы действительно хотите удалить это семейство?
+    product: Вы действительно хотите удалить этот продукт?
+    channel: Вы действительно хотите удалить этот канал?
+    group: Вы действительно хотите удалить эту группу?
+    variant group: Вы действительно хотите удалить эту группу вариантов?
+    group type: Вы действительно хотите удалить эту группу типов?
+    import profile: Вы действительно хотите удалить этот профиль импорта?
+    export profile: Вы действительно хотите удалить этот профиль экспорта?
+    user: Вы действительно хотите удалить этого пользователя?
+    role: Вы действительно хотите удалить эту роль?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Вы уверены, что хотите удалить выбранные продукты?
+      success: Выбранные продукты успешно удалены.
+      error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
+flash:
+  item:
+    removed: Элемент успешно удален
+  association type:
+    removed: Тип ассоциации успешно удален
+  attribute:
+    removed: Атрибут успешно удален
+  family:
+    removed: Семейство успешно удалено
+  product:
+    removed: Продукт успешно удален
+  channel:
+    removed: Канал успешно удален
+  group:
+    removed: Группа успешно удалена
+  variant group:
+    removed: Группа вариантов успешно удалена
+  group type:
+    removed: Группа типов успешно удалена
+  import profile:
+    removed: Профиль импорта успешно удален
+  export profile:
+    removed: Профиль экспорта успешно удален
+  user:
+    removed: Пользователь успешно удален
+  role:
+    removed: Роль успешно удалена
+error:
+  removing:
+    item: Не удается удалить этот элемент
+    association type: Не удается удалить этот тип ассоциации
+    attribute: Не удается удалить этот атрибут
+    family: Не удается удалить это семейство
+    product: Не удается удалить этот продукт
+    channel: Не удается удалить этот канал
+    group: Не удается удалить эту группу
+    variant group: Не удается удалить эту группу вариантов
+    group type: Не удается удалить эту группу типов
+    import profile: Не удается удалить этот профиль импорта
+    export profile: Не удается удалить этот профиль экспорта
+    user: Не удается удалить этого пользователя
+    role: Не удается удалить эту роль
+    attribute_option: При удалении свойства атрибута произошла ошибка
+  saving:
+    attribute_option: Не удается сохранить свойство атрибута
+alert:
+  attribute_option:
+    error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
+    save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
+  session_storage:
+    not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Внимание, вы потеряете несохраненные данные. Вы действительно хотите отменить изменения для этой опции?
+    cancel_edition_on_new_option_title: Отмена изменений
+label:
+  attribute_option:
+    add_option: Добавить новое свойство
+Code: Код
+Edit: Изменить
+Delete: Удалить
+Edit attributes of the product: Изменение атрибутов продукта
+Classify the product: Классифицировать продукт
+Delete the product: Удалить продукт
+Change status: Изменить статус
+Toggle status: Переключить состояние
+pim.grid.mass_action.quick_export.csv_all: CSV (Все атрибуты)
+pim.grid.mass_action.delete: Удалить
+pim.grid.mass_action.mass_edit: Массовое редактирование
+pim.grid.mass_action.sequential_edit: Последовательное редактирование
+jstree.create: Создать
+switch_on: Да
+switch_off: Нет
 pim_enrich:
+  item:
+    list:
+      delete.label: Удалить
+      delete.error: Ошибка при удалении элемента
+    delete:
+      confirm.content: 'Вы действительно хотите удалить {{ itemName }}? Это действие нельзя отменить'
+      confirm.title: 'Удалить {{ itemName }}'
+  navigation:
+    link:
+      back_to_grid: Вернуться к списку
   entity:
+    save:
+      label: Сохранить
+    info:
+      update_failed: Не удалось обновить
+      update_successful: Обновление завершено
     product:
+      title: продукт
+      btn:
+        enable: Активировать
+        enabled: Активирован
+        disable: Деактивировать
+        disabled: Деактивирован
+        download_pdf: PDF
+        compare_translate: Сравнить / Перевести
+        delete: Удалить
+        save: Сохранить
+        save_and_back: Сохранить и вернуться к списку
+      history:
+        version: Версия
+        author: Автор
+        logged_at: Дата входа
+        more: Дополнительно
+        less: Менее
+        from: С
+        modified: Изменен
+        property: Свойство
+        old_values: Старые значения
+        new_values: Новые значения
+        actions: Действия
+      info:
+        deletion_successful: Продукт успешно удален.
+        deletion_failed: Не удалось удалить продукт.
+        update_successful: Продукт успешно обновлен.
+        update_failed: Не удалось обновить продукт.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - поля
+        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+      error:
+        upload: Произошла ошибка при загрузке файла
+      meta:
+        created: Создан
+        created_by: Создан
+        updated_by: Обновлен
+        updated: Последнее обновление
+        family:
+          title: Семейство
+          none: (Пусто)
+        groups:
+          title: Группы
+          modal:
+            title: 'Группа {{ group }}'
+            view_group: Посмотреть группу
+            group_label: Ярлык
+            more_products: '{{ count }} больше продуктов...'
+            close: Закрыть
+      copy:
+        select: Выбрать
+        all: Все
+        all_visible: Все видимые
+        none: (Пусто)
       variant_group:
+        updated_by: Обновлено группой вариантов
         switch:
           "yes": true
           "no": false
+      optional_attribute:
+        remove: Удалить этот атрибут
+      locale_specific_attribute:
+        unavailable: Это локализуемое поле не доступно для этого языка
+      localizable:
+        channel_locale_unavailable: 'Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»'
+      media:
+        upload: Перетащите чтобы загрузить, или нажмите здесь
+    attribute_option:
+      code: Код
+      label: Ярлык
+  confirmation:
+    leave: Вы уверены, что хотите покинуть эту страницу?
+    discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
+    delete_item: Подтвердить удаление
+    delete:
+      product_attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
+  info:
+    not_applicable: '-'
+    entity:
+      updated: Имеются несохраненные изменения.
+  error:
+    upload: Произошла ошибка во время загрузки файла
+  alert:
+    not_allowed: Вы не имеете доступа к этой странице
+    error_occured: Произошла ошибка во время загрузки страницы
   form:
     product:
+      tab:
+        associations:
+          title: Ассоциации
+          info:
+            none_exist: Типы ассоциаций отсутствуют.
+            show_products: Показать продукты
+            show_groups: Показать группы
+            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+        attributes:
+          title: Атрибуты
+          btn:
+            add: Добавить
+            add_attributes: Добавить атрибуты
+          info:
+            search_attributes: Поиск
+            no_available_attributes: Нет больше атрибутов для добавления
+        categories:
+          title: Категории
+      panel:
+        completeness:
+          title: Завершенность
+          info:
+            no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
+            no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
+        history:
+          title: Журнал
       switch:
         "no": false
         "yes": true
+      sequential_edit:
+        info:
+          products: продуктов
+          previous: 'Перейдите обратно к {{ product }} без сохранения.'
+          next: 'Перейти к {{ product }} без сохранения.'
+        btn:
+          save_and_next: Сохранить и далее
+          save_and_finish: Сохранить и завершить
+      change_family:
+        modal:
+          title: Изменить семейство продуктов
+          merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
+          keep_attributes: Атрибуты не будут удалены.
+          change_family_to: Изменить семейство на
+          empty_selection: Выберите семейство
+      flash:
+        attribute_deletion_error: Произошла ошибка при удалении атрибута
+    attribute_option:
+      flash:
+        option_created: Выбор в списке атрибута успешно создан
+        error_creating_option: Произошла ошибка при попытке создания выбора для атрибута
+      add_option_modal:
+        title: Добавить выбор для атрибута
+        confirm: Добавить
+        cancel: Отменить
+    entity:
+      switch:
+        "no": false
+        "yes": true
+pim_enrich.error:
+  exception.title: 'Ах, нет! Произошла ошибка {{ status_code }}...'

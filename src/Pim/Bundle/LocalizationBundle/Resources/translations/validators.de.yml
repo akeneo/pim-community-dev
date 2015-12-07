@@ -1,0 +1,2 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'Dieser Wertetyp erwartet die Benutzung von {{ decimal_separator }} als Dezimaltrennzeichen.'
+"This type of value expects the use of the format {{ date_format }} for dates.": 'Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.'
