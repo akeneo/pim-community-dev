@@ -15,7 +15,7 @@ oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: '{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt'
 datagrid_view:
   views: Ansichten
-  default: Meine Standard-Ansicht
+  default: Standardansicht
   create: Ansicht erstellen
   placeholder: Name der neuen Ansicht
   remove: Diese Ansicht löschen
