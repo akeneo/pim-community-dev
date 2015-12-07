@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
@@ -88,7 +88,8 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($product)
     {
         $contextChannel = $this->channelManager->getChannelByCode($this->channel);
-        $this->productBuilder->addMissingProductValues($product, [$contextChannel], $contextChannel->getLocales()->toArray());
+        $this->productBuilder->addMissingProductValues($product, [$contextChannel],
+            $contextChannel->getLocales()->toArray());
 
         $data['media'] = [];
         $mediaValues   = $this->getMediaProductValues($product);
