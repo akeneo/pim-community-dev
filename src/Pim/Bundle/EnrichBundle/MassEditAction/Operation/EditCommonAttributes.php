@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -40,24 +41,31 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var string */
+    protected $tmpStorageDir;
+
     /**
      * @param ProductBuilderInterface $productBuilder
      * @param FileStorerInterface     $fileStorer
      * @param ObjectUpdaterInterface  $productUpdater
      * @param ValidatorInterface      $productValidator
+     * @param NormalizerInterface     $normalizer
+     * @param string                  $tmpStorageDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         FileStorerInterface $fileStorer,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        $tmpStorageDir
     ) {
         $this->productBuilder   = $productBuilder;
         $this->fileStorer       = $fileStorer;
         $this->productUpdater   = $productUpdater;
         $this->productValidator = $productValidator;
         $this->normalizer       = $normalizer;
+        $this->tmpStorageDir    = $tmpStorageDir;
         $this->values           = '';
     }
 
@@ -134,16 +142,23 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function finalize()
     {
-        // TODO: We need to move the uploaded files for the job to retrieve them
+        $data = json_decode($this->values, true);
+        $fs = new Filesystem();
 
-//        foreach ($this->getValues() as $productValue) {
-//            $media = $productValue->getMedia();
-//
-//            if (null !== $media && null !== $media->getUploadedFile()) {
-//                $file = $this->fileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
-//                $productValue->setMedia($file);
-//            }
-//        }
+        foreach ($data as $attributeCode => $attributeValues) {
+            foreach ($attributeValues as $value) {
+                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
+                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
+                    $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
+
+                    $fs->rename($uploadedFile->getPathname(), $newPath);
+
+                    $value['data']['filePath'] = $newPath;
+                }
+            }
+        }
+
+        $this->values = json_encode($data);
     }
 
     /**

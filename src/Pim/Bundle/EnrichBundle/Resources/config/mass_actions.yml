@@ -45,6 +45,7 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_internal_api_serializer'
+            - %tmp_storage_dir%
         tags:
             -
                 name: pim_enrich.mass_edit_action
