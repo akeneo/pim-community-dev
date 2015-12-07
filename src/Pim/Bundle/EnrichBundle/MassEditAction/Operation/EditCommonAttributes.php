@@ -146,14 +146,14 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $fs = new Filesystem();
 
         foreach ($data as $attributeCode => $attributeValues) {
-            foreach ($attributeValues as $value) {
+            foreach ($attributeValues as $k => $value) {
                 if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
                     $uploadedFile = new \SplFileInfo($value['data']['filePath']);
                     $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
 
                     $fs->rename($uploadedFile->getPathname(), $newPath);
 
-                    $value['data']['filePath'] = $newPath;
+                    $data[$attributeCode][$k]['data']['filePath'] = $newPath;
                 }
             }
         }
