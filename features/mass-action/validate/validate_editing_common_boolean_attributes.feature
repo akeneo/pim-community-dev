@@ -1,5 +1,5 @@
 @javascript
-Feature: Validate editing common attributes of multiple products
+Feature: Validate editing common boolean attributes of multiple products
   In order to update multiple products with valid data
   As a product manager
   I need values to be validated when editing common attributes of products

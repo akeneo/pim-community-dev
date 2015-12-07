@@ -1,5 +1,5 @@
 @javascript
-Feature: Validate editing common attributes of multiple products
+Feature: Validate editing common date attributes of multiple products
   In order to update multiple products with valid data
   As a product manager
   I need values to be validated when editing common attributes of products
@@ -44,7 +44,7 @@ Feature: Validate editing common attributes of multiple products
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
-    And I change the Date to "2015-01-01"
+    And I change the Date to "01/01/2015"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Date of "boots" should be "2015-01-01"
@@ -62,7 +62,7 @@ Feature: Validate editing common attributes of multiple products
     And I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
-    And I change the Date to "2013-01-01"
+    And I change the Date to "01/01/2013"
     And I move on to the next step
     # @TODO: fix this
     And I display the Date attribute
