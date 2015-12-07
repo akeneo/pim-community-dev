@@ -35,11 +35,12 @@ define(
             },
             onValidationError: function (event) {
                 this.validationErrors = event.response;
+                var globalErrors = _.where(this.validationErrors.values, {global: true});
 
                 // Global errors with an empty property path
-                if (this.validationErrors[''] && this.validationErrors[''].message) {
-                    messenger.notificationFlashMessage('error', this.validationErrors[''].message);
-                }
+                _.each(globalErrors, function (error) {
+                    messenger.notificationFlashMessage('error', error.message);
+                })
 
                 this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
             },

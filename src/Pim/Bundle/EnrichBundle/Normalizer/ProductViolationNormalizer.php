@@ -21,19 +21,27 @@ class ProductViolationNormalizer implements NormalizerInterface
     public function normalize($violation, $format = null, array $context = [])
     {
         $path = $violation->getPropertyPath();
-        $codeStart  = strpos($path, '[') + 1;
-        $codeLength = strpos($path, ']') - $codeStart;
-        $attributePath = substr($path, $codeStart, $codeLength);
 
-        $product = $violation->getRoot();
-        $productValue = $product->getValues()[$attributePath];
+        if (0 === strpos($path, 'values')) {
+            $codeStart     = strpos($path, '[') + 1;
+            $codeLength    = strpos($path, ']') - $codeStart;
+            $attributePath = substr($path, $codeStart, $codeLength);
 
-        $normalizedViolation = [
-            'attribute' => $productValue->getAttribute()->getCode(),
-            'locale'    => $productValue->getLocale(),
-            'scope'     => $productValue->getScope(),
-            'message'   => $violation->getMessage()
-        ];
+            $product      = $violation->getRoot();
+            $productValue = $product->getValues()[$attributePath];
+
+            $normalizedViolation = [
+                'attribute' => $productValue->getAttribute()->getCode(),
+                'locale'    => $productValue->getLocale(),
+                'scope'     => $productValue->getScope(),
+                'message'   => $violation->getMessage()
+            ];
+        } else {
+            $normalizedViolation = [
+                'global'  => true,
+                'message' => $violation->getMessage()
+            ];
+        }
 
         return $normalizedViolation;
     }
