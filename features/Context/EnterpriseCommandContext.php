@@ -11,6 +11,7 @@ use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFile
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\QueryPublishedProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
@@ -361,6 +362,31 @@ class EnterpriseCommandContext extends CommandContext
                 $expected,
                 $diff
             );
+        }
+    }
+
+    /**
+     * @Then /^I should get the following published products results for the given filters:$/
+     */
+    public function iShouldGetTheFollowingPublishedProductsResultsForTheGivenFilters(TableNode $filters)
+    {
+        $application = new Application();
+        $application->add(new QueryPublishedProductCommand());
+
+        $command = $application->find('pim:published-product:query');
+        $command->setContainer($this->getMainContext()->getContainer());
+        $commandTester = new CommandTester($command);
+
+        foreach ($filters->getHash() as $filter) {
+            $commandTester->execute(
+                ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
+            );
+
+            $expected = json_decode($filter['result']);
+            $actual   = json_decode($commandTester->getDisplay());
+            sort($expected);
+            sort($actual);
+            assertEquals($expected, $actual);
         }
     }
 
