@@ -110,4 +110,15 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'message'   => 'The price should be above 10.'
         ]);
     }
+
+    function it_normalizes_global_violation(ConstraintViolationInterface $violation)
+    {
+        $violation->getPropertyPath()->willReturn('variant.color');
+        $violation->getMessage()->willReturn('Variant group already contains this color.');
+
+        $this->normalize($violation, 'internal_api')->shouldReturn([
+            'global'  => true,
+            'message' => 'Variant group already contains this color.'
+        ]);
+    }
 }
