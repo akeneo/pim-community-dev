@@ -6,6 +6,7 @@
 
 ## Bug fixes
 - PIM-5238: fix scroll on multiselect for mass edit
+- PIM-5177: fix login redirection
 
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
