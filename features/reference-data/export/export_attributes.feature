@@ -39,5 +39,5 @@ Feature: Export attributes
     pim_reference_data_multiselect;lace_fabric;Lace fabric;other;0;1;;;;fabrics;1;1
     pim_catalog_text;123;"Attribute 123";other;0;1;;;;;0;0
     pim_catalog_number;rate_sale;"Rate of sale";marketing;0;1;;;;;0;0
-    pim_catalog_metric;weight;Weight;info;0;0;;Weight;GRAM;;0;0
+    pim_catalog_metric;weight;Weight;info;0;1;;Weight;GRAM;;0;0
     """
