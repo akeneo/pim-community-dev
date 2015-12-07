@@ -22,7 +22,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -187,7 +186,9 @@ class ProductController
 
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
         } else {
-            $errors = $this->transformViolations($violations, $product);
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api')
+            ];
 
             return new JsonResponse($errors, 400);
         }
@@ -319,59 +320,5 @@ class ProductController
                 );
             }
         }
-    }
-
-    /**
-     * Transforms product violations into an array
-     *
-     * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
-     *
-     * @return array
-     */
-    protected function transformViolations(ConstraintViolationListInterface $violations, ProductInterface $product)
-    {
-        $errors = [];
-        foreach ($violations as $violation) {
-            $path = $violation->getPropertyPath();
-            if (0 === strpos($path, 'values')) {
-                $codeStart  = strpos($path, '[') + 1;
-                $codeLength = strpos($path, ']') - $codeStart;
-
-                $valueIndex = substr($path, $codeStart, $codeLength);
-                $value = $product->getValues()[$valueIndex];
-                $attributeCode = $value->getAttribute()->getCode();
-
-                $currentError = [
-                    'attribute'     => $attributeCode,
-                    'locale'        => $value->getLocale(),
-                    'scope'         => $value->getScope(),
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-
-                $errors['values'][$attributeCode] = isset($errors['values'][$attributeCode])
-                    ? $errors['values'][$attributeCode]
-                    : [];
-
-                $identicalErrors = array_filter(
-                    $errors['values'][$attributeCode],
-                    function ($error) use ($currentError) {
-                        return isset($error['message']) && $error['message'] === $currentError['message'];
-                    }
-                );
-
-                if (empty($identicalErrors)) {
-                    $errors['values'][$attributeCode][] = $currentError;
-                }
-            } else {
-                $errors[$path] = [
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-            }
-        }
-
-        return $errors;
     }
 }
