@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -54,7 +55,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $dateFormats;
 
-    /** @var ProductBuilderInterface */
+    /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
