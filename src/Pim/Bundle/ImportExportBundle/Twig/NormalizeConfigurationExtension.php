@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Twig;
 
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Twig extension to normalize configuration values
@@ -107,8 +108,8 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      * Get the violations from a collection of violations that concern
      * a given field (e.g: channel) of an element (e.g: reader) of a step (e.g: 0)
      *
-     * @param ConstraintViolationList $violations
-     * @param string                  $element
+     * @param ConstraintViolationListInterface $violations
+     * @param string                           $element
      *
      * @return string The violation messages separated by a space character
      */
@@ -117,7 +118,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         $messages = [];
 
         foreach ($violations as $violation) {
-            if (preg_match(sprintf('/[.]%s$/', $element), $violation->getPropertyPath())) {
+            if (preg_match(sprintf('/\[.\]%s$/', $element), $violation->getPropertyPath())) {
                 $messages[] = sprintf(
                     '<span class="label label-important">%s</span>',
                     $this->translator->trans($violation->getMessage())
