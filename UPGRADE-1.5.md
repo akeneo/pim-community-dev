@@ -217,6 +217,7 @@ Especially, classes which implement,
 
 We have a lot of different formats and for backward compatibility reason, we never re-organized them.
 
+```
 Pim/Bundle/CatalogBundle
 └── MongoDB
     └── Normalizer          -> format "mongodb_json", used to generate the field normalizedData in a product mongo document
@@ -232,6 +233,7 @@ Pim/Bundle/TransformBundle
 
 Pim/Bundle/EnrichBundle
 └── Normalizer              -> format "internal_api", used by the internal rest api to communicate with new UI Forms (product edit form)
+```
 
 We could have [WIP],
 
@@ -252,6 +254,8 @@ The "internal_api" format could be renamed in Enrich bundle:
  -> Pim/Bundle/EnrichBundle/Normalizer -> Pim/Bundle/EnrichBundle/Normalizer/InternalRest
 
 Other bundles register normalizers/denormalizers for these formats and could be re-organized:
+
+```
 ├── ImportExportBundle
 │   ├── Normalizer
 ├── ReferenceDataBundle
@@ -263,6 +267,7 @@ Other bundles register normalizers/denormalizers for these formats and could be 
 └── Localization
     ├── Denormalizer
     └── Normalizer
+```
 
 ## Localization Component & Bundle [WIP]
 
@@ -298,7 +303,7 @@ This guessing part is very greedy and we expect to enhance the performances by m
 
 To prepare this shiny future, we've introduced a new Akeneo component which contains only pure business logic related to the versioning.
 
-The versioning process itself will be re-worked in a future, to make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
+The versioning process itself will be re-worked in a future version. To make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
