@@ -1,0 +1,120 @@
+pimee_workflow:
+  product_draft:
+    author: Автор
+    created: Дата предложения
+    changes: Изменения
+    locale: Контекст локали
+    product:
+      label: Ярлык продукта
+    attribute:
+      label: Атрибут
+    status:
+      label: Статус
+      working_copy: Рабочая копия
+      in_progress: В процессе
+      ready: В ожидании утверждения
+      can_not_be_approved: Не может быть пересмотрено
+      can_not_be_deleted: Не может быть удален
+    status_message:
+      can_not_be_approved: Вы не можете подтвердить или отклонить это предложение, так как оно затрагивает значения которые вы не можете редактировать. Обратитесь к администратору для изменения прав доступа.
+      can_not_be_deleted: Вы не можете удалить это предложение, так как оно затрагивает значения которые вы не можете редактировать. Обратитесь к администратору для изменения прав доступа.
+    action:
+      approve: Одобрить
+      refuse: Отклонить
+      remove: Удалить
+      partial_approve: 'Утвердить изменения на атрибута %attribute% продукта %product%'
+    notification:
+      partial_approve:
+        "%owner% has accepted the value for %attribute% for the product": '%product%'
+      approve: '%owner% принял ваше предложение %product%'
+      refuse: '%owner% отклонил ваше предложение %product%'
+      remove: '%owner% удалил ваше предложение %product%'
+    mass_review_action:
+      approve: Одобрить выделенное
+      refuse: Отклонить выбранные
+      error:
+        draft_not_ready: Это предложение не готово быть принятым
+        not_product_owner: Вы не являетесь владельцем продукта, относящиеся к этому предложению
+        cannot_edit_attributes: Нельзя редактировать атрибуты изменяемые этим предложением
+        invalid_draft: 'Это предложение не может быть применено из-за следующей ошибки. %error%'
+  proposal:
+    to_review: '%author.firstname% %author.lastname% направил предложение о пересмотре для %product.label% продукта'
+    original_value: Исходная
+    new_value: Новое
+  published_product:
+    index: Опубликованные продукты
+    title: Опубликованный продукт
+  acl.published_product:
+    index: Управление опубликованными продуктами
+  product:
+    permission:
+      label: Разрешения
+      own: Обзор / публикация
+      edit: Редактировать
+      view: Просмотр
+  jobs:
+    csv_product_proposal_import:
+      title: Импорт предложений в CSV
+      import.title: Импорт предложений
+    approve_product_draft:
+      title: Одобрить предложение
+      perform.title: Одобрить предложение
+    refuse_product_draft:
+      title: Отклонить предложения
+      perform.title: Отклонить предложения
+  steps:
+    product_draft_processor.title: Процессор предложений
+pimee_workflow_product_draft_notification_new_proposal: Новое предложение
+btn.publish: Опубликовать
+btn.unpublish: Снять с публикации
+pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
+pimee_workflow_product_draft_notification_approve: Предложение одобренно
+pimee_workflow_product_draft_notification_refuse: Предложение отклонено
+pimee_workflow_product_draft_notification_remove: Предложение удаленo
+flash:
+  product:
+    published: Продукт был успешно опубликован.
+    unpublished: Продукт был успешно снят с публикации.
+  product_draft:
+    approve:
+      success: Предложение было успешно применено.
+      error: 'Это предложение нельзя применить из-за следующей ошибки. %error%'
+    refuse:
+      success: Это предложение было отклонено.
+    remove:
+      success: Это предложение было удалено.
+pim_menu:
+  item:
+    published_product: Опубликованные продукты
+    proposal: Предложения
+pim_title:
+  published_product:
+    index: Опубликованные продукты
+    view: 'Опубликованные продукты %product.sku% | Просмотр'
+  product:
+    dispatch: 'Продукты %product.sku%'
+    show: 'Продукты %product.sku% | Показать'
+  proposal:
+    index: Предложения
+btn.editworkingcopy: Редактировать рабочую копию
+confirmation:
+  product:
+    publish: Вы уверены, что хотите опубликовать этот продукт?
+    unpublish: Вы уверены, что хотите снять этот продукт с публикации?
+proposal.overview: Предложения
+Attributes.title: Атрибуты
+Completeness.title: Завершенность
+publish_product.steps.publish_product_tasklet.title: Опубликовать продукт
+unpublish_product.steps.unpublish_product_tasklet.title: Снять продукт с публикации
+approve_product_draft.steps.approve.title: Принять предложение
+approve_product_draft.steps.refuse.title: Отклонить предложение
+job_execution.summary:
+  approved: принятo
+  refused: отклонено
+  mass_published: Продукт опубликован
+  mass_unpublished: Продукт снят с публикации
+  proposal: Предложение создано
+  proposal_deleted: удаленнoe предложение
+  proposal_updated: обновленное предложение
+  proposal_created: созданное предложение
+  proposal_skipped: пропущеннoе предложение (без изменений)
