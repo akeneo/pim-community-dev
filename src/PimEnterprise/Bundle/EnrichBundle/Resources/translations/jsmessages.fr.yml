@@ -69,6 +69,7 @@ pimee_enrich:
         source:
           working_copy: Version de travail
           draft: Mon brouillon
+          draft_of: 'Brouillon de {{ author }}'
     product_draft:
       info:
         update_successful: Le brouillon a bien été enregistré

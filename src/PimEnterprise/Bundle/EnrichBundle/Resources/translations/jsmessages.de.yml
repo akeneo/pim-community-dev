@@ -69,6 +69,7 @@ pimee_enrich:
         source:
           working_copy: Arbeitskopie
           draft: Mein Entwurf
+          draft_of: 'Entwurf von {{ author }}'
     product_draft:
       info:
         update_successful: Produktentwurf wurde erfolgreich gespeichert

@@ -1,0 +1,19 @@
+View the product: Посмотреть продукт
+Unpublish the product: Снять продукт с публикации
+Approve: Одобрить
+Refuse: Отклонить
+Approve selected: Одобрить выделенное
+Refuse selected: Отклонить выбраннoе
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Редактировать рабочую копию
+    proposal:
+      modal.title: Оставить комментарий (255 символов макс.)
+  proposal:
+    partial_accept:
+      modal.title: Частичнo oдобрить информацию
+      modal.label: Оставить комментарий (необязательно)
+      modal.error: Произошла ошибка, это предложение не былo частично одобреннo
+      modal.success: Это предложение было успешно частично одобреннo
