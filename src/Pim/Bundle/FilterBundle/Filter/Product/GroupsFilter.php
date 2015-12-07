@@ -62,34 +62,18 @@ class GroupsFilter extends AjaxChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function getForm()
+    protected function getFormOptions()
     {
-        $options = array_merge(
-            $this->getOr('options', []),
-            ['csrf_protection' => false]
+        return array_merge(
+            parent::getFormOptions(),
+            [
+                'choice_url'        => 'pim_ui_ajaxentity_list',
+                'choice_url_params' => [
+                    'class'        => $this->groupClass,
+                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'collectionId' => null
+                ]
+            ]
         );
-
-        $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
-        $options['choice_url']        = 'pim_ui_ajaxentity_list';
-        $options['choice_url_params'] = $this->getChoiceUrlParams();
-        $options['preload_choices']   = false;
-
-        if (!$this->form) {
-            $this->form = $this->formFactory->create($this->getFormType(), [], $options);
-        }
-
-        return $this->form;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getChoiceUrlParams()
-    {
-        return [
-            'class'        => $this->groupClass,
-            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => null
-        ];
     }
 }
