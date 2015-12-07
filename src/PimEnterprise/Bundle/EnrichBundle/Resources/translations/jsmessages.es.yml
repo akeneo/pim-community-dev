@@ -69,6 +69,7 @@ pimee_enrich:
         source:
           working_copy: Versión de trabajo
           draft: Mi borrador
+          draft_of: 'Borrador de {{ author }}'
     product_draft:
       info:
         update_successful: El borrador del producto ha sido guardado con éxito

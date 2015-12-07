@@ -12,3 +12,6 @@ pimee_catalog_rule:
       then.label: Alors
       set_value.label: est modifié dans
       copy_value.label: est copié dans
+      set.label: est modifié dans
+      copy.label: est copié dans
+      add.label: est ajouté dans
