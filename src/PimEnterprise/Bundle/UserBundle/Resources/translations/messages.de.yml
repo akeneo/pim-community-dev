@@ -8,6 +8,8 @@ user:
       "yes": true
       "no": false
   asset_delay_reminder: Wiedervorlage (Tage)
+  default_published_product_grid_view:
+    label: Standardansicht Übersicht veröffentlichter Produkte
 Default asset tree: Voreingestellte Daten
 pimee_user:
   user:
