@@ -9,7 +9,7 @@ Feature: Export published products with localized number
     And I am logged in as "Julia"
     And the missing product asset variations have been generated
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4600
+  @unstable @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
     Given the following job "clothing_mobile_published_product_export" configuration:
       | filePath         | %tmp%/ecommerce_product_export/clothing_mobile_published_product_export.csv |

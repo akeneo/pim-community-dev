@@ -181,6 +181,8 @@ class PublishedProductController extends AbstractController
      *
      * @param int|string $id
      *
+     * @deprecated To be removed in 1.5
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function completenessAction($id)
