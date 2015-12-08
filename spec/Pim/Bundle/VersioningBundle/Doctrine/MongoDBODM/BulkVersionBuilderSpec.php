@@ -9,8 +9,8 @@ use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class BulkVersionBuilderSpec extends ObjectBehavior
 {
-    const VERSION_CLASS = 'Pim\Bundle\VersioningBundle\Model\Version';
+    const VERSION_CLASS = 'Akeneo\Component\Versioning\Model\Version';
 
     function let(
         VersionBuilder $versionBuilder,

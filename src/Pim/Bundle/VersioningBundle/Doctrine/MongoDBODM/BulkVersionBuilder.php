@@ -3,6 +3,8 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
+use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
@@ -10,8 +12,6 @@ use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

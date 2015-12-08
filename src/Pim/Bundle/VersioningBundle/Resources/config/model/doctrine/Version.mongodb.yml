@@ -1,4 +1,4 @@
-Pim\Bundle\VersioningBundle\Model\Version:
+Akeneo\Component\Versioning\Model\Version:
     type: document
     collection: pim_versioning_version
     repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository

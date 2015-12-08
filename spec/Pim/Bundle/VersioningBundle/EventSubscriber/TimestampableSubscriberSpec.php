@@ -13,7 +13,7 @@ use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Model;
+namespace spec\Akeneo\Component\Versioning\Model;
 
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ class VersionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Model\Version');
+        $this->shouldHaveType('Akeneo\Component\Versioning\Model\Version');
     }
 
     function it_has_an_id()

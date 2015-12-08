@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Family interface

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Channel interface

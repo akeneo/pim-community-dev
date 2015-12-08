@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Model;
+namespace Akeneo\Component\Versioning\Model;
 
 /**
  * Resource version entity
@@ -9,7 +9,7 @@ namespace Pim\Bundle\VersioningBundle\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version
+class Version implements VersionInterface
 {
     /**
      * @var int

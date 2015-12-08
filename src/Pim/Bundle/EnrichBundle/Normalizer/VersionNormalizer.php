@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

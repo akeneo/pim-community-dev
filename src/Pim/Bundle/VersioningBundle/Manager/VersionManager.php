@@ -3,11 +3,11 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -167,7 +167,7 @@ class VersionManager
      */
     public function getObjectManager()
     {
-        return $this->registry->getManagerForClass('Pim\\Bundle\\VersioningBundle\\Model\\Version');
+        return $this->registry->getManagerForClass('Akeneo\\Component\\Versioning\\Model\\Version');
     }
 
     /**
@@ -175,7 +175,7 @@ class VersionManager
      */
     public function getVersionRepository()
     {
-        return $this->registry->getRepository('Pim\Bundle\VersioningBundle\Model\Version');
+        return $this->registry->getRepository('Akeneo\Component\Versioning\Model\Version');
     }
 
     /**

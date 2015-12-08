@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

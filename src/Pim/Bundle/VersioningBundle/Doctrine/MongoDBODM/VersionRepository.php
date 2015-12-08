@@ -97,7 +97,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return \Pim\Bundle\VersioningBundle\Model\Version|null
+     * @return Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {

@@ -125,7 +125,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return \Pim\Bundle\VersioningBundle\Model\Version|null
+     * @return \Akeneo\Component\Versioning\Model\Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {
