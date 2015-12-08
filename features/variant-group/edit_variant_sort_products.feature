@@ -11,9 +11,9 @@ Feature: Sort available products for a variant group
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         |
-      | color | Color | simpleselect |
-      | size  | Size  | simpleselect |
+      | code  | label | type         | useable_as_grid_filter |
+      | color | Color | simpleselect | yes                    |
+      | size  | Size  | simpleselect | yes                    |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following products:

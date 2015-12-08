@@ -63,11 +63,11 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this->normalize($metric, 'mongodb_document')->shouldReturn([
             '_id'      => $mongoId,
+            'family'   => 'weight',
             'unit'     => 'Kg',
             'data'     => 85,
             'baseUnit' => 'g',
-            'baseData' => 8500,
-            'family'   => 'weight'
+            'baseData' => 8500
         ]);
     }
 }

@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -27,13 +28,15 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelManager $channelManager,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $serializer,
             $channelManager,
-            'upload/path/'
+            'upload/path/',
+            $productBuilder
         );
         $this->setStepExecution($stepExecution);
     }
@@ -104,7 +107,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        $serializer,
         $channelManager,
         ChannelInterface $channel,
         ProductInterface $product,
@@ -112,9 +114,13 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductMediaInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $serializer,
+        $productBuilder
     ) {
         $this->setLocale('en_US');
+
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
         $media1->getFilename()->willReturn('media_name');
         $media1->getOriginalFilename()->willReturn('media_original_name');
@@ -155,11 +161,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
+        $productBuilder,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+
         $this->setLocale('en_US');
         $product->getValues()->willReturn([]);
 

@@ -334,6 +334,7 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
+            - '@pim_enrich.repository.family.search'
 
     pim_enrich.controller.rest.form_extension:
         scope: request

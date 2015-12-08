@@ -5,7 +5,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
@@ -53,16 +55,21 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $dateFormats;
 
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
     /**
-     * @param Serializer     $serializer
-     * @param ChannelManager $channelManager
-     * @param string[]       $mediaAttributeTypes
-     * @param array          $decimalSeparators
-     * @param array          $dateFormats
+     * @param Serializer              $serializer
+     * @param ChannelManager          $channelManager
+     * @param string[]                $mediaAttributeTypes
+     * @param array                   $decimalSeparators
+     * @param array                   $dateFormats
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
+        ProductBuilderInterface $productBuilder,
         array $mediaAttributeTypes,
         array $decimalSeparators,
         array $dateFormats
@@ -72,6 +79,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->decimalSeparators   = $decimalSeparators;
         $this->dateFormats         = $dateFormats;
+        $this->productBuilder      = $productBuilder;
     }
 
     /**
@@ -79,6 +87,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
+        $contextChannel = $this->channelManager->getChannelByCode($this->channel);
+        $this->productBuilder->addMissingProductValues($product, [$contextChannel],
+            $contextChannel->getLocales()->toArray());
+
         $data['media'] = [];
         $mediaValues   = $this->getMediaProductValues($product);
 

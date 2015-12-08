@@ -4,8 +4,10 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductMediaInterface;
@@ -43,23 +45,29 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var array Normalizer context */
     protected $normalizerContext;
 
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
      * @param string                              $uploadDirectory
+     * @param ProductBuilderInterface             $productBuilder
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        $uploadDirectory
+        $uploadDirectory,
+        ProductBuilderInterface $productBuilder = null
     ) {
         parent::__construct($jobConfigurationRepo);
 
         $this->serializer      = $serializer;
         $this->channelManager  = $channelManager;
         $this->uploadDirectory = $uploadDirectory;
+        $this->productBuilder  = $productBuilder;
     }
 
     /**
@@ -75,6 +83,10 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     public function process($product)
     {
+        if (null !== $this->productBuilder) {
+            $this->productBuilder->addMissingProductValues($product);
+        }
+
         $data['media'] = [];
 
         $productMedias = $this->getProductMedias($product);

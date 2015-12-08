@@ -36,7 +36,7 @@ Feature: Export products with localized dates
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
       """
-      sku;categories;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD;release_date-ecommerce
-      sandal-white;men_2013,men_2014,men_2015;"Ein elegantes weißes Sandal";"Une Sandale blanche élégante";1;sandals;;"Weißes Sandal";"Sandale blanche";10.90;9.00;15.00;28/10/1999
-      sandal-yellow;men_2013,men_2014,men_2015;"Ein elegantes gelb Sandal";"Une Sandale jaune élégante";1;sandals;;"Gelb Sandal";"Sandale jaune";10.90;9.00;15.00;
+      sku;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD;release_date-ecommerce
+      sandal-white;men_2013,men_2014,men_2015;"Ein elegantes weißes Sandal";;;"Une Sandale blanche élégante";1;sandals;;"Weißes Sandal";;;"Sandale blanche";10.90;9.00;15.00;28/10/1999
+      sandal-yellow;men_2013,men_2014,men_2015;"Ein elegantes gelb Sandal";;;"Une Sandale jaune élégante";1;sandals;;"Gelb Sandal";;;"Sandale jaune";10.90;9.00;15.00;
       """

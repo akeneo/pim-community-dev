@@ -25,7 +25,7 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
 
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
-            $fields = [
+            $booleanFields = [
                 'localizable',
                 'useable_as_grid_filter',
                 'unique',
@@ -36,7 +36,7 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
                 'negative_allowed',
             ];
 
-            $convertedItem = $this->convertFields($field, $fields, $data, $convertedItem);
+            $convertedItem = $this->convertFields($field, $booleanFields, $data, $convertedItem);
         }
 
         return $convertedItem;
@@ -83,13 +83,13 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @param string $field
-     * @param array  $fields
+     * @param array  $booleanFields
      * @param array  $data
      * @param array  $convertedItem
      *
      * @return array
      */
-    protected function convertFields($field, $fields, $data, $convertedItem)
+    protected function convertFields($field, $booleanFields, $data, $convertedItem)
     {
         switch ($field) {
             case false !== strpos($field, 'label-', 0):
@@ -113,8 +113,13 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
             case 'available_locales':
                 $convertedItem[$field] = explode(',', $data);
                 break;
-            case in_array($field, $fields):
+            case in_array($field, $booleanFields):
                 $convertedItem[$field] = (bool) $data;
+                break;
+            case 'reference_data_name':
+                if ('' !== $data) {
+                    $convertedItem[$field] = $data;
+                }
                 break;
             default:
                 $convertedItem[$field] = (string) $data;

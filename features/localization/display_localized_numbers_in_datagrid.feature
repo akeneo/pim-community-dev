@@ -7,8 +7,8 @@ Feature: Localize numbers in the datagrid
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code      | label     | type   | decimals_allowed | label-fr_FR |
-      | big_price | big_price | prices | yes              | big_price   |
+      | code      | label     | type   | decimals_allowed | label-fr_FR | useable_as_grid_filter |
+      | big_price | big_price | prices | yes              | big_price   | yes                    |
     And the following products:
       | sku     | big_price   | rate_sale    | weight             |
       | sandals | 1000.12 USD | 1000.1234    | 1000.3456 KILOGRAM |

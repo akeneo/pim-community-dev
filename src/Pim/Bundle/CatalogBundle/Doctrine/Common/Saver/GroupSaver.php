@@ -84,7 +84,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($group, array $options = [])
     {
-        /* @var GroupInterface */
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -115,16 +114,16 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        if (count($options['add_products']) > 0) {
-            $this->addProducts($options['add_products']);
-        }
-
-        if (count($options['remove_products']) > 0) {
-            $this->removeProducts($options['remove_products']);
-        }
-
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
+        } else {
+            if (0 < count($options['add_products'])) {
+                $this->addProducts($options['add_products']);
+            }
+
+            if (0 < count($options['remove_products'])) {
+                $this->removeProducts($options['remove_products']);
+            }
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));

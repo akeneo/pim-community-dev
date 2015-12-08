@@ -7,7 +7,9 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize a reference data very simply to store it as mongodb_json
+ * Normalize a reference data very simply to store it as mongodb_json.
+ * Especially used to build normalized data (for filtering and sorting purpose) in MongoDB documents.
+ * The namespace follows the CatalogBundle one : Pim\Bundle\CatalogBundle\MongoDB\Normalizer
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

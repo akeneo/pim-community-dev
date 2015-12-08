@@ -29,7 +29,7 @@ Feature: Quick export many products from datagrid
     And the path of the exported file of "csv_product_quick_export" should be "/tmp/products_export_en_US_tablet.csv"
     And exported file of "csv_product_quick_export" should contain:
     """
-    sku;123;categories;color;enabled;family;groups;name-en_US;price-EUR;price-USD;size
-    boots;aaa;winter_collection;black;1;boots;;"Amazing boots";20;25;40
-    sneakers;bbb;summer_collection;white;1;sneakers;;Sneakers;50;60;42
+    sku;123;categories;color;description-en_US-tablet;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    boots;aaa;winter_collection;black;;1;boots;;;;"Amazing boots";20;25;;;40;;
+    sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
     """

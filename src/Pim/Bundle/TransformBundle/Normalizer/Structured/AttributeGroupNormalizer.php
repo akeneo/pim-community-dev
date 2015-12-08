@@ -27,7 +27,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * Constructor
      *
-     * @param NormalizerInterface $transNormalizer
+     * @param NormalizerInterface          $transNormalizer
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
