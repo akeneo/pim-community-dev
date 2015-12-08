@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build"
-    xmlns:if="ant:if"
-    xmlns:unless="ant:unless"
 >
     <property name="symfony.catalog.storage.dir" value="catalog" />
 
@@ -362,13 +360,13 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
-            <arg value="v3.0.0-BETA6@dev" />
+            <arg value="v3.0.1" />
         </exec>
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta12@dev" />
+            <arg value="v1.0.3" />
         </exec>
     </target>
 
