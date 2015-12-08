@@ -82,6 +82,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         version:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\VersioningBundle\Model\Version
+            targetDocument: Akeneo\Component\Versioning\Model\Version
         normalizedData:
             type: hash

@@ -75,7 +75,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - detach
     oneToOne:
         version:
-            targetEntity: Pim\Bundle\VersioningBundle\Model\Version
+            targetEntity: Akeneo\Component\Versioning\Model\Version
             joinColumns:
                 version_id:
                     referencedColumnName: id
