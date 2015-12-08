@@ -72,3 +72,4 @@
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator to PimEnterprise\Component\CatalogRule\Validator\SupportedOperatorConditionValidator
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
+- Update schema of `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric`. Increase precision of data and baseData.
