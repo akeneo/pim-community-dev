@@ -102,6 +102,14 @@ $rules = [
         RuleInterface::TYPE_ONLY,
         'The component storage utils should depends only on symfony event dispatcher, doctrine common'
     ),
+    new Rule(
+        'Akeneo\Component\Versioning',
+        [
+            'Akeneo\Component\Versioning',
+        ],
+        RuleInterface::TYPE_ONLY,
+        'The component versioning should depends on nothing'
+    ),
     // [WIP]
     new Rule(
         'Pim\Component\Connector',
@@ -122,7 +130,7 @@ $rules = [
             'Doctrine\Common'
         ],
         RuleInterface::TYPE_ONLY,
-        'The component conector should depends only on ... bunch of stuff :)'
+        'The component connector should depends only on ... bunch of stuff :)'
     ),
     new Rule(
         'Pim\Component\ReferenceData',
@@ -143,7 +151,7 @@ $rules = [
             'Doctrine\Common'
         ],
         RuleInterface::TYPE_ONLY,
-        'The component connector should depends only on ... bunch of stuff :)'
+        'The component catalog should depends only on ... bunch of stuff :)'
     ),
     new Rule(
         'Pim\Bundle',
@@ -323,25 +331,12 @@ $legacyExclusions = [
         'Pim\Bundle\TranslationBundle\Entity\TranslatableInterface',
         'Pim\Bundle\TranslationBundle\Entity\AbstractTranslation',
         // should be extracted in a akeneo component in a BC way
-        'Pim\Bundle\VersioningBundle\Model\VersionableInterface',
-        // should be extracted in a akeneo component in a BC way
         'Pim\Bundle\CommentBundle\Model\CommentSubjectInterface',
     ],
     'Pim\Bundle\CatalogBundle\Entity'                           => [
         // should be extracted in a component in a akeneo component in a BC way (localization?)
         'Pim\Bundle\TranslationBundle\Entity\TranslatableInterface',
         'Pim\Bundle\TranslationBundle\Entity\AbstractTranslation',
-        // should be extracted in a akeneo component in a BC way
-        'Pim\Bundle\VersioningBundle\Model\VersionableInterface',
-    ],
-    'Pim\Bundle\CatalogBundle\EventSubscriber'                  => [
-        // should be extracted in a akeneo component in a BC way
-        'Pim\Bundle\VersioningBundle\Model\VersionableInterface',
-    ],
-    'Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver' => [
-        // what to do with this, it's a weird way to share and update versionning context, could be re-worked
-        // with the versioning reworking (no more relying on doctrine events)
-        'Pim\Bundle\VersioningBundle\Manager\VersionContext',
     ],
     'Pim\Bundle\CatalogBundle\Manager\FamilyManager'            => [
         // FamilyManager should be dropped and not even used
