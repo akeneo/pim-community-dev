@@ -461,7 +461,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (!preg_match(
-                sprintf('/^%s$/', str_replace('/', '\/', $newValue)),
+                sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $newValue)),
                 $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
             )) {
                 throw $this->createExpectationException(
