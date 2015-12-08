@@ -321,6 +321,10 @@ services:
     pim_enrich.form.type.edit_common_attributes:
         class: %pim_enrich.form.type.edit_common_attributes.class%
         arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.locale.class%
             - %pim_enrich.mass_edit_action.edit_common_attributes.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }

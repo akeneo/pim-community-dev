@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,14 +17,40 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class EditCommonAttributesType extends AbstractType
 {
+    /** @var ProductFormViewInterface $productFormView */
+    protected $productFormView;
+
+    /** @var LocaleHelper $localeHelper */
+    protected $localeHelper;
+
+    /** @var string */
+    protected $attributeClass;
+
+    /** @var string */
+    protected $localeClassName;
+
     /** @var string */
     protected $dataClass;
 
     /**
-     * @param string $dataClass
+     * @param ProductFormViewInterface $productFormView
+     * @param LocaleHelper             $localeHelper
+     * @param string                   $attributeClass
+     * @param string                   $localeClassName
+     * @param string                   $dataClass
      */
-    public function __construct($dataClass) {
-        $this->dataClass = $dataClass;
+    public function __construct(
+        ProductFormViewInterface $productFormView,
+        LocaleHelper $localeHelper,
+        $attributeClass,
+        $localeClassName,
+        $dataClass
+    ) {
+        $this->productFormView = $productFormView;
+        $this->localeHelper    = $localeHelper;
+        $this->attributeClass  = $attributeClass;
+        $this->localeClassName = $localeClassName;
+        $this->dataClass       = $dataClass;
     }
 
     /**
