@@ -48,7 +48,7 @@ function($, _, mediator) {
          */
         initialize: function(options) {
             if (!options.element) {
-                throw new Error("Select element must be defined");
+                throw new Error('Select element must be defined');
             }
             this.element = options.element;
 
@@ -75,7 +75,7 @@ function($, _, mediator) {
             // destroy DOM garbage after change page via hash-navigation
             mediator.once('hash_navigation_request:start', function() {
                 if (this.element.closest('body').length) {
-                    this.multiselect("destroy");
+                    this.multiselect('destroy');
                     this.element.hide();
                 }
             }, this);
@@ -144,7 +144,11 @@ function($, _, mediator) {
          * @return {Object}
          */
         getWidget: function() {
-            return this.multiselect('widget');
+            try {
+                return this.multiselect('widget');
+            } catch (error) {
+                return $('.ui-multiselect-menu.pimmultiselect');
+            }
         },
 
         /**
@@ -174,9 +178,10 @@ function($, _, mediator) {
          */
         updateDropdownPosition: function(button) {
             var position = button.offset();
+
             this.getWidget().css({
                 top: position.top + button.outerHeight(),
-                left: position.left
+                right: position.right
             });
         }
     };
