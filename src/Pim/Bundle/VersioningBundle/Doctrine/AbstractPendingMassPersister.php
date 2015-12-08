@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

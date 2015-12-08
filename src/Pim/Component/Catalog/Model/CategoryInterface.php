@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Category interface

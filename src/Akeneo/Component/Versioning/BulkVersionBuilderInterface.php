@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Versioning;
 
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Builds versions for a bulk of versionable objects.

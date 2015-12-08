@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Fields update guesser

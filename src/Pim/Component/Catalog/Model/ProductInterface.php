@@ -4,9 +4,9 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**

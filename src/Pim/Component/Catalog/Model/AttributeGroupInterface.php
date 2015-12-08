@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Attribute Group interface
