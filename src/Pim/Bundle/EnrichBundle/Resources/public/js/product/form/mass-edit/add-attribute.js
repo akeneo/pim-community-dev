@@ -31,23 +31,41 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function () {
+                this.defaultOptions.title = _.__(
+                    'pim_enrich.form.product.mass_edit.select_attributes'
+                );
+
+                BaseAddAttribute.prototype.initialize.apply(arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             loadAttributesChoices: function () {
                 return $.when(
                     AttributeManager.getAvailableOptionalAttributes(this.getFormData()),
                     FetcherRegistry.getFetcher('attribute-group').fetchAll()
-                ).then(
-                    function (attributes, attributeGroups) {
-                        attributes = _.where(attributes, {unique: 0});
+                ).then(function (attributes, attributeGroups) {
+                    attributes = _.where(attributes, {unique: 0});
+                    this.initializeSelect(attributes, attributeGroups);
+                }.bind(this));
+            },
 
-                        this.$('select')
-                            .html(this.template({
-                                groupedAttributes: this.buildGroupedAttributes(attributes, attributeGroups),
-                                locale: UserContext.get('catalogLocale')
-                            }))
-                            .multiselect('refresh')
-                            .next('button').removeAttr('style');
-                    }.bind(this)
-                );
+            /**
+             * Initialize the add attributes select
+             *
+             * @param attributes
+             * @param attributeGroups
+             */
+            initializeSelect: function (attributes, attributeGroups) {
+                this.$('select')
+                    .html(this.template({
+                        groupedAttributes: this.buildGroupedAttributes(attributes, attributeGroups),
+                        locale: UserContext.get('catalogLocale')
+                    }))
+                    .multiselect('refresh')
+                    .next('button').removeAttr('style');
             }
         });
     }

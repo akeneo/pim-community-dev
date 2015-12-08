@@ -26,6 +26,20 @@ define(
             tagName: 'div',
             className: 'add-attribute',
             template: _.template(template),
+            defaultOptions: {
+                title: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
+                placeholder: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
+                emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
+                header: '',
+                height: 175,
+                minWidth: 225,
+                classes: 'pimmultiselect pim-add-attributes-multiselect',
+                position: {
+                    my: 'right top',
+                    at: 'right bottom',
+                    collision: 'none'
+                }
+            },
 
             /**
              * Render this extension
@@ -47,27 +61,15 @@ define(
             initializeSelectWidget: function () {
                 var $select = this.$('select');
 
-                var opts = {
-                    title: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
-                    placeholder: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
-                    emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
-                    header: '',
-                    height: 175,
-                    minWidth: 225,
-                    classes: 'pimmultiselect pim-add-attributes-multiselect',
-                    position: {
-                        my: 'right top',
-                        at: 'right bottom',
-                        collision: 'none'
-                    },
-                    open: function () {
-                        var loadingMask = this.showLoadingMask();
-                        this.loadAttributesChoices()
-                            .always(function () {
-                                loadingMask.hide().$el.remove();
-                            });
-                    }.bind(this)
-                };
+                var opts = this.defaultOptions;
+                opts.open = function () {
+                    var loadingMask = this.showLoadingMask();
+                    this.loadAttributesChoices()
+                        .always(function () {
+                            loadingMask.hide().$el.remove();
+                        });
+                }.bind(this)
+
                 opts.selectedText     = opts.title;
                 opts.noneSelectedText = opts.title;
 
