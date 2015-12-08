@@ -17,7 +17,7 @@ interface CategoryInterface extends
     BaseCategoryInterface,
     TranslatableInterface,
     ReferableInterface,
-    \Akeneo\Component\Versioning\Model\VersionableInterface
+    VersionableInterface
 {
     /**
      * Predicate to know if this category has product(s) linked

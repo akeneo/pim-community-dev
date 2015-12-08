@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -37,7 +37,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->isPending()->willReturn(true);
 
         $version = $this->createPendingVersion($product, 'baz', []);
-        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
+        $version->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
         $version->getAuthor()->shouldReturn('baz');
         $version->isPending()->shouldReturn(true);
     }

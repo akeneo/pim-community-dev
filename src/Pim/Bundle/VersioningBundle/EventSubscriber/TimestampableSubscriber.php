@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Updates the updated date of versioned objects

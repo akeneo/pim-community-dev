@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Command;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Monolog\Handler\StreamHandler;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

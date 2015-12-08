@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;

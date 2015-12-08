@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Model;
-
-use Akeneo\Component\Versioning\Model\VersionInterface;
+namespace Akeneo\Component\Versioning\Model;
 
 /**
  * Resource version entity

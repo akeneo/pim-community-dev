@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,7 +52,7 @@ class VersionManagerSpec extends ObjectBehavior
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
-        $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
+        $versions[0]->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
     }
 
     function it_creates_pending_versions_when_real_time_versioning_is_disabled(ProductInterface $product, $builder)
@@ -63,7 +63,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
         $version = $versions[0];
-        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
+        $version->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
         $version->isPending()->shouldReturn(true);
     }
 

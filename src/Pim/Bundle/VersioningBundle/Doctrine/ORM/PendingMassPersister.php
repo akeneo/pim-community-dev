@@ -3,13 +3,13 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

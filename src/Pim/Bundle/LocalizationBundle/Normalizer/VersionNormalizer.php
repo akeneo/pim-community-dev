@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Normalizer;
 
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

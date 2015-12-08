@@ -1,4 +1,4 @@
-Pim\Bundle\VersioningBundle\Model\Version:
+Akeneo\Component\Versioning\Model\Version:
     type: entity
     table: pim_versioning_version
     repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository

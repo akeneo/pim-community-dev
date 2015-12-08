@@ -12,7 +12,7 @@ use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FamilyInterface extends TranslatableInterface, ReferableInterface, \Akeneo\Component\Versioning\Model\VersionableInterface
+interface FamilyInterface extends TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
      * Get id

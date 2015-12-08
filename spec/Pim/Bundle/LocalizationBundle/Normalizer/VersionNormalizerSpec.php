@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\LocalizationBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Prophecy\Argument;

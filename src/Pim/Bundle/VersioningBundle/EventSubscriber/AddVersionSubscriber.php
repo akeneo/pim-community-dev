@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

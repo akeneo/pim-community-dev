@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,10 +22,10 @@ class BulkVersionSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $documentManager,
             $normalizer,
-            'Pim\Bundle\VersioningBundle\Model\Version'
+            'Akeneo\Component\Versioning\Model\Version'
         );
 
-        $documentManager->getDocumentCollection('Pim\Bundle\VersioningBundle\Model\Version')->willReturn($collection);
+        $documentManager->getDocumentCollection('Akeneo\Component\Versioning\Model\Version')->willReturn($collection);
         $collection->getName()->willReturn('pim_versioning_version');
     }
 

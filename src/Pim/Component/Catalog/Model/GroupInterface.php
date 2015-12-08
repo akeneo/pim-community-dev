@@ -18,7 +18,7 @@ interface GroupInterface extends
     TranslatableInterface,
     GroupSequenceProviderInterface,
     ReferableInterface,
-    \Akeneo\Component\Versioning\Model\VersionableInterface
+    VersionableInterface
 {
     /**
      * Get the id

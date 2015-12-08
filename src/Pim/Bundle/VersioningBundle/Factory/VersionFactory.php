@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Factory;
 
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
 
 /**
  * Version factory

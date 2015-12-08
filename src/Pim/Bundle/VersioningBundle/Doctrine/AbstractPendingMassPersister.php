@@ -57,7 +57,7 @@ abstract class AbstractPendingMassPersister
     /**
      * Create the pending versions for the versionable provided
      *
-     * @param \Akeneo\Component\Versioning\Model\VersionableInterface[] $versionables
+     * @param VersionableInterface[] $versionables
      */
     public function persistPendingVersions(array $versionables)
     {
