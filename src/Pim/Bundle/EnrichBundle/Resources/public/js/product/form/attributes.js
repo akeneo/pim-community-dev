@@ -102,11 +102,15 @@ define(
 
                         return $.when.apply($, fieldPromises);
                     }.bind(this)).then(function () {
+                        return _.sortBy(arguments, function (field) {
+                            return field.attribute.sort_order;
+                        });
+                    }).then(function (fields) {
                         var $productValuesPanel = this.$('.product-values');
                         $productValuesPanel.empty();
 
                         FieldManager.clearVisibleFields();
-                        _.each(arguments, function (field) {
+                        _.each(fields, function (field) {
                             if (field.canBeSeen()) {
                                 field.render();
                                 FieldManager.addVisibleField(field.attribute.code);
