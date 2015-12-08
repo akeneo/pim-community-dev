@@ -3,6 +3,13 @@
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
   It is required because normalization of reference data in product values is based on Doctrine metadata.
+- Changed constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`.
+  Required, because we now use the standard ProductUpdater to be consistent.
+- Changed constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add 
+    `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`,
+    `Symfony\Component\Validator\Validator\ValidatorInterface`,
+    `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
+  Required to raise errors on the enhanced "mass edit common attributes".
 
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
