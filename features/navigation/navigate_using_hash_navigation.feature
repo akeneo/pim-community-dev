@@ -38,3 +38,20 @@ Feature: Navigate the application in hash navigation mode
       | oro_user_profile_view                   |
       | oro_user_role_create                    |
       | oro_user_role_index                     |
+
+  Scenario: Reload a page in hash navigation mode
+    Given a "footwear" catalog configuration
+    And the following family:
+      | code       | attributes                                                       |
+      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
+    And the following products:
+      | sku            | family     | color  | groups        |
+      | boots          | boots      |        |               |
+      | sneakers       | sneakers   |        |               |
+    And I am logged in as "Julia"
+    And I am on the products page
+    When I mass-edit products boots and sneakers
+    And I choose the "Edit common attributes" operation
+    And I display the Name attribute
+    And I reload the page
+    Then I should see the text "Edit common attributes"
