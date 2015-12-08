@@ -124,7 +124,6 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeThatAttributeIsASmart($attribute)
     {
-        $this->wait();
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
 
         foreach ($icons as $icon) {
