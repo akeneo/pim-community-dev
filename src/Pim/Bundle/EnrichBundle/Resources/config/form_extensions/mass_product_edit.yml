@@ -7,16 +7,10 @@ extensions:
         parent: pim-mass-product-edit-form
         position: 1000
 
-    pim-mass-product-edit-form-form-tabs:
-        module: pim/product-edit-form/form-tabs
-        parent: pim-mass-product-edit-form
-        targetZone: content
-        position: 100
-
     pim-mass-product-edit-form-attributes:
         module: pim/mass-product-edit-form/attributes
-        parent: pim-mass-product-edit-form-form-tabs
-        targetZone: container
+        parent: pim-mass-product-edit-form
+        targetZone: content
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
 
@@ -36,14 +30,14 @@ extensions:
     pim-mass-product-edit-form-attribute-scope-switcher:
         module: pim/product-edit-form/scope-switcher
         parent: pim-mass-product-edit-form-attributes
-        targetZone: context-selectors
-        position: 100
+        targetZone: other-actions
+        position: 70
 
     pim-mass-product-edit-form-attribute-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: pim-mass-product-edit-form-attributes
-        targetZone: context-selectors
-        position: 110
+        targetZone: other-actions
+        position: 80
 
     pim-mass-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation

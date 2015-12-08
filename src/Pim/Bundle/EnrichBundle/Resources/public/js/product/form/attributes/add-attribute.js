@@ -29,6 +29,7 @@ define(
             defaultOptions: {
                 title: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
                 placeholder: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
+                buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
                 emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
                 header: '',
                 height: 175,
@@ -84,7 +85,7 @@ define(
                 var $footerContainer = $('<div>', { 'class': 'ui-multiselect-footer' });
                 var $saveButton = $('<a>', {
                     'class': 'btn btn-small',
-                    text: _.__('pim_enrich.form.product.tab.attributes.btn.add')
+                    text: this.defaultOptions.buttonTitle
                 }).on('click', function () {
                     $select.multiselect('close');
                     var values = $select.val();

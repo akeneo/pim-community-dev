@@ -32,9 +32,8 @@ define(
              * {@inheritdoc}
              */
             initialize: function () {
-                this.defaultOptions.title = _.__(
-                    'pim_enrich.form.product.mass_edit.select_attributes'
-                );
+                this.defaultOptions.title = _.__('pim_enrich.form.product.mass_edit.select_attributes');
+                this.defaultOptions.buttonTitle = _.__('pim_enrich.form.product.mass_edit.select');
 
                 BaseAddAttribute.prototype.initialize.apply(arguments);
             },
