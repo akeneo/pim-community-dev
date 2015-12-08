@@ -44,6 +44,7 @@ Feature: Edit product assets properties
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "men"
 
+  @skip
   Scenario: Successfully edit the end of use at of an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
