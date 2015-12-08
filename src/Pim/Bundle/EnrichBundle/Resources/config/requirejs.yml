@@ -187,6 +187,7 @@ config:
         # Mass product edit form
         pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
         pim/mass-product-edit-form/attributes: pimenrich/js/product/form/mass-edit/attributes
+        pim/mass-product-edit-form/add-attribute: pimenrich/js/product/form/mass-edit/add-attribute
 
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form

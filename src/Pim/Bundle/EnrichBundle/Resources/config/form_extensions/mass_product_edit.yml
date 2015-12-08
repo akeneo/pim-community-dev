@@ -27,7 +27,7 @@ extensions:
         position: 100
 
     pim-mass-product-edit-form-add-attribute:
-        module: pim/product-edit-form/attributes/add-attribute
+        module: pim/mass-product-edit-form/add-attribute
         parent: pim-mass-product-edit-form-attributes
         targetZone: other-actions
         aclResourceId: pim_enrich_product_add_attribute
