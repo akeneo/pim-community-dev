@@ -102,7 +102,7 @@ class StringFilter extends OroStringFilter
     protected function getOperator($type)
     {
         if (!isset($this->operatorTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Operator %s is not supported', $type));
+            throw new \InvalidArgumentException(sprintf('Operator %s is not supported', $type));
         }
 
         return $this->operatorTypes[$type];

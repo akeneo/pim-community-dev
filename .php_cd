@@ -6,7 +6,7 @@ use \Akeneo\CouplingDetector\Domain\Rule;
 use \Akeneo\CouplingDetector\Domain\RuleInterface;
 
 $finder = new DefaultFinder();
-$finder->notPath('Oro');
+$finder->notPath('Oro')->notPath('Akeneo/Bundle/BatchBundle/Tests');
 
 $rules = [
     new Rule(
