@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -31,6 +32,9 @@ class ProductAssociationProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var ProductFilterInterface */
     protected $productAssocFilter;
 
@@ -43,13 +47,15 @@ class ProductAssociationProcessor extends AbstractProcessor
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
      * @param ProductFilterInterface                $productAssocFilter product association filter
+     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ProductFilterInterface $productAssocFilter
+        ProductFilterInterface $productAssocFilter,
+        ObjectDetacherInterface $detacher = null
     ) {
         parent::__construct($repository);
 
@@ -58,6 +64,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         $this->updater            = $updater;
         $this->validator          = $validator;
         $this->productAssocFilter = $productAssocFilter;
+        $this->detacher           = $detacher;
     }
 
     /**
@@ -66,27 +73,39 @@ class ProductAssociationProcessor extends AbstractProcessor
     public function process($item)
     {
         $identifier = $this->getIdentifier($item);
+
+        if (null === $identifier) {
+            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        }
+
         $product = $this->findProduct($identifier);
+
         if (!$product) {
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
         $convertedItem = $this->convertItemData($item);
-        $convertedItem = $this->filterIdenticalData($product, $convertedItem);
-        if (empty($convertedItem)) {
-            $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
+        if ($this->enabledComparison) {
+            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
 
-            return null;
+            if (empty($convertedItem)) {
+                $this->detachProduct($product);
+                $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
+
+                return null;
+            }
         }
 
         try {
             $this->updateProduct($product, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
+            $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProductAssociations($product);
         if ($violations && $violations->count() > 0) {
+            $this->detachProduct($product);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
@@ -204,5 +223,19 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         return null;
+    }
+
+    /**
+     * Detaches the product from the unit of work is the responsibility of the writer but in this case we
+     * want ensure that an updated and invalid product will not be used in the association processor.
+     * Also we don't want to keep skipped products in memory
+     *
+     * @param ProductInterface $product
+     */
+    protected function detachProduct(ProductInterface $product)
+    {
+        if (null !== $this->detacher) {
+            $this->detacher->detach($product);
+        }
     }
 }
