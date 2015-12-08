@@ -3,7 +3,7 @@
 namespace Akeneo\Component\Versioning;
 
 use Akeneo\Component\Versioning\Model\VersionableInterface;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionInterface;
 
 /**
  * Builds versions for a bulk of versionable objects.
@@ -19,7 +19,7 @@ interface BulkVersionBuilderInterface
      *
      * @param VersionableInterface[] $versionables
      *
-     * @return Version[]
+     * @return VersionInterface[]
      */
     public function buildVersions(array $versionables);
 }
