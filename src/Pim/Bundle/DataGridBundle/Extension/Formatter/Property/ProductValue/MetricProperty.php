@@ -39,17 +39,7 @@ class MetricProperty extends TwigProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        $data   = isset($result['data']) ? $result['data'] : null;
-        $unit   = $result['unit'];
 
-        if ($data && $unit) {
-            $formattedData = $this->presenter->present($data, ['locale' => $this->translator->getLocale()]);
-            return $this->getTemplate()->render(
-                [
-                    'data' => $formattedData,
-                    'unit' => $unit
-                ]
-            );
-        }
+        return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
     }
 }

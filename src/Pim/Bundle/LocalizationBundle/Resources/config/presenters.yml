@@ -25,6 +25,7 @@ services:
         arguments:
             - '@pim_localization.factory.number'
             - ['pim_catalog_metric']
+            - '@translator'
         tags:
             - { name: pim_localization.presenter, type: 'product_value' }
 

@@ -71,7 +71,7 @@ services:
         arguments:
             - '@twig'
             - '@translator'
-            - '@pim_localization.presenter.number'
+            - '@pim_localization.presenter.metric'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
 

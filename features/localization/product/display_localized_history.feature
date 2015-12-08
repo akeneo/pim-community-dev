@@ -22,12 +22,13 @@ Feature: Display the localized product history
     When I open the history
     Then there should be 1 update
     And I should see history:
-      | version | property | value   |
-      | 1       | SKU      | boots   |
-      | 1       | Metrique | 12,1234 |
-      | 1       | Nombre   | 98,7654 |
-      | 1       | Prix EUR | 20,80   |
-      | 1       | Prix USD | 25,35   |
+      | version | property      | value   |
+      | 1       | SKU           | boots   |
+      | 1       | Metrique      | 12,1234 |
+      | 1       | Metrique unit | GRAM    |
+      | 1       | Nombre        | 98,7654 |
+      | 1       | Prix EUR      | 20,80   |
+      | 1       | Prix USD      | 25,35   |
 
   Scenario: Display english-format product history numbers
     Given I am logged in as "Julia"
@@ -35,9 +36,10 @@ Feature: Display the localized product history
     When I open the history
     Then there should be 1 update
     And I should see history:
-      | version | property  | value   |
-      | 1       | SKU       | boots   |
-      | 1       | Metric    | 12.1234 |
-      | 1       | Number    | 98.7654 |
-      | 1       | Price EUR | 20.80   |
-      | 1       | Price USD | 25.35   |
+      | version | property    | value   |
+      | 1       | SKU         | boots   |
+      | 1       | Metric      | 12.1234 |
+      | 1       | Metric unit | Gram    |
+      | 1       | Number      | 98.7654 |
+      | 1       | Price EUR   | 20.80   |
+      | 1       | Price USD   | 25.35   |

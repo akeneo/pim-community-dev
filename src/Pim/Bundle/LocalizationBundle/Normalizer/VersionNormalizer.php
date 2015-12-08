@@ -74,6 +74,7 @@ class VersionNormalizer implements NormalizerInterface
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($changeset as $attribute => $changes) {
+            $options['versioned_attribute'] = $attribute;
             $attributeName = $attribute;
             if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
                 $attributeName = $matches['attribute'];
