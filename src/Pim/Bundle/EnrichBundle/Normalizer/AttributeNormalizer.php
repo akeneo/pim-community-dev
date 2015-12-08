@@ -70,6 +70,7 @@ class AttributeNormalizer implements NormalizerInterface
             'metric_family'         => $attribute->getMetricFamily(),
             'default_metric_unit'   => $attribute->getDefaultMetricUnit(),
             'max_file_size'         => $attribute->getMaxFileSize(),
+            'sort_order'            => $attribute->getSortOrder(),
         ];
 
         return $normalizedAttribute;

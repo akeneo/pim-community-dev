@@ -443,6 +443,27 @@ class Edit extends Form
     }
 
     /**
+     * @param string $attribute
+     *
+     * @return int
+     */
+    public function getAttributePosition($attribute)
+    {
+        $rows = $this->find('css', '.tab-pane.active.product-values')->findAll('css', '.field-container');
+
+        foreach ($rows as $index => $row) {
+            if ($row->find('css', sprintf(':contains("%s")', $attribute))) {
+                return $index + 1;
+            }
+        }
+
+        throw new ElementNotFoundException(
+            $this->getSession(),
+            sprintf('Attribute "%s" not found', $attribute)
+        );
+    }
+
+    /**
      * Extracts and returns the label NodeElement, identified by $field content and $element
      *
      * @param string  $field

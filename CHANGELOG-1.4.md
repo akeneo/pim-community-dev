@@ -6,8 +6,9 @@
 - In case you wrote your own associations import, please add the parameter `batch_size: 1` to the `import_associations` step element of your `batch_jobs.yml`.
 
 ## Bug fixes
-- PIM-5238: fix scroll on multiselect for mass edit
-- PIM-5177: fix login redirection
+- PIM-5238: Fix scroll on multiselect for mass edit
+- PIM-5177: Fix login redirection
+- PIM-5276: Fix attribute ordering in the product view
 
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
