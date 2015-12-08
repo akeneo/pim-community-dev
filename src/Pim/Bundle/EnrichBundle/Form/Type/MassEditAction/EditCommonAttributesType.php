@@ -58,7 +58,7 @@ class EditCommonAttributesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('values', 'hidden');
+        $builder->add('normalizedValues', 'hidden');
     }
 
     /**

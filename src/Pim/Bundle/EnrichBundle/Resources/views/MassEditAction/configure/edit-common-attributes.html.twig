@@ -5,7 +5,7 @@
     <div id="product-edit-form">
     </div>
 
-    {{ form_widget(form.operation.values) }}
+    {{ form_widget(form.operation.normalizedValues) }}
 
     <script>
         require(
@@ -22,7 +22,7 @@
                         mediator
                 ) {
                     $(function () {
-                        var userData = "{{ form.vars.data.getValues|escape('js') }}";
+                        var userData = "{{ form.vars.data.getNormalizedValues|escape('js') }}";
                         var errors = "{{ form.vars.data.getErrors|escape('js') }}";
                         errors = '' !== errors ? JSON.parse(errors) : {};
 
