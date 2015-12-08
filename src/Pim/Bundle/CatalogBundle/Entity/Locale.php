@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

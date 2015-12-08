@@ -5,7 +5,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Translation update guesser

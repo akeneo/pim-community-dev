@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Model;
+namespace Akeneo\Component\Versioning\Model;
 
 /**
- * Versionable interface
- * Entities implementing this interface will be versioned
+ * Versionable interface, models  implementing this interface will be versioned
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

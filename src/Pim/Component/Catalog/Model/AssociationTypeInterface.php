@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Association type

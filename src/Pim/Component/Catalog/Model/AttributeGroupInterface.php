@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Attribute Group interface
@@ -13,7 +13,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeGroupInterface extends TranslatableInterface, ReferableInterface, VersionableInterface
+interface AttributeGroupInterface extends TranslatableInterface, ReferableInterface, \Akeneo\Component\Versioning\Model\VersionableInterface
 {
     /**
      * Get id

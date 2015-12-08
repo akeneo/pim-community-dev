@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Category interface
@@ -17,7 +17,7 @@ interface CategoryInterface extends
     BaseCategoryInterface,
     TranslatableInterface,
     ReferableInterface,
-    VersionableInterface
+    \Akeneo\Component\Versioning\Model\VersionableInterface
 {
     /**
      * Predicate to know if this category has product(s) linked

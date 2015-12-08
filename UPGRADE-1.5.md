@@ -374,4 +374,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\ChannelRepositoryInterface/Pim\\Component\\Catalog\\Repository\\ChannelRepositoryInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Exception\\InvalidArgumentException/Pim\\Component\\Catalog\\Exception\\InvalidArgumentException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Exception\\MissingIdentifierException/Pim\\Component\\Catalog\\Exception\\MissingIdentifierException/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Model\\VersionableInterface/Akeneo\\Component\\Versioning\\Model\\VersionableInterface/g'
 ```

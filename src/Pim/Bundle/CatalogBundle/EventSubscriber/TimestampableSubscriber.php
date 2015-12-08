@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
 
 /**

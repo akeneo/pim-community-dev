@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
@@ -18,7 +18,7 @@ interface GroupInterface extends
     TranslatableInterface,
     GroupSequenceProviderInterface,
     ReferableInterface,
-    VersionableInterface
+    \Akeneo\Component\Versioning\Model\VersionableInterface
 {
     /**
      * Get the id

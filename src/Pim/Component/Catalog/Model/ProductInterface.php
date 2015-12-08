@@ -6,7 +6,7 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**

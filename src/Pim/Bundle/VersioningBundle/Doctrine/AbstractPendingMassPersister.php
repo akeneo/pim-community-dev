@@ -5,7 +5,7 @@ namespace Pim\Bundle\VersioningBundle\Doctrine;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -57,7 +57,7 @@ abstract class AbstractPendingMassPersister
     /**
      * Create the pending versions for the versionable provided
      *
-     * @param VersionableInterface[] $versionables
+     * @param \Akeneo\Component\Versioning\Model\VersionableInterface[] $versionables
      */
     public function persistPendingVersions(array $versionables)
     {
