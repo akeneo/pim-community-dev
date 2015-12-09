@@ -36,31 +36,16 @@ class Edit extends Creation
      */
     public function dragAttributeToPosition($attribute, $position)
     {
-        $selector             = $this->getElement('Attribute list')->getAttribute('id');
-        $currentPosition      = $this->getAttributePosition($attribute);
-        $manipulationFunction = 'insertAfter';
-        $position--;
+        $list = $this->getElement('Attribute list')->findAll('css', 'tr');
+        $elt  = $this->getElement('Attribute list')->find('css', sprintf('tr:contains("%s") .handle', $attribute));
 
-        if (0 === $position) {
-            $manipulationFunction = 'insertBefore';
-            $position++;
+        if ($position > count($list)) {
+            throw new \InvalidArgumentException(
+                sprintf('Unable to change the position to %d, only %s attributes present', $position, count($list))
+            );
         }
 
-        // Move the row
-        $this->getDriver()->evaluateScript(sprintf(
-            '$("#%s tr:eq(%d)").%s($("#%s tr:eq(%d)"));',
-            $selector,
-            $currentPosition - 1,
-            $manipulationFunction,
-            $selector,
-            $position - 1
-        ));
-
-        // Trigger sortable update
-        $this->getDriver()->evaluateScript(sprintf(
-            '$("#%s").sortable("option").update();',
-            $selector
-        ));
+        $this->dragElementTo($elt, $list[$position-1]);
 
         return $this;
     }
