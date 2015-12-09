@@ -46,3 +46,25 @@ Feature: Filter products by boolean field
       | filter | value    | result               |
       | Status | Enabled  | pants, shirt and hat |
       | Status | Disabled | shoes and socks      |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5334
+  Scenario: Successfully filter products by boolean value for boolean attributes and refresh the grid
+    Given the following products:
+      | sku   | family  | handmade |
+      | pants | tshirts | 1        |
+      | shirt | tshirts | 0        |
+      | shoes | tshirts | 0        |
+      | hat   | tshirts | 0        |
+      | socks | tshirts | 1        |
+    And I am on the products page
+    Then the grid should contain 5 elements
+    And I should see products pants, shirt, shoes, hat and socks
+    When I show the filter "Handmade"
+    And I filter by "Handmade" with value "yes"
+    Then the grid should contain 2 elements
+    And I should see entities pants and socks
+    When I reload the page
+    And I am on the products page
+    And I show the filter "Handmade"
+    Then the grid should contain 2 elements
+    And I should see entities pants and socks

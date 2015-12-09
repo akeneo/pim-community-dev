@@ -310,7 +310,10 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         _onValueUpdated: function(newValue, oldValue) {
             AbstractFilter.prototype._onValueUpdated.apply(this, arguments);
-            this.selectWidget.multiselect('refresh');
+
+            if (this.selectWidget) {
+                this.selectWidget.multiselect('refresh');
+            }
         },
 
         /**

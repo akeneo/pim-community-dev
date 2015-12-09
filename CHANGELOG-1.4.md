@@ -9,6 +9,7 @@
 
 ## Bug fixes
 - PIM-5295: Fix association product grid category filter
+- PIM-5334: Fix boolean filter on product grid
 
 # 1.4.13 (2015-12-10)
 
