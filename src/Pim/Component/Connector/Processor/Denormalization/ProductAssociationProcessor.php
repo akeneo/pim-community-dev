@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -55,7 +54,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ProductFilterInterface $productAssocFilter,
-        ObjectDetacherInterface $detacher = null
+        ObjectDetacherInterface $detacher
     ) {
         parent::__construct($repository);
 
@@ -234,8 +233,6 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     protected function detachProduct(ProductInterface $product)
     {
-        if (null !== $this->detacher) {
-            $this->detacher->detach($product);
-        }
+        $this->detacher->detach($product);
     }
 }
