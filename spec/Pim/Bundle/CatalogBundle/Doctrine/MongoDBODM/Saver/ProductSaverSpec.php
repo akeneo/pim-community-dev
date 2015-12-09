@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
+ * @require Doctrine\MongoDB\Collection
  * @require Doctrine\ODM\MongoDB\DocumentManager
  */
 class ProductSaverSpec extends ObjectBehavior

@@ -169,7 +169,8 @@ connector:
                         reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
-
+                    parameters:
+                        batch_size: 1
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title
             type:  fixtures

@@ -36,6 +36,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $price->getMetricFamily()->willReturn('');
         $price->getDefaultMetricUnit()->willReturn('');
         $price->getMaxFileSize()->willReturn('');
+        $price->getSortOrder()->willReturn(2);
 
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $emptyValueProvider->getEmptyValue($price)->willReturn([]);
@@ -60,7 +61,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'date_max'              => '',
                 'metric_family'         => '',
                 'default_metric_unit'   => '',
-                'max_file_size'         => ''
+                'max_file_size'         => '',
+                'sort_order'            => 2,
             ]
         );
     }
@@ -86,6 +88,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMetricFamily()->willReturn('');
         $attribute->getDefaultMetricUnit()->willReturn('');
         $attribute->getMaxFileSize()->willReturn('');
+        $attribute->getSortOrder()->willReturn(2);
 
         $fieldProvider->getField($attribute)->willReturn('akeneo-text-field');
         $emptyValueProvider->getEmptyValue($attribute)->willReturn([]);
@@ -109,7 +112,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => '',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'boolean']);
@@ -136,7 +140,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => '',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
@@ -163,7 +168,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => '',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
@@ -190,7 +196,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => '',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'metric']);
@@ -218,7 +225,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => 'kg',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'default']);
@@ -245,7 +253,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'date_max'              => '',
             'metric_family'         => '',
             'default_metric_unit'   => 'kg',
-            'max_file_size'         => ''
+            'max_file_size'         => '',
+            'sort_order'            => 2,
         ]);
     }
 
