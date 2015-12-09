@@ -230,17 +230,17 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function finalize()
     {
         $data = json_decode($this->normalizedValues, true);
-        $fs = new Filesystem();
+        $filesystem = new Filesystem();
 
         foreach ($data as $attributeCode => $attributeValues) {
-            foreach ($attributeValues as $k => $value) {
+            foreach ($attributeValues as $index => $value) {
                 if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
                     $uploadedFile = new \SplFileInfo($value['data']['filePath']);
                     $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
 
-                    $fs->rename($uploadedFile->getPathname(), $newPath);
+                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
 
-                    $data[$attributeCode][$k]['data']['filePath'] = $newPath;
+                    $data[$attributeCode][$index]['data']['filePath'] = $newPath;
                 }
             }
         }

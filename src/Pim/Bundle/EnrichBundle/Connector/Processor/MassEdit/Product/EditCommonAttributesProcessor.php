@@ -91,7 +91,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * Set data from $actions to the given $product
      *
-     * Actions should looks like that
+     * Actions should look like that
      *
      * $actions =
      * [
