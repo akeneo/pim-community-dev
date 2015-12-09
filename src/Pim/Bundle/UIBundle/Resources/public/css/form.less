@@ -1125,6 +1125,9 @@ table#progress-table {
 .mass-edit-form {
   padding: 25px;
   background-color: lighten(@color-light_grey, 4%);
+  .product-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
+    border-left: 0;
+  }
   hr {
     height: 3px;
     background-color: lighten(@color-light_grey, 2%);
@@ -1133,6 +1136,7 @@ table#progress-table {
   }
   .tab-content {
     padding: 0;
+    border-left: solid 1px #ccc;
   }
   header {
     display: none;
