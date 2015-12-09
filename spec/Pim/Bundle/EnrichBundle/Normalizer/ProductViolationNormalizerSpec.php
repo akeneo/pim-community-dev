@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ProductViolationNormalizerSpec extends ObjectBehavior
