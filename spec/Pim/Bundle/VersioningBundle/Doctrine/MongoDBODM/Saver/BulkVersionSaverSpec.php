@@ -10,6 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
+ * @require Doctrine\MongoDB\Collection
  * @require Doctrine\ODM\MongoDB\DocumentManager
  */
 class BulkVersionSaverSpec extends ObjectBehavior

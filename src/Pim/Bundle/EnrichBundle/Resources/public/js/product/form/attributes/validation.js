@@ -35,20 +35,25 @@ define(
             },
             onValidationError: function (event) {
                 this.validationErrors = event.response;
+                var globalErrors = _.where(this.validationErrors.values, {global: true});
 
                 // Global errors with an empty property path
-                if (this.validationErrors[''] && this.validationErrors[''].message) {
-                    messenger.notificationFlashMessage('error', this.validationErrors[''].message);
-                }
+                _.each(globalErrors, function (error) {
+                    messenger.notificationFlashMessage('error', error.message);
+                });
 
                 this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
             },
             addFieldExtension: function (event) {
                 var field = event.field;
-                var valuesErrors = this.validationErrors.values;
+                var valuesErrors = _.uniq(this.validationErrors.values, function (error) {
+                    return JSON.stringify(error);
+                });
 
-                if (valuesErrors && _.has(valuesErrors, field.attribute.code)) {
-                    this.addErrorsToField(field, valuesErrors[field.attribute.code]);
+                var errorsForAttribute = _.where(valuesErrors, {attribute: field.attribute.code});
+
+                if (!_.isEmpty(errorsForAttribute)) {
+                    this.addErrorsToField(field, errorsForAttribute);
                 }
             },
             addErrorsToField: function (field, fieldErrors) {

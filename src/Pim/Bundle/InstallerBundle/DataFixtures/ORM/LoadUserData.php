@@ -152,7 +152,7 @@ class LoadUserData extends AbstractInstallerFixture
         $localeRepository = $this->container->get('pim_catalog.repository.locale');
         $locale           = $localeRepository->findOneByIdentifier($localeCode);
 
-        return $locale ? $locale : current($localeRepository->getActivatedLocaleCodes());
+        return $locale ? $locale : current($localeRepository->getActivatedLocales());
     }
 
     /**

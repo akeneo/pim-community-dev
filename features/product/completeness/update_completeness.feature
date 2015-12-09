@@ -1,5 +1,5 @@
 @javascript
-Feature: Update the completeness of a product
+Feature: Display the completeness of a product
   In order to see the completeness of a product in the catalog
   As a product manager
   I need to be able to display the completeness of a product

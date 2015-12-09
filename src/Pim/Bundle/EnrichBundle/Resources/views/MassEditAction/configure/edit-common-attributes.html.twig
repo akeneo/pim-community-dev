@@ -67,10 +67,9 @@
                 'datepicker',
                 'oro/mediator',
                 'routing',
-                'jquery.multiselect',
-                'jquery.multiselect.filter'
+                'oro/multiselect-decorator'
             ],
-            function ($, _, Scopable, CurrencyField, datepicker, mediator, Routing) {
+            function ($, _, Scopable, CurrencyField, datepicker, mediator, Routing, MultiselectDecorator) {
                 'use strict';
                 $(function () {
                     {% if form.operation.vars.groups is empty %}
@@ -123,13 +122,19 @@
                         JSON.parse(sessionStorage.getItem('mass_edit_selected_attributes'))
                     );
 
-                    var $el = $('#{{ form.operation.displayedAttributes.vars.id }}')
-                        .addClass('pimmultiselect')
-                        .multiselect(opts)
-                        .multiselectfilter({
-                            label: false,
-                            placeholder: opts.placeholder
-                        });
+                    var $el = $('#{{ form.operation.displayedAttributes.vars.id }}').addClass('pimmultiselect');
+
+                    var selectWidget = new MultiselectDecorator({
+                        element: $el,
+                        parameters: opts
+                    });
+
+                    selectWidget.multiselectfilter({
+                        label: false,
+                        placeholder: opts.placeholder
+                    });
+
+
                     var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
                     var saveButton = '{{ "Select"|trans }}';
 
@@ -162,6 +167,10 @@
 
                     var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
                     $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+
+                    $('#container').on('scroll', function () {
+                        selectWidget.updateDropdownPosition($openButton);
+                    });
 
                     $menu.find('input[type="search"]').width(207);
 

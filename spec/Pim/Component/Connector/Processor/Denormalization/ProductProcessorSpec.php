@@ -728,7 +728,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violations);
 
-        $productDetacher->detach($product);
+        $productDetacher->detach($product)->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -742,6 +742,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $productRepository,
         $productUpdater,
+        $productDetacher,
         $productFilter,
         $localizedConverter,
         ProductInterface $product,
@@ -829,6 +830,8 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productUpdater
             ->update($product, $filteredData)->shouldNotBeCalled();
+
+        $productDetacher->detach($product)->shouldBeCalled();
 
         $this
             ->process($originalData)
