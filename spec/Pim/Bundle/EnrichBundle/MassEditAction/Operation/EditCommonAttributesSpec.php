@@ -9,11 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,26 +18,37 @@ class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $productBuilder,
+        UserContext $userContext,
+        CatalogContext $catalogContext,
+        AttributeRepositoryInterface $attributeRepository,
+        NormalizerInterface $normalizer,
         FileStorerInterface $fileStorer,
+        ProductMassActionManager $massActionManager,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        NormalizerInterface $normalizer
+        NormalizerInterface $internalNormalizer,
+        $tmpStorageDir = '/tmp/pim/file_storage'
     ) {
         $this->beConstructedWith(
             $productBuilder,
+            $userContext,
+            $catalogContext,
+            $attributeRepository,
+            $normalizer,
             $fileStorer,
+            $massActionManager,
             $productUpdater,
             $productValidator,
-            $normalizer,
-            '/tmp/pim/file_storage'
+            $internalNormalizer,
+            $tmpStorageDir
         );
     }
 
-    function it_sets_and_gets_values()
+    function it_sets_and_gets_values(Collection $values)
     {
-        $this->getValues()->shouldReturn('');
-        $this->setValues('{}');
-        $this->getValues()->shouldReturn('{}');
+        $this->getValues()->shouldReturnAnInstanceOf('Doctrine\Common\Collections\Collection');
+        $this->setValues($values);
+        $this->getValues()->shouldReturn($values);
     }
 
     function it_gets_the_form_type()
