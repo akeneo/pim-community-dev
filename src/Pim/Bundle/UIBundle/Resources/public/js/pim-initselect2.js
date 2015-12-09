@@ -72,6 +72,17 @@ define(
                             dataType: 'json',
                             type: 'GET',
                             success: function (data) {
+
+                                if (undefined == data.results) {
+                                    var results = [];
+                                    _.each(data, function(entity){
+                                        results.push({
+                                            id: entity.code,
+                                            text: entity.label['en_US']}
+                                        );
+                                    });
+                                    data.results = results;
+                                }
                                 options.callback({
                                     results: data.results,
                                     more: data.results.length === self.resultsPerPage,

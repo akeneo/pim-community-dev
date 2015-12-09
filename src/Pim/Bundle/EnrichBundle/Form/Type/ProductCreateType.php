@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -14,6 +16,13 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ProductCreateType extends AbstractType
 {
+    protected $familyRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,26 +32,26 @@ class ProductCreateType extends AbstractType
             ->add(
                 'values',
                 'collection',
-                array(
+                [
                     'type'               => 'pim_product_value',
                     'allow_add'          => true,
                     'allow_delete'       => true,
                     'by_reference'       => false,
                     'cascade_validation' => true,
-                )
+                ]
             )
             ->add(
                 'family',
-                'entity',
-                array(
-                    'class'       => 'Pim\Bundle\CatalogBundle\Entity\Family',
-                    'required'    => false,
-                    'empty_value' => "",
-                    'select2'     => true,
-                    'attr'        => array(
+                'pim_ajax_select',
+                [
+                    'repository' => $this->familyRepository,
+                    'route'      => 'pim_enrich_family_rest_index',
+                    'required'   => false,
+                    'select2'    => true,
+                    'attr'       => [
                         'data-placeholder' => 'Choose a family'
-                    )
-                )
+                    ],
+                ]
             );
     }
 
