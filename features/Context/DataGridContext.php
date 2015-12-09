@@ -1041,7 +1041,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $script = <<<'JS'
         require(['jquery', 'jquery-ui'], function ($) {
-            $inputs = $('input.hasDatepicker:visible');
+            $inputs = $('input.hasDatepicker:visible, input.date-visual-element:visible');
             $inputs.first().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
             $inputs.last().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
         });
