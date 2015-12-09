@@ -39,6 +39,10 @@ class ProductEditForm extends Form
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
+        $this->spin(function() {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+
         $list = $this->getElement('Available attributes list');
         if (!$list->isVisible()) {
             $this->openAvailableAttributesMenu();
