@@ -1,6 +1,13 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/text-filter', 'routing', 'jquery.select2'],
-    function($, _, TextFilter, Routing) {
+    [
+        'jquery',
+        'underscore',
+        'oro/datafilter/text-filter',
+        'routing',
+        'text!pim/template/datagrid/filter/select2-choice-filter',
+        'jquery.select2'
+    ],
+    function($, _, TextFilter, Routing, template) {
         'use strict';
 
         return TextFilter.extend({
@@ -11,31 +18,7 @@ define(
             resultCache: {},
             resultsPerPage: 20,
             choices: [],
-            popupCriteriaTemplate: _.template(
-                '<div class="choicefilter">' +
-                    '<div class="input-prepend">' +
-                        '<div class="btn-group">' +
-                            '<% if (emptyChoice) { %>' +
-                                '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                    '<%= selectedOperatorLabel %>' +
-                                    '<span class="caret"></span>' +
-                                '</button>' +
-                                '<ul class="dropdown-menu">' +
-                                    '<% _.each(operatorChoices, function (label, operator) { %>' +
-                                        '<li<% if (selectedOperator == operator) { %> class="active"<% } %>>' +
-                                            '<a class="operator_choice" href="#" data-value="<%= operator %>"><%= label %></a>' +
-                                        '</li>' +
-                                    '<% }); %>' +
-                                '</ul>' +
-                            '<% } %>' +
-                            '<input type="text" name="value" value=""/>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
-                    '</div>' +
-                '</div>'
-            ),
+            popupCriteriaTemplate: _.template(template),
 
             events: {
                 'click .operator_choice': '_onSelectOperator'

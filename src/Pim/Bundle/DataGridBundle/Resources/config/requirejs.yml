@@ -97,4 +97,5 @@ config:
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
 
-        pim/template/datagrid/configure-columns-action: pimdatagrid/templates/configure-columns-action.html
+        pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
+        pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html
