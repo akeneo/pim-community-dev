@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/navigation', 'backbone/bootstrap-modal'],
-    function ($, _, Backbone, Navigation) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/navigation', 'backbone/bootstrap-modal'],
+    function ($, _, Backbone, __, Navigation) {
         'use strict';
 
         /**
@@ -26,7 +26,8 @@ define(
                     var alert = new Backbone.BootstrapModal({
                         allowCancel: false,
                         title: title,
-                        content: content
+                        content: content,
+                        okText: __('OK')
                     });
                     alert.open();
                 } else {
@@ -47,7 +48,8 @@ define(
                         allowCancel: true,
                         title: title,
                         content: content,
-                        okText: okText
+                        okText: okText,
+                        cancelText: __('Cancel')
                     });
 
                     redirectModal.on('ok', function () {
@@ -84,7 +86,9 @@ define(
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
                         title: title,
-                        content: content
+                        content: content,
+                        okText: __('OK'),
+                        cancelText: __('Cancel')
                     });
                     confirm.on('ok', success);
                     confirm.on('cancel', cancel);
