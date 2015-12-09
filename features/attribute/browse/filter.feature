@@ -1,20 +1,17 @@
 @javascript
-Feature: Browse attributes
+Feature: Filter attributes
   In order to check whether an attribute is available in the catalog
   As a product manager
   I need to be able to see attributes in the catalog
 
-  Scenario: Successfully view, sort and filter attributes
+  Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the attributes page
-    Then the grid should contain 26 elements
-    And I should see the columns Code, Label, Type, Scopable, Localizable and Group
-    And I should see attributes sku, name, manufacturer, volume, weather_conditions, description, price, rating, side_view, top_view, size, color, lace_color, length, number_in_stock, heel_color, sole_color, sole_fabric, lace_fabric, cap_color, rate_sale, weight and 123
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code, Label, Scopable, Localizable and Group
+
+  Scenario: Successfully filter attributes
     Then I should be able to use the following filters:
-      | filter      | value  | result                                                                                                                                                                                                                                |
+      | filter      | value  | result                                                                                                                                                                                                             |
       | Code        | o      | comment, volume, weather_conditions, description, destocking_date, top_view, color, lace_color, number_in_stock, heel_color, sole_color, sole_fabric and cap_color                                                                            |
       | Label       | m      | comment, volume, handmade, name, manufacturer and number_in_stock                                                                                                                                                                             |
       | Type        | Image  | side_view and top_view                                                                                                                                                                                                                |
