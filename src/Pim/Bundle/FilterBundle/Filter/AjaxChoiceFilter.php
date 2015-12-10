@@ -30,7 +30,7 @@ class AjaxChoiceFilter extends ChoiceFilter
      */
     public function getForm()
     {
-        if (!$this->form) {
+        if (null === $this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $this->getFormOptions());
         }
 

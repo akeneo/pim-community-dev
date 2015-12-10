@@ -202,7 +202,7 @@ config:
         pim/textarea-field:                 pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
-        # Fromatters
+        # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
 
         # Templates
