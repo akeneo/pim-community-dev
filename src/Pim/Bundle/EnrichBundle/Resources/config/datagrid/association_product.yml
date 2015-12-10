@@ -48,9 +48,11 @@ datagrid:
                 selector:      product_completeness
             created:
                 label:         Created
+                type:          product_value_date
                 frontend_type: date
             updated:
                 label:         Updated
+                type:          product_value_date
                 frontend_type: date
         properties:
             id: ~

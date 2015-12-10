@@ -52,3 +52,9 @@ services:
             - ['pim_catalog_date']
         tags:
             - { name: pim_localization.presenter, type: 'product_value' }
+
+    pim_localization.presenter.datetime:
+        class: %pim_localization.presenter.date.class%
+        arguments:
+            - '@pim_localization.factory.datetime'
+            - []

@@ -18,6 +18,7 @@ datagrid:
             started_at:
                 label: Started at
                 data_name: startTime
+                type: product_value_date
                 frontend_type: datetime
         actions:
             view:
