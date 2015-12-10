@@ -2,6 +2,7 @@
 
 namespace Context\Page\Product;
 
+use Behat\Mink\Element\Element;
 use Context\Page\Base\Form;
 
 /**
@@ -16,4 +17,19 @@ class Creation extends Form
 {
     /** @var string */
     protected $path = '/enrich/product/create';
+
+    public function fillField($locator, $value, Element $modal = null)
+    {
+        $selectContainer = $this->spin(function () use ($modal) {
+            return $modal->find('css', '.select2-container');
+        }, 10);
+
+        $placeholder = $selectContainer->find('css', sprintf('.select2-chosen:contains("%s")', $locator));
+
+        if ($placeholder) {
+            $this->fillSelect2Field($selectContainer, $value);
+        } else {
+            parent::fillField($locator, $value, $modal);
+        }
+    }
 }
