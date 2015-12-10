@@ -10,9 +10,9 @@ define(
                     {
                         code: 'webcams',
                         label: {
-                            en_US:'Webcams',
-                            fr_FR:'Webcams',
-                            de_DE:'Webcams'
+                            en_US: 'Webcams',
+                            fr_FR: 'Webcams',
+                            de_DE: 'Webcams'
                         }
                     },
                     {
