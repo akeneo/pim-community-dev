@@ -1,3 +1,13 @@
+@javascript
+Feature: Revert product attributes to a previous version
+  In order to manage versioning products
+  As a product manager
+  I need to be able to revert product attributes to a previous version
+
+  Background:
+    Given a "clothing" catalog configuration
+    And I am logged in as "Julia"
+
   Scenario: Successfully revert simpleselect attribute options of a product
     Given the following product:
     | sku  | family |
