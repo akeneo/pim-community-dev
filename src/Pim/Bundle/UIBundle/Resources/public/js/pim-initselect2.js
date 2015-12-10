@@ -1,7 +1,7 @@
 /* jshint unused:vars */
 define(
-    ['jquery', 'underscore', 'jquery.select2'],
-    function ($, _) {
+    ['jquery', 'underscore', 'pim/formatter/choices', 'jquery.select2'],
+    function ($, _, ChoicesFormatter) {
         'use strict';
         return {
             resultsPerPage: 20,
@@ -73,14 +73,7 @@ define(
                             type: 'GET',
                             success: function (data) {
                                 if (_.isUndefined(data.results)) {
-                                    var results = [];
-                                    _.each(data, function (entity) {
-                                        results.push({
-                                            id: entity.code,
-                                            text: entity.label.en_US
-                                        });
-                                    });
-                                    data.results = results;
+                                    data.results = ChoicesFormatter.format(data);
                                 }
                                 options.callback({
                                     results: data.results,
