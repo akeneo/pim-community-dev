@@ -6,7 +6,7 @@ Feature: Datagrid views
 
   Background:
     Given a "footwear" catalog configuration
-    And the following products:
+    And the following published products:
       | sku             | family   |
       | purple-sneakers | sneakers |
       | black-sneakers  | sneakers |
@@ -30,12 +30,12 @@ Feature: Datagrid views
     Then I logout
     And I am logged in as "Julia"
     And I am on the published index page
-    Then I should see published black-boots, purple-sneakers and black-sneakers
+    Then I should see published products black-boots, purple-sneakers and black-sneakers
     Then I logout
     And I am logged in as "Mary"
     And I am on the published index page
     Then I should see the text "Views Sneakers only"
-    And I should see published purple-sneakers and black-sneakers
+    And I should see published products purple-sneakers and black-sneakers
     But I should not see product black-boots
     Then I press the "Reset" button
-    Then I should see published black-boots, purple-sneakers and black-sneakers
+    Then I should see published products black-boots, purple-sneakers and black-sneakers
