@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.13 (2015-12-10)
 
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
