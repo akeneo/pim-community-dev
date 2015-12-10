@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time 
+
 # 1.4.13 (2015-12-10)
 
 ## BC Breaks

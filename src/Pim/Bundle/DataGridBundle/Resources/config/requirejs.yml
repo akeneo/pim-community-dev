@@ -80,6 +80,7 @@ config:
         oro/datafilter/product_completeness-filter: pimdatagrid/js/datafilter/filter/product_completeness-filter
         oro/datafilter/ajax-choice-filter:          pimdatagrid/js/datafilter/filter/ajax-choice-filter
         oro/datafilter/select2-choice-filter:       pimdatagrid/js/datafilter/filter/select2-choice-filter
+        oro/datafilter/select2-rest-choice-filter:  pimdatagrid/js/datafilter/filter/select2-rest-choice-filter
 
         oro/datafilter/abstract-filter:             pimdatagrid/js/datafilter/filter/abstract-filter
         oro/datafilter/none-filter:                 pimdatagrid/js/datafilter/filter/none-filter

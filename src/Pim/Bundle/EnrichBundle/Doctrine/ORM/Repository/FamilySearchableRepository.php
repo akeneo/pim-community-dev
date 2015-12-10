@@ -46,6 +46,11 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
             $qb->orWhere('ft.label like :search')->setParameter('search', "%$search%");
         }
 
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+            $qb->andWhere('f.code in (:codes)');
+            $qb->setParameter('codes', $options['identifiers']);
+        }
+
         if (isset($options['limit'])) {
             $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
