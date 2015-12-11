@@ -1,6 +1,10 @@
 # 1.4.x
 
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
+
 ## Bug fixes
+- PIM-5231: Use new AsyncSelectType for family selector in product creation form
 - PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time 
 
 # 1.4.13 (2015-12-10)
@@ -8,7 +12,6 @@
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
   It is required because normalization of reference data in product values is based on Doctrine metadata.
-- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
 - In case you wrote your own associations import, please add the parameter `batch_size: 1` to the `import_associations` step element of your `batch_jobs.yml`.
 
 ## Bug fixes
@@ -21,7 +24,6 @@
 ## Performance improvements
 - PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
 - PIM-5170: Fixes memory leak on MongoDB at association import time
-- PIM-5232: Use new AjaxSelectType for family selector in product creation form
 
 # 1.4.12 (2015-12-03)
 
