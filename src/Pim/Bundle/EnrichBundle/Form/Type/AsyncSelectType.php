@@ -68,6 +68,7 @@ class AsyncSelectType extends AbstractType
                     'repository_options' => [],
                     'route_parameters'   => [],
                     'required'           => false,
+                    'multiple'           => false,
                     'min-input-length'   => 0,
                 ]
             )
@@ -76,7 +77,7 @@ class AsyncSelectType extends AbstractType
             ->setAllowedTypes('required', ['bool'])
             ->setAllowedTypes('multiple', ['bool'])
             ->setAllowedTypes('min-input-length', ['int'])
-            ->setRequired(['route', 'repository', 'multiple']);
+            ->setRequired(['route', 'repository']);
     }
 
     /**

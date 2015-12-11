@@ -82,7 +82,7 @@ class AsyncSelectTypeSpec extends ObjectBehavior
         $resolver->setAllowedTypes('multiple', ['bool'])->willReturn($resolver);
         $resolver->setAllowedTypes('min-input-length', ['int'])->willReturn($resolver);
 
-        $resolver->setRequired(['route', 'repository', 'multiple'])->shouldBeCalled();
+        $resolver->setRequired(['route', 'repository'])->shouldBeCalled();
 
         $this->configureOptions($resolver);
     }
