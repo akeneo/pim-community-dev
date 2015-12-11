@@ -7,7 +7,6 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -106,21 +105,18 @@ class ChoiceFilterSpec extends ObjectBehavior
      */
     function it_provides_a_choice_filter_form(
         Form $form,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute,
-        $utility,
         $factory,
         $repository
     ) {
         $repository->findOneByCode('data_name_key')->willReturn($attribute);
 
         $factory->create(AjaxChoiceFilterType::NAME, [], [
-            'csrf_protection' => false,
-            'field_options' => [],
-            'choice_url' => 'pim_ui_ajaxentity_list',
+            'csrf_protection'   => false,
+            'choice_url'        => 'pim_ui_ajaxentity_list',
             'choice_url_params' => [
-                'class' => 'attributeOptionClass',
-                'dataLocale' => null,
+                'class'        => 'attributeOptionClass',
+                'dataLocale'   => null,
                 'collectionId' => null
             ]
         ])->willReturn($form);

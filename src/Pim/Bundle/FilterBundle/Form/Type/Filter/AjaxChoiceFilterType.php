@@ -60,7 +60,8 @@ class AjaxChoiceFilterType extends ChoiceFilterType
                 'choices'           => [],
                 'preload_choices'   => false,
                 'choice_url'        => null,
-                'choice_url_params' => null
+                'choice_url_params' => null,
+                'field_options'     => []
             ]
         );
     }

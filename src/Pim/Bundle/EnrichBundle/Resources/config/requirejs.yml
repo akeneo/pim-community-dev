@@ -202,6 +202,9 @@ config:
         pim/textarea-field:                 pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
+        # Formatters
+        pim/formatter/choices/base: pimenrich/js/formatter/choices/base
+
         # Templates
         pim/template/product/form:                                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:                         pimenrich/templates/product/tab/categories.html
