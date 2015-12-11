@@ -81,20 +81,23 @@ services:
     pimee_workflow.presenter.metric:
         class: %pimee_workflow.presenter.metric.class%
         arguments:
-            - '@pim_localization.localizer.metric'
+            - '@pim_localization.presenter.metric'
             - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.date:
         class: %pimee_workflow.presenter.date.class%
+        arguments:
+            - '@pim_localization.presenter.date'
+            - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.prices:
         class: %pimee_workflow.presenter.prices.class%
         arguments:
-            - '@pim_localization.localizer.price'
+            - '@pim_localization.presenter.prices'
             - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }
@@ -102,7 +105,7 @@ services:
     pimee_workflow.presenter.number:
         class: %pimee_workflow.presenter.number.class%
         arguments:
-            - '@pim_localization.localizer.number'
+            - '@pim_localization.presenter.number'
             - '@pim_localization.resolver.locale'
         tags:
             - { name: pimee_workflow.presenter }

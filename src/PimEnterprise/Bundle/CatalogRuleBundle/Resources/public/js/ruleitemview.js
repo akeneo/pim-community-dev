@@ -85,14 +85,12 @@ define(
         };
 
         var valueTemplates = {
-            'metric': _.template('<%= value.data %> <%= value.unit %>'),
             'collection': _.template(
                 '<% for (var i in value) { %>' +
                     '<%= renderValue(value[i]) %>' +
                     '<% if (i < value.length - 1) { %>, ' + '<% } %>' +
                 '<% } %>'
             ),
-            'price': _.template('<%= value.data %> <%= value.currency %> '),
             'file': _.template('<i class="icon-file"></i> <%= value.originalFilename %>'),
             'default': _.template('<%= value %>')
         };
@@ -121,12 +119,6 @@ define(
             var template;
 
             switch (true) {
-                case typeof value.unit !== 'undefined':
-                    template = 'metric';
-                    break;
-                case typeof value.currency !== 'undefined':
-                    template = 'price';
-                    break;
                 case typeof value.originalFilename !== 'undefined':
                     template = 'file';
                     break;

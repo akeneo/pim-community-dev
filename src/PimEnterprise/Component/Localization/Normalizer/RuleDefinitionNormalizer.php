@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Localization\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,24 +29,25 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
-    /** @var LocalizedAttributeConverterInterface */
-    protected $converter;
+    /** @var PresenterRegistryInterface */
+    protected $presenterRegistry;
 
     /** @var LocaleResolver */
     protected $localeResolver;
+
     /**
-     * @param NormalizerInterface                  $ruleNormalizer
-     * @param LocalizedAttributeConverterInterface $converter
-     * @param LocaleResolver                       $localeResolver
+     * @param NormalizerInterface        $ruleNormalizer
+     * @param PresenterRegistryInterface $presenterRegistry
+     * @param LocaleResolver             $localeResolver
      */
     public function __construct(
         NormalizerInterface $ruleNormalizer,
-        LocalizedAttributeConverterInterface $converter,
+        PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver
     ) {
-        $this->ruleNormalizer = $ruleNormalizer;
-        $this->converter      = $converter;
-        $this->localeResolver = $localeResolver;
+        $this->ruleNormalizer    = $ruleNormalizer;
+        $this->presenterRegistry = $presenterRegistry;
+        $this->localeResolver    = $localeResolver;
     }
 
     /**
@@ -78,16 +79,16 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     protected function convertContent(array $content)
     {
-        $localeOptions = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         foreach ($content as $key => $items) {
             foreach ($items as $index => $action) {
                 if (isset($action['field']) && isset($action['value'])) {
-                    $content[$key][$index]['value'] = $this->converter->convertDefaultToLocalizedValue(
-                        $action['field'],
-                        $action['value'],
-                        $localeOptions
-                    );
+                    $presenter = $this->presenterRegistry->getPresenterByAttributeCode($action['field']);
+
+                    if (null !== $presenter) {
+                        $content[$key][$index]['value'] = $presenter->present($action['value'], $options);
+                    }
                 }
             }
         }

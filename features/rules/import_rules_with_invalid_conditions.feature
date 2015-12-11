@@ -381,8 +381,7 @@ Feature: Import rules
     And I should see the text "actions[0]: Attribute or field \"price\" expects an array as data, \"string\" given (for setter prices collection)."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "3"
-    Then I should see the text "EUR"
+    Then I should see the text "€3.00"
 
   Scenario: Skip rules with unsupported values for attribute of type metric in conditions and actions
     Given the following product rule definitions:

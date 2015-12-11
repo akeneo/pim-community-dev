@@ -180,8 +180,7 @@ Feature: Import rules
     And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_price\" as it does not appear to be valid."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "3"
-    Then I should see the text "EUR"
+    Then I should see the text "€3"
 
   Scenario: Import valid rule for "metric attribute" in conditions and "set value" actions
     Given the following yaml file to import:

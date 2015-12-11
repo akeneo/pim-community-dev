@@ -36,8 +36,10 @@
 - Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type`. Add argument `PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`.
 - Remove ProductValue repository from container
 - Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Localizer\LocalizerInterface` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Presenter\MetricPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Presenter\PricesPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter`. Add `Pim\Component\Localization\Presenter\DatePresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter`. Add `Pim\Component\Localization\Presenter\NumberPresenter` and `Pim\Component\Localization\LocaleResolver`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization\RuleDefinitionProcessor
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor

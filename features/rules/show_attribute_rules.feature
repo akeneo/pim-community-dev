@@ -112,9 +112,9 @@ Feature: Show all rules related to an attribute
       | update_tees_collection | description     | une belle description | fr     | mobile |
       | update_tees_collection | number_in_stock | 800                   |        | tablet |
       | update_tees_collection | release_date    | 05/26/2015            |        | mobile |
-      | update_tees_collection | price           | 12 EUR                |        |        |
+      | update_tees_collection | price           | €12.00                |        |        |
       | update_tees_collection | side_view       | image.jpg             |        |        |
-      | update_tees_collection | length          | 10 CENTIMETER         |        |        |
+      | update_tees_collection | length          | 10 Centimeter         |        |        |
     Then I should see the following rule copier actions:
       | rule                   | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | copy_description       | description | description | en          | en        | mobile     | tablet   |
