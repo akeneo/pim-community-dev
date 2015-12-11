@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
@@ -59,8 +58,6 @@ class GroupType extends AbstractType
         $this->addTypeField($builder);
 
         $this->addLabelField($builder);
-
-        $this->addAttributesField($builder);
 
         $this->addProductsField($builder);
 
@@ -140,32 +137,6 @@ class GroupType extends AbstractType
                 'property_path'     => 'translations'
             ]
         );
-    }
-
-    /**
-     * Add attributes field
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addAttributesField(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add(
-                'attributes',
-                'entity',
-                [
-                    'label'         => 'Axis',
-                    'required'      => true,
-                    'multiple'      => true,
-                    'class'         => $this->attributeClass,
-                    'query_builder' => function (AttributeRepositoryInterface $repository) {
-                        return $repository->findAllAxisQB();
-                    },
-                    'help'     => 'pim_enrich.group.axis.help',
-                    'select2'  => true
-                ]
-            )
-            ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
 
     /**

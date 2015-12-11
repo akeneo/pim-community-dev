@@ -234,6 +234,7 @@ services:
             - %pim_catalog.entity.group.class%
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_axes']]
         tags:
             - { name: form.type, alias: pim_enrich_variant_group }
 
