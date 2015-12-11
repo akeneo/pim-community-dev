@@ -1,7 +1,7 @@
 /* jshint unused:vars */
 define(
-    ['jquery', 'underscore', 'jquery.select2'],
-    function ($, _) {
+    ['jquery', 'underscore', 'pim/formatter/choices/base', 'jquery.select2'],
+    function ($, _, ChoicesFormatter) {
         'use strict';
         return {
             resultsPerPage: 20,
@@ -9,23 +9,23 @@ define(
                 var self = this;
 
                 $target.find('input.select2:not(.select2-offscreen)').each(function () {
-                    var $el   = $(this);
+                    var $el = $(this);
                     var value = _.map(_.compact($el.val().split(',')), $.trim);
                     var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
 
                     tags = _.union(tags, value).sort();
-                    $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
+                    $el.select2({tags: tags, tokenSeparators: [',', ' ']});
                 });
 
                 $target.find('select.select2:not(.select2-offscreen)').each(function () {
-                    var $el    = $(this);
+                    var $el = $(this);
                     var $empty = $el.children('[value=""]');
 
                     if ($empty.length && $empty.html()) {
                         $el.attr('data-placeholder', $empty.html());
                         $empty.html('');
                     }
-                    $el.select2({ allowClear: true });
+                    $el.select2({allowClear: true});
                 });
 
                 $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
@@ -72,6 +72,9 @@ define(
                             dataType: 'json',
                             type: 'GET',
                             success: function (data) {
+                                if (_.isUndefined(data.results)) {
+                                    data.results = ChoicesFormatter.format(data);
+                                }
                                 options.callback({
                                     results: data.results,
                                     more: data.results.length === self.resultsPerPage,
@@ -104,7 +107,7 @@ define(
                     return $.fn.select2.defaults.matcher(term, result.text);
                 });
 
-                return _.extend({}, data, { results: matchingResults });
+                return _.extend({}, data, {results: matchingResults});
             }
         };
     }
