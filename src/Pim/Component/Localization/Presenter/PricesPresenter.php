@@ -19,15 +19,23 @@ class PricesPresenter extends NumberPresenter
      */
     public function present($prices, array $options = [])
     {
+        if ('' === $prices || null === $prices) {
+            return $prices;
+        }
+
         if (!is_array($prices)) {
-            return parent::present($prices, $options);
+            if (!isset($options['versioned_attribute'])) {
+                return parent::present($prices, $options);
+            }
+
+            $prices = $this->getStructuredPrice($prices, $options['versioned_attribute']);
         }
 
         $numberFormatter = $this
             ->numberFactory
             ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
 
-        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
+        if (isset($prices['data']) && isset($prices['currency'])) {
             return $numberFormatter->formatCurrency($prices['data'], $prices['currency']);
         }
 
@@ -37,5 +45,22 @@ class PricesPresenter extends NumberPresenter
         };
 
         return $presentedPrices;
+    }
+
+    /**
+     * Get the price with format data and currency from the versioned attribute.
+     * The versionedAttribute looks like 'price-EUR', and the price is a string representing a number.
+     *
+     * @param string $price
+     * @param string $versionedAttribute
+     *
+     * @return array
+     */
+    protected function getStructuredPrice($price, $versionedAttribute)
+    {
+        $parts = preg_split('/-/', $versionedAttribute);
+        $currency = end($parts);
+
+        return ['data' => (float) $price, 'currency' => $currency];
     }
 }

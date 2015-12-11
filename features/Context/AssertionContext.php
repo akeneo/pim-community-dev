@@ -431,11 +431,13 @@ class AssertionContext extends RawMinkContext
 
             $matchingRow = null;
             $parsedText = '';
+            $parsedTexts = [];
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
 
                 $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
                 $parsedText = preg_replace('/\s+/', ' ', $parsedText);
+                $parsedTexts[] = $parsedText;
 
                 if ($parsedText === $data['property']) {
                     $matchingRow = $row;
@@ -445,7 +447,7 @@ class AssertionContext extends RawMinkContext
 
             if (!$matchingRow) {
                 throw $this->createExpectationException(
-                    sprintf('No row found for property %s, found %s', $data['property'], $parsedText)
+                    sprintf('No row found for property %s, found %s', $data['property'], implode(', ', $parsedTexts))
                 );
             }
 
@@ -459,7 +461,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (!preg_match(
-                sprintf('/^%s$/', str_replace('/', '\/', $newValue)),
+                sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $newValue)),
                 $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
             )) {
                 throw $this->createExpectationException(
