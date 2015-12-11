@@ -12,15 +12,20 @@ parameters:
         en_US: 'MM/dd/yyyy hh:mm'
         fr: 'dd/MM/yyyy hh:mm'
         fr_FR: 'dd/MM/yyyy hh:mm'
-    pim_localization.factory.number.formats:
+    pim_localization.factory.currency.formats:
         en_US: '¤#,##0.00'
         fr_FR: '#,##0.00 ¤'
 
 services:
+    pim_localization.factory.currency:
+        class: %pim_localization.factory.number.class%
+        arguments:
+            - %pim_localization.factory.currency.formats%
+
     pim_localization.factory.number:
         class: %pim_localization.factory.number.class%
         arguments:
-            - %pim_localization.factory.number.formats%
+            - []
 
     pim_localization.factory.date:
         class: %pim_localization.factory.date.class%

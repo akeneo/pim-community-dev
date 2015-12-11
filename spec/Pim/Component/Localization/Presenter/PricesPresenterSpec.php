@@ -5,11 +5,11 @@ namespace spec\Pim\Component\Localization\Presenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\Factory\NumberFactory;
 
-class PricePresenterSpec extends ObjectBehavior
+class PricesPresenterSpec extends ObjectBehavior
 {
     function let(NumberFactory $numberFactory)
     {
-        $this->beConstructedWith($numberFactory);
+        $this->beConstructedWith($numberFactory, ['pim_catalog_price_collection']);
     }
 
     function it_should_present_english_price(
@@ -21,8 +21,8 @@ class PricePresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('$12.34');
         $this
-            ->present(['data' => 12.34, 'currency' => 'USD'], ['locale' => 'en_US'])
-            ->shouldReturn('$12.34');
+            ->present([['data' => 12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
+            ->shouldReturn(['$12.34']);
     }
 
     function it_should_present_french_price(
@@ -34,8 +34,8 @@ class PricePresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('12,34 $US');
         $this
-            ->present(['data' => 12.34, 'currency' => 'USD'], ['locale' => 'fr_FR'])
-            ->shouldReturn('12,34 $US');
+            ->present([['data' => 12.34, 'currency' => 'USD']], ['locale' => 'fr_FR'])
+            ->shouldReturn(['12,34 $US']);
     }
 
     function it_should_present_english_negative_price(
@@ -47,8 +47,8 @@ class PricePresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(-12.34, 'USD')->willReturn('-$12.34');
         $this
-            ->present(['data' => -12.34, 'currency' => 'USD'], ['locale' => 'en_US'])
-            ->shouldReturn('-$12.34');
+            ->present([['data' => -12.34, 'currency' => 'USD']], ['locale' => 'en_US'])
+            ->shouldReturn(['-$12.34']);
     }
 
     function it_should_present_french_negative_price(
@@ -60,8 +60,8 @@ class PricePresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(-12.34, 'USD')->willReturn('-12,34 $US');
         $this
-            ->present(['data' => -12.34, 'currency' => 'USD'], ['locale' => 'fr_FR'])
-            ->shouldReturn('-12,34 $US');
+            ->present([['data' => -12.34, 'currency' => 'USD']], ['locale' => 'fr_FR'])
+            ->shouldReturn(['-12,34 $US']);
     }
 
     function it_should_present_price_without_option(
@@ -73,7 +73,7 @@ class PricePresenterSpec extends ObjectBehavior
             ->willReturn($numberFormatter);
         $numberFormatter->formatCurrency(12.34, 'USD')->willReturn('$12.34');
         $this
-            ->present(['data' => 12.34, 'currency' => 'USD'])
-            ->shouldReturn('$12.34');
+            ->present([['data' => 12.34, 'currency' => 'USD']])
+            ->shouldReturn(['$12.34']);
     }
 }

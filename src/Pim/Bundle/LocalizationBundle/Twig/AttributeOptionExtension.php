@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Pim\Component\Localization\LocaleResolver;
+use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 
 /**
  * Twig extension to present localized attribute options
@@ -14,20 +14,20 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class AttributeOptionExtension extends \Twig_Extension
 {
-    /** @var LocalizerRegistryInterface */
-    protected $localizerRegistry;
+    /** @var PresenterRegistryInterface */
+    protected $presenterRegistry;
 
-    /** @var RequestStack */
-    protected $requestStack;
+    /** @var LocaleResolver */
+    protected $localeResolver;
 
     /**
-     * @param LocalizerRegistryInterface $localizerRegistry
-     * @param RequestStack               $requestStack
+     * @param PresenterRegistryInterface $presenterRegistry
+     * @param LocaleResolver             $localeResolver
      */
-    public function __construct(LocalizerRegistryInterface $localizerRegistry, RequestStack $requestStack)
+    public function __construct(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
     {
-        $this->localizerRegistry = $localizerRegistry;
-        $this->requestStack      = $requestStack;
+        $this->presenterRegistry = $presenterRegistry;
+        $this->localeResolver    = $localeResolver;
     }
 
     /**
@@ -45,47 +45,32 @@ class AttributeOptionExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter(
-                'localize_attribute_option',
-                [$this, 'localizeAttributeOption'],
+                'present_attribute_option',
+                [$this, 'presentAttributeOption'],
                 ['is_safe' => ['html']]
             ),
         ];
     }
 
     /**
-     * Localize an attribute option
+     * Presents an attribute option
      *
      * @param string $value
      * @param string $optionName
      *
      * @return string|null
      */
-    public function localizeAttributeOption($value, $optionName)
+    public function presentAttributeOption($value, $optionName)
     {
-        $localizer = $this->localizerRegistry->getAttributeOptionLocalizer($optionName);
-        if (null !== $localizer) {
-            $locale = $this->getLocale();
+        $presenter = $this->presenterRegistry->getAttributeOptionPresenter($optionName);
+        if (null !== $presenter) {
+            $locale = $this->localeResolver->getCurrentLocale();
 
             if (null !== $locale) {
-                return $localizer->localize($value, ['locale' => $locale]);
+                return $presenter->present($value, ['locale' => $locale]);
             }
         }
 
         return $value;
-    }
-
-    /**
-     * Returns current user locale.
-     *
-     * @return string|null
-     */
-    protected function getLocale()
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            return null;
-        }
-
-        return $request->getLocale();
     }
 }

@@ -11,7 +11,7 @@ services:
     pim_localization.twig.attribute_option_extension:
         class: %pim_localization.twig.attribute_option_extension.class%
         arguments:
-            - @pim_localization.localizer.registry
-            - @request_stack
+            - '@pim_localization.presenter.registry'
+            - '@pim_localization.resolver.locale'
         tags:
             - { name: twig.extension }

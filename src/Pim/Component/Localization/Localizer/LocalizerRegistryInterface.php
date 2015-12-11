@@ -14,50 +14,18 @@ namespace Pim\Component\Localization\Localizer;
 interface LocalizerRegistryInterface
 {
     /**
-     * Get localizer
+     * Register a localizer
+     *
+     * @param LocalizerInterface $localizer
+     */
+    public function register(LocalizerInterface $localizer);
+
+    /**
+     * Get the localizer supported by a product value
      *
      * @param string $attributeType
      *
      * @return LocalizerInterface|null
      */
     public function getLocalizer($attributeType);
-
-    /**
-     * Add a localizer
-     *
-     * @param LocalizerInterface $localizer
-     */
-    public function addLocalizer(LocalizerInterface $localizer);
-
-    /**
-     * Get localizer for a product value
-     *
-     * @param string $attributeType
-     *
-     * @return LocalizerInterface|null
-     */
-    public function getProductValueLocalizer($attributeType);
-
-    /**
-     * Add a localizer for a product value
-     *
-     * @param LocalizerInterface $localizer
-     */
-    public function addProductValueLocalizer(LocalizerInterface $localizer);
-
-    /**
-     * Get localizer for an attribute option name
-     *
-     * @param string $optionName
-     *
-     * @return LocalizerInterface|null
-     */
-    public function getAttributeOptionLocalizer($optionName);
-
-    /**
-     * Add a localizer for a product value
-     *
-     * @param LocalizerInterface $localizer
-     */
-    public function addAttributeOptionLocalizer(LocalizerInterface $localizer);
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -14,23 +14,23 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class MetricProperty extends TwigProperty
 {
-    /** @var LocalizerInterface */
-    protected $localizer;
+    /** @var PresenterInterface */
+    protected $presenter;
 
     /**
      * @param \Twig_Environment   $environment
      * @param TranslatorInterface $translator
-     * @param LocalizerInterface  $localizer
+     * @param PresenterInterface  $presenter
      */
     public function __construct(
         \Twig_Environment $environment,
         TranslatorInterface $translator,
-        LocalizerInterface $localizer
+        PresenterInterface $presenter
     ) {
         parent::__construct($environment);
 
         $this->translator = $translator;
-        $this->localizer  = $localizer;
+        $this->presenter  = $presenter;
     }
 
     /**
@@ -39,17 +39,7 @@ class MetricProperty extends TwigProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        $data   = isset($result['data']) ? $result['data'] : null;
-        $unit   = $result['unit'];
 
-        if ($data && $unit) {
-            $formattedData = $this->localizer->localize($data, ['locale' => $this->translator->getLocale()]);
-            return $this->getTemplate()->render(
-                [
-                    'data' => $formattedData,
-                    'unit' => $unit
-                ]
-            );
-        }
+        return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
     }
 }

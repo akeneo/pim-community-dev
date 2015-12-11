@@ -17,11 +17,7 @@ class RegisterLocalizersPass implements CompilerPassInterface
 {
     const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_localization.localizer.registry';
 
-    const LOCALIZATION_LOCALIZER = 'pim_localization.localizer';
-
-    const LOCALIZATION_LOCALIZER_PRODUCT_VALUE = 'pim_localization.localizer.product_value';
-
-    const LOCALIZATION_LOCALIZER_ATTRIBUTE_OPTION = 'pim_localization.localizer.attribute_option';
+    const LOCALIZATION_LOCALIZER_TAG = 'pim_localization.localizer';
 
     /**
      * {@inheritdoc}
@@ -31,34 +27,10 @@ class RegisterLocalizersPass implements CompilerPassInterface
         if (!$container->hasDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY)) {
             return;
         }
-
         $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
 
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER) as $id => $localizer) {
-            $definition->addMethodCall(
-                'addLocalizer',
-                [
-                    new Reference($id)
-                ]
-            );
-        }
-
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE) as $id => $localizer) {
-            $definition->addMethodCall(
-                'addProductValueLocalizer',
-                [
-                    new Reference($id)
-                ]
-            );
-        }
-
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_ATTRIBUTE_OPTION) as $id => $localizer) {
-            $definition->addMethodCall(
-                'addAttributeOptionLocalizer',
-                [
-                    new Reference($id)
-                ]
-            );
+        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_TAG) as $id => $tags) {
+            $definition->addMethodCall('register', [new Reference($id)]);
         }
     }
 }

@@ -3,16 +3,16 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
+use Pim\Component\Localization\Factory\NumberFactory;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MetricLocalizerSpec extends ObjectBehavior
 {
-    function let(ValidatorInterface $validator, FormatProviderInterface $formatProvider)
+    function let(ValidatorInterface $validator, NumberFactory $numberFactory)
     {
-        $this->beConstructedWith($validator, $formatProvider, ['pim_catalog_metric']);
+        $this->beConstructedWith($validator, $numberFactory, ['pim_catalog_metric']);
     }
 
     function it_is_a_localizer()

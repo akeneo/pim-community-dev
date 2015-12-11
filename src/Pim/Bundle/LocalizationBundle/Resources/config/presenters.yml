@@ -1,8 +1,54 @@
 parameters:
-    pim_localization.presenter.price.class: Pim\Component\Localization\Presenter\PricePresenter
+    pim_localization.presenter.registry.class: Pim\Component\Localization\Presenter\PresenterRegistry
+
+    pim_localization.presenter.prices.class:   Pim\Component\Localization\Presenter\PricesPresenter
+    pim_localization.presenter.metric.class:   Pim\Component\Localization\Presenter\MetricPresenter
+    pim_localization.presenter.number.class:   Pim\Component\Localization\Presenter\NumberPresenter
+    pim_localization.presenter.date.class:     Pim\Component\Localization\Presenter\DatePresenter
 
 services:
-    pim_localization.presenter.price:
-        class: %pim_localization.presenter.price.class%
+    pim_localization.presenter.registry:
+        class: %pim_localization.presenter.registry.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_localization.presenter.prices:
+        class: %pim_localization.presenter.prices.class%
+        arguments:
+            - '@pim_localization.factory.currency'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_localization.presenter, type: 'product_value' }
+
+    pim_localization.presenter.metric:
+        class: %pim_localization.presenter.metric.class%
         arguments:
             - '@pim_localization.factory.number'
+            - ['pim_catalog_metric']
+            - '@translator'
+        tags:
+            - { name: pim_localization.presenter, type: 'product_value' }
+
+    pim_localization.presenter.number:
+        class: %pim_localization.presenter.number.class%
+        arguments:
+            - '@pim_localization.factory.number'
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_localization.presenter, type: 'product_value' }
+
+    pim_localization.presenter.number.attribute_option:
+        class: %pim_localization.presenter.number.class%
+        arguments:
+            - '@pim_localization.factory.number'
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_localization.presenter, type: 'attribute_option' }
+
+    pim_localization.presenter.date:
+        class: %pim_localization.presenter.date.class%
+        arguments:
+            - '@pim_localization.factory.date'
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_localization.presenter, type: 'product_value' }

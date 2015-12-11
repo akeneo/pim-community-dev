@@ -45,7 +45,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn(25.3);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25.30']);
         $numberLocalizer->localize('25.30', $options)->willReturn('25,30');
@@ -64,7 +64,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn(25);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
         $numberLocalizer->localize('25', $options)->willReturn('25');
@@ -83,7 +83,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn('25');
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
         $numberLocalizer->localize('25', $options)->willReturn('25');
@@ -102,7 +102,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn(null);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
         $numberLocalizer->localize('', $options)->willReturn('');
@@ -121,7 +121,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn('');
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
         $numberLocalizer->localize('', $options)->willReturn('');
@@ -140,8 +140,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn('shoes');
         $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
-        $localizerRegistry->getProductValueLocalizer(Argument::any())->willReturn(null);
+        $localizerRegistry->getLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getLocalizer(Argument::any())->willReturn(null);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['simple-select' => 'shoes']);
         $numberLocalizer->localize('', $options)->shouldNotBeCalled();
@@ -160,7 +160,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn(new \DateTime('2000-10-28'));
         $attribute->getAttributeType()->willReturn(AttributeTypes::DATE);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '2000-10-28']);
         $dateLocalizer->localize('2000-10-28', $options)->willReturn('28/10/2000');
@@ -179,7 +179,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getData()->willReturn('');
         $attribute->getAttributeType()->willReturn(AttributeTypes::DATE);
         $productValue->getAttribute()->willReturn($attribute);
-        $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
+        $localizerRegistry->getLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '']);
         $dateLocalizer->localize('', $options)->willReturn('');

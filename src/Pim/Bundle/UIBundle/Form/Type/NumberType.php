@@ -53,7 +53,8 @@ class NumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $localeOptions = $this->localeResolver->getFormats();
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $decimalSeparator = $this->localeResolver->getFormats()['decimal_separator'];
 
         $constraint = new NumberFormat();
 
@@ -61,8 +62,8 @@ class NumberType extends AbstractType
             [
                 'decimals_allowed'           => true,
                 'invalid_message'            => $constraint->message,
-                'invalid_message_parameters' => ['{{ decimal_separator }}' => $localeOptions['decimal_separator']],
-                'locale_options'             => $localeOptions
+                'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
+                'locale_options'             => $options
             ]
         );
     }

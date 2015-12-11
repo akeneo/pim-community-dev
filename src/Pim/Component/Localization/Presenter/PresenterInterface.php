@@ -20,4 +20,13 @@ interface PresenterInterface
      * @return string
      */
     public function present($value, array $options = []);
+
+    /**
+     * Returns wether the presenter supports an attribute type.
+     *
+     * @param string $attributeType
+     *
+     * @return bool
+     */
+    public function supports($attributeType);
 }

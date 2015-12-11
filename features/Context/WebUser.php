@@ -2428,10 +2428,12 @@ class WebUser extends RawMinkContext
         unset($expectedLines[0]);
 
         foreach ($expectedLines as $expectedLine) {
+            $originalLines = [];
             $originalExpectedLine = $expectedLine;
             sort($expectedLine);
             $found = false;
             foreach ($actualLines as $index => $actualLine) {
+                $originalLines[] = implode(' | ', $actualLine);
                 // Order of columns is not ensured
                 // Sorting the line values allows to have two identical lines
                 // with values in different orders
@@ -2453,9 +2455,10 @@ class WebUser extends RawMinkContext
             if (!$found) {
                 throw new \Exception(
                     sprintf(
-                        'Could not find a line containing "%s" in %s',
+                        "Could not find a line in %s containing\n    %s\nAvailable lines are:\n    %s",
+                        $path,
                         implode(' | ', $originalExpectedLine),
-                        $path
+                        implode("\n    ", $originalLines)
                     )
                 );
             }
