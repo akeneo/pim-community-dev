@@ -1,6 +1,10 @@
 # 1.4.x
 
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
+
 ## Bug fixes
+- PIM-5231: Use new AsyncSelectType for family selector in product creation form
 - PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time 
 
 # 1.4.13 (2015-12-10)
