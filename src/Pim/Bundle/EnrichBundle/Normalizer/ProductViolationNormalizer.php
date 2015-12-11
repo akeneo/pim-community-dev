@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -23,11 +24,15 @@ class ProductViolationNormalizer implements NormalizerInterface
         $path = $violation->getPropertyPath();
 
         if (0 === strpos($path, 'values')) {
+            if (!isset($context['product']) || !$context['product'] instanceof ProductInterface) {
+                throw new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface');
+            }
+
             $codeStart     = strpos($path, '[') + 1;
             $codeLength    = strpos($path, ']') - $codeStart;
             $attributePath = substr($path, $codeStart, $codeLength);
 
-            $product      = $violation->getRoot();
+            $product      = $context['product'];
             $productValue = $product->getValues()[$attributePath];
 
             $normalizedViolation = [

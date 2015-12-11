@@ -184,7 +184,7 @@ class ProductController
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api', $this->buildContext()));
         } else {
             $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api')
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
             ];
 
             return new JsonResponse($errors, 400);

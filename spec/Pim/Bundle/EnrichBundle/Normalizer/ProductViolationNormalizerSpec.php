@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -21,7 +22,6 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $violation->getRoot()->willReturn($product);
         $product->getValues()->willReturn(['description-en_US-mobile' => $productValue]);
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn('mobile');
@@ -31,7 +31,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[description-en_US-mobile].text');
         $violation->getMessage()->willReturn('The text is too long.');
 
-        $this->normalize($violation, 'internal_api')->shouldReturn([
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
             'attribute' => 'description',
             'locale'    => 'en_US',
             'scope'     => 'mobile',
@@ -55,7 +55,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[movie-title-fr_FR].varchar');
         $violation->getMessage()->willReturn('This movie title is very bad.');
 
-        $this->normalize($violation, 'internal_api')->shouldReturn([
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
             'attribute' => 'movie-title',
             'locale'    => 'fr_FR',
             'scope'     => null,
@@ -69,7 +69,6 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $violation->getRoot()->willReturn($product);
         $product->getValues()->willReturn(['name-ecommerce' => $productValue]);
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn('ecommerce');
@@ -79,7 +78,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[name-ecommerce].varchar');
         $violation->getMessage()->willReturn('The text is too short.');
 
-        $this->normalize($violation, 'internal_api')->shouldReturn([
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
             'attribute' => 'name',
             'locale'    => null,
             'scope'     => 'ecommerce',
@@ -93,7 +92,6 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
-        $violation->getRoot()->willReturn($product);
         $product->getValues()->willReturn(['price' => $productValue]);
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
@@ -103,7 +101,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[price].float');
         $violation->getMessage()->willReturn('The price should be above 10.');
 
-        $this->normalize($violation, 'internal_api')->shouldReturn([
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
             'attribute' => 'price',
             'locale'    => null,
             'scope'     => null,
@@ -111,14 +109,32 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_global_violation(ConstraintViolationInterface $violation)
+    function it_normalizes_global_violation(ConstraintViolationInterface $violation, ProductInterface $product)
     {
         $violation->getPropertyPath()->willReturn('variant.color');
         $violation->getMessage()->willReturn('Variant group already contains this color.');
 
-        $this->normalize($violation, 'internal_api')->shouldReturn([
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
             'global'  => true,
             'message' => 'Variant group already contains this color.'
         ]);
+    }
+
+    function it_throws_an_exception_if_product_argument_is_missing(ConstraintViolationInterface $violation)
+    {
+        $violation->getPropertyPath()->willReturn('values[price].float');
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException( 'Expects a Pim\Component\Catalog\Model\ProductInterface'))
+            ->duringNormalize($violation, 'internal_api');
+    }
+
+    function it_throws_an_exception_if_product_argument_is_not_a_product(ConstraintViolationInterface $violation)
+    {
+        $violation->getPropertyPath()->willReturn('values[price].float');
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException( 'Expects a Pim\Component\Catalog\Model\ProductInterface'))
+            ->duringNormalize($violation, 'internal_api', ['product' => new ProductValue()]);
     }
 }
