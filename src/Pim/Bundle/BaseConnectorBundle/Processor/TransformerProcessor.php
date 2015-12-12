@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -198,7 +198,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      * @param array $item
      * @param array $errors
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      */
     protected function setItemErrors(array $item, array $errors)
     {

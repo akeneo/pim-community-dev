@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Exception;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -18,7 +18,7 @@ class FixtureLoaderException extends \RuntimeException
      * Constructor
      *
      * @param array                $fixtureConfig
-     * @param InvalidItemException $previous
+     * @param \Akeneo\Component\Batch\Item\InvalidItemException $previous
      */
     public function __construct(array $fixtureConfig, InvalidItemException $previous)
     {

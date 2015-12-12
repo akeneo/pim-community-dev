@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 

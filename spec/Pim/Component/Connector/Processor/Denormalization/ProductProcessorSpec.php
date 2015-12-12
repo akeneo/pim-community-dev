@@ -512,7 +512,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $localizedConverter->getViolations()->willReturn($violationList);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -618,7 +618,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -731,7 +731,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -982,7 +982,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $localizedConverter->getViolations()->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]

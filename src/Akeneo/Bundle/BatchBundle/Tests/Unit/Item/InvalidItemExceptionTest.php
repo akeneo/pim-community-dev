@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 
 /**
  * Test related class
@@ -17,7 +17,7 @@ class InvalidItemExceptionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->exception = new InvalidItemException(
+        $this->exception = new \Akeneo\Component\Batch\Item\InvalidItemException(
             'Tango is down, I repeat...',
             array('foo' => 'fighter')
         );

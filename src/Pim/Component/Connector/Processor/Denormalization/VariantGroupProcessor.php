@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
@@ -44,7 +44,7 @@ class VariantGroupProcessor extends GroupProcessor
     /**
      * @param GroupInterface $group
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */

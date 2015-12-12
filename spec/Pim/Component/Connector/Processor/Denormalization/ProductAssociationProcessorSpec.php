@@ -178,7 +178,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -252,7 +252,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]

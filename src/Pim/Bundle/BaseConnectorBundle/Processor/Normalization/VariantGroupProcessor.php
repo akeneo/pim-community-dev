@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -168,7 +168,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      *
      * @param GroupInterface $group
      *
-     * @throws InvalidItemException If a media file is not found
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException If a media file is not found
      *
      * @return array
      */

@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -152,7 +152,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param \Exception $previousException
      * @param string     $message
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      */
     protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
     {
@@ -170,7 +170,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param ConstraintViolationListInterface $violations
      * @param \Exception                       $previousException
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      */
     protected function skipItemWithConstraintViolations(
         array $item,

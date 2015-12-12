@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;

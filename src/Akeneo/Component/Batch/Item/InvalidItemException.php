@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Item;
+namespace Akeneo\Component\Batch\Item;
+
+use Exception;
 
 /**
  * Exception throw during step execution when an item is invalid

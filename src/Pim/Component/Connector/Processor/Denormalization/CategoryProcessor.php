@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

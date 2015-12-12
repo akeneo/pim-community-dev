@@ -71,7 +71,7 @@ class MultipleLoaderSpec extends ObjectBehavior
         $loader
     ) {
         $loader->load(Argument::any())
-            ->willThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException');
+            ->willThrow('Akeneo\Component\Batch\Item\InvalidItemException');
         $paths = ['/path_to_file/categories.csv'];
         $this->shouldThrow('Pim\Bundle\InstallerBundle\Exception\FixtureLoaderException')
             ->during('load', [$manager, $repository, $paths]);

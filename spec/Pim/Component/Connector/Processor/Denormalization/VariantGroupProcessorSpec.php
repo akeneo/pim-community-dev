@@ -126,7 +126,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->willThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'));
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]
@@ -181,7 +181,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]

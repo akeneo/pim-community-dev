@@ -109,7 +109,7 @@ class CategoryProcessorSpec extends ObjectBehavior
             ->willThrow(new \InvalidArgumentException());
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]
@@ -157,7 +157,7 @@ class CategoryProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]

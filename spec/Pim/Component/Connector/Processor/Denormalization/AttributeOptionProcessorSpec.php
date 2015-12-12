@@ -117,7 +117,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             ->willThrow(new \InvalidArgumentException('attribute does not exists'));
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]]
@@ -148,7 +148,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]]
