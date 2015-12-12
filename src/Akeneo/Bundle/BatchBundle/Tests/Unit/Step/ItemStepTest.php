@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Component\Batch\Step\ItemStep;
 
 /**
  * Tests related to the ItemStep class
@@ -16,7 +16,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     const STEP_NAME = 'test_step_name';
 
     /**
-     * @var ItemStep
+     * @var \Akeneo\Component\Batch\Step\ItemStep
      */
     protected $itemStep = null;
 
@@ -350,7 +350,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep', $entity);
+        $this->assertInstanceOf('Akeneo\\Component\\Batch\\Step\\ItemStep', $entity);
     }
 
     private function getReaderMock(array $configuration, array $fields = array())

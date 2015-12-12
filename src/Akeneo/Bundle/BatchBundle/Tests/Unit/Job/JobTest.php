@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Component\Batch\Step\ItemStep;
 use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
 use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Step;
+namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
@@ -9,8 +9,6 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 // TODO extract validation to a yml file in the bundle
-use Akeneo\Component\Batch\Step\AbstractStep;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

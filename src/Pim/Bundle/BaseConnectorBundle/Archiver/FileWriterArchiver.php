@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
