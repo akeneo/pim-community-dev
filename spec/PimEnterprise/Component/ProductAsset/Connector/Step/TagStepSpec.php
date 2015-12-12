@@ -25,7 +25,7 @@ class TagStepSpec extends ObjectBehavior
     function it_is_a_step()
     {
         $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepInterface');
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\AbstractStep');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\AbstractStep');
     }
 
     function it_executes(
