@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Entity;
 
-use Akeneo\Bundle\BatchBundle\Job\Job;
+use Akeneo\Component\Batch\Job\Job;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 // TODO extract mapping in yml file

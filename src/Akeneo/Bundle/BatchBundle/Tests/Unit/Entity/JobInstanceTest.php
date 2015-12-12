@@ -130,7 +130,7 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
 
         $expectedConfiguration = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
-        $mockJob = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Job\\Job')
+        $mockJob = $this->getMockBuilder('Akeneo\\Component\\Batch\\Job\\Job')
             ->disableOriginalConstructor()
             ->getMock();
 

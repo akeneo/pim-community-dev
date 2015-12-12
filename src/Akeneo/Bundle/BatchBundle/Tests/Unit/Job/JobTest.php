@@ -4,12 +4,12 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
-use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Step\ItemStep;
+use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
+use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
 
 /**
  * Tests related to the Job class

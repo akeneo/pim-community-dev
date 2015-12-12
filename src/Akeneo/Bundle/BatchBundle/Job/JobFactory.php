@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

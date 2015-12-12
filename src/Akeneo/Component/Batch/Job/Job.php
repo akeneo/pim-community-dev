@@ -1,15 +1,15 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+// TODO following classes does not exist
+use Akeneo\Bundle\BatchBundle\Job\JobRestartException;
+use Akeneo\Bundle\BatchBundle\Job\StartLimitExceededException;
+use Akeneo\Bundle\BatchBundle\Job\Step;
+use Akeneo\Bundle\BatchBundle\Job\StepExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobInterruptedException;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
