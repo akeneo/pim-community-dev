@@ -13,6 +13,7 @@ use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+// TODO: extract in a validation file
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
