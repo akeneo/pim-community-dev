@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
@@ -135,7 +135,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     /**
      * @param ChannelVariationsConfigurationInterface $channelConfiguration
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      *
      * @return ConstraintViolationListInterface
      */

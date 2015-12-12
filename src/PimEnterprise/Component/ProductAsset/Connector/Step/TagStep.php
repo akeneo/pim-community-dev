@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 
 /**

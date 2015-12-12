@@ -105,7 +105,7 @@ class AssetProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]
@@ -155,7 +155,7 @@ class AssetProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]

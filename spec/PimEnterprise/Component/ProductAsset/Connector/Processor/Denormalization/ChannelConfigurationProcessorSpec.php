@@ -172,7 +172,7 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
 
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$item]

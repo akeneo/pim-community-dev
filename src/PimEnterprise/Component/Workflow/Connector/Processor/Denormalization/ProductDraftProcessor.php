@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -200,7 +200,7 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param ProductInterface $product
      * @param array            $item
      *
-     * @throws InvalidItemException
+     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
      *
      * @return ProductDraft|null
      */

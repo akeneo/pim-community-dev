@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalizat
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -216,7 +216,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['original_values']]
