@@ -200,7 +200,7 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param ProductInterface $product
      * @param array            $item
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      *
      * @return ProductDraft|null
      */

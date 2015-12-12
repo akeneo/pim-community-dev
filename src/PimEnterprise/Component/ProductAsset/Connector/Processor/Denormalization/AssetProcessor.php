@@ -138,7 +138,7 @@ class AssetProcessor extends AbstractProcessor
     /**
      * @param AssetInterface $asset
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      *
      * @return ConstraintViolationListInterface
      */

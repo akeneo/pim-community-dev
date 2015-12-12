@@ -135,7 +135,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     /**
      * @param ChannelVariationsConfigurationInterface $channelConfiguration
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      *
      * @return ConstraintViolationListInterface
      */

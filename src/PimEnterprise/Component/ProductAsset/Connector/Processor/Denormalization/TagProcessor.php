@@ -135,7 +135,7 @@ class TagProcessor extends AbstractProcessor
     /**
      * @param TagInterface $tag
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      *
      * @return ConstraintViolationListInterface
      */
