@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;

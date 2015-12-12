@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;

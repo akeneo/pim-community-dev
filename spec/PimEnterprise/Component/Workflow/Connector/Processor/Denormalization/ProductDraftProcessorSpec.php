@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
