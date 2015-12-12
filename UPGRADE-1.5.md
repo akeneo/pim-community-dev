@@ -193,7 +193,9 @@ We've extracted following classes and interfaces from the Catalog bundle to the 
  - repository interfaces as ProductRepositoryInterface
  - builder interfaces as ProductBuilderInterface
 
-To upgrade run following 'sed' commands in your project and change you app/config.yml if you do mapping overrides:
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+
+Don't forget to change the app/config.yml if you did mapping overrides:
 
 v1.4
 ```
