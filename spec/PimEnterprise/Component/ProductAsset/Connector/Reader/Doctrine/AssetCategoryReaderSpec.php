@@ -17,7 +17,7 @@ class AssetCategoryReaderSpec extends ObjectBehavior
     function it_is_a_reader()
     {
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_returns_an_asset_category(
