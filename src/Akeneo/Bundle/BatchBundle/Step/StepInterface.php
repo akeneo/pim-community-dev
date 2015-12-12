@@ -14,6 +14,8 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * TODO: this interface should not enforce step configuration, not the same concern!
  */
 interface StepInterface
 {

@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+// TODO extract validation to a yml file in the bundle
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
