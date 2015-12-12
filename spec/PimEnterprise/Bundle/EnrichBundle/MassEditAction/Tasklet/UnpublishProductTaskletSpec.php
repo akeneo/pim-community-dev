@@ -56,8 +56,8 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_element()
     {
-        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->beAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->beAnInstanceOf('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration(
