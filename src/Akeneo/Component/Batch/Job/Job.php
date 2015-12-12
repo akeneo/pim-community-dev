@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * TODO: templates should be extracted, we mix concerns here
+ * TODO: JobRepository and EventDispatcher should be injected in the constructor
  */
 class Job implements JobInterface
 {
@@ -70,6 +71,8 @@ class Job implements JobInterface
 
     /**
      * Set the name property
+     *
+     * @deprecated will be removed in 1.6
      *
      * @param string $name
      *
@@ -386,7 +389,7 @@ class Job implements JobInterface
      *
      * @return StepExecution
      */
-    public function handleStep(StepInterface $step, JobExecution $jobExecution)
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution)
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
