@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Step;
 
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Component\Connector\Reader\File\CsvReader;
