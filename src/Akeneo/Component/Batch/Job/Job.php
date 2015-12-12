@@ -3,11 +3,7 @@
 namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-// TODO following classes does not exist
-use Akeneo\Bundle\BatchBundle\Job\JobRestartException;
-use Akeneo\Bundle\BatchBundle\Job\StartLimitExceededException;
-use Akeneo\Bundle\BatchBundle\Job\Step;
-use Akeneo\Bundle\BatchBundle\Job\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Step\StepInterface;
@@ -131,7 +127,7 @@ class Job implements JobInterface
      *
      * @param string $stepName
      *
-     * @return Step the Step
+     * @return StepInterface the Step
      */
     public function getStep($stepName)
     {
@@ -289,7 +285,6 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
-     * @throws StartLimitExceededException if start limit of one of the steps was exceeded
      */
     final public function execute(JobExecution $jobExecution)
     {
@@ -356,8 +351,6 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution the current {@link JobExecution}
      *
      * @throws JobInterruptedException
-     * @throws JobRestartException
-     * @throws StartLimitExceededException
      */
     protected function doExecute(JobExecution $jobExecution)
     {
@@ -390,8 +383,6 @@ class Job implements JobInterface
      * @param JobExecution  $jobExecution Job execution
      *
      * @throws JobInterruptedException
-     * @throws JobRestartException
-     * @throws StartLimitExceededException
      *
      * @return StepExecution
      */
