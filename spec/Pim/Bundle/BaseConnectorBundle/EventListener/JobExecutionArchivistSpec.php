@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;

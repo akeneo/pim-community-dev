@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Event;
+namespace Akeneo\Component\Batch\Event;
 
 /**
  * Interface of the batch bundle events

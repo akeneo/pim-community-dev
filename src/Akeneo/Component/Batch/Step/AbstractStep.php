@@ -3,7 +3,7 @@
 namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
 use Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;

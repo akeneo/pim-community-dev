@@ -226,16 +226,20 @@ It's a shame because this bundle provides the main interfaces and classes to str
 
 To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
 
-With the same strategy than for other old bundles, main technical interfaces are extracted in a Akeneo/Batch component.
+With the same strategy than for other old bundles, main technical interfaces and classes are extracted in a Akeneo/Batch component.
 
 It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
 
-As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+Has been done:
+ - extract main Step interface and classes
+ - extract main Item interface and classes
+ - extract main exceptions
+ - [WIP] extract main Event interface and classes
+ - [WIP] extract main Job interface and classes
+ - [WIP] replace unit tests by specs, add missing specs
+ - [TODO] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
 
-TODO:
- - extract main Step, Item, Job, Exception classes
- - replace unit tests by specs
- - batch component should never rely on Doctrine entities (add domain model interfaces)
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
 ## Normalizers & Denormalizers [WIP]
 
@@ -415,4 +419,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep/Akeneo\\Component\\Batch\\Step\\AbstractStep/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepExecutionAwareInterface/Akeneo\\Component\\Batch\\Step\\StepExecutionAwareInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep/Akeneo\\Component\\Batch\\Step\\ItemStep/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\EventInterface/Akeneo\\Component\\Batch\\Event\\EventInterface/g'
 ```

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
