@@ -94,7 +94,6 @@ class PricesPresenter extends AbstractProductValuePresenter
             $amount = $price->getData();
 
             if (null !== $amount) {
-
                 $structuredPrice = ['data' => $amount, 'currency' => $price->getCurrency()];
                 $prices[$price->getCurrency()] = $this->pricesPresenter->present($structuredPrice, $options);
             }
