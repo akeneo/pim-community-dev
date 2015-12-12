@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
+// TODO extract mapping in yml file
 use Doctrine\ORM\Mapping as ORM;
 
 /**

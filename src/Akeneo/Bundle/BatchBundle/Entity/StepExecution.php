@@ -8,7 +8,9 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
+// TODO extract mapping in yml file
 use Doctrine\ORM\Mapping as ORM;
+// TODO extract validation in yml file
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
