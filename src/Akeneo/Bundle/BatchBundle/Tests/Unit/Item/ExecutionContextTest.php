@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 
 /**
  * Tests related to the ExecutionContext class
@@ -75,6 +75,6 @@ class ExecutionContextTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Item\ExecutionContext', $entity);
+        $this->assertInstanceOf('Akeneo\Component\Batch\Item\ExecutionContext', $entity);
     }
 }

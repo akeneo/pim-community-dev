@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Entity;
 
-use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;

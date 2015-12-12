@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Item;
+namespace Akeneo\Component\Batch\Item;
 
 /**
  * Object representing a context for an {@link ItemStream}.
