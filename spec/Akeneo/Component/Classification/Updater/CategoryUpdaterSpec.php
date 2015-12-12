@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Catalog\Updater;
+namespace spec\Akeneo\Component\Classification\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +29,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\CategoryInterface", "stdClass" provided.'
+                'Expects a "Akeneo\Component\Classification\Model\CategoryInterface", "stdClass" provided.'
             )
         )->during(
             'update',
@@ -37,27 +37,20 @@ class CategoryUpdaterSpec extends ObjectBehavior
         );
     }
 
-    function it_updates_a_category(
+    function it_updates_a_not_translatable_category(
         $categoryRepository,
         CategoryInterface $category,
         CategoryInterface $categoryMaster,
         CategoryTranslation $translatable
     ) {
         $categoryRepository->findOneByIdentifier('master')->willReturn($categoryMaster);
-
-        $category->getTranslation()->willReturn($translatable);
-        $translatable->setLabel('Ma superbe catégorie')->shouldBeCalled();
         $category->setCode('mycode')->shouldBeCalled();
         $category->setParent($categoryMaster)->shouldBeCalled();
-        $category->setLocale('fr_FR')->shouldBeCalled();
         $category->getId()->willReturn(null);
 
         $values = [
             'code'         => 'mycode',
-            'parent'       => 'master',
-            'labels'       => [
-                'fr_FR' => 'Ma superbe catégorie',
-            ],
+            'parent'       => 'master'
         ];
 
         $this->update($category, $values, []);
