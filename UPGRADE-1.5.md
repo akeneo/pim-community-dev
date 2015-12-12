@@ -235,7 +235,7 @@ Has been done:
  - extract main Item interface and classes
  - extract main exceptions
  - extract main Event interface and classes
- - [WIP] extract main Job interface and classes
+ - extract main Job interface and classes
  - [WIP] replace unit tests by specs, add missing specs
  - [TODO] extract validation from Job class
  - [TODO] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
