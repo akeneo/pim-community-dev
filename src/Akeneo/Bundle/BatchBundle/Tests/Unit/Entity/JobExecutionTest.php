@@ -5,9 +5,9 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -138,7 +138,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->jobExecution->isRunning());
 
-        $status = $this->getMock('Akeneo\Bundle\BatchBundle\Job\BatchStatus');
+        $status = $this->getMock('Akeneo\Component\Batch\Job\BatchStatus');
         $status->expects($this->any())
             ->method('getValue')
             ->will($this->returnValue(BatchStatus::COMPLETED));

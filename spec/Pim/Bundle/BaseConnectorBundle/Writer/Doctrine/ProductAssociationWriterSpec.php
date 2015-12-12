@@ -27,17 +27,17 @@ class ProductAssociationWriterSpec extends ObjectBehavior
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_is_a_configurable_step_element()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
     }
 
     function it_increments_summary_info(

@@ -113,6 +113,7 @@ src/
 │   │   └── StorageUtilsBundle      Doctrine implementations for storage access (remover, saver, updater, repositories, etc)
 │   └── Component
 │       ├── Analytics               Data collector interfaces to aggregate statistics
+│       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes extracted from BatchBundle
 │       ├── Classification          Generic classes for classification trees (implemented by product categories and asset categories) and tags
 │       ├── Console                 Utility classes to execute commands
 │       ├── FileStorage             Business interfaces and classes to handle files storage with filesystem abstraction
@@ -144,11 +145,35 @@ src/
     │   ├── VersioningBundle        Versioning implementation for the PIM domain models
     │   └── WebServiceBundle        Very light Web Rest API (json format)
     └── Component
-        ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy and backward compatibility reasons
+        ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
         ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
+
+## Component & Bundle
+
+Since the 1.3, Akeneo PIM introduced several components, they contain pure PIM business logic (Pim namespace) or technical logic (Akeneo namespace).
+
+The code located in components is not coupled to Symfony Framework or Doctrine ORM/MongoDBODM.
+
+The bundles contain specific Doctrine implementations and the Symfony glue to assemble components together.
+
+At the end, this decoupling is very powerful, it allows to all our business code to rely only on interfaces and allow to change specific implementation easily.
+
+For instance, in previous versions, by introducing SaverInterface and BulkSaverInterface, we've decoupled our business code from Doctrine by avoiding the direct use of persist/flush everywhere in the code.
+
+With this move, we were able to replace the bulk saving of a products by a more efficient one without breaking anything in the business code.
+
+Our very new features are done in this way but what to do with our legacy code?
+
+We were really hesitating about this topic, because re-organizing has an impact on projects migration and not re-organizing makes the technical stack even harder to understand.
+
+We've decided to assume the re-organization of our legacy code by providing a clear way to migrate from minor version to the upcoming one.
+
+At the end, most of these changes consist in moving classes from bundles to move them into components and can be fixed by search & replace (cf last chapter).
+
+These changes will continue to improve Developer eXperience by bringing a more understandable technical stack and by simplifying future evolutions and maintenance. 
 
 ## ConnectorBundle & BaseConnectorBundle
 
@@ -169,9 +194,9 @@ We've extracted following classes and interfaces from the Catalog bundle to the 
  - repository interfaces as ProductRepositoryInterface
  - builder interfaces as ProductBuilderInterface
 
-This allow us to continue to split our classes in components and bundles to separate business code and framework glue.
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
-To upgrade run following 'sed' commands in your project and change you app/config.yml if you do mapping overrides:
+Don't forget to change the app/config.yml if you did mapping overrides:
 
 v1.4
 ```
@@ -201,9 +226,23 @@ It's a shame because this bundle provides the main interfaces and classes to str
 
 To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
 
-With the same strategy than for other old bundles, main technical interfaces are extracted in a Akeneo/Batch component.
+With the same strategy than for other old bundles, main technical interfaces and classes are extracted in a Akeneo/Batch component.
 
 It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
+
+Has been done:
+ - extract main Step interface and classes
+ - extract main Item interface and classes
+ - extract main exceptions
+ - extract main Event interface and classes
+ - extract main Job interface and classes
+ - [WIP] replace unit tests by specs, add missing specs
+ - [TODO] extract validation from Job class
+ - [TODO] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
+
+Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
+
+One remaining issue with the Batch component and bundle is the mix of configuration and UI logic inside the Job, the StepInterface and the AbstractConfigurableStepElement.
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
@@ -376,4 +415,25 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Exception\\MissingIdentifierException/Pim\\Component\\Catalog\\Exception\\MissingIdentifierException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Model\\VersionableInterface/Akeneo\\Component\\Versioning\\Model\\VersionableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Model\\Version/Akeneo\\Component\\Versioning\\Model\\Version/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemReaderInterface/Akeneo\\Component\\Batch\\Item\\ItemReaderInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface/Akeneo\\Component\\Batch\\Item\\ItemProcessorInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemWriterInterface/Akeneo\\Component\\Batch\\Item\\ItemWriterInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\InvalidItemException/Akeneo\\Component\\Batch\\Item\\InvalidItemException/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement/Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ExecutionContext/Akeneo\\Component\\Batch\\Item\\ExecutionContext/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepInterface/Akeneo\\Component\\Batch\\Step\\StepInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep/Akeneo\\Component\\Batch\\Step\\AbstractStep/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepExecutionAwareInterface/Akeneo\\Component\\Batch\\Step\\StepExecutionAwareInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep/Akeneo\\Component\\Batch\\Step\\ItemStep/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\EventInterface/Akeneo\\Component\\Batch\\Event\\EventInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent/Akeneo\\Component\\Batch\\Event\\InvalidItemEvent/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\JobExecutionEvent/Akeneo\\Component\\Batch\\Event\\JobExecutionEvent/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\StepExecutionEvent/Akeneo\\Component\\Batch\\Event\\StepExecutionEvent/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface/Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobInterruptedException/Akeneo\\Component\\Batch\\Job\\JobInterruptedException/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus/Akeneo\\Component\\Batch\\Job\\ExitStatus/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\BatchStatus/Akeneo\\Component\\Batch\\Job\\BatchStatus/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobInterface/Akeneo\\Component\\Batch\\Job\\JobInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\Job/Akeneo\\Component\\Batch\\Job\\Job/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\RuntimeErrorException/Akeneo\\Component\\Batch\\Job\\RuntimeErrorException/g'
 ```

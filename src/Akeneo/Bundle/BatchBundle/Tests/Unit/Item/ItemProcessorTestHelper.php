@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * Test helpers class needed as there is no way to create a mock from

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation

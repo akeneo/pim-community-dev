@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Step\AbstractStep;
+use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader;

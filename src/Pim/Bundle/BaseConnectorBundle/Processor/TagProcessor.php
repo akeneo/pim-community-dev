@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

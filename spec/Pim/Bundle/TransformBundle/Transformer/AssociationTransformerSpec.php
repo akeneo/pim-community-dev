@@ -66,7 +66,7 @@ class AssociationTransformerSpec extends ObjectBehavior
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
         $data  = ['association_type' => 'PACK'];
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }
 
     function it_throws_an_exception_if_the_owner_does_not_exist(
@@ -86,7 +86,7 @@ class AssociationTransformerSpec extends ObjectBehavior
         $em->getRepository('productClass')->willReturn($repository);
         $repository->findOneByIdentifier('mug-001')->willReturn(null);
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }
 
     function it_throws_an_exception_if_the_association_type_is_not_defined()
@@ -94,7 +94,7 @@ class AssociationTransformerSpec extends ObjectBehavior
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
         $data  = ['owner' => 'mug-001'];
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }
 
     function it_throws_an_exception_if_the_association_type_does_not_exist(
@@ -109,6 +109,6 @@ class AssociationTransformerSpec extends ObjectBehavior
         $em->getRepository($class)->willReturn($repository);
         $repository->findOneByIdentifier('PACK')->willReturn(null);
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }
 }

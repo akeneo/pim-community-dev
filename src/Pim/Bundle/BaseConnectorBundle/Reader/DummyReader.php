@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * Dummy step, can't be used unless you have a concrete implementation

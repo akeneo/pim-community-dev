@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;

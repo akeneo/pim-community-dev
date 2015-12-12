@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Prophecy\Argument;

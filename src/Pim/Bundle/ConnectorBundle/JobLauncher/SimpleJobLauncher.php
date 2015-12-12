@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ConnectorBundle\JobLauncher;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher as BaseSimpleJobLauncher;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Connector\Factory\JobConfigurationFactory;
 use Symfony\Component\Process\PhpExecutableFinder;

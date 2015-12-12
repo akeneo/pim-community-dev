@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Entity\Warning;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;

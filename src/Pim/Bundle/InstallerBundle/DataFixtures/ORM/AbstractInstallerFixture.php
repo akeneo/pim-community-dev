@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;

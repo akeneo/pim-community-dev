@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -39,12 +39,12 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_is_configurable()

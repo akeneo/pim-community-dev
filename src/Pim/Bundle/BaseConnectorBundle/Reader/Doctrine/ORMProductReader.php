@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;

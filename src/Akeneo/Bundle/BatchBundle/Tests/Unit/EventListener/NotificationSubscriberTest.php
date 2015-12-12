@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber;
+use Akeneo\Component\Batch\Event\EventInterface;
 
 /**
  * Test related class
@@ -70,7 +70,7 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Component\Batch\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 

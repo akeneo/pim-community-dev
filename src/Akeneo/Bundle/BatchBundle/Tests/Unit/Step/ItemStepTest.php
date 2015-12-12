@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Step\ItemStep;
 
 /**
  * Tests related to the ItemStep class
@@ -36,7 +36,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
 
         $this->itemStep = new ItemStep(self::STEP_NAME);
 
@@ -162,7 +162,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Component\\Batch\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The read item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
@@ -224,7 +224,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Component\\Batch\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The processed item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
@@ -291,7 +291,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
+                    $this->isInstanceOf('Akeneo\\Component\\Batch\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The written item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
@@ -350,7 +350,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep', $entity);
+        $this->assertInstanceOf('Akeneo\\Component\\Batch\\Step\\ItemStep', $entity);
     }
 
     private function getReaderMock(array $configuration, array $fields = array())

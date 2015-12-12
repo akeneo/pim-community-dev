@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Component\Batch\Step\ItemStep;
 use Doctrine\Common\Util\Inflector;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

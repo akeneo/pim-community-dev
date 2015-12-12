@@ -17,14 +17,14 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        $jobRepository = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $jobRepository = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $jobFactory = new JobFactory($eventDispatcher, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(
-            'Akeneo\\Bundle\\BatchBundle\\Job\\JobInterface',
+            'Akeneo\\Component\\Batch\\Job\\JobInterface',
             $job
         );
     }

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
@@ -41,7 +41,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_provides_configuration_fields()

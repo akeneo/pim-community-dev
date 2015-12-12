@@ -32,13 +32,13 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('setReferenceRepository')
             ->with($this->identicalTo($referenceRepository));
 
-        $reader = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $reader = $this->getMock('Akeneo\Component\Batch\Item\ItemReaderInterface');
         $configurationRegistry->expects($this->once())
             ->method('getReader')
             ->with($this->equalTo('name'), $this->equalTo('extension'))
             ->will($this->returnValue($reader));
 
-        $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $processor = $this->getMock('Akeneo\Component\Batch\Item\ItemProcessorInterface');
         $configurationRegistry->expects($this->once())
             ->method('getProcessor')
             ->with($this->equalTo('name'), $this->equalTo('extension'))

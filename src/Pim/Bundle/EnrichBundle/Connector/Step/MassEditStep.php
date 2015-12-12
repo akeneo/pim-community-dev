@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Step\AbstractStep;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
 use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
 

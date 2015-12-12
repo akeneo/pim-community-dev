@@ -19,10 +19,10 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $reader = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface')
+        $reader = $this->getMockBuilder('Akeneo\Component\Batch\Item\ItemReaderInterface')
             ->setMethods(['setFilePath', 'read'])
             ->getMock();
-        $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $processor = $this->getMock('Akeneo\Component\Batch\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $loader = new Loader(
             $objectManager,

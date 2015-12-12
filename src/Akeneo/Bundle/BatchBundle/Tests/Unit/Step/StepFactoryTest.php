@@ -13,30 +13,30 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateStep()
     {
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
 
         $stepFactory = new StepFactory($eventDispatcher, $jobRepository);
 
         $reader = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemReaderInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemReaderInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $processor = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemProcessorInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $writer = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemWriterInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemWriterInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $services = array('reader' => $reader, 'processor' => $processor, 'writer' => $writer);
-        $class = 'Akeneo\Bundle\BatchBundle\Step\ItemStep';
+        $class = 'Akeneo\Component\Batch\Step\ItemStep';
         $step = $stepFactory->createStep('my_test_job', $class, $services, array());
 
-        $this->assertInstanceOf('Akeneo\\Bundle\\BatchBundle\\Step\\StepInterface', $step);
+        $this->assertInstanceOf('Akeneo\\Component\\Batch\\Step\\StepInterface', $step);
         $this->assertAttributeEquals($reader, 'reader', $step);
         $this->assertAttributeEquals($processor, 'processor', $step);
         $this->assertAttributeEquals($writer, 'writer', $step);

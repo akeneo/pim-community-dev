@@ -5,4 +5,4 @@ parameters:
     akeneo_batch.entity.job_instance.class:   Akeneo\Bundle\BatchBundle\Entity\JobInstance
     akeneo_batch.entity.job_execution.class:  Akeneo\Bundle\BatchBundle\Entity\JobExecution
     akeneo_batch.entity.step_execution.class: Akeneo\Bundle\BatchBundle\Entity\StepExecution
-    akeneo_batch.job.batch_status.class:      Akeneo\Bundle\BatchBundle\Job\BatchStatus
+    akeneo_batch.job.batch_status.class:      Akeneo\Component\Batch\Job\BatchStatus

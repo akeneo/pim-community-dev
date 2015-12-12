@@ -16,9 +16,9 @@ class VariantGroupReaderSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_reader()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemReaderInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_reads_variant_groups_one_by_one($repository)

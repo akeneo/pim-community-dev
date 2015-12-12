@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\BatchBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber;
+use Akeneo\Component\Batch\Event\EventInterface;
 
 /**
  * Test related class
@@ -222,12 +222,12 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warning')
             ->with(
-                'The Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'The Akeneo\Component\Batch\Item\ItemReaderInterface was unable ' .
                 'to handle the following item: [foo => bar] (REASON: This is a valid reason.)'
             );
 
         $event = $this->getInvalidItemEventMock(
-            'Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'Akeneo\Component\Batch\Item\ItemReaderInterface',
             'batch.invalid_item_reason',
             array('item' => 'foobar'),
             array('foo'  => 'bar')
@@ -243,7 +243,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Component\Batch\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -257,7 +257,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionEventMock($stepExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent')
+            ->getMockBuilder('Akeneo\Component\Batch\Event\StepExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -294,7 +294,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getInvalidItemEventMock($class, $reason, array $reasonParameters, $item)
     {
-        $invalidItem = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent')
+        $invalidItem = $this->getMockBuilder('Akeneo\Component\Batch\Event\InvalidItemEvent')
             ->disableOriginalConstructor()
             ->getMock();
 

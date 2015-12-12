@@ -156,7 +156,7 @@ class RegisterJobsPass implements CompilerPassInterface
                                     ->children()
                                         ->scalarNode('title')->end()
                                         ->scalarNode('class')
-                                            ->defaultValue('Akeneo\Bundle\BatchBundle\Step\ItemStep')
+                                            ->defaultValue('Akeneo\Component\Batch\Step\ItemStep')
                                         ->end()
                                         ->arrayNode('services')
                                             ->prototype('scalar')->end()

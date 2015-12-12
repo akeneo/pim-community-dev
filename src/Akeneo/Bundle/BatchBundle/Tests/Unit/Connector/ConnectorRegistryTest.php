@@ -23,7 +23,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
     public function testAddStepToInexistantJob()
     {
         $job       = $this->getJobMock();
-        $step      = $this->getConstructorDisabledMock('Akeneo\Bundle\BatchBundle\Step\ItemStep');
+        $step      = $this->getConstructorDisabledMock('Akeneo\Component\Batch\Step\ItemStep');
         $reader    = $this->getConstructorDisabledMock(
             'Akeneo\Bundle\BatchBundle\Tests\Unit\Item\ItemReaderTestHelper'
         );
@@ -45,7 +45,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('createStep')
             ->with(
                 'Export',
-                'Akeneo\Bundle\BatchBundle\Step\ItemStep',
+                'Akeneo\Component\Batch\Step\ItemStep',
                 array(
                     'reader'    => $reader,
                     'processor' => $processor,
@@ -65,7 +65,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export',
-            'Akeneo\Bundle\BatchBundle\Step\ItemStep',
+            'Akeneo\Component\Batch\Step\ItemStep',
             array(
                 'reader'    => $reader,
                 'processor' => $processor,
@@ -87,8 +87,8 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
     public function testAddStepToExistantJob()
     {
         $job       = $this->getJobMock();
-        $step0     = $this->getConstructorDisabledMock('Akeneo\Bundle\BatchBundle\Step\ItemStep');
-        $step1     = $this->getConstructorDisabledMock('Akeneo\Bundle\BatchBundle\Step\ItemStep');
+        $step0     = $this->getConstructorDisabledMock('Akeneo\Component\Batch\Step\ItemStep');
+        $step1     = $this->getConstructorDisabledMock('Akeneo\Component\Batch\Step\ItemStep');
         $reader    = $this->getConstructorDisabledMock(
             'Akeneo\Bundle\BatchBundle\Tests\Unit\Item\ItemReaderTestHelper'
         );
@@ -124,7 +124,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export',
-            'Akeneo\Bundle\BatchBundle\Step\ItemStep',
+            'Akeneo\Component\Batch\Step\ItemStep',
             array(
                 'reader'    => $reader,
                 'processor' => $processor,
@@ -139,7 +139,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
             'export_stuff',
             'Export some stuff',
             'Export2',
-            'Akeneo\Bundle\BatchBundle\Step\ItemStep',
+            'Akeneo\Component\Batch\Step\ItemStep',
             array(
                 'reader'    => $reader,
                 'processor' => $processor,
@@ -168,7 +168,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        return $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\Job', array(), array('TestJob', $logger));
+        return $this->getMock('Akeneo\\Component\\Batch\\Job\\Job', array(), array('TestJob', $logger));
     }
 
     private function getConstructorDisabledMock($classname)

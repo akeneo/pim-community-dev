@@ -108,6 +108,6 @@ class AttributeProcessorSpec extends ObjectBehavior
         $attributeFactory->createAttribute('pim_catalog_identifier')->willReturn($attribute);
         $updater->update($attribute, $convertedItems)->willThrow('\InvalidArgumentException');
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$item]);
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
     }
 }

@@ -46,9 +46,9 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_reader()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_massively_insert_products(

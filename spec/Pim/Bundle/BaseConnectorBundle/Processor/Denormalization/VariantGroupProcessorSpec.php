@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -55,9 +55,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_processor()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_has_no_extra_configuration()

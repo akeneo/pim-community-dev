@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+
 /**
  * Interface for fixture loader configuration
  *
@@ -60,7 +63,7 @@ interface ConfigurationRegistryInterface
      * @param string $name
      * @param string $extension
      *
-     * @return \Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface
+     * @return ItemProcessorInterface
      */
     public function getProcessor($name, $extension);
 
@@ -70,7 +73,7 @@ interface ConfigurationRegistryInterface
      * @param string $name
      * @param string $extension
      *
-     * @return \Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface
+     * @return ItemReaderInterface
      */
     public function getReader($name, $extension);
 }

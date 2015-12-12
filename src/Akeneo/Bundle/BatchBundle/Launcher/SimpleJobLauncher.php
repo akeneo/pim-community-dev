@@ -4,7 +4,7 @@ namespace Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Entity;
 
+// TODO extract mapping in yml file
 use Doctrine\ORM\Mapping as ORM;
 
 /**

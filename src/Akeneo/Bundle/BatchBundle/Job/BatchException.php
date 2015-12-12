@@ -10,6 +10,8 @@ namespace Akeneo\Bundle\BatchBundle\Job;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * @abstract
+ *
+ * @deprecated not used anymore, will be removed in 1.6
  */
 abstract class BatchException extends \Exception
 {

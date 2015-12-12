@@ -9,7 +9,7 @@ class CachedReaderSpec extends ObjectBehavior
 {
     function it_is_an_item_reader()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
     }
 
     function it_provides_configuration_fields()
