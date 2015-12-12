@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader;
 
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Product reader interface

@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Abstract repository reader, returns items one by one

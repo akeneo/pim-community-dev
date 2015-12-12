@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Step;
+namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 

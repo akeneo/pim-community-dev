@@ -29,7 +29,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_writes_some_variant_groups(

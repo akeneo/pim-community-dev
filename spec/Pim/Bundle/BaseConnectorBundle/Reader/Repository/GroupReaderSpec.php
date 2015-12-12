@@ -18,7 +18,7 @@ class GroupReaderSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_reads_groups_one_by_one($repository)

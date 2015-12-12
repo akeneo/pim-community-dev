@@ -41,7 +41,7 @@ class CategoryProcessorSpec extends ObjectBehavior
     function it_is_an_item_processor_step_execution_aware()
     {
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_provides_configuration_fields()

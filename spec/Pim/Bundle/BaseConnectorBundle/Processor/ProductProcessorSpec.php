@@ -44,7 +44,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_is_configurable()

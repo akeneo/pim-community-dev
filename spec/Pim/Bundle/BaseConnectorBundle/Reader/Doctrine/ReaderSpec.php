@@ -23,7 +23,7 @@ class ReaderSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_can_have_an_orm_query(AbstractQuery $query)

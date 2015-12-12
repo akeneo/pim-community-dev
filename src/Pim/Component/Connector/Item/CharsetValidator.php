@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Item;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\Exception\CharsetException;
 
 /**
