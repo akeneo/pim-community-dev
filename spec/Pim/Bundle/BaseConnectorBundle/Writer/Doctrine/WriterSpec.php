@@ -21,7 +21,7 @@ class WriterSpec extends ObjectBehavior
     function it_is_a_configurable_step_execution_aware_writer()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 

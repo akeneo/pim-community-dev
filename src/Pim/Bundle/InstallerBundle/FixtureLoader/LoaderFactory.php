@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;

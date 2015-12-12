@@ -37,7 +37,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     function it_is_a_configurable_step_execution_aware_processor()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 

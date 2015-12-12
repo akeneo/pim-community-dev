@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;

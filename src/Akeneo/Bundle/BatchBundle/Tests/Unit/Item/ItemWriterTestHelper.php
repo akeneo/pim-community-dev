@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
 
 /**
  * Test helpers class needed as there is no way to create a mock from

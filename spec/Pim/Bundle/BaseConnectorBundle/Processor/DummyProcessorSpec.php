@@ -13,7 +13,7 @@ class DummyProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_provides_configuration_fields()

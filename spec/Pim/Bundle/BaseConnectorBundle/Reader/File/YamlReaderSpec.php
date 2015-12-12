@@ -16,7 +16,7 @@ class YamlReaderSpec extends ObjectBehavior
 
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
         $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface');
         $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }

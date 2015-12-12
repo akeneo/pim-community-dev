@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concrete implementation

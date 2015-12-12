@@ -27,7 +27,7 @@ class ProductAssociationWriterSpec extends ObjectBehavior
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_is_step_execution_aware()

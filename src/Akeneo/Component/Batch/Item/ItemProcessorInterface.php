@@ -1,6 +1,7 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Item;
+namespace Akeneo\Component\Batch\Item;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Interface for item transformation.  Given an item as input, this interface provides

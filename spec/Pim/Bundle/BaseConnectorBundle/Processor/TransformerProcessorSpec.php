@@ -33,7 +33,7 @@ class TransformerProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor_step_execution_aware()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
         $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 

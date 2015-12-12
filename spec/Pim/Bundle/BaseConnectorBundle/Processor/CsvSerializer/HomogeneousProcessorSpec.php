@@ -26,7 +26,7 @@ class HomogeneousProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_is_step_execution_aware()

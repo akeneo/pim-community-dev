@@ -18,17 +18,17 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
         $stepFactory = new StepFactory($eventDispatcher, $jobRepository);
 
         $reader = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemReaderInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemReaderInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $processor = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemProcessorInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $writer = $this
-            ->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Item\\ItemWriterInterface')
+            ->getMockBuilder('Akeneo\\Component\\Batch\\Item\\ItemWriterInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

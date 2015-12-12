@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;

@@ -36,7 +36,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
     function it_is_a_processor_and_a_step_element()
     {
         $this->beAnInstanceOf('\Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->beAnInstanceOf('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_a_family(

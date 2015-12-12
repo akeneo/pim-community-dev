@@ -222,12 +222,12 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warning')
             ->with(
-                'The Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'The Akeneo\Component\Batch\Item\ItemReaderInterface was unable ' .
                 'to handle the following item: [foo => bar] (REASON: This is a valid reason.)'
             );
 
         $event = $this->getInvalidItemEventMock(
-            'Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'Akeneo\Component\Batch\Item\ItemReaderInterface',
             'batch.invalid_item_reason',
             array('item' => 'foobar'),
             array('foo'  => 'bar')
