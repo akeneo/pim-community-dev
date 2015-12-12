@@ -1,6 +1,7 @@
 <?php
 
 namespace Akeneo\Component\Batch\Item;
+
 use Akeneo\Component\Batch\Item\InvalidItemException;
 
 /**

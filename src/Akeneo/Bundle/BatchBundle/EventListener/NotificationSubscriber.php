@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
+use Akeneo\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Notification\Notifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

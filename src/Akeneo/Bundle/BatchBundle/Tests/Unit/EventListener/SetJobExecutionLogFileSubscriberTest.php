@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\EventListener;
 
-use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber;
+use Akeneo\Component\Batch\Event\EventInterface;
 
 /**
  * Test related class
