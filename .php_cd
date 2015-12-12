@@ -30,59 +30,25 @@ $forbidCatalogRepositoryImplementations = [
 ];
 
 $rules = [
-    new Rule(
-        'Akeneo\Component',
-        array_merge($forbidAnyBundles, $forbidPimAndEnterprise, $forbidDoctrineExceptCommon),
-        RuleInterface::TYPE_FORBIDDEN,
-        'A Akeneo component must only contain technical logic re-usable out of the Pim, must not depends on Pim, Bundle, Doctrine'
-    ),
-    new Rule(
-        'Pim\Component',
-        array_merge($forbidAnyBundles, $forbidPimEnterprise, $forbidDoctrineExceptCommon),
-        RuleInterface::TYPE_FORBIDDEN,
-        'A Pim component must only contain business logic related to the PIM, must not depends on Bundle or Doctrine'
-    ),
-    new Rule(
-        'PimEnterprise\Component',
-        array_merge($forbidAnyBundles, $forbidDoctrineExceptCommon),
-        RuleInterface::TYPE_FORBIDDEN,
-        'PimEnterprise components contain Enterprise Business Logic, they does not depend on Bundle, Doctrine or Symfony'
-    ),
-    new Rule(
-        'Pim',
-        array_merge($forbidCatalogModelImplementations),
-        RuleInterface::TYPE_FORBIDDEN,
-        'A Pim component or bundle must never depends on model implementations to allow to replace implementation'
-    ),
-    new Rule(
-        'Pim',
-        array_merge($forbidCatalogRepositoryImplementations),
-        RuleInterface::TYPE_FORBIDDEN,
-        'A Pim component or bundle must never depends on repositories implementations to allow to replace implementation'
-    ),
-    new Rule(
-        'Akeneo\Bundle',
-        $forbidPimAndEnterprise,
-        RuleInterface::TYPE_FORBIDDEN,
-        'A Akeneo bundle contain Symfony or Doctine glue for Akeno components, must not depend on Pim'
-    ),
+    // ONLY and OK
     new Rule(
         'Akeneo\Component\Analytics',
         ['Akeneo\Component\Analytics'],
         RuleInterface::TYPE_ONLY,
         'The component analytics should depends on nothing'
     ),
+    // TODO: could evolve depending on what we'll move from BatchBundle to Batch (Step? Item?) so maybe PropertyAccess, EventDispatcher
+    new Rule(
+        'Akeneo\Component\Batch',
+        ['Akeneo\Component\Batch'],
+        RuleInterface::TYPE_ONLY,
+        'The component batch should depends on nothing'
+    ),
     new Rule(
         'Akeneo\Component\Buffer',
         ['Akeneo\Component\Buffer'],
         RuleInterface::TYPE_ONLY,
         'The component buffer should depends on nothing'
-    ),
-    new Rule(
-        'Akeneo\Component\Classification',
-        ['Akeneo\Component\Classification', 'Akeneo\Component\StorageUtils', 'Doctrine\Common', 'Symfony\Component\PropertyAccess'],
-        RuleInterface::TYPE_ONLY,
-        'The component classification should only depends on storageutils, doctrine common and symfony property access (gedmo is an implementation detail?)'
     ),
     new Rule(
         'Akeneo\Component\Console',
@@ -104,13 +70,83 @@ $rules = [
     ),
     new Rule(
         'Akeneo\Component\Versioning',
-        [
-            'Akeneo\Component\Versioning',
-        ],
+        ['Akeneo\Component\Versioning'],
         RuleInterface::TYPE_ONLY,
         'The component versioning should depends on nothing'
     ),
+
+    // FORBIDDEN and OK
+    new Rule(
+        'PimEnterprise\Component',
+        array_merge($forbidAnyBundles, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_FORBIDDEN,
+        'PimEnterprise components contain Enterprise Business Logic, they does not depend on Bundle, Doctrine or Symfony'
+    ),
+    new Rule(
+        'Akeneo\Bundle',
+        $forbidPimAndEnterprise,
+        RuleInterface::TYPE_FORBIDDEN,
+        'A Akeneo bundle contain Symfony or Doctine glue for Akeno components, must not depend on Pim'
+    ),
+    new Rule(
+        'Pim\Bundle',
+        $forbidPimEnterprise,
+        RuleInterface::TYPE_FORBIDDEN,
+        'Pim bundles should never use the namespace PimEnterprise'
+    ),
+];
+
+$rulesToFix = [
+    // TODO following is "easy" to fix
+    // TODO fix AttributeValidatorHelper
+    new Rule(
+        'Pim\Component\ReferenceData',
+        ['Pim\Component\ReferenceData', 'Pim\Component\Catalog', 'Doctrine\Common', 'Symfony\Component\PropertyAccess', 'Symfony\Component\OptionsResolver'],
+        RuleInterface::TYPE_ONLY,
+        'The component reference data should depends only on catalog component, symfony property access, symfony options resolver and doctrine common'
+    ),
+
+    // TODO: violations with QB + TranslatableInterface!!
+    new Rule(
+        'Akeneo\Component',
+        array_merge($forbidAnyBundles, $forbidPimAndEnterprise, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_FORBIDDEN,
+        'A Akeneo component must only contain technical logic re-usable out of the Pim, must not depends on Pim, Bundle, Doctrine'
+    ),
+
+    // TODO: violations with QB + TranslatableInterface!! (Akeneo/Localization component?)
+    new Rule(
+        'Akeneo\Component\Classification',
+        ['Akeneo\Component\Classification', 'Akeneo\Component\StorageUtils', 'Doctrine\Common', 'Symfony\Component\PropertyAccess'],
+        RuleInterface::TYPE_ONLY,
+        'The component classification should only depends on storageutils, doctrine common and symfony property access (gedmo is an implementation detail?)'
+    ),
+
+    // DISCOURAGED to be fixed to forbidden
+
+    new Rule(
+        'Pim\Component',
+        array_merge($forbidAnyBundles, $forbidPimEnterprise, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component must only contain business logic related to the PIM, must not depends on Bundle or Doctrine'
+    ),
+    new Rule(
+        'Pim',
+        array_merge($forbidCatalogModelImplementations),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component or bundle must never depends on model implementations to allow to replace implementation'
+    ),
+    new Rule(
+        'Pim',
+        array_merge($forbidCatalogRepositoryImplementations),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component or bundle must never depends on repositories implementations to allow to replace implementation'
+    ),
+
+    // TODO: to double check and fix
+
     // [WIP]
+
     new Rule(
         'Pim\Component\Connector',
         [
@@ -132,12 +168,6 @@ $rules = [
         RuleInterface::TYPE_ONLY,
         'The component connector should depends only on ... bunch of stuff :)'
     ),
-    new Rule(
-        'Pim\Component\ReferenceData',
-        ['Pim\Component\ReferenceData', 'Pim\Component\Catalog', 'Doctrine\Common', 'Symfony\Component\PropertyAccess', 'Symfony\Component\OptionsResolver'],
-        RuleInterface::TYPE_ONLY,
-        'The component reference data should depends only on catalog component, symfony property access, symfony options resolver and doctrine common'
-    ),
     // [WIP]
     new Rule(
         'Pim\Component\Catalog',
@@ -153,12 +183,8 @@ $rules = [
         RuleInterface::TYPE_ONLY,
         'The component catalog should depends only on ... bunch of stuff :)'
     ),
-    new Rule(
-        'Pim\Bundle',
-        $forbidPimEnterprise,
-        RuleInterface::TYPE_FORBIDDEN,
-        'Pim bundles should never use the namespace PimEnterprise'
-    ),
+
+    // [WIP]
     new Rule(
         'Akeneo\Bundle\BatchBundle',
         [
@@ -189,6 +215,7 @@ $rules = [
         RuleInterface::TYPE_ONLY,
         'BatchBundle should use only batch component, monolog, symfony console'
     ),
+
     new Rule(
         'Pim\Bundle\CatalogBundle',
         [
@@ -253,7 +280,9 @@ $rules = [
     ),
 ];
 
-// TODO: how to enforce the use of model and repository interfaces only, aka, forbid the use of final implementation?
+
+$rules = array_merge($rules, $rulesToFix);
+
 
 // TODO: list of violations to fix
 $legacyExclusions = [
