@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;

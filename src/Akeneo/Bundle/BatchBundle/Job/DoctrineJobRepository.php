@@ -5,6 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Job;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 

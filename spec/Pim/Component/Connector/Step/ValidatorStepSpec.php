@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Step;
 
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Item\CharsetValidator;
 

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
@@ -45,7 +45,7 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
-    /** @var JobRepositoryInterface */
+    /** @var \Akeneo\Component\Batch\Job\JobRepositoryInterface */
     protected $jobRepository;
 
     /** @var ConnectorRegistry */
@@ -70,7 +70,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param JobLauncherInterface       $simpleJobLauncher
-     * @param JobRepositoryInterface     $jobRepository
+     * @param \Akeneo\Component\Batch\Job\JobRepositoryInterface     $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver

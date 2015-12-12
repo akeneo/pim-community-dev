@@ -17,7 +17,7 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        $jobRepository = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $jobRepository = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $jobFactory = new JobFactory($eventDispatcher, $jobRepository);

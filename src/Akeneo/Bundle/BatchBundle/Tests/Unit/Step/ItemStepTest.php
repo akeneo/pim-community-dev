@@ -36,7 +36,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
 
         $this->itemStep = new ItemStep(self::STEP_NAME);
 

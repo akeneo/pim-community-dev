@@ -1,6 +1,9 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
+
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Exception;
 
 /**
  * Exception to indicate the the job has been interrupted. The exception state

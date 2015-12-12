@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Job\JobInterruptedException;
+use Akeneo\Component\Batch\Job\JobInterruptedException;
 
 /**
  * Tests related to the AbstractStep class
@@ -25,7 +25,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
 
         $this->step = $this->getMockForAbstractClass(
             'Akeneo\\Component\\Batch\\Step\\AbstractStep',
@@ -104,7 +104,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo(
                     new ExitStatus(
                         ExitStatus::STOPPED,
-                        'Akeneo\\Bundle\\BatchBundle\\Job\\JobInterruptedException'
+                        'Akeneo\\Component\\Batch\\Job\\JobInterruptedException'
                     )
                 )
             );

@@ -13,7 +13,7 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateStep()
     {
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
 
         $stepFactory = new StepFactory($eventDispatcher, $jobRepository);
 

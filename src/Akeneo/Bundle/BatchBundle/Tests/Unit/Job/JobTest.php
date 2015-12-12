@@ -28,7 +28,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->jobRepository   = $this->getMock('Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface');
         $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $this->job = new Job(self::JOB_TEST_NAME);
@@ -149,7 +149,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
             'Exit status code stopped'
         );
         $this->assertStringStartsWith(
-            'Akeneo\Bundle\BatchBundle\Job\JobInterruptedException',
+            'Akeneo\Component\Batch\Job\JobInterruptedException',
             $jobExecution->getExitStatus()->getExitDescription(),
             'Exit description'
         );
