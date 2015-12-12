@@ -24,7 +24,7 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         $job = $jobFactory->createJob('my_test_job');
 
         $this->assertInstanceOf(
-            'Akeneo\\Bundle\\BatchBundle\\Job\\JobInterface',
+            'Akeneo\\Component\\Batch\\Job\\JobInterface',
             $job
         );
     }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;

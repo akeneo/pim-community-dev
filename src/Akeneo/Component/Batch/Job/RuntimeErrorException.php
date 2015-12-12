@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
+
+use RuntimeException;
 
 /**
  * Exception that stops the job execution

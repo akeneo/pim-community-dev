@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Connector;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\Job;
 use Akeneo\Bundle\BatchBundle\Job\JobFactory;
-use Akeneo\Bundle\BatchBundle\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepFactory;
 
 /**
@@ -38,7 +38,7 @@ class ConnectorRegistry
      * @param JobInstance $jobInstance
      *
      * @throws \LogicException
-     * @return JobInterface
+     * @return \Akeneo\Component\Batch\Job\JobInterface
      */
     public function getJob(JobInstance $jobInstance)
     {

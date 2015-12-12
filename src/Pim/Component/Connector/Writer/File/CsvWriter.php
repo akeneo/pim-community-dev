@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
 use Symfony\Component\Validator\Constraints as Assert;
