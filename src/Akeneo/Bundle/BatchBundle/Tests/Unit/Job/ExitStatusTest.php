@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
 
 /**
  * Tests related to the ExitStatus class

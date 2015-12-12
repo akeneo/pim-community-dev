@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
 
 /**

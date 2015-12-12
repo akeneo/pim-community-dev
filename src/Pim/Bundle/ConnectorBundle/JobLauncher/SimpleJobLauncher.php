@@ -27,7 +27,7 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
     protected $objectManager;
 
     /**
-     * @param \Akeneo\Component\Batch\Job\JobRepositoryInterface  $jobRepository
+     * @param JobRepositoryInterface  $jobRepository
      * @param JobConfigurationFactory $jobConfigFactory
      * @param ObjectManager           $objectManager
      * @param string                  $rootDir

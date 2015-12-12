@@ -231,7 +231,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log invalid item event
      *
-     * @param \Akeneo\Component\Batch\Event\InvalidItemEvent $event
+     * @param InvalidItemEvent $event
      */
     public function invalidItem(InvalidItemEvent $event)
     {

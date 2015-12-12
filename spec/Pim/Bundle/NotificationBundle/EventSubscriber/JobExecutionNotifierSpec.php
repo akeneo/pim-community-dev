@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
 
 /**
  * Value object used to carry information about the status of a

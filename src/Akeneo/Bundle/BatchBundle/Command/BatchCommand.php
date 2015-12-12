@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

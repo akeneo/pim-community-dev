@@ -17,7 +17,7 @@ class InvalidItemExceptionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->exception = new \Akeneo\Component\Batch\Item\InvalidItemException(
+        $this->exception = new InvalidItemException(
             'Tango is down, I repeat...',
             array('foo' => 'fighter')
         );

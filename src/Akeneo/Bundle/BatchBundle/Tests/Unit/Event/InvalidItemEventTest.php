@@ -15,7 +15,7 @@ class InvalidItemEventTest extends \PHPUnit_Framework_TestCase
 {
     public function testAccessors()
     {
-        $event = new \Akeneo\Component\Batch\Event\InvalidItemEvent(
+        $event = new InvalidItemEvent(
             'Foo\\Bar\\Baz',
             'No special reason.',
             array('%param%' => 'Item1'),

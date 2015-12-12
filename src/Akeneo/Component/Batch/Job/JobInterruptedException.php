@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Exception;
 
 /**

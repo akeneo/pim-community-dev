@@ -152,7 +152,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param \Exception $previousException
      * @param string     $message
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      */
     protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
     {
@@ -170,7 +170,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param ConstraintViolationListInterface $violations
      * @param \Exception                       $previousException
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      */
     protected function skipItemWithConstraintViolations(
         array $item,

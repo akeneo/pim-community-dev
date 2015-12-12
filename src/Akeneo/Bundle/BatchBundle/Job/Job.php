@@ -5,6 +5,8 @@ namespace Akeneo\Bundle\BatchBundle\Job;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Step\StepInterface;

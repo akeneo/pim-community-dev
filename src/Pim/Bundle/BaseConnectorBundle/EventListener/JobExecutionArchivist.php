@@ -55,7 +55,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /**
      * Delegate archiving to the registered archivers
      *
-     * @param \Akeneo\Component\Batch\Event\JobExecutionEvent $event
+     * @param JobExecutionEvent $event
      */
     public function beforeStatusUpgrade(JobExecutionEvent $event)
     {

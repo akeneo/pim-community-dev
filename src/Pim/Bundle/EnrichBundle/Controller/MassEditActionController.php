@@ -45,7 +45,7 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
-    /** @var \Akeneo\Component\Batch\Job\JobRepositoryInterface */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /** @var ConnectorRegistry */
@@ -70,7 +70,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param JobLauncherInterface       $simpleJobLauncher
-     * @param \Akeneo\Component\Batch\Job\JobRepositoryInterface     $jobRepository
+     * @param JobRepositoryInterface     $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver

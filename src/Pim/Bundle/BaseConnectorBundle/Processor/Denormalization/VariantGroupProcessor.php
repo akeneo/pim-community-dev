@@ -173,7 +173,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param GroupInterface $variantGroup
      * @param array          $groupData
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      */
     protected function validateVariantGroup(GroupInterface $variantGroup, array $groupData)
     {

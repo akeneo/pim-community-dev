@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Component\Batch\Event\StepExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -65,7 +65,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * Public setter for {@link JobRepositoryInterface}.
      *
-     * @param \Akeneo\Component\Batch\Job\JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
+     * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
      *
      * @return AbstractStep
      */

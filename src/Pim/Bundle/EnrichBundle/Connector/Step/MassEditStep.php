@@ -15,7 +15,7 @@ use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditStep extends \Akeneo\Component\Batch\Step\AbstractStep
+class MassEditStep extends AbstractStep
 {
     /** @var array */
     protected $configuration;
@@ -71,7 +71,7 @@ class MassEditStep extends \Akeneo\Component\Batch\Step\AbstractStep
      *
      * @return MassEditStep
      */
-    public function setCleaner(\Akeneo\Component\Batch\Step\StepExecutionAwareInterface $cleaner)
+    public function setCleaner(StepExecutionAwareInterface $cleaner)
     {
         $this->cleaner = $cleaner;
 

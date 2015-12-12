@@ -44,7 +44,7 @@ class VariantGroupProcessor extends GroupProcessor
     /**
      * @param GroupInterface $group
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */

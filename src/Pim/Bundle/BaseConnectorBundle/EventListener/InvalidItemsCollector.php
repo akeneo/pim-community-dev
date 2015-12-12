@@ -31,7 +31,7 @@ class InvalidItemsCollector implements EventSubscriberInterface
     /**
      * Collect unique invalid items
      *
-     * @param \Akeneo\Component\Batch\Event\InvalidItemEvent $event
+     * @param InvalidItemEvent $event
      */
     public function collect(InvalidItemEvent $event)
     {

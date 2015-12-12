@@ -9,7 +9,7 @@ use Akeneo\Component\Batch\Step\AbstractStep;
  * Step used for test and always declared a stopped execution
  *
  */
-class InterruptedStep extends \Akeneo\Component\Batch\Step\AbstractStep
+class InterruptedStep extends AbstractStep
 {
     /**
      * {@inheritdoc}

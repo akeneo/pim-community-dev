@@ -18,7 +18,7 @@ class FixtureLoaderException extends \RuntimeException
      * Constructor
      *
      * @param array                $fixtureConfig
-     * @param \Akeneo\Component\Batch\Item\InvalidItemException $previous
+     * @param InvalidItemException $previous
      */
     public function __construct(array $fixtureConfig, InvalidItemException $previous)
     {

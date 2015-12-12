@@ -427,4 +427,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\StepExecutionEvent/Akeneo\\Component\\Batch\\Event\\StepExecutionEvent/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface/Akeneo\\Component\\Batch\\Job\\JobRepositoryInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobInterruptedException/Akeneo\\Component\\Batch\\Job\\JobInterruptedException/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\ExitStatus/Akeneo\\Component\\Batch\\Job\\ExitStatus/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\BatchStatus/Akeneo\\Component\\Batch\\Job\\BatchStatus/g'
 ```

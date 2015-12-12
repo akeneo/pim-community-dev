@@ -42,7 +42,7 @@ class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
     /**
      * Set the job execution log file
      *
-     * @param \Akeneo\Component\Batch\Event\JobExecutionEvent $event
+     * @param JobExecutionEvent $event
      */
     public function setJobExecutionLogFile(JobExecutionEvent $event)
     {

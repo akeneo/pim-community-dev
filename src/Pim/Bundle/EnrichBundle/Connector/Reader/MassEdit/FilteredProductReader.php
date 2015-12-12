@@ -37,7 +37,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var string */
     protected $channel;
 
-    /** @var \Akeneo\Component\Batch\Job\JobRepositoryInterface */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /** @var JobConfigurationRepositoryInterface */
@@ -45,7 +45,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param \Akeneo\Component\Batch\Job\JobRepositoryInterface              $jobRepository
+     * @param JobRepositoryInterface              $jobRepository
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(

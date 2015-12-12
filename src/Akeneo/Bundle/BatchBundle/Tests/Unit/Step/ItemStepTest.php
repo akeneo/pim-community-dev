@@ -4,7 +4,7 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Step\ItemStep;
 
 /**
@@ -16,7 +16,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     const STEP_NAME = 'test_step_name';
 
     /**
-     * @var \Akeneo\Component\Batch\Step\ItemStep
+     * @var ItemStep
      */
     protected $itemStep = null;
 

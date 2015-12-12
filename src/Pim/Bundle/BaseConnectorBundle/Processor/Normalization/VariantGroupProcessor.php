@@ -168,7 +168,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      *
      * @param GroupInterface $group
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException If a media file is not found
+     * @throws InvalidItemException If a media file is not found
      *
      * @return array
      */

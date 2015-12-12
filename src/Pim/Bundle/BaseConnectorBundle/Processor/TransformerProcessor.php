@@ -198,7 +198,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      * @param array $item
      * @param array $errors
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      */
     protected function setItemErrors(array $item, array $errors)
     {
