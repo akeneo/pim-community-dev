@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;

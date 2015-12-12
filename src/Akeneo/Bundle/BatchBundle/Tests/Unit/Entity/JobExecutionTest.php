@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
@@ -233,7 +233,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLabel()
     {
-        $jobInstance = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobInstance')
+        $jobInstance = $this->getMockBuilder('Akeneo\Component\Batch\Model\JobInstance')
             ->disableOriginalConstructor()
             ->getMock();
         $this->jobExecution->setJobInstance($jobInstance);

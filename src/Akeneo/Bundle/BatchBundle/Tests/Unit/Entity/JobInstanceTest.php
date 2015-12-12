@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 
 /**
  * Tests related to the JobInstance
@@ -150,6 +150,6 @@ class JobInstanceTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Entity\JobInstance', $entity);
+        $this->assertInstanceOf('Akeneo\Component\Batch\Model\JobInstance', $entity);
     }
 }

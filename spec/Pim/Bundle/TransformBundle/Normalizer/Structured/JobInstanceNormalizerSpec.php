@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 
 class JobInstanceNormalizerSpec extends ObjectBehavior

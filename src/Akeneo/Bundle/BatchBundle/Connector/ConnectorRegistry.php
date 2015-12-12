@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\JobFactory;
 use Akeneo\Bundle\BatchBundle\Step\StepFactory;
 use Akeneo\Component\Batch\Job\Job;

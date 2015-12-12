@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Entity;
+namespace Akeneo\Component\Batch\Model;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Component\Batch\Job\Job;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

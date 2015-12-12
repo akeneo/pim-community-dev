@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Event\BaseScenarioEvent;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ConnectorBundle\JobLauncher;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher as BaseSimpleJobLauncher;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;

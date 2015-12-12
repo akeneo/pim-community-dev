@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
