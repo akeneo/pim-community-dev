@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile;
 
-use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Symfony\Component\Yaml\Yaml;
 
