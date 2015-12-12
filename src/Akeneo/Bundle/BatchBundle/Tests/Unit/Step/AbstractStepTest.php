@@ -28,7 +28,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
         $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->step = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array(self::STEP_NAME)
         );
 
@@ -39,7 +39,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
     public function testGetSetJobRepository()
     {
         $this->step = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array(self::STEP_NAME)
         );
 
@@ -146,6 +146,6 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Step\AbstractStep', $entity);
+        $this->assertInstanceOf('Akeneo\Component\Batch\Step\AbstractStep', $entity);
     }
 }

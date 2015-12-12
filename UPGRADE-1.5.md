@@ -412,4 +412,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\InvalidItemException/Akeneo\\Component\\Batch\\Item\\InvalidItemException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement/Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepInterface/Akeneo\\Component\\Batch\\Step\\StepInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep/Akeneo\\Component\\Batch\\Step\\AbstractStep/g'
 ```

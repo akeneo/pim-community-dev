@@ -3,13 +3,13 @@
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
+use Akeneo\Component\Batch\Step\AbstractStep;
 
 /**
  * Step used for test and always declared a stopped execution
  *
  */
-class InterruptedStep extends AbstractStep
+class InterruptedStep extends \Akeneo\Component\Batch\Step\AbstractStep
 {
     /**
      * {@inheritdoc}

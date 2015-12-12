@@ -89,7 +89,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $jobExecution = new JobExecution($jobInstance);
 
         $mockStep = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step')
         );
 
@@ -234,11 +234,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testAddStep()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
@@ -251,11 +251,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testSetSteps()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
@@ -267,11 +267,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testGetStepNames()
     {
         $mockStep1 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step1')
         );
         $mockStep2 = $this->getMockForAbstractClass(
-            'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
+            'Akeneo\\Component\\Batch\\Step\\AbstractStep',
             array('my_mock_step2')
         );
 
