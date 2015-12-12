@@ -37,12 +37,11 @@ $rules = [
         RuleInterface::TYPE_ONLY,
         'The component analytics should depends on nothing'
     ),
-    // TODO: could evolve depending on what we'll move from BatchBundle to Batch (Step? Item?) so maybe PropertyAccess, EventDispatcher
     new Rule(
         'Akeneo\Component\Batch',
-        ['Akeneo\Component\Batch'],
+        ['Akeneo\Component\Batch', 'Symfony\Component\EventDispatcher', 'Symfony\Component\PropertyAccess', 'Doctrine\Common', 'Exception'],
         RuleInterface::TYPE_ONLY,
-        'The component batch should depends on nothing'
+        'The component batch should depends on event dispatcher, property access and doctrine common'
     ),
     new Rule(
         'Akeneo\Component\Buffer',
@@ -281,8 +280,7 @@ $rulesToFix = [
 ];
 
 
-$rules = array_merge($rules, $rulesToFix);
-
+// $rules = array_merge($rules, $rulesToFix);
 
 // TODO: list of violations to fix
 $legacyExclusions = [
@@ -312,18 +310,6 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
     ],
     'Pim\Component\Connector'                                   => [
-        // Interfaces of BatchBundle should be extracted in an Akeneo component
-        'Akeneo\Bundle\BatchBundle\Entity\StepExecution',
-        'Akeneo\Bundle\BatchBundle\Entity\JobExecution',
-        'Akeneo\Bundle\BatchBundle\Item\InvalidItemException',
-        'Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface',
-        'Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface',
-        'Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface',
-        'Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement',
-        'Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface',
-        'Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException',
-        'Akeneo\Bundle\BatchBundle\Step\AbstractStep',
-        'Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface',
         // Repositories interfaces of CatalogBundle should be extracted in the catalog component
         'Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface',
         'Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface',
