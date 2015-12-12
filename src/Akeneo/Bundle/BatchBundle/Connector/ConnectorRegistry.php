@@ -3,10 +3,10 @@
 namespace Akeneo\Bundle\BatchBundle\Connector;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Bundle\BatchBundle\Job\JobFactory;
-use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepFactory;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
  * Aims to register all connectors
