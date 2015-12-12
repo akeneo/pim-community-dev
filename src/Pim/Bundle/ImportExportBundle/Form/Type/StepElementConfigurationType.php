@@ -64,7 +64,7 @@ class StepElementConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement',
+                'data_class' => 'Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement',
             ]
         );
     }

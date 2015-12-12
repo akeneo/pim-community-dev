@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**

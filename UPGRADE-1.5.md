@@ -231,6 +231,11 @@ It helps to clearly separate its business logic and the Symfony and Doctrine "gl
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
+TODO:
+ - extract main Step, Item, Job, Exception classes
+ - replace unit tests by specs
+ - batch component should never rely on Doctrine entities (add domain model interfaces)
+
 ## Normalizers & Denormalizers [WIP]
 
 The PIM heavily uses the Serializer component of Symfony http://symfony.com/doc/2.7/components/serializer.html.
@@ -404,4 +409,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface/Akeneo\\Component\\Batch\\Item\\ItemProcessorInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemWriterInterface/Akeneo\\Component\\Batch\\Item\\ItemWriterInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\InvalidItemException/Akeneo\\Component\\Batch\\Item\\InvalidItemException/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement/Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement/g'
 ```

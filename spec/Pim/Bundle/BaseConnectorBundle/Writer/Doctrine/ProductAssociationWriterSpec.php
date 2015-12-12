@@ -37,7 +37,7 @@ class ProductAssociationWriterSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_element()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
     }
 
     function it_increments_summary_info(

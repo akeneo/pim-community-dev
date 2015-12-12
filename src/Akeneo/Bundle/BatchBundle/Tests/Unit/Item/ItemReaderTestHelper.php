@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Item;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 
 /**

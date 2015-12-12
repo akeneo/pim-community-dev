@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;

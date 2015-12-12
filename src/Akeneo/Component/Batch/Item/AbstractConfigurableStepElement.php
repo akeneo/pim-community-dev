@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Item;
+namespace Akeneo\Component\Batch\Item;
 
 use Doctrine\Common\Util\Inflector;
 use Symfony\Component\PropertyAccess\PropertyAccess;
