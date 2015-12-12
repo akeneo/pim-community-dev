@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Event;
 
-use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Akeneo\Component\Batch\Event\InvalidItemEvent;
 
 /**
  * Test related class
@@ -15,7 +15,7 @@ class InvalidItemEventTest extends \PHPUnit_Framework_TestCase
 {
     public function testAccessors()
     {
-        $event = new InvalidItemEvent(
+        $event = new \Akeneo\Component\Batch\Event\InvalidItemEvent(
             'Foo\\Bar\\Baz',
             'No special reason.',
             array('%param%' => 'Item1'),

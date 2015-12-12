@@ -234,7 +234,7 @@ Has been done:
  - extract main Step interface and classes
  - extract main Item interface and classes
  - extract main exceptions
- - [WIP] extract main Event interface and classes
+ - extract main Event interface and classes
  - [WIP] extract main Job interface and classes
  - [WIP] replace unit tests by specs, add missing specs
  - [TODO] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
@@ -420,4 +420,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepExecutionAwareInterface/Akeneo\\Component\\Batch\\Step\\StepExecutionAwareInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\ItemStep/Akeneo\\Component\\Batch\\Step\\ItemStep/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\EventInterface/Akeneo\\Component\\Batch\\Event\\EventInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\InvalidItemEvent/Akeneo\\Component\\Batch\\Event\\InvalidItemEvent/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\JobExecutionEvent/Akeneo\\Component\\Batch\\Event\\JobExecutionEvent/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Event\\StepExecutionEvent/Akeneo\\Component\\Batch\\Event\\StepExecutionEvent/g'
 ```

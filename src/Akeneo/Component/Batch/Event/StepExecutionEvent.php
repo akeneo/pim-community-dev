@@ -1,9 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Event;
+namespace Akeneo\Component\Batch\Event;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\Batch\Event\EventInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

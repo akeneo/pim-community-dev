@@ -4,8 +4,8 @@ namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
-use Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Akeneo\Component\Batch\Event\InvalidItemEvent;
+use Akeneo\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\JobInterruptedException;

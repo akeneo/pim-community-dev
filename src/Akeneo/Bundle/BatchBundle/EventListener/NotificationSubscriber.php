@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Notification\Notifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

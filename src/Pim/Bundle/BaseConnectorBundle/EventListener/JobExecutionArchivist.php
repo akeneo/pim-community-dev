@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -55,7 +55,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /**
      * Delegate archiving to the registered archivers
      *
-     * @param JobExecutionEvent $event
+     * @param \Akeneo\Component\Batch\Event\JobExecutionEvent $event
      */
     public function beforeStatusUpgrade(JobExecutionEvent $event)
     {

@@ -243,7 +243,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionEventMock($jobExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent')
+            ->getMockBuilder('Akeneo\Component\Batch\Event\JobExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -257,7 +257,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionEventMock($stepExecution = null)
     {
         $event = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent')
+            ->getMockBuilder('Akeneo\Component\Batch\Event\StepExecutionEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -294,7 +294,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getInvalidItemEventMock($class, $reason, array $reasonParameters, $item)
     {
-        $invalidItem = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent')
+        $invalidItem = $this->getMockBuilder('Akeneo\Component\Batch\Event\InvalidItemEvent')
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -42,7 +42,7 @@ class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
     /**
      * Set the job execution log file
      *
-     * @param JobExecutionEvent $event
+     * @param \Akeneo\Component\Batch\Event\JobExecutionEvent $event
      */
     public function setJobExecutionLogFile(JobExecutionEvent $event)
     {
