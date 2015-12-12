@@ -10,6 +10,7 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\JobInterruptedException;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

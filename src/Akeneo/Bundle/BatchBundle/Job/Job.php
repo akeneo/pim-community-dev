@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\BatchBundle\Job;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Step\StepInterface;
+use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraints as Assert;

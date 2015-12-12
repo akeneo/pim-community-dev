@@ -113,6 +113,7 @@ src/
 │   │   └── StorageUtilsBundle      Doctrine implementations for storage access (remover, saver, updater, repositories, etc)
 │   └── Component
 │       ├── Analytics               Data collector interfaces to aggregate statistics
+│       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes extracted from BatchBundle
 │       ├── Classification          Generic classes for classification trees (implemented by product categories and asset categories) and tags
 │       ├── Console                 Utility classes to execute commands
 │       ├── FileStorage             Business interfaces and classes to handle files storage with filesystem abstraction
@@ -144,7 +145,7 @@ src/
     │   ├── VersioningBundle        Versioning implementation for the PIM domain models
     │   └── WebServiceBundle        Very light Web Rest API (json format)
     └── Component
-        ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy and backward compatibility reasons
+        ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
         ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
@@ -410,4 +411,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\ItemWriterInterface/Akeneo\\Component\\Batch\\Item\\ItemWriterInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\InvalidItemException/Akeneo\\Component\\Batch\\Item\\InvalidItemException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement/Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepInterface/Akeneo\\Component\\Batch\\Step\\StepInterface/g'
 ```

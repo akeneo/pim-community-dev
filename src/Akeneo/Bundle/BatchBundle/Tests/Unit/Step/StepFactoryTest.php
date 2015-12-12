@@ -36,7 +36,7 @@ class StepFactoryTest extends \PHPUnit_Framework_TestCase
         $class = 'Akeneo\Bundle\BatchBundle\Step\ItemStep';
         $step = $stepFactory->createStep('my_test_job', $class, $services, array());
 
-        $this->assertInstanceOf('Akeneo\\Bundle\\BatchBundle\\Step\\StepInterface', $step);
+        $this->assertInstanceOf('Akeneo\\Component\\Batch\\Step\\StepInterface', $step);
         $this->assertAttributeEquals($reader, 'reader', $step);
         $this->assertAttributeEquals($processor, 'processor', $step);
         $this->assertAttributeEquals($writer, 'writer', $step);
