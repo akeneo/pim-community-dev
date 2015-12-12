@@ -17,7 +17,7 @@ class RuleDefinitionWriterSpec extends ObjectBehavior
 
     function it_implements()
     {
-        $this->shouldHaveType('Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
+        $this->shouldHaveType('Akeneo\Component\Batch\Item\ItemWriterInterface');
         $this->shouldHaveType('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
