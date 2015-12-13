@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
+use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
  * Batch domain interface representing the configuration of a step. As with the

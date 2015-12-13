@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 

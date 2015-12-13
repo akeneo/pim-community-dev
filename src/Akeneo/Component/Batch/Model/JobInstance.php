@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Batch\Model;
 
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\Exclude;

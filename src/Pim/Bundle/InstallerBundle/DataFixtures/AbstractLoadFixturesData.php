@@ -3,9 +3,9 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Job\ExitStatus;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

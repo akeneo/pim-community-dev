@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Step;
 
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Pim\Component\Connector\Item\CharsetValidator;
 

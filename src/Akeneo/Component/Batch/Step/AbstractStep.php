@@ -2,7 +2,6 @@
 
 namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Component\Batch\Event\StepExecutionEvent;
@@ -10,6 +9,7 @@ use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
