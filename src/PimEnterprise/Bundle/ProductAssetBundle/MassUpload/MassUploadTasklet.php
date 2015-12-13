@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Component\Connector\Step\TaskletInterface;
