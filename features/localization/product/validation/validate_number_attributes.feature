@@ -12,7 +12,7 @@ Feature: Validate localized number attributes of a product
     And the following attributes:
       | code       | label-fr_FR | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group   |
       | sold       | Vendu       | number | no       | no     | no               | no               |            |            | other   |
-      | rating     | Classement  | number | no       | no     | no               | no               | 1          | 5          | other   |
+      | rating     | Classement  | number | no       | no     | no               | yes              | 1          | 5          | other   |
       | quality    | Qualité     | number | no       | no     | no               | yes              | 1          | 10         | other   |
       | popularity | Popularité  | number | yes      | no     | no               | no               | 1          | 10         | other   |
     And the following family:
@@ -31,7 +31,7 @@ Feature: Validate localized number attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of number attribute
-    Given I change the Classement to "4,5"
+    Given I change the Vendu to "4,5"
     And I save the product
     Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
     And there should be 1 error in the "[other]" tab
