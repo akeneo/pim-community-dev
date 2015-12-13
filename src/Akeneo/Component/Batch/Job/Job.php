@@ -9,8 +9,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-// TODO: extract in a validation file
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -35,11 +33,7 @@ class Job implements JobInterface
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /**
-     * @var array
-     *
-     * @Assert\Valid
-     */
+    /** @var array */
     protected $steps;
 
     /** @var string */

@@ -8,8 +8,6 @@ use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
-// TODO extract validation in yml file
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -30,11 +28,7 @@ class StepExecution
     /** @var JobExecution */
     private $jobExecution = null;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank
-     */
+    /** @var string */
     private $stepName;
 
     /** @var integer */

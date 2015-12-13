@@ -3,13 +3,9 @@
 namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Job\Job;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\Exclude;
-// TODO extract validation in yml file
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity job
@@ -17,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class JobInstance
 {
@@ -29,42 +23,22 @@ class JobInstance
     const TYPE_IMPORT = 'import';
     const TYPE_EXPORT = 'export';
 
-    /**
-     * @var integer
-     */
+    /** @var integer */
     protected $id;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Regex(
-     *     pattern="/^[a-zA-Z0-9_]+$/",
-     *     message="The code must only contain alphanumeric characters and underscore."
-     * )
-     */
+    /** @var string */
     protected $code;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank
-     */
+    /** @var string */
     protected $label;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $alias;
 
-    /**
-     * @var integer
-     */
+    /** @var integer */
     protected $status = self::STATUS_READY;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $connector;
 
     /**
@@ -74,14 +48,11 @@ class JobInstance
      */
     protected $type;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $rawConfiguration = array();
 
     /**
      * @var Job
-     * @Assert\Valid
      * @Exclude
      */
     protected $job;
