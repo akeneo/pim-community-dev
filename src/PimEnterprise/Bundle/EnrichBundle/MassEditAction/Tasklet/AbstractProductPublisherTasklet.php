@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;

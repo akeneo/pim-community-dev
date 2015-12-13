@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
