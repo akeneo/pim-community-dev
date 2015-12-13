@@ -520,7 +520,7 @@ class StepExecution
      *
      * @param array $summary
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
+     * @return StepExecution
      */
     public function setSummary($summary)
     {
