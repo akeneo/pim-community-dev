@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -17,7 +17,7 @@ class JobInstance extends Constraint
     /**
      * @var string
      */
-    public $message = 'pim_import_export.job_instance.unknown_job_definition';
+    public $message = 'akeneo_batch.job_instance.unknown_job_definition';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class JobInstance extends Constraint
      */
     public function validatedBy()
     {
-        return 'pim_job_instance_validator';
+        return 'akeneo_job_instance_validator';
     }
 
     /**

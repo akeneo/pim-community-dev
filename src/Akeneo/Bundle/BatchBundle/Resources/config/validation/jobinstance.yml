@@ -2,7 +2,7 @@ Akeneo\Component\Batch\Model\JobInstance:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         # TODO move this constraint!
-        - Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance:
+        - Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstance:
             property: alias
     properties:
         code:

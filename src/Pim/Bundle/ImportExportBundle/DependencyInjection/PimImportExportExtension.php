@@ -35,7 +35,6 @@ class PimImportExportExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('factory.yml');
-        $loader->load('validators.yml');
         $loader->load('twig.yml');
     }
 }

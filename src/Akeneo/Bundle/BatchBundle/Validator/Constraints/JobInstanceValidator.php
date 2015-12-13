@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Symfony\Component\Validator\Constraint;

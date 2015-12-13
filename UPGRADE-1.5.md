@@ -241,8 +241,8 @@ Has been done:
  - extract main Event interface and classes
  - extract main Job interface and classes
  - extract domain models (doctrine entities) and move doctrine mapping to yml files
+ - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
  - [WIP] replace unit tests by specs, add missing specs
- - [WIP] extract annotation validation in yml files (take care some existing  validation in other bundles as ImportExportBundle)
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 

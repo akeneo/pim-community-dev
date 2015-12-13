@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace spec\Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
+use Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
