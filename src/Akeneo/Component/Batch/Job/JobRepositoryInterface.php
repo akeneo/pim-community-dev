@@ -2,9 +2,9 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
  * Common interface for Job repositories which should handle how job are stored, updated

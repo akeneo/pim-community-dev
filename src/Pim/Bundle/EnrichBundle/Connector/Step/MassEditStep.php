@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;

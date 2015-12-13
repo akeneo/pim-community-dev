@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Manager;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\ORM\EntityManager;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Translation\TranslatorInterface;

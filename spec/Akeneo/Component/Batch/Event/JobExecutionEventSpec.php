@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\Batch\Event;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
 
 class JobExecutionEventSpec extends ObjectBehavior

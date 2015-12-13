@@ -271,7 +271,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Component\Batch\Model\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -279,7 +279,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Component\Batch\Model\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

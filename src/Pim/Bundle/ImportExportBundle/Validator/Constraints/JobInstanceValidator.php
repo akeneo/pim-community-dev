@@ -35,7 +35,7 @@ class JobInstanceValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof \Akeneo\Bundle\BatchBundle\Entity\JobInstance) {
+        if ($entity instanceof \Akeneo\Component\Batch\Model\JobInstance) {
             if (!$this->connectorRegistry->getJob($entity)) {
                 $this->context->buildViolation(
                     $constraint->message,

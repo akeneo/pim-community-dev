@@ -4,7 +4,7 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
@@ -82,7 +82,7 @@ class FixturesContext extends RawMinkContext
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
-        'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
+        'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
         'User'             => 'PimUserBundle:User',
         'Role'             => 'OroUserBundle:Role',

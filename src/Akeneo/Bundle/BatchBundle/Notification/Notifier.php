@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Notification;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 
 /**
  * Interface of the job execution result notifiers

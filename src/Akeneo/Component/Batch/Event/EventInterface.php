@@ -3,7 +3,7 @@
 namespace Akeneo\Component\Batch\Event;
 
 /**
- * Interface of the batch bundle events
+ * Interface of the batch component events
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Event;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

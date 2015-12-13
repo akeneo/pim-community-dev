@@ -57,7 +57,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -78,7 +78,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithTerminate()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -120,7 +120,7 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
             ->method('doExecute')
             ->will($this->throwException($exception));
 
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
 

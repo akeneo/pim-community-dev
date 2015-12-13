@@ -3,10 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -472,7 +472,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
-        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
+        $jobInstance = $this->findOr404('Akeneo\Component\Batch\Model\JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
         if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {

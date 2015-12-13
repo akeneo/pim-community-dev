@@ -17,7 +17,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckRunningStatusCompleted()
     {
-        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+        $jobExecution = $this->getMock('Akeneo\\Component\\Batch\\Model\\JobExecution');
 
         $jobExecution->expects($this->once())
             ->method('getStatus')
@@ -34,7 +34,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckRunningStatusRunning()
     {
-        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+        $jobExecution = $this->getMock('Akeneo\\Component\\Batch\\Model\\JobExecution');
 
         $jobExecution->expects($this->once())
             ->method('getStatus')
@@ -55,7 +55,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckRunningStatusKilled()
     {
-        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+        $jobExecution = $this->getMock('Akeneo\\Component\\Batch\\Model\\JobExecution');
 
         $jobExecution->expects($this->once())
             ->method('getStatus')
@@ -79,7 +79,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckRunningStatusInvalidPid()
     {
-        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+        $jobExecution = $this->getMock('Akeneo\\Component\\Batch\\Model\\JobExecution');
 
         $jobExecution->expects($this->once())
             ->method('getStatus')
@@ -100,7 +100,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testMarkAsFailed()
     {
-        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+        $jobExecution = $this->getMock('Akeneo\\Component\\Batch\\Model\\JobExecution');
 
         $jobExecution->expects($this->once())
             ->method('setStatus');

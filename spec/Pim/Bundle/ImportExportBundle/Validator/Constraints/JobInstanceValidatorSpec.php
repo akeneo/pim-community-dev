@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;

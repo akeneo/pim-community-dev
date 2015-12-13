@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Subscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 
 /**

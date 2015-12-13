@@ -123,7 +123,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function showAction(Request $request, $id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
@@ -172,7 +172,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
@@ -193,7 +193,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadFilesAction($id, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 

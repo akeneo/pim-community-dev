@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Connector;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 

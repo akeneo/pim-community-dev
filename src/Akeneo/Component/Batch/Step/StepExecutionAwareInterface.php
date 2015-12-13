@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
  * Interface is used to receive StepExecution instance inside reader, processor or writer

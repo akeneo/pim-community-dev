@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Event;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

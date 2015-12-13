@@ -95,7 +95,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -146,7 +146,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchReadInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -208,7 +208,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchProcessInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())
@@ -275,7 +275,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testDispatchWriteInvalidItemException()
     {
-        $stepExecution = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution')
+        $stepExecution = $this->getMockBuilder('Akeneo\\Component\\Batch\\Model\\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
         $stepExecution->expects($this->any())

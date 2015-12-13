@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Entity;
+namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
@@ -8,8 +8,6 @@ use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
-// TODO extract mapping in yml file
-use Doctrine\ORM\Mapping as ORM;
 // TODO extract validation in yml file
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,77 +21,38 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * @ORM\Table(name="akeneo_batch_step_execution")
- * @ORM\Entity()
  */
 class StepExecution
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @var integer */
     private $id;
 
-    /**
-     * @var JobExecution
-     *
-     * @ORM\ManyToOne(targetEntity="JobExecution", inversedBy="stepExecutions")
-     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    /** @var JobExecution */
     private $jobExecution = null;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="step_name", type="string", length=100, nullable=true)
      * @Assert\NotBlank
      */
     private $stepName;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer")
-     */
+    /** @var integer */
     private $status = null;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="read_count", type="integer")
-     */
+    /** @var integer */
     private $readCount = 0;
 
-    /**
-     * @var integer
-     *
-     * @orm\column(name="write_count", type="integer")
-     */
+    /** @var integer */
     private $writeCount = 0;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="filter_count", type="integer")
-     */
+    /** @var integer */
     private $filterCount = 0;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $startTime;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $endTime;
 
     /* @var ExecutionContext $executionContext */
@@ -102,60 +61,25 @@ class StepExecution
     /* @var ExitStatus */
     private $exitStatus = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="exit_code", type="string", length=255, nullable=true)
-     */
+    /** @var string */
     private $exitCode = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="exit_description", type="text", nullable=true)
-     */
+    /** @var string */
     private $exitDescription = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="terminate_only", type="boolean", nullable=true)
-     */
+    /** @var boolean */
     private $terminateOnly = false;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
-     */
+    /** @var array */
     private $failureExceptions = null;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="errors", type="array")
-     */
+    /** @var array */
     private $errors = array();
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="Warning",
-     *      mappedBy="stepExecution",
-     *      cascade={"persist", "remove"},
-     *      fetch="EXTRA_LAZY",
-     *      orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"id" = "ASC"})
-     */
+    /** @var ArrayCollection */
     private $warnings;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="summary", type="array")
-     */
+    /** @var array */
     private $summary = array();
 
     /**
@@ -596,7 +520,7 @@ class StepExecution
      *
      * @param array $summary
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\StepExecution
+     * @return StepExecution
      */
     public function setSummary($summary)
     {

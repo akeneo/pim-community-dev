@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ORM\AbstractQuery;

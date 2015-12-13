@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

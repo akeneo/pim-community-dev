@@ -2,12 +2,12 @@
 
 namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 // TODO extract validation to a yml file in the bundle
 use Symfony\Component\Validator\Constraints as Assert;
 

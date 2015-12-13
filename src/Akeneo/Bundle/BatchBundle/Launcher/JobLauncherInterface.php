@@ -2,7 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -21,7 +22,7 @@ interface JobLauncherInterface
      * @param UserInterface $user
      * @param string        $rawConfiguration
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobExecution
+     * @return JobExecution
      */
     public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null);
 

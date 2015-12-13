@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 
 /**
  * Batch domain object representing a job. Job is an explicit abstraction

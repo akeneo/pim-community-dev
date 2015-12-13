@@ -56,7 +56,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
             ->method('getFilename')
             ->will($this->returnValue('/tmp/foo.log'));
 
-        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Bundle\BatchBundle\Entity\JobExecution');
+        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Component\Batch\Model\JobExecution');
         $parameters = array(
             'jobExecution' => $jobExecution,
             'log'          => '/tmp/foo.log',
@@ -115,7 +115,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
             ->method('getFilename')
             ->will($this->returnValue('/tmp/foo.log'));
 
-        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Bundle\BatchBundle\Entity\JobExecution');
+        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Component\Batch\Model\JobExecution');
         $parameters = array(
             'jobExecution' => $jobExecution,
             'log'          => '/tmp/foo.log',
@@ -174,7 +174,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($token));
 
-        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Bundle\BatchBundle\Entity\JobExecution');
+        $jobExecution = $this->getDisabledConstructorMock('Akeneo\Component\Batch\Model\JobExecution');
 
         $this->mailer
             ->expects($this->never())

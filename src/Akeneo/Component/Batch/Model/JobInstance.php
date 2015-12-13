@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Entity;
+namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-// TODO extract mapping in yml file
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 // TODO extract validation in yml file
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @ORM\Table(name="akeneo_batch_job_instance")
- * @ORM\Entity()
  * @UniqueEntity(fields="code", message="This code is already taken")
  */
 class JobInstance
@@ -34,17 +31,12 @@ class JobInstance
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=100, unique=true)
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern="/^[a-zA-Z0-9_]+$/",
@@ -56,29 +48,22 @@ class JobInstance
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
      * @Assert\NotBlank
      */
     protected $label;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="alias", type="string", length=50)
      */
     protected $alias;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="integer")
      */
     protected $status = self::STATUS_READY;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="connector", type="string")
      */
     protected $connector;
 
@@ -86,15 +71,11 @@ class JobInstance
      * JobInstance type export or import
      *
      * @var string
-     *
-     * @ORM\Column
      */
     protected $type;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="array")
      */
     protected $rawConfiguration = array();
 
@@ -107,12 +88,6 @@ class JobInstance
 
     /**
      * @var Collection|JobExecution[]
-     * @ORM\OneToMany(
-     *      targetEntity="JobExecution",
-     *      mappedBy="jobInstance",
-     *      cascade={"remove"},
-     *      orphanRemoval=true
-     * )
      * @Exclude
      */
     protected $jobExecutions;
@@ -159,7 +134,7 @@ class JobInstance
      *
      * @param string $code
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setCode($code)
     {
@@ -183,7 +158,7 @@ class JobInstance
      *
      * @param string $label
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setLabel($label)
     {
@@ -237,7 +212,7 @@ class JobInstance
      *
      * @param integer $status
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setStatus($status)
     {
@@ -251,7 +226,7 @@ class JobInstance
      *
      * @param string $type
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setType($type)
     {
@@ -275,7 +250,7 @@ class JobInstance
      *
      * @param array $configuration
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setRawConfiguration($configuration)
     {
@@ -299,7 +274,7 @@ class JobInstance
      *
      * @param Job $job
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setJob($job)
     {
@@ -373,7 +348,7 @@ class JobInstance
      *
      * @throws \LogicException
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setAlias($alias)
     {
@@ -394,7 +369,7 @@ class JobInstance
      *
      * @throws \LogicException
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobInstance
+     * @return JobInstance
      */
     public function setConnector($connector)
     {

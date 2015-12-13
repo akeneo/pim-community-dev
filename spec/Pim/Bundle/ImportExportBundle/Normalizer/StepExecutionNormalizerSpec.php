@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Entity\Warning;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Model\Warning;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
