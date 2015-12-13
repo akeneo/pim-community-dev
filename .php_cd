@@ -279,8 +279,7 @@ $rulesToFix = [
     ),
 ];
 
-
-// $rules = array_merge($rules, $rulesToFix);
+$rules = array_merge($rules, $rulesToFix);
 
 // TODO: list of violations to fix
 $legacyExclusions = [

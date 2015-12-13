@@ -175,7 +175,7 @@ At the end, most of these changes consist in moving classes from bundles to move
 
 These changes will continue to improve Developer eXperience by bringing a more understandable technical stack and by simplifying future evolutions and maintenance. 
 
-## ConnectorBundle & BaseConnectorBundle
+## ConnectorBundle & BaseConnectorBundle [WIP]
 
 In 1.4, we re-worked the PIM import system and we've depreciated the old import system.
 
@@ -186,6 +186,10 @@ In 1.5, for performance reason, we re-worked the export writer part, we introduc
 Old export writer classes and services are still in BaseConnectorBundle and are marked as deprecated.
 
 The strategy is to be able to depreciate entirely the BaseConnectorBundle once we'll have re-worked remaining export parts (mainly reader and processor).
+
+TODO:
+ - re-work legacy readers and processors pieces in Connector component
+ - depreciate legacy readers and processors pieces in BaseConnector bundle
 
 ## Catalog Bundle & Component [WIP]
 
@@ -236,9 +240,9 @@ Has been done:
  - extract main exceptions
  - extract main Event interface and classes
  - extract main Job interface and classes
+ - extract domain models (doctrine entities) and move doctrine mapping to yml files
  - [WIP] replace unit tests by specs, add missing specs
- - [TODO] extract validation from Job class
- - [WIP] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
+ - [WIP] extract annotation validation in yml files
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
@@ -274,7 +278,7 @@ Pim/Bundle/EnrichBundle
 └── Normalizer              -> format "internal_api", used by the internal rest api to communicate with new UI Forms (product edit form)
 ```
 
-We could have [WIP],
+TODO:
 
 The "structured/json/standard" format could be moved to Catalog component:
  - Pim/Bundle/TransformBundle/Normalizer/Structured -> Pim/Component/Catalog/Normalizer/Structured
@@ -322,7 +326,8 @@ The 1.5 covers,
 
 The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
 
-[WIP] The following bundles are removed Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
+TODO:
+ - The following bundles are removed Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
 
 ## Versioning Bundle & Component [WIP]
 
@@ -346,6 +351,11 @@ The versioning process itself will be re-worked in a future version. To make thi
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
+TODO:
+ - re-work the versioning system in the new component
+ - rely on business save & saveAll and not anymore on doctrine events
+ - depreciate the legacy system
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
@@ -357,7 +367,6 @@ Based on a PIM standard installation, execute the following command in your proj
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/EntityBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/StorageUtilsBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Writer\\File\\ArchivableWriterInterface/Pim\\Component\\Connector\\Writer\\File\\ArchivableWriterInterface/g'
-
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractAssociation/Component\\Catalog\\Model\\AbstractAssociation/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractAttribute/Component\\Catalog\\Model\\AbstractAttribute/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractCompleteness/Component\\Catalog\\Model\\AbstractCompleteness/g'
