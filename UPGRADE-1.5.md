@@ -242,7 +242,7 @@ Has been done:
  - extract main Job interface and classes
  - extract domain models (doctrine entities) and move doctrine mapping to yml files
  - [WIP] replace unit tests by specs, add missing specs
- - [WIP] extract annotation validation in yml files
+ - [WIP] extract annotation validation in yml files (take care some existing  validation in other bundles as ImportExportBundle)
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
@@ -445,8 +445,8 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobInterface/Akeneo\\Component\\Batch\\Job\\JobInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\Job/Akeneo\\Component\\Batch\\Job\\Job/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\RuntimeErrorException/Akeneo\\Component\\Batch\\Job\\RuntimeErrorException/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\JobInstance/Akeneo\\Component\\Batch\\Model\\JobInstance/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\Warning/Akeneo\\Component\\Batch\\Model\\Warning/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\StepExecution/Akeneo\\Component\\Batch\\Model\\StepExecution/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\JobExecution/Akeneo\\Component\\Batch\\Model\\JobExecution/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance/Akeneo\\Component\\Batch\\Model\\JobInstance/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\Warning/Akeneo\\Component\\Batch\\Model\\Warning/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution/Akeneo\\Component\\Batch\\Model\\StepExecution/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution/Akeneo\\Component\\Batch\\Model\\JobExecution/g'
 ```

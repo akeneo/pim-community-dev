@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Security\Core\User\UserInterface;
 
