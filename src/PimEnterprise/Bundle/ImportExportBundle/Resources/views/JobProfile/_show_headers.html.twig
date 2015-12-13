@@ -11,7 +11,7 @@
 
     {{ elements.backLink(indexRoute) }}
 
-    {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') and
+    {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') and
         is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT'), jobInstance)
             and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_edit') %}
         {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}

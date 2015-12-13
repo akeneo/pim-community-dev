@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;

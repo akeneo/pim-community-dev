@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Context\NavigationContext as BaseNavigationContext;
 use PimEnterprise\Component\ProductAsset\Model\Category;
 

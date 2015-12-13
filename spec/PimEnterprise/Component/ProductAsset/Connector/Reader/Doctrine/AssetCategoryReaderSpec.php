@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;

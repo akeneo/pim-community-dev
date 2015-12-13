@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\Step;
 
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
 use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
