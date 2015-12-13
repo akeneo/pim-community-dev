@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\Job;

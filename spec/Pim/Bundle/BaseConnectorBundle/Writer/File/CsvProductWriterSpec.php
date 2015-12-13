@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;

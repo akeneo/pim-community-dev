@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;

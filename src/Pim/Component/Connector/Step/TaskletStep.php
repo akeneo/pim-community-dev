@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Pim\Component\Connector\Step\TaskletInterface;
 

@@ -13,7 +13,7 @@ parameters:
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
-    akeneo_batch.entity.job_execution.class:                  Akeneo\Bundle\BatchBundle\Entity\JobExecution
+    akeneo_batch.entity.job_execution.class:                  Akeneo\Component\Batch\Model\JobExecution
 
 services:
     # connectors registry

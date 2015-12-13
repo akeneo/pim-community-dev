@@ -472,7 +472,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
-        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
+        $jobInstance = $this->findOr404('Akeneo\Component\Batch\Model\JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
         if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {

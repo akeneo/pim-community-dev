@@ -82,7 +82,7 @@ class FixturesContext extends RawMinkContext
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
-        'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
+        'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
         'User'             => 'PimUserBundle:User',
         'Role'             => 'OroUserBundle:Role',

@@ -21,7 +21,7 @@ interface JobLauncherInterface
      * @param UserInterface $user
      * @param string        $rawConfiguration
      *
-     * @return \Akeneo\Bundle\BatchBundle\Entity\JobExecution
+     * @return JobExecution
      */
     public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null);
 

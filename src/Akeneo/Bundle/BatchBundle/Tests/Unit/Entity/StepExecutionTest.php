@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Entity;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
@@ -286,6 +286,6 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Akeneo\Bundle\BatchBundle\Entity\StepExecution', $entity);
+        $this->assertInstanceOf('Akeneo\Component\Batch\Model\StepExecution', $entity);
     }
 }

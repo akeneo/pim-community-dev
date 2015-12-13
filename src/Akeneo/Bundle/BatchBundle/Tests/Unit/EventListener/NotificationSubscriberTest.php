@@ -84,7 +84,7 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
     private function getJobExecutionMock()
     {
         return $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
+            ->getMockBuilder('Akeneo\Component\Batch\Model\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

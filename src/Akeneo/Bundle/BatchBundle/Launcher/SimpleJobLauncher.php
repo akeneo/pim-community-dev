@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Symfony\Component\Process\PhpExecutableFinder;

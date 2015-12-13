@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
 
 /**

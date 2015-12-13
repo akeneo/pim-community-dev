@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Factory;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
 
 class JobConfigurationFactorySpec extends ObjectBehavior

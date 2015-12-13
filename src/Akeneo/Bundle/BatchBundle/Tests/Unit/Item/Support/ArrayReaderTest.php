@@ -54,7 +54,7 @@ class ArrayReaderTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Akeneo\Component\Batch\Model\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -238,7 +238,7 @@ Has been done:
  - extract main Job interface and classes
  - [WIP] replace unit tests by specs, add missing specs
  - [TODO] extract validation from Job class
- - [TODO] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
+ - [WIP] extract domain models (currently doctrine entities, so extract doctrine mapping and symfony validation in yml files)
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
@@ -437,4 +437,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\Job/Akeneo\\Component\\Batch\\Job\\Job/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\RuntimeErrorException/Akeneo\\Component\\Batch\\Job\\RuntimeErrorException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\JobInstance/Akeneo\\Component\\Batch\\Model\\JobInstance/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\Warning/Akeneo\\Component\\Batch\\Model\\Warning/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\StepExecution/Akeneo\\Component\\Batch\\Model\\StepExecution/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Model\\JobExecution/Akeneo\\Component\\Batch\\Model\\JobExecution/g'
 ```

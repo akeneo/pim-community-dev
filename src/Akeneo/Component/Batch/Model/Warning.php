@@ -1,9 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Entity;
-
-// TODO extract mapping in yml file
-use Doctrine\ORM\Mapping as ORM;
+namespace Akeneo\Component\Batch\Model;
 
 /**
  * Represents a Warning raised during step execution
@@ -11,53 +8,25 @@ use Doctrine\ORM\Mapping as ORM;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ORM\Table(name="akeneo_batch_warning")
- * @ORM\Entity()
  */
 class Warning
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @var integer */
     private $id;
 
-    /**
-     * @var StepExecution
-     *
-     * @ORM\ManyToOne(targetEntity="StepExecution", inversedBy="warnings")
-     * @ORM\JoinColumn(name="step_execution_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    /** @var StepExecution */
     private $stepExecution;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     */
+    /** @var string */
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reason", type="text", nullable=true)
-     */
+    /** @var string */
     private $reason;
 
-    /**
-     * @ORM\Column(name="reason_parameters", type="array", nullable=false)
-     * @var array
-     */
+    /** @var array */
     private $reasonParameters = [];
 
-    /**
-     * @ORM\Column(name="item", type="array", nullable=false)
-     * @var array
-     */
+    /** @var array */
     private $item;
 
     /**

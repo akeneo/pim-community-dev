@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\SerializerInterface;

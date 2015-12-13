@@ -217,7 +217,8 @@ class MassEditActionController extends AbstractDoctrineController
             $operation->setFilters($pimFilters);
 
             $jobCode = $operation->getBatchJobCode();
-            $jobInstance = $this->getRepository('AkeneoBatchBundle:JobInstance')->findOneBy(['code' => $jobCode]);
+            $jobInstance = $this->getRepository('Akeneo\Component\Batch\Model\JobInstance')
+                ->findOneBy(['code' => $jobCode]);
 
             if (null === $jobInstance) {
                 throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));

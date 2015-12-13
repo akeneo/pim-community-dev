@@ -1,15 +1,12 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Entity;
+namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\Common\Collections\ArrayCollection;
-// TODO extract mapping in yml file
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Batch domain object representing the execution of a job
@@ -19,88 +16,37 @@ use Doctrine\ORM\Mapping as ORM;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * @ORM\Table(name="akeneo_batch_job_execution")
- * @ORM\Entity()
  */
 class JobExecution
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @var integer */
     private $id;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="StepExecution",
-     *      mappedBy="jobExecution",
-     *      cascade={"persist", "remove"},
-     *      orphanRemoval=true
-     * )
-     */
+    /** @var ArrayCollection */
     private $stepExecutions;
 
-    /**
-     * @var JobInstance
-     *
-     * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
+    /** @var JobInstance */
     private $jobInstance;
 
-    /**
-     * @var integer Process Identifier
-     *
-     * @ORM\Column(name="pid", type="integer", nullable=true)
-     */
+    /** @var integer Process Identifier */
     private $pid;
 
-    /**
-     * @var string|null The user who launched the job
-     *
-     * @ORM\Column(name="`user`", type="string", nullable=true)
-     */
+    /** @var string|null The user who launched the job */
     private $user;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer")
-     */
+    /** @var integer */
     private $status;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $startTime;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $endTime;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $createTime;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_time", type="datetime", nullable=true)
-     */
+    /** @var \DateTime */
     private $updatedTime;
 
     /* @var ExecutionContext $executionContext */
@@ -109,32 +55,16 @@ class JobExecution
     /* @var ExitStatus $existStatus */
     private $exitStatus;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="exit_code", type="string", length=255, nullable=true)
-     */
+    /** @var string */
     private $exitCode;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="exit_description", type="text", nullable=true)
-     */
+    /** @var string */
     private $exitDescription;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="failure_exceptions", type="array", nullable=true)
-     */
+    /** @var array */
     private $failureExceptions;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="log_file", type="string", length=255, nullable=true)
-     */
+    /** @var string */
     private $logFile;
 
     /**

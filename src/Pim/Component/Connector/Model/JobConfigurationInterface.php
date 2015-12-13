@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Model;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 
 /**
  * A job configuration is used to transport raw configuration used

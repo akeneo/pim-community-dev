@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;

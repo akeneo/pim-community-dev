@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;

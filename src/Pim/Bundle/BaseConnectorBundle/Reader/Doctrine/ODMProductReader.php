@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;

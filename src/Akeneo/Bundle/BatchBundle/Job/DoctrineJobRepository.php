@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
@@ -37,7 +37,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function __construct(
         EntityManager $entityManager,
-        $jobExecutionClass = 'Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution'
+        $jobExecutionClass = 'Akeneo\\Component\\Batch\\Model\\JobExecution'
     ) {
         $currentConn = $entityManager->getConnection();
 

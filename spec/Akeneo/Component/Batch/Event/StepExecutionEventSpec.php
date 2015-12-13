@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\Batch\Event;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 
 class StepExecutionEventSpec extends ObjectBehavior
