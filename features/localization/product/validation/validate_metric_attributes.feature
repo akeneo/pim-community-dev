@@ -22,35 +22,35 @@ Feature: Validate localized metric attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the decimals allowed constraint of metric attribute
-    Given I change the Zone to "2,7 HECTARE"
+    Given I change the Zone to "2,7 Hectare"
     And I save the product
     Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Taille to "4,9 METER"
+    And I change the Taille to "4,9 Mètre"
     And I save the product
     Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number min constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Vitesse to "-7,5 YARD_PER_HOUR"
+    And I change the Vitesse to "-7,5 Yard par heure"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 5.5."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number max constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Vitesse to "111,1 YARD_PER_HOUR"
+    And I change the Vitesse to "111,1 Yard par heure"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être inférieure ou égale à 100."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Vitesse to "50.1 YARD_PER_HOUR"
+    And I change the Vitesse to "50.1 Yard par heure"
     And I save the product
     Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
     And there should be 1 error in the "[other]" tab

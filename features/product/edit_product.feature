@@ -80,9 +80,9 @@ Feature: Edit a product
   Scenario: Successfully add a metric attribute to a product
     Given I am logged in as "Julia"
     And I am on the "sandal" product page
-    When I change the "Shoes size" to "29 DEKAMETER"
+    When I change the "Shoes size" to "29 Dekameter"
     And I save the product
-    Then the product Shoes size should be "29 DEKAMETER"
+    Then the product Shoes size should be "29 Dekameter"
 
   Scenario: Successfully switch the product scope
     And I am logged in as "Peter"
