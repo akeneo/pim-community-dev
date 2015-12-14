@@ -8,6 +8,7 @@
 - Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
 
 ## Bug fixes
+- PIM-5295: Fix association product grid category filter
 
 # 1.4.13 (2015-12-10)
 
