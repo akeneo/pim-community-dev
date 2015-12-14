@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5335: Fix media save on variant group
+
 # 1.3.33 (2015-11-25)
 
 ## Bug fixes

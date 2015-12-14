@@ -110,6 +110,17 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | side_view | SNKRS-1R.png |
 
+  Scenario: Change a pim_catalog_image attribute of a variant group
+    When I add available attributes Side view
+    And I visit the "Media" group
+    And I attach file "SNKRS-1R.png" to "Side view"
+    And I save the variant group
+    And I visit the "Products" tab
+    And I uncheck the row "boot"
+    And I save the variant group
+    And I reload the page
+    Then the row "boot" should not be checked
+
   Scenario: Change a pim_catalog_file attribute of a variant group
     When I add available attributes Technical description
     And I visit the "Media" group
