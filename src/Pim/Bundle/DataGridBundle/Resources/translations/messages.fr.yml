@@ -15,7 +15,7 @@ oro.grid.datagrid.page_size.all: Tous
 oro.grid.mass_action.delete.success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimé|]1, Inf [ %count% entités ont été supprimée"
 datagrid_view:
   views: Vues
-  default: Ma vue par défaut
+  default: Vue par défaut
   create: Créer une vue
   placeholder: Nom de la nouvelle vue
   remove: Supprimer cette vue
