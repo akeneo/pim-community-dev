@@ -74,33 +74,12 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getForm()
-    {
-        $attribute = $this->getAttribute();
-
-        $options = array_merge(
-            $this->getOr('options', []),
-            ['csrf_protection' => false]
-        );
-
-        $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
-        $options['choice_url']        = 'pim_ui_ajaxentity_list';
-        $options['choice_url_params'] = $this->getChoiceUrlParams($attribute);
-
-        if (!$this->form) {
-            $this->form = $this->formFactory->create($this->getFormType(), [], $options);
-        }
-
-        return $this->form;
-    }
-
-    /**
      * Load the attribute for this filter
      * Required to prepare choice url params and filter configuration
      *
      * @throws \LogicException
+     *
+     * @return AttributeInterface
      */
     protected function getAttribute()
     {
@@ -115,16 +94,22 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getChoiceUrlParams(AttributeInterface $attribute)
+    protected function getFormOptions()
     {
-        return [
-            'class'        => $this->optionRepoClass,
-            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $attribute->getId()
-        ];
+        $attribute = $this->getAttribute();
+
+        return array_merge(
+            parent::getFormOptions(),
+            [
+                'choice_url'        => 'pim_ui_ajaxentity_list',
+                'choice_url_params' => [
+                    'class'        => $this->optionRepoClass,
+                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'collectionId' => $attribute->getId()
+                ]
+            ]
+        );
     }
 }

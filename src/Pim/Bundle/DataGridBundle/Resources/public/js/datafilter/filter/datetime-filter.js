@@ -2,6 +2,7 @@
 define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'],
     function($, _, DateFilter, DateContext) {
     'use strict';
+
     /**
      * Datetime filter: filter type as option + interval begin and end dates
      *
@@ -18,7 +19,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
         inputClass: 'datetime-visual-element',
 
         /**
-         * Date widget options
+         * Datetime widget options
          *
          * @property
          */

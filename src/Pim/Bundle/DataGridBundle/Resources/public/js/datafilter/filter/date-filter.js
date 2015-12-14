@@ -128,7 +128,7 @@ function($, _, __, ChoiceFilter, DateContext) {
          *
          * @property
          */
-        dateWidgetSelector: 'div.datepicker',
+        dateWidgetSelector: '.datepicker',
 
         /**
          * @inheritDoc
@@ -278,6 +278,63 @@ function($, _, __, ChoiceFilter, DateContext) {
             }
 
             return this.placeholder;
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _formatDisplayValue: function(value) {
+            var fromFormat = this.dateWidgetOptions.altFormat;
+            var toFormat = this.dateWidgetOptions.dateFormat;
+            return this._formatValueDates(value, fromFormat, toFormat);
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _formatRawValue: function(value) {
+            var fromFormat = this.dateWidgetOptions.dateFormat;
+            var toFormat = this.dateWidgetOptions.altFormat;
+            return this._formatValueDates(value, fromFormat, toFormat);
+        },
+
+        /**
+         * Format datetes in a valut to another format
+         *
+         * @param {Object} value
+         * @param {String} fromFormat
+         * @param {String} toFormat
+         * @return {Object}
+         * @protected
+         */
+        _formatValueDates: function(value, fromFormat, toFormat) {
+            if (value.value && value.value.start) {
+                value.value.start = this._formatDate(value.value.start, fromFormat, toFormat);
+            }
+            if (value.value && value.value.end) {
+                value.value.end = this._formatDate(value.value.end, fromFormat, toFormat);
+            }
+            return value;
+        },
+
+        /**
+         * Formats date string to another format
+         *
+         * @param {String} value
+         * @param {String} fromFormat
+         * @param {String} toFormat
+         * @return {String}
+         * @protected
+         */
+        _formatDate: function(value, fromFormat, toFormat) {
+            var fromValue = $.datepicker.parseDate(fromFormat, value);
+            if (!fromValue) {
+                fromValue = $.datepicker.parseDate(toFormat, value);
+                if (!fromValue) {
+                    return value;
+                }
+            }
+            return $.datepicker.formatDate(toFormat, fromValue);
         },
 
         /**

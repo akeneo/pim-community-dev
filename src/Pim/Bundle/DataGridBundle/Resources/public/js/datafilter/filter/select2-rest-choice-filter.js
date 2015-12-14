@@ -1,23 +1,22 @@
+'use strict';
+
 define(
     [
         'jquery',
         'underscore',
-        'oro/datafilter/text-filter',
         'routing',
+        'oro/datafilter/text-filter',
+        'pim/formatter/choices/base',
         'text!pim/template/datagrid/filter/select2-choice-filter',
         'jquery.select2'
     ],
-    function($, _, TextFilter, Routing, template) {
-        'use strict';
-
+    function($, _, Routing, TextFilter, ChoicesFormatter, template) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
             choiceUrlParams: {},
             emptyChoice: false,
-            resultCache: {},
             resultsPerPage: 20,
-            choices: [],
             popupCriteriaTemplate: _.template(template),
 
             events: {
@@ -27,15 +26,8 @@ define(
             initialize: function(options) {
                 _.extend(this.events, TextFilter.prototype.events);
 
-                options = options || {};
-                if (_.has(options, 'choiceUrl')) {
-                    this.choiceUrl = options.choiceUrl;
-                }
-                if (_.has(options, 'choiceUrlParams')) {
-                    this.choiceUrlParams = options.choiceUrlParams;
-                }
-                if (_.has(options, 'emptyChoice')) {
-                    this.emptyChoice = options.emptyChoice;
+                if (!_.isUndefined(options)) {
+                    _.extend(this, _.pick(options, 'choiceUrl', 'choiceUrlParams', 'emptyChoice'));
                 }
 
                 if (_.isUndefined(this.emptyValue)) {
@@ -44,8 +36,6 @@ define(
                         value: ''
                     };
                 }
-
-                this.resultCache = {};
 
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
@@ -82,33 +72,26 @@ define(
                     minimumInputLength: 0
                 };
 
-                if (this.choiceUrl) {
+                if (null !== this.choiceUrl) {
                     config.ajax = {
                         url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
                         cache: true,
-                        data: _.bind(function(term, page) {
-                            return {
-                                search: term,
-                                options: {
-                                    limit: this.resultsPerPage,
-                                    page: page
-                                }
-                            };
-                        }, this),
-                        results: _.bind(function(data) {
-                            this._cacheResults(data.results);
-                            data.more = this.resultsPerPage === data.results.length;
+                        data: function(term, page) {
+                                return {
+                                    search: term,
+                                    options: {
+                                        limit: this.resultsPerPage,
+                                        page: page
+                                    }
+                                };
+                            }.bind(this),
+                        results: function(data) {
+                                data.results = ChoicesFormatter.format(data);
+                                data.more    = this.resultsPerPage === data.results.length;
 
-                            return data;
-                        }, this)
+                                return data;
+                            }.bind(this)
                     };
-                } else {
-                    config.data = _.map(this.choices, function(choice) {
-                        return {
-                            id: choice.value,
-                            text: choice.label
-                        };
-                    });
                 }
 
                 return config;
@@ -188,45 +171,17 @@ define(
                 }
             },
 
-            _cacheResults: function (results) {
-                _.each(results, function (result) {
-                    this.resultCache[result.id] = result.text;
-                }, this);
-            },
+            _getResults: function(identifiers) {
+                var results = [];
+                var params  = {options: {identifiers: identifiers}};
 
-            _getCachedResults: function(ids) {
-                var results = [],
-                    missingResults = [];
-
-                _.each(ids, function(id) {
-                    if (_.isUndefined(this.resultCache[id])) {
-                        if (_.isEmpty(this.choices)) {
-                            missingResults.push(id);
-                        } else {
-                            var choice = _.findWhere(this.choices, { value: id });
-                            if (_.isUndefined(choice)) {
-                                missingResults.push(id);
-                            } else {
-                                results.push({ id: choice.value, text: choice.label });
-                            }
-                        }
-                    } else {
-                        results.push({ id: id, text: this.resultCache[id] });
-                    }
-                }, this);
-
-                if (missingResults.length) {
-                    var params = { options: { ids: missingResults } };
-
-                    $.ajax({
-                        url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '&' + $.param(params),
-                        success: _.bind(function(data) {
-                            this._cacheResults(data.results);
-                            results = _.union(results, data.results);
-                        }, this),
-                        async: false
-                    });
-                }
+                $.ajax({
+                    url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '?' + $.param(params),
+                    success: function(data) {
+                        results = ChoicesFormatter.format(data);
+                    },
+                    async: false
+                });
 
                 return results;
             },
@@ -236,13 +191,19 @@ define(
             },
 
             _setInputValue: function(input, value) {
-                this.$(input).select2('data', this._getCachedResults(value));
+                this.$(input).select2('data', this._getResults(value));
 
                 return this;
             },
 
             _updateDOMValue: function() {
-                return this._writeDOMValue(this.getValue());
+                var currentValue = this.getValue();
+                var data         = this.$(this.criteriaValueSelectors.value).select2('data');
+                if (0 === _.difference(currentValue.value, _.pluck(data, 'id')).length) {
+                    return;
+                }
+
+                return this._writeDOMValue(currentValue);
             },
 
             _formatDisplayValue: function(value) {
@@ -251,7 +212,10 @@ define(
                 }
 
                 return {
-                    value: _.pluck(this._getCachedResults(value.value), 'text').join(', ')
+                    value: _.pluck(
+                        this.$(this.criteriaValueSelectors.value).select2('data'),
+                        'text'
+                    ).join(', ')
                 };
             },
 
@@ -262,6 +226,7 @@ define(
                 }
 
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+
                 return !_.isEmpty(value.value) ? '"' + value.value + '"': this.placeholder;
             }
         });

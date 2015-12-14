@@ -208,6 +208,9 @@ config:
         pim/textarea-field:                 pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
+        # Formatters
+        pim/formatter/choices/base: pimenrich/js/formatter/choices/base
+
         # Templates
         pim/template/form/common/group-selector: pimenrich/templates/form/common/group-selector.html
         pim/template/form/common/save:           pimenrich/templates/form/common/save.html
