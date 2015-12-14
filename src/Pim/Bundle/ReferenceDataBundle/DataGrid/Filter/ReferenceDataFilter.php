@@ -44,22 +44,27 @@ class ReferenceDataFilter extends ChoiceFilter
     }
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getChoiceUrlParams(AttributeInterface $attribute)
+    protected function getFormOptions()
     {
+        $attribute         = $this->getAttribute();
         $referenceDataName = $attribute->getReferenceDataName();
-        $referenceData = $this->registry->get($referenceDataName);
+        $referenceData     = $this->registry->get($referenceDataName);
+
         if (null === $referenceData) {
             throw new \InvalidArgumentException(sprintf('Reference data "%s" does not exist', $referenceDataName));
         }
 
-        return [
-            'class'        => $referenceData->getClass(),
-            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $attribute->getId()
-        ];
+        return array_merge(
+            parent::getFormOptions(),
+            [
+                'choice_url_params' => [
+                    'class'        => $referenceData->getClass(),
+                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'collectionId' => $attribute->getId()
+                ]
+            ]
+        );
     }
 }

@@ -28,6 +28,18 @@ class AjaxChoiceFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
+    public function getForm()
+    {
+        if (null === $this->form) {
+            $this->form = $this->formFactory->create($this->getFormType(), [], $this->getFormOptions());
+        }
+
+        return $this->form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getMetadata()
     {
         $formView = $this->getForm()->createView();
@@ -79,5 +91,18 @@ class AjaxChoiceFilter extends ChoiceFilter
         }
 
         return parent::parseData($data);
+    }
+
+    /**
+     * Return options passed to the form factory
+     *
+     * @return array
+     */
+    protected function getFormOptions()
+    {
+        return array_merge(
+            $this->getOr(FilterUtility::FORM_OPTIONS_KEY, []),
+            ['csrf_protection' => false]
+        );
     }
 }

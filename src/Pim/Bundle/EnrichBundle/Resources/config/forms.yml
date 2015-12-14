@@ -71,3 +71,11 @@ services:
         arguments:
             - pim_enrich_associationtype_form
             - pim_enrich_associationtype
+
+    pim_enrich.form.type.async_select:
+        class: Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType
+        arguments:
+            - '@router'
+            - '@pim_enrich.factory.transformer.identifiable_model'
+        tags:
+            - { name: form.type, alias: pim_async_select }

@@ -1,0 +1,23 @@
+<div class="choicefilter">
+    <div class="input-prepend">
+        <div class="btn-group">
+            <% if (emptyChoice) { %>
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    <%= selectedOperatorLabel %>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <% _.each(operatorChoices, function (label, operator) { %>
+                        <li<% if (selectedOperator == operator) { %> class="active"<% } %>>
+                            <a class="operator_choice" href="#" data-value="<%= operator %>"><%= label %></a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } %>
+            <input type="text" name="value">
+        </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary filter-update"><%- _.__('Update') %></button>
+    </div>
+</div>

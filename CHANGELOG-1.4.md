@@ -1,5 +1,20 @@
 # 1.4.x
 
+## Scalability improvements
+- PIM-5231: Use new AsyncSelectType for family selector in product creation form
+- PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
+
+## Bug fixes
+
+# 1.4.13 (2015-12-10)
+
+## Scalability improvements
+- PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
+- PIM-5170: Fixes memory leak on MongoDB at association import time
+
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
   It is required because normalization of reference data in product values is based on Doctrine metadata.
@@ -9,26 +24,26 @@
 - PIM-5238: Fix scroll on multiselect for mass edit
 - PIM-5177: Fix login redirection
 - PIM-5276: Fix attribute ordering in the product view
-
-## Performance improvements
-- PIM-5218: Use DirectToMongoDB bulk product saver natively. This considerably speeds up all bulk actions on a MongoDB storage install (imports, mass edit, rules application, etc.).
-- PIM-5170: Fixes memory leak on MongoDB at association import time
+- PIM-5282: Fix reload freeze
+- PIM-5269: Fix date filter picker
 
 # 1.4.12 (2015-12-03)
 
+## Scalability improvements
+- PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
+- PIM-5194: Fix performance issues on families loading in PEF
+
 ## Bug fixes
 - PIM-5235: Fix empty reference data name on attributes import
-- PIM-5208: Fix the datagrid performance issue related to large number of attributes, only attribute usable in grid will be available
 - PIM-5215: Create empty product values for new family attributes after product import with family change
 - PIM-5268: Fix PDF display to be able to display long attribute name
-- PIM-5194: Fix performance issues on families loading in PEF
 
 # 1.4.11 (2015-11-27)
 
 ## BC Breaks
 - Changed constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` in order to avoid circular reference dependency exceptions.
 
-## Performance improvements
+## Scalability improvements
 - PIM-5209: Optimize AttributeGroupNormalizer in order to serialize attributes codes in one request.
 
 ## Bug fixes
@@ -48,8 +63,10 @@
 
 # 1.4.9 (2015-11-12)
 
-## Bug fixes
+## Scalability improvements
 - PIM-5127: Improve products export memory usage
+
+## Bug fixes
 - PIM-5148: IE11 wrong display on multiple select attributes
 - PIM-5161: Fix the is_associated sort on MongoDB association grid
 - PIM-5150: Improve the product grid loading performance when a lot of attribute filters are available
