@@ -37,14 +37,6 @@ services:
         tags:
             - { name: pim_localization.presenter, type: 'product_value' }
 
-    pim_localization.presenter.number.attribute_option:
-        class: %pim_localization.presenter.number.class%
-        arguments:
-            - '@pim_localization.factory.number'
-            - ['number_min', 'number_max']
-        tags:
-            - { name: pim_localization.presenter, type: 'attribute_option' }
-
     pim_localization.presenter.date:
         class: %pim_localization.presenter.date.class%
         arguments:
@@ -58,3 +50,19 @@ services:
         arguments:
             - '@pim_localization.factory.datetime'
             - []
+
+    pim_localization.presenter.number.attribute_option:
+        class: %pim_localization.presenter.number.class%
+        arguments:
+            - '@pim_localization.factory.number'
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_localization.presenter, type: 'attribute_option' }
+
+    pim_localization.presenter.date.attribute_option:
+        class: %pim_localization.presenter.date.class%
+        arguments:
+            - '@pim_localization.factory.date'
+            - ['date_min', 'date_max']
+        tags:
+            - { name: pim_localization.presenter, type: 'attribute_option' }

@@ -11,11 +11,7 @@
     {% else %}
     <li>
         <strong>{{ fieldKey }}:</strong>
-        {% if fieldValue.old.timestamp is defined %}
-            {{ fieldValue.old|datetime_presenter }}
-        {% else %}
-            {{ fieldValue.old|attribute_option_presenter(fieldKey) }}
-        {% endif %}
+        {{ fieldValue.old|attribute_option_presenter(fieldKey) }}
     </li>
     {% endif %}
 {% endfor %}
