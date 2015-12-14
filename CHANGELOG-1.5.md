@@ -14,6 +14,8 @@
 ## Bug fixes
 
 ## BC breaks
+- Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
+- Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
 - Service `oro_form.type.date` is removed and replaced by `pim_form.type.date` (alias `oro_date` is replaced by `pim_date`)
 - Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.

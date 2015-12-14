@@ -523,4 +523,9 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\Warning/Akeneo\\Component\\Batch\\Model\\Warning/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution/Akeneo\\Component\\Batch\\Model\\StepExecution/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution/Akeneo\\Component\\Batch\\Model\\JobExecution/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\FilterBundle\\Form\\Type\\DateRangeType/Pim\\Bundle\\FilterBundle\\Form\\Type\\DateRangeType/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\FilterBundle\\Form\\Type\\DateTimeRangeType/Pim\\Bundle\\FilterBundle\\Form\\Type\\DateTimeRangeType/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\LocaleBundle\\DoctrineExtensions\\DBAL\\Types\\UTCDateTimeType/Akeneo\\Bundle\\StorageUtilsBundle\\Doctrine\\DBAL\\Types\\UTCDateTimeType/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.datetime_range/pim_filter.form.type.datetime_range/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.date_range/pim_filter.form.type.date_range/g'
 ```
