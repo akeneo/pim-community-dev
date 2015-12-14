@@ -22,15 +22,14 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I save the product
     Then the product Size should be "47xxl"
 
-  @unstable
   Scenario: Sucessfully add a new option to a multi select attribute
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save the product
-    Then the product Weather conditions should be "Wet, Extremely wet"
+    Then the product Weather conditions should be "wet, very_wet"
 
-  @unstable @jira https://akeneo.atlassian.net/browse/PIM-4737
+  @jira https://akeneo.atlassian.net/browse/PIM-4737
   Scenario: Successfully find a created option in a multiselect attribute through several products
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
