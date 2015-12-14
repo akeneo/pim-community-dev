@@ -1,2 +1,18 @@
 An identifier attribute already exists.: Атрибут-идентификатор уже существует.
 Attribute code may contain only letters, numbers and underscore: Код атрибута может содержать только буквы, цифры и символ подчеркивания
+Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута может содержать только буквы (минимум одну), цифры и символ подчеркивания
+This attribute type can't be used as a grid filter: Этот тип атрибут не может использоваться как фильтр
+This code is not available: Этот код недоступен
+This attribute type must be required: Этот тип атрибута должен быть обязательным
+This attribute type can't be required: Этот тип атрибута не может быть обязательным
+This attribute type can't have unique value: Этот тип атрибута не может иметь уникальное значение
+No default value may be specified for this attribute type: Значение по умолчанию не может быть указано для этого типа атрибута
+This value should be Yes or No: Это значение должно быть Да или Нет
+This value should not be blank: Это значение не должно быть пустым
+Option code may contain only letters, numbers and underscores: Код выбора может содержать только буквы, цифры и символ подчеркивания
+Option code may contain only letters (at least one), numbers and underscores: Код выбора может содержать только буквы (минимум одну), цифры и символ подчеркивания
+This color is already used by another channel: Этот цвет уже используется другим каналом
+This value should not be a decimal.: Это значение не должно быть десятичным.
+"The value %value% is already set on another product for the unique attribute %attribute%": 'Значение %value% уже установленo на другом продукте для уникального атрибутa %attribute%'
+regex.comma_or_semicolon.message: Это поле не должно содержать запятыe или точки с запятой.
+file.extensions.message: 'Расширение файла не разрешается (возможные расширения: %extensions%).'
