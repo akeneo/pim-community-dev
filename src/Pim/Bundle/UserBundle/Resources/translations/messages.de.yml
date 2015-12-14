@@ -73,6 +73,12 @@ API key: API-Schlüssel
 Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
+user:
+  product_grid_filters: Produktübersichtsfilter
+  default_product_grid_view:
+    label: Standardansicht Produktübersicht
+  default_grid_view:
+    none: Keine
 Role: Rolle
 Owner: Eigentümer
 General: Allgemein
