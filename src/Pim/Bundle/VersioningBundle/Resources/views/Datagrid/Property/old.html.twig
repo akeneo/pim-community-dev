@@ -4,7 +4,7 @@
         {% if fieldValue.old|length %}
         {% for collKey, collValue in fieldValue.old %}
     <li>
-        <strong>{{ collKey }}:</strong> {{ collValue|present_attribute_option(collKey) }}
+        <strong>{{ collKey }}:</strong> {{ collValue|attribute_option_presenter(collKey) }}
     </li>
         {% endfor %}
         {% endif %}
@@ -14,7 +14,7 @@
         {% if fieldValue.old.timestamp is defined %}
             {{ fieldValue.old|datetime_presenter }}
         {% else %}
-            {{ fieldValue.old|present_attribute_option(fieldKey) }}
+            {{ fieldValue.old|attribute_option_presenter(fieldKey) }}
         {% endif %}
     </li>
     {% endif %}
