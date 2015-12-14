@@ -250,6 +250,12 @@ One remaining issue with the Batch component and bundle is the mix of configurat
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
+During upgrade, you also have to remove the following line from your project composer.json:
+
+```
+    "akeneo/batch-bundle": "0.4.5",
+```
+
 ## Normalizers & Denormalizers [WIP]
 
 The PIM heavily uses the Serializer component of Symfony http://symfony.com/doc/2.7/components/serializer.html.

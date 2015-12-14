@@ -1,130 +1,125 @@
 <?php
 
-namespace spec\Akeneo\Component\Batch\Job;
+namespace spec\Akeneo\Component\Batch\Model;
 
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Step\StepInterface;
+use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class JobSpec extends ObjectBehavior
+class JobExecutionSpec extends ObjectBehavior
 {
-    function let()
+    function it_is_properly_instanciated()
     {
-        $this->beConstructedWith('myname');
+        $this->getStatus()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Job\BatchStatus');
+        $this->getStatus()->getValue()->shouldReturn(BatchStatus::STARTING);
+        $this->getExitStatus()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Job\ExitStatus');
+        $this->getExitStatus()->getExitCode()->shouldReturn(ExitStatus::UNKNOWN);
+        $this->getExecutionContext()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\ExecutionContext');
+        $this->getStepExecutions()->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
+        $this->getStepExecutions()->shouldBeEmpty();
+        $this->getCreateTime()->shouldBeAnInstanceOf('\Datetime');
+        $this->getFailureExceptions()->shouldHaveCount(0);
     }
 
-    function it_provides_its_name()
-    {
-        $this->getName()->shouldReturn('myname');
+    function it_is_cloneable(
+        ExecutionContext $executionContext,
+        StepExecution $stepExecution1,
+        StepExecution $stepExecution2
+    ) {
+        $this->setExecutionContext($executionContext);
+        $this->addStepExecution($stepExecution1);
+        $this->addStepExecution($stepExecution2);
+        $clone = clone $this;
+        $clone->shouldBeAnInstanceOf('Akeneo\Component\Batch\Model\JobExecution');
+        $clone->getExecutionContext()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\ExecutionContext');
+        $clone->getStepExecutions()->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
+        $clone->getStepExecutions()->shouldHaveCount(2);
     }
 
-    function it_changes_its_name()
+    function it_upgrades_status()
     {
-        $this->setName('mynewname');
-        $this->getName()->shouldReturn('mynewname');
+        $this->getStatus()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Job\BatchStatus');
+        $this->getStatus()->getValue()->shouldReturn(BatchStatus::STARTING);
+        $this->upgradeStatus(BatchStatus::COMPLETED)->shouldBeAnInstanceOf('Akeneo\Component\Batch\Model\JobExecution');
+        $this->getStatus()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Job\BatchStatus');
+        $this->getStatus()->getValue()->shouldReturn(BatchStatus::COMPLETED);
     }
 
-    function it_sets_event_dispatcher(EventDispatcherInterface $eventDispatcher)
+    function it_sets_exist_status(ExitStatus $exitStatus)
     {
-        $this->setEventDispatcher($eventDispatcher)->shouldReturn($this);
+        $this->setExitStatus($exitStatus)->shouldReturn($this);
     }
 
-    function it_has_no_steps_by_default()
+    function it_creates_step_execution()
     {
-        $this->getSteps()->shouldReturn([]);
+        $newStep = $this->createStepExecution('myStepName');
+        $newStep->shouldBeAnInstanceOf('Akeneo\Component\Batch\Model\StepExecution');
+        $newStep->getStepName()->shouldReturn('myStepName');
     }
 
-    function it_sets_steps(StepInterface $stepOne,StepInterface $stepTwo)
+    function it_adds_step_execution(StepExecution $stepExecution1)
     {
-        $this->setSteps([$stepOne, $stepTwo]);
-        $this->getSteps()->shouldReturn([$stepOne, $stepTwo]);
+        $this->getStepExecutions()->shouldHaveCount(0);
+        $this->addStepExecution($stepExecution1);
+        $this->getStepExecutions()->shouldHaveCount(1);
     }
 
-    function it_gets_a_step_by_its_name(StepInterface $stepOne,StepInterface $stepTwo)
+    function it_indicates_if_running(BatchStatus $completedStatus)
     {
-        $this->setSteps([$stepOne, $stepTwo]);
-        $stepOne->getName()->willReturn('one');
-        $stepTwo->getName()->willReturn('two');
-        $this->getStep('two')->shouldReturn($stepTwo);
-        $this->getStep('three')->shouldReturn(null);
+        $this->isRunning()->shouldReturn(true);
+        $this->setStatus($completedStatus);
+        $completedStatus->getValue()->willReturn(BatchStatus::COMPLETED);
+        $this->isRunning()->shouldReturn(false);
     }
 
-    function it_gets_step_names(StepInterface $stepOne,StepInterface $stepTwo)
+    function it_indicates_if_stopping(BatchStatus $stoppingStatus)
     {
-        $this->setSteps([$stepOne, $stepTwo]);
-        $stepOne->getName()->willReturn('one');
-        $stepTwo->getName()->willReturn('two');
-        $this->getStepNames()->shouldReturn(['one', 'two']);
+        $this->isStopping()->shouldReturn(false);
+        $stoppingStatus->getValue()->willReturn(BatchStatus::STOPPING);
+        $this->setStatus($stoppingStatus);
+        $this->isStopping()->shouldReturn(true);
     }
 
-    function it_adds_a_step(StepInterface $stepOne,StepInterface $stepTwo)
+    function it_stops(StepExecution $stepExecution1)
     {
-        $this->setSteps([$stepOne]);
-        $this->getSteps()->shouldReturn([$stepOne]);
-        $this->addStep('two', $stepTwo);
-        $this->getSteps()->shouldReturn([$stepOne, $stepTwo]);
+        $this->addStepExecution($stepExecution1);
+        $stepExecution1->setTerminateOnly()->shouldBeCalled();
+        $this->stop()->shouldBeAnInstanceOf('Akeneo\Component\Batch\Model\JobExecution');
     }
 
-    function it_sets_a_job_repository(JobRepositoryInterface $jobRepository)
+    function it_adds_a_failure_exception()
     {
-        $this->getJobRepository()->shouldReturn(null);
-        $this->setJobRepository($jobRepository);
-        $this->getJobRepository()->shouldReturn($jobRepository);
+        $exception = new \Exception('my msg');
+        $this->addFailureException($exception)->shouldReturn($this);
+        $this->getFailureExceptions()->shouldHaveCount(1);
     }
 
-    function it_aggregates_the_steps_configuration(StepInterface $stepOne, StepInterface $stepTwo)
+    function it_provides_aggregated_step_failure_exceptions(StepExecution $stepExecution1)
     {
-        $this->setSteps([$stepOne, $stepTwo]);
-        $stepOne->getConfiguration()->willReturn(['conf1A' => 'value1A', 'conf1B' => 'value1B']);
-        $stepTwo->getConfiguration()->willReturn(['conf2' => 'value2']);
+        $stepExecution1->getFailureExceptions()->willReturn(['one structured exception']);
+        $this->addStepExecution($stepExecution1);
 
-        $this->getConfiguration()->shouldReturn(['conf1A' => 'value1A', 'conf1B' => 'value1B', 'conf2' => 'value2']);
+        $this->getAllFailureExceptions()->shouldHaveCount(1);
     }
 
-    function it_injects_the_configuration_in_steps(StepInterface $stepOne, StepInterface $stepTwo)
+    function it_sets_job_instance(JobInstance $jobInstance)
     {
-        $this->setSteps([$stepOne, $stepTwo]);
-        $stepOne->setConfiguration(['conf1A' => 'value1A', 'conf2' => 'value2'])->shouldBeCalled();
-        $stepTwo->setConfiguration(['conf1A' => 'value1A', 'conf2' => 'value2'])->shouldBeCalled();
-        $this->setConfiguration(['conf1A' => 'value1A', 'conf2' => 'value2']);
+        $jobInstance->addJobExecution($this)->shouldBeCalled();
+        $this->setJobInstance($jobInstance);
     }
 
-    function it_sets_show_and_edit_templates()
+    function it_provides_the_job_instance_label(JobInstance $jobInstance)
     {
-        $this->setShowTemplate('my show tmpl');
-        $this->getShowTemplate()->shouldReturn('my show tmpl');
-
-        $this->setEditTemplate('my edit tmpl');
-        $this->getEditTemplate()->shouldReturn('my edit tmpl');
+        $this->setJobInstance($jobInstance);
+        $jobInstance->getLabel()->willReturn('my label');
+        $this->getLabel()->shouldReturn('my label');
     }
 
     function it_is_displayable()
     {
-        $this->__toString()->shouldReturn('Akeneo\Component\Batch\Job\Job: [name=myname]');
-    }
-
-    function it_executes(
-        JobExecution $jobExecution,
-        JobRepositoryInterface $jobRepository,
-        EventDispatcherInterface $dispatcher,
-        BatchStatus $status
-    ) {
-        $this->setEventDispatcher($dispatcher);
-        $this->setJobRepository($jobRepository);
-        $jobExecution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(BatchStatus::UNKNOWN);
-
-        $dispatcher->dispatch(EventInterface::BEFORE_JOB_EXECUTION, Argument::any())->shouldBeCalled();
-        $jobExecution->setStartTime(Argument::any())->shouldBeCalled();
-        $jobExecution->setStatus(Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::AFTER_JOB_EXECUTION, Argument::any())->shouldBeCalled();
-        $jobExecution->setEndTime(Argument::any())->shouldBeCalled();
-
-        $this->execute($jobExecution);
+        $this->__toString()->shouldReturn('startTime=, endTime=, updatedTime=, status=2, exitStatus=[UNKNOWN] , exitDescription=[], job=[]');
     }
 }

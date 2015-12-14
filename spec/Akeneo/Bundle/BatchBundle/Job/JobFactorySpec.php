@@ -15,8 +15,9 @@ class JobFactorySpec extends ObjectBehavior
         $this->beConstructedWith($dispatcher, $repository);
     }
 
-    function it_creates_job()
+    function it_creates_job($repository)
     {
         $this->createJob('myJobTitle')->shouldReturnAnInstanceOf(self::TESTED_CLASS);
+        $this->createJob('myJobTitle')->getJobRepository()->shouldReturn($repository);
     }
 }
