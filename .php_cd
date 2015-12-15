@@ -74,7 +74,6 @@ $rules = [
         'The component versioning should depends on nothing'
     ),
 
-    // FORBIDDEN and OK
     new Rule(
         'PimEnterprise\Component',
         array_merge($forbidAnyBundles, $forbidDoctrineExceptCommon),
@@ -177,7 +176,9 @@ $rulesToFix = [
             'Akeneo\Component\Localization',
             'Akeneo\Component\FileStorage',
             'Akeneo\Component\StorageUtils',
-            'Doctrine\Common'
+            'Doctrine\Common',
+            'Symfony\Component\PropertyAccess',
+            'Exception'
         ],
         RuleInterface::TYPE_ONLY,
         'The component catalog should depends only on ... bunch of stuff :)'
