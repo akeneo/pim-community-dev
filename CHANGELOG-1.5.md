@@ -4,6 +4,9 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
+- Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
+- Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
 - Remove class `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
 - Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
