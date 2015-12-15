@@ -85,5 +85,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jasmine']);
     grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);
     grunt.registerTask('travis', ['codestyle', 'test']);
-    grunt.registerTask('default', ['codestyle', 'test']);
+    // TODO: Enable running specs when there actually are some
+    // grunt.registerTask('default', ['codestyle', 'test']);
+    grunt.registerTask('default', ['codestyle']);
 };

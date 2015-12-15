@@ -13,7 +13,6 @@ services:
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.repository.job_configuration'
-            - '@pim_catalog.updater.product'
             - '@oro_user.manager'
             - '@security.token_storage'
             - '@security.authorization_checker'

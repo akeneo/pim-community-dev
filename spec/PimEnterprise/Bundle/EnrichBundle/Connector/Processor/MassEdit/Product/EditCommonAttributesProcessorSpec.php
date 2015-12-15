@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Pr
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
@@ -16,7 +15,6 @@ use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -30,7 +28,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -41,7 +38,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
-            $productUpdater,
             $userManager,
             $tokenStorage,
             $authorizationChecker
@@ -50,7 +46,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_sets_values_if_user_is_a_product_owner(
         $validator,
-        $productUpdater,
+        $propertySetter,
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
@@ -69,25 +65,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
-        $values = [
-            'categories' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => ['office', 'bedroom']
-                ]
-            ]
-        ];
-        $normalizedValues = addslashes(json_encode($values));
-
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues
-                    ]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );
@@ -95,16 +77,16 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
+        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $productUpdater->update($product, $values)->shouldBeCalled();
+        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_sets_values_if_user_is_a_product_editor(
         $validator,
-        $productUpdater,
+        $propertySetter,
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
@@ -124,25 +106,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
-        $values = [
-            'categories' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => ['office', 'bedroom']
-                ]
-            ]
-        ];
-        $normalizedValues = addslashes(json_encode($values));
-
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues
-                    ]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );
@@ -150,15 +118,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
+        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $productUpdater->update($product, $values)->shouldBeCalled();
+        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_does_not_set_values_if_user_is_not_allowed_to_edit_the_product(
-        $productUpdater,
+        $propertySetter,
         $userManager,
         $authorizationChecker,
         ProductInterface $product,
@@ -177,29 +145,16 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $values = [
-            'categories' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => ['office', 'bedroom']
-                ]
-            ]
-        ];
-        $normalizedValues = addslashes(json_encode($values));
-
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues
-                    ]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );
 
-        $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
+        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldNotBeCalled();
 
         $this->process($product);
     }

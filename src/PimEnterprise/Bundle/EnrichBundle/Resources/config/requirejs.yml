@@ -46,9 +46,6 @@ config:
         pimee/product-edit-form/associations:                         pimenterpriseenrich/js/product/form/associations
         pimee/product-edit-form/status-switcher:                      pimenterpriseenrich/js/product/form/status-switcher
 
-        # Mass product edit form
-        pimee/mass-product-edit-form/add-attribute: pimenterpriseenrich/js/product/form/mass-edit/add-attribute
-
         # Templates
         pimee/template/product/meta/owner-groups:               pimenterpriseenrich/templates/product/meta/owner-groups.html
         pimee/template/product/panel/history/revert:            pimenterpriseenrich/templates/product/panel/history/revert.html
