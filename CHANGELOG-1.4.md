@@ -3,6 +3,7 @@
 ## Scalability improvements
 - PIM-5231: Use new AsyncSelectType for family selector in product creation form
 - PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time
+- PIM-5211: Do not load all axes on the variant group form during edition
 
 ## BC Breaks
 - Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
