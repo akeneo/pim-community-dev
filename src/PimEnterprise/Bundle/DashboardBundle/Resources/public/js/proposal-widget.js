@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
-    function ($, _, Routing, Navigation, AbstractWidget, moment) {
+    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget'],
+    function ($, _, Routing, Navigation, AbstractWidget) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -121,16 +121,6 @@ define(
 
             _processResponse: function (data) {
                 this.options.contentLoaded = true;
-
-                _.each(data, function (proposal) {
-                    if (proposal.createdAt) {
-                        var date = moment(new Date(proposal.createdAt * 1000));
-                        if (date.isValid()) {
-                            var dateFormat = date.isSame(new Date(), 'day') ? 'HH:mm' : 'YYYY-MM-DD HH:mm';
-                            proposal.createdAt = date.format(dateFormat);
-                        }
-                    }
-                }, this);
 
                 return data;
             }
