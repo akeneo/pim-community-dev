@@ -56,7 +56,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_does_not_set_values_when_attribute_is_not_editable(
         $validator,
-        $propertySetter,
+        $productUpdater,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
@@ -76,11 +76,24 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+
+        $normalizedValues = addslashes(json_encode([
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ]));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
@@ -88,9 +101,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(false);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldNotBeCalled();
+        $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
     }
@@ -112,11 +125,25 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+
+        $values = [
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ];
+        $normalizedValues = addslashes(json_encode($values));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
@@ -124,16 +151,16 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_sets_invalid_values_to_attributes(
         $validator,
-        $propertySetter,
+        $productUpdater,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
@@ -146,11 +173,25 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+
+        $values = [
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ];
+        $normalizedValues = addslashes(json_encode($values));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
@@ -160,10 +201,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
 
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productUpdater->update($product, $values)->shouldBeCalled();
         $this->setStepExecution($stepExecution);
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();

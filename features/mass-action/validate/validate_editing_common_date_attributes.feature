@@ -64,9 +64,7 @@ Feature: Validate editing common date attributes of multiple products
     And I display the Date attribute
     And I change the Date to "01/01/2013"
     And I move on to the next step
-    # @TODO: fix this
-    And I display the Date attribute
-    Then I should see validation error "This date should be 2014-01-01 or after."
+    Then I should see validation tooltip "This date should be 2014-01-01 or after."
     And attribute Date of "boots" should be ""
     And attribute Date of "sandals" should be ""
     And attribute Date of "sneakers" should be ""

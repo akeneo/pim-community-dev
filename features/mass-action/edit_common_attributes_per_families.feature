@@ -39,7 +39,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Size in group "Sizes"
     And I should see available attribute Color in group "Colors"
-    And I display the Name and Weather condition attribute
+    And I add available attributes Name and Weather condition
     And I change the "Weather condition" to "Cold, Wet"
     And I change the "Name" to "Product"
     And I move on to the next step
@@ -63,8 +63,8 @@ Feature: Edit common attributes of many products at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
-    And I change the "$ Price" to "100"
-    And I change the "€ Price" to "150"
+    And I change the "Price" to "100 USD"
+    And I change the "Price" to "150 EUR"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sandals should be:

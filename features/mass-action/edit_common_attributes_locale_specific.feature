@@ -16,12 +16,12 @@ Feature: Edit common attributes of many products at once with locale specific ca
   Scenario: Allow editing only common attributes, including locale specific attribute
     Given I mass-edit products tshirt
     And I choose the "Edit common attributes" operation
-    And I switch the locale to "German (Germany)"
+    And I switch the locale to "de_DE"
     Then I should see available attributes Kosten, Anzahl auf Lager, Datenblatt, Zollsteuer in group "Intern"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Allow editing only common attributes, excluding locale specific attribute
     Given I mass-edit products tshirt
     And I choose the "Edit common attributes" operation
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     Then I should see available attributes Cost, Number in stock, Datasheet in group "Internal"
