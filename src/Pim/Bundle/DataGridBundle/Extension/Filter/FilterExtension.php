@@ -142,10 +142,12 @@ class FilterExtension extends AbstractExtension
             if (isset($filtersConfig[$filter->getName()])) {
                 $metadata = $filter->getMetadata();
 
-                $filtersMetaData[] = array_merge(
-                    $metadata,
-                    ['label' => $this->translator->trans($metadata['label'])]
-                );
+                if ($metadata['enabled']) {
+                    $filtersMetaData[] = array_merge(
+                        $metadata,
+                        ['label' => $this->translator->trans($metadata['label'])]
+                    );
+                }
             }
         }
 
