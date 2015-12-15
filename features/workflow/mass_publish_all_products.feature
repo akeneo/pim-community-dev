@@ -25,28 +25,24 @@ Feature: Publish many products at once
       | jackadi   | jackets | Jackadi    | jackets    |
       | teafortwo | tees    | My tee     | tees       |
 
-  Scenario: Only publish products on which user is the owner
+  Scenario: Successfully publish all products
+    And I am logged in as "Julia"
+    And I am on the products page
+    And I mass-edit products unionjack and jackadi
+    When I choose the "Publish products" operation
+    Then I should see "The 2 selected products will be published"
+    And I should see "Confirm"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3784
+  Scenario: Successfully publish all products
     Given I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products unionjack, jackadi and teafortwo
-    And I choose the "Publish products" operation
-    And I move on to the next step
-    And I wait for the "publish" mass-edit job to finish
-    Then I should see "You're not the owner of the product, you can't publish it"
-    And I press the "Send" button in the popin
-    And I should see "skipped products 1"
-    When I am on the published index page
-    Then the grid should contain 2 elements
-
-  Scenario: Publish nothing if the user is the owner of no product
-    And I am logged in as "Mary"
-    And I am on the products page
-    And I mass-edit products unionjack, jackadi and teafortwo
+    And I mass-edit products unionjack
     When I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    Then I should see "You're not the owner of the product, you can't publish it"
-    And I should see "skipped products 3"
-    When I am on the published index page
-    And I press the "Send" button in the popin
-    Then the grid should contain 0 elements
+    And I am on the published index page
+    And I should see product unionjack
+    Then the row "unionjack" should contain:
+      | column   | value |
+      | complete | 20%   |
