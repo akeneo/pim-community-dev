@@ -2,12 +2,9 @@
 
 namespace spec\Akeneo\Component\Batch\Model;
 
-use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 
 class StepExecutionSpec extends ObjectBehavior
