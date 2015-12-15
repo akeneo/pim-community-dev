@@ -284,6 +284,7 @@ With the same strategy than for other old bundles, main technical interfaces and
 It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
 
 Has been done:
+ - move BatchBundle to pim-community-dev repository
  - extract main Step interface and classes
  - extract main Item interface and classes
  - extract main exceptions
@@ -292,6 +293,7 @@ Has been done:
  - extract domain models (doctrine entities) and move doctrine mapping to yml files
  - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
  - [WIP] replace unit tests by specs, add missing specs
+ - [WIP] remove useless bundle files (composer, readme, upgrade, travis setup, etc)
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
