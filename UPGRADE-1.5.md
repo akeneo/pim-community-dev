@@ -267,6 +267,8 @@ akeneo_storage_utils:
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
 
+[TODO] In 1.4 we've re-worked thefile storage system, we now dropped the deprecated models.
+
 ## Batch Bundle & Component [WIP]
 
 The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
