@@ -31,7 +31,7 @@
                             </div>
                             <div class="missing">
                                 <% if (completeness.completeness.missing !== 0) { %>
-                                 missing values:
+                                 <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
                                  <span class="missing-attributes">
                                     <% _.each(completeness.missing, function(missing) { %>
                                         <span data-attribute="<%- missing %>" data-locale="<%- locale %>" data-channel="<%- channel %>"><%- missing %></span>

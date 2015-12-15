@@ -539,3 +539,10 @@
 {% block oro_acl_label_widget %}
     <strong>{{ value|trans }}</strong>
 {% endblock %}
+
+{% block pim_async_select_widget %}
+    {% if attr['data-placeholder'] is defined %}
+        {% set attr = attr|merge({'data-placeholder': attr['data-placeholder']|trans}) %}
+    {% endif %}
+    {{ block('hidden_widget') }}
+{% endblock %}

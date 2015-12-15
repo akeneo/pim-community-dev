@@ -176,6 +176,7 @@ pim_enrich:
                 all: All
                 all_visible: All visible
                 none: None
+                copy: Copy
             variant_group:
                 updated_by: Updated by variant group
                 switch:
@@ -233,6 +234,7 @@ pim_enrich:
                     info:
                         no_family: No family defined. Please define a family to calculate the completeness of this product.
                         no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+                    missing_values: Missing values
                 history:
                     title: History
             switch:

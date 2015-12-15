@@ -18,7 +18,8 @@ define(
             this.config = {
                 core: {
                     animation: 200,
-                    html_titles: true
+                    html_titles: true,
+                    strings: { loading:  _.__('jstree.loading') }
                 },
                 plugins: [
                     'themes',
