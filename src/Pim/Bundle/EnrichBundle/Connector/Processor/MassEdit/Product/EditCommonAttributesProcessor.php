@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
@@ -97,31 +96,20 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * Set data from $actions to the given $product
      *
-     * Actions should look like that
+     * Actions should looks like that
      *
      * $actions =
      * [
-     *      'normalized_values' => [
-     *          'name' => [
-     *              [
-     *                  'locale' => null,
-     *                  'scope'  => null,
-     *                  'data' => 'The name'
-     *              ]
-     *          ],
-     *          'description' => [
-     *              [
-     *                  'locale' => 'en_US',
-     *                  'scope' => 'ecommerce',
-     *                  'data' => 'The description for ecommerce'
-     *              ],
-     *              [
-     *                  'locale' => 'en_US',
-     *                  'scope' => 'mobile',
-     *                  'data' => 'The description for mobile'
-     *              ]
-     *          ]
-     *      ]
+     *     [
+     *          'field'   => 'group',
+     *          'value'   => 'summer_clothes',
+     *          'options' => null
+     *      ],
+     *      [
+     *          'field'   => 'category',
+     *          'value'   => 'catalog_2013,catalog_2014',
+     *          'options' => null
+     *      ],
      * ]
      *
      * @param ProductInterface $product
@@ -133,20 +121,21 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $configuration)
     {
-        $normalizedValues = json_decode($actions['normalized_values'], true);
-        $filteredValues = [];
+        $modifiedAttributesNb = 0;
+        foreach ($actions as $action) {
+            $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
 
-        foreach ($normalizedValues as $attributeCode => $values) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            if (null === $attribute) {
+                throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
+            }
 
             if ($product->isAttributeEditable($attribute)) {
-                $filteredValues[$attributeCode] = $values;
+                $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
+                $modifiedAttributesNb++;
             }
         }
 
-        if (!empty($filteredValues)) {
-            $this->productUpdater->update($product, $filteredValues);
-        } else {
+        if (0 === $modifiedAttributesNb) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),

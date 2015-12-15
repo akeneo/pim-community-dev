@@ -64,7 +64,7 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Info attribute
     And I change the "Info" to "Extremely useful information"
     And I move on to the next step
-    Then I should see validation tooltip "This value is too long. It should have 25 characters or less."
+    Then I should see validation error "This value is too long. It should have 25 characters or less."
     And attribute Info of "boots" should be ""
     And attribute Info of "sandals" should be ""
     And attribute Info of "sneakers" should be ""
@@ -93,7 +93,7 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Comment attribute
     And I change the Comment to an invalid value
     And I move on to the next step
-    Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
+    Then I should see validation error "This value is too long. It should have 255 characters or less."
     And attribute Comment of "boots" should be ""
     And attribute Comment of "sandals" should be ""
     And attribute Comment of "sneakers" should be ""
