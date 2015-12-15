@@ -9,6 +9,15 @@ define(
                 return;
             }
             initialized = true;
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+                var $container = $('.scrollable-container');
+                $target.find('.fullheight').filter(':visible').each(function () {
+                    $(this).height($container.height() - $(this).position().top + $container.position().top);
+                });
+            };
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
@@ -57,11 +66,20 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
+
+                setFullHeight($target);
             };
 
             $(function () {
                 $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
+                });
+
+                $(document).on('shown', 'a[data-toggle="tab"]', function () {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 var secret = '38384040373937396665';

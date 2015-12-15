@@ -43,11 +43,9 @@ Feature: Edit common attributes of many products at once
     Then I should see "Product information"
     And I should see "Sizes"
     And I should see "Name"
-    Then I visit the "Sizes" group
     And I should see "Size"
-    When I switch the locale to "fr_FR"
+    When I switch the locale to "French (France)"
     Then I should see "[info]"
     And I should see "[sizes]"
-    And I should see "Taille"
-    Then I visit the "[info]" group
     And I should see "Nom"
+    And I should see "Taille"
