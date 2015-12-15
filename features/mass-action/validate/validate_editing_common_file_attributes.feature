@@ -60,5 +60,5 @@ Feature: Validate editing common attributes of multiple products
     And I display the File attribute
     And I attach file "akeneo.txt" to "File"
     And I move on to the next step
-    Then I should see validation tooltip "The file extension is not allowed (allowed extensions: gif)."
+    Then I should see "The file extension is not allowed (allowed extensions: gif)."
     And the file "file" of products boots, sandals and sneakers should be ""

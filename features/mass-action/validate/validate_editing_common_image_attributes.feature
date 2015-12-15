@@ -61,5 +61,5 @@ Feature: Validate editing common attributes of multiple products
     And I display the Side view attribute
     And I attach file "akeneo.txt" to "Side view"
     And I move on to the next step
-    Then I should see validation tooltip "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
+    Then I should see "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
     And the file "side_view" of products boots, sandals and sneakers should be ""

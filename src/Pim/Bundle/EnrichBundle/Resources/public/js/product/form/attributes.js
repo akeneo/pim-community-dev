@@ -293,11 +293,7 @@ define(
                             this.render();
                         }
 
-                        var displayedAttributes = FieldManager.getFields();
-
-                        if (_.has(displayedAttributes, event.attribute)) {
-                            displayedAttributes[event.attribute].setFocus();
-                        }
+                        FieldManager.getFields()[event.attribute].setFocus();
                     }.bind(this));
             },
             comparisonChange: function (open) {
