@@ -19,6 +19,7 @@ Feature: Apply permissions for an assets collection attribute during mass action
     Given I am on the products page
     And I mass-edit products leather jacket and wool jacket
     And I choose the "Edit common attributes" operation
-    When I display the Front view attribute
-    Then I should see the choices paint and dog in Front view
-    But I should not see the choice doc_tech in Front view
+    And I display the Front view attribute
+    When I start to manage assets for "Front view"
+    Then I should see assets paint and dog
+    But I should not see assets doc_tech
