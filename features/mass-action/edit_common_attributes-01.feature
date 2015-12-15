@@ -96,8 +96,8 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit a price not added to the product
     Given I create a new product
     And I fill in the following information in the popin:
-      | SKU    | Shoes      |
-      | Family | high_heels |
+      | SKU             | Shoes      |
+      | Choose a family | Heels      |
     And I press the "Save" button in the popin
     Then I should be on the product "Shoes" edit page
     And I am on the products page

@@ -6,6 +6,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 

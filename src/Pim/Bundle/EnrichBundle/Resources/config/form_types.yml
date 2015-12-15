@@ -82,6 +82,8 @@ services:
 
     pim_enrich.form.type.product_create:
         class: %pim_enrich.form.type.product_create.class%
+        arguments:
+            - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_product_create }
 

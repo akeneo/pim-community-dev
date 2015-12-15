@@ -429,6 +429,30 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clickLink($link)
+    {
+        $this->spin(function () use ($link) {
+            parent::clickLink($link);
+
+            return true;
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertNumElements($num, $element)
+    {
+        $this->spin(function () use ($num, $element) {
+            parent::assertNumElements($num, $element);
+
+            return true;
+        });
+    }
+
+    /**
      * Set the waiting timeout
      *
      * @param $parameters

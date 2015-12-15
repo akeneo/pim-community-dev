@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -9,11 +11,23 @@ use Symfony\Component\Form\FormBuilderInterface;
  * Product creation form type
  *
  * @author    Filips Alpe <filips@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductCreateType extends AbstractType
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $familyRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $familyRepository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,15 +47,14 @@ class ProductCreateType extends AbstractType
             )
             ->add(
                 'family',
-                'entity',
+                'pim_async_select',
                 [
-                    'class'       => 'Pim\Bundle\CatalogBundle\Entity\Family',
-                    'required'    => false,
-                    'empty_value' => "",
-                    'select2'     => true,
-                    'attr'        => [
+                    'repository' => $this->familyRepository,
+                    'route'      => 'pim_enrich_family_rest_index',
+                    'required'   => false,
+                    'attr'       => [
                         'data-placeholder' => 'Choose a family'
-                    ]
+                    ],
                 ]
             );
     }
