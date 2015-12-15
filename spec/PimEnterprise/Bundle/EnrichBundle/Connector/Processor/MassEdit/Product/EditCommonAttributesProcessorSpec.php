@@ -17,6 +17,7 @@ use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -52,7 +53,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_sets_values_if_user_is_a_product_owner(
         $validator,
-        $propertySetter,
+        $productUpdater,
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
@@ -71,11 +72,25 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+
+        $values = [
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ];
+        $normalizedValues = addslashes(json_encode($values));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
@@ -83,16 +98,16 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_sets_values_if_user_is_a_product_editor(
         $validator,
-        $propertySetter,
+        $productUpdater,
         $userManager,
         $authorizationChecker,
         AttributeInterface $attribute,
@@ -112,11 +127,25 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+
+        $values = [
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ];
+        $normalizedValues = addslashes(json_encode($values));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
@@ -124,15 +153,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_does_not_set_values_if_user_is_not_allowed_to_edit_the_product(
-        $propertySetter,
+        $productUpdater,
         $userManager,
         $authorizationChecker,
         ProductInterface $product,
@@ -151,16 +180,29 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $values = [
+            'categories' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => ['office', 'bedroom']
+                ]
+            ]
+        ];
+        $normalizedValues = addslashes(json_encode($values));
+
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'actions' => [
+                        'normalized_values' => $normalizedValues
+                    ]
                 ]
             )
         );
 
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldNotBeCalled();
+        $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product);
     }
