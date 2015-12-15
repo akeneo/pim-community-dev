@@ -30,10 +30,10 @@ module.exports = function (grunt) {
         },
         recess: {
             all: [
-                'src/**/*.css',
-                'src/**/*.less',
-                '!src/**/lib/**/*.css',
-                '!src/**/lib/**/*.less'
+                'web/bundles/pim*/**/*.css',
+                'web/bundles/pim*/**/*.less',
+                '!web/bundles/**/lib/**/*.css',
+                '!web/bundles/**/lib/**/*.less'
             ],
             options: {
                 strictPropertyOrder: false,
