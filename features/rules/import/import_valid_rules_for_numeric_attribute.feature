@@ -121,7 +121,7 @@ Feature: Import rules
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_date\" as it does not appear to be valid."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "1970-01-01"
+    Then I should see the text "01/01/1970"
 
   Scenario: Import a copy value rule with valid values for attribute of type date in actions
     Given the following yaml file to import:

@@ -33,7 +33,6 @@ Feature: Publish many products at once
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     Then I should see "You're not the owner of the product, you can't publish it"
-    And I press the "Send" button in the popin
     And I should see "skipped products 1"
     When I am on the published index page
     Then the grid should contain 2 elements
@@ -48,5 +47,4 @@ Feature: Publish many products at once
     Then I should see "You're not the owner of the product, you can't publish it"
     And I should see "skipped products 3"
     When I am on the published index page
-    And I press the "Send" button in the popin
     Then the grid should contain 0 elements
