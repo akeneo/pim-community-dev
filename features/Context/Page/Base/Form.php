@@ -96,15 +96,16 @@ class Form extends Base
             return $this->getElement('Panel selector');
         }, 'Can not find the Panel selector');
 
-        if (!$elt->find('css', sprintf('button.active:contains("%s")', $panel))) {
-            $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
+        $panel = strtolower($panel);
+        if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
+            $elt->find('css', sprintf('button[data-panel$="%s"]', $panel))->click();
         }
     }
 
     /**
      * Close the specified panel
      *
-     * @param string $panel
+     * @throws \Context\Spin\TimeoutException
      */
     public function closePanel()
     {
