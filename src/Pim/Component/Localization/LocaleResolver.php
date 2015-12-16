@@ -3,7 +3,7 @@
 namespace Pim\Component\Localization;
 
 use Pim\Component\Localization\Factory\DateFactory;
-use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
+use Pim\Component\Localization\Factory\NumberFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -21,28 +21,28 @@ class LocaleResolver
     /** @var DateFactory */
     protected $dateFactory;
 
-    /** @var FormatProviderInterface */
-    protected $numberFormatProvider;
+    /** @var NumberFactory */
+    protected $numberFactory;
 
     /** @var string */
     protected $defaultLocale;
 
     /**
-     * @param RequestStack            $requestStack
-     * @param DateFactory             $dateFactory
-     * @param FormatProviderInterface $numberFormatProvider
-     * @param string                  $defaultLocale
+     * @param RequestStack  $requestStack
+     * @param DateFactory   $dateFactory
+     * @param NumberFactory $numberFactory
+     * @param string        $defaultLocale
      */
     public function __construct(
         RequestStack $requestStack,
         DateFactory $dateFactory,
-        FormatProviderInterface $numberFormatProvider,
+        NumberFactory $numberFactory,
         $defaultLocale
     ) {
-        $this->requestStack         = $requestStack;
-        $this->dateFactory          = $dateFactory;
-        $this->numberFormatProvider = $numberFormatProvider;
-        $this->defaultLocale        = $defaultLocale;
+        $this->requestStack  = $requestStack;
+        $this->dateFactory   = $dateFactory;
+        $this->numberFactory = $numberFactory;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -50,11 +50,13 @@ class LocaleResolver
      */
     public function getFormats()
     {
-        $locale = $this->getCurrentLocale();
+        $options = ['locale' => $this->getCurrentLocale()];
+        $decimalSeparator = $this->numberFactory->create($options)
+            ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
         return [
-            'decimal_separator' => $this->numberFormatProvider->getFormat($locale)['decimal_separator'],
-            'date_format'       => $this->dateFactory->create(['locale' => $locale])->getPattern(),
+            'decimal_separator' => $decimalSeparator,
+            'date_format'       => $this->dateFactory->create($options)->getPattern(),
         ];
     }
 
