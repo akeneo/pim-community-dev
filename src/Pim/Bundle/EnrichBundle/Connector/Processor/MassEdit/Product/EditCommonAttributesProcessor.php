@@ -128,12 +128,17 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function updateProduct(ProductInterface $product, array $actions)
     {
         $normalizedValues = json_decode($actions['normalized_values'], true);
+        $currentLocale = $actions['current_locale'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if ($product->isAttributeEditable($attribute)) {
+                $values = array_filter($values, function ($value) use ($currentLocale) {
+                    return $currentLocale === $value['locale'] || null === $value['locale'];
+                });
+
                 $filteredValues[$attributeCode] = $values;
             }
         }
