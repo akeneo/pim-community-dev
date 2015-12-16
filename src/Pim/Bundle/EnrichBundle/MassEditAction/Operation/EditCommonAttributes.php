@@ -76,6 +76,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $tmpStorageDir;
 
+    /** @var string */
+    protected $currentLocale;
+
     /**
      * @param ProductBuilderInterface      $productBuilder
      * @param UserContext                  $userContext
@@ -107,6 +110,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->catalogContext      = $catalogContext;
         $this->displayedAttributes = new ArrayCollection();
         $this->values              = '';
+        $this->currentLocale       = '';
         $this->normalizer          = $normalizer;
         $this->attributeRepository = $attributeRepository;
         $this->fileStorer          = $fileStorer;
@@ -284,7 +288,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getActions()
     {
         $actions = [
-            'normalized_values' => $this->getValues()
+            'normalized_values' => $this->getValues(),
+            'current_locale'    => $this->getCurrentLocale()
         ];
 
         return $actions;
@@ -353,5 +358,21 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentLocale()
+    {
+        return $this->currentLocale;
+    }
+
+    /**
+     * @param string $currentLocale
+     */
+    public function setCurrentLocale($currentLocale)
+    {
+        $this->currentLocale = $currentLocale;
     }
 }
