@@ -41,7 +41,7 @@ class ProductEditForm extends Form
     {
         $this->spin(function () {
             return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
 
         $list = $this->getElement('Available attributes list');
         if (!$list->isVisible()) {
@@ -50,7 +50,7 @@ class ProductEditForm extends Form
 
         $options = $this->spin(function () use ($list) {
             return $list->findAll('css', 'li');
-        }, 20, 'No attributes found in available attributes list');
+        }, 'No attributes found in available attributes list');
 
         $groupedAttributes = [];
         $currentOptgroup   = '';
@@ -136,7 +136,7 @@ class ProductEditForm extends Form
         try {
             $labelNode = $this->spin(function () use ($label) {
                 return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-            }, 10);
+            });
         } catch (\Exception $e) {
             throw new ElementNotFoundException($this->getSession());
         }
@@ -175,7 +175,7 @@ class ProductEditForm extends Form
 
         $field = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
-        }, 10);
+        });
 
         return $field;
     }
@@ -230,7 +230,7 @@ class ProductEditForm extends Form
 
         $link = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', 'a.select2-choice');
-        }, 20, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
+        }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
 
         $link->click();
@@ -272,7 +272,7 @@ class ProductEditForm extends Form
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                }, 5);
+                });
             }
 
             if (!$item) {
@@ -322,7 +322,7 @@ class ProductEditForm extends Form
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
                 );
-            }, 5);
+            });
 
             // Select the value in the displayed dropdown
             if (null !== $item) {
@@ -500,7 +500,6 @@ class ProductEditForm extends Form
     {
         $dropdown = $this->getElement(
             $copy ? 'Copy locales dropdown' : 'Locales dropdown',
-            20,
             'Could not find locale switcher'
         );
 
@@ -511,7 +510,7 @@ class ProductEditForm extends Form
 
         $option = $this->spin(function () use ($dropdown, $localeCode) {
             return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
-        }, 20, sprintf('Could not find locale "%s" in switcher', $localeCode));
+        }, sprintf('Could not find locale "%s" in switcher', $localeCode));
         $option->click();
     }
 
@@ -525,7 +524,6 @@ class ProductEditForm extends Form
     {
         $dropdown = $this->getElement(
             $copy ? 'Copy channel dropdown' : 'Channel dropdown',
-            20,
             'Could not find scope switcher'
         );
 
@@ -536,7 +534,7 @@ class ProductEditForm extends Form
 
         $option = $this->spin(function () use ($dropdown, $scopeCode) {
             return $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
-        }, 20, sprintf('Could not find scope "%s" in switcher', $scopeCode));
+        }, sprintf('Could not find scope "%s" in switcher', $scopeCode));
         $option->click();
     }
 

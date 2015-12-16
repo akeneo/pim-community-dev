@@ -2,9 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
@@ -110,8 +112,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_sets_values_to_attributes(
         $validator,
-        $productUpdater,
+        $propertySetter,
         $localizerRegistry,
+        $productUpdater,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
@@ -140,6 +143,17 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
+                    'filters'           => [],
+                    'actions'           => [
+                        [
+                            'field' => 'categories',
+                            'value' => [
+                                '2,5'
+                            ],
+                            'options' => []
+                        ]
+                    ],
+                    'locale' => 'fr_FR'
                     'filters' => [],
                     'actions' => [
                         'normalized_values' => $normalizedValues
@@ -151,8 +165,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
+        $attribute->getAttributeType()->willReturn('multi_select');
+        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
+
+        $localizerRegistry->getLocalizer('multi_select')->willReturn($localizer);
+        $localizer->delocalize(['2,5'], ['locale' => 'fr_FR'])->willReturn('2.5');
+
+        $propertySetter->setData($product, 'categories', '2.5', [])->shouldBeCalled();
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);

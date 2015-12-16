@@ -42,11 +42,7 @@ services:
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
-            - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_catalog.manager.product_mass_action'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_internal_api_serializer'

@@ -82,9 +82,9 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots and pump
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
-    And I expand the "Description" attribute
-    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo"
-    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar"
+    And I change the Description to "Bar"
+    And I switch the scope to "mobile"
+    And I change the "Description" to "Foo"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english mobile Description of "boots" should be "Foo"

@@ -2,7 +2,9 @@
 
 namespace Context\Page\Batch;
 
+use Behat\Mink\Session;
 use Context\Page\Base\ProductEditForm;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
 
 /**
  * Edit common attributes page
@@ -16,7 +18,9 @@ class EditCommonAttributes extends ProductEditForm
     protected $currentStep;
 
     /**
-     * {@inheritdoc}
+     * @param Session              $session
+     * @param PageFactoryInterface $pageFactory
+     * @param array                $parameters
      */
     public function __construct($session, $pageFactory, $parameters = [])
     {
@@ -25,11 +29,12 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
-                'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
+                'Available attributes button'     => ['css' => 'button.pimmultiselect'],
+                'Available attributes add button' => ['css' => '.pimmultiselect .ui-multiselect-footer a'],
                 'Available attributes form'       => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
                 ],
+                'Locales dropdown' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_locale'],
             ]
         );
     }
