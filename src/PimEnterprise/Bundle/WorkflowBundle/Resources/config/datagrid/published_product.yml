@@ -33,9 +33,11 @@ datagrid:
                 selector:      product_completeness
             created:
                 label:         Created At
+                type:          product_value_date
                 frontend_type: date
             updated:
                 label:         Updated At
+                type:          product_value_date
                 frontend_type: date
             groups:
                 label:         Groups

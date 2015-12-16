@@ -20,7 +20,7 @@ datagrid:
                 frontend_type: html
             createdAt:
                 label: pimee_workflow.product_draft.created
-                type: field
+                type: product_value_date
                 frontend_type: datetime
             status:
                 label: pimee_workflow.product_draft.status.label
