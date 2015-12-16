@@ -69,6 +69,8 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     edit_common_attributes:
         executeJobProfile: [IT support, Manager, Redactor]
+    edit_common_attributes_with_permission:
+        executeJobProfile: [IT support, Manager, Redactor]
     add_to_variant_group:
         executeJobProfile: [IT support, Manager, Redactor]
     set_attribute_requirements:

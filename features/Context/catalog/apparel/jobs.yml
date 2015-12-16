@@ -51,3 +51,8 @@ jobs:
             filePath:      /tmp/asset_channel_configurations.yml
             uploadAllowed: true
             multiple:      false
+    edit_common_attributes_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes_with_permission
+        label:     Mass edit common product attributes with permission check
+        type:      mass_edit
