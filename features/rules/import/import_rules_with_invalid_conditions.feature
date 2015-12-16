@@ -589,7 +589,7 @@ Feature: Import rules
     And I should see the text "actions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"string\" given (for setter date)."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
-    Then I should see "01/01/1970"
+    Then I should see the text "01/01/1970"
 
   Scenario: Skip rules with unsupported values for attribute of type media in conditions and actions
     Given the following product rule definitions:
