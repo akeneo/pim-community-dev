@@ -8,6 +8,6 @@ class EchoWriterSpec extends ObjectBehavior
 {
     function it_writes()
     {
-        $this->write(['item1', 'item2', 'item3'])->shouldReturn(null);
+        $this->write([])->shouldReturn(null);
     }
 }

@@ -263,13 +263,13 @@ class ItemStep extends AbstractStep
     /**
      * Handle step execution warning
      *
-     * @param StepExecution                   $stepExecution
-     * @param AbstractConfigurableStepElement $element
-     * @param InvalidItemException            $e
+     * @param StepExecution        $stepExecution
+     * @param mixed                $element
+     * @param InvalidItemException $e
      */
     protected function handleStepExecutionWarning(
         StepExecution $stepExecution,
-        AbstractConfigurableStepElement $element,
+        $element,
         InvalidItemException $e
     ) {
         if ($element instanceof AbstractConfigurableStepElement) {
