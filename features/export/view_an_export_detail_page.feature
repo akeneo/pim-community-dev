@@ -1,3 +1,4 @@
+@javascript
 Feature: View an export detail page
   In order to know if an export is ready to be executed
   As a product manager
@@ -7,7 +8,6 @@ Feature: View an export detail page
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully display the export information
     Given I am on the exports page
     When I click on the "footwear_product_export" row
