@@ -7,6 +7,8 @@
 
 ## BC Breaks
 - Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
+- Updated event on which `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` subscribing, PRE_REMOVE instead of POST_REMOVE.
+- Updated public method preRemove from `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` to addRemoveVersion.
 
 ## Bug fixes
 - PIM-5295: Fix association product grid category filter
