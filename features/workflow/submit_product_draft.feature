@@ -130,10 +130,10 @@ Feature: Submit a modification on a product draft
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully accept a metric attribute modification on a product draft
     When I visit the "Sizes" group
-    And I change the Length to "40 CENTIMETER"
+    And I change the Length to "40 Centimeter"
     And I save the product
     Then the metric "length" of product my-jacket should be "60"
-    But the product Length should be "40 CENTIMETER"
+    But the product Length should be "40 Centimeter"
     And I should see that Length is a modified value
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
