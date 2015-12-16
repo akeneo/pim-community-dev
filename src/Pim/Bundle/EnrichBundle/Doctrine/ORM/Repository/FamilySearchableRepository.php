@@ -39,11 +39,16 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
     public function findBySearch($search = null, array $options = [])
     {
         $qb = $this->entityManager->createQueryBuilder()->select('f')->from($this->entityName, 'f');
-        $qb->join('f.translations', 'ft');
+        $qb->leftJoin('f.translations', 'ft');
 
-        if (null !== $search) {
+        if (null !== $search && '' !== $search) {
             $qb->where('f.code like :search')->setParameter('search', "%$search%");
             $qb->orWhere('ft.label like :search')->setParameter('search', "%$search%");
+        }
+
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+            $qb->andWhere('f.code in (:codes)');
+            $qb->setParameter('codes', $options['identifiers']);
         }
 
         if (isset($options['limit'])) {

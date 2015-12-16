@@ -645,7 +645,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
 
-        $datePattern = '#^(more than|less than|between|not between) (\d{2}/\d{2}/\d{4})( and )?(\d{2}/\d{2}/\d{4})?$#';
+        $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator    = false;
 
         $matches = [];
@@ -1017,6 +1017,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
+     * @param int    $time
      * @param string $condition
      */
     protected function wait($condition = null)

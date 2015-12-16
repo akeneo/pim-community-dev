@@ -27,8 +27,8 @@ Feature: Filter products per family
     And the grid should contain 7 elements
     Then I should see the filter "Family"
     And I should be able to use the following filters:
-      | filter | value               | result                               |
-      | Family | [computers]         | PC and Laptop                        |
-      | Family | [hi_fi],[computers] | Amplifier, CD changer, PC and Laptop |
-      | Family | [washing_machines]  | Whirlpool and Electrolux             |
-      | Family | is empty            | Mug                                  |
+      | filter | value            | result                               |
+      | Family | computers        | PC and Laptop                        |
+      | Family | hi_fi,computers  | Amplifier, CD changer, PC and Laptop |
+      | Family | washing_machines | Whirlpool and Electrolux             |
+      | Family | is empty         | Mug                                  |
