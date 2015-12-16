@@ -1,0 +1,1400 @@
+ Then /^I should see:$/
+    # Context\FeatureContext::iShouldSeeText()
+
+ Then /^I should not see:$/
+    # Context\FeatureContext::iShouldNotSeeText()
+
+ When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
+    - Fills in form field with specified id|name|label|value.
+    # Context\FeatureContext::fillFieldOnCurrentPage()
+
+ When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
+    - Fills in form field with specified id|name|label|value.
+    # Context\FeatureContext::fillFieldOnCurrentPage()
+
+ When /^(?:|I )follow "(?P<link>(?:[^"]|\\")*)"$/
+    - Clicks link with specified id|title|alt|text.
+    # Context\FeatureContext::clickLink()
+
+ Then /^(?:|I )should see (?P<num>\d+) "(?P<element>[^"]*)" elements?$/
+    - Checks, that (?P<num>\d+) CSS elements exist on the page
+    # Context\FeatureContext::assertNumElements()
+
+Given /^(?:|I )am on (?:|the )homepage$/
+    - Opens homepage.
+    # Context\FeatureContext::iAmOnHomepage()
+
+ When /^(?:|I )go to (?:|the )homepage$/
+    - Opens homepage.
+    # Context\FeatureContext::iAmOnHomepage()
+
+Given /^(?:|I )am on "(?P<page>[^"]+)"$/
+    - Opens specified page.
+    # Context\FeatureContext::visit()
+
+ When /^(?:|I )go to "(?P<page>[^"]+)"$/
+    - Opens specified page.
+    # Context\FeatureContext::visit()
+
+ When /^(?:|I )reload the page$/
+    - Reloads current page.
+    # Context\FeatureContext::reload()
+
+ When /^(?:|I )move backward one page$/
+    - Moves backward one page in history.
+    # Context\FeatureContext::back()
+
+ When /^(?:|I )move forward one page$/
+    - Moves forward one page in history
+    # Context\FeatureContext::forward()
+
+ When /^(?:|I )press "(?P<button>(?:[^"]|\\")*)"$/
+    - Presses button with specified id|name|title|alt|value.
+    # Context\FeatureContext::pressButton()
+
+ When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)"$/
+    - Fills in form field with specified id|name|label|value.
+    # Context\FeatureContext::fillField()
+
+ When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with:$/
+    - Fills in form field with specified id|name|label|value.
+    # Context\FeatureContext::fillField()
+
+ When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)"$/
+    - Fills in form field with specified id|name|label|value.
+    # Context\FeatureContext::fillField()
+
+ When /^(?:|I )fill in the following:$/
+    - Fills in form fields with provided table.
+    # Context\FeatureContext::fillFields()
+
+ When /^(?:|I )select "(?P<option>(?:[^"]|\\")*)" from "(?P<select>(?:[^"]|\\")*)"$/
+    - Selects option in select field with specified id|name|label|value.
+    # Context\FeatureContext::selectOption()
+
+ When /^(?:|I )additionally select "(?P<option>(?:[^"]|\\")*)" from "(?P<select>(?:[^"]|\\")*)"$/
+    - Selects additional option in select field with specified id|name|label|value.
+    # Context\FeatureContext::additionallySelectOption()
+
+ When /^(?:|I )check "(?P<option>(?:[^"]|\\")*)"$/
+    - Checks checkbox with specified id|name|label|value.
+    # Context\FeatureContext::checkOption()
+
+ When /^(?:|I )uncheck "(?P<option>(?:[^"]|\\")*)"$/
+    - Unchecks checkbox with specified id|name|label|value.
+    # Context\FeatureContext::uncheckOption()
+
+ When /^(?:|I )attach the file "(?P[^"]*)" to "(?P<field>(?:[^"]|\\")*)"$/
+    - Attaches file to field with specified id|name|label|value.
+    # Context\FeatureContext::attachFileToField()
+
+ Then /^(?:|I )should be on "(?P<page>[^"]+)"$/
+    - Checks, that current page PATH is equal to specified.
+    # Context\FeatureContext::assertPageAddress()
+
+ Then /^(?:|I )should be on (?:|the )homepage$/
+    - Checks, that current page is the homepage.
+    # Context\FeatureContext::assertHomepage()
+
+ Then /^the (?i)url(?-i) should match (?P<pattern>"(?:[^"]|\\")*")$/
+    - Checks, that current page PATH matches regular expression.
+    # Context\FeatureContext::assertUrlRegExp()
+
+ Then /^the response status code should be (?P<code>\d+)$/
+    - Checks, that current page response status is equal to specified.
+    # Context\FeatureContext::assertResponseStatus()
+
+ Then /^the response status code should not be (?P<code>\d+)$/
+    - Checks, that current page response status is not equal to specified.
+    # Context\FeatureContext::assertResponseStatusIsNot()
+
+ Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that page contains specified text.
+    # Context\FeatureContext::assertPageContainsText()
+
+ Then /^(?:|I )should not see "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that page doesn't contain specified text.
+    # Context\FeatureContext::assertPageNotContainsText()
+
+ Then /^(?:|I )should see text matching (?P<pattern>"(?:[^"]|\\")*")$/
+    - Checks, that page contains text matching specified pattern.
+    # Context\FeatureContext::assertPageMatchesText()
+
+ Then /^(?:|I )should not see text matching (?P<pattern>"(?:[^"]|\\")*")$/
+    - Checks, that page doesn't contain text matching specified pattern.
+    # Context\FeatureContext::assertPageNotMatchesText()
+
+ Then /^the response should contain "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that HTML response contains specified string.
+    # Context\FeatureContext::assertResponseContains()
+
+ Then /^the response should not contain "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that HTML response doesn't contain specified string.
+    # Context\FeatureContext::assertResponseNotContains()
+
+ Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" in the "(?P<element>[^"]*)" element$/
+    - Checks, that element with specified CSS contains specified text.
+    # Context\FeatureContext::assertElementContainsText()
+
+ Then /^(?:|I )should not see "(?P<text>(?:[^"]|\\")*)" in the "(?P<element>[^"]*)" element$/
+    - Checks, that element with specified CSS doesn't contain specified text.
+    # Context\FeatureContext::assertElementNotContainsText()
+
+ Then /^the "(?P<element>[^"]*)" element should contain "(?P<value>(?:[^"]|\\")*)"$/
+    - Checks, that element with specified CSS contains specified HTML.
+    # Context\FeatureContext::assertElementContains()
+
+ Then /^the "(?P<element>[^"]*)" element should not contain "(?P<value>(?:[^"]|\\")*)"$/
+    - Checks, that element with specified CSS doesn't contain specified HTML.
+    # Context\FeatureContext::assertElementNotContains()
+
+ Then /^(?:|I )should see an? "(?P<element>[^"]*)" element$/
+    - Checks, that element with specified CSS exists on page.
+    # Context\FeatureContext::assertElementOnPage()
+
+ Then /^(?:|I )should not see an? "(?P<element>[^"]*)" element$/
+    - Checks, that element with specified CSS doesn't exist on page.
+    # Context\FeatureContext::assertElementNotOnPage()
+
+ Then /^the "(?P<field>(?:[^"]|\\")*)" field should contain "(?P<value>(?:[^"]|\\")*)"$/
+    - Checks, that form field with specified id|name|label|value has specified value.
+    # Context\FeatureContext::assertFieldContains()
+
+ Then /^the "(?P<field>(?:[^"]|\\")*)" field should not contain "(?P<value>(?:[^"]|\\")*)"$/
+    - Checks, that form field with specified id|name|label|value doesn't have specified value.
+    # Context\FeatureContext::assertFieldNotContains()
+
+ Then /^the "(?P<checkbox>(?:[^"]|\\")*)" checkbox should be checked$/
+    - Checks, that checkbox with specified in|name|label|value is checked.
+    # Context\FeatureContext::assertCheckboxChecked()
+
+ Then /^the checkbox "(?P<checkbox>(?:[^"]|\\")*)" (?:is|should be) checked$/
+    - Checks, that checkbox with specified in|name|label|value is checked.
+    # Context\FeatureContext::assertCheckboxChecked()
+
+ Then /^the "(?P<checkbox>(?:[^"]|\\")*)" checkbox should not be checked$/
+    - Checks, that checkbox with specified in|name|label|value is unchecked.
+    # Context\FeatureContext::assertCheckboxNotChecked()
+
+ Then /^the checkbox "(?P<checkbox>(?:[^"]|\\")*)" should (?:be unchecked|not be checked)$/
+    - Checks, that checkbox with specified in|name|label|value is unchecked.
+    # Context\FeatureContext::assertCheckboxNotChecked()
+
+ Then /^the checkbox "(?P<checkbox>(?:[^"]|\\")*)" is (?:unchecked|not checked)$/
+    - Checks, that checkbox with specified in|name|label|value is unchecked.
+    # Context\FeatureContext::assertCheckboxNotChecked()
+
+ Then /^print current URL$/
+    - Prints current URL to console.
+    # Context\FeatureContext::printCurrentUrl()
+
+ Then /^print last response$/
+    - Prints last response to console.
+    # Context\FeatureContext::printLastResponse()
+
+ Then /^show last response$/
+    - Opens last response content in browser.
+    # Context\FeatureContext::showLastResponse()
+
+Given /^a "([^"]*)" product$/
+    # Context\FixturesContext::createProduct()
+
+Given /^the following products?:$/
+    # Context\FixturesContext::theFollowingProduct()
+
+Given /^the product?:$/
+    # Context\FixturesContext::theProduct()
+
+Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
+    # Context\FixturesContext::anEnabledOrDisabledProduct()
+
+Given /^the following famil(?:y|ies):$/
+    # Context\FixturesContext::theFollowingFamilies()
+
+Given /^there is no (.*)$/
+    # Context\FixturesContext::thereIsNoEntity()
+
+Given /^the following attribute groups?:$/
+    # Context\FixturesContext::theFollowingAttributeGroups()
+
+Given /^the following attributes?:$/
+    # Context\FixturesContext::theFollowingAttributes()
+
+Given /^the following attribute label translations:$/
+    # Context\FixturesContext::theFollowingAttributeLabelTranslations()
+
+Given /^the following product values?:$/
+    # Context\FixturesContext::theFollowingProductValues()
+
+Given /^the following product comments:$/
+    # Context\FixturesContext::theFollowingProductComments()
+
+Given /^the "([^"]*)" product has the "([^"]*)" attributes?$/
+    # Context\FixturesContext::theProductHasTheAttributes()
+
+Given /^the attribute "([^"]*)" has been chosen as the family "([^"]*)" label$/
+    # Context\FixturesContext::theAttributeHasBeenChosenAsTheFamilyLabel()
+
+Given /^the following categor(?:y|ies):$/
+    # Context\FixturesContext::theFollowingCategories()
+
+Given /^the following datagrid views:$/
+    # Context\FixturesContext::theFollowingDatagridViews()
+
+Given /^(\d+) (filterable )?(simple|multi) select attributes with (\d+) options per attribute$/
+    # Context\FixturesContext::createSelectAttributesWithOptions()
+
+ Then /^there should be the following attributes:$/
+    # Context\FixturesContext::thereShouldBeTheFollowingAttributes()
+
+ Then /^there should be the following options:$/
+    # Context\FixturesContext::thereShouldBeTheFollowingOptions()
+
+ Then /^there should be the following categories:$/
+    # Context\FixturesContext::thereShouldBeTheFollowingCategories()
+
+ Then /^there should be the following association types:$/
+    # Context\FixturesContext::thereShouldBeTheFollowingAssociationTypes()
+
+ Then /^there should be the following groups:$/
+    # Context\FixturesContext::thereShouldBeTheFollowingGroups()
+
+Given /^the following channels?:$/
+    # Context\FixturesContext::theFollowingChannels()
+
+Given /^I add the "([^"]*)" locale to the "([^"]*)" channel$/
+    # Context\FixturesContext::iAddTheLocaleToTheChannel()
+
+Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
+    # Context\FixturesContext::iSetTheLocaleToTheChannel()
+
+Given /^the following jobs?:$/
+    # Context\FixturesContext::theFollowingJobs()
+
+Given /^the following job "([^"]*)" configuration:$/
+    # Context\FixturesContext::theFollowingJobConfiguration()
+
+Given /^the following product groups?:$/
+    # Context\FixturesContext::theFollowingProductGroups()
+
+Given /^the following association types?:$/
+    # Context\FixturesContext::theFollowingAssociationTypes()
+
+Given /^the following group types?:$/
+    # Context\FixturesContext::theFollowingGroupTypes()
+
+Given /^the following "([^"]*)" attribute options?: (.*)$/
+    # Context\FixturesContext::theFollowingAttributeOptions()
+
+Given /^the following "([^"]*)" attribute reference data: (.*)$/
+    # Context\FixturesContext::theFollowingAttributeReferenceData()
+
+Given /^the following reference data?:$/
+    # Context\FixturesContext::theFollowingReferenceData()
+
+Given /^attribute (\w+) of "([^"]*)" should be "([^"]*)"$/
+    # Context\FixturesContext::theOfShouldBe()
+
+Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+    # Context\FixturesContext::theLocalizableOfShouldBe()
+
+Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+    - We use the tag |NL| for \n in gherkin
+    # Context\FixturesContext::theScopableOfShouldBe()
+
+Given /^the prices "([^"]*)" of products? (.*) should be:$/
+    # Context\FixturesContext::thePricesOfProductsShouldBe()
+
+Given /^the option "([^"]*)" of products? (.*) should be "([^"]*)"$/
+    # Context\FixturesContext::theOptionOfProductsShouldBe()
+
+Given /^the options "([^"]*)" of products? (.*) should be:$/
+    # Context\FixturesContext::theOptionsOfProductsShouldBe()
+
+Given /^the file "([^"]*)" of products? (.*) should be "([^"]*)"$/
+    # Context\FixturesContext::theFileOfShouldBe()
+
+Given /^the metric "([^"]*)" of products? (.*) should be "([^"]*)"$/
+    # Context\FixturesContext::theMetricOfProductsShouldBe()
+
+Given /^the following ([^"]*) file to import:$/
+    # Context\FixturesContext::theFollowingFileToImport()
+
+Given /^the following random files:$/
+    # Context\FixturesContext::theFollowingRandomFiles()
+
+Given /^the following CSV configuration to import:$/
+    # Context\FixturesContext::theFollowingCSVToImport()
+
+Given /^import directory of "([^"]*)" contains the following media:$/
+    # Context\FixturesContext::importDirectoryOfContainsTheFollowingMedia()
+
+ Then /^there should be (\d+) products?$/
+    # Context\FixturesContext::thereShouldBeProducts()
+
+ Then /^there should be (\d+) attributes?$/
+    # Context\FixturesContext::thereShouldBeAttributes()
+
+ Then /^there should be (\d+) categor(?:y|ies)$/
+    # Context\FixturesContext::thereShouldBeCategories()
+
+Given /^the product "([^"]*)" should have the following values?:$/
+    # Context\FixturesContext::theProductShouldHaveTheFollowingValues()
+
+Given /^(?:the )?family of "([^"]*)" should be "([^"]*)"$/
+    # Context\FixturesContext::theFamilyOfShouldBe()
+
+Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+    # Context\FixturesContext::theCategoriesOfShouldBe()
+
+Given /^the following (channel "(?:[^"]*)") conversion options:$/
+    # Context\FixturesContext::theFollowingChannelConversionOptions()
+
+ Then /^"([^"]*)" group should contain "([^"]*)"$/
+    # Context\FixturesContext::groupShouldContain()
+
+ Then /^there should be a "([^"]+)" user group$/
+    # Context\FixturesContext::getUserGroup()
+
+ Then /^there should be a "([^"]+)" user role$/
+    # Context\FixturesContext::getUserRole()
+
+ Then /^there should be a "([^"]*)" user$/
+    # Context\FixturesContext::getUser()
+
+ Then /^the user "([^"]+)" should be in the "([^"]+)" (group)$/
+    # Context\FixturesContext::checkUserAssociationExists()
+
+ Then /^the user "([^"]+)" should have the "([^"]+)" (role)$/
+    # Context\FixturesContext::checkUserAssociationExists()
+
+ Then /^the user "([^"]+)" should be in (\d+) (group)s?$/
+    # Context\FixturesContext::checkUserAssociationsCount()
+
+ Then /^the user "([^"]+)" should(?: still)? have (\d+) (role)s?$/
+    # Context\FixturesContext::checkUserAssociationsCount()
+
+Given /^I\'ve removed the "([^"]*)" attribute$/
+    # Context\FixturesContext::iVeRemovedTheAttribute()
+
+Given /^I set product "([^"]*)" family to "([^"]*)"$/
+    # Context\FixturesContext::iSetProductFamilyTo()
+
+Given /^I delete "([^"]+)" media from filesystem$/
+    - Unlink all product media
+    # Context\FixturesContext::iDeleteProductMediaFromFilesystem()
+
+ Then /^attribute "([^"]*)" should be required in family "([^"]*)" for channel "([^"]*)"$/
+    # Context\FixturesContext::attributeShouldBeRequiredInFamilyForChannel()
+
+Given /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+    # Context\FixturesContext::attributeShouldBeOptionalInFamilyForChannel()
+
+Given /^the history of the product "([^"]*)" has been built$/
+    # Context\FixturesContext::theHistoryOfTheProductHasBeenBuilt()
+
+Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+    # Context\FixturesContext::theProductUpdatedDateIs()
+
+ Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+    - Asserts that we have less than a minute interval between the product updated date and the argument
+    # Context\FixturesContext::theProductUpdatedDateShouldBeCloseTo()
+
+ Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+    - Asserts that we have more than a minute interval between the product updated date and the argument
+    # Context\FixturesContext::theProductUpdatedDateShouldNotBeCloseTo()
+
+Given /^the following associations for the (product "([^"]+)"):$/
+    # Context\FixturesContext::theFollowingAssociationsForTheProduct()
+
+Given /^(?:a|an|the) "([^"]*)" catalog configuration$/
+    # Context\CatalogConfigurationContext::aCatalogConfiguration()
+
+Given /^I create a new ([^"]*)$/
+    # Context\WebUser::iCreateANew()
+
+Given /^I create a(?:n)? "([^"]*)" attribute$/
+    # Context\WebUser::iCreateAnAttribute()
+
+Given /^I choose the "([^"]*)" attribute type$/
+    # Context\WebUser::iChooseTheAttributeType()
+
+ Then /^I should be able visit the following pages without errors$/
+    # Context\WebUser::iVisitTheFollowingPages()
+
+Given /^I select the "([^"]*)" tree$/
+    # Context\WebUser::iSelectTheTree()
+
+Given /^I expand the "([^"]*)" category$/
+    # Context\WebUser::iExpandTheCategory()
+
+Given /^I expand the "([^"]*)" attribute$/
+    # Context\WebUser::iExpandTheAttribute()
+
+Given /^I drag the "([^"]*)" category to the "([^"]*)" category$/
+    # Context\WebUser::iDragTheCategoryToTheCategory()
+
+ Then /^I should (not )?see the "([^"]*)" category under the "([^"]*)" category$/
+    # Context\WebUser::iShouldSeeTheCategoryUnderTheCategory()
+
+Given /^I visit the "([^"]*)" tab$/
+    # Context\WebUser::iVisitTheTab()
+
+ Then /^I should (not )?see the "([^"]*)" tab$/
+    # Context\WebUser::iShouldSeeTheTab()
+
+Given /^I open the history$/
+    # Context\WebUser::iOpenTheHistory()
+
+ Then /^I should see (\d+) versions in the history$/
+    # Context\WebUser::iShouldSeeVersionsInTheHistory()
+
+Given /^I open the "([^"]*)" panel$/
+    # Context\WebUser::iOpenThePanel()
+
+Given /^I close the "([^"]*)" panel$/
+    # Context\WebUser::iCloseThePanel()
+
+Given /^I visit the "([^"]*)" group$/
+    # Context\WebUser::iVisitTheGroup()
+
+Given /^I click on the "([^"]*)" ACL group$/
+    # Context\WebUser::iClickOnTheACLGroup()
+
+Given /^I click on the "([^"]*)" ACL role/
+    # Context\WebUser::iClickOnTheACLRole()
+
+Given /^I select the "([^"]*)" association$/
+    # Context\WebUser::iSelectTheAssociation()
+
+Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+    # Context\WebUser::thereShouldBeErrorsInTheTab()
+
+ When /^I (?:de)?activate the (.*) currenc(?:y|ies)$/
+    # Context\WebUser::iToggleTheCurrencies()
+
+ When /^the locale "([^"]*)" should be selected$/
+    # Context\WebUser::theLocaleShouldBeSelected()
+
+ When /^I switch the locale to "([^"]*)"$/
+    # Context\WebUser::iSwitchTheLocaleTo()
+
+ When /^I switch the scope to "([^"]*)"$/
+    # Context\WebUser::iSwitchTheScopeTo()
+
+ Then /^the locale switcher should contain the following items:$/
+    # Context\WebUser::theLocaleSwitcherShouldContainTheFollowingItems()
+
+ Then /^the copy locale switcher should contain the following items:$/
+    # Context\WebUser::theCopyLocaleSwitcherShouldContainTheFollowingItems()
+
+Given /^I confirm the ([^"]*)$/
+    # Context\WebUser::iConfirmThe()
+
+Given /^I cancel the ([^"]*)$/
+    # Context\WebUser::iCancelThe()
+
+Given /^I save the (.*)$/
+    # Context\WebUser::iSave()
+
+Given /^I save and close$/
+    # Context\WebUser::iSaveAndClose()
+
+Given /^I change the attribute "([^"]*)" position to (\d+)$/
+    # Context\WebUser::iChangeTheAttributePositionTo()
+
+ Then /^the attribute "([^"]*)" should be in position (\d+)$/
+    # Context\WebUser::theAttributeShouldBeInPosition()
+
+ Then /^I should see the "([^"]*)" section$/
+    # Context\WebUser::iShouldSeeTheSection()
+
+Given /^the Options section should contain ([^"]*) options?$/
+    # Context\WebUser::theOptionsSectionShouldContainOption()
+
+ Then /^I remove the "([^"]*)" option$/
+    # Context\WebUser::iRemoveTheOption()
+
+Given /^attributes? in group "([^"]*)" should be (.*)$/
+    # Context\WebUser::attributesInGroupShouldBe()
+
+ Then /^the title of the product should be "([^"]*)"$/
+    # Context\WebUser::theTitleOfTheProductShouldBe()
+
+ Then /^the product ([^"]*) for locale "([^"]*)" should be empty$/
+    # Context\WebUser::theProductLocalizableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) for locale "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::theProductLocalizableFieldValueShouldBe()
+
+ Then /^the field ([^"]*) for locale "([^"]*)" should contain "([^"]*)"$/
+    # Context\WebUser::theProductLocalizableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) for scope "([^"]*)" should be empty$/
+    # Context\WebUser::theProductScopableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) for scope "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::theProductScopableFieldValueShouldBe()
+
+ Then /^the field ([^"]*) for scope "([^"]*)" should contain "([^"]*)"$/
+    # Context\WebUser::theProductScopableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be empty$/
+    # Context\WebUser::theProductLocalizableAndScopableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::theProductLocalizableAndScopableFieldValueShouldBe()
+
+ Then /^the field ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should contain "([^"]*)"$/
+    # Context\WebUser::theProductLocalizableAndScopableFieldValueShouldBe()
+
+ Then /^the product ([^"]*) should be empty$/
+    # Context\WebUser::theProductFieldValueShouldBe()
+
+ Then /^the product ([^"]*) should be "([^"]*)"$/
+    # Context\WebUser::theProductFieldValueShouldBe()
+
+ Then /^the field ([^"]*) should contain "([^"]*)"$/
+    # Context\WebUser::theFieldShouldContain()
+
+ Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+    # Context\WebUser::iShouldSeeTheChoicesInField()
+
+ Then /^the field ([^"]*) should be read only$/
+    # Context\WebUser::theFieldShouldBeReadOnly()
+
+ Then /^the ([^"]*) copy value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::theCopyValueShouldBe()
+
+ When /^I change the ([^"]+) for scope (\w+) to "([^"]*)"$/
+    # Context\WebUser::iChangeTheValueForScope()
+
+ When /^I change the ([^"]+) for locale (\w+) to "([^"]*)"$/
+    # Context\WebUser::iChangeTheValueForLocale()
+
+ When /^I change the ([^"]+) for scope (\w+) and locale (\w+) to "([^"]*)"$/
+    # Context\WebUser::iChangeTheValueForScopeAndLocale()
+
+ When /^I change the (?P<field>\w+) to "([^"]*)"$/
+    # Context\WebUser::iChangeTheTo()
+
+ When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
+    # Context\WebUser::iChangeTheTo()
+
+ When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
+    # Context\WebUser::iChangeTheTo()
+
+ When /^I change the (?P<field>\w+) to an invalid value$/
+    # Context\WebUser::iChangeTheTo()
+
+ Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+    # Context\WebUser::iShouldSeeAvailableAttributesInGroup()
+
+Given /^I add available attributes? (.*)$/
+    # Context\WebUser::iAddAvailableAttributes()
+
+ Then /^I should see the families (.*)$/
+    # Context\WebUser::iShouldSeeTheFamilies()
+
+Given /^I should see attributes? "([^"]*)" in group "([^"]*)"$/
+    # Context\WebUser::iShouldSeeAttributesInGroup()
+
+ Then /^I should (not )?see a remove link next to the "([^"]*)" field$/
+    # Context\WebUser::iShouldSeeARemoveLinkNextToTheField()
+
+ Then /^I should (not )?be able to remove the file of "([^"]*)"$/
+    # Context\WebUser::iShouldBeAbleToRemoveTheFileOf()
+
+ When /^I remove the "([^"]*)" attribute$/
+    # Context\WebUser::iRemoveTheAttribute()
+
+ Then /^I should not see the "([^"]*)" attribute$/
+    # Context\WebUser::iShouldNotSeeTheAttribute()
+
+ When /^I add a new option to the "([^"]*)" attribute:$/
+    # Context\WebUser::iAddANewOptionToTheAttribute()
+
+ Then /^I should see reorder handles$/
+    # Context\WebUser::iShouldSeeReorderHandles()
+
+ Then /^I should not see reorder handles$/
+    # Context\WebUser::iShouldNotSeeReorderHandles()
+
+ Then /^eligible attributes as label should be (.*)$/
+    # Context\WebUser::eligibleAttributesAsLabelShouldBe()
+
+Given /^I select the role "([^"]*)"$/
+    # Context\WebUser::iSelectRole()
+
+Given /^I fill in the following information(| in the popin):$/
+    # Context\WebUser::iFillInTheFollowingInformation()
+
+Given /^I should not see the following option:$/
+    # Context\WebUser::iShouldNotSeeTheFollowingOptions()
+
+ When /^I fill in the following information in the quick search popin:$/
+    # Context\WebUser::iFillInTheFollowingInformationInTheQuickSearchPopin()
+
+ When /^I open the quick search popin$/
+    # Context\WebUser::iOpenTheQuickSearchPopin()
+
+ When /^I can search by the following types:$/
+    # Context\WebUser::iCanSearchByTheFollowingTypes()
+
+ When /^I can not search by the following types:$/
+    # Context\WebUser::iCanNotSearchByTheFollowingTypes()
+
+ When /^I (grant|remove) rights to (.*)$/
+    # Context\WebUser::iSetRightsToACLResources()
+
+ When /^I grant all rights$/
+    # Context\WebUser::iGrantAllRightsToACLResources()
+
+Given /^I reset the "([^"]*)" rights$/
+    # Context\WebUser::iResetTheRights()
+
+ Then /^removing the following permissions? should hide the following buttons?:$/
+    # Context\WebUser::removingPermissionsShouldHideTheButtons()
+
+ Then /^removing the following permissions? should hide the following section:$/
+    # Context\WebUser::removingPermissionsShouldHideTheSection()
+
+Given /^I attach file "([^"]*)" to "([^"]*)"$/
+    # Context\WebUser::attachFileToField()
+
+Given /^I remove the "([^"]*)" file$/
+    # Context\WebUser::iRemoveTheFile()
+
+Given /^I open "([^"]*)" in the current window$/
+    # Context\WebUser::iOpenInTheCurrentWindow()
+
+Given /^the following attribute types should have the following fields$/
+    # Context\WebUser::theFollowingAttributeTypesShouldHaveTheFollowingFields()
+
+Given /^I create the following attribute options:$/
+    # Context\WebUser::iCreateTheFollowingAttributeOptions()
+
+Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+    # Context\WebUser::iEditTheFollowingAttributeOptions()
+
+Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+    # Context\WebUser::iEditAndCancelToEditTheFollowingAttributeOptions()
+
+Given /^I press the "([^"]*)" button$/
+    # Context\WebUser::iPressTheButton()
+
+Given /^I should see the "([^"]*)" button$/
+    # Context\WebUser::iShouldSeeTheButton()
+
+Given /^I should not see the "([^"]*)" button$/
+    # Context\WebUser::iShouldNotSeeTheButton()
+
+Given /^I press the "([^"]*)" button in the popin$/
+    # Context\WebUser::iPressTheButtonInThePopin()
+
+Given /^I press "([^"]*)" on the "([^"]*)" dropdown button$/
+    # Context\WebUser::iPressOnTheDropdownButton()
+
+Given /^I (enable|disable) the product$/
+    # Context\WebUser::iEnableOrDisableTheProduct()
+
+Given /^I (enable|disable) the products$/
+    # Context\WebUser::iEnableOrDisableTheProducts()
+
+ Then /^I choose to download the file$/
+    # Context\WebUser::iChooseToDownloadTheFile()
+
+ When /^I (un)?check the "([^"]*)" switch$/
+    # Context\WebUser::iCheckTheSwitch()
+
+ When /^I (en|dis)able the inclusion of sub-categories$/
+    # Context\WebUser::iSwitchTheSubCategoriesInclusion()
+
+Given /^(product "([^"]*)") should be disabled$/
+    # Context\WebUser::productShouldBeDisabled()
+
+Given /^(product "([^"]*)") should be enabled$/
+    # Context\WebUser::productShouldBeEnabled()
+
+ Then /^the product "([^"]*)" should have no family$/
+    # Context\WebUser::theFamilyOfProductShouldBe()
+
+ Then /^the family of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::theFamilyOfProductShouldBe()
+
+ Then /^there should be (\d+) updates?$/
+    # Context\WebUser::thereShouldBeUpdate()
+
+Given /^I (right )?click on the "([^"]*)" category$/
+    # Context\WebUser::iClickOnTheCategory()
+
+ Then /^I should see (\d+) category count$/
+    # Context\WebUser::iShouldSeeCategoryCount()
+
+Given /^I click on "([^"]*)" in the right click menu$/
+    # Context\WebUser::iClickOnInTheRightClickMenu()
+
+Given /^I click on the job tracker button on the job widget$/
+    # Context\WebUser::iClickOnTheJobTrackerButtonOnTheJobWidget()
+
+Given /^I blur the category node$/
+    # Context\WebUser::iBlurTheCategoryNode()
+
+ Then /^I should see "([^"]*)" next to the (\w+)$/
+    # Context\WebUser::iShouldSeeNextToThe()
+
+ When /^I launch the (import|export) job$/
+    # Context\WebUser::iExecuteTheJob()
+
+ When /^I wait for the "([^"]*)" job to finish$/
+    # Context\WebUser::iWaitForTheJobToFinish()
+
+Given /^I wait for the "([^"]*)" mass-edit job to finish$/
+    # Context\WebUser::iWaitForTheMassEditJobToFinish()
+
+Given /^I wait for the quick export to finish$/
+    # Context\WebUser::iWaitForTheQuickExportToFinish()
+
+Given /^I wait for (the )?widgets to load$/
+    # Context\WebUser::iWaitForTheWidgetsToLoad()
+
+Given /^I wait for (the )?options to load$/
+    # Context\WebUser::iWaitForTheOptionsToLoad()
+
+Given /^I upload and import the file "([^"]*)"$/
+    # Context\WebUser::iUploadAndImportTheFile()
+
+Given /^I upload and import an invalid file "([^"]*)"$/
+    # Context\WebUser::iUploadAndImportAnInvalidFile()
+
+Given /^the category order in the file "([^"]*)" should be following:$/
+    # Context\WebUser::theCategoryOrderInTheFileShouldBeFollowing()
+
+Given /^I copy the file "([^"]*)" to "([^"]*)"$/
+    # Context\WebUser::iCopyTheFileTo()
+
+ Then /^I should see the uploaded image$/
+    # Context\WebUser::iShouldSeeTheUploadedImage()
+
+ Then /^I should see the "([^"]*)" content$/
+    # Context\WebUser::iShouldSeeTheContent()
+
+ Then /^attribute "([^"]*)" should( not)? be required in channels? (.*)$/
+    # Context\WebUser::attributeShouldBeRequiredInChannels()
+
+Given /^I switch the attribute "([^"]*)" requirement in channel "([^"]*)"$/
+    # Context\WebUser::iSwitchTheAttributeRequirementInChannel()
+
+ Then /^I should see the completeness summary$/
+    # Context\WebUser::iShouldSeeTheCompletenessSummary()
+
+ Then /^I should see the completeness:$/
+    # Context\WebUser::iShouldSeeTheCompleteness()
+
+Given /^completeness of "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::completenessOfShouldBe()
+
+Given /^"([^"]*)" completeness of "([^"]*)" should be "([^"]*)"$/
+    # Context\WebUser::localizedCompletenessOfShouldBe()
+
+ Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale and "([^"]*)" channel/
+    # Context\WebUser::iClickOnTheMissingValueForLocaleAndChannel()
+
+ Then /^I should be on the "([^"]*)" attribute group$/
+    # Context\WebUser::iShouldBeOnTheAttributeGroup()
+
+Given /^an email to "([^"]*)" should have been sent$/
+    # Context\WebUser::anEmailToShouldHaveBeenSent()
+
+ Then /^I wait (\d+) seconds$/
+    # Context\WebUser::iWaitSeconds()
+
+Given /^I choose the "([^"]*)" operation$/
+    # Context\WebUser::iChooseTheOperation()
+
+Given /^I display the (.*) attributes?$/
+    # Context\WebUser::iDisplayTheAttributes()
+
+Given /^I move on to the next step$/
+    # Context\WebUser::iMoveOnToTheNextStep()
+
+ Then /^I click on the Akeneo logo$/
+    # Context\WebUser::iClickOnTheAkeneoLogo()
+
+ Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
+    # Context\WebUser::thePathOfTheExportedFileOfShouldBe()
+
+ Then /^exported file of "([^"]*)" should contain:$/
+    # Context\WebUser::exportedFileOfShouldContain()
+
+ Then /^export directory of "([^"]*)" should contain the following media:$/
+    # Context\WebUser::exportDirectoryOfShouldContainTheFollowingMedia()
+
+ When /^I start the copy$/
+    # Context\WebUser::iStartTheCopy()
+
+ When /^I compare values with the "([^"]*)" translation$/
+    # Context\WebUser::iCompareValuesWithTheTranslation()
+
+Given /^I select translations for "([^"]*)"$/
+    # Context\WebUser::iSelectTranslationsFor()
+
+Given /^I select (.*) translations$/
+    # Context\WebUser::iSelectTranslations()
+
+Given /^I copy selected translations$/
+    # Context\WebUser::iCopySelectedTranslations()
+
+Given /^I should see "([^"]*)" fields:$/
+    # Context\WebUser::iShouldSeeFields()
+
+Given /^the invalid data file of "([^"]*)" should contain:$/
+    # Context\WebUser::theInvalidDataFileOfShouldContain()
+
+Given /^I execute javascript:$/
+    # Context\WebUser::iExecuteJavascript()
+
+Given /^I scroll down$/
+    # Context\WebUser::scrollContainerTo()
+
+Given /^I should see the following product comments:$/
+    # Context\WebUser::iShouldSeeTheFollowingProductComments()
+
+ When /^I delete the "([^"]*)" comment$/
+    # Context\WebUser::iDeleteTheComment()
+
+ Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
+    # Context\WebUser::iShouldNotSeeTheLinkToDeleteTheComment()
+
+ When /^I add a new comment "([^"]*)"$/
+    # Context\WebUser::iAddANewComment()
+
+ When /^I reply to the comment "([^"]*)" of "([^"]*)" with "([^"]*)"$/
+    # Context\WebUser::iReplyToTheCommentWith()
+
+ Then /^the response content type should be "([^"]*)"$/
+    # Context\WebUser::contentTypeShouldBe()
+
+ Then /^I change the family of the product to "([^"]*)"$/
+    # Context\WebUser::iChangeTheFamilyOfTheProductTo()
+
+ Then /^I should (not )?see the status-switcher button$/
+    # Context\WebUser::iShouldSeeTheStatusSwitcherButton()
+
+ Then /^The API key should (not )?be (.+)$/
+    - Check the user API key
+    # Context\WebUser::theApiKeyShouldBe()
+
+Given /^I am authenticating as "([^"]*)" with "([^"]*)" api key$/
+    - Provides WSSE authentication for next request.
+    # Context\WebApiContext::iAmAuthenticatingWithApiKey()
+
+Given /^I request information for product "([^"]*)"$/
+    # Context\WebApiContext::iRequestInformationForProduct()
+
+Given /^(?:the )?response should be valid json$/
+    # Context\WebApiContext::theResponseShouldBeValidJson()
+
+Given /^(?:the )?response should contain the following data:$/
+    # Context\WebApiContext::theResponseShouldContainTheFollowingData()
+
+Given /^I am authenticating as "([^"]*)" with "([^"]*)" password$/
+    - Adds Basic Authentication header to next request.
+    # Context\WebApiContext::iAmAuthenticatingAs()
+
+Given /^I set header "([^"]*)" with value "([^"]*)"$/
+    - Sets a HTTP Header.
+    # Context\WebApiContext::iSetHeaderWithValue()
+
+ When /^(?:I )?send a ([A-Z]+) request to "([^"]+)"$/
+    - Sends HTTP request to specific relative URL.
+    # Context\WebApiContext::iSendARequest()
+
+ When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with values:$/
+    - Sends HTTP request to specific URL with field values from Table.
+    # Context\WebApiContext::iSendARequestWithValues()
+
+ When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with body:$/
+    - Sends HTTP request to specific URL with raw body from PyString.
+    # Context\WebApiContext::iSendARequestWithBody()
+
+ When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with form data:$/
+    - Sends HTTP request to specific URL with form data from PyString.
+    # Context\WebApiContext::iSendARequestWithFormData()
+
+ Then /^(?:the )?response code should be (\d+)$/
+    - Checks that response has specific status code.
+    # Context\WebApiContext::theResponseCodeShouldBe()
+
+ Then /^(?:the )?response should contain "([^"]*)"$/
+    - Checks that response body contains specific text.
+    # Context\WebApiContext::theResponseShouldContain()
+
+ Then /^(?:the )?response should not contain "([^"]*)"$/
+    - Checks that response body doesn't contains specific text.
+    # Context\WebApiContext::theResponseShouldNotContain()
+
+ Then /^(?:the )?response should contain json:$/
+    - Checks that response body contains JSON from PyString.
+    # Context\WebApiContext::theResponseShouldContainJson()
+
+ Then print response
+    - Prints last response body.
+    # Context\WebApiContext::printResponse()
+
+Given /^the grid should contain (\d+) elements?$/
+    # Context\DataGridContext::theGridShouldContainElement()
+
+ When /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([A-Z]{3})"$/
+    # Context\DataGridContext::iFilterByPrice()
+
+ Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([a-zA-Z_]{1,2}|[a-zA-Z_]{4,})"$/
+    # Context\DataGridContext::iFilterByMetric()
+
+ Then /^I filter by price "([^"]*)" with empty value on "([^"]*)" currency$/
+    # Context\DataGridContext::iFilterByPriceWithEmptyValue()
+
+ Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*)"$/
+    # Context\DataGridContext::iFilterByNumber()
+
+Given /^I filter by "category" with value "([^"]*)"$/
+    # Context\DataGridContext::iFilterByCategory()
+
+ Then /^the row "([^"]*)" should contain:$/
+    # Context\DataGridContext::theRowShouldContain()
+
+ Then /^the row "([^"]*)" should contain the images:$/
+    # Context\DataGridContext::theRowShouldContainImages()
+
+ Then /^I should see the filters? (.*)$/
+    # Context\DataGridContext::iShouldSeeTheFilters()
+
+Given /^I should( not)? see the available filters (.*)$/
+    # Context\DataGridContext::iShouldSeeTheAvailableFilters()
+
+ Then /^I should not see the filters? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeTheFilters()
+
+ Then /^I show the filter "([^"]*)"$/
+    # Context\DataGridContext::iShowTheFilter()
+
+ Then /^I hide the filter "([^"]*)"$/
+    # Context\DataGridContext::iHideTheFilter()
+
+Given /^I display the columns (.*)$/
+    # Context\DataGridContext::iDisplayTheColumns()
+
+ Then /^I should see the columns? (.*)$/
+    # Context\DataGridContext::iShouldSeeTheColumns()
+
+ Then /^the rows should be sorted (ascending|descending) by (.*)$/
+    # Context\DataGridContext::theRowsShouldBeSortedBy()
+
+ When /^I (delete) the "([^"]*)" job$/
+    # Context\DataGridContext::iClickOnTheActionOfTheRowWhichContains()
+
+Given /^I click on the "([^"]*)" action of the row which contains "([^"]*)"$/
+    # Context\DataGridContext::iClickOnTheActionOfTheRowWhichContains()
+
+Given /^I should( not)? be able to view the "([^"]*)" action of the row which contains "([^"]*)"$/
+    # Context\DataGridContext::iViewTheActionOfTheRowWhichContains()
+
+ Then /^I should be able to sort the rows by (.*)$/
+    # Context\DataGridContext::iShouldBeAbleToSortTheRowsBy()
+
+ Then /^I should be able to use the following filters:$/
+    # Context\DataGridContext::iShouldBeAbleToUseTheFollowingFilters()
+
+ When /^I change (?:the) page size to (.*)$/
+    # Context\DataGridContext::iChangePageSize()
+
+ When /^page size should be (\d+)$/
+    # Context\DataGridContext::pageSizeShouldBe()
+
+ When /^I sort by "(.*)" value (ascending|descending)$/
+    # Context\DataGridContext::iSortByValue()
+
+ Then /^the rows should be sortable by (.*)$/
+    # Context\DataGridContext::theRowsShouldBeSortableBy()
+
+ Then /^I should see products? (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see channels? (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see locales? (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see (?:import|export) profiles? (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see groups? (?:types )?(.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see association (?:types? )?(.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see users? (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should see famil(?:y|ies) (.*)$/
+    # Context\DataGridContext::iShouldSeeEntities()
+
+ Then /^I should not see products? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see attributes? (?!(.*)in group )(.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see channels? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see locales? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see (?:import|export) profiles? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see group(?: type)?s? (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see association (?:types? )?(.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I should not see famil(?:y|ies) (.*)$/
+    # Context\DataGridContext::iShouldNotSeeEntities()
+
+ Then /^I filter by "([^"]*(?<!category))" with value "([^">=<]*)"$/
+    # Context\DataGridContext::iFilterBy()
+
+ When /^I click on the "([^"]*)" row$/
+    # Context\DataGridContext::iClickOnTheRow()
+
+ When /^I check the rows? "([^"]*)"$/
+    # Context\DataGridContext::iCheckTheRows()
+
+ When /^I uncheck the rows? "([^"]+)"$/
+    # Context\DataGridContext::iUncheckTheRows()
+
+ Then /^the rows? "([^"]*)" should be checked$/
+    # Context\DataGridContext::theRowShouldBeChecked()
+
+ Then /^I reset the grid$/
+    # Context\DataGridContext::iResetTheGrid()
+
+ Then /^I refresh the grid$/
+    # Context\DataGridContext::iRefrestTheGrid()
+
+ Then /^I click back to grid$/
+    # Context\DataGridContext::iClickBackToGrid()
+
+ When /^I hide the "([^"]*)" column$/
+    # Context\DataGridContext::iHideTheColumn()
+
+ When /^I put the "([^"]*)" column before the "([^"]*)" one$/
+    # Context\DataGridContext::iPutTheColumnBeforeTheOne()
+
+ When /^I mass-edit (?:products?|families) (.*)$/
+    # Context\DataGridContext::iMassEditEntities()
+
+ When /^I press mass-edit button$/
+    # Context\DataGridContext::iPressMassEditButton()
+
+ Then /^I select rows? (.*)$/
+    # Context\DataGridContext::iSelectRows()
+
+ Then /^I unselect rows? (.*)$/
+    # Context\DataGridContext::iUnSelectRows()
+
+ Then /^I select all visible products$/
+    # Context\DataGridContext::iSelectAllVisible()
+
+ Then /^I select none product$/
+    # Context\DataGridContext::iSelectNone()
+
+ Then /^I select all products$/
+    # Context\DataGridContext::iSelectAll()
+
+ When /^I mass-delete products? (.*)$/
+    # Context\DataGridContext::iMassDelete()
+
+ When /^I press mass-delete button$/
+    # Context\DataGridContext::iPressMassDeleteButton()
+
+ When /^I press sequential-edit button$/
+    # Context\DataGridContext::iPressSequentialEditButton()
+
+ When /^I apply the "([^"]*)" view$/
+    # Context\DataGridContext::iApplyTheView()
+
+ When /^I delete the view$/
+    # Context\DataGridContext::iDeleteTheView()
+
+ When /^I create the view:$/
+    # Context\DataGridContext::iCreateTheView()
+
+ When /^I update the view$/
+    # Context\DataGridContext::iUpdateTheView()
+
+ Then /^I should( not)? see the "([^"]*)" view$/
+    # Context\DataGridContext::iShouldSeeTheView()
+
+Given /^I launched the completeness calculator$/
+    # Context\CommandContext::iLaunchedTheCompletenessCalculator()
+
+ Then /^I should get the following results for the given filters:$/
+    # Context\CommandContext::iShouldGetTheFollowingResultsForTheGivenFilters()
+
+ Then /^I should get the following products after apply the following updater to it:$/
+    # Context\CommandContext::iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt()
+
+Given /^I am logged in as "([^"]*)"$/
+    # Context\NavigationContext::iAmLoggedInAs()
+
+Given /^I logout$/
+    # Context\NavigationContext::iLogout()
+
+ When /^I go on the last executed job resume of "([^"]*)"$/
+    # Context\NavigationContext::iGoOnTheLastExecutedJobResume()
+
+Given /^I am on the ([^"]*) page$/
+    # Context\NavigationContext::iAmOnThePage()
+
+Given /^I go to the ([^"]*) page$/
+    # Context\NavigationContext::iAmOnThePage()
+
+Given /^I am on the relative path ([^"]+) from ([^"]+)$/
+    # Context\NavigationContext::iAmOnTheRelativePath()
+
+Given /^I should( not)? be able to access the ([^"]*) page$/
+    # Context\NavigationContext::iShouldNotBeAbleToAccessThePage()
+
+Given /^I should( not)? be able to (\w+) the "([^"]*)" (\w+)$/
+    # Context\NavigationContext::iShouldNotBeAbleToAccessTheEntityEditPage()
+
+Given /^I should( not)? be able to access the (\w+) "([^"]*)" (\w+) page$/
+    # Context\NavigationContext::iShouldNotBeAbleToAccessTheEntityEditPage()
+
+Given /^I edit the "([^"]*)" (\w+)$/
+    # Context\NavigationContext::iAmOnTheEntityEditPage()
+
+Given /^I am on the "([^"]*)" (\w+) page$/
+    # Context\NavigationContext::iAmOnTheEntityEditPage()
+
+Given /^I edit the "([^"]*)" user group$/
+    # Context\NavigationContext::iEditTheUserGroup()
+
+Given /^I edit the "([^"]+)" user role$/
+    # Context\NavigationContext::iEditTheUserRole()
+
+Given /^I show the "([^"]*)" (\w+)$/
+    # Context\NavigationContext::iAmOnTheEntityShowPage()
+
+Given /^I am on the "([^"]*)" (\w+) show page$/
+    # Context\NavigationContext::iAmOnTheEntityShowPage()
+
+Given /^I am on the "([^"]*)" attribute group page$/
+    # Context\NavigationContext::iAmOnTheAttributeGroupEditPage()
+
+Given /^I edit the "([^"]*)" attribute group$/
+    # Context\NavigationContext::iAmOnTheAttributeGroupEditPage()
+
+Given /^I edit the "([^"]*)" association type$/
+    # Context\NavigationContext::iEditTheAssociationType()
+
+Given /^I am on the (category "([^"]*)") node creation page$/
+    # Context\NavigationContext::iAmOnTheCategoryNodeCreationPage()
+
+Given /^I am on the ("([^"]*)" import job) page$/
+    # Context\NavigationContext::iAmOnTheImportJobPage()
+
+Given /^I am on the ("([^"]*)" export job) page$/
+    # Context\NavigationContext::iAmOnTheExportJobPage()
+
+Given /^I am on the ("([^"]*)" import job) edit page$/
+    # Context\NavigationContext::iAmOnTheImportJobEditPage()
+
+Given /^I am on the ("([^"]*)" export job) edit page$/
+    # Context\NavigationContext::iAmOnTheExportJobEditPage()
+
+Given /^I create a new "([^"]*)" (import|export)$/
+    # Context\NavigationContext::iCreateANewJob()
+
+Given /^I try to create an unknown (import|export)$/
+    # Context\NavigationContext::iTryToCreateAnUnknownJob()
+
+Given /^I am on the "([^"]*)" product group page$/
+    # Context\NavigationContext::iAmOnTheProductGroupEditPage()
+
+Given /^I edit the "([^"]*)" product group$/
+    # Context\NavigationContext::iAmOnTheProductGroupEditPage()
+
+Given /^I am on the "([^"]*)" group type page$/
+    # Context\NavigationContext::iAmOnTheGroupTypeEditPage()
+
+Given /^I edit the "([^"]*)" group type$/
+    # Context\NavigationContext::iAmOnTheGroupTypeEditPage()
+
+Given /^I am on the "([^"]*)" association type page$/
+    # Context\NavigationContext::iAmOnTheAssociationTypeEditPage()
+
+ When /^I launch the ("([^"]*)" (import|export) job)$/
+    # Context\NavigationContext::iLaunchTheExportJob()
+
+ When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
+    # Context\NavigationContext::iShouldNotBeAbleToAccessTheJob()
+
+ Then /^I should be redirected on the (.*) page$/
+    # Context\NavigationContext::iShouldBeRedirectedOnThePage()
+
+Given /^I should be on the ("([^"]*)" attribute group) page$/
+    # Context\NavigationContext::iShouldBeOnTheAttributeGroupPage()
+
+Given /^I should be on the ("([^"]*)" (import|export) job) page$/
+    # Context\NavigationContext::iShouldBeOnTheJobPage()
+
+Given /^I should be on the ("([^"]*)" group type) page$/
+    # Context\NavigationContext::iShouldBeOnTheGroupTypePage()
+
+Given /^I should be on the ("([^"]*)" product group) page$/
+    # Context\NavigationContext::iShouldBeOnTheProductGroupPage()
+
+Given /^I should be on the ("([^"]*)" role) page$/
+    # Context\NavigationContext::iShouldBeOnTheRolePage()
+
+ Then /^I should be on the user groups edit page$/
+    # Context\NavigationContext::iShouldBeOnTheUserGroupsEditPage()
+
+Given /^I should be on the ("([^"]*)" family) page$/
+    # Context\NavigationContext::iShouldBeOnTheFamilyPage()
+
+Given /^I should be on the ("([^"]*)" association type) page$/
+    # Context\NavigationContext::iShouldBeOnTheAssociationTypePage()
+
+Given /^I should be on the locales page$/
+    # Context\NavigationContext::iShouldBeOnTheLocalesPage()
+
+Given /^I should be on the families page$/
+    # Context\NavigationContext::iShouldBeOnTheFamiliesPage()
+
+Given /^I should be on the attributes page$/
+    # Context\NavigationContext::iShouldBeOnTheAttributesPage()
+
+Given /^I should be on the categories page$/
+    # Context\NavigationContext::iShouldBeOnTheCategoriesPage()
+
+ Then /^I should be on the (category "([^"]*)") edit page$/
+    # Context\NavigationContext::iShouldBeOnTheCategoryEditPage()
+
+Given /^I should be on the (category "([^"]*)") node creation page$/
+    # Context\NavigationContext::iShouldBeOnTheCategoryNodeCreationPage()
+
+Given /^I should be on the products page$/
+    # Context\NavigationContext::iShouldBeOnTheProductsPage()
+
+Given /^I should be on the (product "([^"]*)") edit page$/
+    # Context\NavigationContext::iShouldBeOnTheProductEditPage()
+
+Given /^I refresh current page$/
+    # Context\NavigationContext::iRefreshCurrentPage()
+
+ When /^I pin the current page$/
+    # Context\NavigationContext::iPinTheCurrentPage()
+
+ When /^I click on the pinned item "([^"]+)"$/
+    # Context\NavigationContext::iClickOnThePinnedItem()
+
+ Then /^(?:|I )should see the text "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that page contains specified text.
+    # Context\AssertionContext::assertPageContainsText()
+
+ Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+    - Checks, that page does not contain specified text.
+    # Context\AssertionContext::assertPageNotContainsText()
+
+ Then /^I should see the title "([^"]*)"$/
+    # Context\AssertionContext::iShouldSeeTheTitle()
+
+ Then /^I should see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
+    # Context\AssertionContext::iShouldSeeValidationError()
+
+ Then /^I should not see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
+    # Context\AssertionContext::iShouldNotSeeValidationError()
+
+ Then /^the "([^"]*)" tab should (?:be red|have errors)$/
+    # Context\AssertionContext::theTabShouldHaveErrors()
+
+ Then /^I should see the (.*) fields?$/
+    # Context\AssertionContext::iShouldSeeTheFields()
+
+ Then /^I should see "(.+)" currencies on the (.*) price field$/
+    # Context\AssertionContext::iShouldSeeCurrenciesOnThePriceField()
+
+ Then /^I should not see the (.*) fields?$/
+    # Context\AssertionContext::iShouldNotSeeTheFields()
+
+Given /^the fields? (.*) should be disabled$/
+    # Context\AssertionContext::theFieldsShouldBeDisabled()
+
+ Then /^I should see (?:a )?flash message "([^"]*)"$/
+    # Context\AssertionContext::iShouldSeeFlashMessage()
+
+ Then /^I should see a dialog with the following content:$/
+    # Context\AssertionContext::iShouldSeeAConfirmDialog()
+
+ Then /^I should see a confirm dialog with the following content:$/
+    # Context\AssertionContext::iShouldSeeAConfirmDialog()
+
+ Then /^I should not see the "([^"]*)" link$/
+    # Context\AssertionContext::iShouldNotSeeTheLink()
+
+ Then /^I should see history:$/
+    # Context\AssertionContext::iShouldSeeHistory()
+
+ Then /^I should see history in panel:$/
+    # Context\AssertionContext::iShouldSeeHistoryInPanel()
+
+Given /^file "([^"]*)" should exist$/
+    # Context\AssertionContext::fileShouldExist()
+
+Given /^file "([^"]*)" should contain (\d+) rows$/
+    # Context\AssertionContext::fileShouldContainRows()
+
+ Then /^the following (.*) codes should not be available:$/
+    # Context\AssertionContext::theFollowingCodesShouldNotBeAvailable()
+
+ Then /^the following pages should have the following titles:$/
+    # Context\AssertionContext::theFollowingPagesShouldHaveTheFollowingTitles()
+
+ Then /^the scopable "([^"]*)" field should have the following colors:$/
+    # Context\AssertionContext::theScopableFieldShouldHaveTheFollowingColors()
+
+ Then /^I should have (\d+) new notification$/
+    # Context\AssertionContext::iShouldHaveNewNotification()
+
+Given /^I should see notifications?:$/
+    # Context\AssertionContext::iShouldSeeNotifications()
+
+ Then /^the field "([^"]*)" should have the following options:$/
+    # Context\AssertionContext::theFieldShouldHaveTheFollowingOptions()
+
+ Then /^I should see the sequential edit progression:$/
+    # Context\AssertionContext::iShouldSeeTheSequentialEditProgression()
+
+ Then /^I should not see the default avatar$/
+    - Checks that avatar was not the default one
+    # Context\AssertionContext::iShouldNotSeeDefaultAvatar()
+
+ Then /^I should be able to normalize and denormalize (?:the )?products? (.*)$/
+    # Context\TechnicalContext::iShouldBeAbleToNormalizeAndDenormalizeProducts()
+
