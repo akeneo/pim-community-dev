@@ -84,7 +84,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     /**
      * {@inheritdoc}
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      *
      * We override parent to keep only attributes the user can edit
      */
