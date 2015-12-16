@@ -108,12 +108,13 @@ src/
 │       └── AppBundle               Dev examples for product value override and specific reference data
 ├── Akeneo
 │   ├── Bundle
+│   │   ├── BatchBundle             Doctrine and Symfony implementations for the Batch component
 │   │   ├── ClassificationBundle    Doctrine generic implementations for classification trees and related DI
 │   │   ├── FileStorageBundle       Doctrine and Symfony implementations for files storage
 │   │   └── StorageUtilsBundle      Doctrine implementations for storage access (remover, saver, updater, repositories, etc)
 │   └── Component
 │       ├── Analytics               Data collector interfaces to aggregate statistics
-│       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes extracted from BatchBundle
+│       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes (extracted from previous BatchBundle version)
 │       ├── Classification          Generic classes for classification trees (implemented by product categories and asset categories) and tags
 │       ├── Console                 Utility classes to execute commands
 │       ├── FileStorage             Business interfaces and classes to handle files storage with filesystem abstraction
@@ -147,9 +148,33 @@ src/
     └── Component
         ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
-        ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
+        ├── Localization            New (introduced v1.5) PIM business interfaces and classes to handle data localization
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
+
+## Component & Bundle
+
+Since the 1.3, Akeneo PIM introduced several components, they contain pure PIM business logic (Pim namespace) or technical logic (Akeneo namespace).
+
+The code located in components is not coupled to Symfony Framework or Doctrine ORM/MongoDBODM.
+
+The bundles contain specific Doctrine implementations and the Symfony glue to assemble components together.
+
+At the end, this decoupling is very powerful, it allows to all our business code to rely only on interfaces and allow to change specific implementation easily.
+
+For instance, in previous versions, by introducing SaverInterface and BulkSaverInterface, we've decoupled our business code from Doctrine by avoiding the direct use of persist/flush everywhere in the code.
+
+With this move, we were able to replace the bulk saving of a products by a more efficient one without breaking anything in the business code.
+
+Our very new features are done in this way but what to do with our legacy code?
+
+We were really hesitating about this topic, because re-organizing has an impact on projects migration and not re-organizing makes the technical stack even harder to understand.
+
+We've decided to assume the re-organization of our legacy code by providing a clear way to migrate from minor version to the upcoming one.
+
+At the end, most of these changes consist in moving classes from bundles to move them into components and can be fixed by search & replace (cf last chapter).
+
+These changes will continue to improve Developer eXperience by bringing a more understandable technical stack and by simplifying future evolutions and maintenance.
 
 ## Doctrine events [WIP]
 
@@ -198,29 +223,53 @@ For instance, a product repository in catalog bundle, another one in enrich with
 
 It allows a better separation of concern and a more atomic customization in projects.
 
-## Component & Bundle
+## Batch Bundle & Component [WIP]
 
-Since the 1.3, Akeneo PIM introduced several components, they contain pure PIM business logic (Pim namespace) or technical logic (Akeneo namespace).
+The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
 
-The code located in components is not coupled to Symfony Framework or Doctrine ORM/MongoDBODM.
+It resides in a dedicated Github repository and, due to that, it has not been enhanced as much as the other bundles.
 
-The bundles contain specific Doctrine implementations and the Symfony glue to assemble components together.
+It's a shame because this bundle provides the main interfaces and classes to structure the connectors for import/export.
 
-At the end, this decoupling is very powerful, it allows to all our business code to rely only on interfaces and allow to change specific implementation easily.
+To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
 
-For instance, in previous versions, by introducing SaverInterface and BulkSaverInterface, we've decoupled our business code from Doctrine by avoiding the direct use of persist/flush everywhere in the code.
+With the same strategy than for other old bundles, main technical interfaces and classes are extracted in a Akeneo/Batch component.
 
-With this move, we were able to replace the bulk saving of a products by a more efficient one without breaking anything in the business code.
+It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
 
-Our very new features are done in this way but what to do with our legacy code?
+Has been done:
+ - move BatchBundle to pim-community-dev repository
+ - extract main Step interface and classes
+ - extract main Item interface and classes
+ - extract main exceptions
+ - extract main Event interface and classes
+ - extract main Job interface and classes
+ - extract domain models (doctrine entities) and move doctrine mapping to yml files
+ - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
+ - replace unit tests by specs, add missing specs
+ - remove useless batch bundle files (composer, readme, upgrade, travis setup, etc)
 
-We were really hesitating about this topic, because re-organizing has an impact on projects migration and not re-organizing makes the technical stack even harder to understand.
+After this re-work, several batch domain classes remain in the BatchBundle.
 
-We've decided to assume the re-organization of our legacy code by providing a clear way to migrate from minor version to the upcoming one.
+Several of these classes are deprecated, several others are not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
-At the end, most of these changes consist in moving classes from bundles to move them into components and can be fixed by search & replace (cf last chapter).
+Another remaining issue with the Batch component is the mix of concerns, batch logic, job and step configuration and step element UI configuration.
 
-These changes will continue to improve Developer eXperience by bringing a more understandable technical stack and by simplifying future evolutions and maintenance. 
+The Akeneo\Component\Batch\Step\StepInterface should not contain getConfiguration(), setConfiguration() and getConfigurableStepElements().
+
+The Akeneo\Component\Batch\Step\StepInterface should not assume the use of Akeneo\Component\Batch\Item\AbstractConfigurableStepElement.
+
+Another issue in the Batch Bundle is the way the 'batch_jobs.yml' files are parsed and systematically stored in the DIC.
+
+We could rely on a more standard way to define the batch services.
+
+As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+
+During upgrade, you also have to remove the following line from your project composer.json:
+
+```
+    "akeneo/batch-bundle": "0.4.5",
+```
 
 ## ConnectorBundle & BaseConnectorBundle [WIP]
 
@@ -267,45 +316,61 @@ akeneo_storage_utils:
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
 
-[TODO] In 1.4 we've re-worked thefile storage system, we now dropped the deprecated models.
+TODO:
+ - in 1.4 we've re-worked the file storage system, we can drop the deprecated models
+ - we remove "knplabs/gaufrette" and "knplabs/knp-gaufrette-bundle" from composer.json
 
-## Batch Bundle & Component [WIP]
+## Localization Component & Bundle [WIP]
 
-The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
+One key feature of the 1.5 is the proper localization of the PIM for number format, date format and UI translation.
 
-It resides in a dedicated Github repository and, due to that, it has not been enhanced as much as the other bundles.
+In 1.4, internationalization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
 
-It's a shame because this bundle provides the main interfaces and classes to structure the connectors for import/export.
+The 1.5 covers,
+ - UI language per user
+ - Rework of UI components (a single localized date picker for instance)
+ - Number and date format in UI
+ - Number and date format in import/export
+ - Translations of error messages in import/export
 
-To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
+The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
 
-With the same strategy than for other old bundles, main technical interfaces and classes are extracted in a Akeneo/Batch component.
+TODO:
+ - Akeneo vs Pim namespace to discuss
+ - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
+ - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
+ - Remove Oro/Bundle/LocaleBundle
+ - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
+ - Remove Oro/Bundle/TranslationBundle
+ - From Pim/Bundle/TranslationBundle, move translations models to our new component
+ - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
 
-It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
+## Versioning Bundle & Component [WIP]
 
-Has been done:
- - move BatchBundle to pim-community-dev repository
- - extract main Step interface and classes
- - extract main Item interface and classes
- - extract main exceptions
- - extract main Event interface and classes
- - extract main Job interface and classes
- - extract domain models (doctrine entities) and move doctrine mapping to yml files
- - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
- - [WIP] replace unit tests by specs, add missing specs
- - [WIP] remove useless bundle files (composer, readme, upgrade, travis setup, etc)
+Versioning system has been introduced in a really early version of the PIM and has never been re-worked.
 
-Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
+Up to the version 1.3, the saving of an object was done through direct calls to Doctrine persist/flush anywhere in the application.
 
-One remaining issue with the Batch component and bundle is the mix of configuration and UI logic inside the Job, the StepInterface and the AbstractConfigurableStepElement.
+The versioning system relies on Doctrine events to detect if an object has been changed to write a new version if this object is versionable.
+
+Since the 1.3, we've introduced the SaverInterface and BulkSaverInterface and make all our business code rely on it.
+
+It allows to decouple business code from Doctrine ORM persistence and make the object saving more explicit from business code point of view.
+
+Our future plan for the versioning is to rely on these save calls to create new versions (and avoid to guess if any object has been updated).
+
+This guessing part is very greedy and we expect to enhance the performances by making it more straightforward.
+
+To prepare this shiny future, we've introduced a new Akeneo component which contains only pure business logic related to the versioning.
+
+The versioning process itself will be re-worked in a future version. To make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
-During upgrade, you also have to remove the following line from your project composer.json:
-
-```
-    "akeneo/batch-bundle": "0.4.5",
-```
+TODO:
+ - re-work the versioning system in the new component
+ - rely on business save & saveAll and not anymore on doctrine events
+ - depreciate the legacy system
 
 ## Normalizers & Denormalizers [WIP]
 
@@ -371,64 +436,16 @@ Other bundles register normalizers/denormalizers for these formats and could be 
 
 ## JMS Serializer [WIP]
 
-In early version of the PIM, this library was required by Oro navigation, to be able to serialize a whole page and mark it as updated when other user has updated it.
+Since early version of the PIM, this library is required by Oro navigation.
 
-We had issues with large serialization and we had to use 'JMS\Serializer\Annotation\Exclude' in our entities.
-
-TODO:
- - try to remove annotation and this dependency
-
-## Localization Component & Bundle [WIP]
-
-One key feature of the 1.5 is the proper localization of the PIM for number format, date format and UI translation.
-
-In 1.4, internationalization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
-
-The 1.5 covers,
- - UI language per user
- - Rework of UI components (a single localized date picker for instance)
- - Number and date format in UI
- - Number and date format in import/export
- - Translations of error messages in import/export
-
-The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
+As some point, we used JMS\Serializer\Annotation\Exclude to be able to fix issues with the serialization of our entities.
 
 TODO:
- - Akeneo vs Pim namespace to discuss
- - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
- - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
- - Remove Oro/Bundle/LocaleBundle
- - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
- - Remove Oro/Bundle/TranslationBundle
- - From Pim/Bundle/TranslationBundle, move translations models to our new component
- - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
-
-## Versioning Bundle & Component [WIP]
-
-Versioning system has been introduced in a really early version of the PIM and has never been re-worked.
-
-Up to the version 1.3, the saving of an object was done through direct calls to Doctrine persist/flush anywhere in the application.
-
-The versioning system relies on Doctrine events to detect if an object has been changed to write a new version if this object is versionable.
-
-Since the 1.3, we've introduced the SaverInterface and BulkSaverInterface and make all our business code rely on it.
-
-It allows to decouple business code from Doctrine ORM persistence and make the object saving more explicit from business code point of view.
-
-Our future plan for the versioning is to rely on these save calls to create new versions (and avoid to guess if any object has been updated).
-
-This guessing part is very greedy and we expect to enhance the performances by making it more straightforward.
-
-To prepare this shiny future, we've introduced a new Akeneo component which contains only pure business logic related to the versioning.
-
-The versioning process itself will be re-worked in a future version. To make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
-
-As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
-
-TODO:
- - re-work the versioning system in the new component
- - rely on business save & saveAll and not anymore on doctrine events
- - depreciate the legacy system
+ - Remove the use of annotations from entities
+ - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Provider\TitleService
+ - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Title\StoredTitle
+ - Remove the JMS dependency from Oro\Bundle\UIBundle\Twig\Md5Extension
+ - Remove the "jms/serializer" and "jms/serializer-bundle"
 
 ## Partially fix BC breaks
 
