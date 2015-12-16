@@ -76,7 +76,7 @@ Feature: Display the product history
       | 1       | Length unit | Centimeter |
     When I close the "history" panel
     When I visit the "Attributes" tab
-    And I change the "Length" to "35 CENTIMETER"
+    And I change the "Length" to "35 Centimeter"
     And I save the product
     And the history of the product "boots" has been built
     When I open the history

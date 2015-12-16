@@ -32,9 +32,9 @@ Feature: Add attributes to a product
     And I add available attribute Length
     Then I should see "Length"
     And I should see "Centimeter"
-    When I change the Length to "29 CENTIMETER"
+    When I change the Length to "29 Centimeter"
     And I save the product
-    Then the product Length should be "29 CENTIMETER"
+    Then the product Length should be "29 Centimeter"
 
   Scenario: Successfully display unclassified attributes in group "Other"
     Given I am on the "sandals" product page
