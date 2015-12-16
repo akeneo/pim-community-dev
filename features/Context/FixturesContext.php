@@ -9,12 +9,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -29,7 +28,6 @@ use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -39,7 +37,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FixturesContext extends RawMinkContext
+class FixturesContext extends BaseFixturesContext
 {
     protected $locales = [
         'english'    => 'en_US',
@@ -70,207 +68,7 @@ class FixturesContext extends RawMinkContext
         'reference_data_multiselect'  => 'pim_reference_data_multiselect',
     ];
 
-    protected $entities = [
-        'Attribute'        => 'PimCatalogBundle:Attribute',
-        'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
-        'AttributeOption'  => 'PimCatalogBundle:AttributeOption',
-        'Channel'          => 'PimCatalogBundle:Channel',
-        'Currency'         => 'PimCatalogBundle:Currency',
-        'Family'           => 'PimCatalogBundle:Family',
-        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory'  => 'PimCatalogBundle:Category',
-        'AssociationType'  => 'PimCatalogBundle:AssociationType',
-        'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
-        'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
-        'User'             => 'PimUserBundle:User',
-        'Role'             => 'OroUserBundle:Role',
-        'UserGroup'        => 'OroUserBundle:Group',
-        'Locale'           => 'PimCatalogBundle:Locale',
-        'GroupType'        => 'PimCatalogBundle:GroupType',
-        'Product'          => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
-    ];
-
-    protected $placeholderValues = [];
-
     protected $username;
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
-    {
-        $this->placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => __DIR__ . '/fixtures'
-        ];
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function removeTmpDir()
-    {
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($this->placeholderValues['%tmp%']);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearUOW()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearPimFilesystem()
-    {
-        foreach ($this->getPimFilesystems() as $fs) {
-            foreach ($fs->listContents() as $key) {
-                if ('dir' === $key['type']) {
-                    $fs->deleteDir($key['path']);
-                } else {
-                    $fs->delete($key['path']);
-                }
-            }
-        }
-    }
-
-    /**
-     * Magic methods for getting and creating entities
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \BadMethodCallException
-     *
-     * @return mixed
-     */
-    public function __call($method, $args)
-    {
-        if ('getOrCreate' === $getter = substr($method, 0, 11)) {
-            $entityName = substr($method, 11);
-        } elseif ('create' === $getter = substr($method, 0, 6)) {
-            $entityName = substr($method, 6);
-        } elseif ('find' === $getter = substr($method, 0, 4)) {
-            $entityName = substr($method, 4);
-        } elseif ('get' === $getter = substr($method, 0, 3)) {
-            $entityName = substr($method, 3);
-        } else {
-            $getter     = null;
-            $entityName = null;
-        }
-
-        if ($getter && array_key_exists($entityName, $this->getEntities())) {
-            $method = $getter . 'Entity';
-
-            return $this->$method($entityName, $args[0]);
-        }
-
-        throw new \BadMethodCallException(sprintf('There is no method named %s in FixturesContext', $method));
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
-     * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
-     */
-    public function getEntity($entityName, $data)
-    {
-        $getter = sprintf('get%s', $entityName);
-
-        if (method_exists($this, $getter)) {
-            return $this->$getter($data);
-        }
-
-        return $this->getEntityOrException($entityName, $data);
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
-     * @return object
-     */
-    public function createEntity($entityName, $data)
-    {
-        $method = sprintf('create%s', $entityName);
-
-        return $this->$method($data);
-    }
-
-    /**
-     * @param string $entityName
-     * @param string $data
-     *
-     * @return object
-     */
-    public function getOrCreateEntity($entityName, $data)
-    {
-        try {
-            return $this->getEntity($entityName, $data);
-        } catch (\InvalidArgumentException $e) {
-            return $this->createEntity($entityName, $data);
-        }
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
-     * @throws \Exception
-     *
-     * @return null|object
-     */
-    public function findEntity($entityName, $criteria)
-    {
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        if (gettype($criteria) === 'string' || $criteria === null) {
-            $criteria = ['code' => $criteria];
-        }
-
-        return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
-     * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
-     */
-    public function getEntityOrException($entityName, $criteria)
-    {
-        $entity = $this->findEntity($entityName, $criteria);
-
-        if (!$entity) {
-            if (is_string($criteria)) {
-                $criteria = ['code' => $criteria];
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Could not find "%s" with criteria %s',
-                    $this->getEntities()[$entityName],
-                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
-                )
-            );
-        }
-
-        return $entity;
-    }
 
     /**
      * @param array|string $data
@@ -302,45 +100,18 @@ class FixturesContext extends RawMinkContext
         return $product;
     }
 
-    /**
-     * @param array|string $data
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
-     *
-     * @Given /^a "([^"]*)" variant group$/
-     */
-    public function createVariantGroup($data)
-    {
-        if (is_string($data)) {
-            $data = ['code' => $data];
-        }
-        $variantGroup = $this->loadFixture('variant_groups', $data);
-        $this->saveVariantGroup($variantGroup);
+//    /**
+//     * @param array|string $data
+//     *
+//     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+//     *
+//     * @Given /^a "([^"]*)" variant group$/
+//     */
+//    public function createVariantGroup($data)
+//    {
+//        $this->getMainContext()->getSubcontext('domain-variant-group')->createVariantGroup($data);
+//    }
 
-        return $variantGroup;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
-     */
-    protected function getVariantGroup($code)
-    {
-        $repository = $this->getContainer()->get('pim_catalog.repository.group');
-        $group      = $repository->findOneByCode($code);
-
-        return $group;
-    }
-
-    /**
-     * @param Group $group
-     */
-    protected function saveVariantGroup(Group $group)
-    {
-        $saver = $this->getContainer()->get('pim_catalog.saver.group');
-        $saver->save($group);
-    }
 
     /**
      * @param TableNode $table
@@ -394,35 +165,6 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this->createFamily($data);
         }
-    }
-
-    /**
-     * @param string $entityName
-     *
-     * @Given /^there is no (.*)$/
-     *
-     * @throws \Exception
-     */
-    public function thereIsNoEntity($entityName)
-    {
-        if (strpos($entityName, ' ')) {
-            $entityName = implode('', array_map('ucfirst', explode(' ', $entityName)));
-        }
-
-        $entityName = ucfirst($entityName);
-
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        $namespace = $this->getEntities()[$entityName];
-        $entities  = $this->getRepository($namespace)->findAll();
-
-        foreach ($entities as $entity) {
-            // TODO use a Remover
-            $this->remove($entity, false);
-        }
-        $this->flush();
     }
 
     /**
@@ -495,37 +237,19 @@ class FixturesContext extends RawMinkContext
         }
     }
 
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following variant group values?:$/
-     */
-    public function theFollowingVariantGroupValues(TableNode $table)
-    {
-        $groups = [];
-
-        foreach ($table->getHash() as $row) {
-            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
-
-            $attributeCode = $row['attribute'];
-            if ($row['locale']) {
-                $attributeCode .= '-' . $row['locale'];
-            }
-            if ($row['scope']) {
-                $attributeCode .= '-' . $row['scope'];
-            }
-            $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
-        }
-
-        foreach ($groups as $code => $data) {
-            if (!isset($data['type'])) {
-                $data['type'] = 'VARIANT';
-            }
-            $this->createVariantGroup(['code' => $code] + $data);
-        }
-        // TODO use a Saver
-        $this->flush();
-    }
+//    /**
+//     * @param TableNode $table
+//     *
+//     * @Given /^the following variant group values?:$/
+//     */
+//    public function theFollowingVariantGroupValues(TableNode $table)
+//    {
+//        $this->getMainContext()->getSubcontext('domain-variant-group')->theFollowingVariantGroupValues($table);
+//
+//        // was done in the method but seems useless
+//        // TODO use a Saver
+//        $this->flush();
+//    }
 
     /**
      * @param TableNode $table
@@ -990,29 +714,6 @@ class FixturesContext extends RawMinkContext
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
         $this->assertDataEquals($productValue->getData(), $value);
-    }
-
-    /**
-     * @param mixed  $data
-     * @param string $value
-     */
-    protected function assertDataEquals($data, $value)
-    {
-        switch ($value) {
-            case 'true':
-                assertTrue($data);
-                break;
-
-            case 'false':
-                assertFalse($data);
-                break;
-
-            default:
-                if ($data instanceof \DateTime) {
-                    $data = $data->format('Y-m-d');
-                }
-                assertEquals($value, $data);
-        }
     }
 
     /**
@@ -2269,103 +1970,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Load an installer fixture
-     *
-     * @param string $type
-     * @param array  $data
-     * @param string $format
-     *
-     * @return object
-     */
-    protected function loadFixture($type, array $data, $format = 'csv')
-    {
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor($type, $format);
-
-        if ($processor instanceof ProductProcessor) {
-            $processor->setEnabledComparison(false);
-        }
-
-        $entity = $processor->process($data);
-
-        // we encountered a bunch of invalid data in behat due to old way to import them
-        // could be removed once all the fixtures will use the new API (processor, updater, validator)
-        $this->validate($entity);
-
-        return $entity;
-    }
-
-    /**
-     * @param mixed $object
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function validate($object)
-    {
-        // TODO: split UniqueVariantAxis + spec
-        // TODO: rework validation constraint to forbid to add products with same options in variant group in same time
-        if ($object instanceof ProductInterface) {
-            $validator = $this->getContainer()->get('pim_catalog.validator.product');
-        } else {
-            $validator = $this->getContainer()->get('validator');
-        }
-        $violations = $validator->validate($object);
-
-        if (0 < $violations->count()) {
-            $messages = [];
-            foreach ($violations as $violation) {
-                $messages[] = $violation->getMessage();
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Object "%s" is not valid, cf following constraint violations "%s"',
-                    ClassUtils::getClass($object),
-                    implode(', ', $messages)
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function camelize($string)
-    {
-        return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getMainContext()->getEntityManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
-    }
-
-    /**
-     * @param string $namespace
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($namespace)
-    {
-        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
-    }
-
-    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
      */
     protected function getProductManager()
@@ -2477,72 +2081,5 @@ class FixturesContext extends RawMinkContext
     protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
-    }
-
-    /**
-     * @param object $object
-     */
-    protected function refresh($object)
-    {
-        if (is_object($object)) {
-            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     *
-     * TODO use Savers
-     */
-    protected function persist($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->persist($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     *
-     * * TODO use Removers
-     */
-    protected function remove($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->remove($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     */
-    protected function flush($object = null)
-    {
-        if (!$object) {
-            $this->flushAll();
-
-            return;
-        }
-
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->flush($object);
-    }
-
-    /**
-     * Flush all managers
-     */
-    protected function flushAll()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
     }
 }
