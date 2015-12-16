@@ -33,26 +33,25 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements 
 
         $sql = sprintf(
             'SELECT COUNT(DISTINCT category_item.category_id) AS item_count, tree.id AS tree_id ' .
-            'FROM %s tree ' .
+            'FROM (SELECT id FROM %s where parent_id IS NULL) tree ' .
             'JOIN %s category ON category.root = tree.id ' .
             'LEFT JOIN %s category_item ON category_item.category_id = category.id ' .
-            'AND category_item.%s= :itemId ' .
+            'AND category_item.%s= :item_id ' .
             'INNER JOIN pimee_security_asset_category_access a ON a.category_id = category.id ' .
-            'AND a.view_items = 1 AND a.user_group_id IN (:user_group_id) ' .
+            'AND a.view_items = 1 AND a.user_group_id IN (%s) ' .
             'GROUP BY tree.id',
             $config['categoryTable'],
             $config['categoryTable'],
             $config['categoryAssocTable'],
-            $config['relation']
+            $config['relation'],
+            implode(',', $user->getGroupsIds())
         );
 
         $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->bindValue('itemId', $asset->getId());
-        $stmt->bindValue('user_group_id', $user->getGroupsIds(), Type::SIMPLE_ARRAY);
-
+        $stmt->bindValue('item_id', $asset->getId());
         $stmt->execute();
-        $assets = $stmt->fetchAll();
+        $trees = $stmt->fetchAll();
 
-        return $this->buildItemCountByTree($assets, $config['categoryClass']);
+        return $this->buildItemCountByTree($trees, $config['categoryClass']);
     }
 }
