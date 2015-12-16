@@ -23,8 +23,7 @@ define(
                 'click li a': 'changeLocale'
             },
             render: function () {
-                FetcherRegistry.getFetcher('locale')
-                    .fetchAll()
+                this.getDisplayedLocales()
                     .done(function (locales) {
                         this.$el.html(
                             this.template({
@@ -34,11 +33,25 @@ define(
                             })
                         );
                         this.delegateEvents();
-                    }.bind(this)
-                );
+                    }.bind(this));
 
                 return this;
             },
+
+            /**
+             * Retrieve locales to display in the locale switcher
+             *
+             * @returns {Promise}
+             */
+            getDisplayedLocales: function () {
+                return FetcherRegistry.getFetcher('locale').fetchAll();
+            },
+
+            /**
+             * Method triggered on the 'change locale' event
+             *
+             * @param {Object} event
+             */
             changeLocale: function (event) {
                 this.getParent().setLocale(event.currentTarget.dataset.locale);
                 this.render();
