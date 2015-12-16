@@ -310,18 +310,20 @@ class AttributeRepository extends EntityRepository implements
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id');
 
-        if (is_array($codes) && !empty($codes)) {
+        if (is_array($codes)) {
+            if (empty($codes)) {
+                return [];
+            }
             $qb->andWhere("att.code IN (:codes)");
             $qb->setParameter('codes', $codes);
-        } elseif (is_array($codes)) {
-            return [];
         }
 
-        if (is_array($groupIds) && !empty($groupIds)) {
+        if (is_array($groupIds)) {
+            if (empty($groupIds)) {
+                return [];
+            }
             $qb->andWhere("att.group IN (:groupIds)");
             $qb->setParameter('groupIds', $groupIds);
-        } elseif (is_array($groupIds)) {
-            return [];
         }
 
         $qb->andWhere('att.useableAsGridFilter = :useableInGrid');
@@ -337,8 +339,8 @@ class AttributeRepository extends EntityRepository implements
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('a');
-        $rootAlias = $qb->getRootAlias();
+        $qb        = $this->createQueryBuilder('a');
+        $rootAlias = $qb->getRootAliases()[0];
 
         $labelExpr = sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
@@ -354,8 +356,8 @@ class AttributeRepository extends EntityRepository implements
             ->addSelect('attributeGroup.code');
 
         $qb
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias .'.group', 'attributeGroup')
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin($rootAlias . '.group', 'attributeGroup')
             ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode');
 
         return $qb;
