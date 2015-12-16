@@ -141,7 +141,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      *
      * @return EditCommonAttributes
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      */
     public function setLocale(LocaleInterface $locale)
     {
@@ -153,7 +153,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * @return LocaleInterface
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      */
     public function getLocale()
     {
@@ -169,7 +169,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      *
      * @return EditCommonAttributes
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      */
     public function setDisplayedAttributes(Collection $displayedAttributes)
     {
@@ -181,7 +181,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * @return Collection
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      */
     public function getDisplayedAttributes()
     {
@@ -245,7 +245,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      *
      * @return array
      *
-     * @deprecated Will be removed in 1.6
+     * @deprecated Will be removed in 1.5
      */
     public function getAllAttributes()
     {
