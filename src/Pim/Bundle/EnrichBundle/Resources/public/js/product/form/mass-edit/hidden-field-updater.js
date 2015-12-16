@@ -12,15 +12,20 @@
  */
 define(
     [
+        'underscore',
         'jquery',
-        'pim/form'
+        'pim/form',
+        'pim/user-context'
     ],
-    function ($, BaseForm) {
+    function (_, $, BaseForm, UserContext) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}
              */
             configure: function () {
+                UserContext.off('change:catalogLocale', this.render);
+                this.listenTo(UserContext, 'change:catalogLocale', this.render);
+
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
@@ -30,11 +35,29 @@ define(
 
             /**
              * {@inheritdoc}
+             *
+             * To respect current mass edit common attributes behavior, on locale change,
+             * we need to remove localized values if they don't match the current selected locale.
              */
             render: function () {
+                var selectedLocale = UserContext.get('catalogLocale');
                 var data = this.getFormData().values;
+
+                data = _.mapObject(data, function (attributeValues) {
+                    return _.map(attributeValues, function (value) {
+                        if (null !== value.locale && selectedLocale !== value.locale) {
+                            value.data = null;
+                        }
+
+                        return value;
+                    });
+                });
+
+                this.setData({values: data}, {silent: true});
+
                 var stringData = JSON.stringify(data, null, 0);
                 $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
+                $('#pim_enrich_mass_edit_choose_action_operation_current_locale').val(selectedLocale);
 
                 return this;
             }

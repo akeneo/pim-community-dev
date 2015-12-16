@@ -3,12 +3,13 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -26,34 +27,35 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
     /** @var array */
     protected $skippedAttributes = [];
-
-    /** @var LocalizerRegistryInterface */
-    protected $localizerRegistry;
 
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
     /**
-     * @param ValidatorInterface                  $validator
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param LocalizerRegistryInterface          $localizerRegistry
-     * @param ObjectUpdaterInterface              $productUpdater
+     * @param PropertySetterInterface              $propertySetter
+     * @param ValidatorInterface                   $validator
+     * @param ProductMassActionRepositoryInterface $massActionRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      */
     public function __construct(
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
+        ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry,
         ObjectUpdaterInterface $productUpdater
     ) {
         parent::__construct($jobConfigurationRepo);
 
+        $this->propertySetter      = $propertySetter;
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
-        $this->localizerRegistry   = $localizerRegistry;
         $this->productUpdater      = $productUpdater;
     }
 
@@ -74,7 +76,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $product = $this->updateProduct($product, $configuration['actions']);
+        $actions = $configuration['actions'];
+
+        $product = $this->updateProduct($product, $actions);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
@@ -123,9 +127,25 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
-        $values = $this->prepareProductValues($product, $actions);
+        $normalizedValues = json_decode($actions['normalized_values'], true);
+        $currentLocale = $actions['current_locale'];
+        $filteredValues = [];
 
-        if (empty($values)) {
+        foreach ($normalizedValues as $attributeCode => $values) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if ($product->isAttributeEditable($attribute)) {
+                $values = array_filter($values, function ($value) use ($currentLocale) {
+                    return $currentLocale === $value['locale'] || null === $value['locale'];
+                });
+
+                $filteredValues[$attributeCode] = $values;
+            }
+        }
+
+        if (!empty($filteredValues)) {
+            $this->productUpdater->update($product, $filteredValues);
+        } else {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),
@@ -137,42 +157,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $this->productUpdater->update($product, $values);
-
         return $product;
-    }
-
-    /**
-     * Prepare product values
-     *
-     * @param ProductInterface $product
-     * @param array            $actions
-     *
-     * @return array
-     */
-    protected function prepareProductValues(ProductInterface $product, array $actions)
-    {
-        $normalizedValues = json_decode($actions['normalized_values'], true);
-        $filteredValues = [];
-
-        foreach ($normalizedValues as $attributeCode => $values) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
-            if ($product->isAttributeEditable($attribute)) {
-                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
-                if (null !== $localizer) {
-                    foreach ($values as $value) {
-                        $value['data'] = $localizer->delocalize($value['data'], [
-                            'locale' => $actions['locale']
-                        ]);
-                    }
-                }
-
-                $filteredValues[$attributeCode] = $values;
-            }
-        }
-
-        return $filteredValues;
     }
 
     /**
