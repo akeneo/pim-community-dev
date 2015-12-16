@@ -317,7 +317,7 @@ akeneo_storage_utils:
 ```
 
 TODO:
- - in 1.4 we've re-worked the file storage system, we can drop the deprecated models
+ - in 1.4 we've re-worked the file storage system, we can drop the model 'Pim\Component\Catalog\Model\ProductMediaInterface' and related services
  - we remove "knplabs/gaufrette" and "knplabs/knp-gaufrette-bundle" from composer.json
 
 ## Localization Component & Bundle [WIP]
