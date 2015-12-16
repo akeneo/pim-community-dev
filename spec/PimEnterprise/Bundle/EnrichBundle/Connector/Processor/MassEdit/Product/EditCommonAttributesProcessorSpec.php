@@ -86,7 +86,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 [
                     'filters' => [],
                     'actions' => [
-                        'normalized_values' => $normalizedValues
+                        'normalized_values' => $normalizedValues,
+                        'current_locale'    => 'en_US'
                     ]
                 ]
             )
@@ -141,7 +142,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 [
                     'filters' => [],
                     'actions' => [
-                        'normalized_values' => $normalizedValues
+                        'normalized_values' => $normalizedValues,
+                        'current_locale'    => 'en_US'
                     ]
                 ]
             )
@@ -193,7 +195,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 [
                     'filters' => [],
                     'actions' => [
-                        'normalized_values' => $normalizedValues
+                        'normalized_values' => $normalizedValues,
+                        'current_locale'    => 'en_US'
                     ]
                 ]
             )
