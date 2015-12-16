@@ -5,14 +5,13 @@ Given /^a "([^"]*)" variant group$/
 Given /^the following variant group values?:$/
     # Context\FixturesContext::theFollowingVariantGroupValues()
 
-
-#TODO
 Given /^I am on the "([^"]*)" variant group page$/
     # Context\NavigationContext::iAmOnTheVariantGroupEditPage()
 
 Given /^I edit the "([^"]*)" variant group$/
     # Context\NavigationContext::iAmOnTheVariantGroupEditPage()
 
+#TODO
 Given /^I should be on the ("([^"]*)" variant group) page$/
     # Context\NavigationContext::iShouldBeOnTheVariantGroupPage()
 
