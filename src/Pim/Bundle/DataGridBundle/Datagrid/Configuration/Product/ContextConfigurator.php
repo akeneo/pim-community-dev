@@ -366,7 +366,10 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $attributeIds  = $this->getAttributeIds();
+        $attributeCodes = array_merge((array)$this->getUserGridFilters(), (array)$this->getUserGridColumns());
+//        $attributeCodes = null;
+
+        $attributeIds  = $this->getAttributeIds($attributeCodes);
         if (empty($attributeIds)) {
             return [];
         }
@@ -390,6 +393,16 @@ class ContextConfigurator implements ConfiguratorInterface
             return explode(',', $params['view']['columns']);
         }
 
+        return null;
+    }
+
+    protected function getUserGridFilters()
+    {
+        $params = $this->requestParams->get('_filter');
+
+        if ($params) {
+            return array_keys($params);
+        }
         return null;
     }
 }

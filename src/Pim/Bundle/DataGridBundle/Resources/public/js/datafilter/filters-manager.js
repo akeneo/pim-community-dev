@@ -357,9 +357,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             var activeFilters = this.$(this.filterSelector).val();
 
             _.each(this.filters, function (filter, name) {
-                if (!filter.enabled && _.indexOf(activeFilters, name) != -1) {
+                if (!filter.enabled && _.indexOf(activeFilters, name) !== -1) {
                     this.enableFilter(filter);
-                } else if (filter.enabled && _.indexOf(activeFilters, name) == -1) {
+                } else if (filter.enabled && _.indexOf(activeFilters, name) === -1) {
                     this.disableFilter(filter);
                 }
             }, this);

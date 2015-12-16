@@ -313,6 +313,8 @@ class AttributeRepository extends EntityRepository implements
         if (is_array($codes) && !empty($codes)) {
             $qb->andWhere("att.code IN (:codes)");
             $qb->setParameter('codes', $codes);
+        } elseif (is_array($codes)) {
+            return [];
         }
 
         if (is_array($groupIds) && !empty($groupIds)) {
