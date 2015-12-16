@@ -100,19 +100,6 @@ class FixturesContext extends BaseFixturesContext
         return $product;
     }
 
-//    /**
-//     * @param array|string $data
-//     *
-//     * @return \Pim\Bundle\CatalogBundle\Entity\Group
-//     *
-//     * @Given /^a "([^"]*)" variant group$/
-//     */
-//    public function createVariantGroup($data)
-//    {
-//        $this->getMainContext()->getSubcontext('domain-variant-group')->createVariantGroup($data);
-//    }
-
-
     /**
      * @param TableNode $table
      *
@@ -236,20 +223,6 @@ class FixturesContext extends BaseFixturesContext
             $this->createProduct($data);
         }
     }
-
-//    /**
-//     * @param TableNode $table
-//     *
-//     * @Given /^the following variant group values?:$/
-//     */
-//    public function theFollowingVariantGroupValues(TableNode $table)
-//    {
-//        $this->getMainContext()->getSubcontext('domain-variant-group')->theFollowingVariantGroupValues($table);
-//
-//        // was done in the method but seems useless
-//        // TODO use a Saver
-//        $this->flush();
-//    }
 
     /**
      * @param TableNode $table

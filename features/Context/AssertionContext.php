@@ -657,48 +657,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param string $attribute
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     * @Then /^I should see that (.*) is inherited from variant group attribute$/
-     */
-    public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
-    {
-        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
-        $error = $footer->find('css', '*:contains("Updated by variant group")');
-
-        if (!$error) {
-            throw $this->createExpectationException(
-                'Affected by a variant group error was not found'
-            );
-        }
-    }
-
-    /**
-     * @param string $attribute
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     * @Then /^I should see that (.*) is not inherited from variant group attribute$/
-     */
-    public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
-    {
-        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
-        $error = $footer->find('css', '*:contains("Updated by variant group")');
-
-        if ($error) {
-            throw $this->createExpectationException(
-                'Affected by a variant group error was found'
-            );
-        }
-    }
-
-    /**
      * @param $fieldName
      * @param $string
      *

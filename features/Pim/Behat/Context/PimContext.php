@@ -61,11 +61,9 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
 
 
 
-
-
-    /***************************************************/
-    /**** temporary methods that should be deleted ****/
-    /***************************************************/
+    /*************************************************************/
+    /**** transitional methods that should be deleted ideally ****/
+    /*************************************************************/
 
     /**
      * @return \Context\FixturesContext
@@ -81,5 +79,23 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected function getNavigationContext()
     {
         return $this->getMainContext()->getSubcontext('navigation');
+    }
+
+    /**
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    protected function getCurrentPage()
+    {
+        return $this->getNavigationContext()->getCurrentPage();
+    }
+
+    /**
+     * @param string $page
+     *
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    protected function getPage($page)
+    {
+        return $this->getNavigationContext()->getPage($page);
     }
 }
