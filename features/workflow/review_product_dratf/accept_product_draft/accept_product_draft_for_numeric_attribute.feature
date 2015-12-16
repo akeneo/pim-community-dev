@@ -84,4 +84,4 @@ Feature: Review a product draft
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Sizes" group
-    Then the product Length should be "40 CENTIMETER"
+    Then the product Length should be "40 Centimeter"
