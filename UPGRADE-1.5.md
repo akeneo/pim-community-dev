@@ -151,6 +151,53 @@ src/
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
 
+## Doctrine events [WIP]
+
+By the past, we've plugged a lot of ou business code on Doctrine events (prePersist, preUpdate, onFlush, postFlush).
+
+For instance, to create versions, to convert metric values, to update properties 'created at' and 'updated at', etc.
+
+This practice strongly couple our business code to Doctrine entity lifecyle and causes several performance issues.
+
+In 1.4,
+ - we've introduced our own business events that are dispatched by Saver, BulkSaver, Remover, BulkRemover
+ - we've continued to use these Saver, BulkSaver, Remover, BulkRemover
+
+The strategy is to use our own business events to plug the business logic that was relying on doctrine events.
+
+## Doctrine repositories [WIP]
+
+In very early version of the Akeneo PIM, we've used Doctrine repository in a quite standard way.
+
+We define them by using the Doctrine factory service:
+
+```
+    pim_catalog.repository.attribute:
+        class: %pim_catalog.repository.attribute.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.attribute.class%]
+        tags:
+            - { name: 'pim_repository' }
+```
+
+In the code we fetched them by using the following methods of the Doctrine ObjectManager:
+
+```
+    $entityManager->getRepository('PimCatalogBundle:Attribute')
+    $entityManager->getRepository('Pim\Bundle\CatalogBundle\Entity\Attribute')
+```
+
+With our following versions, this practice shows limitation, it forbid to override models in project.
+
+So, in 1.2, 1.3, 1.4 versions we've continuously replaced '$entityManager->getRepository(' by the injection of the service repository.
+
+We're thinking about get rid of factory service to instanciate repositories as standard services to be able to have several repositories for an object.
+
+For instance, a product repository in catalog bundle, another one in enrich with methods related to grid and forms, etc.
+
+It allows a better separation of concern and a more atomic customization in projects.
+
 ## Component & Bundle
 
 Since the 1.3, Akeneo PIM introduced several components, they contain pure PIM business logic (Pim namespace) or technical logic (Akeneo namespace).
@@ -220,6 +267,8 @@ akeneo_storage_utils:
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
 
+[TODO] In 1.4 we've re-worked thefile storage system, we now dropped the deprecated models.
+
 ## Batch Bundle & Component [WIP]
 
 The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
@@ -235,20 +284,28 @@ With the same strategy than for other old bundles, main technical interfaces and
 It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
 
 Has been done:
+ - move BatchBundle to pim-community-dev repository
  - extract main Step interface and classes
  - extract main Item interface and classes
  - extract main exceptions
  - extract main Event interface and classes
  - extract main Job interface and classes
  - extract domain models (doctrine entities) and move doctrine mapping to yml files
+ - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
  - [WIP] replace unit tests by specs, add missing specs
- - [WIP] extract annotation validation in yml files (take care some existing  validation in other bundles as ImportExportBundle)
+ - [WIP] remove useless bundle files (composer, readme, upgrade, travis setup, etc)
 
 Several batch domain classes remain in the BatchBundle, these classes can be deprecated or not even used in the context of the PIM (we need extra analysis to know what to do with these).
 
 One remaining issue with the Batch component and bundle is the mix of configuration and UI logic inside the Job, the StepInterface and the AbstractConfigurableStepElement.
 
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+
+During upgrade, you also have to remove the following line from your project composer.json:
+
+```
+    "akeneo/batch-bundle": "0.4.5",
+```
 
 ## Normalizers & Denormalizers [WIP]
 
@@ -312,22 +369,39 @@ Other bundles register normalizers/denormalizers for these formats and could be 
     └── Normalizer
 ```
 
+## JMS Serializer [WIP]
+
+In early version of the PIM, this library was required by Oro navigation, to be able to serialize a whole page and mark it as updated when other user has updated it.
+
+We had issues with large serialization and we had to use 'JMS\Serializer\Annotation\Exclude' in our entities.
+
+TODO:
+ - try to remove annotation and this dependency
+
 ## Localization Component & Bundle [WIP]
 
 One key feature of the 1.5 is the proper localization of the PIM for number format, date format and UI translation.
 
-In 1.4, localization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
+In 1.4, internationalization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
 
 The 1.5 covers,
  - UI language per user
  - Rework of UI components (a single localized date picker for instance)
- - number and date format in UI and import/export
- - translations of error messages in import/export
+ - Number and date format in UI
+ - Number and date format in import/export
+ - Translations of error messages in import/export
 
 The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
 
 TODO:
- - The following bundles are removed Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
+ - Akeneo vs Pim namespace to discuss
+ - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
+ - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
+ - Remove Oro/Bundle/LocaleBundle
+ - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
+ - Remove Oro/Bundle/TranslationBundle
+ - From Pim/Bundle/TranslationBundle, move translations models to our new component
+ - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
 
 ## Versioning Bundle & Component [WIP]
 

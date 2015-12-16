@@ -8,8 +8,6 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-// TODO extract validation to a yml file in the bundle
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -20,32 +18,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ItemStep extends AbstractStep
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $batchSize = 100;
 
-    /**
-     * @Assert\Valid
-     * @var ItemReaderInterface
-     */
+    /** @var ItemReaderInterface */
     protected $reader = null;
 
-    /**
-     * @Assert\Valid
-     * @var ItemWriterInterface
-     */
+    /** @var ItemWriterInterface */
     protected $writer = null;
 
-    /**
-     * @Assert\Valid
-     * @var ItemProcessorInterface
-     */
+    /** @var ItemProcessorInterface */
     protected $processor = null;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution = null;
 
     /**
@@ -278,13 +263,13 @@ class ItemStep extends AbstractStep
     /**
      * Handle step execution warning
      *
-     * @param StepExecution                   $stepExecution
-     * @param AbstractConfigurableStepElement $element
-     * @param InvalidItemException            $e
+     * @param StepExecution        $stepExecution
+     * @param mixed                $element
+     * @param InvalidItemException $e
      */
     protected function handleStepExecutionWarning(
         StepExecution $stepExecution,
-        AbstractConfigurableStepElement $element,
+        $element,
         InvalidItemException $e
     ) {
         if ($element instanceof AbstractConfigurableStepElement) {

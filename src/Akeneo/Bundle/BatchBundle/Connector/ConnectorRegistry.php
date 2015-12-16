@@ -166,17 +166,6 @@ class ConnectorRegistry
     }
 
     /**
-     * @param array  $connector
-     * @param string $jobAlias
-     *
-     * @return Job|null
-     */
-    private function getConnectorJob($connector, $jobAlias)
-    {
-        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
-    }
-
-    /**
      * Get list of connectors
      *
      * @param string $jobType
@@ -194,5 +183,16 @@ class ConnectorRegistry
         }
 
         return array_unique(array_keys($this->jobs));
+    }
+
+    /**
+     * @param array  $connector
+     * @param string $jobAlias
+     *
+     * @return Job|null
+     */
+    private function getConnectorJob($connector, $jobAlias)
+    {
+        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
     }
 }
