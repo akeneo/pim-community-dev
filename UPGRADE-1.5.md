@@ -223,7 +223,7 @@ For instance, a product repository in catalog bundle, another one in enrich with
 
 It allows a better separation of concern and a more atomic customization in projects.
 
-## Batch Bundle & Component [WIP]
+## Batch Bundle & Component
 
 The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
 
@@ -294,6 +294,20 @@ We've extracted following classes and interfaces from the Catalog bundle to the 
  - repository interfaces as ProductRepositoryInterface
  - builder interfaces as ProductBuilderInterface
 
+In v1.4, we've re-worked the file storage system, the model `Pim\Component\Catalog\Model\ProductMediaInterface` is not used anymore, we now use `Akeneo\Component\FileStorage\Model\FileInfoInterface`.
+
+In v1.5, we've removed following deprecated classes, interfaces and services:
+ - `Pim\Component\Catalog\Model\ProductMediaInterface`
+ - `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and `@pim_catalog.factory.media`
+
+
+We've also removed following requirements from composer.json, you can do the same in your project:
+
+```
+    "knplabs/gaufrette": "0.1.9",
+    "knplabs/knp-gaufrette-bundle": "0.1.7"
+```
+
 As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
 
 Don't forget to change the app/config.yml if you did mapping overrides:
@@ -315,10 +329,6 @@ akeneo_storage_utils:
             original: Pim\Component\Catalog\Model\ProductValue
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
-
-TODO:
- - in 1.4 we've re-worked the file storage system, we can drop the model 'Pim\Component\Catalog\Model\ProductMediaInterface' and related services
- - we remove "knplabs/gaufrette" and "knplabs/knp-gaufrette-bundle" from composer.json
 
 ## Localization Component & Bundle [WIP]
 

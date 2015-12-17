@@ -1,7 +1,6 @@
 parameters:
     pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
-    pim_catalog.factory.media.class:                 Pim\Bundle\CatalogBundle\Factory\MediaFactory
     pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
     pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
     pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
@@ -22,11 +21,6 @@ services:
     # deprecated: will be removed in 1.4
     pim_catalog.factory.referenced_collection:
         alias: akeneo_storage_utils.factory.referenced_collection
-
-    pim_catalog.factory.media:
-        class: %pim_catalog.factory.media.class%
-        arguments:
-            - %pim_catalog.entity.product_media.class%
 
     pim_catalog.factory.attribute:
         class: %pim_catalog.factory.attribute.class%
