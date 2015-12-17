@@ -299,6 +299,7 @@ In v1.4, we've re-worked the file storage system, the model `Pim\Component\Catal
 In v1.5, we've removed following deprecated classes, interfaces and services:
  - `Pim\Component\Catalog\Model\ProductMediaInterface`
  - `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and `@pim_catalog.factory.media`
+ - `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer`
  - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\RegisterProductValuePresentersPass`
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\BooleanPresenter`
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\DatePresenter`
@@ -480,8 +481,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractCompleteness/Component\\Catalog\\Model\\AbstractCompleteness/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractMetric/Component\\Catalog\\Model\\AbstractMetric/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProduct/Component\\Catalog\\Model\\AbstractProduct/g'
-    # TODO: AbstractProductMedia is deprecated since 1.4, should be removed
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductMedia/Component\\Catalog\\Model\\AbstractProductMedia/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductPrice/Component\\Catalog\\Model\\AbstractProductPrice/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AbstractProductValue/Component\\Catalog\\Model\\AbstractProductValue/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Association/Component\\Catalog\\Model\\Association/g'
@@ -507,9 +506,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\MetricInterface/Component\\Catalog\\Model\\MetricInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Product/Component\\Catalog\\Model\\Product/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductInterface/Component\\Catalog\\Model\\ProductInterface/g'
-    # TODO: ProductMedia is deprecated since 1.4, should be removed
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMedia/Component\\Catalog\\Model\\ProductMedia/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductMediaInterface/Component\\Catalog\\Model\\ProductMediaInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPrice/Component\\Catalog\\Model\\ProductPrice/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPriceInterface/Component\\Catalog\\Model\\ProductPriceInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductTemplateInterface/Component\\Catalog\\Model\\ProductTemplateInterface/g'
