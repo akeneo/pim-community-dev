@@ -9,6 +9,8 @@
 
 # 1.4.13 (2015-12-10)
 
+# 1.4.12 (2015-12-03)
+
 ## Bug fixes
 - PIM-5136: Fixed completeness of published products
 
