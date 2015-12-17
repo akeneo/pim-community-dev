@@ -1,4 +1,4 @@
-/* global describe, it, expect */
+/* global describe, it, expect, spyOn */
 'use strict';
 
 define(
@@ -15,7 +15,9 @@ define(
     function ($, _, AssetCollection, FormBuilder, Form, fetcherRegistry, Fetcher) {
         describe('Asset collection picker', function () {
             var assetCollection = new AssetCollection();
-            _.__ = function (key) { return key; };
+            _.__ = function (key) {
+                return key;
+            };
 
             it('Can store data', function () {
                 expect(assetCollection.setData).toBeDefined();

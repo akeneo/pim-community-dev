@@ -215,6 +215,14 @@ define(
             it('returns an other draft data', function () {
                 var draftData = {name: [{locale: null, scope: null, data: 'A name'}]};
 
+                spyOn(copy, 'getFormData').and.returnValue({
+                    meta: {
+                        working_copy: {
+
+                        }
+                    }
+                });
+
                 copy.configure();
                 copy.currentSource = {type: 'draft', author: 'mary'};
                 copy.otherDrafts = [{

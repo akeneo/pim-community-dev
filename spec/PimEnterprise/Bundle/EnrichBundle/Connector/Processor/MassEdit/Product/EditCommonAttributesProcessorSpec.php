@@ -2,19 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
@@ -29,9 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
     function let(
-        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         LocalizerRegistryInterface $localizerRegistry,
@@ -41,9 +34,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
-            $propertySetter,
             $validator,
-            $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
             $localizerRegistry,
@@ -93,7 +84,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                     'filters' => [],
                     'actions' => [
                         'normalized_values' => $normalizedValues,
-                        'current_locale'    => 'en_US'
+                        'ui_locale'         => 'fr_FR',
+                        'attribute_locale'  => 'en_US'
                     ]
                 ]
             )
@@ -149,7 +141,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                     'filters' => [],
                     'actions' => [
                         'normalized_values' => $normalizedValues,
-                        'current_locale'    => 'en_US'
+                        'ui_locale'         => 'fr_FR',
+                        'attribute_locale'  => 'en_US'
                     ]
                 ]
             )
