@@ -361,6 +361,7 @@ attributes:
         negativeAllowed:   false
         decimalsAllowed:   true
         useableAsGridFilter: true
+        sortOrder: 30
     123:
         labels:
             en_US: Attribute 123
