@@ -60,4 +60,4 @@ Feature: Show localized rules
       | rule    | field                  | value            |
       | my_rule | another_decimal_number | 5,5679           |
       | my_rule | decimal_price          | 12,50 €          |
-      | my_rule | decimal_metric         | 10,50 CENTIMETER |
+      | my_rule | decimal_metric         | 10,50 Centimètre |
