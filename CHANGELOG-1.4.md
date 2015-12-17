@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.14 (2015-12-17)
 
 ## BC Breaks
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
@@ -8,6 +8,8 @@
         `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 
 # 1.4.13 (2015-12-10)
+
+# 1.4.12 (2015-12-03)
 
 ## Bug fixes
 - PIM-5136: Fixed completeness of published products
