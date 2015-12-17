@@ -1,6 +1,5 @@
 parameters:
     pimee_workflow.twig.extension.product_draft_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
-    pimee_workflow.twig.extension.product_value_presenter.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension
     pimee_workflow.rendering.diff_factory.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\DiffFactory
     pimee_workflow.renderer.html.base_only.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\BaseOnly
     pimee_workflow.renderer.html.changed_only.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\ChangedOnly
@@ -16,10 +15,6 @@ parameters:
     pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
     pimee_workflow.presenter.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
     pimee_workflow.presenter.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
-    pimee_workflow.presenter.product_value.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\DatePresenter
-    pimee_workflow.presenter.product_value.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\BooleanPresenter
-    pimee_workflow.presenter.product_value.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ImagePresenter
-    pimee_workflow.presenter.product_value.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\FilePresenter
 
 services:
     ##
@@ -33,13 +28,6 @@ services:
             - '@translator'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.attribute'
-        tags:
-            - { name: twig.extension }
-
-    pimee_workflow.twig.extension.product_value_presenter:
-        class: %pimee_workflow.twig.extension.product_value_presenter.class%
-        arguments:
-            - '@translator'
         tags:
             - { name: twig.extension }
 
@@ -142,23 +130,3 @@ services:
             - '@router'
         tags:
             - { name: pimee_workflow.presenter }
-
-    pimee_workflow.presenter.product_value.date:
-        class: %pimee_workflow.presenter.product_value.date.class%
-        tags:
-            - { name: pimee_workflow.product_value_presenter }
-
-    pimee_workflow.presenter.product_value.boolean:
-        class: %pimee_workflow.presenter.product_value.boolean.class%
-        tags:
-            - { name: pimee_workflow.product_value_presenter }
-
-    pimee_workflow.presenter.product_value.image:
-        class: %pimee_workflow.presenter.product_value.image.class%
-        tags:
-            - { name: pimee_workflow.product_value_presenter }
-
-    pimee_workflow.presenter.product_value.file:
-        class: %pimee_workflow.presenter.product_value.file.class%
-        tags:
-            - { name: pimee_workflow.product_value_presenter }

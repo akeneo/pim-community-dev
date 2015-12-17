@@ -146,7 +146,6 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
-            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
