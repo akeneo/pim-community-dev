@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.14 (2015-12-17)
 
 ## Scalability improvements
 - PIM-5231: Use new AsyncSelectType for family selector in product creation form
