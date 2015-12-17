@@ -299,6 +299,13 @@ In v1.4, we've re-worked the file storage system, the model `Pim\Component\Catal
 In v1.5, we've removed following deprecated classes, interfaces and services:
  - `Pim\Component\Catalog\Model\ProductMediaInterface`
  - `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and `@pim_catalog.factory.media`
+ - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\RegisterProductValuePresentersPass`
+ - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\BooleanPresenter`
+ - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\DatePresenter`
+ - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\FilePresenter`
+ - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ImagePresenter`
+ - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ProductValuePresenterInterface`
+ - `PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension`
 
 
 We've also removed following requirements from composer.json, you can do the same in your project:
