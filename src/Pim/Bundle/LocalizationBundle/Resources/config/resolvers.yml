@@ -7,5 +7,5 @@ services:
         arguments:
             - '@request_stack'
             - '@pim_localization.factory.date'
-            - '@pim_localization.provider.number_format'
+            - '@pim_localization.factory.number'
             - %locale%

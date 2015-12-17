@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
-    function ($, _, Routing, Navigation, AbstractWidget, moment) {
+    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget'],
+    function ($, _, Routing, Navigation, AbstractWidget) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -136,14 +136,6 @@ define(
                         : '';
                     operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
                         operation.statusLabel.slice(1).toLowerCase();
-
-                    if (operation.date) {
-                        var date = moment(new Date(operation.date * 1000));
-                        if (date.isValid()) {
-                            var dateFormat = date.isSame(new Date(), 'day') ? 'HH:mm' : 'YYYY-MM-DD HH:mm';
-                            operation.date = date.format(dateFormat);
-                        }
-                    }
                 }, this);
 
                 return data;

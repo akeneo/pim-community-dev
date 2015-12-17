@@ -1,6 +1,0 @@
-parameters:
-    pim_localization.date_format_converter.class: Pim\Component\Localization\DateFormatConverter
-
-services:
-    pim_localization.date_format_converter:
-        class: %pim_localization.date_format_converter.class%

@@ -42,8 +42,8 @@
                                         <ul class="inline">
                                             {% block stats %}
                                                 {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</li>
                                                 {% endif %}
                                             {% endblock stats %}
                                         </ul>
@@ -60,6 +60,5 @@
                 {% endblock content_data %}
             </div>
         </form>
-        {{ oro_form_js_validation(form) }}
     {% endblock content %}
 {% endblock %}

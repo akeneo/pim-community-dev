@@ -1,15 +1,4 @@
 services:
-    oro_filter.form.type.date_range:
-        class: Oro\Bundle\FilterBundle\Form\Type\DateRangeType
-        tags:
-            - { name: form.type, alias: oro_type_date_range }
-
-    oro_filter.form.type.datetime_range:
-        class: Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType
-        arguments: ["@oro_locale.settings"]
-        tags:
-            - { name: form.type, alias: oro_type_datetime_range }
-
     oro_filter.form.type.filter:
         class:     Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType
         arguments: ["@translator"]

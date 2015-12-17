@@ -44,8 +44,6 @@ config:
         oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
         oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
         oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
-        oro/datagrid/datetime-formatter:        pimdatagrid/js/datagrid/formatter/datetime-formatter
-        oro/datagrid/number-formatter:          pimdatagrid/js/datagrid/formatter/number-formatter
         oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
         oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell
         oro/datagrid/select-all-header-cell:    pimdatagrid/js/datagrid/header-cell/select-all-header-cell
@@ -93,7 +91,6 @@ config:
         oro/datafilter/select-row-filter:           pimdatagrid/js/datafilter/filter/select-row-filter
         oro/datafilter/text-filter:                 pimdatagrid/js/datafilter/filter/text-filter
         oro/datafilter/abstract-formatter:          pimdatagrid/js/datafilter/formatter/abstract-formatter
-        oro/datafilter/number-formatter:            pimdatagrid/js/datafilter/formatter/number-formatter
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder

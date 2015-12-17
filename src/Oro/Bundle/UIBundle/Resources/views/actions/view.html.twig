@@ -45,8 +45,8 @@
                         <div class="clearfix">
                             <ul class="inline">
                                 {% block stats %}
-                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
-                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</li>
+                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</li>
                                 {% endblock stats %}
                             </ul>
                         </div>

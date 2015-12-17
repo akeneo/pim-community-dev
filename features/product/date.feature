@@ -18,8 +18,8 @@ Feature: Check that imported date is properly displayed
     Given I am on the products page
     And I display the columns sku, family, release, complete, created and updated
     Then the row "postit" should contain:
-     | column  | value       |
-     | release | May 1, 2014 |
+     | column  | value      |
+     | release | 05/01/2014 |
 
   Scenario: Successfully display a date in the product edit form (PIM-2971)
     Given I am on the "postit" product page

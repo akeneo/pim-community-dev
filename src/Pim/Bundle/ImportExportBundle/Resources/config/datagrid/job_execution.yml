@@ -18,6 +18,7 @@ datagrid:
             date:
                 label:         Date
                 data_name:     date
+                type: product_value_datetime
                 frontend_type: datetime
             status:
                 label:     Status

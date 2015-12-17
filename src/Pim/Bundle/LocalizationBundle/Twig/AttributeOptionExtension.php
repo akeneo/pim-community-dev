@@ -45,8 +45,8 @@ class AttributeOptionExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter(
-                'present_attribute_option',
-                [$this, 'presentAttributeOption'],
+                'attribute_option_presenter',
+                [$this, 'attributeOptionPresenter'],
                 ['is_safe' => ['html']]
             ),
         ];
@@ -60,7 +60,7 @@ class AttributeOptionExtension extends \Twig_Extension
      *
      * @return string|null
      */
-    public function presentAttributeOption($value, $optionName)
+    public function attributeOptionPresenter($value, $optionName)
     {
         $presenter = $this->presenterRegistry->getAttributeOptionPresenter($optionName);
         if (null !== $presenter) {

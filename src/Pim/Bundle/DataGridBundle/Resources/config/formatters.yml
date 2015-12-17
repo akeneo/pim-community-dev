@@ -86,8 +86,17 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.date_property.class%
         arguments:
             - '@translator'
+            - '@pim_localization.presenter.date'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_date }
+
+    pim_datagrid.extension.formatter.property.product_value.datetime_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.date_property.class%
+        arguments:
+            - '@translator'
+            - '@pim_localization.presenter.datetime'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_datetime }
 
     pim_datagrid.extension.formatter.property.product_value.twig_property:
         class: %pim_datagrid.extension.formatter.property.product_value.twig_property.class%

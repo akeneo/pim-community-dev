@@ -18,7 +18,7 @@ interface LocalizerInterface
 {
     const DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
 
-    const DEFAULT_DATETIME_FORMAT = 'yyyy-MM-dd hh:mm';
+    const DEFAULT_DATETIME_FORMAT = 'yyyy-MM-dd HH:mm';
 
     const DEFAULT_DECIMAL_SEPARATOR = '.';
 

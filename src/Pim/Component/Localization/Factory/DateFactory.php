@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Localization\Factory;
 
-use Pim\Component\Localization\Localizer\LocalizerInterface;
-
 /**
  * Create a new instance of IntlDateFormatter
  *
@@ -61,7 +59,7 @@ class DateFactory
             'timetype'    => \IntlDateFormatter::NONE,
             'timezone'    => null,
             'calendar'    => null,
-            'date_format' => LocalizerInterface::DEFAULT_DATE_FORMAT,
+            'date_format' => null,
         ], $options);
 
         return $options;
