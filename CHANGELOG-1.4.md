@@ -12,8 +12,9 @@
 - Updated public method preRemove from `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` to addRemoveVersion.
 
 ## Bug fixes
-- PIM-5295: Fix association product grid category filter
 - PIM-5334: Fix boolean filter on product grid
+- PIM-5342: Fix 1.3 to 1.4 migration issue on media thumbnails
+- PIM-5202: Fix error message when deleting a product
 
 # 1.4.13 (2015-12-10)
 
