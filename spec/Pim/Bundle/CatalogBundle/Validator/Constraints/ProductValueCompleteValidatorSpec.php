@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Akeneo\Component\FileStorage\Model\FileInfo;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\Metric;
-use Pim\Component\Catalog\Model\ProductMedia;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
@@ -139,8 +139,8 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
     ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
-        $productMedia = new ProductMedia();
-        $productMedia->setFilename('akeneo.jpg');
+        $productMedia = new FileInfo();
+        $productMedia->setOriginalFilename('akeneo.jpg');
         $productValue->getMedia()->willReturn($productMedia);
         $productValue->getData()->willReturn('data');
 
@@ -163,7 +163,7 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
     ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
-        $productMedia = new ProductMedia();
+        $productMedia = new FileInfo();
         $productValue->getMedia()->willReturn($productMedia);
         $productValue->getData()->willReturn('data');
 
