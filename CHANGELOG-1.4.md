@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.14 (2015-12-17)
 
 ## BC Breaks
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
