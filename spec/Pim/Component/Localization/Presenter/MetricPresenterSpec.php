@@ -28,7 +28,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFactory->create([])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translator->trans('KILOGRAM')->willReturn('Kilogram');
+        $translator->trans('KILOGRAM', Argument::any(), Argument::any())->willReturn('Kilogram');
         $this
             ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'])
             ->shouldReturn('12,000.34 Kilogram');
@@ -42,7 +42,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFactory->create(['locale' => 'fr_FR'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12 000,34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translator->trans('KILOGRAM')->willReturn('Kilogram');
+        $translator->trans('KILOGRAM', Argument::any(), Argument::any())->willReturn('Kilogram');
         $this
             ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
             ->shouldReturn('12 000,34 Kilogram');
@@ -57,7 +57,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '')->willReturn(null);
         $numberFormatter->format(12000.34)->willReturn('12000.34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translator->trans('KILOGRAM')->willReturn('Kilogram');
+        $translator->trans('KILOGRAM', Argument::any(), Argument::any())->willReturn('Kilogram');
         $this
             ->present(['data' => 12000.34, 'unit' => 'KILOGRAM'], ['disable_grouping_separator' => true])
             ->shouldReturn('12000.34 Kilogram');

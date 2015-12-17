@@ -39,7 +39,7 @@ class MetricPresenter extends NumberPresenter
         }
 
         $amount = isset($value['data']) ? parent::present($value['data'], $options) : null;
-        $unit = isset($value['unit']) ? $this->translator->trans($value['unit']) : null;
+        $unit = isset($value['unit']) ? $this->translator->trans($value['unit'], [], 'measures') : null;
 
         return trim(sprintf('%s %s', $amount, $unit));
     }
