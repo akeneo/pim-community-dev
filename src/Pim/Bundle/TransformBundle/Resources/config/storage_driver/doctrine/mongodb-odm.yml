@@ -3,7 +3,6 @@ parameters:
     pim_serializer.normalizer.mongodb.product_value.class: Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer
     pim_serializer.normalizer.mongodb.metric.class:        Pim\Bundle\TransformBundle\Normalizer\MongoDB\MetricNormalizer
     pim_serializer.normalizer.mongodb.price.class:         Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductPriceNormalizer
-    pim_serializer.normalizer.mongodb.media.class:         Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductMediaNormalizer
     pim_serializer.normalizer.mongodb.datetime.class:      Pim\Bundle\TransformBundle\Normalizer\MongoDB\DateTimeNormalizer
     pim_serializer.normalizer.mongodb.association.class:   Pim\Bundle\TransformBundle\Normalizer\MongoDB\AssociationNormalizer
     pim_serializer.normalizer.mongodb.version.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer
@@ -37,13 +36,6 @@ services:
 
     pim_serializer.normalizer.mongodb.price:
         class: %pim_serializer.normalizer.mongodb.price.class%
-        arguments:
-            - '@pim_catalog.mongodb.mongo_objects_factory'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
-
-    pim_serializer.normalizer.mongodb.media:
-        class: %pim_serializer.normalizer.mongodb.media.class%
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
