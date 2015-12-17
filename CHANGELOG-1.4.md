@@ -1,3 +1,8 @@
+# 1.4.*
+
+## Bug fixes
+- PIM-5348: fix asset category tree bug on new tree
+
 # 1.4.14 (2015-12-17)
 
 ## BC Breaks

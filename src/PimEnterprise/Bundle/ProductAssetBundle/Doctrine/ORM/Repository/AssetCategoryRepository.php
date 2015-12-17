@@ -37,7 +37,7 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements 
             'JOIN %s category ON category.root = tree.id ' .
             'LEFT JOIN %s category_item ON category_item.category_id = category.id ' .
             'AND category_item.%s= :item_id ' .
-            'INNER JOIN pimee_security_asset_category_access a ON a.category_id = category.id ' .
+            'INNER JOIN pimee_security_asset_category_access a ON a.category_id = tree.id ' .
             'AND a.view_items = 1 AND a.user_group_id IN (%s) ' .
             'GROUP BY tree.id',
             $config['categoryTable'],

@@ -11,6 +11,9 @@ Feature: List proposals
       | 2014_collection  | Redactor   | edit   |
       | 2015_collection  | Redactor   | edit   |
       | 2015_collection  | Manager    | edit   |
+      | 2014_collection  | Manager    | own   |
+      | 2014_collection  | IT support | own   |
+      | 2015_collection  | IT support | own   |
     And the following products:
       | sku     | family   | categories      |
       | tshirt  | tshirts  | 2014_collection |

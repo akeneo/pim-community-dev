@@ -79,7 +79,8 @@ class UserLoader extends LoadUserData
         $apiKey    = isset($data['api_key']) ? $data['api_key'] : $username . '_api_key';
         $roles     = isset($data['roles']) ? $data['roles'] : ['ROLE_ADMINISTRATOR'];
         $groups    = isset($data['groups']) ? $data['groups'] : [];
-        $groups    = array_merge($groups, ['all']);
+        $groups    = isset($groups['all']) ? $groups : array_merge($groups, ['all']);
+
         $user = $this->getUserManager()->createUser();
 
         $api = new UserApi();
