@@ -36,8 +36,6 @@
         "incenteev/composer-parameter-handler": "2.1.1",
         "jms/serializer": "1.0.0",
         "jms/serializer-bundle": "1.0.0",
-        "knplabs/gaufrette": "0.1.9",
-        "knplabs/knp-gaufrette-bundle": "0.1.7",
         "knplabs/knp-menu": "2.0.1",
         "knplabs/knp-menu-bundle": "2.0.0",
         "kriswallsmith/assetic": "1.1.3",

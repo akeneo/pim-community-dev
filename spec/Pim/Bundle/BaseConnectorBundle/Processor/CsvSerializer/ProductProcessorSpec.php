@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -149,8 +149,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelManager,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         ChannelInterface $channel
     ) {
         $products = [$product1, $product2];

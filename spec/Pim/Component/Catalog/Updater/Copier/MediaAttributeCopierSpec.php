@@ -11,7 +11,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\FileStorage;
@@ -160,8 +159,8 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
         FileInfoInterface $fileInfo,
-        ProductMediaInterface $fromMedia,
-        ProductMediaInterface $toMedia,
+        FileInfoInterface $fromMedia,
+        FileInfoInterface $toMedia,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product,

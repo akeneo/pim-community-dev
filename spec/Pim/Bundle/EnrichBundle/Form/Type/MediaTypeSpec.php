@@ -10,7 +10,7 @@ class MediaTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Component\Catalog\Model\ProductMedia');
+        $this->beConstructedWith('Akeneo\Component\FileStorage\Model\FileInfo');
     }
 
     function it_is_a_file_type()
@@ -51,7 +51,7 @@ class MediaTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Component\Catalog\Model\ProductMedia',
+                'data_class' => 'Akeneo\Component\FileStorage\Model\FileInfo',
             ]
         )->shouldHaveBeenCalled();
     }

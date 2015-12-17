@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -13,7 +14,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
@@ -110,8 +110,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager,
         ChannelInterface $channel,
         ProductInterface $product,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         AttributeInterface $attribute,
@@ -121,12 +121,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->setLocale('en_US');
 
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
-
-        $media1->getFilename()->willReturn('media_name');
-        $media1->getOriginalFilename()->willReturn('media_original_name');
-
-        $media2->getFilename()->willReturn('media_name');
-        $media2->getOriginalFilename()->willReturn('media_original_name');
 
         $value1->getAttribute()->willReturn($attribute);
         $value1->getData()->willReturn($media1);
@@ -191,7 +185,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_throws_an_exception_if_something_goes_wrong_with_media_normalization(
         $serializer,
         ProductInterface $product,
-        ProductMediaInterface $media,
+        FileInfoInterface $media,
         ProductValueInterface $value,
         ProductValueInterface $value2,
         AttributeInterface $attribute

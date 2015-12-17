@@ -119,7 +119,7 @@ class ProductValueCompleteValidator extends ConstraintValidator
     protected function validateMedia(ProductValueInterface $value, Constraint $constraint)
     {
         $media = $value->getMedia();
-        if (!$media || $media->__toString() === '') {
+        if (!$media || $media->__toString() === '' || $media->__toString() === null) {
             $this->context->buildViolation($constraint->messageComplete)
                 ->addViolation();
         }

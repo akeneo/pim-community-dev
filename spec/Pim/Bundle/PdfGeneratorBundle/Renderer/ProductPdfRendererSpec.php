@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

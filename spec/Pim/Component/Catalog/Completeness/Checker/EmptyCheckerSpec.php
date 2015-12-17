@@ -3,10 +3,6 @@
 namespace spec\Pim\Component\Catalog\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class EmptyCheckerSpec extends ObjectBehavior

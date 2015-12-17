@@ -491,8 +491,6 @@ MAIN_SQL;
                 return [sprintf('%s.%s', $prefix, 'data')];
             case 'Pim\Component\Catalog\Model\ProductPrice':
                 return [];
-            case 'Pim\Component\Catalog\Model\ProductMedia':
-                return [sprintf('%s.%s', $prefix, 'filename')];
             default:
                 return array_map(
                     function ($name) use ($prefix) {
