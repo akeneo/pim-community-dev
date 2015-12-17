@@ -59,7 +59,7 @@ Feature: Ensure that a published product is safe
     And I should see group similar_jacket
 
   Scenario: Successfully remove a group that is not linked to a published product
-    Given I am on the "hm_jackets" product group page
+    Given I am on the "hm_jackets" variant group page
     And I press the "Delete" button
     And I confirm the removal
     When I am on the product groups page
