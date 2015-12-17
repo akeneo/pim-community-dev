@@ -81,3 +81,8 @@ We decided to clean this bundle and respect our new architecture organisation. T
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogRuleBundle\\Validator\\Constraints\\ProductRule\\SupportedOperatorConditionValidator/PimEnterprise\\Component\\CatalogRule\\Validator\\SupportedOperatorConditionValidator/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogRuleBundle\\Validator\\Constraints\\ProductRule\\ValueCondition/PimEnterprise\\Bundle\\CatalogRuleBundle\\Validator\\Constraint\\ValueCondition/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogRuleBundle\\Validator\\Constraints\\ProductRule\\ValueConditionValidator/PimEnterprise\\Component\\CatalogRule\\Validator\\ValueConditionValidator/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\FilterBundle\\Form\\Type\\DateRangeType/Pim\\Bundle\\FilterBundle\\Form\\Type\\DateRangeType/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\FilterBundle\\Form\\Type\\DateTimeRangeType/Pim\\Bundle\\FilterBundle\\Form\\Type\\DateTimeRangeType/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\LocaleBundle\\DoctrineExtensions\\DBAL\\Types\\UTCDateTimeType/Akeneo\\Bundle\\StorageUtilsBundle\\Doctrine\\DBAL\\Types\\UTCDateTimeType/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.datetime_range/pim_filter.form.type.datetime_range/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.date_range/pim_filter.form.type.date_range/g'

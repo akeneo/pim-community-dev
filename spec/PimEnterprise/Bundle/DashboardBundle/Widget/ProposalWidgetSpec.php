@@ -4,8 +4,10 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -21,12 +23,17 @@ class ProposalWidgetSpec extends ObjectBehavior
         UserInterface $user,
         TokenInterface $token,
         UserManager $userManager,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PresenterInterface $presenter,
+        LocaleInterface $locale
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage);
+        $user->getUiLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('en');
+
+        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage, $presenter);
     }
 
     function it_is_a_widget()
@@ -57,6 +64,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $user,
         $repository,
         $userManager,
+        $presenter,
         ProductDraftInterface $first,
         ProductDraftInterface $second,
         ProductInterface $firstProduct,
@@ -84,19 +92,23 @@ class ProposalWidgetSpec extends ObjectBehavior
         $first->getCreatedAt()->willReturn($firstCreatedAt);
         $second->getCreatedAt()->willReturn($secondCreatedAt);
 
+        $options = ['locale' => 'en'];
+        $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
+        $presenter->present($firstCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
+
         $this->getData()->shouldReturn(
             [
                 [
                     'productId'    => 1,
                     'productLabel' => 'First product',
                     'author'       => 'Julia Stark',
-                    'createdAt'    => $firstCreatedAt->format('U')
+                    'createdAt'    => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
                     'productId'    => 2,
                     'productLabel' => 'Second product',
                     'author'       => 'Julia Stark',
-                    'createdAt'    => $secondCreatedAt->format('U')
+                    'createdAt'    => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
         );
@@ -107,6 +119,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $user,
         $repository,
         $userManager,
+        $presenter,
         ProductDraftInterface $first,
         ProductDraftInterface $second,
         ProductInterface $firstProduct,
@@ -131,19 +144,23 @@ class ProposalWidgetSpec extends ObjectBehavior
         $first->getCreatedAt()->willReturn($firstCreatedAt);
         $second->getCreatedAt()->willReturn($secondCreatedAt);
 
+        $options = ['locale' => 'en'];
+        $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
+        $presenter->present($firstCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
+
         $this->getData()->shouldReturn(
             [
                 [
                     'productId'    => 1,
                     'productLabel' => 'First product',
                     'author'       => 'jack',
-                    'createdAt'    => $firstCreatedAt->format('U')
+                    'createdAt'    => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
                     'productId'    => 2,
                     'productLabel' => 'Second product',
                     'author'       => 'jack',
-                    'createdAt'    => $secondCreatedAt->format('U')
+                    'createdAt'    => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
         );
