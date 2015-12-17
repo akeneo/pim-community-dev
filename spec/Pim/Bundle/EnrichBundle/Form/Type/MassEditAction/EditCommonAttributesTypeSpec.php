@@ -3,19 +3,12 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditCommonAttributesTypeSpec extends ObjectBehavior
 {
-    function let(ProductFormViewInterface $productFormView, LocaleHelper $localeHelper)
+    function let()
     {
         $this->beConstructedWith(
-            $productFormView,
-            $localeHelper,
-            'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            'Pim\Bundle\CatalogBundle\Entity\Locale',
             'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes'
         );
     }

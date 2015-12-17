@@ -57,7 +57,7 @@ define(
 
                 var stringData = JSON.stringify(data, null, 0);
                 $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
-                $('#pim_enrich_mass_edit_choose_action_operation_current_locale').val(selectedLocale);
+                $('#pim_enrich_mass_edit_choose_action_operation_attribute_locale').val(selectedLocale);
 
                 return this;
             }

@@ -655,7 +655,7 @@ class ProductEditForm extends Form
         $input  = $subContainer->find('css', '.data');
         $select = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.select2-container');
-        }, 5);
+        });
 
         return sprintf(
             '%s %s',
@@ -675,7 +675,7 @@ class ProductEditForm extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        }, 5);
+        });
 
         return '' === $input->getValue() ? [] : explode(',', $input->getValue());
     }
@@ -691,7 +691,7 @@ class ProductEditForm extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        }, 5);
+        });
 
         return $input->getValue();
     }
@@ -707,7 +707,7 @@ class ProductEditForm extends Form
     {
         $widget = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input .media-uploader');
-        }, 5);
+        });
 
         $filenameNode = $widget->find('css', '.filename');
 
@@ -727,7 +727,7 @@ class ProductEditForm extends Form
     {
         $widget = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', '.field-input .switch.has-switch');
-        }, 5);
+        });
 
         if ($widget->find('css', '.switch-on')) {
             return true;
