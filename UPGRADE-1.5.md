@@ -300,6 +300,7 @@ In v1.5, we've removed following deprecated classes, interfaces and services:
  - `Pim\Component\Catalog\Model\ProductMediaInterface`
  - `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and `@pim_catalog.factory.media`
  - `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer`
+ - `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductMediaNormalizer`
  - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\RegisterProductValuePresentersPass`
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\BooleanPresenter`
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\DatePresenter`
@@ -307,7 +308,6 @@ In v1.5, we've removed following deprecated classes, interfaces and services:
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ImagePresenter`
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ProductValuePresenterInterface`
  - `PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension`
-
 
 We've also removed following requirements from composer.json, you can do the same in your project:
 

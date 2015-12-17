@@ -3,13 +3,10 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -140,8 +137,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $denormalizer,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue
@@ -194,7 +191,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $denormalizer,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
-        ProductMediaInterface $media,
+        FileInfoInterface $media,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue
