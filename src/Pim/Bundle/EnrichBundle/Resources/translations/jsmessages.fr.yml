@@ -165,6 +165,7 @@ pim_enrich:
         all: Tous
         all_visible: Tous les visibles
         none: Aucun
+        copy: Copier
       variant_group:
         updated_by: Mis à jour par un groupe de variantes
         switch:
@@ -222,6 +223,7 @@ pim_enrich:
           info:
             no_family: Aucune famille de défini. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
+          missing_values: Valeurs manquantes
         history:
           title: Historique
       switch:

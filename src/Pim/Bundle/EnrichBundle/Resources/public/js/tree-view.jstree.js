@@ -85,7 +85,8 @@ define(
         var getTreeConfig = function () {
             return {
                 core: {
-                    animation: 200
+                    animation: 200,
+                    strings: { loading: _.__('jstree.loading') }
                 },
                 plugins: [
                     'tree_selector',
