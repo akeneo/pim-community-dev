@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Completeness\Checker;
 
+use Akeneo\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductMediaInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class MediaCompleteCheckerSpec extends ObjectBehavior
@@ -32,7 +32,7 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
         ProductValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        ProductMediaInterface $media
+        FileInfo $media
     ) {
         $value->getMedia()->willReturn(null);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
