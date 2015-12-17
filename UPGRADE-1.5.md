@@ -298,6 +298,8 @@ In v1.4, we've re-worked the file storage system, the model `Pim\Component\Catal
 
 In v1.5, we've removed following deprecated classes, interfaces and services:
  - `Pim\Component\Catalog\Model\ProductMediaInterface`
+ - `Pim\Component\Catalog\Model\AbstractProductMedia`
+ - `Pim\Component\Catalog\Model\ProductMedia`
  - `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and `@pim_catalog.factory.media`
  - `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer`
  - `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductMediaNormalizer`
