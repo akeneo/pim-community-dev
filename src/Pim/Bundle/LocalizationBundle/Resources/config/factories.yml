@@ -1,6 +1,7 @@
 parameters:
-    pim_localization.factory.date.class: Pim\Component\Localization\Factory\DateFactory
-    pim_localization.factory.number.class: Pim\Component\Localization\Factory\NumberFactory
+    pim_localization.factory.date.class:     Pim\Component\Localization\Factory\DateFactory
+    pim_localization.factory.datetime.class: Pim\Component\Localization\Factory\DateTimeFactory
+    pim_localization.factory.number.class:   Pim\Component\Localization\Factory\NumberFactory
 
     pim_localization.factory.date.formats:
         en: 'MM/dd/yyyy'
@@ -33,6 +34,6 @@ services:
             - %pim_localization.factory.date.formats%
 
     pim_localization.factory.datetime:
-        class: %pim_localization.factory.date.class%
+        class: %pim_localization.factory.datetime.class%
         arguments:
             - %pim_localization.factory.datetime.formats%

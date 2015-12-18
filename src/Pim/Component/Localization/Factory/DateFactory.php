@@ -11,6 +11,12 @@ namespace Pim\Component\Localization\Factory;
  */
 class DateFactory
 {
+    /** @var int */
+    const TYPE_DATE = \IntlDateFormatter::SHORT;
+
+    /** @var int */
+    const TYPE_TIME = \IntlDateFormatter::NONE;
+
     /** @var array */
     protected $dateFormats;
 
@@ -55,8 +61,8 @@ class DateFactory
 
         $options = array_merge([
             'locale'      => 'en',
-            'datetype'    => \IntlDateFormatter::SHORT,
-            'timetype'    => \IntlDateFormatter::NONE,
+            'datetype'    => static::TYPE_DATE,
+            'timetype'    => static::TYPE_TIME,
             'timezone'    => null,
             'calendar'    => null,
             'date_format' => null,
