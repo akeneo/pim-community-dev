@@ -28,10 +28,10 @@ Feature: Localize numbers in the datagrid
     When I am on the products page
     And I display the columns sku, big_price, rate_sale and weight
     Then the row "sandals" should contain:
-      | column       | value               |
-      | big_price    | 1 000,12 $US        |
-      | Rate of Sale | 1 000,1234          |
-      | weight       | 1 000,3456 KILOGRAM |
+      | column       | value                 |
+      | big_price    | 1 000,12 $US          |
+      | Rate of Sale | 1 000,1234            |
+      | weight       | 1 000,3456 Kilogramme |
 
   Scenario: Successfully show English format numbers for French catalog
     Given I am logged in as "Julia"

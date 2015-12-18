@@ -25,7 +25,7 @@ Feature: Display the localized product history
       | version | property      | value     |
       | 1       | SKU           | boots     |
       | 1       | Metrique      | 12,1234   |
-      | 1       | Metrique unit | GRAM      |
+      | 1       | Metrique unit | Gramme    |
       | 1       | Nombre        | 98,7654   |
       | 1       | Prix EUR      | 20,80 €   |
       | 1       | Prix USD      | 25,35 $US |
