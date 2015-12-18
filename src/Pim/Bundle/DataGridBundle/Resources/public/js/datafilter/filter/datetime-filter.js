@@ -26,7 +26,8 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
             format: DateContext.get('time').format,
             defaultFormat: DateContext.get('time').defaultFormat,
             locale: DateContext.get('language'),
-            pickSeconds: false
+            pickSeconds: false,
+            pick12HourFormat: DateContext.get('12Hours')
         }
     });
 });

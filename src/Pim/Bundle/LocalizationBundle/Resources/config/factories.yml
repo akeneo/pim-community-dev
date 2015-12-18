@@ -9,8 +9,8 @@ parameters:
         fr: 'dd/MM/yyyy'
         fr_FR: 'dd/MM/yyyy'
     pim_localization.factory.datetime.formats:
-        en: 'MM/dd/yyyy HH:mm'
-        en_US: 'MM/dd/yyyy HH:mm'
+        en: 'MM/dd/yyyy hh:mm a'
+        en_US: 'MM/dd/yyyy hh:mm a'
         fr: 'dd/MM/yyyy HH:mm'
         fr_FR: 'dd/MM/yyyy HH:mm'
     pim_localization.factory.currency.formats:
