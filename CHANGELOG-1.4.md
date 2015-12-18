@@ -1,3 +1,8 @@
+# 1.4.*
+
+## Bug fixes
+- PIM-5348: fix group count on behats
+
 # 1.4.14 (2015-12-17)
 
 ## Scalability improvements

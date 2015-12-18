@@ -14,7 +14,7 @@ Feature: Edit a user groups and roles
     And I check "Redactor"
     And I save the user
     Then I should see "User saved"
-    And the user "admin" should be in 3 groups
+    And the user "admin" should be in 2 groups
     And the user "admin" should be in the "Redactor" group
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
@@ -22,7 +22,7 @@ Feature: Edit a user groups and roles
     And I uncheck "Redactor"
     And I save the user
     Then I should see "User saved"
-    And the user "admin" should be in 1 group
+    And the user "admin" should be in 0 group
 
   Scenario: Successfully change a user role
     Given I edit the "admin" user
@@ -47,7 +47,7 @@ Feature: Edit a user groups and roles
     And I click on the "Peter" row
     And I save the group
     Then I should see "Group saved"
-    And the user "Peter" should be in 2 group
+    And the user "Peter" should be in 1 group
     And the user "Peter" should be in the "Redactor" group
 
   Scenario: Assign a role to a user from the role page
