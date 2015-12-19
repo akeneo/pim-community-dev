@@ -60,8 +60,6 @@ class GroupType extends AbstractType
 
         $this->addLabelField($builder);
 
-        $this->addAttributesField($builder);
-
         $this->addProductsField($builder);
 
         foreach ($this->subscribers as $subscriber) {
@@ -140,32 +138,6 @@ class GroupType extends AbstractType
                 'property_path'     => 'translations'
             ]
         );
-    }
-
-    /**
-     * Add attributes field
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addAttributesField(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add(
-                'attributes',
-                'entity',
-                [
-                    'label'         => 'Axis',
-                    'required'      => true,
-                    'multiple'      => true,
-                    'class'         => $this->attributeClass,
-                    'query_builder' => function (AttributeRepositoryInterface $repository) {
-                        return $repository->findAllAxisQB();
-                    },
-                    'help'     => 'pim_enrich.group.axis.help',
-                    'select2'  => true
-                ]
-            )
-            ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
 
     /**

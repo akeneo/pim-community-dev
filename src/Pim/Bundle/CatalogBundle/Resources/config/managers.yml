@@ -9,7 +9,6 @@ parameters:
     pim_catalog.manager.family.class:              Pim\Bundle\CatalogBundle\Manager\FamilyManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
-    pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
@@ -23,12 +22,6 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.attribute'
-
-    pim_catalog.manager.product_mass_action:
-        class: %pim_catalog.manager.product_mass_action.class%
-        arguments:
-            - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
 
     pim_catalog.manager.product_category:

@@ -64,8 +64,6 @@ Feature: Validate editing common attributes of multiple products
     And I display the Date attribute
     And I change the Date to "01/01/2013"
     And I move on to the next step
-    # @TODO: fix this
-    And I display the Date attribute
     Then I should see validation error "This date should be 2014-01-01 or after."
     And attribute Date of "boots" should be ""
     And attribute Date of "sandals" should be ""
@@ -91,7 +89,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the File attribute
     And I attach file "akeneo.txt" to "File"
     And I move on to the next step
-    Then I should see "The file extension is not allowed (allowed extensions: gif)."
+    Then I should see validation error "The file extension is not allowed (allowed extensions: gif)."
     And the file "file" of products boots, sandals and sneakers should be ""
 
   Scenario: Successfully mass edit an image attribute
@@ -115,7 +113,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Side view attribute
     And I attach file "akeneo.txt" to "Side view"
     And I move on to the next step
-    Then I should see "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
+    Then I should see validation error "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
     And the file "side_view" of products boots, sandals and sneakers should be ""
 
   Scenario: Successfully mass edit a multi select attribute

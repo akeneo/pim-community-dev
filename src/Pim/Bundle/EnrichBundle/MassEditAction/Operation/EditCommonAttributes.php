@@ -2,19 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\FileStorage;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Edit common attributes of given products
@@ -25,14 +21,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class EditCommonAttributes extends AbstractMassEditOperation
 {
-    /** @var ArrayCollection|ProductValueInterface[] */
+    /** @var string */
     protected $values;
-
-    /** @var ArrayCollection */
-    protected $displayedAttributes;
-
-    /** @var LocaleInterface */
-    protected $locale;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
@@ -40,59 +30,67 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var UserContext */
     protected $userContext;
 
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /** @var array */
-    protected $allAttributes;
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
 
-    /** @var FileStorerInterface */
-    protected $fileStorer;
+    /** @var ValidatorInterface */
+    protected $productValidator;
 
-    /** @var ProductMassActionManager */
-    protected $massActionManager;
+    /** @var NormalizerInterface */
+    protected $internalNormalizer;
+
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
+    /** @var string */
+    protected $tmpStorageDir;
+
+    /** @var string */
+    protected $attributeLocale;
+
+    /** @var string */
+    protected $errors;
 
     /**
-     * @param ProductBuilderInterface      $productBuilder
-     * @param UserContext                  $userContext
-     * @param CatalogContext               $catalogContext
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param FileStorerInterface          $fileStorer
-     * @param ProductMassActionManager     $massActionManager
+     * @param ProductBuilderInterface              $productBuilder
+     * @param UserContext                          $userContext
+     * @param NormalizerInterface                  $normalizer
+     * @param ObjectUpdaterInterface               $productUpdater
+     * @param ValidatorInterface                   $productValidator
+     * @param NormalizerInterface                  $internalNormalizer
+     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param string                               $tmpStorageDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
-        CatalogContext $catalogContext,
-        AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        FileStorerInterface $fileStorer,
-        ProductMassActionManager $massActionManager
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        NormalizerInterface $internalNormalizer,
+        LocalizedAttributeConverterInterface $localizedConverter,
+        $tmpStorageDir
     ) {
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
-        $this->catalogContext      = $catalogContext;
-        $this->displayedAttributes = new ArrayCollection();
-        $this->values              = new ArrayCollection();
-        $this->normalizer          = $normalizer;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer          = $fileStorer;
-        $this->massActionManager   = $massActionManager;
+        $this->productBuilder     = $productBuilder;
+        $this->userContext        = $userContext;
+        $this->normalizer         = $normalizer;
+        $this->productUpdater     = $productUpdater;
+        $this->productValidator   = $productValidator;
+        $this->tmpStorageDir      = $tmpStorageDir;
+        $this->internalNormalizer = $internalNormalizer;
+        $this->localizedConverter = $localizedConverter;
+        $this->values             = '';
     }
 
     /**
-     * @param Collection $values
+     * @param string $values
      *
-     * @return EditCommonAttributes
+     * @return string
      */
-    public function setValues(Collection $values)
+    public function setValues($values)
     {
         $this->values = $values;
 
@@ -100,55 +98,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * @return Collection
+     * @return string
      */
     public function getValues()
     {
         return $this->values;
-    }
-
-    /**
-     * @param LocaleInterface $locale
-     *
-     * @return EditCommonAttributes
-     */
-    public function setLocale(LocaleInterface $locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * @return LocaleInterface
-     */
-    public function getLocale()
-    {
-        if ($this->locale instanceof LocaleInterface) {
-            return $this->locale;
-        }
-
-        return $this->userContext->getCurrentLocale();
-    }
-
-    /**
-     * @param Collection $displayedAttributes
-     *
-     * @return EditCommonAttributes
-     */
-    public function setDisplayedAttributes(Collection $displayedAttributes)
-    {
-        $this->displayedAttributes = $displayedAttributes;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getDisplayedAttributes()
-    {
-        return $this->displayedAttributes;
     }
 
     /**
@@ -164,23 +118,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function getFormOptions()
     {
-        return [
-            'locales'        => $this->userContext->getUserLocales(),
-            'all_attributes' => $this->getAllAttributes(),
-            'current_locale' => $this->getLocale()->getCode()
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchConfig()
-    {
-        $config = json_decode(stripslashes(parent::getBatchConfig()), true);
-
-        $config['locale'] = $this->userContext->getUiLocale()->getCode();
-
-        return addslashes(json_encode($config));
+        return [];
     }
 
     /**
@@ -188,17 +126,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function initialize()
     {
-        $locale = $this->getLocale()->getCode();
-        $this->catalogContext->setLocaleCode($locale);
-        $this->allAttributes = null;
-        $this->values = new ArrayCollection();
-
-        $allAttributes = $this->getAllAttributes();
-
-        $this->values = new ArrayCollection();
-        foreach ($allAttributes as $attribute) {
-            $this->addValues($attribute, $this->getLocale());
-        }
+        $this->values = '';
     }
 
     /**
@@ -209,72 +137,23 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function finalize()
     {
-        foreach ($this->getValues() as $productValue) {
-            $media = $productValue->getMedia();
+        $data = json_decode($this->values, true);
+        $filesystem = new Filesystem();
 
-            if (null !== $media && null !== $media->getUploadedFile()) {
-                $file = $this->fileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
-                $productValue->setMedia($file);
+        foreach ($data as $attributeCode => $attributeValues) {
+            foreach ($attributeValues as $index => $value) {
+                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
+                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
+                    $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
+
+                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
+
+                    $data[$attributeCode][$index]['data']['filePath'] = $newPath;
+                }
             }
         }
-    }
 
-    /**
-     * Initializes self::allAttributes with values from the repository
-     *
-     * @return array
-     */
-    public function getAllAttributes()
-    {
-        if (null === $this->allAttributes) {
-            $locale = $this->getLocale()->getCode();
-            $allAttributes = $this->attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]]);
-
-            foreach ($allAttributes as $attribute) {
-                $attribute->setLocale($locale);
-                $attribute->getGroup()->setLocale($locale);
-            }
-
-            $allAttributes = $this->massActionManager->filterLocaleSpecificAttributes(
-                $allAttributes,
-                $locale
-            );
-
-            $this->allAttributes = $allAttributes;
-        }
-
-        return $this->allAttributes;
-    }
-
-    /**
-     * Add all the values required by the given attribute
-     *
-     * @param AttributeInterface $attribute
-     * @param LocaleInterface    $locale
-     */
-    protected function addValues(AttributeInterface $attribute, $locale)
-    {
-        if ($attribute->isScopable()) {
-            foreach ($locale->getChannels() as $channel) {
-                $key = $attribute->getCode() . '_' . $channel->getCode();
-                $value = $this->productBuilder->createProductValue(
-                    $attribute,
-                    $locale->getCode(),
-                    $channel->getCode()
-                );
-
-                $this->productBuilder->addMissingPrices($value);
-                $this->values[$key] = $value;
-            }
-        } else {
-            $value = $this->productBuilder->createProductValue(
-                $attribute,
-                $locale->getCode()
-            );
-
-            $this->productBuilder->addMissingPrices($value);
-            $this->values[$attribute->getCode()] = $value;
-        }
+        $this->values = json_encode($data);
     }
 
     /**
@@ -290,24 +169,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function getActions()
     {
-        $actions = [];
-        $options = [
-            'entity'                     => 'product',
-            'locale'                     => $this->userContext->getUiLocale(),
-            'disable_grouping_separator' => true
+        $actions = [
+            'normalized_values' => $this->getValues(),
+            'ui_locale'         => $this->userContext->getUiLocale()->getCode(),
+            'attribute_locale'  => $this->getAttributeLocale()
         ];
-
-        foreach ($this->values as $value) {
-            $rawData = $this->normalizer->normalize($value->getData(), 'json', $options);
-            // if the value is localizable, let's use the locale the user has chosen in the form
-            $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
-
-            $actions[] = [
-                'field'   => $value->getAttribute()->getCode(),
-                'value'   => $rawData,
-                'options' => ['locale' => $locale, 'scope' => $value->getScope()]
-            ];
-        }
 
         return $actions;
     }
@@ -330,5 +196,74 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getItemsName()
     {
         return 'product';
+    }
+
+    /**
+     * Add constraint on product values integrity.
+     *
+     * It registers constraint assertion that "hasValidValues" must return true on
+     * mass edit form submission.
+     *
+     * @param ClassMetadata $metadata
+     */
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addGetterConstraint('validValues', new IsTrue([
+            'message' => 'mass_edit.edit_common_attributes.invalid_values'
+        ]));
+    }
+
+    /**
+     * Apply current values to a fake product and test its integrity with the product validator.
+     * If violations are raised, values are not valid.
+     *
+     * Errors are stored in json format to be useable by the Product Edit Form.
+     *
+     * @return bool
+     */
+    public function hasValidValues()
+    {
+        $data = json_decode($this->values, true);
+
+        $locale = $this->userContext->getUiLocale()->getCode();
+        $data = $this->localizedConverter->convertLocalizedToDefaultValues($data, ['locale' => $locale]);
+
+        $product = $this->productBuilder->createProduct('0');
+        $this->productUpdater->update($product, $data);
+        $violations = $this->productValidator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
+
+        $errors = ['values' => $this->internalNormalizer->normalize(
+            $violations,
+            'internal_api',
+            ['product' => $product]
+        )];
+        $this->errors = json_encode($errors);
+
+        return 0 === $violations->count();
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeLocale()
+    {
+        return $this->attributeLocale;
+    }
+
+    /**
+     * @param string $attributeLocale
+     */
+    public function setAttributeLocale($attributeLocale)
+    {
+        $this->attributeLocale = $attributeLocale;
     }
 }

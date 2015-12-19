@@ -37,4 +37,4 @@ services:
             - '@security.authorization_checker'
             - '@pim_versioning.saver.version'
         tags:
-            - { name: kernel.event_subscriber}
+            - { name: kernel.event_subscriber, priority: 0 }

@@ -195,7 +195,7 @@ class AttributeRepository extends EntityRepository implements
             ->andWhere(
                 $qb->expr()->in(
                     'a.attributeType',
-                    [AttributeTypes::OPTION_SIMPLE_SELECT, 'pim_reference_data_simpleselect']
+                    [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT]
                 )
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))

@@ -3,12 +3,17 @@
 ## Scalability improvements
 - PIM-5231: Use new AsyncSelectType for family selector in product creation form
 - PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time
+- PIM-5211: Do not load all axes on the variant group form during edition
+- PIM-5210: Use the enhanced Product Edit Form in the "Edit Common Attributes" mass edit action
 
 ## BC Breaks
 - Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
+- Updated event on which `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` subscribing, PRE_REMOVE instead of POST_REMOVE.
+- Updated public method preRemove from `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` to addRemoveVersion.
 
 ## Bug fixes
 - PIM-5295: Fix association product grid category filter
+- PIM-5334: Fix boolean filter on product grid
 
 # 1.4.13 (2015-12-10)
 
@@ -20,6 +25,13 @@
 - Changed constructor of `Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer`to add a `Doctrine\Common\Persistence\ManagerRegistry` (instead of a DocumentManager to avoid circular references)
   It is required because normalization of reference data in product values is based on Doctrine metadata.
 - In case you wrote your own associations import, please add the parameter `batch_size: 1` to the `import_associations` step element of your `batch_jobs.yml`.
+- Changed constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`.
+  Required, because we now use the standard ProductUpdater to be consistent.
+- Changed constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add 
+    `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`,
+    `Symfony\Component\Validator\Validator\ValidatorInterface`,
+    `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
+  Required to raise errors on the enhanced "mass edit common attributes".
 
 ## Bug fixes
 - PIM-5238: Fix scroll on multiselect for mass edit

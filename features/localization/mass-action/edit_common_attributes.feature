@@ -25,8 +25,8 @@ Feature: Edit common localized attributes of many products at once
     Given I mass-edit products boots and sandals
     When I choose the "Modifier les attributs communs" operation
     And I display the Price attribute
-    And I change the "$ Price" to "100,50"
-    And I change the "€ Price" to "150,75"
+    And I change the "Price" to "100,50 USD"
+    And I change the "Price" to "150,75 EUR"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sandals should be:
@@ -71,8 +71,8 @@ Feature: Edit common localized attributes of many products at once
     Given I mass-edit products boots and sandals
     When I choose the "Modifier les attributs communs" operation
     And I display the Price attribute
-    And I change the "$ Price" to "100.50"
-    And I change the "€ Price" to "150.75"
+    And I change the "Price" to "100.50 USD"
+    And I change the "Price" to "150.75 EUR"
     And I move on to the next step
     Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
 

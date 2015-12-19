@@ -82,9 +82,9 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots and pump
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
-    And I expand the "Description" attribute
-    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo"
-    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar"
+    And I change the Description to "Bar"
+    And I switch the scope to "mobile"
+    And I change the "Description" to "Foo"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english mobile Description of "boots" should be "Foo"
@@ -104,8 +104,8 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products Shoes
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
-    And I change the "$ Price" to "100"
-    And I change the "€ Price" to "150"
+    And I change the "Price" to "100 USD"
+    And I change the "Price" to "150 EUR"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products Shoes should be:
@@ -134,25 +134,27 @@ Feature: Edit common attributes of many products at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
     And I display the Weight and Name attribute
+    Then I visit the "Other" group
     And I change the "Weight" to "Edith"
     And I move on to the next step
-    Then I should see "Product information"
-    And I should see "Weight"
-    And I should see "Name"
+    Then I should see the text "Product information"
+    And I should see the text "Weight"
+    Then I visit the "Product information" group
+    And I should see the text "Name"
     When I am on the attributes page
     And I am on the products page
     And I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
-    Then I should not see "Product information"
-    And I should not see "Weight"
-    And I should not see "Name"
+    Then I should not see the text "Product information"
+    And I should not see the text "Weight"
+    And I should not see the text "Name"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4777
   Scenario: Doing a mass edit of an attribute from a variant group does not override group value
     Given I mass-edit products highheels, blue_highheels and sandals
     And I choose the "Edit common attributes" operation
     And I display the Heel Height attribute
-    And fill in "Heel Height" with "3"
+    And I change the "Heel Height" to "3"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "heel_height" of products highheels, blue_highheels should be "12"
