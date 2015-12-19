@@ -29,12 +29,13 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
+                'Next'                            => ['css' => '.configuration .btn-primary'],
+                'Confirm'                         => ['css' => '.confirmation .btn-primary'],
                 'Available attributes button'     => ['css' => 'button.pimmultiselect'],
                 'Available attributes add button' => ['css' => '.pimmultiselect .ui-multiselect-footer a'],
                 'Available attributes form'       => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
-                ],
-                'Locales dropdown' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_locale'],
+                ]
             ]
         );
     }
@@ -46,7 +47,7 @@ class EditCommonAttributes extends ProductEditForm
      */
     public function next()
     {
-        $this->pressButton('Next');
+        $this->getElement('Next')->click();
 
         return $this->currentStep;
     }
@@ -58,7 +59,7 @@ class EditCommonAttributes extends ProductEditForm
      */
     public function confirm()
     {
-        $this->pressButton('Confirm');
+        $this->getElement('Confirm')->click();
 
         return $this->currentStep;
     }

@@ -112,7 +112,7 @@ Feature: Edit common attributes of many products at once
     And I visit the "Other" group
     And I change the "Weight" to "Edith"
     And I move on to the next step
-    Then I should see "There are errors in the attributes form"
+    Then I should see the text "There are errors in the attributes form"
     And I should see the text "Product information"
     And I should see the text "Weight"
     And I should not see the text "Name"

@@ -166,11 +166,12 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
                 $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
                 if (null !== $localizer) {
-                    foreach ($values as $value) {
-                        $value['data'] = $localizer->delocalize($value['data'], [
-                            'locale' => $actions['ui_locale']
-                        ]);
-                    }
+                    $locale = $actions['ui_locale'];
+                    $values = array_map(function ($value) use ($localizer, $locale) {
+                        $value['data'] = $localizer->delocalize($value['data'], ['locale' => $locale]);
+
+                        return $value;
+                    }, $values);
                 }
 
                 $filteredValues[$attributeCode] = $values;

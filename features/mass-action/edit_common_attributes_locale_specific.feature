@@ -35,7 +35,7 @@ Feature: Edit common attributes of many products at once with locale specific ca
     And I visit the "General" group
     And I change the Description to "Bar tablet"
     And I visit the "Additional information" group
-    And I change the Weight to "10 KILOGRAM"
+    And I change the Weight to "10 Kilogram"
     And I switch the scope to "ecommerce"
     And I visit the "General" group
     And I change the Description to "Bar ecommerce"
@@ -45,7 +45,7 @@ Feature: Edit common attributes of many products at once with locale specific ca
     When I switch the scope to "ecommerce"
     Then the product Description should be empty
     Given I visit the "Additional information" group
-    Then the product Weight should be "10 KILOGRAM"
+    Then the product Weight should be "10 Kilogram"
     When I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "tshirt" should have the following values:

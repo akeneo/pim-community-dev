@@ -34,8 +34,10 @@ class Edit extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
+                'Locales dropdown'        => ['css' => '.attribute-edit-actions .locale-switcher'],
                 'Copy locales dropdown'   => ['css' => '.attribute-copy-actions .locale-switcher'],
                 'Locales selector'        => ['css' => '#pim_product_locales'],
+                'Channel dropdown'        => ['css' => '.attribute-edit-actions .scope-switcher'],
                 'Copy channel dropdown'   => ['css' => '.attribute-copy-actions .scope-switcher'],
                 'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
@@ -50,7 +52,8 @@ class Edit extends ProductEditForm
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
-                'Progress bar'            => ['css' => '.progress-bar']
+                'Progress bar'            => ['css' => '.progress-bar'],
+                'Save'                    => ['css' => 'button.save-product']
             ]
         );
     }
@@ -60,7 +63,7 @@ class Edit extends ProductEditForm
      */
     public function save()
     {
-        $this->pressButton('Save');
+        $this->getElement('Save')->click();
         $this->spin(function () {
             return null === $this->find(
                 'css',
@@ -149,12 +152,12 @@ class Edit extends ProductEditForm
         $dropdown = $this->getElement('Copy source dropdown');
         $toggle   = $this->spin(function () use ($dropdown) {
             return $dropdown->find('css', '.dropdown-toggle');
-        }, 20, 'Could not find copy source switcher.');
+        }, 'Could not find copy source switcher.');
         $toggle->click();
 
         $option = $this->spin(function () use ($dropdown, $source) {
             return $dropdown->find('css', sprintf('a[data-source="%s"]', $source));
-        }, 20, sprintf('Could not find source "%s" in switcher', $source));
+        }, sprintf('Could not find source "%s" in switcher', $source));
         $option->click();
     }
 
@@ -225,11 +228,11 @@ class Edit extends ProductEditForm
         if ($element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, 10, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
+            }, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, 10, sprintf('unable to find label %s', $labelContent));
+            }, sprintf('unable to find label %s', $labelContent));
         }
 
         if (!$label) {
@@ -307,7 +310,7 @@ class Edit extends ProductEditForm
         try {
             $button = $this->spin(function () use ($field) {
                 return $this->find('css', sprintf('.field-container:contains("%s") .clear-field', $field));
-            }, 5);
+            });
         } catch (\Exception $e) {
             $button = null;
         }
@@ -369,7 +372,7 @@ class Edit extends ProductEditForm
         try {
             $switcher = $this->spin(function () {
                 return $this->find('css', '.status-switcher');
-            }, 5);
+            });
         } catch (\Exception $e) {
             $switcher = null;
         }
@@ -400,7 +403,7 @@ class Edit extends ProductEditForm
      */
     public function findCompletenessContent()
     {
-        return $this->getElement('Completeness', 20, 'Completeness content not found !!!');
+        return $this->getElement('Completeness', 'Completeness content not found !!!');
     }
 
     /**
@@ -799,10 +802,10 @@ class Edit extends ProductEditForm
     {
         $startCopyBtn = $this->spin(function () {
             return $this->getElement('Comparison dropdown')->find('css', 'div.start-copying');
-        }, 5);
+        });
 
         $startCopyBtn->click();
-        $this->getSession()->wait(500);
+        $this->getSession()->wait($this->getTimeout());
     }
 
     /**
@@ -820,7 +823,7 @@ class Edit extends ProductEditForm
             // Is panel already open?
             $this->spin(function () {
                 return $this->getElement('Copy actions')->find('css', '.stop-copying');
-            }, 20, "Copy panel seems neither open nor closed.");
+            }, "Copy panel seems neither open nor closed.");
         }
 
         $this->switchLocale($localeCode, true);
@@ -917,7 +920,7 @@ class Edit extends ProductEditForm
     {
         $this->spin(function () {
             return $this->getElement('Progress bar');
-        }, 30);
+        });
     }
 
     /**
@@ -967,8 +970,8 @@ class Edit extends ProductEditForm
         $groups = $this->getElement('Form Groups');
 
         $groupNode = $this->spin(function () use ($groups, $group) {
-            return $groups->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
-        }, 20, sprintf("Can't find attribute group '%s'", $group));
+            return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+        }, sprintf("Can't find attribute group '%s'", $group));
 
         return $groupNode->getParent()->getParent();
     }

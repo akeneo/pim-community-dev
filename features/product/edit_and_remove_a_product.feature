@@ -18,7 +18,7 @@ Feature: Edit and remove a product
     And I press the "Save" button in the popin
     Then I am on the "boots" product page
     And I fill in the following information:
-      | Length | 5.0000 CENTIMETER |
+      | Length | 5.0000 Centimeter |
     And I press the "Save" button
 
   Scenario: Successfully edit and then delete a product from the grid

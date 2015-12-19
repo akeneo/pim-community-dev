@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -41,6 +42,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var NormalizerInterface */
     protected $internalNormalizer;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /** @var string */
     protected $tmpStorageDir;
 
@@ -50,6 +54,16 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
+    /**
+     * @param ProductBuilderInterface              $productBuilder
+     * @param UserContext                          $userContext
+     * @param NormalizerInterface                  $normalizer
+     * @param ObjectUpdaterInterface               $productUpdater
+     * @param ValidatorInterface                   $productValidator
+     * @param NormalizerInterface                  $internalNormalizer
+     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param string                               $tmpStorageDir
+     */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
@@ -57,16 +71,18 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         NormalizerInterface $internalNormalizer,
+        LocalizedAttributeConverterInterface $localizedConverter,
         $tmpStorageDir
     ) {
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
-        $this->normalizer          = $normalizer;
-        $this->productUpdater      = $productUpdater;
-        $this->productValidator    = $productValidator;
-        $this->tmpStorageDir       = $tmpStorageDir;
-        $this->internalNormalizer  = $internalNormalizer;
-        $this->values              = '';
+        $this->productBuilder     = $productBuilder;
+        $this->userContext        = $userContext;
+        $this->normalizer         = $normalizer;
+        $this->productUpdater     = $productUpdater;
+        $this->productValidator   = $productValidator;
+        $this->tmpStorageDir      = $tmpStorageDir;
+        $this->internalNormalizer = $internalNormalizer;
+        $this->localizedConverter = $localizedConverter;
+        $this->values             = '';
     }
 
     /**
@@ -209,11 +225,19 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         $data = json_decode($this->values, true);
 
+        $locale = $this->userContext->getUiLocale()->getCode();
+        $data = $this->localizedConverter->convertLocalizedToDefaultValues($data, ['locale' => $locale]);
+
         $product = $this->productBuilder->createProduct('0');
         $this->productUpdater->update($product, $data);
         $violations = $this->productValidator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
 
-        $errors = ['values' => $this->internalNormalizer->normalize($violations, 'internal_api')];
+        $errors = ['values' => $this->internalNormalizer->normalize(
+            $violations,
+            'internal_api',
+            ['product' => $product]
+        )];
         $this->errors = json_encode($errors);
 
         return 0 === $violations->count();

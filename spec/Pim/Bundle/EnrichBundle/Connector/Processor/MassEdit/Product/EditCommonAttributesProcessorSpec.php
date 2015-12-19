@@ -121,6 +121,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
+        $expectedValues = [
+            'number' => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => '2.5'
+                ]
+            ]
+        ];
         $values = [
             'number' => [
                 [
@@ -156,7 +165,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $localizerRegistry->getLocalizer('number')->willReturn($localizer);
         $localizer->delocalize('2,5', ['locale' => 'fr_FR'])->willReturn('2.5');
 
-        $productUpdater->update($product, $values)->shouldBeCalled();
+        $productUpdater->update($product, $expectedValues)->shouldBeCalled();
 
         $this->process($product);
     }

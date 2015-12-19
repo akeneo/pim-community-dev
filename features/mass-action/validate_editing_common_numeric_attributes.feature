@@ -81,8 +81,6 @@ Feature: Validate editing common attributes of multiple products
     And I display the Length attribute
     And I change the Length to "foo"
     And I move on to the next step
-    # @TODO: fix this
-    And I display the Length attribute
     Then I should see validation error "This value should be a valid number."
     Then the metric "Length" of products boots, sandals and sneakers should be ""
 
@@ -119,8 +117,8 @@ Feature: Validate editing common attributes of multiple products
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
-    And I change the "$ Price" to "10"
-    And I change the "€ Price" to "15"
+    And I change the "Price" to "10 USD"
+    And I change the "Price" to "15 EUR"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sneakers should be:
@@ -141,10 +139,8 @@ Feature: Validate editing common attributes of multiple products
     And I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
-    And I change the "$ Price" to "500"
+    And I change the "Price" to "500 USD"
     And I move on to the next step
-    # @TODO: fix this
-    And I display the Price attribute
     Then I should see validation error "This value should be 200 or less."
     Then the prices "Price" of products boots, sandals and sneakers should be:
       | amount | currency |

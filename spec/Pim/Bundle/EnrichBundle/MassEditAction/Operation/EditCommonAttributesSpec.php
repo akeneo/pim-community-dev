@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -19,6 +20,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         NormalizerInterface $internalNormalizer,
+        LocalizedAttributeConverterInterface $localizedConverter,
         $tmpStorageDir = '/tmp/pim/file_storage'
     ) {
         $this->beConstructedWith(
@@ -28,6 +30,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $productUpdater,
             $productValidator,
             $internalNormalizer,
+            $localizedConverter,
             $tmpStorageDir
         );
     }

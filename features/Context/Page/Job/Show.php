@@ -22,7 +22,7 @@ class Show extends BaseIndex
     {
         $error = $this->spin(function () use ($property) {
             return $this->find('css', sprintf('tr:contains("%s") span.label-important', ucfirst($property)));
-        }, 20, sprintf('Could not find the %s property', $property));
+        }, sprintf('Could not find the %s property', $property));
 
         return $error->getText();
     }

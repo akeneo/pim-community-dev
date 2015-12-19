@@ -46,6 +46,7 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_internal_api_serializer'
+            - '@pim_localization.localizer.converter'
             - %tmp_storage_dir%
         tags:
             -
