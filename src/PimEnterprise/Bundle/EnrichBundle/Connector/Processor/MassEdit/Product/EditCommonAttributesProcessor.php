@@ -3,9 +3,8 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -34,34 +33,31 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $authorizationChecker;
 
     /**
-     * @param PropertySetterInterface              $propertySetter
-     * @param ValidatorInterface                   $validator
-     * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
-     * @param LocalizerRegistryInterface           $localizerRegistry
-     * @param UserManager                          $userManager
-     * @param TokenStorageInterface                $tokenStorage
-     * @param AuthorizationCheckerInterface        $authorizationChecker
+     * @param ValidatorInterface                  $validator
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param LocalizerRegistryInterface          $localizerRegistry
+     * @param ObjectUpdaterInterface              $productUpdater
+     * @param UserManager                         $userManager
+     * @param TokenStorageInterface               $tokenStorage
+     * @param AuthorizationCheckerInterface       $authorizationChecker
      */
     public function __construct(
-        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         LocalizerRegistryInterface $localizerRegistry,
+        ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         BaseProcessor::__construct(
-            $propertySetter,
             $validator,
-            $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
-            $localizerRegistry
+            $localizerRegistry,
+            $productUpdater
         );
 
         $this->tokenStorage         = $tokenStorage;

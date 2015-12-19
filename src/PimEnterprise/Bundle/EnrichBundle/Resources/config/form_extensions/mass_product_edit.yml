@@ -1,0 +1,13 @@
+extensions:
+    pim-mass-product-edit-form-add-attribute:
+        module: pimee/mass-product-edit-form/add-attribute
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: other-actions
+        aclResourceId: pim_enrich_product_add_attribute
+        position: 90
+
+    pim-mass-product-edit-form-attribute-locale-switcher:
+        module: pimee/mass-product-edit-form/locale-switcher
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: other-actions
+        position: 80

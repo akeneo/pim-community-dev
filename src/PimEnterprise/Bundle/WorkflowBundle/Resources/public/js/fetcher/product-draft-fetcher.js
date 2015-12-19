@@ -28,7 +28,9 @@ define(
                             draftsPromises.push(
                                 ProductManager
                                     .doGenerateMissing(draft.changes)
-                                    .then(function () {return draft;})
+                                    .then(function () {
+                                        return draft;
+                                    })
                             );
                         });
 

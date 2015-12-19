@@ -20,7 +20,7 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.repository.category'
         tags:
-            - { name: kernel.event_subscriber}
+            - { name: kernel.event_subscriber, priority: 255 }
 
     pimee_workflow.event_subscriber.published_product.consistency_exception:
         class: %pimee_workflow.event_subscriber.published_product.consistency_exception.class%

@@ -31,26 +31,6 @@ services:
                 acl: pim_enrich_product_edit_attributes
                 datagrid: product-grid
 
-    # Overriden products operation to deal with product draft or working copy saving depending on permissions
-    pim_enrich.mass_edit_action.edit_common_attributes:
-        public: false
-        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
-        arguments:
-            - '@pim_catalog.builder.product'
-            - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_serializer'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_catalog.manager.product_mass_action'
-            - '@security.authorization_checker'
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: edit-common-attributes
-                acl: pim_enrich_product_edit_attributes
-                datagrid: product-grid
-
     # Overriden products operation to add permission checks when try to classify products
     pim_enrich.mass_edit_action.classify:
         public: false
