@@ -37,6 +37,8 @@ services:
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@security.context'
+            - %kernel.root_dir%
+            - %kernel.environment%
         tags:
             -
                 name: pim_enrich.mass_edit_action
