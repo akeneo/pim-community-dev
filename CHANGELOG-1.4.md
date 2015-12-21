@@ -1,4 +1,7 @@
-# 1.4.*
+# 1.4.x
+
+## Scalability improvements
+- PIM-5170: Fix memory leak on bulk detach
 
 ## Bug fixes
 - PIM-5348: fix group count on behats
