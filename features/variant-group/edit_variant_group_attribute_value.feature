@@ -110,6 +110,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | side_view | SNKRS-1R.png |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-5335
   Scenario: Change a pim_catalog_image attribute of a variant group and ensure saving
     When I add available attributes Side view
     And I visit the "Media" group
