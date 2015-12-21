@@ -810,7 +810,15 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         if (in_array($type, ['product category', 'asset category', 'locale'])) {
-            return ($action === 'edit') ? Attributes::EDIT_ITEMS : Attributes::VIEW_ITEMS;
+            switch ($action) {
+                case 'own':
+                    return Attributes::OWN_PRODUCTS;
+                case 'edit':
+                    return Attributes::EDIT_ITEMS;
+                case 'view':
+                default:
+                    return Attributes::VIEW_ITEMS;
+            }
         }
 
         throw new \Exception('Undefined access type');
@@ -827,29 +835,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $accessClass = str_replace(' ', '', ucwords($accessType));
         $getterAccessType = sprintf('get%s', $accessClass);
 
+        $accessManager = $this->getAccessManager($accessType);
+        foreach ($table->getHash() as $data) {
+            $access = $this->$getterAccessType($data[$accessType]);
+            $accessManager->revokeAccess($access);
+        }
+
         foreach ($table->getHash() as $data) {
             $access = $this->$getterAccessType($data[$accessType]);
             $userGroup = $this->getUserGroup($data['user group']);
             $accessLevel = $this->getAccessLevelByAccessTypeAndAction($accessType, $data['access']);
 
-            $accessManager = $this->getAccessManager($accessType);
-
-            if ('none' === $accessLevel) {
-                $viewGroups = $accessManager->getViewUserGroups($access);
-
-                $key = array_search($userGroup, $viewGroups, true);
-                if (false !== $key) {
-                    unset($viewGroups[$key]);
-                }
-
-                $editGroups = $accessManager->getEditUserGroups($access);
-                $key = array_search($userGroup, $editGroups, true);
-                if (false !== $key) {
-                    unset($editGroups[$key]);
-                }
-
-                $accessManager->setAccess($access, $viewGroups, $editGroups);
-            } else {
+            if ('none' != $accessLevel) {
                 $accessManager->grantAccess($access, $userGroup, $accessLevel);
             }
         }

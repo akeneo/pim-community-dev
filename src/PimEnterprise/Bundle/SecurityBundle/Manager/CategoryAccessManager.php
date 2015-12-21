@@ -474,7 +474,7 @@ class CategoryAccessManager
      *
      * @return int
      */
-    protected function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
+    public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {
         return $this->getAccessRepository()->revokeAccess($category, $excludedGroups);
     }

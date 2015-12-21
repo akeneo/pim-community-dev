@@ -22,3 +22,15 @@ Feature: Create an asset category
     And I save the asset category
     Then I should be on the asset category "logo" edit page
     And I should see "Category successfully created"
+
+  @javascript
+  Scenario: Create an asset category tree and assign an asset to it
+    Given I am on the asset category tree creation page
+    When I fill in the following information:
+      | Code | newcategory |
+    And I save the asset category
+    Then I should be on the asset category "newcategory" edit page
+    And I should see "Tree successfully created"
+    Then I edit the "mugs" asset
+    And I visit the "Categories" tab
+    Then I should see the text "[newcategory]"

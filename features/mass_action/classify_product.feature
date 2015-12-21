@@ -19,6 +19,8 @@ Feature: Classify many products at once for the tree I have access
       | vintage          | Manager    | view   |
       | trendy           | Manager    | view   |
       | classy           | Manager    | view   |
+      | boots            | IT support | none   |
+      | 2014_collection  | Manager    | own    |
     And the following products:
       | sku     | categories      |
       | rangers | 2014_collection |
@@ -39,6 +41,6 @@ Feature: Classify many products at once for the tree I have access
     And I wait for the "classify" mass-edit job to finish
     And I am on the products page
     And I select the "Shoes" tree
-    Then I should see "Vintage (2)"
-    And I should see "Classy (2)"
+    Then I should see the text "Vintage (2)"
+    And I should see the text "Classy (2)"
 

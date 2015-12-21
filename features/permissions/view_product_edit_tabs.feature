@@ -12,6 +12,7 @@ Feature: Check product edit tabs visibility
     And the following product category accesses:
       | product category | user group | access |
       | pants            | Redactor   | edit   |
+      | pants            | Manager   | own   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-4483
   Scenario: Not being able to classify a product if I am not owner

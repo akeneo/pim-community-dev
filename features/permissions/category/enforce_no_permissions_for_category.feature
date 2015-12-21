@@ -50,6 +50,10 @@ Feature: Enforce no permissions for a category
       | code           | parent         |
       | protected_tree |                |
       | protected_node | protected_tree |
+    And the following product category accesses:
+      | product category | user group | access |
+      | protected_tree   | Manager    | none   |
+      | protected_node   | Manager    | none   |
     And the following products:
       | sku             | categories     |
       | unclassifiedOne |                |
