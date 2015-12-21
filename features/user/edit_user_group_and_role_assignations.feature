@@ -47,8 +47,9 @@ Feature: Edit a user groups and roles
     And I click on the "Peter" row
     And I save the group
     Then I should see "Group saved"
-    And the user "Peter" should be in 1 group
+    And the user "Peter" should be in 2 group
     And the user "Peter" should be in the "Redactor" group
+    And the user "Peter" should be in the "IT support" group
 
   Scenario: Assign a role to a user from the role page
     Given I edit the "Catalog manager" user role
