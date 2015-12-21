@@ -92,7 +92,7 @@ class ProductMassActionManager
      * @param AttributeInterface[] $attributes
      * @param string               $currentLocaleCode
      *
-     * @return bool
+     * @return array
      */
     public function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
     {
