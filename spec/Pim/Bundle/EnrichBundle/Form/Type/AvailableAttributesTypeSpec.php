@@ -40,13 +40,13 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
             'attributes',
             'light_entity',
             [
-                'repository' => $attributeRepository,
+                'repository'         => $attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => 'excluded attributes',
                     'locale_code'            => 'en_US',
                 ],
-                'multiple' => true,
-                'expanded' => false,
+                'multiple'           => true,
+                'expanded'           => false,
             ])->shouldHaveBeenCalled();
     }
 
