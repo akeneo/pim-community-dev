@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

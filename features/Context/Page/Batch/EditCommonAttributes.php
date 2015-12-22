@@ -18,9 +18,7 @@ class EditCommonAttributes extends ProductEditForm
     protected $currentStep;
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
-     * @param array                $parameters
+     * {@inheritdoc}
      */
     public function __construct($session, $pageFactory, $parameters = [])
     {
