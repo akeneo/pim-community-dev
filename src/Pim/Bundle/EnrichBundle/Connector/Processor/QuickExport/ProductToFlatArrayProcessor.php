@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -43,19 +44,24 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var  ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
      * @param string                              $uploadDirectory
      * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
         $uploadDirectory,
-        ProductBuilderInterface $productBuilder = null
+        ProductBuilderInterface $productBuilder = null,
+        ObjectDetacherInterface $objectDetacher = null
     ) {
         parent::__construct($jobConfigurationRepo);
 
@@ -63,6 +69,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $this->channelManager  = $channelManager;
         $this->uploadDirectory = $uploadDirectory;
         $this->productBuilder  = $productBuilder;
+        $this->objectDetacher  = $objectDetacher;
     }
 
     /**
@@ -104,6 +111,10 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+
+        if (null !== $this->objectDetacher) {
+            $this->objectDetacher->detach($product);
+        }
 
         return $data;
     }

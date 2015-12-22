@@ -9,6 +9,7 @@
 ## Bug fixes
 - PIM-5348: fix group count on behats
 - PIM-5347: fix mongo database in case of attribute removal
+- PIM-5387: fix memory leak on quick export
 
 # 1.4.14 (2015-12-17)
 
