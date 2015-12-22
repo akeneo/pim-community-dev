@@ -170,15 +170,14 @@ define(
                 var attributeCodes = event.codes;
 
                 $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
+                    FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locales, channels, currencies) {
                     var product = this.getFormData();
 
-                    _.each(attributeCodes, function (attributeCode) {
-                        var attribute = _.findWhere(attributes, {code: attributeCode});
+                    _.each(attributes, function (attribute) {
                         if (!product.values[attribute.code]) {
                             product.values[attribute.code] = AttributeManager.generateMissingValues(
                                 [],
@@ -191,7 +190,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.findWhere(attributes, {code: _.first(attributeCodes)}).group
+                        _.first(attributes).group
                     );
 
                     this.setData(product);
