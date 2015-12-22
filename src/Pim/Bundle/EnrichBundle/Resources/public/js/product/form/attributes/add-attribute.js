@@ -18,10 +18,12 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'oro/loading-mask',
+        'pim/formatter/choices/base',
         'jquery.multiselect',
         'jquery.multiselect.filter'
     ],
-    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, FetcherRegistry, LoadingMask) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, FetcherRegistry, LoadingMask, ChoicesFormatter) {
+
         return BaseForm.extend({
             tagName: 'div',
             className: 'add-attribute',
@@ -34,13 +36,14 @@ define(
                 header: '',
                 height: 175,
                 minWidth: 225,
-                classes: 'pimmultiselect pim-add-attributes-multiselect',
+                classes: 'pim-add-attributes-multiselect',
                 position: {
                     my: 'right top',
                     at: 'right bottom',
                     collision: 'none'
                 }
             },
+            resultsPerPage: 20,
 
             /**
              * Render this extension
@@ -48,7 +51,7 @@ define(
              * @return {Object}
              */
             render: function () {
-                this.$el.html($('<select>').attr('multiple', true));
+                this.$el.html(this.template());
 
                 this.initializeSelectWidget();
                 this.delegateEvents();
@@ -60,35 +63,56 @@ define(
              * Initialize jQuery multiselect and its filter plugin
              */
             initializeSelectWidget: function () {
-                var $select = this.$('select');
-
+                var $select = this.$('input[type="hidden"]');
                 var opts = this.defaultOptions;
-                opts.open = function () {
-                    var loadingMask = this.showLoadingMask();
-                    this.loadAttributesChoices()
-                        .always(function () {
-                            loadingMask.hide().$el.remove();
-                        });
-                }.bind(this);
+                var queryTimer;
 
-                opts.selectedText     = opts.title;
-                opts.noneSelectedText = opts.title;
+                $select.select2({
+                    tags: false,
+                    multiple: true,
+                    closeOnSelect: false,
+                    allowClear: true,
+                    minimumInputLength: 2,
+                    query: function (options) {
+                        window.clearTimeout(queryTimer);
+                        queryTimer = window.setTimeout(function () {
+                            var page = 1;
+                            if (options.context && options.context.page) {
+                                page = options.context.page;
+                            }
+                            var searchOptions = {
+                                search: options.term,
+                                options: {
+                                    limit: this.resultsPerPage,
+                                    page: page
+                                }
+                            };
 
-                $select
-                    .multiselect(opts)
-                    .multiselectfilter({
-                        label: false,
-                        placeholder: opts.placeholder
-                    });
-                var $menu = $('.ui-multiselect-menu.pimmultiselect');
+                            $.when(
+                                FetcherRegistry.getFetcher('attribute').search(searchOptions)
+                            ).then(function(attributes) {
+                                var choices = ChoicesFormatter.format(attributes);
+                                options.callback({
+                                    results: choices,
+                                    more: choices.length === this.resultsPerPage,
+                                    context: {
+                                        page: page + 1
+                                    }
+                                });
+                            }.bind(this));
+                        }.bind(this), 400)
+                    }.bind(this)
+                });
 
-                var $footerContainer = $('<div>', { 'class': 'ui-multiselect-footer' });
+                var $menu = this.$('.select2-drop');
+
+                var $footerContainer = $('<div>', {'class': 'ui-multiselect-footer'});
                 var $saveButton = $('<a>', {
                     'class': 'btn btn-small',
                     text: this.defaultOptions.buttonTitle
                 }).on('click', function () {
-                    $select.multiselect('close');
-                    var values = $select.val();
+                    $select.select2('close');
+                    var values = $select.select2('val');
                     if (null !== values) {
                         this.addAttributes(values);
                     }
@@ -99,7 +123,7 @@ define(
 
                 $select.next()
                     .addClass('btn btn-group')
-                    .append($('<span>', { 'class': 'caret' }))
+                    .append($('<span>', {'class': 'caret'}))
                     .removeAttr('style');
 
                 $menu.find('input[type="search"]').width(200);
@@ -127,65 +151,6 @@ define(
              */
             addAttributes: function (attributeCodes) {
                 this.trigger('add-attribute:add', { codes: attributeCodes });
-            },
-
-            /**
-             * Fetch attributes and refresh the multiselect with the new choices
-             *
-             * @return {Promise}
-             */
-            loadAttributesChoices: function () {
-                return $.when(
-                    AttributeManager.getAvailableOptionalAttributes(this.getFormData()),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
-                ).then(
-                    function (attributes, attributeGroups) {
-                        this.$('select')
-                            .html(this.template({
-                                groupedAttributes: this.buildGroupedAttributes(attributes, attributeGroups),
-                                locale: UserContext.get('catalogLocale')
-                            }))
-                            .multiselect('refresh')
-                            .next('button').removeAttr('style');
-                    }.bind(this)
-                );
-            },
-
-            /**
-             * Organize attributes by attribute groups
-             *
-             * @param {Array} attributes
-             * @param {Object} attributeGroups
-             *
-             * @return {Object}
-             */
-            buildGroupedAttributes: function (attributes, attributeGroups) {
-                var attributeCodes = _.pluck(attributes, 'code');
-                var groups         = _.sortBy($.extend(true, {}, attributeGroups), 'sortOrder');
-
-                _.each(groups, function (group) {
-                    group.attributes = _.intersection(group.attributes, attributeCodes);
-                    group.attributes = _.map(group.attributes, function (attributeCode) {
-                        return _.findWhere(attributes, { code: attributeCode });
-                    });
-                });
-
-                return groups;
-            },
-
-            /**
-             * Create, insert, show and return the loading mask for multiselect choices list
-             *
-             * @return {Object}
-             */
-            showLoadingMask: function () {
-                var loadingMask = new LoadingMask();
-                $('.ui-widget-content.pim-add-attributes-multiselect .ui-multiselect-checkboxes')
-                    .empty()
-                    .append(loadingMask.render().$el);
-                loadingMask.show();
-
-                return loadingMask;
             }
         });
     }
