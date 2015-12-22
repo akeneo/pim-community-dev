@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,23 +27,31 @@ class AttributeController
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
+    /** @var SearchableRepositoryInterface */
+    protected $attributeSearchRepository;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param CollectionFilterInterface    $collectionFilter
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param NormalizerInterface           $normalizer
+     * @param CollectionFilterInterface     $collectionFilter
+     * @param SearchableRepositoryInterface $attributeSearchRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer          = $normalizer;
         $this->collectionFilter    = $collectionFilter;
+        $this->attributeSearchRepository = $attributeSearchRepository;
     }
 
     /**
      * Get the attribute collection
+     *
+     * @param Request $request
      *
      * @return JsonResponse
      */
@@ -56,7 +65,16 @@ class AttributeController
             $criteria['attributeType'] = explode(',', $request->query->get('types'));
         }
 
-        $attributes         = $this->attributeRepository->findBy($criteria);
+        if (null !== $this->attributeSearchRepository) {
+            $query  = $request->query;
+            $attributes = $this->attributeSearchRepository->findBySearch(
+                $query->get('search'),
+                $query->get('options', ['limit' => 20])
+            );
+        } else {
+            $attributes = $this->attributeRepository->findBy($criteria);
+        }
+
         $filteredAttributes = $this->collectionFilter
             ->filterCollection($attributes, 'pim.internal_api.attribute.view');
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
