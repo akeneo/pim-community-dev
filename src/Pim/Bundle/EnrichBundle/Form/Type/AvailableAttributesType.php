@@ -70,6 +70,7 @@ class AvailableAttributesType extends AbstractType
                 'route'      => 'pim_enrich_attribute_rest_index',
                 'required'   => false,
                 'multiple'   => true,
+                'min-input-length' => 2,
             ]
         );
     }

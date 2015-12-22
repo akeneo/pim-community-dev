@@ -1,9 +1,8 @@
-<% _.each(groupedAttributes, function (group) { %>
-    <optgroup label="<%- group.label[locale] ? group.label[locale] : '[' + group.code + ']' %>">
-        <% _.each(group.attributes, function (attribute) { %>
-            <option value="<%- attribute.code %>">
-                <%- attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
-            </option>
-        <% }); %>
-    </optgroup>
-<% }); %>
+<button type="button"
+        class="pim-add-attributes-multiselect btn btn-group ui-state-active"
+        aria-haspopup="true">
+    <span class="ui-icon ui-icon-triangle-1-s"></span>
+    <span>Add attributes</span>
+    <span class="caret"></span>
+</button>
+<input type="hidden" multiple="true" style="width: 200px;"/>

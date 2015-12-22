@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -85,5 +86,23 @@ class AttributeController
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
 
         return new JsonResponse($normalizedAttributes);
+    }
+
+    /**
+     * Get attribute by identifier
+     *
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
+
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
+        }
+
+        return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
     }
 }

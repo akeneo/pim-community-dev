@@ -51,7 +51,7 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         /**
          * Get the related fetcher for the given collection name
          *
-         * @param String entityType
+         * @param {String} entityType
          *
          * @return Fetcher
          */
@@ -62,8 +62,8 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         /**
          * Clear the fetcher cache for the given collection name
          *
-         * @param String         entityType
-         * @param String|Ingeter entity
+         * @param {String}         entityType
+         * @param {String|integer} entity
          */
         clear: function (entityType, entity) {
             return this.getFetcher(entityType).clear(entity);
