@@ -1,0 +1,25 @@
+#DONE
+Given /^a "([^"]*)" variant group$/
+    # Context\FixturesContext::createVariantGroup()
+
+Given /^the following variant group values?:$/
+    # Context\FixturesContext::theFollowingVariantGroupValues()
+
+Given /^I am on the "([^"]*)" variant group page$/
+    # Context\NavigationContext::iAmOnTheVariantGroupEditPage()
+
+Given /^I edit the "([^"]*)" variant group$/
+    # Context\NavigationContext::iAmOnTheVariantGroupEditPage()
+
+#TODO
+Given /^I should be on the ("([^"]*)" variant group) page$/
+    # Context\NavigationContext::iShouldBeOnTheVariantGroupPage()
+
+ Then /^I should see that (.*) is inherited from variant group attribute$/
+    # Context\AssertionContext::iShouldSeeThatAttributeIsInheritedFromVariantGroup()
+
+ Then /^I should see that (.*) is not inherited from variant group attribute$/
+    # Context\AssertionContext::iShouldSeeThatAttributeIsNotInheritedFromVariantGroup()
+
+Given /^I select the "([^"]*)" variant group$/
+    # Context\WebUser::iSelectVariantGroup()
