@@ -124,3 +124,13 @@ datagrid:
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
+                category:
+                    type:      product_category
+                    label:     Category
+                    data_name: category
+            default:
+                category:
+                    value:
+                        treeId: %pim_filter.product_category_filter.class%::UNKNOWN_TREE
+                        categoryId: %pim_filter.product_category_filter.class%::ALL_CATEGORY
+                    type: %pim_filter.product_category_filter.class%::DEFAULT_TYPE

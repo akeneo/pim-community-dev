@@ -54,6 +54,24 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
+    /** @var string */
+    protected $errors;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
+    /** @var NormalizerInterface */
+    protected $internalNormalizer;
+
+    /** @var string */
+    protected $tmpStorageDir;
+
+    /** @var string */
+    protected $currentLocale;
+
     /**
      * @param ProductBuilderInterface              $productBuilder
      * @param UserContext                          $userContext

@@ -7,14 +7,14 @@ Feature: Associate a product
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku            | categories        |
-      | charcoal-boots | Summer_collection |
-      | black-boots    |                   |
-      | gray-boots     |                   |
-      | brown-boots    |                   |
-      | green-boots    |                   |
-      | shoelaces      |                   |
-      | glossy-boots   |                   |
+      | sku            |
+      | charcoal-boots |
+      | black-boots    |
+      | gray-boots     |
+      | brown-boots    |
+      | green-boots    |
+      | shoelaces      |
+      | glossy-boots   |
     And I am logged in as "Julia"
 
   Scenario: Associate a product to another product
@@ -167,15 +167,3 @@ Feature: Associate a product
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should be able to sort the rows by Is associated
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5295
-  Scenario: Association product grid is not filtered by the category selected in the product grid
-    Given I am on the products page
-    When I filter by "category" with value "Summer_collection"
-    Then I should see product charcoal-boots
-    And I should not see product black-boots
-    When I click on the "charcoal-boots" row
-    And I follow "Associations"
-    Then I should see 6 "#grid-association-product-grid tbody tr" elements
-    When I follow "Upsell"
-    Then I should see 6 "#grid-association-product-grid tbody tr" elements

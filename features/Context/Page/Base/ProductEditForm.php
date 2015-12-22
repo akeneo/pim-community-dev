@@ -233,7 +233,6 @@ class ProductEditForm extends Form
             return $fieldContainer->find('css', 'a.select2-choice');
         }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
-
         $link->click();
 
         $item = $this->spin(function () use ($link, $value) {
