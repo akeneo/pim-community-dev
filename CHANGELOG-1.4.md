@@ -4,6 +4,7 @@
 - PIM-5170: Fix memory leak on bulk detach
 
 ## Bug fixes
+- PIM-5295: Fix association product grid category filter
 - PIM-5348: fix group count on behats
 - PIM-5347: fix mongo database in case of attribute removal
 
