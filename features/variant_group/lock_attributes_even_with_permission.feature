@@ -9,13 +9,14 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
     And the following products:
       | sku              | groups     | size | main_color |
       | star_wars_jacket | hm_jackets | XS   | blue       |
+    And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4477
   Scenario: I'm not able to remove a media if I have no permission on this attribute group
     Given the following attribute group accesses:
       | attribute group | user group | access |
       | media           | Redactor   | view   |
-    And I am logged in as "Julia"
+      | media           | Manager    | edit   |
     And I am on the "hm_jackets" variant group page
     And I visit the "Attributes" tab
     And I add available attributes Side view
@@ -32,7 +33,7 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
     Given the following attribute group accesses:
       | attribute group | user group | access |
       | media           | Redactor   | edit   |
-    And I am logged in as "Julia"
+      | media           | Manager    | edit   |
     And I am on the "hm_jackets" variant group page
     And I visit the "Attributes" tab
     And I add available attributes Side view

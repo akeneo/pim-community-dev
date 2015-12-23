@@ -437,6 +437,20 @@ class CategoryAccessManager
     }
 
     /**
+     * Revoke access to a category
+     * If $excludedGroups are provided, access will not be revoked for user groups with them
+     *
+     * @param CategoryInterface $category
+     * @param Group[]           $excludedGroups
+     *
+     * @return int
+     */
+    public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
+    {
+        return $this->getAccessRepository()->revokeAccess($category, $excludedGroups);
+    }
+
+    /**
      * Get ProductCategoryAccess entity for a category and user group
      *
      * @param CategoryInterface $category
@@ -463,20 +477,6 @@ class CategoryAccessManager
         }
 
         return $access;
-    }
-
-    /**
-     * Revoke access to a category
-     * If $excludedGroups are provided, access will not be revoked for user groups with them
-     *
-     * @param CategoryInterface $category
-     * @param Group[]           $excludedGroups
-     *
-     * @return int
-     */
-    public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
-    {
-        return $this->getAccessRepository()->revokeAccess($category, $excludedGroups);
     }
 
     /**

@@ -112,6 +112,20 @@ class JobProfileAccessManager
     }
 
     /**
+     * Revoke access to a job profile
+     * If $excludedGroups are provided, access will not be revoked for user groups with them
+     *
+     * @param JobInstance $jobProfile
+     * @param Group[]     $excludedGroups
+     *
+     * @return int
+     */
+    public function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
+    {
+        return $this->getRepository()->revokeAccess($jobProfile, $excludedGroups);
+    }
+
+    /**
      * Get JobProfileAccess entity for a job profile and user group
      *
      * @param JobInstance $jobProfile
@@ -138,20 +152,6 @@ class JobProfileAccessManager
         }
 
         return $access;
-    }
-
-    /**
-     * Revoke access to a job profile
-     * If $excludedGroups are provided, access will not be revoked for user groups with them
-     *
-     * @param JobInstance $jobProfile
-     * @param Group[]     $excludedGroups
-     *
-     * @return int
-     */
-    protected function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
-    {
-        return $this->getRepository()->revokeAccess($jobProfile, $excludedGroups);
     }
 
     /**

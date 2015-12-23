@@ -123,7 +123,7 @@ class LocaleAccessManager
      *
      * @return int
      */
-    protected function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
+    public function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {
         return $this->getAccessRepository()->revokeAccess($locale, $excludedUserGroups);
     }
