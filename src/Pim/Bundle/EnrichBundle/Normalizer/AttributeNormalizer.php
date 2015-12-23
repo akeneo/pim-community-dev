@@ -74,7 +74,7 @@ class AttributeNormalizer implements NormalizerInterface
         ];
 
         if (null !== $attribute->getGroup()) {
-            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json');
+            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
         } else {
             $normalizedAttribute['group'] = null;
         }
