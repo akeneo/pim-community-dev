@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5348: fix asset category tree bug on new tree
+- PIM-5347: fix mongo database in case of attribute removal
 
 # 1.4.14 (2015-12-17)
 
