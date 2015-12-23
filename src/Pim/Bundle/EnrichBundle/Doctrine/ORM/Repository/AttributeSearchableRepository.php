@@ -38,7 +38,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
      */
     public function findBySearch($search = null, array $options = [])
     {
-        //TODO: refactor on master because this part is exactly the same that FamilySearchableRepository
+        //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
         //TODO: and should be put in Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
         $qb = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
         $qb->leftJoin('a.translations', 'at');
@@ -59,8 +59,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
             }
         }
-
-
 
         return $qb->getQuery()->getResult();
     }

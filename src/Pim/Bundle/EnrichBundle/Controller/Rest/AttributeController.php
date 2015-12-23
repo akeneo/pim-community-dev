@@ -57,22 +57,27 @@ class AttributeController
      */
     public function indexAction(Request $request)
     {
-        $criteria = [];
+        $options = [];
         if ($request->query->has('identifiers')) {
-            $criteria['code'] = explode(',', $request->query->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
         if ($request->query->has('types')) {
-            $criteria['attributeType'] = explode(',', $request->query->get('types'));
+            $options['attributeType'] = explode(',', $request->query->get('types'));
+        }
+        if (empty($options)) {
+            $options = $request->query->get('options', ['limit' => 20]);
         }
 
         if (null !== $this->attributeSearchRepository) {
-            $query  = $request->query;
             $attributes = $this->attributeSearchRepository->findBySearch(
-                $query->get('search'),
-                $query->get('options', ['limit' => 20])
+                $request->query->get('search'),
+                $options
             );
         } else {
-            $attributes = $this->attributeRepository->findBy($criteria);
+            if (isset($options['identifiers'])) {
+                $options['code'] = $options['identifiers'];
+            }
+            $attributes = $this->attributeRepository->findBy($options);
         }
 
         $filteredAttributes = $this->collectionFilter
