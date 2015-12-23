@@ -18,19 +18,11 @@ class PublishSpec extends ObjectBehavior
 
     function let(PublishedProductManager $manager, SecurityContextInterface $securityContext)
     {
-        $this->beConstructedWith($manager, $securityContext);
+        $this->beConstructedWith($manager, $securityContext, 'root/dir', 'prod');
     }
 
     function it_gets_form_type_alias()
     {
         $this->getFormType()->shouldReturn('pimee_enrich_mass_publish');
-    }
-
-    function it_publishes_each_product(ProductInterface $foo, ProductInterface $bar, $securityContext, $manager)
-    {
-        $this->setObjectsToMassEdit([$foo, $bar]);
-        $securityContext->isGranted(Attributes::OWN, Argument::any())->willReturn(true);
-        $manager->publishAll([$foo, $bar])->shouldBeCalled();
-        $this->perform();
     }
 }

@@ -14,6 +14,8 @@ use Context\WebUser as BaseWebUser;
  */
 class EnterpriseWebUser extends BaseWebUser
 {
+    const MASS_PUBLISH_LOG_PATH = 'app/logs/mass_action.log';
+
     /**
      * Override parent
      *
@@ -79,4 +81,41 @@ class EnterpriseWebUser extends BaseWebUser
             );
         }
     }
+
+    /**
+     * @Given /^I wait for the mass publish to finish$/
+     */
+    public function iWaitForTheMassPublishToFinish()
+    {
+        $logFilePath = __DIR__ . '/../../' . self::MASS_PUBLISH_LOG_PATH;
+        if (!file_exists($logFilePath)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see the mass publish log file to the path : "%s". None found.',
+                    $logFilePath
+                )
+            );
+        }
+
+        $i = 10;
+        $massPublishFinished = false;
+        while (!$massPublishFinished && $i > 0) {
+            sleep(2);
+            $logContent = file_get_contents($logFilePath);
+            if (false !== strpos($logContent, 'Associations have been published.')) {
+                $massPublishFinished = true;
+            }
+            $i--;
+        }
+
+        if (!$massPublishFinished) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Mass publish is not yet finished after 20s running or an error occurred. Log file content : "%s"',
+                    $logContent
+                )
+            );
+        }
+    }
+
 }

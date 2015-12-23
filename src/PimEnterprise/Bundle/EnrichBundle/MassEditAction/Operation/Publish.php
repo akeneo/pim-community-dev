@@ -16,6 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -31,14 +32,28 @@ class Publish extends AbstractMassEditAction
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var string */
+    protected $rootDir;
+
+    /** @var string */
+    protected $environment;
+
     /**
      * @param PublishedProductManager  $manager
      * @param SecurityContextInterface $securityContext
+     * @param string                   $rootDir
+     * @param string                   $environment
      */
-    public function __construct(PublishedProductManager $manager, SecurityContextInterface $securityContext)
-    {
+    public function __construct(
+        PublishedProductManager $manager,
+        SecurityContextInterface $securityContext,
+        $rootDir,
+        $environment
+    ) {
         $this->manager         = $manager;
         $this->securityContext = $securityContext;
+        $this->rootDir         = $rootDir;
+        $this->environment     = $environment;
     }
 
     /**
@@ -84,6 +99,8 @@ class Publish extends AbstractMassEditAction
      */
     public function perform()
     {
+        $pathFinder  = new PhpExecutableFinder();
+        $identifiers = [];
         foreach ($this->objects as $key => $product) {
             if (!$product instanceof ProductInterface) {
                 throw new \LogicException(
@@ -96,11 +113,26 @@ class Publish extends AbstractMassEditAction
                 );
             }
 
-            if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
-                unset($this->objects[$key]);
+            if ($this->securityContext->isGranted(Attributes::OWN, $product)) {
+                $identifier = $product->getIdentifier();
+                $identifiers[] = sprintf('"%s"', $identifier) ;
             }
         }
 
-        $this->manager->publishAll($this->objects);
+        $logFile = sprintf('%s/logs/mass_action.log', $this->rootDir);
+        if (file_exists($logFile)) {
+            unlink($logFile);
+        }
+
+        $cmd = sprintf(
+            '%s %s/console pim:product:mass-publish "%s" --env=%s >> %s 2>&1 &',
+            $pathFinder->find(),
+            $this->rootDir,
+            json_encode($identifiers),
+            $this->environment,
+            $logFile
+        );
+
+        exec($cmd);
     }
 }

@@ -54,7 +54,8 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     When I press the "Next" button
     When I press the "Confirm" button
-    And I am on the published index page
+    Then I wait for the mass publish to finish
+    When I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     And I am on the products page
@@ -63,6 +64,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     When I press the "Next" button
     When I press the "Confirm" button
+    Then I wait for the mass publish to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -92,6 +94,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     When I press the "Next" button
     When I press the "Confirm" button
+    And I wait for the mass publish to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -101,6 +104,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     When I press the "Next" button
     When I press the "Confirm" button
+    And I wait for the mass publish to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -144,6 +148,7 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     When I press the "Next" button
     When I press the "Confirm" button
+    And I wait for the mass publish to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product my-jacket and my-shoes

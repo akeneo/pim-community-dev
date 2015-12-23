@@ -1,3 +1,11 @@
+# 1.3.x
+
+## Scalability improvements
+- PIM-5349: Fix the issue with Publication on Mass Edit
+
+## BC Breaks
+- `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish` constructor changed, it now requires the kernel root dir and environment to launch process as backend process.
+
 # 1.3.34 (2015-12-17)
 
 # 1.3.33 (2015-11-25)
