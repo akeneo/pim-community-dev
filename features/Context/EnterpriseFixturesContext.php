@@ -47,17 +47,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     ];
 
     /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
-    {
-        $this->placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => __DIR__ . '/fixtures'
-        ];
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function createProduct($data)
