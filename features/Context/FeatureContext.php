@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Behat\Behat\Event\StepEvent;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Driver\Selenium2Driver;
@@ -10,10 +9,9 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\HookContext;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Yaml\Parser;
 
 /**
  * Main feature context
@@ -29,16 +27,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var KernelInterface */
     protected $kernel;
 
-    /** @var string[] */
-    protected static $errorMessages = [];
-
-    /**
-     * Path of the yaml file containing tables that should be excluded from database purge
-     *
-     * @var string
-     */
-    protected $excludedTablesFile = 'excluded_tables.yml';
-
     /**
      * Register contexts
      *
@@ -48,7 +36,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
-        $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('webUser', new WebUser());
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
@@ -58,160 +46,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('technical', new TechnicalContext());
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
     }
 
-    /**
-     * @BeforeScenario
-     */
-    public function purgeDatabase()
-    {
-        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
-        if (file_exists($excludedTablesFile)) {
-            $parser         = new Parser();
-            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
-            $excludedTables = $excludedTables['excluded_tables'];
-        } else {
-            $excludedTables = [];
-        }
-
-        if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
-            $purgers[]        = new MongoDBPurger($this->getDocumentManager());
-            $excludedTables[] = 'pim_catalog_product';
-            $excludedTables[] = 'pim_catalog_product_value';
-            $excludedTables[] = 'pim_catalog_media';
-        }
-
-        $purgers[] = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
-
-        foreach ($purgers as $purger) {
-            $purger->purge();
-        }
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function closeConnection()
-    {
-        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
-            $connection->close();
-        }
-    }
-
-    /**
-     * Take a screenshot when a step fails
-     *
-     * @param StepEvent $event
-     *
-     * @AfterStep
-     */
-    public function takeScreenshotAfterFailedStep(StepEvent $event)
-    {
-        if ($event->getResult() === StepEvent::FAILED) {
-            $driver = $this->getSession()->getDriver();
-
-            $rootDir   = dirname($this->getContainer()->getParameter('kernel.root_dir'));
-            $filePath  = $event->getLogicalParent()->getFile();
-            $stepStats = [
-                'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
-                'scenario_line'  => $event->getLogicalParent()->getLine(),
-                'scenario_label' => $event->getLogicalParent()->getTitle(),
-                'exception'      => $event->getException()->getMessage(),
-                'step_line'      => $event->getStep()->getLine(),
-                'step_label'     => $event->getStep()->getText(),
-                'status'         => 'failed'
-            ];
-
-            if ($driver instanceof Selenium2Driver) {
-                $dir      = getenv('WORKSPACE');
-                $buildUrl = getenv('BUILD_URL');
-                if (false !== $dir) {
-                    $dir = sprintf('%s/app/build/screenshots', $dir);
-                } else {
-                    $dir = '/tmp/behat/screenshots';
-                }
-
-                $lineNum  = $event->getStep()->getLine();
-                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
-                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
-                $path     = sprintf('%s/%s', $dir, $filename);
-
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
-                $fs->dumpFile($path, $driver->getScreenshot());
-
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
-                }
-
-                $stepStats['screenshot'] = $path;
-                $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
-            }
-
-            if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
-                echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
-            }
-        }
-    }
-
-    /**
-     * Print error messages
-     *
-     * @AfterFeature
-     */
-    public static function printErrorMessages()
-    {
-        if (!empty(self::$errorMessages)) {
-            echo "\n\033[1;31mAttention!\033[0m\n\n";
-
-            foreach (self::$errorMessages as $message) {
-                echo $message . "\n";
-            }
-
-            self::$errorMessages = [];
-        }
-    }
-
-    /**
-     * Add an error message
-     *
-     * @param string $message
-     */
-    public function addErrorMessage($message)
-    {
-        self::$errorMessages[] = $message;
-    }
-
-    /**
-     * Listen to JS errors
-     *
-     * @BeforeStep
-     */
-    public function listenToErrors()
-    {
-        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
-
-        $this->executeScript($script);
-    }
-
-    /**
-     * Collect and log JS errors
-     *
-     * @AfterStep
-     */
-    public function collectErrors()
-    {
-        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-            $result = $this->getSession()->evaluateScript($script);
-            if ($result) {
-                $this->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
-            }
-        }
-    }
 
     /**
      * Sets Kernel instance.

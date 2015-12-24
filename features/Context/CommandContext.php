@@ -3,7 +3,7 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
@@ -17,21 +17,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommandContext extends RawMinkContext
+class CommandContext extends PimContext
 {
     /** @var array */
     protected $placeholderValues = [];
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
-    {
-        $this->placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => __DIR__ . '/fixtures'
-        ];
-    }
 
     /**
      * @Given /^I launched the completeness calculator$/
@@ -224,7 +213,7 @@ class CommandContext extends RawMinkContext
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

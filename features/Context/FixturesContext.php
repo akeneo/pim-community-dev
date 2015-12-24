@@ -8,9 +8,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-use Doctrine\Common\Util\ClassUtils;
-use League\Flysystem\Filesystem;
+use Behat\Gherkin\Node\TableNode;use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
@@ -69,6 +67,16 @@ class FixturesContext extends BaseFixturesContext
     ];
 
     protected $username;
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearUOW()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->clear();
+        }
+    }
 
     /**
      * @param array|string $data
@@ -2008,14 +2016,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
-     * @return Filesystem[]
-     */
-    protected function getPimFilesystems()
-    {
-        return [];
     }
 
     /**

@@ -19,9 +19,6 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
         $this->resetPlaceholderValues();
     }
 
-    /**
-     * @BeforeScenario
-     */
     public function resetPlaceholderValues()
     {
         $this->placeholderValues = [
@@ -59,7 +56,15 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
         return $this->kernel->getContainer()->get($id);
     }
 
-
+    /**
+     * @param string $name
+     *
+     * @return object
+     */
+    protected function getParameter($name)
+    {
+        return $this->kernel->getContainer()->getParameter($name);
+    }
 
     /*************************************************************/
     /**** transitional methods that should be deleted ideally ****/
