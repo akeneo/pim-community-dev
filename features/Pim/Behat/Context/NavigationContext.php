@@ -344,7 +344,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     /**
      * @param string $expected
      */
-    protected function assertAddress($expected)
+    public function assertAddress($expected)
     {
         $actualFullUrl = $this->getSession()->getCurrentUrl();
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
