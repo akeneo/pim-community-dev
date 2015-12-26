@@ -19,7 +19,6 @@ $forbidCatalogModelImplementations = [
     'Pim\Component\Catalog\Model\AbstractCompleteness',
     'Pim\Component\Catalog\Model\AbstractMetric',
     'Pim\Component\Catalog\Model\AbstractProduct',
-    'Pim\Component\Catalog\Model\AbstractProductMedia',
     'Pim\Component\Catalog\Model\AbstractProductPrice',
     'Pim\Component\Catalog\Model\AbstractProductValue',
     'Pim\Bundle\CatalogBundle\Entity',
