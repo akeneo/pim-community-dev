@@ -21,9 +21,14 @@ define(
                 'click button': 'changePanel'
             },
             render: function () {
+                var state = this.getParent().state.toJSON();
+                state.panels = _.filter(state.panels, function (panel) {
+                    return !_.isFunction(panel.displayCondition) || panel.displayCondition();
+                });
+
                 this.$el.html(
                     this.template({
-                        state: this.getParent().state.toJSON()
+                        state: state
                     })
                 );
 
