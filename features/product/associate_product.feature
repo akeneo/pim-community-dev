@@ -176,6 +176,6 @@ Feature: Associate a product
     And I should not see product black-boots
     When I click on the "charcoal-boots" row
     And I follow "Associations"
-    Then I should see 6 "#grid-association-product-grid tbody tr" elements
+    Then the grid should contain 6 elements
     When I follow "Upsell"
-    Then I should see 6 "#grid-association-product-grid tbody tr" elements
+    Then the grid should contain 6 elements
