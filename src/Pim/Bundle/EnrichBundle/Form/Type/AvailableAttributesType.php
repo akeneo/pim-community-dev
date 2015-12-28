@@ -64,15 +64,13 @@ class AvailableAttributesType extends AbstractType
     {
         $builder->add(
             'attributes',
-            'light_entity',
+            'pim_async_select',
             [
-                'repository'         => $this->attributeRepository,
-                'repository_options' => [
-                    'excluded_attribute_ids' => $options['excluded_attributes'],
-                    'locale_code'            => $this->userContext->getCurrentLocaleCode(),
-                ],
-                'multiple' => true,
-                'expanded' => false,
+                'repository' => $this->attributeRepository,
+                'route'      => 'pim_enrich_attribute_rest_index',
+                'required'   => false,
+                'multiple'   => true,
+                'min-input-length' => 2,
             ]
         );
     }

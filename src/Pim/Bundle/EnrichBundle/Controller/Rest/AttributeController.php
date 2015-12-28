@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -26,41 +28,81 @@ class AttributeController
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
+    /** @var SearchableRepositoryInterface */
+    protected $attributeSearchRepository;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param CollectionFilterInterface    $collectionFilter
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param NormalizerInterface           $normalizer
+     * @param CollectionFilterInterface     $collectionFilter
+     * @param SearchableRepositoryInterface $attributeSearchRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer          = $normalizer;
         $this->collectionFilter    = $collectionFilter;
+        $this->attributeSearchRepository = $attributeSearchRepository;
     }
 
     /**
      * Get the attribute collection
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function indexAction(Request $request)
     {
-        $criteria = [];
+        $options = [];
         if ($request->query->has('identifiers')) {
-            $criteria['code'] = explode(',', $request->query->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
         if ($request->query->has('types')) {
-            $criteria['attributeType'] = explode(',', $request->query->get('types'));
+            $options['attributeType'] = explode(',', $request->query->get('types'));
+        }
+        if (empty($options)) {
+            $options = $request->query->get('options', ['limit' => 20]);
         }
 
-        $attributes         = $this->attributeRepository->findBy($criteria);
+        if (null !== $this->attributeSearchRepository) {
+            $attributes = $this->attributeSearchRepository->findBySearch(
+                $request->query->get('search'),
+                $options
+            );
+        } else {
+            if (isset($options['identifiers'])) {
+                $options['code'] = $options['identifiers'];
+            }
+            $attributes = $this->attributeRepository->findBy($options);
+        }
+
         $filteredAttributes = $this->collectionFilter
             ->filterCollection($attributes, 'pim.internal_api.attribute.view');
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
 
         return new JsonResponse($normalizedAttributes);
+    }
+
+    /**
+     * Get attribute by identifier
+     *
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
+
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
+        }
+
+        return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
     }
 }

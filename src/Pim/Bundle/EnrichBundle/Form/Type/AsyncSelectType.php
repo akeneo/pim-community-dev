@@ -107,6 +107,7 @@ class AsyncSelectType extends AbstractType
     {
         $view->vars['attr']['data-url']              = $this->getUrl($options);
         $view->vars['attr']['data-min-input-length'] = $options['min-input-length'];
+        $view->vars['attr']['data-multiple']         = $options['multiple'];
         if ($options['required']) {
             $view->vars['attr']['data-required'] = 'required';
         }
