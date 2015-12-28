@@ -355,14 +355,16 @@ The 1.5 covers,
 
 The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
 
-TODO:
- - Akeneo vs Pim namespace to discuss
+DONE:
  - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
  - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
  - Remove Oro/Bundle/LocaleBundle
+
+TODO:
+ - Akeneo vs Pim namespace to discuss
  - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
  - Remove Oro/Bundle/TranslationBundle
- - From Pim/Bundle/TranslationBundle, move translations models to our new component
+ - [WIP] From Pim/Bundle/TranslationBundle, move translations models to our new component
  - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
 
 ## Versioning Bundle & Component [WIP]
@@ -560,4 +562,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\LocaleBundle\\DoctrineExtensions\\DBAL\\Types\\UTCDateTimeType/Akeneo\\Bundle\\StorageUtilsBundle\\Doctrine\\DBAL\\Types\\UTCDateTimeType/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.datetime_range/pim_filter.form.type.datetime_range/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.date_range/pim_filter.form.type.date_range/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Entity\\TranslatableInterface/Akeneo\\Component\\Localization\\Model\\TranslatableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Entity\\AbstractTranslation/Akeneo\\Component\\Localization\\Model\\AbstractTranslation/g'
 ```

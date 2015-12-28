@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Association type translation entity

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 
 /**
  * Test class

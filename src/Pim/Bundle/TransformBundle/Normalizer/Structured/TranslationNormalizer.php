@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

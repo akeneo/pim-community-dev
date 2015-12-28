@@ -1,11 +1,13 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Entity;
+namespace Akeneo\Component\Localization\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Abstract translation class
+ *
+ * TODO: extract in doctrine mapping file
  *
  * @ORM\MappedSuperclass
  */

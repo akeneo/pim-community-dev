@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Entity;
+namespace Akeneo\Component\Localization\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Translatable interface, must be implemented by translatable business objects
@@ -23,7 +24,7 @@ interface TranslatableInterface
     /**
      * Get translation for current locale
      *
-     * @return \Pim\Bundle\TranslationBundle\Entity\AbstractTranslation
+     * @return AbstractTranslation
      */
     public function getTranslation();
 
@@ -32,7 +33,7 @@ interface TranslatableInterface
      *
      * @param AbstractTranslation $translation
      *
-     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return TranslatableInterface
      */
     public function addTranslation(AbstractTranslation $translation);
 
@@ -41,7 +42,7 @@ interface TranslatableInterface
      *
      * @param AbstractTranslation $translation
      *
-     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return TranslatableInterface
      */
     public function removeTranslation(AbstractTranslation $translation);
 
@@ -57,7 +58,7 @@ interface TranslatableInterface
      *
      * @param string $locale
      *
-     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return TranslatableInterface
      */
     public function setLocale($locale);
 }

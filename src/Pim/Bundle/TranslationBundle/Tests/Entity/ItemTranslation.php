@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Item Translation
