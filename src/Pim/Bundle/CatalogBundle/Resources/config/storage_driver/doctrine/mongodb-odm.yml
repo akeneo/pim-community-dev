@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository
+    pim_catalog.repository.product_value_counter.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductValueCounterRepository
     pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository
@@ -30,6 +31,7 @@ parameters:
     pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator
     pim_catalog.mongodb_odm_query_generator.attribute_as_label_updated.class:    Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeAsLabelUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.channel_deleted.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\ChannelDeletedQueryGenerator
+    pim_catalog.mongodb_odm_query_generator.attribute_deleted.class:             Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.family_label_updated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_code_updated.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionCodeUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_deleted.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionDeletedQueryGenerator
@@ -196,6 +198,12 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_catalog.repository.product_value_counter:
+        class: %pim_catalog.repository.product_value_counter.class%
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - %pim_catalog.entity.product.class%
+
     pim_catalog.repository.product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
@@ -296,6 +304,14 @@ services:
         arguments:
             - %pim_catalog.entity.family.class%
             - 'attributeAsLabel'
+        tags:
+            - { name: pim_catalog.mongodb_odm_query_generator }
+
+    pim_catalog.mongodb_odm_query_generator.attribute_deleted:
+        class: %pim_catalog.mongodb_odm_query_generator.attribute_deleted.class%
+        parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
+        arguments:
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 

@@ -42,12 +42,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     public function detachAll(array $objects)
     {
-        if (count($objects) > 0) {
-            $firstObject = current($objects);
-            $objectManager = $this->getObjectManager($firstObject);
-            foreach ($objects as $object) {
-                $objectManager->detach($object);
-            }
+        foreach ($objects as $object) {
+            $this->detach($object);
         }
     }
 

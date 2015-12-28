@@ -34,10 +34,8 @@ class Edit extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'        => ['css' => '.attribute-edit-actions .locale-switcher'],
                 'Copy locales dropdown'   => ['css' => '.attribute-copy-actions .locale-switcher'],
                 'Locales selector'        => ['css' => '#pim_product_locales'],
-                'Channel dropdown'        => ['css' => '.attribute-edit-actions .scope-switcher'],
                 'Copy channel dropdown'   => ['css' => '.attribute-copy-actions .scope-switcher'],
                 'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
