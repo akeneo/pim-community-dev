@@ -14,7 +14,7 @@ Feature: Edit a user groups and roles
     And I check "Redactor"
     And I save the user
     Then I should see a flash message "User saved"
-    And the user "admin" should be in 3 groups
+    And the user "admin" should be in 2 groups
     And the user "admin" should be in the "Redactor" group
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
