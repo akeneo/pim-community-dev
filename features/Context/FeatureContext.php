@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\HookContext;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -50,8 +51,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
     }
-
 
     /**
      * Sets Kernel instance.

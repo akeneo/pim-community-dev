@@ -1387,26 +1387,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $file
-     * @param string $field
-     *
-     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
-     */
-    public function attachFileToField($file, $field)
-    {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
-                .DIRECTORY_SEPARATOR.$file;
-            if (is_file($fullPath)) {
-                $file = $fullPath;
-            }
-        }
-
-        $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->getMainContext()->wait();
-    }
-
-    /**
      * @param string $field
      *
      * @Given /^I remove the "([^"]*)" file$/
@@ -1808,16 +1788,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $type
-     *
-     * @When /^I launch the (import|export) job$/
-     */
-    public function iExecuteTheJob($type)
-    {
-        $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-    }
-
-    /**
      * @param string $code
      *
      * @When /^I wait for the "([^"]*)" job to finish$/
@@ -1930,35 +1900,6 @@ class WebUser extends RawMinkContext
     public function iWaitForTheOptionsToLoad()
     {
         $this->wait(2000, false);
-        $this->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^I upload and import the file "([^"]*)"$/
-     */
-    public function iUploadAndImportTheFile($file)
-    {
-        $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
-        $this->getCurrentPage()->pressButton('Upload and import now');
-
-        sleep(10);
-        $this->getMainContext()->reload();
-        $this->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^I upload and import an invalid file "([^"]*)"$/
-     */
-    public function iUploadAndImportAnInvalidFile($file)
-    {
-        $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
-        $this->getCurrentPage()->pressButton('Upload and import now');
         $this->wait();
     }
 
