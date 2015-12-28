@@ -11,14 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AbstractProductPrice;
 
 /**
  * Published product price
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @ExclusionPolicy("all")
  */
 class PublishedProductPrice extends AbstractProductPrice implements PublishedProductPriceInterface
 {

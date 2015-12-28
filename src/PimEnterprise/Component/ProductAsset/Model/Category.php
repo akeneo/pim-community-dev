@@ -19,8 +19,6 @@ use Akeneo\Component\Localization\Model\AbstractTranslation;
  * Category for assets
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
- *
- * TODO: ExclusionPolicy("all") ? use JMS\Serializer\Annotation\ExclusionPolicy;
  */
 class Category extends BaseCategory implements CategoryInterface
 {
