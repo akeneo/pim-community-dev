@@ -50,6 +50,10 @@ Feature: Enforce no permissions for a category
       | code           | parent         |
       | protected_tree |                |
       | protected_node | protected_tree |
+    And the following product category accesses:
+      | product category | user group | access |
+      | protected_tree   | Manager    | none   |
+      | protected_node   | Manager    | none   |
     And the following products:
       | sku             | categories     |
       | unclassifiedOne |                |
@@ -82,6 +86,9 @@ Feature: Enforce no permissions for a category
   @javascript
   Scenario: Display only granted products in association products grid, I see a sub set of products
     Given I am logged in as "Julia"
+    And the following product category accesses:
+      | product category  | user group | access |
+      | winter_collection | Manager    | own    |
     And I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:

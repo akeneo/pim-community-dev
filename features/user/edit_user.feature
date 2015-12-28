@@ -12,8 +12,8 @@ Feature: Edit a user
       | john_deere | John Deere  | tractors |
     And the following asset category accesses:
       | asset category | user group | access |
-      |  tractors      | Manager    | view   |
-      | john_deere     | Manager    | view   |
+      | tractors       | IT support | view   |
+      | john_deere     | IT support | view   |
     And I am logged in as "Peter"
 
   @javascript

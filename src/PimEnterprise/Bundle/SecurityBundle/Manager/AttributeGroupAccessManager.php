@@ -156,6 +156,20 @@ class AttributeGroupAccessManager
     }
 
     /**
+     * Revoke access to an attribute group
+     * If $excludedUserGroups are provided, access will not be revoked for groups with them
+     *
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup[]             $excludedUserGroups
+     *
+     * @return int
+     */
+    public function revokeAccess(AttributeGroupInterface $attributeGroup, array $excludedUserGroups = [])
+    {
+        return $this->getRepository()->revokeAccess($attributeGroup, $excludedUserGroups);
+    }
+
+    /**
      * Get AttributeGroupAccess entity for an attribute group and user group
      *
      * @param AttributeGroupInterface $attributeGroup
@@ -182,20 +196,6 @@ class AttributeGroupAccessManager
         }
 
         return $access;
-    }
-
-    /**
-     * Revoke access to an attribute group
-     * If $excludedUserGroups are provided, access will not be revoked for groups with them
-     *
-     * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup[]             $excludedUserGroups
-     *
-     * @return int
-     */
-    protected function revokeAccess(AttributeGroupInterface $attributeGroup, array $excludedUserGroups = [])
-    {
-        return $this->getRepository()->revokeAccess($attributeGroup, $excludedUserGroups);
     }
 
     /**

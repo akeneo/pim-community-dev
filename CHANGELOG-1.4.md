@@ -1,5 +1,11 @@
 # 1.4.x
 
+## Bug fixes
+- PIM-5348: fix asset category tree bug on new tree
+- PIM-5347: fix mongo database in case of attribute removal
+
+# 1.4.14 (2015-12-17)
+
 ## BC Breaks
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add
@@ -8,6 +14,8 @@
         `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 
 # 1.4.13 (2015-12-10)
+
+# 1.4.12 (2015-12-03)
 
 ## Bug fixes
 - PIM-5136: Fixed completeness of published products
