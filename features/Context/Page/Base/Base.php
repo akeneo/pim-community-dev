@@ -42,14 +42,6 @@ class Base extends Page
     }
 
     /**
-     * Verify that page is loaded after login
-     */
-    public function verifyAfterLogin()
-    {
-        return true;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function fillField($locator, $value)

@@ -7,6 +7,7 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Base;
 use Context\Spin\SpinCapableTrait;
@@ -20,6 +21,9 @@ use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Context for navigating the website
@@ -37,6 +41,9 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /** @var string */
     protected $username;
+
+    /** @var RouterInterface */
+    private static $router;
 
     /** @var string */
     protected $password;
@@ -117,10 +124,77 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmLoggedInAs($username)
     {
-        $this->username = $username;
-        $this->password = $username;
+//        $this->username = $username;
+        $this->theTest($username);
+    }
 
-        $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+    /**
+     * @param string $username
+     */
+    protected function theTest($username)
+    {
+        $user = $this->getRepository('Pim\Bundle\UserBundle\Entity\User')->findOneBy(['username' => $username ]);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $session = $this->getService('session');
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $this->prepareSessionIfNeeded();
+
+        $this->getSession()->setCookie($session->getName(), $session->getId());
+        $this->getService('security.token_storage')->setToken($token);
+
+        return true;
+    }
+
+    private function prepareSessionIfNeeded()
+    {
+        if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
+            return;
+        }
+
+        if (false !== strpos($this->getSession()->getCurrentUrl(), $this->getMinkParameter('/'))) {
+            return;
+        }
+
+        $this->getSession()->visit($this->locatePath('/'));
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getRepository($namespace)
+    {
+        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    protected function getSmartRegistry()
+    {
+        return $this->getMainContext()->getSmartRegistry();
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return object
+     */
+    protected function getService($name)
+    {
+        return $this->getContainer()->get($name);
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return $this->getMainContext()->getContainer();
     }
 
     /**
@@ -728,15 +802,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = $this->getCurrentPage()->open($options);
 
         // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page, $options) {
-            if ($this->loginIfRequired()) {
-                $page = $this->getCurrentPage()->open($options);
-                $this->wait();
-            }
-
-            return $page->verifyAfterLogin();
-        }, 30);
-        $this->wait();
+//        $this->getMainContext()->spin(function () use ($page, $options) {
+//            if ($this->theTest($this->username)) {
+//                $page = $this->getCurrentPage()->open($options);
+//            }
+//
+//            return $page;
+//        }, 30);
 
         return $page;
     }
@@ -796,25 +868,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         }
 
         return $filteredUrl;
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     *
-     * @return bool true if login was required, false if not
-     */
-    protected function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

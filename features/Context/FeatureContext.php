@@ -57,6 +57,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('technical', new TechnicalContext());
     }
 
+    private $cachedQueries = [];
+
     /**
      * @BeforeScenario
      */
@@ -78,12 +80,27 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $excludedTables[] = 'pim_catalog_media';
         }
 
-        $purgers[] = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
+        if (empty($this->cachedQueries)) {
+            $this->purgeForTheFirstTime($excludedTables);
+            return;
+        }
 
-        foreach ($purgers as $purger) {
-            $purger->purge();
+        $this->purgeUsingCachedQueries();
+    }
+
+    private function purgeUsingCachedQueries()
+    {
+        $this->getEntityManager()->getConnection()->getConfiguration()->setSQLLogger(null);
+
+        foreach ($this->cachedQueries as $cachedQuery) {
+            $this->getEntityManager()->getConnection()->executeUpdate(
+                $cachedQuery['sql'],
+                $cachedQuery['params'],
+                $cachedQuery['types']
+            );
         }
     }
+
 
     /**
      * @AfterScenario
@@ -411,5 +428,28 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    private function getQueryLogger()
+    {
+        return new QueryLogger();
+    }
+
+    /**
+     * @param $excludedTables
+     * @param $purgers
+     */
+    protected function purgeForTheFirstTime($excludedTables)
+    {
+        $this->getEntityManager()->getConnection()->getConfiguration()->setSQLLogger($this->getQueryLogger());
+
+        $purgers[] = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
+
+        foreach ($purgers as $purger) {
+            $purger->purge();
+        }
+
+        $this->cachedQueries = $this->getQueryLogger()->getLoggedQueries();
+        $this->getQueryLogger()->clearLoggedQueries();
     }
 }
