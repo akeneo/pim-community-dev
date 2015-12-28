@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TranslationBundle\EventListener;
 
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Akeneo\Component\Localization\Model\TranslatableInterface;
 
 /**
  * Aims to inject user context locale into translatable entities

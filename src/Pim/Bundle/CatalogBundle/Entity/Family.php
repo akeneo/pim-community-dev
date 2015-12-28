@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;

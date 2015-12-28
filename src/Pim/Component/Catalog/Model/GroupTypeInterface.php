@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Component\Localization\Model\TranslatableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Group type interface

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Translation update guesser

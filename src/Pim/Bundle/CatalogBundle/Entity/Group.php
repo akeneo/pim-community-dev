@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
