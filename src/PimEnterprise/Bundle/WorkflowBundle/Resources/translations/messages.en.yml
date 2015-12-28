@@ -38,6 +38,8 @@ pimee_workflow:
                 invalid_draft: This proposal can't be applied due to the following error. %error%
     proposal:
         to_review: %author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%
+        individual_import: %author.firstname% %author.lastname% has sent proposals to review from job import
+        generic_import: You have proposals to review from job import
         original_value: Original
         new_value: New
     published_product:
@@ -64,6 +66,8 @@ pimee_workflow:
     steps:
         product_draft_processor.title: Proposal processor
 pimee_workflow_product_draft_notification_new_proposal: New proposal
+pimee_workflow_import_notification_new_proposals: New proposals from import
+
 btn.publish: Publish
 btn.unpublish: Unpublish
 

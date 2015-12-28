@@ -26,33 +26,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class SendForApprovalSubscriber implements EventSubscriberInterface
+class SendForApprovalSubscriber extends AbstractProposalSubscriber
 {
     const NOTIFICATION_TYPE = 'pimee_workflow_product_draft_notification_new_proposal';
-
-    /** @var NotificationManager */
-    protected $notificationManager;
-
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
-
-    /** @var UserRepositoryInterface */
-    protected $userRepository;
-
-    /**
-     * @param NotificationManager      $notificationManager
-     * @param CategoryAccessRepository $categoryAccessRepo
-     * @param UserRepositoryInterface  $userRepository
-     */
-    public function __construct(
-        NotificationManager $notificationManager,
-        CategoryAccessRepository $categoryAccessRepo,
-        UserRepositoryInterface $userRepository
-    ) {
-        $this->notificationManager = $notificationManager;
-        $this->categoryAccessRepo  = $categoryAccessRepo;
-        $this->userRepository      = $userRepository;
-    }
 
     /**
      * {@inheritdoc}
@@ -75,14 +51,10 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
         $comment      = $event->getArgument('comment');
         $product      = $productDraft->getProduct();
 
-        $ownerGroupsId = [];
-        $ownerGroups   = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS);
-        foreach ($ownerGroups as $userGroup) {
-            $ownerGroupsId[] = $userGroup['id'];
-        }
+        $ownerGroupIds = $this->getOwnerGroupIds($product);
 
-        $users         = $this->userRepository->findByGroupIds($ownerGroupsId);
-        $usersToNotify = $this->filterUsersToNotify($users);
+        $users         = $this->userRepository->findByGroups($ownerGroupIds);
+        $usersToNotify = $this->getUsersToNotify($users);
         $author        = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
 
         if (!empty($usersToNotify)) {
@@ -109,22 +81,5 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                 ]
             );
         }
-    }
-
-    /**
-     * @param UserInterface[] $users
-     *
-     * @return UserInterface[]
-     */
-    protected function filterUsersToNotify(array $users)
-    {
-        $usersToNotify = [];
-        foreach ($users as $user) {
-            if ($user->hasProposalsToReviewNotification()) {
-                $usersToNotify[] = $user;
-            }
-        }
-
-        return $usersToNotify;
     }
 }
