@@ -342,7 +342,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         $data = json_decode($this->values, true);
 
-        $product = $this->productBuilder->createProduct('0');
+        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
         $this->productUpdater->update($product, $data);
         $violations = $this->productValidator->validate($product);
 
