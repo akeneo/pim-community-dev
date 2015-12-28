@@ -6,7 +6,7 @@ use \Akeneo\CouplingDetector\Domain\Rule;
 use \Akeneo\CouplingDetector\Domain\RuleInterface;
 
 $finder = new DefaultFinder();
-$finder->notPath('Oro')->notPath('Akeneo/Bundle/BatchBundle/Tests');
+$finder->notPath('Oro');
 
 $forbidDoctrineExceptCommon = ['Doctrine\ORM', 'Doctrine\ODM', 'Doctrine\DBAL'];
 $forbidPimAndEnterprise = ['Pim', 'PimEnterprise'];
@@ -61,6 +61,12 @@ $rules = [
         'The component file storage should depends only on akeneo storageutils, flysystem, symfony filesystem, symfony http foundation, doctrine common'
     ),
     new Rule(
+        'Akeneo\Component\Localization',
+        ['Akeneo\Component\Localization', 'Doctrine\Common'],
+        RuleInterface::TYPE_ONLY,
+        'The component console should depends only on doctrine common'
+    ),
+    new Rule(
         'Akeneo\Component\StorageUtils',
         ['Akeneo\Component\StorageUtils', 'Symfony\Component\EventDispatcher', 'Doctrine\Common'],
         RuleInterface::TYPE_ONLY,
@@ -103,7 +109,7 @@ $rulesToFix = [
         'The component reference data should depends only on catalog component, symfony property access, symfony options resolver and doctrine common'
     ),
 
-    // TODO: violations with QB + TranslatableInterface!!
+    // TODO: violations with QB
     new Rule(
         'Akeneo\Component',
         array_merge($forbidAnyBundles, $forbidPimAndEnterprise, $forbidDoctrineExceptCommon),
@@ -111,10 +117,10 @@ $rulesToFix = [
         'A Akeneo component must only contain technical logic re-usable out of the Pim, must not depends on Pim, Bundle, Doctrine'
     ),
 
-    // TODO: violations with QB + TranslatableInterface!! (Akeneo/Localization component?)
+    // TODO: violations with QB
     new Rule(
         'Akeneo\Component\Classification',
-        ['Akeneo\Component\Classification', 'Akeneo\Component\StorageUtils', 'Doctrine\Common', 'Symfony\Component\PropertyAccess'],
+        ['Akeneo\Component\Classification', 'Akeneo\Component\Localization', 'Akeneo\Component\StorageUtils', 'Doctrine\Common', 'Symfony\Component\PropertyAccess'],
         RuleInterface::TYPE_ONLY,
         'The component classification should only depends on storageutils, doctrine common and symfony property access (gedmo is an implementation detail?)'
     ),
@@ -140,9 +146,23 @@ $rulesToFix = [
         'A Pim component or bundle must never depends on repositories implementations to allow to replace implementation'
     ),
 
-    // TODO: to double check and fix
-
     // [WIP]
+    new Rule(
+        'Pim\Component\Catalog',
+        [
+            'Pim\Component\Catalog',
+            'Akeneo\Component\Versioning',
+            'Akeneo\Component\Comment',
+            'Akeneo\Component\Localization',
+            'Akeneo\Component\FileStorage',
+            'Akeneo\Component\StorageUtils',
+            'Doctrine\Common',
+            'Symfony\Component\PropertyAccess',
+            'Exception'
+        ],
+        RuleInterface::TYPE_ONLY,
+        'The component catalog should depends only on ... bunch of stuff :)'
+    ),
 
     new Rule(
         'Pim\Component\Connector',
@@ -165,23 +185,7 @@ $rulesToFix = [
         RuleInterface::TYPE_ONLY,
         'The component connector should depends only on ... bunch of stuff :)'
     ),
-    // [WIP]
-    new Rule(
-        'Pim\Component\Catalog',
-        [
-            'Pim\Component\Catalog',
-            'Akeneo\Component\Versioning',
-            'Akeneo\Component\Comment',
-            'Akeneo\Component\Localization',
-            'Akeneo\Component\FileStorage',
-            'Akeneo\Component\StorageUtils',
-            'Doctrine\Common',
-            'Symfony\Component\PropertyAccess',
-            'Exception'
-        ],
-        RuleInterface::TYPE_ONLY,
-        'The component catalog should depends only on ... bunch of stuff :)'
-    ),
+
 
     // [WIP]
     new Rule(
@@ -279,14 +283,10 @@ $rulesToFix = [
     ),
 ];
 
-$rules = array_merge($rules, $rulesToFix);
+//$rules = array_merge($rules, $rulesToFix);
 
 // TODO: list of violations to fix
 $legacyExclusions = [
-    // TranslatableInterface should be moved in a Akeneo component
-    'Akeneo\Component\Classification\Updater\CategoryUpdater'   => [
-        'Pim\Bundle\TranslationBundle\Entity\TranslatableInterface',
-    ],
     // Repository interfaces should never expose QueryBuilder as parameter
     'Akeneo\Component\Classification\Repository'                => [
         'Doctrine\ORM\QueryBuilder',

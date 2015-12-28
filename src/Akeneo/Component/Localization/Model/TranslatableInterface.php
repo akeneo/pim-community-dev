@@ -3,7 +3,6 @@
 namespace Akeneo\Component\Localization\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Translatable interface, must be implemented by translatable business objects
