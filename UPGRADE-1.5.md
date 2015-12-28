@@ -56,24 +56,24 @@ src/
 │   └── Bundle
 │       ├── AsseticBundle           -> -
 │       ├── ConfigBundle            -> -
-│       ├── DataGridBundle          -> move generic classes from Pim/DataGridBundle to this namespace (or from Oro to Pim?), move specific product classes to Pim/EnrichBundle
+│       ├── DataGridBundle          -> -
 │       ├── EntityBundle            -> [Done] - removed (DoctrineOrmMappingsPass has been extracted in Akeneo/StorageUtilsBundle)
 │       ├── EntityConfigBundle      -> [Done] - removed (ServiceLinkPass has been extracted in Oro/SecurityBundle)
 │       ├── DistributionBundle      -> [Done] - removed (automatic routing has been dropped and routes are explicitly declared in routing.yml)
-│       ├── FilterBundle            -> ?merge to Oro/DataGridBundle?
+│       ├── FilterBundle            -> -
 │       ├── FormBundle              -> merge useful parts to Oro/ConfigBundle and Pim/EnrichBundle
-│       ├── LocaleBundle            -> merge useful parts to Pim/LocalizationBundle
-│       ├── NavigationBundle        -> merge with Pim/NavigationBundle during navigation re-work project
-│       ├── RequireJSBundle         -> ?try to use last version? do PRs to backport fixes?
+│       ├── LocaleBundle            -> merge useful parts to Akeneo/Pim Localization
+│       ├── NavigationBundle        -> -
+│       ├── RequireJSBundle         -> -
 │       ├── SecurityBundle          -> -
-│       ├── TranslationBundle       -> merge useful parts to Pim/LocalizationBundle
+│       ├── TranslationBundle       -> merge useful parts to Akeneo/Pim Localization
 │       ├── UIBundle                -> merge useful parts to Pim/UIBundle
 │       └── UserBundle              -> merge useful parts to Pim/UserBundle
 └── Pim
     ├── Bundle
     │   ├── AnalyticsBundle         -> -
     │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) once exports re-worked in ConnectorBundle
-    │   ├── CatalogBundle           -> we continue to extract business code to relevant components
+    │   ├── CatalogBundle           -> continue to extract business code to relevant components
     │   ├── CommentBundle           -> could be splitted in a Akeneo component + bundle (does not rely on PIM domain)
     │   ├── ConnectorBundle         -> could welcome new classes if we re-work export
     │   ├── DashboardBundle         -> -
@@ -83,12 +83,12 @@ src/
     │   ├── ImportExportBundle      -> could be merged to EnrichBundle it mainly contain UI related classes
     │   ├── InstallerBundle         -> -
     │   ├── JsFormValidationBundle  -> -
-    │   ├── NavigationBundle        -> merge from Oro/NavigationBundle during navigation re-work project
+    │   ├── NavigationBundle        -> -
     │   ├── NotificationBundle      -> bit re-worked during the collaborative workflow epic
     │   ├── PdfGeneratorBundle      -> -
     │   ├── ReferenceDataBundle     -> -
     │   ├── TransformBundle         -> re-work normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
-    │   ├── TranslationBundle       -> could be deprecated after copying useful classes in new Localization component + bundle (in a BC way)
+    │   ├── TranslationBundle       -> copy useful classes in new Localization component + bundle, then remove this bundle
     │   ├── UIBundle                -> mainly used for js/css third party libraries, we should load them via a dedicated package manager
     │   ├── UserBundle              -> merge used parts of Oro/UserBundle to Pim/UserBundle
     │   ├── VersioningBundle        -> -
@@ -115,15 +115,20 @@ src/
 │   └── Component
 │       ├── Analytics               Data collector interfaces to aggregate statistics
 │       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes (extracted from previous BatchBundle version)
+│       ├── Buffer                  New (introduced v1.5) Buffer domain interfaces and classes (extracted from previous BatchBundle version)
 │       ├── Classification          Generic classes for classification trees (implemented by product categories and asset categories) and tags
 │       ├── Console                 Utility classes to execute commands
 │       ├── FileStorage             Business interfaces and classes to handle files storage with filesystem abstraction
-│       └── StorageUtils            Business interfaces and classes to abstract storage access (remover, saver, updater, repositories, etc)
+│       ├── Localization            New (introduced v1.5) Localization domain interfaces and classes
+│       ├── StorageUtils            Business interfaces and classes to abstract storage access (remover, saver, updater, repositories, etc)
+│       └── Versioning              New (introduced v1.5) Versioning domain interfaces and classes
 ├── Oro
 │   └── Bundle
 │       ├── AsseticBundle           CSS assets management, assets can be distributed across several bundles
 │       ├── ConfigBundle            Application configuration, other bundles can declare their own configurations
 │       ├── DataGridBundle          Generic interfaces and classes to implement Datagrid
+│       ├── FilterBundle            Generic interfaces and classes to implement Datagrid filters
+│       ├── FormBundle              Form utils
 │       ├── RequireJSBundle         Generates a require.js config file for a project, minify and merge all JS-file into one resources
 │       └── SecurityBundle          Advanced ACL management
 └── Pim
@@ -148,7 +153,6 @@ src/
     └── Component
         ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy reasons
         ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
-        ├── Localization            New (introduced v1.5) PIM business interfaces and classes to handle data localization
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
 
@@ -359,12 +363,12 @@ DONE:
  - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
  - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
  - Remove Oro/Bundle/LocaleBundle
+ - From Pim/Bundle/TranslationBundle, move translations models to our new component
 
 TODO:
  - Akeneo vs Pim namespace to discuss
  - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
  - Remove Oro/Bundle/TranslationBundle
- - [WIP] From Pim/Bundle/TranslationBundle, move translations models to our new component
  - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
 
 ## Versioning Bundle & Component [WIP]
@@ -462,8 +466,10 @@ Since early version of the PIM, this library is required by Oro navigation.
 
 As some point, we used JMS\Serializer\Annotation\Exclude to be able to fix issues with the serialization of our entities.
 
-TODO:
+DONE:
  - Remove the use of annotations from entities
+
+TODO:
  - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Provider\TitleService
  - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Title\StoredTitle
  - Remove the JMS dependency from Oro\Bundle\UIBundle\Twig\Md5Extension

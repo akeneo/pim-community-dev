@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
@@ -11,8 +10,6 @@ use Akeneo\Component\Localization\Model\AbstractTranslation;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 class AttributeTranslation extends AbstractTranslation
 {

@@ -5,7 +5,6 @@ namespace Akeneo\Component\Batch\Model;
 use Akeneo\Component\Batch\Job\Job;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Entity job
@@ -51,16 +50,10 @@ class JobInstance
     /** @var array */
     protected $rawConfiguration = array();
 
-    /**
-     * @var Job
-     * @Exclude
-     */
+    /** @var Job */
     protected $job;
 
-    /**
-     * @var Collection|JobExecution[]
-     * @Exclude
-     */
+    /** @var Collection|JobExecution[] */
     protected $jobExecutions;
 
     /**

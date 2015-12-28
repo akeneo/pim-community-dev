@@ -7,19 +7,13 @@ namespace Akeneo\Component\Localization\Model;
  */
 abstract class AbstractTranslation
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $locale;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $foreignKey;
 
     /**

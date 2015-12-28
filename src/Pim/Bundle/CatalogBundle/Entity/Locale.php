@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,8 +17,6 @@ use Symfony\Component\Intl\Intl;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @UniqueEntity("code")
- *
- * @ExclusionPolicy("all")
  */
 class Locale implements LocaleInterface, VersionableInterface
 {

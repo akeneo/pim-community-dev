@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Assert\GroupSequenceProvider
- *
- * @ExclusionPolicy("all")
  */
 class Attribute extends AbstractAttribute
 {
