@@ -8,10 +8,9 @@ use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\SelectiveORMPurger;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Parser;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 
 class HookContext extends PimContext
 {
@@ -167,25 +166,7 @@ class HookContext extends PimContext
     {
         $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
 
-        $this->executeScript($script);
-    }
-
-    /**
-     * Execute javascript
-     *
-     * @param string $script
-     *
-     * @return bool Success or failure
-     */
-    public function executeScript($script)
-    {
-        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $this->getSession()->executeScript($script);
-
-            return true;
-        }
-
-        return false;
+        $this->getMainContext()->executeScript($script);
     }
 
     /**
@@ -226,7 +207,7 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function resetPlaceholderValues()
+    public static function resetPlaceholderValues()
     {
         parent::resetPlaceholderValues();
     }
@@ -237,7 +218,7 @@ class HookContext extends PimContext
     public function removeTmpDir()
     {
         $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($this->placeholderValues['%tmp%']);
+        $fs->remove(self::$placeholderValues['%tmp%']);
     }
 
     /**
@@ -248,14 +229,6 @@ class HookContext extends PimContext
         foreach ($this->getSmartRegistry()->getManagers() as $manager) {
             $manager->clear();
         }
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    public function getSmartRegistry()
-    {
-        return $this->getService('pim_catalog.doctrine.smart_manager_registry');
     }
 
     /**
@@ -305,5 +278,13 @@ class HookContext extends PimContext
         }
 
         $this->currentPage = null;
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    private function getSmartRegistry()
+    {
+        return $this->getService('pim_catalog.doctrine.smart_manager_registry');
     }
 }

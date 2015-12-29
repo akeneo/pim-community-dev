@@ -9,19 +9,19 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class PimContext extends RawMinkContext implements KernelAwareInterface
 {
     /** @var array */
-    protected $placeholderValues = [];
+    protected static $placeholderValues = [];
 
     /** @var KernelInterface */
     private $kernel;
 
     public function __construct()
     {
-        $this->resetPlaceholderValues();
+        self::resetPlaceholderValues();
     }
 
-    public function resetPlaceholderValues()
+    public static function resetPlaceholderValues()
     {
-        $this->placeholderValues = [
+        self::$placeholderValues = [
             '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
             //TODO: change that later
             '%fixtures%' => __DIR__ . '/../../../Context/fixtures'
@@ -41,9 +41,9 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
-        return strtr($value, $this->placeholderValues);
+        return strtr($value, self::$placeholderValues);
     }
 
     /**
