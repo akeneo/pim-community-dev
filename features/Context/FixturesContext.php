@@ -7,7 +7,6 @@ use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;

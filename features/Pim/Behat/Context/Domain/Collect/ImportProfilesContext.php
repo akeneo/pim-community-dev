@@ -35,31 +35,6 @@ class ImportProfilesContext extends PimContext
     }
 
     /**
-     * @param string    $code
-     * @param TableNode $table
-     *
-     * @Given /^the following job "([^"]*)" configuration:$/
-     */
-    public function theFollowingJobConfiguration($code, TableNode $table)
-    {
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $configuration = $jobInstance->getRawConfiguration();
-
-        foreach ($table->getRowsHash() as $property => $value) {
-            $value = $this->replacePlaceholders($value);
-            if (in_array($value, ['yes', 'no'])) {
-                $value = 'yes' === $value;
-            }
-
-            $configuration[$property] = $value;
-        }
-
-        $jobInstance->setRawConfiguration($configuration);
-        // TODO use a Saver
-        $this->getFixturesContext()->flush();
-    }
-
-    /**
      * @param TableNode $table
      *
      *
@@ -92,16 +67,6 @@ class ImportProfilesContext extends PimContext
     }
 
     /**
-     * @param string $type
-     *
-     * @When /^I launch the (import|export) job$/
-     */
-    public function iExecuteTheJob($type)
-    {
-        $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-    }
-
-    /**
      * @param string $file
      *
      * @Given /^I upload and import the file "([^"]*)"$/
@@ -114,26 +79,6 @@ class ImportProfilesContext extends PimContext
 
         sleep(10);
         $this->getMainContext()->reload();
-        $this->getMainContext()->wait();
-    }
-
-    /**
-     * @param string $file
-     * @param string $field
-     *
-     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
-     */
-    public function attachFileToField($file, $field)
-    {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
-                .DIRECTORY_SEPARATOR.$file;
-            if (is_file($fullPath)) {
-                $file = $fullPath;
-            }
-        }
-
-        $this->getCurrentPage()->attachFileToField($field, $file);
         $this->getMainContext()->wait();
     }
 
@@ -169,42 +114,5 @@ class ImportProfilesContext extends PimContext
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
         $this->getNavigationContext()->openPage('Import edit', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @When /^I launch the ("([^"]*)" (import|export) job)$/
-     */
-    public function iLaunchTheExportJob(JobInstance $job)
-    {
-        $jobType = ucfirst($job->getType());
-        $this->getNavigationContext()->openPage(sprintf('%s launch', $jobType), ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param string      $action
-     * @param JobInstance $job
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
-     */
-    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
-    {
-        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
-
-        return new Step\Then('I should see "403 Forbidden"');
-    }
-
-    /**
-     * @param string $jobType
-     *
-     * @Given /^I try to create an unknown (import|export)$/
-     */
-    public function iTryToCreateAnUnknownJob($jobType)
-    {
-        $this->getNavigationContext()->openPage(sprintf('%s creation', ucfirst($jobType)));
     }
 }

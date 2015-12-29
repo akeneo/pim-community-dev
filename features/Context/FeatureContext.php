@@ -10,8 +10,10 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
+use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\HookContext;
+use Pim\Behat\Context\JobContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -51,7 +53,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+
+        $this->useContext('job', new JobContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
     }
 
     /**
