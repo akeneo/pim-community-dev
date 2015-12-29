@@ -10,11 +10,9 @@ Feature: List proposals
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
       | 2015_collection  | Redactor   | edit   |
-      | 2014_collection  | IT Support | view   |
       | 2015_collection  | Manager    | edit   |
-      | 2014_collection  | Manager    | own   |
-      | 2014_collection  | IT support | own   |
-      | 2015_collection  | IT support | own   |
+      | 2014_collection  | Manager    | own    |
+      | 2015_collection  | IT support | own    |
     And the following products:
       | sku     | family   | categories      |
       | tshirt  | tshirts  | 2015_collection |
@@ -29,15 +27,15 @@ Feature: List proposals
       | field | value          |
       | Name  | Winter sweater |
     And Julia proposed the following change to "jacket":
-      | field       | value         | tab     |
-      | Name        | Autumn jacket | General |
-      | Price       | 10 USD        | Sales   |
+      | field | value         | tab     |
+      | Name  | Autumn jacket | General |
+      | Price | 10 USD        | Sales   |
     And Mary proposed the following change to "hoodie":
       | field | value              |
       | Name  | Hoodie for hackers |
 
   Scenario: Successfully sort and filter proposals in the grid
-    Given I am logged in as "admin"
+    Given I am logged in as "Peter"
     And I am on the proposals page
     Then the grid should contain 3 elements
     And the rows should be sorted descending by proposed at
@@ -54,7 +52,7 @@ Feature: List proposals
       | Attribute     | Description,Price | tshirt, jacket          |
 
   Scenario: Successfully approve or reject a proposal
-    Given I am logged in as "admin"
+    Given I am logged in as "Peter"
     And I am on the proposals page
     Then the grid should contain 3 elements
     And I should see entities tshirt, sweater and jacket

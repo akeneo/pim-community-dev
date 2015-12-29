@@ -13,6 +13,7 @@ Feature: Display localized numbers in proposals
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
+      | 2014_collection  | Manager    | own    |
     And the following products:
       | sku     | family | categories      |
       | tshirt  | pants  | 2014_collection |

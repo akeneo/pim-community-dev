@@ -9,7 +9,9 @@ Feature: Partial approve
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
+      | 2014_collection  | Manager    | own    |
       | tshirts          | Redactor   | edit   |
+      | tshirts          | Manager    | own    |
     And the following products:
       | sku    | family | categories      |
       | tshirt | pants  | 2014_collection |
@@ -20,7 +22,7 @@ Feature: Partial approve
       | field       | value                      |
       | Name        | Summer t-shirt             |
       | Description | Summer t-shirt description |
-    And I am logged in as "Peter"
+    And I am logged in as "Julia"
     And I am on the proposals page
     And I partially approve:
       | product | author | attribute   | locale | scope  |
@@ -31,10 +33,10 @@ Feature: Partial approve
     And I am on the dashboard page
     Then I should have 2 new notification
     And I should see notification:
-      | type    | message                                                                       |
-      | success | Peter Williams has accepted the value for Name for the product: tshirt        |
-      | success | Peter Williams has accepted the value for Description for the product: tshirt |
-    When I click on the notification "Peter Williams has accepted the value for Name for the product: tshirt"
+      | type    | message                                                                     |
+      | success | Julia Stark has accepted the value for Name for the product: tshirt        |
+      | success | Julia Stark has accepted the value for Description for the product: tshirt |
+    When I click on the notification "Julia Stark has accepted the value for Name for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | name-en_US               | Summer t-shirt             |
@@ -45,7 +47,7 @@ Feature: Partial approve
       | field       | value                      |
       | Name        | Summer t-shirt             |
       | Description | Summer t-shirt description |
-    And I am logged in as "Peter"
+    And I am logged in as "Julia"
     And I am on the proposals page
     And I partially approve:
       | product | author | attribute   | locale | scope  | comment                                      |
@@ -55,9 +57,9 @@ Feature: Partial approve
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                       | comment                                      |
-      | success | Peter Williams has accepted the value for Description for the product: tshirt | Yes, remember to update the price next time! |
-    When I click on the notification "Peter Williams has accepted the value for Description for the product: tshirt"
+      | type    | message                                                                     | comment                                      |
+      | success | Julia Stark has accepted the value for Description for the product: tshirt | Yes, remember to update the price next time! |
+    When I click on the notification "Julia Stark has accepted the value for Description for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | description-en_US-mobile | Summer t-shirt description |
@@ -67,36 +69,36 @@ Feature: Partial approve
       | field       | value                      |
       | Name        | Summer t-shirt             |
       | Description | Summer t-shirt description |
-    And I am logged in as "Peter"
+    And I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
     And I partially approve:
-      | product | author | attribute   | locale | scope  |
-      | tshirt  | Mary   | name        | en_US  |        |
+      | product | author | attribute | locale | scope |
+      | tshirt  | Mary   | name      | en_US  |       |
     When I logout
     And I am logged in as "Mary"
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                |
-      | success | Peter Williams has accepted the value for Name for the product: tshirt |
-    When I click on the notification "Peter Williams has accepted the value for Name for the product: tshirt"
+      | type    | message                                                              |
+      | success | Julia Stark has accepted the value for Name for the product: tshirt |
+    When I click on the notification "Julia Stark has accepted the value for Name for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | name-en_US | Summer t-shirt |
 
   Scenario: I can partially approve proposal that have only one change
     Given Mary proposed the following change to "jacket":
-      | field       | value         |
-      | Name        | Summer jacket |
-    And I am logged in as "Peter"
+      | field | value         |
+      | Name  | Summer jacket |
+    And I am logged in as "Julia"
     And I edit the "jacket" product
     And I visit the "Proposals" tab
     Then I should get the following proposals:
       | jacket | Mary |
     And I partially approve:
-      | product | author | attribute   | locale | scope  |
-      | jacket  | Mary   | name        | en_US  |        |
+      | product | author | attribute | locale | scope |
+      | jacket  | Mary   | name      | en_US  |       |
     Then I should not get the following proposals:
       | jacket | Mary |
 
@@ -105,12 +107,12 @@ Feature: Partial approve
       | field       | value                      |
       | Name        | Summer t-shirt             |
       | Description | Summer t-shirt description |
-    And I am logged in as "Peter"
+    And I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
     And I partially approve:
-      | product | author | attribute   | locale | scope  |
-      | tshirt  | Mary   | name        | en_US  |        |
+      | product | author | attribute | locale | scope |
+      | tshirt  | Mary   | name      | en_US  |       |
     Then I should not see the following partial approve button:
       | product | author | attribute | locale |
       | tshirt  | Mary   | name      | en_US  |
@@ -118,19 +120,19 @@ Feature: Partial approve
       | product | author | attribute   | locale | scope  |
       | tshirt  | Mary   | description | en_US  | mobile |
 
-  Scenario: I dont see the propposal tab if I can't approve anything
+  Scenario: I don't see the proposal tab if I can't approve anything
     Given Mary proposed the following change to "jacket":
-      | field       | value         |
-      | Name        | Summer jacket |
-    And I am logged in as "Julia"
+      | field | value         |
+      | Name  | Summer jacket |
+    And I am logged in as "Mary"
     And I edit the "jacket" product
     Then I should not see the "Proposals" tab
 
   Scenario: I can partially approve only attribute that I can edit
     Given Mary proposed the following change to "tshirt":
-      | field       | value         | tab                 |
-      | Name        | Summer jacket | Product information |
-      | Price       | 10 USD        | Marketing           |
+      | field | value         | tab                 |
+      | Name  | Summer jacket | Product information |
+      | Price | 10 USD        | Marketing           |
     And the following attribute group accesses:
       | attribute group | user group | access |
       | info            | Manager    | edit   |
@@ -186,8 +188,8 @@ Feature: Partial approve
     And I change the Description to "Maillot de corps"
     And I save the product
     Given Mary proposed the following change to "tshirt":
-      | field       | value         | tab                 |
-      | Price       | 10 USD        | Marketing           |
+      | field | value  | tab       |
+      | Price | 10 USD | Marketing |
     And the following attribute group accesses:
       | attribute group | user group | access |
       | info            | Manager    | view   |

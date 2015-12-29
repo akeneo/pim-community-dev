@@ -10,6 +10,7 @@ Feature: Filter product drafts
       | product category | user group | access |
       | 2015_collection  | Redactor   | edit   |
       | 2015_collection  | Manager    | edit   |
+      | 2015_collection  | IT support | own    |
     And the following products:
       | sku     | family   | categories      |
       | tshirt  | tshirts  | 2015_collection |
@@ -27,7 +28,7 @@ Feature: Filter product drafts
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully filter product drafts
-    Given I am logged in as "admin"
+    Given I am logged in as "Peter"
     And I edit the "tshirt" product
     When I visit the "Proposals" tab
     Then the grid should contain 3 elements
