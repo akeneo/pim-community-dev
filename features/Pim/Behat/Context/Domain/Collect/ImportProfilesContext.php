@@ -21,10 +21,10 @@ class ImportProfilesContext extends PimContext
 
         $string = $this->replacePlaceholders($string);
 
-        $this->placeholderValues['%file to import%'] = $filename =
+        self::$placeholderValues['%file to import%'] = $filename =
             sprintf(
                 '%s/pim-import/behat-import-%s.%s',
-                $this->placeholderValues['%tmp%'],
+                self::$placeholderValues['%tmp%'],
                 substr(md5(rand()), 0, 7),
                 $extension
             );
@@ -74,7 +74,8 @@ class ImportProfilesContext extends PimContext
     public function iUploadAndImportTheFile($file)
     {
         $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
+        $this->getMainContext()->getSubcontext('job')
+            ->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
         $this->getCurrentPage()->pressButton('Upload and import now');
 
         sleep(10);
@@ -90,7 +91,8 @@ class ImportProfilesContext extends PimContext
     public function iUploadAndImportAnInvalidFile($file)
     {
         $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
+        $this->getMainContext()->getSubcontext('job')
+            ->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
         $this->getCurrentPage()->pressButton('Upload and import now');
 
         $this->getMainContext()->wait();
