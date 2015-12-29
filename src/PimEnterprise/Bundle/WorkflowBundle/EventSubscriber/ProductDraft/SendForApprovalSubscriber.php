@@ -81,7 +81,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             $ownerGroupsId[] = $userGroup['id'];
         }
 
-        $users         = $this->userRepository->findByGroups($ownerGroupsId);
+        $users         = $this->userRepository->findByGroupIds($ownerGroupsId);
         $usersToNotify = $this->filterUsersToNotify($users);
         $author        = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
 

@@ -3,12 +3,12 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -71,7 +71,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
 
         $categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS)->willReturn($groupIds);
 
-        $userRepository->findByGroups([2, 4])->willReturn($owners);
+        $userRepository->findByGroupIds([2, 4])->willReturn($owners);
         $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
 
         $notificationManager->notify(
