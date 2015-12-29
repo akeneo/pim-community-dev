@@ -134,7 +134,7 @@ class ExportProfilesContext extends PimContext
      */
     public function thePathOfTheExportedFileOfShouldBe($code, $path)
     {
-        $executionPath = $this->getFixturesContext()->getJobInstancePath($code);
+        $executionPath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
 
         if ($path !== $executionPath) {
             throw $this->getMainContext()->createExpectationException(
