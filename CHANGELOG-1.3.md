@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.35 (2015-12-29)
 
 ## Scalability improvements
 - PIM-5349: Fix the issue with Publication on Mass Edit
