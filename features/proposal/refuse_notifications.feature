@@ -9,15 +9,16 @@ Feature: Refuse notifications
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
+      | 2014_collection  | Manager    | own    |
     And the following products:
-      | sku     | family   | categories      |
-      | tshirt  | jackets  | 2014_collection |
+      | sku    | family  | categories      |
+      | tshirt | jackets | 2014_collection |
     And Mary proposed the following change to "tshirt":
       | field | value          |
       | Name  | Summer t-shirt |
 
   Scenario: A notification is sent when I approve a proposal from the proposal grid
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I am on the proposals page
     And I click on the "Reject" action of the row which contains "Summer t-shirt"
     And I press the "Send" button in the popin
@@ -26,13 +27,13 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          |
-      | error | Peter Williams has rejected your proposal for the product tshirt |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       |
+      | error | Julia Stark has rejected your proposal for the product tshirt |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the proposal grid
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I am on the proposals page
     And I click on the "Reject" action of the row which contains "Summer t-shirt"
     And I fill in this comment in the popin: "To be reviewed, this value looks wrong."
@@ -42,13 +43,13 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          | comment                                 |
-      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       | comment                                 |
+      | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
     And I click on the "Reject" action of the row which contains "Summer t-shirt"
@@ -58,13 +59,13 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          |
-      | error | Peter Williams has rejected your proposal for the product tshirt |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       |
+      | error | Julia Stark has rejected your proposal for the product tshirt |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
     And I click on the "Reject" action of the row which contains "Summer t-shirt"
@@ -75,13 +76,13 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          | comment                                 |
-      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       | comment                                 |
+      | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I am on the proposals page
     And I press the "All" button
     And I press the "Reject selected" button
@@ -91,13 +92,13 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          |
-      | error | Peter Williams has rejected your proposal for the product tshirt |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       |
+      | error | Julia Stark has rejected your proposal for the product tshirt |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
-    Given I am logged in as "Peter"
+    Given I am logged in as "Julia"
     And I am on the proposals page
     And I press the "All" button
     And I press the "Reject selected" button
@@ -108,7 +109,7 @@ Feature: Refuse notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                          | comment                                 |
-      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
-    When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
+      | type  | message                                                       | comment                                 |
+      | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+    When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page

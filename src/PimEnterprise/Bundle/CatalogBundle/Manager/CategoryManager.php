@@ -125,15 +125,15 @@ class CategoryManager extends BaseCategoryManager
     {
         $filledTree = parent::getFilledTree($root, $categories);
 
-        return $this->filterGrantedFilledTree($filledTree);
+        $this->filterGrantedFilledTree($filledTree);
+
+        return $filledTree;
     }
 
     /**
      * Filter the filled tree to remove not granted category or branch of categories
      *
      * @param array &$filledTree the tree
-     *
-     * @return array Multi-dimensional array representing the tree
      */
     protected function filterGrantedFilledTree(&$filledTree)
     {
@@ -147,7 +147,5 @@ class CategoryManager extends BaseCategoryManager
                 $this->filterGrantedFilledTree($categoryData['__children']);
             }
         }
-
-        return $filledTree;
     }
 }
