@@ -1,4 +1,4 @@
-# 1.4.*
+# 1.4.15 (2015-12-30)
 
 ## Bug fixes
 - PIM-5348: fix asset category tree bug on new tree
