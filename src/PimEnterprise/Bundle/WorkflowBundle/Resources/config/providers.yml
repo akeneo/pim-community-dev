@@ -1,6 +1,8 @@
 parameters:
     pimee_workflow.provider.form.published_product.class:          PimEnterprise\Bundle\WorkflowBundle\Provider\Form\PublishedProductFormProvider
     pimee_workflow.provider.product_draft_granted_attribute.class: PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider
+    pimee_workflow.provider.users_to_notify.class:                 PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider
+    pimee_workflow.provider.owner_groups.class:                    PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider
 
 services:
     pimee_workflow.provider.form.published_product:
@@ -11,6 +13,16 @@ services:
     pimee_workflow.provider.product_draft_granted_attribute:
         class: %pimee_workflow.provider.product_draft_granted_attribute.class%
         arguments:
-            - @pim_catalog.repository.cached_attribute
-            - @pim_catalog.repository.cached_locale
-            - @security.authorization_checker
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@security.authorization_checker'
+
+    pimee_workflow.provider.users_to_notify:
+        class: %pimee_workflow.provider.users_to_notify.class%
+        arguments:
+            - '@pim_user.repository.user'
+
+    pimee_workflow.provider.owner_groups:
+        class: %pimee_workflow.provider.owner_groups.class%
+        arguments:
+            - '@pimee_security.repository.category_access'

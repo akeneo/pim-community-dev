@@ -44,8 +44,10 @@ services:
         class: %pimee_workflow.event_subscriber.import.new_proposals.class%
         arguments:
             - '@pim_notification.manager.notification'
-            - '@pimee_security.repository.category_access'
             - '@pim_user.repository.user'
+            - '@pimee_workflow.provider.owner_groups'
+            - '@pimee_workflow.provider.users_to_notify'
+            - '@pim_import_export.repository.job_instance'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -91,8 +93,9 @@ services:
         class: %pimee_workflow.event_subscriber.product_draft.send_for_approval.class%
         arguments:
             - '@pim_notification.manager.notification'
-            - '@pimee_security.repository.category_access'
             - '@pim_user.repository.user'
+            - '@pimee_workflow.provider.owner_groups'
+            - '@pimee_workflow.provider.users_to_notify'
         tags:
             - { name: kernel.event_subscriber }
 

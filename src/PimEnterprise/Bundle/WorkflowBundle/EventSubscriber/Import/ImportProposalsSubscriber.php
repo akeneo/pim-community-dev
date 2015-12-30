@@ -14,9 +14,13 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Import;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\AbstractProposalSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -24,15 +28,55 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * Class ImportProposalsSubscriber
  *
  * This subscriber listens events during import process, to send notifications for users at the end of import.
+ * This class is stateful because we keep group ids in memory during the import process, and is empty only when
+ * notifications were send.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ImportProposalsSubscriber extends AbstractProposalSubscriber
+class ImportProposalsSubscriber implements EventSubscriberInterface
 {
     const NOTIFICATION_TYPE = 'pimee_workflow_import_notification_new_proposals';
 
+    const PROPOSAL_IMPORT_CODE = 'csv_product_proposal_import';
+
+    /** @var NotificationManager */
+    protected $notificationManager;
+
+    /** @var UserRepositoryInterface */
+    protected $userRepository;
+
+    /** @var OwnerGroupsProvider */
+    protected $ownerGroupsProvider;
+
+    /** @var UsersToNotifyProvider */
+    protected $usersProvider;
+
+    /** @var ObjectRepository */
+    protected $jobRepository;
+
     /** @var array */
     protected $ownerGroupIds = [];
+
+    /**
+     * @param NotificationManager     $notificationManager
+     * @param UserRepositoryInterface $userRepository
+     * @param OwnerGroupsProvider     $ownerGroupsProvider
+     * @param UsersToNotifyProvider   $usersProvider
+     * @param ObjectRepository        $jobRepository
+     */
+    public function __construct(
+        NotificationManager $notificationManager,
+        UserRepositoryInterface $userRepository,
+        OwnerGroupsProvider $ownerGroupsProvider,
+        UsersToNotifyProvider $usersProvider,
+        ObjectRepository $jobRepository
+    ) {
+        $this->notificationManager = $notificationManager;
+        $this->userRepository      = $userRepository;
+        $this->ownerGroupsProvider = $ownerGroupsProvider;
+        $this->usersProvider       = $usersProvider;
+        $this->jobRepository       = $jobRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -54,9 +98,9 @@ class ImportProposalsSubscriber extends AbstractProposalSubscriber
     public function saveGroupIdsToNotify(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
-        if ($productDraft instanceof ProductDraftInterface) {
+        if ($productDraft instanceof ProductDraftInterface && $this->isProposalImport($productDraft->getAuthor())) {
             $product = $productDraft->getProduct();
-            $ownerGroupIds = $this->getOwnerGroupIds($product);
+            $ownerGroupIds = $this->ownerGroupsProvider->getOwnerGroupIds($product);
 
             $this->ownerGroupIds = array_unique(array_merge($this->ownerGroupIds, $ownerGroupIds));
         }
@@ -70,11 +114,10 @@ class ImportProposalsSubscriber extends AbstractProposalSubscriber
      */
     public function notifyUsers(JobExecutionEvent $event)
     {
-        if (!empty($this->ownerGroupIds)) {
+        if (!empty($this->ownerGroupIds)
+            && self::PROPOSAL_IMPORT_CODE === $event->getJobExecution()->getJobInstance()->getAlias()) {
             $author = $this->userRepository->findOneBy(['username' => $event->getJobExecution()->getUser()]);
-
-            $users  = $this->userRepository->findByGroups($this->ownerGroupIds);
-            $usersToNotify = $this->getUsersToNotify($users);
+            $usersToNotify = $this->usersProvider->getUsersToNotify($this->ownerGroupIds);
 
             if (!empty($usersToNotify)) {
                 $index = array_search($author, $usersToNotify, true);
@@ -84,6 +127,7 @@ class ImportProposalsSubscriber extends AbstractProposalSubscriber
                 }
                 $this->sendProposalsNotification($usersToNotify, $author);
             }
+            $this->ownerGroupIds = [];
         }
     }
 
@@ -114,5 +158,20 @@ class ImportProposalsSubscriber extends AbstractProposalSubscriber
         }
 
         $this->notificationManager->notify($users, $message, 'add', $params);
+    }
+
+    /**
+     * Check if the code of product draft import is a proposal import code.
+     *
+     * @param $code The job instance code
+     *
+     * @return bool
+     */
+    protected function isProposalImport($code)
+    {
+        return null !== $this->jobRepository->findOneBy([
+            'alias' => self::PROPOSAL_IMPORT_CODE,
+            'code' => $code
+        ]);
     }
 }
