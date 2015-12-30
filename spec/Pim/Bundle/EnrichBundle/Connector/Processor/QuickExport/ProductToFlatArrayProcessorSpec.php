@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -27,14 +28,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         ChannelManager $channelManager,
         StepExecution $stepExecution,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $serializer,
             $channelManager,
             'upload/path/',
-            $productBuilder
+            $productBuilder,
+            $objectDetacher
         );
         $this->setStepExecution($stepExecution);
     }
@@ -94,6 +97,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager,
         $serializer,
         $productBuilder,
+        $objectDetacher,
         ProductInterface $product,
         ProductMediaInterface $media1,
         ProductMediaInterface $media2,
@@ -127,11 +131,13 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
+        $objectDetacher->detach($product)->shouldBeCalled();
         $this->process($product)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
     }
 
     function it_returns_flat_data_without_media(
         $productBuilder,
+        $objectDetacher,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
@@ -148,6 +154,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
+        $objectDetacher->detach($product)->shouldBeCalled();
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
 

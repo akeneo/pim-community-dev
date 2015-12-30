@@ -55,3 +55,4 @@ services:
             - '@pim_catalog.manager.channel'
             - %upload_dir%
             - '@pim_catalog.builder.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
