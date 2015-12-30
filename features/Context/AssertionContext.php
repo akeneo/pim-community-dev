@@ -594,7 +594,7 @@ class AssertionContext extends RawMinkContext
     /**
      * @param int $count
      *
-     * @Then /^I should have (\d+) new notification$/
+     * @Then /^I should have (\d+) new notifications?$/
      */
     public function iShouldHaveNewNotification($count)
     {
@@ -670,13 +670,26 @@ class AssertionContext extends RawMinkContext
         ];
 
         foreach ($table->getHash() as $data) {
-            $notification = $notificationWidget->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+            $notifications = $notificationWidget->findAll('css', '#header-notification-widget .dropdown-menu li>a');
 
-            if (!$notification) {
+            $matchingNotification = null;
+
+            foreach ($notifications as $notification) {
+                if (null === $matchingNotification && false !== strpos($notification->getText(), $data['message'])) {
+                    $matchingNotification = $notification;
+                }
+            }
+
+            if (null === $matchingNotification) {
+                $notificationTexts = array_map(function ($notification) {
+                    return sprintf("'%s'", $notification->getText());
+                }, $notifications);
+
                 throw $this->createExpectationException(
                     sprintf(
-                        'Expecting to see notification "%s", not found.',
-                        $data['message']
+                        "Notification '%s' not found.\nAvailable notifications: %s",
+                        $data['message'],
+                        implode(', ', $notificationTexts)
                     )
                 );
             }
@@ -691,7 +704,7 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            if (!$notification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
+            if (!$matchingNotification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting the type of notification "%s" to be "%s"',
@@ -702,7 +715,7 @@ class AssertionContext extends RawMinkContext
             }
 
             if (isset($data['comment']) && '' !== $data['comment']) {
-                $commentNode = $notification->find('css', 'div.comment');
+                $commentNode = $matchingNotification->find('css', 'div.comment');
 
                 if (!$commentNode) {
                     throw $this->createExpectationException(
