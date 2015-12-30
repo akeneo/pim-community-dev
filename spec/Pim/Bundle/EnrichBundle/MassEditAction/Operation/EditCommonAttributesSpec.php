@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
+        
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
         NormalizerInterface $normalizer,

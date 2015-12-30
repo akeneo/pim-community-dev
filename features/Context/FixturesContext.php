@@ -1590,10 +1590,16 @@ class FixturesContext extends RawMinkContext
         $this->refresh($user);
         $actualCount = null;
         if ($associationType == 'group') {
-            $actualCount = count($user->getGroupNames());
+            //We remove the "All" group which is not displayed to the user
+            $groupNames = $user->getGroupNames();
+            if (($key = array_search('All', $groupNames)) !== false) {
+                unset($groupNames[$key]);
+            }
+            $actualCount = count($groupNames);
         } elseif ($associationType == 'role') {
             $actualCount = count($user->getRoles());
         }
+
         if ($actualCount != $count) {
             throw new \InvalidArgumentException(
                 sprintf("Expected %d %s(s) for User %s, found %d", $count, $associationType, $username, $actualCount)

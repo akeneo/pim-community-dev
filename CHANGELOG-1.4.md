@@ -1,5 +1,17 @@
 # 1.4.x
 
+## Improvements
+- PIM-4897: Added MongoDB status on SF debug toolbar
+
+## Scalability improvements
+- PIM-5170: Fix memory leak on bulk detach
+
+## Bug fixes
+- PIM-5348: fix group count on behats
+- PIM-5347: fix mongo database in case of attribute removal
+
+# 1.4.14 (2015-12-17)
+
 ## Scalability improvements
 - PIM-5231: Use new AsyncSelectType for family selector in product creation form
 - PIM-5232: Load choices asynchronously in the product family filter to improve grid loading time
@@ -12,8 +24,9 @@
 - Updated public method preRemove from `Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveSubscriber` to addRemoveVersion.
 
 ## Bug fixes
-- PIM-5295: Fix association product grid category filter
 - PIM-5334: Fix boolean filter on product grid
+- PIM-5342: Fix 1.3 to 1.4 migration issue on media thumbnails
+- PIM-5202: Fix error message when deleting a product
 
 # 1.4.13 (2015-12-10)
 
