@@ -44,7 +44,7 @@ define(
                 buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
                 emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
                 classes: 'pim-add-attributes-multiselect',
-                minimumInputLength: 2,
+                minimumInputLength: 0,
                 width: '300px',
                 dropdownCssClass: 'add-attribute',
                 closeOnSelect: false
