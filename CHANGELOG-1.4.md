@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.15 (2015-12-30)
 
 ## Improvements
 - PIM-4897: Added MongoDB status on SF debug toolbar
