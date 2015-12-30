@@ -38,13 +38,37 @@ define(['underscore', 'pim/user-context', 'pim/i18n'], function (_, UserContext,
         format: function (entities) {
             var choices = [];
             _.each(entities, function (entity) {
-                choices.push({
-                    id: entity.code,
-                    text: i18n.getLabel(entity.label, UserContext.get('catalogLocale'), entity.code)
-                });
+                choices.push(this.formatOne(entity));
             });
 
             return choices;
+        },
+
+        /**
+         * Format an entity into a choice as follows.
+         * From :
+         * {
+         *     code: 'webcams',
+         *     label: {
+         *         en_US:'Webcams',
+         *         fr_FR:'Webcams',
+         *         de_DE:'Webcams'
+         *     }
+         * }
+         *
+         * to (for locale "de_DE") :
+         *
+         * { id: 'webcams', text: 'Webcams' }
+         *
+         * @param {Object} entity
+         *
+         * @return {Object}
+         */
+        formatOne: function (entity) {
+            return {
+                id: entity.code,
+                text: i18n.getLabel(entity.label, UserContext.get('catalogLocale'), entity.code)
+            };
         }
     };
 });

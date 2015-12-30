@@ -220,6 +220,7 @@ pim_enrich:
                     info:
                         search_attributes: Search
                         no_available_attributes: There are no more attributes to add
+                        attributes_selected: "{{ attributeCount }} attribute(s) selected"
                 categories:
                     title: Categories
             panel:

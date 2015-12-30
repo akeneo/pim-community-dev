@@ -53,6 +53,11 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('codes', $options['identifiers']);
         }
 
+        if (isset($options['excluded_identifiers']) && !empty($options['excluded_identifiers'])) {
+            $qb->andWhere('a.code not in (:codes)');
+            $qb->setParameter('codes', $options['excluded_identifiers']);
+        }
+
         if (isset($options['limit'])) {
             $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
