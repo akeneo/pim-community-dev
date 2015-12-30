@@ -66,7 +66,7 @@ class AttributeController
             $options['attributeType'] = explode(',', $request->query->get('types'));
         }
         if (empty($options)) {
-            $options = $request->query->get('options', ['limit' => 20]);
+            $options = $request->query->get('options', ['limit' => 20, 'locale' => null]);
         }
 
         if (null !== $this->attributeSearchRepository) {
