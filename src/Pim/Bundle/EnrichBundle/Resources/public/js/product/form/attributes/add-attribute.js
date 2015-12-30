@@ -44,6 +44,7 @@ define(
                 }
             },
             resultsPerPage: 20,
+            selection: [],
 
             /**
              * Render this extension
@@ -67,12 +68,32 @@ define(
                 var opts = this.defaultOptions;
                 var queryTimer;
 
-                $select.select2({
-                    tags: false,
-                    multiple: true,
+                var select2 = $select.select2({
+                    placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
+                    width: '300px',
+                    dropdownCssClass: 'add-attribute',
                     closeOnSelect: false,
-                    allowClear: true,
                     minimumInputLength: 2,
+                    formatResult: function(item) {
+                        var $checkbox = $('<input type="checkbox">');
+                        var $attributeLabel = $('<span>', {'class': 'attribute-label'}).text(item.text);
+                        var $groupLabel = $('<span>', {'class': 'group-label'}).text(item.group.text);;
+
+                        if (_.contains(this.selection, item.id)) {
+                            $checkbox.prop('checked', true);
+                        }
+
+                        var $div = $('<div>', {'class': 'select2-result-label-attribute'})
+                            .append($checkbox)
+                            .append($attributeLabel)
+                            .append($groupLabel);
+
+                        $div.on('click', function (e) {
+                            $checkbox.prop('checked', _.contains(this.selection, item.id));
+                        }.bind(this));
+
+                        return $div;
+                    }.bind(this),
                     query: function (options) {
                         window.clearTimeout(queryTimer);
                         queryTimer = window.setTimeout(function () {
@@ -80,7 +101,7 @@ define(
                             if (options.context && options.context.page) {
                                 page = options.context.page;
                             }
-                            var searchOptions = {
+                            var searchParameters = {
                                 search: options.term,
                                 options: {
                                     limit: this.resultsPerPage,
@@ -88,10 +109,23 @@ define(
                                 }
                             };
 
-                            $.when(
-                                FetcherRegistry.getFetcher('attribute').search(searchOptions)
-                            ).then(function(attributes) {
-                                var choices = ChoicesFormatter.format(attributes);
+                            AttributeManager.getAttributesForProduct(this.getFormData())
+                            .then(function (productAttributes) {
+                                searchParameters.options.excluded_identifiers = productAttributes;
+
+                                return FetcherRegistry.getFetcher('attribute').search(searchParameters)
+                            })
+                            .then(function(attributes) {
+                                var choices = _.chain(attributes)
+                                    .map(function (attribute) {
+                                        var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
+                                        var attributeChoice = ChoicesFormatter.formatOne(attribute);
+                                        attributeChoice.group = attributeGroup;
+
+                                        return attributeChoice;
+                                    })
+                                    .value();
+
                                 options.callback({
                                     results: choices,
                                     more: choices.length === this.resultsPerPage,
@@ -104,53 +138,60 @@ define(
                     }.bind(this)
                 });
 
+                select2.on('select2-selecting', function (event) {
+                    if (_.contains(this.selection, event.val)) {
+                        this.selection = _.without(this.selection, event.val);
+                    } else {
+                        this.selection.push(event.val);
+                    }
+
+                    this.updateSelectedCounter();
+                    event.preventDefault();
+                }.bind(this));
+
+                select2.on('select2-open', function () {
+                    this.selection = [];
+                    this.updateSelectedCounter();
+                }.bind(this));
+
                 var $menu = this.$('.select2-drop');
 
                 var $footerContainer = $('<div>', {'class': 'ui-multiselect-footer'});
-                var $saveButton = $('<a>', {
-                    'class': 'btn btn-small',
-                    text: this.defaultOptions.buttonTitle
-                }).on('click', function () {
-                    $select.select2('close');
-                    var values = $select.select2('val');
-                    if (null !== values) {
-                        this.addAttributes(values);
-                    }
-                }.bind(this));
 
+                var $saveButton = $('<button>', {'class': 'btn btn-small btn-primary pull-right', 'type': 'button'})
+                    .append($('<i>', {'class': 'icon-plus'}))
+                    .append(this.defaultOptions.buttonTitle)
+                    .on('click', function () {
+                        $select.select2('close');
+                        if(this.selection.length > 0) {
+                            this.addAttributes();
+                        }
+                    }.bind(this));
+
+                var $selectedCount = $('<span>', {'class': 'attribute-counter'});
+
+                $footerContainer.append($selectedCount);
                 $footerContainer.append($saveButton);
                 $menu.append($footerContainer);
-
-                $select.next()
-                    .addClass('btn btn-group')
-                    .append($('<span>', {'class': 'caret'}))
-                    .removeAttr('style');
-
-                $menu.find('input[type="search"]').width(200);
-
-                var $content = $menu.find('.ui-multiselect-checkboxes');
-                if (!$content.html()) {
-                    $content.html(
-                        $('<span>', {
-                            text: opts.emptyText,
-                            css: {
-                                'position': 'absolute',
-                                'color': '#999',
-                                'padding': '15px',
-                                'font-size': '13px'
-                            }
-                        })
-                    );
-                }
             },
 
             /**
-             * Add the specified attributes to the product
-             *
-             * @param {Array} attributeCodes
+             * Add the saved attributes selection to the product
              */
-            addAttributes: function (attributeCodes) {
-                this.trigger('add-attribute:add', { codes: attributeCodes });
+            addAttributes: function () {
+                this.trigger('add-attribute:add', { codes: this.selection });
+            },
+
+            /**
+             * Update the "selected attributes" counter in the select2 footer
+             */
+            updateSelectedCounter: function () {
+                $('.add-attribute .attribute-counter').text(
+                    _.__(
+                        'pim_enrich.form.product.tab.attributes.info.attributes_selected',
+                        {'attributeCount': this.selection.length}
+                    )
+                );
             }
         });
     }
