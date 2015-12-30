@@ -39,7 +39,7 @@ define(['underscore', 'pim/user-context', 'pim/i18n'], function (_, UserContext,
             var choices = [];
             _.each(entities, function (entity) {
                 choices.push(this.formatOne(entity));
-            });
+            }.bind(this));
 
             return choices;
         },
