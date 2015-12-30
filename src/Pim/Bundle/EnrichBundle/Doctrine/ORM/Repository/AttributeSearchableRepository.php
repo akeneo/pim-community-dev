@@ -4,11 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Attribute searchable repository
- *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Soatware License (OSL 3.0)
@@ -33,42 +33,83 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return FamilyInterface[]
+     * @return AttributeInterface[]
      */
     public function findBySearch($search = null, array $options = [])
     {
         //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
         //TODO: and should be put in Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
-        $qb = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
-        $qb->leftJoin('a.translations', 'at');
+        $qb      = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
+        $options = $this->resolveOptions($options);
 
-        if (null !== $search && '' !== $search) {
+        if (null !== $search) {
+            $qb->leftJoin('a.translations', 'at');
             $qb->where('a.code like :search')->setParameter('search', "%$search%");
-            $qb->orWhere('at.label like :search')->setParameter('search', "%$search%");
+            if (null !== $localeCode = $options['locale']) {
+                $qb->orWhere('at.label like :search AND at.locale like :locale');
+                $qb->setParameter('search', "%$search%");
+                $qb->setParameter('locale', "$localeCode");
+            }
         }
 
-        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+        if (!empty($options['identifiers'])) {
             $qb->andWhere('a.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
         }
 
-        if (isset($options['excluded_identifiers']) && !empty($options['excluded_identifiers'])) {
+        if (!empty($options['excluded_identifiers'])) {
             $qb->andWhere('a.code not in (:codes)');
             $qb->setParameter('codes', $options['excluded_identifiers']);
         }
 
-        if (isset($options['exclude_unique']) && !empty($options['exclude_unique'])) {
+        if ($options['exclude_unique']) {
             $qb->andWhere('a.unique = 0');
         }
 
-        if (isset($options['limit'])) {
-            $qb->setMaxResults((int) $options['limit']);
-            if (isset($options['page'])) {
-                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
+        if (null !== $options['limit']) {
+            $qb->setMaxResults($options['limit']);
+            if (null !== $options['page']) {
+                $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
             }
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'identifiers'          => [],
+                'excluded_identifiers' => [],
+                'limit'                => null,
+                'page'                 => null,
+                'locale'               => null,
+                'exclude_unique'       => false,
+            ]
+        );
+        $resolver->setAllowedTypes('identifiers', 'array');
+        $resolver->setAllowedTypes('excluded_identifiers', 'array');
+        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('locale', 'string');
+        $resolver->setAllowedTypes('exclude_unique', 'bool');
+
+        $options = $resolver->resolve($options);
+
+        if (null !== $options['page']) {
+            $options['page'] = (int)$options['page'];
+        }
+        if (null !== $options['limit']) {
+            $options['limit'] = (int)$options['limit'];
+        }
+
+        return $options;
     }
 }

@@ -205,7 +205,8 @@ define(
                     search: term,
                     options: {
                         limit: this.resultsPerPage,
-                        page: page
+                        page: page,
+                        locale: UserContext.get('catalogLocale')
                     }
                 };
             }
