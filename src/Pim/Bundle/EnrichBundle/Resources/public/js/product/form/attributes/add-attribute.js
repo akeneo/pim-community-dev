@@ -22,26 +22,32 @@ define(
         'jquery.multiselect',
         'jquery.multiselect.filter'
     ],
-    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, FetcherRegistry, LoadingMask, ChoicesFormatter) {
-
+    function (
+        $,
+        Backbone,
+        _,
+        BaseForm,
+        AttributeManager,
+        template,
+        UserContext,
+        FetcherRegistry,
+        LoadingMask,
+        ChoicesFormatter
+    ) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'add-attribute',
             template: _.template(template),
             defaultOptions: {
-                title: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
-                placeholder: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
+                placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
+                title: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
                 buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
                 emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
-                header: '',
-                height: 175,
-                minWidth: 225,
                 classes: 'pim-add-attributes-multiselect',
-                position: {
-                    my: 'right top',
-                    at: 'right bottom',
-                    collision: 'none'
-                }
+                minimumInputLength: 2,
+                width: '300px',
+                dropdownCssClass: 'add-attribute',
+                closeOnSelect: false
             },
             resultsPerPage: 20,
             selection: [],
@@ -64,20 +70,14 @@ define(
              * Initialize jQuery multiselect and its filter plugin
              */
             initializeSelectWidget: function () {
-                var $select = this.$('input[type="hidden"]');
-                var opts = this.defaultOptions;
                 var queryTimer;
+                var $select = this.$('input[type="hidden"]');
 
-                var select2 = $select.select2({
-                    placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
-                    width: '300px',
-                    dropdownCssClass: 'add-attribute',
-                    closeOnSelect: false,
-                    minimumInputLength: 2,
-                    formatResult: function(item) {
+                var opts = {
+                    formatResult: function (item) {
                         var $checkbox = $('<input type="checkbox">');
                         var $attributeLabel = $('<span>', {'class': 'attribute-label'}).text(item.text);
-                        var $groupLabel = $('<span>', {'class': 'group-label'}).text(item.group.text);;
+                        var $groupLabel = $('<span>', {'class': 'group-label'}).text(item.group.text);
 
                         if (_.contains(this.selection, item.id)) {
                             $checkbox.prop('checked', true);
@@ -88,7 +88,7 @@ define(
                             .append($attributeLabel)
                             .append($groupLabel);
 
-                        $div.on('click', function (e) {
+                        $div.on('click', function () {
                             $checkbox.prop('checked', _.contains(this.selection, item.id));
                         }.bind(this));
 
@@ -101,42 +101,40 @@ define(
                             if (options.context && options.context.page) {
                                 page = options.context.page;
                             }
-                            var searchParameters = {
-                                search: options.term,
-                                options: {
-                                    limit: this.resultsPerPage,
-                                    page: page
-                                }
-                            };
+                            var searchParameters = this.getSelectSearchParameters(options.term, page);
 
                             AttributeManager.getAttributesForProduct(this.getFormData())
-                            .then(function (productAttributes) {
-                                searchParameters.options.excluded_identifiers = productAttributes;
+                                .then(function (productAttributes) {
+                                    searchParameters.options.excluded_identifiers = productAttributes;
 
-                                return FetcherRegistry.getFetcher('attribute').search(searchParameters)
-                            })
-                            .then(function(attributes) {
-                                var choices = _.chain(attributes)
-                                    .map(function (attribute) {
-                                        var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
-                                        var attributeChoice = ChoicesFormatter.formatOne(attribute);
-                                        attributeChoice.group = attributeGroup;
+                                    return FetcherRegistry.getFetcher('attribute').search(searchParameters);
+                                })
+                                .then(function (attributes) {
+                                    var choices = _.chain(attributes)
+                                        .map(function (attribute) {
+                                            var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
+                                            var attributeChoice = ChoicesFormatter.formatOne(attribute);
+                                            attributeChoice.group = attributeGroup;
 
-                                        return attributeChoice;
-                                    })
-                                    .value();
+                                            return attributeChoice;
+                                        })
+                                        .value();
 
-                                options.callback({
-                                    results: choices,
-                                    more: choices.length === this.resultsPerPage,
-                                    context: {
-                                        page: page + 1
-                                    }
-                                });
-                            }.bind(this));
-                        }.bind(this), 400)
+                                    options.callback({
+                                        results: choices,
+                                        more: choices.length === this.resultsPerPage,
+                                        context: {
+                                            page: page + 1
+                                        }
+                                    });
+                                }.bind(this));
+                        }.bind(this), 400);
                     }.bind(this)
-                });
+                };
+
+                opts = $.extend(true, this.defaultOptions, opts);
+
+                var select2 = $select.select2(opts);
 
                 select2.on('select2-selecting', function (event) {
                     if (_.contains(this.selection, event.val)) {
@@ -163,7 +161,7 @@ define(
                     .append(this.defaultOptions.buttonTitle)
                     .on('click', function () {
                         $select.select2('close');
-                        if(this.selection.length > 0) {
+                        if (this.selection.length > 0) {
                             this.addAttributes();
                         }
                     }.bind(this));
@@ -192,6 +190,24 @@ define(
                         {'attributeCount': this.selection.length}
                     )
                 );
+            },
+
+            /**
+             * Get attribute fetcher search parameters by giving select2 search term & page
+             *
+             * @param {string} term
+             * @param {int}    page
+             *
+             * @returns {Object}
+             */
+            getSelectSearchParameters: function (term, page) {
+                return {
+                    search: term,
+                    options: {
+                        limit: this.resultsPerPage,
+                        page: page
+                    }
+                };
             }
         });
     }

@@ -32,7 +32,7 @@ define(
              * {@inheritdoc}
              */
             initialize: function () {
-                this.defaultOptions.title = _.__('pim_enrich.form.product.mass_edit.select_attributes');
+                this.defaultOptions.placeholder = _.__('pim_enrich.form.product.mass_edit.select_attributes');
                 this.defaultOptions.buttonTitle = _.__('pim_enrich.form.product.mass_edit.select');
 
                 BaseAddAttribute.prototype.initialize.apply(arguments);
@@ -41,48 +41,14 @@ define(
             /**
              * {@inheritdoc}
              */
-            loadAttributesChoices: function () {
-                return $.when(
-                    AttributeManager.getAvailableOptionalAttributes(this.getFormData()),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
-                ).then(function (attributes, attributeGroups) {
-                    attributes = _.where(attributes, {unique: 0});
-                    this.initializeSelect(attributes, attributeGroups);
-                }.bind(this));
-            },
+            getSelectSearchParameters: function (term, page) {
+                var parameters = BaseAddAttribute.prototype.getSelectSearchParameters.apply(this, [term, page]);
 
-            /**
-             * Initialize the add attributes select
-             *
-             * @param {Array} attributes
-             * @param {Object} attributeGroups
-             */
-            initializeSelect: function (attributes, attributeGroups) {
-                this.$('select')
-                    .html(this.template({
-                        groupedAttributes: this.buildGroupedAttributes(attributes, attributeGroups),
-                        locale: UserContext.get('catalogLocale')
-                    }))
-                    .multiselect('refresh')
-                    .next('button').removeAttr('style');
-
-                // Implementation of the MultiselectDecorator::updateDropdownPosition()
-                $('#container').on('scroll', function () {
-                    var element = null;
-                    var button = this.$('button.pimmultiselect');
-                    var position = button.offset();
-
-                    try {
-                        element = this.$('select').multiselect('widget');
-                    } catch (error) {
-                        element = $('.ui-multiselect-menu.pimmultiselect');
+                return $.extend(true, parameters, {
+                    options: {
+                        exclude_unique: true
                     }
-
-                    element.css({
-                        top: position.top + button.outerHeight(),
-                        right: position.right
-                    });
-                }.bind(this));
+                });
             }
         });
     }
