@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5400: fix grid rows display in asset grid (group by issue when classify an asset in several categories)
+
 # 1.4.15 (2015-12-30)
 
 ## Bug fixes
