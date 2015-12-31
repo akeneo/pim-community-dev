@@ -2726,14 +2726,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I select the "([^"]*)" variant group$/
-     */
-    public function iSelectVariantGroup($variant)
-    {
-        $this->getCurrentPage()->fillField('Group', $variant);
-    }
-
-    /**
      * @Then /^I change the family of the product to "([^"]*)"$/
      */
     public function iChangeTheFamilyOfTheProductTo($family)
