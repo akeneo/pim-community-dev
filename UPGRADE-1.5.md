@@ -363,13 +363,14 @@ DONE:
  - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
  - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
  - Remove Oro/Bundle/LocaleBundle
- - From Pim/Bundle/TranslationBundle, move translations models to our new component
+ - From Pim/Bundle/TranslationBundle, move translations models and factory to our new component Akeneo/Component/Localization
+ - From Pim/Bundle/TranslationBundle, move Form, DI and js to Pim/Bundle/EnrichBundle
+ - Remove Pim/Bundle/TranslationBundle
 
 TODO:
  - Akeneo vs Pim namespace to discuss
  - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
  - Remove Oro/Bundle/TranslationBundle
- - From Pim/Bundle/TranslationBundle, move form, DI, etc in Pim/Bundle/EnrichBundle
 
 ## Versioning Bundle & Component [WIP]
 

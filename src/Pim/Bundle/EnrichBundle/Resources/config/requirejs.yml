@@ -9,6 +9,8 @@ config:
         jstree/nested_switch:
             deps:
                 - jquery.jstree
+        translator:
+            exports: Translator
 
     config:
         # Forwarded events from mediator
@@ -121,6 +123,8 @@ config:
         pim/user-context:                   pimenrich/js/user-context
         pim/date-context:                   pimenrich/js/date-context
         pim/error:                          pimenrich/js/error/error
+        translator:                         pimenrich/lib/translator
+        oro/translator:                     pimenrich/js/translator
 
         # Security
         pim/security-context:               pimenrich/js/security-context
