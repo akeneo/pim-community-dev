@@ -13,10 +13,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -33,25 +32,31 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     /** @var NotificationManager */
     protected $notificationManager;
 
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
-
     /** @var UserRepositoryInterface */
     protected $userRepository;
 
+    /** @var OwnerGroupsProvider */
+    protected $ownerGroupsProvider;
+
+    /** @var UsersToNotifyProvider */
+    protected $usersProvider;
+
     /**
-     * @param NotificationManager      $notificationManager
-     * @param CategoryAccessRepository $categoryAccessRepo
-     * @param UserRepositoryInterface  $userRepository
+     * @param NotificationManager     $notificationManager
+     * @param UserRepositoryInterface $userRepository
+     * @param OwnerGroupsProvider     $ownerGroupsProvider
+     * @param UsersToNotifyProvider   $usersProvider
      */
     public function __construct(
         NotificationManager $notificationManager,
-        CategoryAccessRepository $categoryAccessRepo,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        OwnerGroupsProvider $ownerGroupsProvider,
+        UsersToNotifyProvider $usersProvider
     ) {
         $this->notificationManager = $notificationManager;
-        $this->categoryAccessRepo  = $categoryAccessRepo;
         $this->userRepository      = $userRepository;
+        $this->ownerGroupsProvider = $ownerGroupsProvider;
+        $this->usersProvider       = $usersProvider;
     }
 
     /**
@@ -71,19 +76,14 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
      */
     public function sendNotificationToOwners(GenericEvent $event)
     {
-        $productDraft = $event->getSubject();
-        $comment      = $event->getArgument('comment');
-        $product      = $productDraft->getProduct();
-
-        $ownerGroupsId = [];
-        $ownerGroups   = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS);
-        foreach ($ownerGroups as $userGroup) {
-            $ownerGroupsId[] = $userGroup['id'];
-        }
-
-        $users         = $this->userRepository->findByGroupIds($ownerGroupsId);
-        $usersToNotify = $this->filterUsersToNotify($users);
+        $productDraft  = $event->getSubject();
+        $comment       = $event->getArgument('comment');
+        $product       = $productDraft->getProduct();
         $author        = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
+
+        $usersToNotify = $this->usersProvider->getUsersToNotify(
+            $this->ownerGroupsProvider->getOwnerGroupIds($product)
+        );
 
         if (!empty($usersToNotify)) {
             $this->notificationManager->notify(
@@ -109,22 +109,5 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                 ]
             );
         }
-    }
-
-    /**
-     * @param UserInterface[] $users
-     *
-     * @return UserInterface[]
-     */
-    protected function filterUsersToNotify(array $users)
-    {
-        $usersToNotify = [];
-        foreach ($users as $user) {
-            if ($user->hasProposalsToReviewNotification()) {
-                $usersToNotify[] = $user;
-            }
-        }
-
-        return $usersToNotify;
     }
 }
