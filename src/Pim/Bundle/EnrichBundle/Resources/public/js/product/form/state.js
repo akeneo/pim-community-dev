@@ -131,12 +131,6 @@ define(
              * @return {boolean}
              */
             hasModelChanged: function () {
-                if (this.state !== JSON.stringify(this.getFormData())) {
-                    /*global console: true */
-                    console.log(this.state);
-                    console.log(JSON.stringify(this.getFormData()));
-                }
-
                 return this.state !== JSON.stringify(this.getFormData());
             },
 
