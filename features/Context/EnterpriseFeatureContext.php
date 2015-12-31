@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 
 /**
  * A context for creating entities
@@ -32,6 +33,8 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
+
+        $this->useContext('domain-variant-group', new VariantGroupContext());
 
         $this->setTimeout($parameters);
     }
