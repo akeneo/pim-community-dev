@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Exception;
+namespace Pim\Bundle\EnrichBundle\Exception;
 
 /**
  * Exception thrown when missing an option
