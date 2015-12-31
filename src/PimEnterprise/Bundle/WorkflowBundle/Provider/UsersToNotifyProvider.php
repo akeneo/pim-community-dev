@@ -31,27 +31,22 @@ class UsersToNotifyProvider
      */
     public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->userRepository      = $userRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * Get a set of users according belonging to a group and their profile notifications options
+     * Get a set of users according to their group membership and their profile notifications options.
      *
-     * @param integer[] $groupIds
+     * @param int[] $groupIds
      *
      * @return UserInterface[]
      */
     public function getUsersToNotify(array $groupIds)
     {
-        $usersToNotify = [];
-
         $users = $this->userRepository->findByGroupIds($groupIds);
-        foreach ($users as $user) {
-            if ($user->hasProposalsToReviewNotification()) {
-                $usersToNotify[] = $user;
-            }
-        }
 
-        return $usersToNotify;
+        return array_filter($users, function($user) {
+            return $user->hasProposalsToReviewNotification();
+        });
     }
 }

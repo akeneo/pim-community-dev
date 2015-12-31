@@ -37,7 +37,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
 {
     const NOTIFICATION_TYPE = 'pimee_workflow_import_notification_new_proposals';
 
-    const PROPOSAL_IMPORT_CODE = 'csv_product_proposal_import';
+    const PROPOSAL_IMPORT_ALIAS = 'csv_product_proposal_import';
 
     /** @var NotificationManager */
     protected $notificationManager;
@@ -90,8 +90,8 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Adds the group ids owner of a product to an instance variable. This function works only on ProductDraft saves
-     * and only in import events.
+     * Adds the group ids owner of a product to an instance variable. This function only works on ProductDraft saves
+     * from proposal imports.
      *
      * @param GenericEvent $event
      */
@@ -115,7 +115,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     public function notifyUsers(JobExecutionEvent $event)
     {
         if (!empty($this->ownerGroupIds)
-            && self::PROPOSAL_IMPORT_CODE === $event->getJobExecution()->getJobInstance()->getAlias()) {
+            && self::PROPOSAL_IMPORT_ALIAS === $event->getJobExecution()->getJobInstance()->getAlias()) {
             $author = $this->userRepository->findOneBy(['username' => $event->getJobExecution()->getUser()]);
             $usersToNotify = $this->usersProvider->getUsersToNotify($this->ownerGroupIds);
 
@@ -144,7 +144,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
         $params = [
             'route'   => 'pimee_workflow_proposal_index',
             'context' => [
-                'actionType'       => static::NOTIFICATION_TYPE,
+                'actionType'       => self::NOTIFICATION_TYPE,
                 'showReportButton' => false
             ]
         ];
@@ -163,14 +163,14 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     /**
      * Check if the code of product draft import is a proposal import code.
      *
-     * @param $code The job instance code
+     * @param string $code The job instance code
      *
      * @return bool
      */
     protected function isProposalImport($code)
     {
         return null !== $this->jobRepository->findOneBy([
-            'alias' => self::PROPOSAL_IMPORT_CODE,
+            'alias' => self::PROPOSAL_IMPORT_ALIAS,
             'code' => $code
         ]);
     }

@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 /**
  * Class OwnerGroupsProvider
  *
- * Provides a set of user groups having owner permission of a productDraft.
+ * Provides a set of user groups having owner permission of a product.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -27,6 +27,9 @@ class OwnerGroupsProvider
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /**
+     * @param CategoryAccessRepository $categoryAccessRepo
+     */
     public function __construct(CategoryAccessRepository $categoryAccessRepo)
     {
         $this->categoryAccessRepo = $categoryAccessRepo;

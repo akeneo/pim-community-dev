@@ -14,6 +14,7 @@ Feature: Display proposals after import
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
+      | 2014_collection  | Manager    | own    |
     And the following CSV file to import:
       """
       sku;name-en_US
