@@ -78,6 +78,8 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $qb->orderBy('ag.sortOrder');
         $qb->orderBy('ag.code');
 
+        $qb->groupBy('a.id');
+
         return $qb->getQuery()->getResult();
     }
 
@@ -104,15 +106,18 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
         $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
         $resolver->setAllowedTypes('locale', ['string', 'null']);
-        $resolver->setAllowedTypes('exclude_unique', 'bool');
+        $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
 
         $options = $resolver->resolve($options);
 
         if (null !== $options['page']) {
-            $options['page'] = (int)$options['page'];
+            $options['page'] = (int) $options['page'];
         }
         if (null !== $options['limit']) {
-            $options['limit'] = (int)$options['limit'];
+            $options['limit'] = (int) $options['limit'];
+        }
+        if (null !== $options['exclude_unique']) {
+            $options['exclude_unique'] = (bool) $options['exclude_unique'];
         }
 
         return $options;
