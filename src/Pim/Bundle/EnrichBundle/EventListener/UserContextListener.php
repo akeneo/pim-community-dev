@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
+use Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

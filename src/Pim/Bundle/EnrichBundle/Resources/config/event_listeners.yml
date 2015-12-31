@@ -3,6 +3,7 @@ parameters:
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
     pim_enrich.event_subscriber.storage.channel_locale.class:   Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber
+    pim_enrich.event_listener.add_locale.class:                 Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener
 
 services:
     # User context listener
@@ -10,7 +11,7 @@ services:
         class: %pim_enrich.event_listener.user_context.class%
         arguments:
             - '@security.token_storage'
-            - '@pim_translation.listener.add_locale'
+            - '@pim_enrich.event_listener.add_locale'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
         tags:
@@ -37,3 +38,9 @@ services:
             - @pim_catalog.doctrine.completeness_generator
         tags:
             - { name: kernel.event_subscriber }
+
+    # inject current locale into translatable entities
+    pim_enrich.event_listener.add_locale:
+        class: %pim_enrich.event_listener.add_locale.class%
+        tags:
+            - { name: doctrine.event_subscriber }
