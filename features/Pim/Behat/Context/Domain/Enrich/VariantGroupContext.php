@@ -5,7 +5,7 @@ namespace Pim\Behat\Context\Domain\Enrich;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 class VariantGroupContext extends PimContext
 {

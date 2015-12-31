@@ -5,7 +5,7 @@ namespace Pim\Behat\Context;
 use Behat\Behat\Context\Step;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 
 /**
