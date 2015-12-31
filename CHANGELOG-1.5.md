@@ -14,6 +14,7 @@
 ## Bug fixes
 
 ## BC breaks
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` to add `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface` and `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
 - Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
 - Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
 - Delete class `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager` its service `pim_catalog.manager.product_mass_action`

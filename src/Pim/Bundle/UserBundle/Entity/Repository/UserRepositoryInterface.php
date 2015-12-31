@@ -29,5 +29,5 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
      *
      * @return UserInterface[]
      */
-    public function findByGroups($groupIds);
+    public function findByGroupIds(array $groupIds);
 }

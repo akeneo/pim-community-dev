@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -29,14 +30,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         ChannelManager $channelManager,
         StepExecution $stepExecution,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $serializer,
             $channelManager,
-            'upload/path/',
-            $productBuilder
+            $productBuilder,
+            $objectDetacher,
+            'upload/path/'
         );
         $this->setStepExecution($stepExecution);
     }
@@ -108,6 +111,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_flat_data_with_media(
         $channelManager,
+        $serializer,
+        $productBuilder,
+        $objectDetacher,
         ChannelInterface $channel,
         ProductInterface $product,
         FileInfoInterface $media1,
@@ -146,16 +152,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
-        $this->process($product)->shouldReturn(
-            [
-                'media'   => ['normalized_media1', 'normalized_media2'],
-                'product' => ['normalized_product']
-            ]
-        );
+        $objectDetacher->detach($product)->shouldBeCalled();
+    $this->process($product)->shouldReturn(
+        [
+            'media'   => ['normalized_media1', 'normalized_media2'],
+            'product' => ['normalized_product']
+        ]
+    );
     }
 
     function it_returns_flat_data_without_media(
         $productBuilder,
+        $objectDetacher,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
@@ -179,6 +187,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
+        $objectDetacher->detach($product)->shouldBeCalled();
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
 

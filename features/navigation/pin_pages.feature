@@ -12,6 +12,7 @@ Feature: Pin pages to pinbar
       | potatoe   |
     And I am logged in as "Mary"
 
+  @unstable
   Scenario: Add pages to the pinbar
     Given I am on the "pineapple" product page
     Then the product SKU should be "pineapple"
