@@ -570,4 +570,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/oro_filter.form.type.date_range/pim_filter.form.type.date_range/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Entity\\TranslatableInterface/Akeneo\\Component\\Localization\\Model\\TranslatableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Entity\\AbstractTranslation/Akeneo\\Component\\Localization\\Model\\AbstractTranslation/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Factory\\TranslationFactory/Akeneo\\Component\\Localization\\Factory\\TranslationFactory/g'
 ```

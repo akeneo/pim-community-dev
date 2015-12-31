@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Factory;
+namespace Akeneo\Component\Localization\Factory;
+
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Translation factory for entity instanciation
@@ -49,7 +51,7 @@ class TranslationFactory
                 sprintf(
                     'The translation class "%s" must extends "%s"',
                     $translationClass,
-                    'Pim\Bundle\TranslationBundle\Entity'
+                    'Akeneo\Component\Localization\Model\AbstractTranslation'
                 )
             );
         }
@@ -64,7 +66,7 @@ class TranslationFactory
      *
      * @param string $locale
      *
-     * @return \Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation
+     * @return AbstractTranslation
      */
     public function createTranslation($locale)
     {
