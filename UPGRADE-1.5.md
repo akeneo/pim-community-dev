@@ -575,4 +575,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Exception\\MissingOptionException/Pim\\Bundle\\EnrichBundle\\Exception\\MissingOptionException/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Form\\Subscriber\\AddTranslatableFieldSubscriber/Pim\\Bundle\\EnrichBundle\\Form\\Subscriber\\AddTranslatableFieldSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Twig\\TranslationsExtension/Pim\\Bundle\\EnrichBundle\\Twig\\TranslationsExtension/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Form\\Type\\TranslatableFieldType/Pim\\Bundle\\EnrichBundle\\Form\\Type\\TranslatableFieldType/g'
 ```

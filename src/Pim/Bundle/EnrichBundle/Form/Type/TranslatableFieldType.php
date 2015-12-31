@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Form\Type;
+namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;

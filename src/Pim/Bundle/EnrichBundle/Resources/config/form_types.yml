@@ -47,6 +47,7 @@ parameters:
     pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
     pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
+    pim_enrich.form.type.translatable_field.class:         Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType
 
 services:
     pim_enrich.form.type.product.view:
@@ -376,3 +377,12 @@ services:
             - %pim_enrich.mass_edit_action.set_attribute_requirements.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }
+
+    pim_enrich.form.type.translatable_field:
+        class: %pim_enrich.form.type.translatable_field.class%
+        arguments:
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: form.type, alias: pim_translatable_field }
