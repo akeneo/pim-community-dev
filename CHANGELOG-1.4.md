@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.15 (2015-12-30)
 
 ## Improvements
 - PIM-4897: Added MongoDB status on SF debug toolbar
@@ -7,8 +7,10 @@
 - PIM-5170: Fix memory leak on bulk detach
 
 ## Bug fixes
+- PIM-5295: Fix association product grid category filter
 - PIM-5348: fix group count on behats
 - PIM-5347: fix mongo database in case of attribute removal
+- PIM-5387: Fix memory leak in quick export
 
 # 1.4.14 (2015-12-17)
 

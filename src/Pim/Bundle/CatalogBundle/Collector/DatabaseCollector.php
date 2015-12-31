@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Collector;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Version;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 use Pim\Component\Catalog\Repository\ProductValueCounterRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,7 +107,7 @@ class DatabaseCollector extends DataCollector
      */
     public function isMongoDbEnabled()
     {
-        return 'doctrine/mongodb-odm' === $this->storageDriver;
+        return AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver;
     }
 
     /**

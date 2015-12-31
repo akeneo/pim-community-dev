@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -47,19 +48,24 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var  ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
-     * @param string                              $uploadDirectory
      * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectDetacherInterface             $objectDetacher
+     * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        $uploadDirectory,
-        ProductBuilderInterface $productBuilder = null
+        ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $objectDetacher,
+        $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
@@ -67,6 +73,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $this->channelManager  = $channelManager;
         $this->uploadDirectory = $uploadDirectory;
         $this->productBuilder  = $productBuilder;
+        $this->objectDetacher  = $objectDetacher;
     }
 
     /**
@@ -108,6 +115,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+        $this->objectDetacher->detach($product);
 
         return $data;
     }
@@ -149,13 +157,11 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function getNormalizerContext()
     {
-        if (null === $this->normalizerContext) {
-            $this->normalizerContext = [
-                'scopeCode'   => $this->channelCode,
-                'localeCodes' => $this->getLocaleCodes($this->channelCode),
-                'locale'      => $this->locale,
-            ];
-        }
+        $this->normalizerContext = [
+            'scopeCode'   => $this->channelCode,
+            'localeCodes' => $this->getLocaleCodes($this->channelCode),
+            'locale'      => $this->locale,
+        ];
 
         return $this->normalizerContext;
     }

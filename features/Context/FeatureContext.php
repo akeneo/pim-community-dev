@@ -11,6 +11,7 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
 
@@ -58,6 +59,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+
+        $this->useContext('domain-variant-group', new VariantGroupContext());
 
         $this->setTimeout($parameters);
     }
