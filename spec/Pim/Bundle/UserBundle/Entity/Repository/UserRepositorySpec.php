@@ -78,7 +78,7 @@ class UserRepositorySpec extends ObjectBehavior
         $qb->getQuery()->willReturn($query);
         $query->getResult()->shouldBeCalled();
 
-        $this->findByGroups($groupIds);
+        $this->findByGroupIds($groupIds);
     }
 
     function it_counts_all_users($em, QueryBuilder $qb, AbstractQuery $query)

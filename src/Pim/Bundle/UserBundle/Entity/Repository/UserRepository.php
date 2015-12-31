@@ -36,7 +36,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findByGroups($groupIds)
+    public function findByGroupIds(array $groupIds)
     {
         $qb = $this->createQueryBuilder('u');
         $qb->leftJoin('u.groups', 'g');
