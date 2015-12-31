@@ -49,6 +49,9 @@ class AddLocaleListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
+        // [DX] Attempt to delete old listener
+        return;
+
         $entity = $args->getEntity();
 
         if ($entity instanceof TranslatableInterface) {
