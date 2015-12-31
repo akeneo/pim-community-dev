@@ -24,7 +24,7 @@ define(
                         /* jscs:disable requireDotNotation */
                         var attributeGroupPermission = _.findWhere(
                             permissions['attribute_groups'],
-                            {code: field.attribute.group}
+                            {code: field.attribute.group.code}
                         );
 
                         if (!attributeGroupPermission.edit) {
