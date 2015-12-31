@@ -12,7 +12,8 @@
     "autoload": {
         "psr-0": {
             "": "src/",
-            "Context": "features/"
+            "Context": "features/",
+            "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         }
     },
     "require": {
