@@ -27,28 +27,18 @@ define(
     ) {
         return BaseAddAttribute.extend({
             /**
+             * TODO we MUST exclude attribute we can't add (rights)
+             *
              * {@inheritdoc}
              */
-            loadAttributesChoices: function () {
-                return $.when(
-                    AttributeManager.getAvailableOptionalAttributes(this.getFormData()),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                    FetcherRegistry.getFetcher('permission').fetchAll()
-                ).then(function (attributes, attributeGroups, permissions) {
-                    var editableGroupCodes = _.chain(permissions.attribute_groups)
-                        .where({edit: true})
-                        .pluck('code')
-                        .value();
+            getSelectSearchParameters: function (term, page) {
+                var parameters = BaseAddAttribute.prototype.getSelectSearchParameters.apply(this, [term, page]);
 
-                    var editableAttributes = _.chain(attributes)
-                        .where({unique: 0})
-                        .filter(function (attribute) {
-                            return _.contains(editableGroupCodes, attribute.group);
-                        })
-                        .value();
-
-                    this.initializeSelect(editableAttributes, attributeGroups);
-                }.bind(this));
+                return $.extend(true, parameters, {
+                    options: {
+                        exclude_unique: 1
+                    }
+                });
             }
         });
     }
