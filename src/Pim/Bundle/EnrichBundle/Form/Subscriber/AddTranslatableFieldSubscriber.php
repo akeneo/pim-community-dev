@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Akeneo\Component\Localization\Factory\TranslationFactory;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
-use Akeneo\Component\Localization\Factory\TranslationFactory;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
