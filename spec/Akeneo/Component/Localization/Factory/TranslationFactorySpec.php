@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TranslationBundle\Factory;
+namespace spec\Akeneo\Component\Localization\Factory;
 
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ class TranslationFactorySpec extends ObjectBehavior
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'
         );
-        $this->shouldHaveType('Pim\Bundle\TranslationBundle\Factory\TranslationFactory');
+        $this->shouldHaveType('Akeneo\Component\Localization\Factory\TranslationFactory');
     }
 
     function it_creates_a_translation()

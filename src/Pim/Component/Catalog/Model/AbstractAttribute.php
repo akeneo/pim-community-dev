@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**

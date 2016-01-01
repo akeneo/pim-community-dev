@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
@@ -14,8 +13,6 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 abstract class AbstractProductValue implements ProductValueInterface
 {

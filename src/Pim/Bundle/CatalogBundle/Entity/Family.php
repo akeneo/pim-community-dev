@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -16,8 +15,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 class Family implements FamilyInterface
 {

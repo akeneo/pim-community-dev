@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
+namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Akeneo\Component\Localization\Factory\TranslationFactory;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
-use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
+use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
@@ -99,8 +99,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * Build the custom form based on the provided locales
      *
      * @param FormEvent $event
-     *
-     * @return
      */
     public function preSetData(FormEvent $event)
     {

@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\TranslationBundle\Twig;
+namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Akeneo\Component\Console\CommandLauncher;
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

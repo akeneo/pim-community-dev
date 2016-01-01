@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -20,8 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Assert\GroupSequenceProvider
- *
- * @ExclusionPolicy("all")
  */
 class Group implements GroupInterface
 {
