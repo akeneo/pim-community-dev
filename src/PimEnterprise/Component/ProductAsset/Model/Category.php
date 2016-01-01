@@ -12,15 +12,13 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
  * Category for assets
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
- *
- * TODO: ExclusionPolicy("all") ? use JMS\Serializer\Annotation\ExclusionPolicy;
  */
 class Category extends BaseCategory implements CategoryInterface
 {

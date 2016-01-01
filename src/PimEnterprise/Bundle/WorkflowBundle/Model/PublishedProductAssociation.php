@@ -11,15 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AbstractAssociation;
 
 /**
  * Association entity
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- *
- * @ExclusionPolicy("all")
  */
 class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {

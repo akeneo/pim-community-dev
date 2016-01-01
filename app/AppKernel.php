@@ -119,7 +119,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
-            new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),

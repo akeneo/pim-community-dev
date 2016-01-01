@@ -12,8 +12,8 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**

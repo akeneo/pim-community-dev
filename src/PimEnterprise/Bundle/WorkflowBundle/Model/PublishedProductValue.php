@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
@@ -20,7 +19,6 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
  * Published product value
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @ExclusionPolicy("all")
  */
 class PublishedProductValue extends AbstractProductValue implements PublishedProductValueInterface
 {
