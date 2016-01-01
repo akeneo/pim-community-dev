@@ -119,7 +119,7 @@ pimee_product_asset:
     csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en csv
     yml_asset_configuration_export.title: Export de la configuration des canaux de ressources en Yaml
     csv_asset_category_export.title: Export des catégories de ressources en csv
-    yml_asset_channel_configuration_import.title: Import des configurations des transformations pour les canaux en Yaml
+    yml_asset_channel_configuration_import.title: Import des configurations de transformations de ressources en Yaml
   steps:
     channel_configuration.processor.title: Traiter les configurations des canaux
   notAvailable:
