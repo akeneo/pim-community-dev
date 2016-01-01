@@ -148,8 +148,6 @@ class ORMProductReaderSpec extends ObjectBehavior
         $channelManager,
         $repository,
         $stepExecution,
-        $channelManager,
-        $repository,
         ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
