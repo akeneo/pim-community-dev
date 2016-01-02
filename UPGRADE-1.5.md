@@ -604,4 +604,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\ProductValueNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\ProductValueNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\VersionNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\VersionNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Normalizer\\MongoDB\\ReferenceDataNormalizer/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\Document\\ReferenceDataNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.referencedata./g'
 ```
