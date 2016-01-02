@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Version;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;

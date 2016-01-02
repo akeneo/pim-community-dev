@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;

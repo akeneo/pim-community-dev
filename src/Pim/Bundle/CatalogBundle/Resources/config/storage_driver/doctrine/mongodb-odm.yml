@@ -8,18 +8,28 @@ parameters:
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
-    pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
-    pim_catalog.mongodb.normalizer.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\GroupNormalizer
-    pim_catalog.mongodb.normalizer.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
-    pim_catalog.mongodb.normalizer.product.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
-    pim_catalog.mongodb.normalizer.product_value.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
-    pim_catalog.mongodb.normalizer.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
-    pim_catalog.mongodb.normalizer.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
-    pim_catalog.mongodb.normalizer.file.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FileNormalizer
-    pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MetricNormalizer
-    pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
-    pim_catalog.event_subscriber.mongodb.set_products.class:  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber
 
+    pim_catalog.mongodb.normalizer.normalized_data.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FamilyNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\GroupNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\CompletenessNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.product.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.product_value.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductValueNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\AttributeOptionNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductPriceNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.file.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FileNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\MetricNormalizer
+    pim_catalog.mongodb.normalizer.normalized_data.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\DateTimeNormalizer
+
+    pim_catalog.mongodb.normalizer.document.product.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer
+    pim_catalog.mongodb.normalizer.document.product_value.class: Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductValueNormalizer
+    pim_catalog.mongodb.normalizer.document.metric.class:        Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\MetricNormalizer
+    pim_catalog.mongodb.normalizer.document.price.class:         Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductPriceNormalizer
+    pim_catalog.mongodb.normalizer.document.datetime.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\DateTimeNormalizer
+    pim_catalog.mongodb.normalizer.document.association.class:   Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\AssociationNormalizer
+    pim_catalog.mongodb.normalizer.document.version.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer
+    pim_catalog.mongodb.normalizer.document.generic.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\GenericNormalizer
+
+    pim_catalog.event_subscriber.mongodb.set_products.class:                   Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetNormalizedProductDataSubscriber
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\ProductRelatedEntityRemovalSubscriber
@@ -104,82 +114,142 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
 
-    # deprecetad: will be removed in 1.4
+    # deprecated: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entities_type:
         alias: akeneo_storage_utils.event_subscriber.mongodb.entities_type
 
-    # deprecetad: will be removed in 1.4
+    # deprecated: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
         alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository
 
-    # deprecetad: will be removed in 1.4
+    # deprecated: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entity_type:
         alias: akeneo_storage_utils.event_subscriber.mongodb.entity_type
 
-    # Normalizers
-    pim_catalog.mongodb.normalizer.product:
-        class: %pim_catalog.mongodb.normalizer.product.class%
+    # Normalizers from Object to MongoDB normalizedData
+    pim_catalog.mongodb.normalizer.normalized_data.product:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.product.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.product_value:
-        class: %pim_catalog.mongodb.normalizer.product_value.class%
+    pim_catalog.mongodb.normalizer.normalized_data.product_value:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.product_value.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.attribute_option:
-        class: %pim_catalog.mongodb.normalizer.attribute_option.class%
+    pim_catalog.mongodb.normalizer.normalized_data.attribute_option:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.attribute_option.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.product_price:
-        class: %pim_catalog.mongodb.normalizer.product_price.class%
+    pim_catalog.mongodb.normalizer.normalized_data.product_price:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.product_price.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.file:
-        class: %pim_catalog.mongodb.normalizer.file.class%
+    pim_catalog.mongodb.normalizer.normalized_data.file:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.file.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.metric:
-        class: %pim_catalog.mongodb.normalizer.metric.class%
+    pim_catalog.mongodb.normalizer.normalized_data.metric:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.metric.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.family:
-        class: %pim_catalog.mongodb.normalizer.family.class%
+    pim_catalog.mongodb.normalizer.normalized_data.family:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.family.class%
         public: false
         arguments:
             - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.group:
-        class: %pim_catalog.mongodb.normalizer.group.class%
+    pim_catalog.mongodb.normalizer.normalized_data.group:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.group.class%
         public: false
         arguments:
             - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.completeness:
-        class: %pim_catalog.mongodb.normalizer.completeness.class%
+    pim_catalog.mongodb.normalizer.normalized_data.completeness:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.completeness.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_catalog.mongodb.normalizer.datetime:
-        class: %pim_catalog.mongodb.normalizer.datetime.class%
+    pim_catalog.mongodb.normalizer.normalized_data.datetime:
+        class: %pim_catalog.mongodb.normalizer.normalized_data.datetime.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
+
+    # Normalizers from Object to MongoDB document
+    pim_catalog.mongodb.normalizer.document.product:
+        class: %pim_catalog.mongodb.normalizer.document.product.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.product_value:
+        class: %pim_catalog.mongodb.normalizer.document.product_value.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.metric:
+        class: %pim_catalog.mongodb.normalizer.document.metric.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.price:
+        class: %pim_catalog.mongodb.normalizer.document.price.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.datetime:
+        class: %pim_catalog.mongodb.normalizer.document.datetime.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.association:
+        class: %pim_catalog.mongodb.normalizer.document.association.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.version:
+        class: %pim_catalog.mongodb.normalizer.document.version.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_catalog.mongodb.normalizer.document.generic:
+        class: %pim_catalog.mongodb.normalizer.document.generic.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
 
     pim_catalog.mongodb.mongo_objects_factory:
         alias: akeneo_storage_utils.mongodb.mongo_objects_factory

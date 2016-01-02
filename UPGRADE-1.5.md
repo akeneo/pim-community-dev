@@ -8,9 +8,7 @@
 
 We continue to do several compatibility tests for PHP7 and HHVM.
 
-Our dependencies are becoming more and more compliant with HHVM and PHP7.
-
-Our Continuous integration is configured to run our unit tests suites with PHP 5.4, 5.5, 5.6, 7.0 and HHVM.
+Our dependencies are becoming more and more compliant and our Continuous integration is configured to run our unit tests suites with PHP 5.4, 5.5, 5.6, 7.0 and HHVM.
 
 Akeneo PIM is still not production ready with PHP7 and HHVM but we're definitely getting closer.
 
@@ -72,11 +70,11 @@ src/
 │       ├── DistributionBundle      -> [Done] - removed (automatic routing has been dropped and routes are explicitly declared in routing.yml)
 │       ├── FilterBundle            -> -
 │       ├── FormBundle              -> merge useful parts to Oro/ConfigBundle and Pim/EnrichBundle
-│       ├── LocaleBundle            -> merge useful parts to Akeneo/Pim Localization
+│       ├── LocaleBundle            -> [Done] - removed
 │       ├── NavigationBundle        -> -
 │       ├── RequireJSBundle         -> -
 │       ├── SecurityBundle          -> -
-│       ├── TranslationBundle       -> merge useful parts to Akeneo/Pim Localization
+│       ├── TranslationBundle       -> merge useful parts to Akeneo/Pim Localization then remove
 │       ├── UIBundle                -> merge useful parts to Pim/UIBundle
 │       └── UserBundle              -> merge useful parts to Pim/UserBundle
 └── Pim
@@ -97,7 +95,7 @@ src/
     │   ├── NotificationBundle      -> bit re-worked during the collaborative workflow epic
     │   ├── PdfGeneratorBundle      -> -
     │   ├── ReferenceDataBundle     -> -
-    │   ├── TransformBundle         -> re-work normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
+    │   ├── TransformBundle         -> move normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
     │   ├── TranslationBundle       -> copy useful classes in new Localization component + bundle, then remove this bundle
     │   ├── UIBundle                -> mainly used for js/css third party libraries, we should load them via a dedicated package manager
     │   ├── UserBundle              -> merge used parts of Oro/UserBundle to Pim/UserBundle
@@ -156,7 +154,6 @@ src/
     │   ├── PdfGeneratorBundle      Classes to generate a PDF datasheet for a product
     │   ├── ReferenceDataBundle     Classes to provide reference data support for PIM features
     │   ├── TransformBundle         Handles normalization and denormalization of PIM models
-    │   ├── TranslationBundle       Doctrine and Symfony classes to manage localizable models
     │   ├── UserBundle              Interfaces and classes to manage Users, Roles and Groups
     │   ├── VersioningBundle        Versioning implementation for the PIM domain models
     │   └── WebServiceBundle        Very light Web Rest API (json format)
@@ -231,11 +228,11 @@ With our following versions, this practice shows limitation, it forbid to overri
 
 So, in 1.2, 1.3, 1.4 versions we've continuously replaced '$entityManager->getRepository(' by the injection of the service repository.
 
-We're thinking about get rid of factory service to instanciate repositories as standard services to be able to have several repositories for an object.
+We're getting rid of factory service to instanciate new repositories as standard services to be able to have several repositories for an object.
 
 For instance, a product repository in catalog bundle, another one in enrich with methods related to grid and forms, etc.
 
-It allows a better separation of concern and a more atomic customization in projects.
+It allows a better separation of concerns and a more atomic customization in projects.
 
 ## Batch Bundle & Component
 
@@ -437,6 +434,13 @@ Pim/Bundle/EnrichBundle
 └── Normalizer              -> format "internal_api", used by the internal rest api to communicate with new UI Forms (product edit form)
 ```
 
+DONE:
+
+ - The "mongodb_json" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/CatalogBundle/MongoDB/Normalizer -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/NormalizedData
+ - The parameters and services 'pim_catalog.mongodb.normalizer.*' have been renamed to 'pim_catalog.mongodb.normalizer.normalized_data.*'
+ - The "mongodb_document" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/TransformBundle/Normalizer/MongoDB -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/Document
+ - The parameters and services 'pim_serializer.normalizer.mongodb.*' have been renamed to 'pim_catalog.mongodb.normalizer.document.*'
+
 TODO:
 
 The "structured/json/standard" format could be moved to Catalog component:
@@ -444,13 +448,7 @@ The "structured/json/standard" format could be moved to Catalog component:
 
 The "flat/csv" format should be only used for import/export and could reside in Connector component:
 Pim/Bundle/TransformBundle/Normalizer/Flat -> Pim/Component/Connector/Normalizer/Flat
- -> because should only be used for csv import/export (versioning for legacy reasons)
-
-The "mongodb_json" format could be moved in Catalog Bundle (not in component because rely on storage classes):
- -> Pim/Bundle/CatalogBundle/MongoDB/Normalizer -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/NormalizedData
-
-The "mongodb_document" format could be moved in Catalog Bundle (not in component because rely on storage classes):
- -> Pim/Bundle/TransformBundle/Normalizer/MongoDB -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/Document
+ -> because should only be used for csv import/export (and currently versioning for legacy reasons)
 
 The "internal_api" format could be renamed in Enrich bundle:
  -> Pim/Bundle/EnrichBundle/Normalizer -> Pim/Bundle/EnrichBundle/Normalizer/InternalRest
@@ -461,6 +459,7 @@ Other bundles register normalizers/denormalizers for these formats and could be 
 ├── ImportExportBundle
 │   ├── Normalizer
 ├── ReferenceDataBundle
+│   ├── MongoDB
 │   ├── Normalizer
 ├── UserBundle
 │   ├── Normalizer
@@ -587,4 +586,26 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Form\\Subscriber\\AddTranslatableFieldSubscriber/Pim\\Bundle\\EnrichBundle\\Form\\Subscriber\\AddTranslatableFieldSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Twig\\TranslationsExtension/Pim\\Bundle\\EnrichBundle\\Twig\\TranslationsExtension/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TranslationBundle\\Form\\Type\\TranslatableFieldType/Pim\\Bundle\\EnrichBundle\\Form\\Type\\TranslatableFieldType/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\AttributeOptionNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\AttributeOptionNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\CompletenessNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\CompletenessNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\DateTimeNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\DateTimeNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\FamilyNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\FamilyNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\FileNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\FileNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\GroupNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\GroupNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\MetricNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\MetricNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\ProductNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\ProductNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\ProductPriceNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\ProductPriceNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\ProductValueNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\NormalizedData\\ProductValueNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\ReferenceDataNormalizer/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\NormalizedData\\ReferenceDataNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\AssociationNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\AssociationNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\DateTimeNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\DateTimeNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\GenericNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\GenericNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\MetricNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\MetricNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\ProductNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\ProductNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\ProductPriceNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\ProductPriceNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\ProductValueNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\ProductValueNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\VersionNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\VersionNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Normalizer\\MongoDB\\ReferenceDataNormalizer/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\Document\\ReferenceDataNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.normalized_data./g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer.normalizer.mongodb./pim_catalog.mongodb.normalizer.document./g'
 ```
