@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Localization\Localizer;
 
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
@@ -67,6 +68,6 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
 
         $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
-        $this->getViolations()->shouldNotBeNull();
+        $this->getViolations()->shouldHaveCount(1);
     }
 }
