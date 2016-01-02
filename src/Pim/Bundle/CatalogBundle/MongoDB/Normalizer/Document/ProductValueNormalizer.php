@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

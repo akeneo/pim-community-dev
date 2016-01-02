@@ -12,7 +12,7 @@ use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSaver;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

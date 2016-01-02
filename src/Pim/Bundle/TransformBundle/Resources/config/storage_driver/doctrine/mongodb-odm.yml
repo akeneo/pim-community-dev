@@ -1,12 +1,12 @@
 parameters:
-    pim_serializer.normalizer.mongodb.product.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer
-    pim_serializer.normalizer.mongodb.product_value.class: Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer
-    pim_serializer.normalizer.mongodb.metric.class:        Pim\Bundle\TransformBundle\Normalizer\MongoDB\MetricNormalizer
-    pim_serializer.normalizer.mongodb.price.class:         Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductPriceNormalizer
-    pim_serializer.normalizer.mongodb.datetime.class:      Pim\Bundle\TransformBundle\Normalizer\MongoDB\DateTimeNormalizer
-    pim_serializer.normalizer.mongodb.association.class:   Pim\Bundle\TransformBundle\Normalizer\MongoDB\AssociationNormalizer
-    pim_serializer.normalizer.mongodb.version.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer
-    pim_serializer.normalizer.mongodb.generic.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\GenericNormalizer
+    pim_serializer.normalizer.mongodb.product.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer
+    pim_serializer.normalizer.mongodb.product_value.class: Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductValueNormalizer
+    pim_serializer.normalizer.mongodb.metric.class:        Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\MetricNormalizer
+    pim_serializer.normalizer.mongodb.price.class:         Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductPriceNormalizer
+    pim_serializer.normalizer.mongodb.datetime.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\DateTimeNormalizer
+    pim_serializer.normalizer.mongodb.association.class:   Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\AssociationNormalizer
+    pim_serializer.normalizer.mongodb.version.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer
+    pim_serializer.normalizer.mongodb.generic.class:       Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\GenericNormalizer
 
 services:
     # Object to MongoDB document normalizers

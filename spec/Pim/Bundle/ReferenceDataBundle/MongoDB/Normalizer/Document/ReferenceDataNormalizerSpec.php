@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Normalizer\MongoDB;
+namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\Document;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

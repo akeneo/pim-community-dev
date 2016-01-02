@@ -10,7 +10,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

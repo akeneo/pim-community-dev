@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Normalizer\MongoDB;
+namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\Document;
 
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ReferenceDataNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = [ProductNormalizer::FORMAT];
+    protected $supportedFormats = [\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer::FORMAT];
 
     /**
      * {@inheritdoc}

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
+namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;

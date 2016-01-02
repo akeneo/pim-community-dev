@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\Versioning\Model\Version;
