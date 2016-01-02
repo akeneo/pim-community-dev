@@ -437,7 +437,9 @@ Pim/Bundle/EnrichBundle
 DONE:
 
  - The "mongodb_json" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/CatalogBundle/MongoDB/Normalizer -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/NormalizedData
+ - The parameters and services 'pim_catalog.mongodb.normalizer.*' have been renamed to 'pim_catalog.mongodb.normalizer.normalized_data.*'
  - The "mongodb_document" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/TransformBundle/Normalizer/MongoDB -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/Document
+ - The parameters and services 'pim_serializer.normalizer.mongodb.*' have been renamed to 'pim_catalog.mongodb.normalizer.document.*'
 
 TODO:
 
@@ -604,5 +606,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\ProductValueNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\ProductValueNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\MongoDB\\VersionNormalizer/Pim\\Bundle\\CatalogBundle\\MongoDB\\Normalizer\\Document\\VersionNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Normalizer\\MongoDB\\ReferenceDataNormalizer/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\Document\\ReferenceDataNormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.referencedata./g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.normalized_data./g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer.normalizer.mongodb./pim_catalog.mongodb.normalizer.document./g'
 ```
