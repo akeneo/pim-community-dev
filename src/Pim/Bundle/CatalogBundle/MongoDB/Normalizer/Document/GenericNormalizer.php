@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document;
 
-use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
