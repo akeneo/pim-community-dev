@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
+namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData;
 
 use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

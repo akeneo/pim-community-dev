@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;

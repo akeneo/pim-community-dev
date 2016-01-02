@@ -1,7 +1,7 @@
 parameters:
     pim_reference_data.doctrine.query.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter
     pim_reference_data.doctrine.query.sorter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Sorter\ReferenceDataSorter
-    pim_reference_data.mongodb.normalizer.reference_data.class:    Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\ReferenceDataNormalizer
+    pim_reference_data.mongodb.normalizer.reference_data.class:    Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData\ReferenceDataNormalizer
     pim_reference_data.normalizer.mongodb.reference_data.class:    Pim\Bundle\ReferenceDataBundle\Normalizer\MongoDB\ReferenceDataNormalizer
 
 services:

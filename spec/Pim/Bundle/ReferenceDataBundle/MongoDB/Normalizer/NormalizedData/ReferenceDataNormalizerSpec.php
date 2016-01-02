@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
+namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -17,7 +17,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\ReferenceDataNormalizer');
+        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData\ReferenceDataNormalizer');
     }
 
     function it_supports_normalization(ReferenceDataInterface $referenceData, AttributeOptionInterface $option)

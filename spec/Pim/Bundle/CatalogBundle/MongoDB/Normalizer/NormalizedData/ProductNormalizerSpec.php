@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -47,7 +47,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->willReturn(['completenessCode' => 'completeness normalization']);
 
         $this->normalize($product, 'mongodb_json', [])->shouldReturn([
-            ProductNormalizer::FAMILY_FIELD => 'family normalization',
+            \Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer::FAMILY_FIELD => 'family normalization',
             ProductNormalizer::COMPLETENESSES_FIELD => array('completenessCode' => 'completeness normalization'),
             ProductNormalizer::ENABLED_FIELD => true
         ]);

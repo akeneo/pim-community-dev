@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
-use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize a product metric to store it as mongodb_json
+ * Normalize a product price collection to store it as mongodb_json
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricNormalizer implements NormalizerInterface
+class ProductPriceNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
@@ -23,10 +23,7 @@ class MetricNormalizer implements NormalizerInterface
         if ($object->getData() !== null) {
             $data = [
                 'data'     => $object->getData(),
-                'unit'     => $object->getUnit(),
-                'baseData' => $object->getBaseData(),
-                'baseUnit' => $object->getBaseUnit(),
-                'family'   => $object->getFamily()
+                'currency' => $object->getCurrency()
             ];
         }
 
@@ -38,6 +35,6 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof MetricInterface && 'mongodb_json' === $format;
+        return $data instanceof ProductPriceInterface && 'mongodb_json' === $format;
     }
 }

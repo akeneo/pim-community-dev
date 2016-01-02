@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;

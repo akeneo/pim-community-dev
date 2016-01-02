@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 use Pim\Component\Catalog\Model\FamilyInterface;

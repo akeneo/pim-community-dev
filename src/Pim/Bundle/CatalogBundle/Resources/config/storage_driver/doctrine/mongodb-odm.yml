@@ -8,16 +8,16 @@ parameters:
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
-    pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
-    pim_catalog.mongodb.normalizer.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\GroupNormalizer
-    pim_catalog.mongodb.normalizer.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
-    pim_catalog.mongodb.normalizer.product.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
-    pim_catalog.mongodb.normalizer.product_value.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
-    pim_catalog.mongodb.normalizer.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
-    pim_catalog.mongodb.normalizer.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
-    pim_catalog.mongodb.normalizer.file.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FileNormalizer
-    pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MetricNormalizer
-    pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
+    pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FamilyNormalizer
+    pim_catalog.mongodb.normalizer.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\GroupNormalizer
+    pim_catalog.mongodb.normalizer.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\CompletenessNormalizer
+    pim_catalog.mongodb.normalizer.product.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer
+    pim_catalog.mongodb.normalizer.product_value.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductValueNormalizer
+    pim_catalog.mongodb.normalizer.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\AttributeOptionNormalizer
+    pim_catalog.mongodb.normalizer.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductPriceNormalizer
+    pim_catalog.mongodb.normalizer.file.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FileNormalizer
+    pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\MetricNormalizer
+    pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\DateTimeNormalizer
     pim_catalog.event_subscriber.mongodb.set_products.class:  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber
 
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetNormalizedProductDataSubscriber
