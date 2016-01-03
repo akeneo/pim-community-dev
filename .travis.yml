@@ -9,11 +9,6 @@ php:
 # Allow to use container infrastructure
 sudo: false
 
-matrix:
-    allow_failures:
-        - php: "7.0"
-        - php: "hhvm"
-
 cache:
   directories:
     - $HOME/.composer/cache
@@ -27,15 +22,15 @@ before_script:
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console assets:install; fi;'
-    - npm install -g grunt-cli
-    - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then npm install -g grunt-cli; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then npm install; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer; fi;'
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
-    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then grunt travis; else grunt codestyle; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then grunt travis; fi;'
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
