@@ -15,12 +15,4 @@ class HookContext extends BaseHookContext
         $this->getMainContext()->getSubcontext('catalogConfiguration')
             ->addConfigurationDirectory(__DIR__.'/../../../Context/catalog');
     }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetImageFile()
-    {
-        $this->imageFile = null;
-    }
 }
