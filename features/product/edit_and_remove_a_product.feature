@@ -16,7 +16,7 @@ Feature: Edit and remove a product
       | SKU             | boots |
       | Choose a family | shoes |
     And I press the "Save" button in the popin
-    Then I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I fill in the following information:
       | Length | 5.0000 Centimeter |
     And I press the "Save" button

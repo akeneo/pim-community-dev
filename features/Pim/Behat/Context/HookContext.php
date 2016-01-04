@@ -12,6 +12,7 @@ use Behat\Behat\Hook\Annotation\BeforeScenario;
 use Behat\Behat\Hook\Annotation\BeforeStep;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\DbSessionPurger;
 use Context\FeatureContext;
 use Context\SelectiveORMPurger;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
@@ -73,6 +74,8 @@ class HookContext extends PimContext
         }
 
         $purgers[] = new SelectiveORMPurger($this->getService('doctrine')->getManager(), $excludedTables);
+
+        $purgers[] = new DbSessionPurger($this->getService("database_connection"), 'pim_session');
 
         foreach ($purgers as $purger) {
             $purger->purge();

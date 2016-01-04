@@ -75,13 +75,20 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-        }
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-        }
+        $tabs = $this->spin(function () {
+
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+
+        }, "Findind $tab tab");
+
         $tabs->clickLink($tab);
     }
 
@@ -98,7 +105,10 @@ class Form extends Base
 
         $panel = strtolower($panel);
         if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
-            $elt->find('css', sprintf('button[data-panel$="%s"]', $panel))->click();
+            $button = $this->spin(function () use ($elt, $panel) {
+                return $elt->find('css', sprintf('button[data-panel$="%s"]', $panel));
+            }, 'Cannot find the data-panel button in the panel');
+            $button->click();
         }
     }
 
@@ -178,8 +188,9 @@ class Form extends Base
         if (!$groups) {
             $groups = $this->getElement('Form Groups');
 
-            $groupsContainer = $groups
-                ->find('css', sprintf('.group-label:contains("%s")', $group));
+            $groupsContainer = $this->spin(function () use ($groups, $group) {
+                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+            }, "Finding the group $group");
 
             $button = null;
 
