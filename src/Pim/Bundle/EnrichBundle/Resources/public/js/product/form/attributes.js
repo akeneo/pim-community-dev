@@ -190,7 +190,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group
+                        _.first(attributes).group.code
                     );
 
                     this.setData(product);
