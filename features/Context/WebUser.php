@@ -145,29 +145,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $category
-     *
-     * @Given /^I select the "([^"]*)" tree$/
-     */
-    public function iSelectTheTree($category)
-    {
-        $this->getCurrentPage()->selectTree($category);
-        $this->wait();
-    }
-
-    /**
-     * @param string $category
-     *
-     * @Given /^I expand the "([^"]*)" category$/
-     */
-    public function iExpandTheCategory($category)
-    {
-        $this->wait(); // Make sure that the tree is loaded
-        $this->getCurrentPage()->expandCategory($category);
-        $this->wait();
-    }
-
-    /**
      * @param string $attribute
      *
      * @Given /^I expand the "([^"]*)" attribute$/
@@ -175,47 +152,6 @@ class WebUser extends RawMinkContext
     public function iExpandTheAttribute($attribute)
     {
         $this->getCurrentPage()->expandAttribute($attribute);
-    }
-
-    /**
-     * @param string $category1
-     * @param string $category2
-     *
-     * @Given /^I drag the "([^"]*)" category to the "([^"]*)" category$/
-     */
-    public function iDragTheCategoryToTheCategory($category1, $category2)
-    {
-        $this->getCurrentPage()->dragCategoryTo($category1, $category2);
-        $this->wait();
-    }
-
-    /**
-     * @param string $not
-     * @param string $child
-     * @param string $parent
-     *
-     * @Then /^I should (not )?see the "([^"]*)" category under the "([^"]*)" category$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
-    {
-        $this->wait(); // Make sure that the tree is loaded
-
-        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
-
-        if ($not && $childNode) {
-            throw $this->createExpectationException(
-                sprintf('Expecting not to see category "%s" under the category "%s"', $child, $parent)
-            );
-        }
-
-        if (!$not && !$childNode) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see category "%s" under the category "%s", not found', $child, $parent)
-            );
-        }
     }
 
     /**
@@ -1282,29 +1218,6 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @When /^I fill in the following information in the quick search popin:$/
-     */
-    public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
-    {
-        $fields = $table->getRowsHash();
-        if (!isset($fields['type'])) {
-            $fields['type'] = null;
-        }
-
-        $this->getCurrentPage()->fillQuickSearch($fields['search'], $fields['type']);
-    }
-
-    /**
-     * @When /^I open the quick search popin$/
-     */
-    public function iOpenTheQuickSearchPopin()
-    {
-        $this->getCurrentPage()->openQuickSearchPopin();
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @When /^I can search by the following types:$/
      */
     public function iCanSearchByTheFollowingTypes(TableNode $table)
@@ -1744,52 +1657,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $right
-     * @param string $category
-     *
-     * @Given /^I (right )?click on the "([^"]*)" category$/
-     */
-    public function iClickOnTheCategory($right, $category)
-    {
-        $category = $this->getCurrentPage()->findCategoryInTree($category);
-
-        if ($right) {
-            $category->rightClick();
-        } else {
-            try {
-                $checkbox = $this->spin(function () use ($category) {
-                    return $category->find('css', '.jstree-checkbox');
-
-                });
-            } catch (\Exception $e) {
-                $checkbox = null;
-            }
-
-            if (null !== $checkbox) {
-                $checkbox->click();
-            } else {
-                $category->click();
-            }
-            $this->wait();
-        }
-    }
-
-    /**
-     * @Then /^I should see (\d+) category count$/
-     *
-     * @param int $count
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeCategoryCount($count)
-    {
-        $badge = $this->getCurrentPage()->find('css', sprintf('span.badge:contains("%d")', $count));
-        if (!$badge) {
-            throw $this->createExpectationException('Catgeroy badge not found');
-        }
-    }
-
-    /**
      * @param string $action
      *
      * @Given /^I click on "([^"]*)" in the right click menu$/
@@ -1810,18 +1677,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I blur the category node$/
-     */
-    public function iBlurTheCategoryNode()
-    {
-        $this->getCurrentPage()->find('css', '#container')->click();
-        $this->wait();
-    }
-
-    /**
      * @param string $message
      * @param string $property
-     *
+     * TODO: used only once
      * @Then /^I should see "([^"]*)" next to the (\w+)$/
      *
      * @throws ExpectationException
