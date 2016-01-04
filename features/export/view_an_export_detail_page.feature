@@ -13,11 +13,3 @@ Feature: View an export detail page
     When I click on the "footwear_product_export" row
     Then I should be on the "footwear_product_export" export job page
     And I should see "Export profile - Footwear product export"
-
-  @ce
-  Scenario: Successfully display the validation errors
-    Given the following job:
-      | connector            | alias              | code                | label                       | type   |
-      | Akeneo CSV Connector | csv_product_export | acme_product_export | Product export for Acme.com | export |
-    When I am on the "acme_product_export" export job page
-    Then I should see "This value should not be blank." next to the channel
