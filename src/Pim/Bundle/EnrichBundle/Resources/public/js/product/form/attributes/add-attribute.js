@@ -75,7 +75,7 @@ define(
 
                 var opts = {
                     formatResult: function (item) {
-                        var $checkbox = $('<input type="checkbox">');
+                        var $checkbox = $('<input>', {'type': 'checkbox', 'data-code': item.id});
                         var $attributeLabel = $('<span>', {'class': 'attribute-label'}).text(item.text);
                         var $groupLabel = $('<span>', {'class': 'group-label'}).text(item.group.text);
 
@@ -139,8 +139,10 @@ define(
                 select2.on('select2-selecting', function (event) {
                     if (_.contains(this.selection, event.val)) {
                         this.selection = _.without(this.selection, event.val);
+                        $('.add-attribute input[data-code="' + event.val + '"]').prop('checked', false);
                     } else {
                         this.selection.push(event.val);
+                        $('.add-attribute input[data-code="' + event.val + '"]').prop('checked', true);
                     }
 
                     this.updateSelectedCounter();
