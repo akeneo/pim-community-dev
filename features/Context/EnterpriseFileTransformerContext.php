@@ -6,7 +6,6 @@ use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Behat\Context\PimContext;
-use PimEnterprise\Behat\Context\PimEnterpriseContext;
 use Symfony\Component\Process\ExecutableFinder;
 
 /**
@@ -15,7 +14,7 @@ use Symfony\Component\Process\ExecutableFinder;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterpriseFileTransformerContext extends PimEnterpriseContext
+class EnterpriseFileTransformerContext extends PimContext
 {
     const DEFAULT_PERCEPTUAL_DIFF = '/usr/bin/perceptualdiff';
 
