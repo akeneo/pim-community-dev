@@ -44,3 +44,4 @@ jstree:
     unclassified: Produits non classifiés
   no_tree: "Pas d'arborescence disponible"
   include_sub: Inc. les sous-catégories
+  loading: Chargement ...
