@@ -1,0 +1,6 @@
+entity.user.name: Käyttäjä
+entity.user.description: Käyttäjäprofiili
+entity.role.name: Rooli
+entity.role.description: käyttäjärooli
+entity.group.name: Ryhmä
+entity.group.description: Ryhmän rooli
