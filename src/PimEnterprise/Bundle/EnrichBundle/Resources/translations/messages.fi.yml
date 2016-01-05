@@ -1,0 +1,151 @@
+pim_title.locale:
+  edit: 'Alueelliset asetukset %locale.code% | Muokkaa'
+Permissions: Käyttöoikeudet
+pane.accordion.permissions: Käyttöoikeudet
+attribute group.permissions:
+  view.label: Attribuuttien katselu sallittu
+  view.help: Salli tuotteiden katselu tässä attribuuttiryhmässä
+  edit.label: Attribuuttien muokkaaminen sallittu
+  edit.help: Salli tuotteiden muokkaaminen tässä attribuuttiryhmässä
+  no_access_to_attributes: Sinulla ei ole pääsyä mihinkään tämän tuotteen attribuuttiin. Ole hyvä ja ota yhteyttä järjestelmänvalvojaasi.
+category.permissions:
+  view.label: Tuotteiden katselu sallittu
+  view.help: Salli tässä kategoriassa olevien tuotteiden katselu
+  edit.label: Tuotteiden muokkaaminen sallittu
+  edit.help: Salli tässä kategoriassa olevien tuotteiden katselu (tarkoittaa katseluoikeuksia)
+  own.label: Tuotteiden omistaminen sallittu
+  own.help: Saa tarkistaa, julkaista, peruuttaa julkaisun, luokitella, liittää tuoteryhmän (edellyttää Muokkaa-käyttöoikeus)
+  no_access_to_products: Sinulla ei ole käyttöoikeuksia minkään puun tuotteisiin, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+  apply_on_children.label: Tee muutokset myös alatasolle
+  apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
+locale.permissions:
+  view.label: Voivat tarkastella tuotetietoja
+  view.help: Salli tuotetietojen katselu tällä alueella
+  edit.label: Tuoteinformaation muokkaus sallittu
+  edit.help: Salli tuotetietojen muokkaaminen tällä alueella (edellyttää Katseluoikeutta)
+  no_access_to_products: Sinulla ei ole pääsyä tuotedataan millään aktivoidulla alueella, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+btn:
+  save working copy: Tallenna työn alla oleva kopio
+  save draft: Tallenna luonnos
+  save working copy and next: Tallenna työn alla oleva kopio ja jatka
+  save draft and next: Tallenna luonnos ja jatka
+  save working copy and finish: Tallenna työn alla oleva kopio ja lopeta
+  save draft and finish: Tallenna luonnos ja lopeta
+  send for approval: Lähetä hyväksyttäväksi
+  sent for approval: Lähetetty hyväksyttäväksi
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".'
+    publish:
+      label: Julkaise tuotteet
+      description: Julkaise valitut tuotteet, tällä hetkellä julkaistu data pyyhkiytyy julkaistavan datan alta.
+      success_flash: Valitut tuotteet ovat julkaistu onnistuneesti.
+      launched_flash: 'Työ "Tuotteiden julkaisu" on tällä hetkellä käynnissä.'
+      message:
+        error: Sinä et omista tätä tuotetta, joten et voi julkaista sitä.
+        warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".'
+        info: '%nbProducts% valitut tuotteet julkaistaan.'
+      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.'
+    published_product:
+      page_title: Julkaistut tuotteet
+      page_subtitle: 'Massamuokkaa (1 julkaistu tuote) | Massamuokkaa (%count% julkaistua tuotetta)'
+      title: Valitse toimenpide
+      subtitle: 'Valitse toimenpide, jonka haluat suorittaa valitulle julkaistulle tuotteelle | Valitse toimenpide jonka haluat suorittaa valituille %count% julkaistulle tuotteelle'
+      confirm: 'Olet päivittämässä julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista. | Olet päivittämässä %count% julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista.'
+      steps:
+        first: Valitse julkaistut tuotteet
+        second: Valitse toimenpide
+        third: Konfiguroi
+        fourth: Vahvista
+    unpublish:
+      label: 'Muuta tuote tilaan "Julkaisematon"'
+      description: 'Muuta valittujen tuotteiden tila tilaan "Julkaisematon", tällä hetkellä julkaistu data poistetaan.'
+      success_flash: 'Valitut tuotteet ovat onnistuneesti muutettu tilaan "Julkaisematon".'
+      launched_flash: 'Työ "Peruuta julkaisu tuotteelta/tuotteilta" on käynnissä.'
+      message:
+        error: Sinä et omista tätä tuotetta, joten et voi peruuttaa sen julkaisua.
+        warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi peruuttaa tuotteiden "%notGranted%" julkaisua.'
+        info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
+      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.'
+    classify:
+      message:
+        error: Et ole tuotteen omistaja, et voi luokitella sitä.
+        warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi luokitella tuotteita "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Et ole tuotteen omistaja, et voi muokata sitä.
+pim_enrich.mass_edit_action:
+  limit_exceeded: 'Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi'
+  product:
+    page_title: Tuotteet
+    page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
+    title: Valitse toimenpide
+    subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
+    confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+    steps:
+      first: Valitse tuotteet
+      second: Valitse toimenpide
+      third: Konfiguroi
+      fourth: Vahvista
+flash.product.updated: Tuotteen työn alla oleva kopio on päivitetty
+flash.product_draft.updated: Luonnos on tallennettu onnistuneesti
+flash.locale.updated: Alueen asetukset ja käyttöoikeudet on päivitetty
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Käyttöoikeudet
+  product:
+    tab:
+      proposal.title: Ehdotukset
+  category:
+    tab:
+      permission.title: Käyttöoikeudert
+  channel:
+    tab:
+      asset_transformation.title: Resurssien muunnokset
+  acl.product_ownership.title: Omistajuus
+  attributes:
+    empty: ei mitään
+  groups:
+    label: omistajaryhmät
+    empty: ei mitään
+  asset_transformation:
+    not_found: Ei muunnosta löydettävissä
+    title:
+      transformation: Muunnos
+      options: Asetukset
+    colorspace:
+      title: Väriavaruus
+      options:
+        colorspace: '%value% väriavaruus'
+    resize:
+      title: Muokkaa kokoa
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+    resolution:
+      title: Resoluutio
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Asteikko
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+        ratio: '%value%% suhde'
+    thumbnail:
+      title: Pikkukuva
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
+edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuutteja
+job_execution.summary:
+  mass_published: Tuote julkaistu
+  mass_unpublished: Tuote ei julkaistu
+  proposal: Ehdotus luotu
+  proposal_deleted: poistettu
+pim_assets_collection: Resurssien keruu

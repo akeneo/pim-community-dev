@@ -1,0 +1,97 @@
+View the product: Näytä tuote
+pimee_enrich.product_history.action.revert: Palaa tähän versioon
+permission-changes:
+  category:
+    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
+    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
+  locale:
+    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella'
+    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella'
+  attribute group:
+    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
+    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
+  job profile:
+    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>'
+    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>'
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Julkaistu
+        revert: Palauta
+      smart_attribute:
+        come_from: 'Tämä attribuutti voidaan päivittää säännöllä:'
+      btn:
+        publish: Julkaise
+        publish_this_version: Julkaise tämä versio
+        unpublish: Peruuta julkaisu
+        save_draft: Tallenna luonnos
+      flash:
+        product_unpublished: Tuotteen julkaisu peruutettu onnistuneesti
+        product_published: Tuote julkaistu onnistuneesti
+        product_not_published: Tuotteen julkaisu epäonnistui
+        product_not_unpublished: Tuotteen julkaisun peruuttaminen epäonnistui
+        product_reverted: Tuote palautettu onnistuneesti
+      meta:
+        published: Julkaistu versio
+        owner_groups: Omistajaryhmät
+        draft_status: Luonnoksen tila
+        draft:
+          in_progress: Työn alla
+          sent_for_approval: Odottaa hyväksyntää
+          working_copy: Työkopio
+      tab:
+        proposals:
+          title: Ehdotukset
+          messages:
+            approve:
+              success: Ehdotus on otettu käyttöön onnistuneesti.
+              error:
+                The proposal can't be applied due to the following error:
+                  - virhe
+            reject:
+              success: Ehdotus on hylätty.
+            remove:
+              success: Ehdotus on poistettu.
+      confirmation:
+        revert:
+          title: Palauta vahvistus
+          content: Oletko varma, että haluat palauttaa tuotteen tähän versioon?
+        publish:
+          title: Julkaise tämä tuote
+          content: Oletko varma että haluat julkaista tämän tuotteen?
+        unpublish:
+          title: Peruuta tuotteen julkaisu
+          content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
+      info:
+        update_successful: Tuotteen työkopio on päivitetty
+      copy:
+        source:
+          working_copy: Työkopio
+          draft: Luonnokseni
+          draft_of: '{{ author }}: n luonnos'
+    product_draft:
+      info:
+        update_successful: Tuotteen luonnos tallennettu onnistuneesti
+        update_failed: Tuotteen luonnosta ei voitu päivittää
+        value_modified: Nykyinen luonnos muuttaa tätä arvoa
+      flash:
+        sent_for_approval: Tuotteen luonnos lähetetty hyväksyttäväksi
+        draft_not_sendable: Et voi lähettää tätä luonnosta hyväksyttäväksi
+      btn:
+        send_for_approval: Lähetä hyväksyttäväksi
+        sent_for_approval: Lähetetty hyväksyttäväksi
+      modal:
+        accept_proposal: Hyväksy ehdotus
+        accept_selected_proposal: Hyävksy valittu ehdotus / ehdotukset
+        reject_proposal: Hylkää ehdotus
+        reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
+        remove_proposal: Poista ehdotus
+        send_for_approval: Lähetä hyväksyttäväksi
+        cancel: Hylkää
+        confirm: Lähetä
+        title: 'Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)'
+        characters: merkkiä
+      confirmation:
+        discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
+        discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
