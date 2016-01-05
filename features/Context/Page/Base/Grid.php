@@ -69,7 +69,6 @@ class Grid extends Index
 
                 return false;
             },
-            20,
             'No visible grid found'
         );
     }
@@ -507,7 +506,6 @@ class Grid extends Index
             function () use ($header) {
                 return $header->find('css', 'a');
             },
-            20,
             sprintf('Column %s is not sortable', $columnName)
         );
     }
@@ -601,7 +599,7 @@ class Grid extends Index
             return $this
                 ->getElement('Grid toolbar')
                 ->find('css', sprintf('a:contains("%s")', 'Reset'));
-        }, 20, 'Reset button not found');
+        }, 'Reset button not found');
 
         $resetBtn->click();
     }
@@ -615,7 +613,7 @@ class Grid extends Index
             return $this
                 ->getElement('Grid toolbar')
                 ->find('css', sprintf('a:contains("%s")', 'Refresh'));
-        }, 20, 'Refresh button not found');
+        }, 'Refresh button not found');
 
         $refreshBtn->click();
     }
@@ -725,7 +723,7 @@ class Grid extends Index
             return $this
                 ->getElement('Manage filters')
                 ->find('css', sprintf('label:contains("%s")', $filterName));
-        }, 20, sprintf('Impossible to activate filter "%s"', $filterName));
+        }, sprintf('Impossible to activate filter "%s"', $filterName));
 
         $filterElement->click();
     }
@@ -739,7 +737,7 @@ class Grid extends Index
             return $this
                 ->getElement('Filters')
                 ->find('css', '#add-filter-button');
-        }, 20, 'Impossible to find filter list');
+        }, 'Impossible to find filter list');
 
         $filterList->click();
     }
@@ -757,7 +755,7 @@ class Grid extends Index
         $row      = $this->getRow($value);
         $checkbox = $this->spin(function () use ($row) {
             return $row->find('css', 'input[type="checkbox"]');
-        }, 20, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
+        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
 
         if ($check) {
             $checkbox->check();
@@ -1031,7 +1029,7 @@ class Grid extends Index
 
         $allBtn = $this->spin(function () use ($selector) {
             return $selector->find('css', 'button:contains("All")');
-        }, 20, '"All" button on dropdown row selector not found');
+        }, '"All" button on dropdown row selector not found');
 
         $allBtn->click();
     }
@@ -1061,7 +1059,7 @@ class Grid extends Index
     {
         return $this->spin(function () {
             return $this->getElement('Grid')->find('css', 'th .btn-group');
-        }, 20, 'Grid dropdown row selector not found');
+        }, 'Grid dropdown row selector not found');
     }
 
     /**
@@ -1075,13 +1073,13 @@ class Grid extends Index
 
         $dropdown = $this->spin(function () use ($selector) {
             return $selector->find('css', 'button.dropdown-toggle');
-        }, 20, 'Dropdown row selector not found');
+        }, 'Dropdown row selector not found');
 
         $dropdown->click();
 
         $listItem = $this->spin(function () use ($dropdown, $item) {
             return $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
-        }, 20, sprintf('Item "%s" of dropdown row selector not found', $item));
+        }, sprintf('Item "%s" of dropdown row selector not found', $item));
 
         $listItem->click();
     }
