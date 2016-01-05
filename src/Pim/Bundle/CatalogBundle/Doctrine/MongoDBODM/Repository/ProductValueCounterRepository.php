@@ -36,9 +36,28 @@ class ProductValueCounterRepository implements ProductValueCounterRepositoryInte
      */
     public function count()
     {
-        $qb = $this->documentManager->createQueryBuilder($this->productClass);
-        $qb->distinct('values._id');
+        $result = $this->documentManager->getDocumentDatabase($this->productClass)
+            ->command(
+                [
+                    'aggregate' => 'pim_catalog_product',
+                    'pipeline'  =>
+                        [
+                            ['$project' => ['values' => 1]],
+                            ['$unwind'  => '$values'],
+                            [
+                                '$group' => [
+                                    '_id' => '$values._id'
+                                ]
+                            ],
+                            [
+                                '$group' => [
+                                    '_id'   => 'DistinctCount',
+                                    'count' => ['$sum' => 1]
+                                ]
+                            ]
+                        ]
+                ]);
 
-        return $qb->getQuery()->execute()->count();
+        return $result['result'][0]['count'];
     }
 }
