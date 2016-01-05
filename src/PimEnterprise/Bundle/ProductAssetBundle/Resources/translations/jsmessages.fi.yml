@@ -1,0 +1,69 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Hallinnoi resursseja
+        panel:
+          basket:
+            title: Kori
+            empty_basket: Kori on tyhjä
+        manage_asset:
+          title: Hallinnoi resursseja
+          cancel: Keskeytä
+          confirm: Vahvista
+  enrich_asset:
+    grid:
+      edit: Muokkaa resurssin ominaisuuksia
+  enrich_variation:
+    popin:
+      delete:
+        title: Poista vahvistus
+        message: Oletko varma että haluat poistaa tämän kohteen?
+      reset:
+        title: Nollaa variaatiot
+        message: Oletko varma että haluat nollata kaikki variaatiot?
+  mass_upload:
+    menu: Tuo resursseja
+    btn:
+      add_files: Lisää tiedostoja
+      cancel: Peruuta lataaminen
+      delete: Poista
+      schedule: Aikataulu
+      start: Aloita lataus
+    success:
+      new: Uusi resurssi luodaan
+      scheduled: Resurssin käsittelyä varten aikataulutetut tiedostot
+      canceled: Tuonti onnistuneesti keskeytetty
+      deleted: Tuotu tiedosto onnistuneesti poistettu
+    error:
+      list: Jo tuotuja tiedostoja ei voida lukea
+      upload: Virhe tapahtui tuonnin yhteydessä
+      delete: Tiedostoa ei voida poistaa palvelimelta
+      schedule: Tuonnin prosessoinnin aikataulutuksen yhteydessä tapahtui virhe
+      filename: Resurssin tiedostonimi ei ole pätevä
+      code: Resurssin koodiformaatti ei ole pätevä
+      locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
+      invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
+      exists: Samanniminen tiedosto on jo aikataulutettu tuotavaksi
+      conflicts: Tiedostonimissä on konflikti
+    grid:
+      medias: mediat
+      filename: tiedostonimi
+      filetype: tiedostotyyppi
+      status: status
+      progress: edistyminen
+      actions: toiminnot
+    action:
+      cancel: Peruuta
+      delete: Poista
+    status:
+      added: Lisätty
+      queued: Jonossa
+      uploading: Tuo
+      error: Virhe
+      success: Onnistui
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Massatuonti
