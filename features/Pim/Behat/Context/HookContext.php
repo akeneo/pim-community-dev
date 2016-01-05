@@ -7,6 +7,7 @@ use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\FeatureContext;
 use Context\SelectiveORMPurger;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\Filesystem\Filesystem;
@@ -130,7 +131,7 @@ class HookContext extends PimContext
                 }
 
                 $stepStats['screenshot'] = $path;
-                $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
+                $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
             }
 
             if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
@@ -146,10 +147,10 @@ class HookContext extends PimContext
      */
     public static function printErrorMessages()
     {
-        if (!empty(self::$errorMessages)) {
+        if (!empty(FeatureContext::$errorMessages)) {
             echo "\n\033[1;31mAttention!\033[0m\n\n";
 
-            foreach (self::$errorMessages as $message) {
+            foreach (FeatureContext::$errorMessages as $message) {
                 echo $message . "\n";
             }
 
@@ -180,7 +181,7 @@ class HookContext extends PimContext
             $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
             $result = $this->getSession()->evaluateScript($script);
             if ($result) {
-                $this->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
             }
         }
     }
@@ -253,16 +254,6 @@ class HookContext extends PimContext
     protected function getPimFilesystems()
     {
         return [];
-    }
-
-    /**
-     * Add an error message
-     *
-     * @param string $message
-     */
-    public function addErrorMessage($message)
-    {
-        self::$errorMessages[] = $message;
     }
 
     /**

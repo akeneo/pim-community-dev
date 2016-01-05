@@ -27,6 +27,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
+    protected static $errorMessages = [];
+
     /**
      * Register contexts
      *
@@ -130,6 +133,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function createExpectationException($message)
     {
         return new ExpectationException($message, $this->getSession());
+    }
+
+   /**
+    * Add an error message
+    *
+    * @param string $message
+    */
+    public function addErrorMessage($message)
+    {
+        self::$errorMessages[] = $message;
     }
 
     /**
