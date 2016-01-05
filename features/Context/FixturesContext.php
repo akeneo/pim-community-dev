@@ -10,7 +10,6 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
-use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
@@ -735,7 +734,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
         $this->assertDataEquals($productValue->getData(), $value);
     }
@@ -750,7 +749,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
 
         $this->assertDataEquals($productValue->getData(), $value);
@@ -770,7 +769,7 @@ class FixturesContext extends BaseFixturesContext
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
         $value = str_replace('|NL|', "\n", $value);
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
         $this->assertDataEquals($productValue->getData(), $value);
@@ -785,7 +784,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
@@ -809,7 +808,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theOptionOfProductsShouldBe($attribute, $products, $optionCode)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
             $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
@@ -827,7 +826,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $options      = $productValue->getOptions();
@@ -865,7 +864,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media        = $productValue->getMedia();
@@ -888,7 +887,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($data, $productValue->getMetric()->getData());
@@ -907,10 +906,10 @@ class FixturesContext extends BaseFixturesContext
 
         $string = $this->replacePlaceholders($string);
 
-        $this->placeholderValues['%file to import%'] = $filename =
+        self::$placeholderValues['%file to import%'] = $filename =
             sprintf(
                 '%s/pim-import/behat-import-%s.%s',
-                $this->placeholderValues['%tmp%'],
+                self::$placeholderValues['%tmp%'],
                 substr(md5(rand()), 0, 7),
                 $extension
             );
@@ -1037,7 +1036,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
@@ -1447,16 +1446,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $this->locales[$language];
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return string
-     */
-    public function replacePlaceholders($value)
-    {
-        return strtr($value, $this->placeholderValues);
     }
 
     /**
@@ -2092,14 +2081,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
-     * @return Filesystem[]
-     */
-    protected function getPimFilesystems()
-    {
-        return [];
     }
 
     /**

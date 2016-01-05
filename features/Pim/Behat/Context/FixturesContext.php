@@ -39,41 +39,6 @@ class FixturesContext extends PimContext
     ];
 
     /**
-     * @BeforeScenario
-     */
-    public function removeTmpDir()
-    {
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($this->placeholderValues['%tmp%']);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearUOW()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearPimFilesystem()
-    {
-        foreach ($this->getPimFilesystems() as $fs) {
-            foreach ($fs->listContents() as $key) {
-                if ('dir' === $key['type']) {
-                    $fs->deleteDir($key['path']);
-                } else {
-                    $fs->delete($key['path']);
-                }
-            }
-        }
-    }
-
-    /**
      * Magic methods for getting and creating entities
      *
      * @param string $method

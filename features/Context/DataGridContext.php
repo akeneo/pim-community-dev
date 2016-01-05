@@ -401,7 +401,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $expectedPosition = 0;
         foreach ($columns as $column) {
-            $position = $this->datagrid->getColumnPosition($column);
+            $position = $this->datagrid->getColumnPosition($column, false, false);
             if ($expectedPosition++ !== $position) {
                 throw $this->createExpectationException(
                     sprintf(
@@ -549,9 +549,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->wait(sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
         $this->datagrid->sortBy($columnName, $order);
-        $this->wait();
+
+        $loadlingMask = $this->datagrid
+            ->getElement('Grid container')
+            ->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadlingMask) {
+            return !$loadlingMask->isVisible();
+        });
     }
 
     /**
