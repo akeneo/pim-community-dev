@@ -13,6 +13,7 @@
         "psr-0": {
             "": "src/",
             "Context": "features/",
+            "PimEnterprise\\Behat": "features/",
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         }
     },

@@ -5,6 +5,7 @@ namespace Context;
 use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Behat\Context\PimContext;
 use Symfony\Component\Process\ExecutableFinder;
 
 /**
@@ -13,34 +14,12 @@ use Symfony\Component\Process\ExecutableFinder;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterpriseFileTransformerContext extends RawMinkContext
+class EnterpriseFileTransformerContext extends PimContext
 {
     const DEFAULT_PERCEPTUAL_DIFF = '/usr/bin/perceptualdiff';
 
     /** @var \SplFileInfo */
     protected $imageFile;
-
-    /** @var array */
-    protected $placeholderValues = [];
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
-    {
-        $this->placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => __DIR__ . '/fixtures',
-        ];
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetImageFile()
-    {
-        $this->imageFile = null;
-    }
 
     /**
      * @Given /^I apply the following transformations on the input file "([^"]*)"$/
@@ -72,16 +51,6 @@ class EnterpriseFileTransformerContext extends RawMinkContext
         $inputPathname = $this->replacePlaceholders($inputPathname);
 
         $this->execPerceptualDiff($inputPathname, $this->imageFile->getPathname());
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return string
-     */
-    public function replacePlaceholders($value)
-    {
-        return strtr($value, $this->placeholderValues);
     }
 
     /**
