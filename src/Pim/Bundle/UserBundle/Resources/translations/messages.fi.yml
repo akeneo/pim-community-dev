@@ -1,0 +1,147 @@
+pim_user:
+  user:
+    tab:
+      general.title: Yleinen
+      additional.title: Lisää
+      group_and_role.title: Ryhmät ja roolit
+      password.title: Salasana
+      business_unit.title: Liiketoimintayksiköt
+      email_synchronization.title: Sähköpostin synkronoinnin asetukset
+      interfaces.title: Rajapinnat
+oro.user.controller:
+  group.message.saved: Ryhmä tallennettu
+  role.message.saved: Rooli tallennettu
+  user.message.saved: Käyttäjän tallennettu
+  status.message.saved: Tila tallennettu
+oro.user.grid.users:
+  columns:
+    username: Käyttäjänimi
+    email: Sähköpostiosoite
+    firstName: Etunimi
+    lastName: Sukunimi
+    createdAt: Luotu
+    updatedAt: Päivitetty
+    enabled: Status
+oro.user.grid.roles:
+  columns:
+    label: Nimike
+oro.user.grid.groups:
+  columns:
+    name: Nimi
+pim_title:
+  user.index: Käyttäjät
+  user_role.index: Roolit
+  user_group.index: Ryhmät
+  system_configuration.index: Kokoonpano
+user.title: Käyttäjä
+user.overview: Käyttäjä
+Users Management: Käyttäjähallinta
+Create user: Luo käyttäjä
+btn.create.user: Luo käyttäjä
+New user: Uusi käyttäjä
+Additional: Lisää
+Groups and Roles: Ryhmät ja roolit
+Username: Käyttäjänimi
+Password: Salasana
+Re-enter password: Syötä salasana uudelleen
+Name prefix: Nimen etuliite
+First name: Etunimi
+Middle name: Toinen nimi
+Last name: Sukunimi
+Name suffix: Nimen liite
+Date of birth: Syntymäaika
+Avatar: Avatar
+Additional emails: Lisää sähköposteja
+Add another email: Lisää toinen sähköpostiosoite
+Catalog locale: Katalogin lokaatio
+Catalog scope: Katalogin laajuus
+Default tree: Oletusarvoinen puu
+Business Units: Liiketoimintayksiköt
+Email synchronization settings: Sähköpostin synkronoinnin asetukset
+Host: Isäntä
+Port: Portti
+Ssl: SSL
+Last logged in: Viimeksi kirjautunut
+Login count: Kirjautumisien määrä
+Additional Information: Lisätiedot
+Interfaces: Rajapinnat
+Basic Information: Perustiedot
+Contact Information: Yhteystiedot
+User name: Käyttäjänimi
+Birthday: Syntymäpäivä
+API key: API-avain
+Generate key: Luo avain
+Primary: ensisijainen
+Removed user: Poistettu käyttäjä
+user:
+  product_grid_filters: Tuoteruudukon suodattimet
+  default_product_grid_view:
+    label: Tuoteruudukon oletusnäkymä
+  default_grid_view:
+    none: Ei yhtään
+Role: Rooli
+Owner: Omistaja
+General: Yleinen
+Entity: Yksikkö
+Capabilities: Ominaisuudet
+Save and close: Tallenna ja sulje
+Has role: On rooli
+role:
+  title: rooli
+  overview: rooli
+  edit: Muokkaa roolia
+  create: Luo rooli
+btn.create.role: Luo rooli
+rights:
+  action: Käyttöoikeudet
+oro_security:
+  acl_group:
+    user: Käyttäjät
+    role: Roolit
+    group: Käyttäjäryhmät
+  acl:
+    user:
+      view: Listaa käyttäjät
+      create: Luo käyttäjä
+      edit: Muokkaa käyttäjiä
+      delete: Poista käyttäjä
+    role:
+      view: Listaa roolit
+      create: Luo rooli
+      edit: Muokkaa rooleja
+      delete: Poista rooli
+    group:
+      view: Listaa käyttäjäryhmät
+      create: Luo käyttäjäryhmä
+      edit: Muokkaa käyttäjäryhmiä
+      delete: Poista käyttäjäryhmä
+(default): Entiteettien oletusoikeudet
+VIEW: Näytä
+CREATE: Luo
+EDIT: Muokkaa
+DELETE: Poista
+ASSIGN: Määritä
+SHARE: Jaa
+oro:
+  security:
+    access-level:
+      BASIC: Käyttäjä
+      LOCAL: Liiketoimintayksikkö
+      DEEP: Divisioona
+      GLOBAL: Organisaatio
+      SYSTEM: Järjestelmä
+      NONE: Ei yhtään
+Create group: Luo ryhmä
+btn.create.user-group: Luo ryhmä
+Has group: Ryhmä on olemassa
+Save and Close: Tallenna ja sulje
+user-group.overview: Ryhmät
+Log in: Kirjaudu
+Remember me on this computer: Muista minut tässä tietokoneessa
+Forgot your password?: Unohditko salasanasi?
+Username or Email: Käyttäjänimi tai sähköpostiosoite
+Forgot Password: Unohdin salasanani
+Request: Pyyntö
+Check Email: Tarkista sähköpostisi
+password_reset_email_sent: 'Sähköposti on lähetetty %email%. Se sisältää linkin jota sinun pitää klikata resetoidaksi salasanasi.'
+Go to homepage: Siirry etusivulle
