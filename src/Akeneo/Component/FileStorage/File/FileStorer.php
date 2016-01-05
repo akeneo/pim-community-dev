@@ -65,7 +65,12 @@ class FileStorer implements FileStorerInterface
         }
 
         try {
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource);
+            $options = [];
+            $mimeType = $file->getMimeType();
+            if (null !== $mimeType) {
+                $options['ContentType'] = $mimeType;
+            }
+            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
         } catch (FileExistsException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
         }

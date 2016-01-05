@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5405: Fix content type for stream upload
+
 # 1.4.15 (2015-12-30)
 
 ## Improvements

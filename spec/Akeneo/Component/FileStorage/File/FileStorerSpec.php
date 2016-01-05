@@ -39,7 +39,7 @@ class FileStorerSpec extends ObjectBehavior
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
 
-        $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
+        $fs->writeStream(Argument::cetera())->shouldBeCalled();
 
         $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination');
@@ -67,7 +67,7 @@ class FileStorerSpec extends ObjectBehavior
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
 
-        $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
+        $fs->writeStream(Argument::cetera())->shouldBeCalled();
 
         $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination', true);
@@ -88,7 +88,7 @@ class FileStorerSpec extends ObjectBehavior
         $rawFile->getPathname()->willReturn(__FILE__);
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-        $fs->writeStream(Argument::any(), Argument::any())->willReturn(false);
+        $fs->writeStream(Argument::cetera())->willReturn(false);
 
         $saver->save(Argument::any())->shouldNotBeCalled();
 
@@ -108,10 +108,11 @@ class FileStorerSpec extends ObjectBehavior
     ) {
         $rawFile->getPathname()->willReturn(__FILE__);
         $fs->has(Argument::any())->willReturn(true);
-        $fs->writeStream(Argument::any(), Argument::any())->willThrow(new FileExistsException('The file exists.'));
+        $fs->writeStream(Argument::cetera())->willThrow(new FileExistsException('The file exists.'));
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('key-file');
+        $fileInfo->getMimeType()->willReturn('mime-type');
 
         $this->shouldThrow(
             new FileTransferException(
