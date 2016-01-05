@@ -37,10 +37,10 @@ class Form extends Base
                 'Form Groups'                     => ['css' => '.attribute-group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
-                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-                'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
-                'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
+                'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
+                'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
+                'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
+                'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
                 'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
             ],
             $this->elements
@@ -260,28 +260,22 @@ class Form extends Base
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $searchSelector = $this->elements['Available attributes search']['css'];
-
-        $selector = $this->spin(function () {
+        $this->spin(function () {
             return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
 
-        // Open select2
-        $selector->click();
+        $list = $this->getElement('Available attributes list');
+        if (!$list->isVisible()) {
+            $this->openAvailableAttributesMenu();
+        }
 
-        $list = $this->spin(function () {
-            return $this->getElement('Available attributes list');
-        }, 5);
-
+        $search = $this->getElement('Available attributes search');
         foreach ($attributes as $attributeLabel) {
-            // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-            // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attributeLabel . "').trigger('input');");
+            $search->setValue($attributeLabel);
             $label = $this->spin(
                 function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));
+                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
                 },
-                20,
                 sprintf('Could not find available attribute "%s".', $attributeLabel)
             );
 

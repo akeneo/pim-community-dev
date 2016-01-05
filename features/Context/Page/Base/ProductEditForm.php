@@ -26,8 +26,14 @@ class ProductEditForm extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown' => ['css' => '.attribute-edit-actions .locale-switcher'],
-                'Channel dropdown' => ['css' => '.attribute-edit-actions .scope-switcher'],
+                'Locales dropdown'                => ['css' => '.attribute-edit-actions .locale-switcher'],
+                'Channel dropdown'                => ['css' => '.attribute-edit-actions .scope-switcher'],
+                // Note: It erases parent add-attributes selector values because of the new JS module,
+                // once refactoring done everywhere, it should be set in parent like before
+                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
+                'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
             ]
         );
     }
@@ -74,6 +80,45 @@ class ProductEditForm extends Form
         $selector->click();
 
         return $attributeElement;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
+     * when legacy stuff is removed.
+     */
+    public function addAvailableAttributes(array $attributes = [])
+    {
+        $searchSelector = $this->elements['Available attributes search']['css'];
+
+        $selector = $this->spin(function () {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+
+        // Open select2
+        $selector->click();
+
+        $list = $this->spin(function () {
+            return $this->getElement('Available attributes list');
+        }, 5);
+
+        foreach ($attributes as $attributeLabel) {
+            // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
+            // because select2 selects the first element on TAB key press.
+            $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attributeLabel . "').trigger('input');");
+            $label = $this->spin(
+                function () use ($list, $attributeLabel) {
+                    return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));
+                },
+                20,
+                sprintf('Could not find available attribute "%s".', $attributeLabel)
+            );
+
+            $label->click();
+        }
+
+        $this->getElement('Available attributes add button')->press();
     }
 
     /**
