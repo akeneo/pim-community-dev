@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5400: fix grid rows display in asset grid (group by issue when classify an asset in several categories)
+- PIM-5392: remove product draft when a product is deleted
 
 # 1.4.15 (2015-12-30)
 
