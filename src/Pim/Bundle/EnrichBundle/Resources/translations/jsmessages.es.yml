@@ -165,6 +165,7 @@ pim_enrich:
         all: Todo
         all_visible: Todo lo visible
         none: Ninguno
+        copy: Copiar
       variant_group:
         updated_by: Actualizado por grupo de variantes
         switch:
@@ -222,6 +223,7 @@ pim_enrich:
           info:
             no_family: Ninguna familia definida. Por favor defina una familia para calcular la completitud de este producto.
             no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
+          missing_values: Valores faltantes
         history:
           title: Historial
       switch:
@@ -244,6 +246,9 @@ pim_enrich:
           empty_selection: Seleccionar familia
       flash:
         attribute_deletion_error: Un error ha ocurrido durante la eliminación del atributo
+      mass_edit:
+        select_attributes: Seleccionar atributos
+        select: Seleccionar
     attribute_option:
       flash:
         option_created: Opción del atributo creada con éxito

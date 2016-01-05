@@ -1,0 +1,165 @@
+pim_connector:
+  jobs:
+    csv_product_export:
+      title: Tuotteiden vienti CSV-muodossa
+      export.title: Tuotteiden vienti
+    csv_category_export:
+      title: Kategorian vienti CSV-muodossa
+      export.title: Kategorian vienti
+    csv_attribute_export:
+      title: Attribuutin vienti CSV-muodossa
+      export.title: Attribuutin vienti
+    csv_attribute_option_export:
+      title: Attribuutin vaihtoehdon vienti CSV-muodossa
+      export.title: Attribuutin vaihtoehdon vienti
+    csv_association_type_export:
+      title: Liitännäistyyppien vienti CSV-muodossa
+      export.title: Liitännäistyyppien vienti
+    csv_group_export:
+      title: Ryhmän vienti CSV-muodossa
+      export.title: Ryhmän vienti
+    csv_variant_group_export:
+      title: Muuttujaryhmien vienti CSV-muodossa
+      export.title: Muuttujaryhmien vienti
+    csv_product_import:
+      title: Tuotteiden tuonti CSV-muodossa
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Tuotteiden tuonti
+      import_associations.title: Liitännäisten tuonti
+    csv_category_import:
+      title: Kategorioiden tuonti CSV-muodossa
+      validation.title: Tiedostojen validaatio
+      import.title: Kategorioiden tuonti
+    csv_attribute_import:
+      title: Attribuuttien tuonti CSV-muodossa
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Attribuuttien tuonti
+    csv_attribute_option_import:
+      title: Attribuutin vaihtoehdon tuonti CSV-muodossa
+      validation.title: Tiedostojen validaatio
+      import.title: Attribuutin vaihtoehdon tuonti
+    csv_association_type_import:
+      title: Liitännäistyyppien tuonti CSV-muodossa
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Liitännäistyyppien tuonti
+    csv_family_import:
+      title: Ryhmän tuonti CSV-tiedostona
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Ryhmätuonti
+    csv_group_import:
+      title: Ryhmän tuonti CSV-muodossa
+      validation.title: Tiedostojen validaatio
+      import.title: Ryhmien tuonti
+    csv_variant_group_import:
+      title: Muuttujaryhmien tuonti CSV-muodossa
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Muuttujaryhmien tuonti
+  steps:
+    dummy_reader.title: Mallilukija
+    product_reader.title: Tuotteen poisto
+    entity_reader.title: Kohteen poisto
+    csv_reader:
+      title: CSV-lukija
+      invalid_item_columns_count: 'Odotit %totalColumnsCount% saraketta, sinulla on %itemColumnsCount% %csvPath%:%lineno%'
+    csv_product_reader.title: CSV-tuotteen lukija
+    csv_category_reader.title: CSV-kategorian lukija
+    csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
+    dummy_processor.title: Malliprosessori
+    product_processor.title: Tuotteen luominen
+    variant_group_processor.title: Malliryhmän luonti / päivitys
+    category_processor.title: Kategorian luominen
+    association_processor.title: Assosiaation luominen
+    product_association_processor.title: Assosiaation luominen
+    group_processor.title: Ryhmän perustaminen
+    attribute_processor.title: Attribuutin luominen
+    attribute_option_processor.title: Attribuutin vaihtoehdon luominen
+    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostoja
+    homogeneous_processor.title: CSV-entiteettien sarjanmuodostaja
+    transformer_processor.title: Muunnos
+    dummy_writer.title: Mallikirjoittaja
+    file_writer.title: Ulostulo
+    product_writer.title: Tuotteen varastointi
+    category_writer.title: Kategorian varastointi
+    variant_group_writer.title: Variant ryhmän varastointi
+    writer.title: Yksikön varastointi
+    csv_writer.title: CSV-kirjoittaja
+  export:
+    delimiter:
+      label: Erotin
+      help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
+    enclosure:
+      label: Liite
+      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+    withHeader:
+      label: Otsikon kanssa
+      help: Tulostaako sarakkeen nimen vai ei
+    filePath:
+      label: Tiedostopolku
+      help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+    channel:
+      label: Kanava
+      help: Kanava, jonka haluat viedä
+  import:
+    enabled:
+      label: Enabloi tuote
+      help: Pitääkö tuodun tuotteen olla enabloitu
+    categoriesColumn:
+      label: Kategoriasarake
+      help: Kategoriasarakkeen nimi
+    familyColumn:
+      label: Perhesarake
+      help: Perhesarakkeen nimi
+    groupsColumn:
+      label: Ryhmäsarake
+      help: Ryhmäsarakkeen nimi
+    filePath:
+      label: Tiedosto
+      help: Tuotava CSV-tiedosto
+    yamlFilePath:
+      label: Tiedosto
+      help: YAML tiedosto joka tuodaan
+    uploadAllowed:
+      label: Salli tiedoston tuonti
+      help: Sallitaanko tiedoston suora lataus järjestelmään
+    delimiter:
+      label: Erotin
+      help: Yhtä merkkiä käytetään CSV-tiedoston kenttäerottimena
+    enclosure:
+      label: Liite
+      help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+    escape:
+      label: Poistu
+      help: 'Yhtä merkkiä käytetään kentän "poistu" määrittämiseen'
+    circularRefsChecked:
+      label: Tarkista kehäviittaukset
+      help: Jos kyllä, data prosessoidaan siten että kategorioiden välillä ei ole kehäviittauksia
+    realTimeVersioning:
+      label: Reaaliaikainen historiapäivitys
+      help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+    copyValuesToProducts:
+      label: Kopioi variant-ryhmien arvot tuotteisiin
+      help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
+    enabledComparison:
+      label: Vertaa arvoja
+      help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
+    decimalSeparator:
+      label: Desimaalierotin
+      help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
+    dateFormat:
+      label: Päivämäärän muoto
+      help: Määritä minkä tahansa päivämäärä-sarakkeen muoto tiedostossa, esim, tässä DD/MM/YYYY 31/04/2014 formaattia varten.
+job_execution.summary:
+  read: lue
+  read_lines: lue rivit
+  write: kirjoitettu
+  skip: ohitettu
+  create: luotu
+  process: käsitelty
+  update_products: päivitetyt tuotteet
+  process_products: prosessoidut tuotteet
+  skip_products: ohitetut tuotteet
+  displayed: ensimmäiset varoitukset näytetty
+  charset_validator:
+    title: 'Tiedoston koodaus:'
+    skipped: ohitetaan, laajennus valkolistattu
+  product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
