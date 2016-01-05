@@ -266,18 +266,17 @@ class Form extends Base
             return $this->find('css', $this->elements['Available attributes button']['css']);
         }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
 
+        // Open select2
         $selector->click();
 
-        $search = $this->spin(function () use ($searchSelector) {
-            return $this->find('css', $searchSelector);
-        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes search']['css']));
-
-        $list = $this->getElement('Available attributes list');
+        $list = $this->spin(function () {
+            return $this->getElement('Available attributes list');
+        }, 5);
 
         foreach ($attributes as $attributeLabel) {
             // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
             // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attributeLabel . "');");
+            $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attributeLabel . "').trigger('input');");
             $label = $this->spin(
                 function () use ($list, $attributeLabel) {
                     return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));
