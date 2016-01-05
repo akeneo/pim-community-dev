@@ -71,7 +71,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
             'actions' => [
                 'normalized_values' => '',
                 'ui_locale'         => 'fr_FR',
-                'attribute_locale'  => null
+                'attribute_locale'  => null,
+                'attribute_channel' => null,
             ]
         ]));
 

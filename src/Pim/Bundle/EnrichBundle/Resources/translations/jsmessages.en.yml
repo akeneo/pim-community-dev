@@ -272,6 +272,9 @@ pim_enrich:
             switch:
                 no: No
                 yes: Yes
+    mass_edit_action:
+        edit_common_attributes:
+            description: The selected product's attributes will be edited with the following data for the locale <span class="bold-purple">{{ locale }}</span> and the channel <span class="bold-purple">{{ channel }}</span>, chosen in the products grid.
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

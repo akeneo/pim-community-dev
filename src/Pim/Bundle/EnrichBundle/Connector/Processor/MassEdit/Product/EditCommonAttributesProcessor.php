@@ -103,13 +103,8 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *              [
      *                  'locale' => 'en_US',
      *                  'scope' => 'ecommerce',
-     *                  'data' => 'The description for ecommerce'
+     *                  'data' => 'The description for en_US ecommerce'
      *              ],
-     *              [
-     *                  'locale' => 'en_US',
-     *                  'scope' => 'mobile',
-     *                  'data' => 'The description for mobile'
-     *              ]
      *          ]
      *      ]
      * ]
@@ -153,15 +148,18 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function prepareProductValues(ProductInterface $product, array $actions)
     {
         $normalizedValues = json_decode($actions['normalized_values'], true);
-        $attributeLocale = $actions['attribute_locale'];
+        $attributeLocale  = $actions['attribute_locale'];
+        $attributeChannel = $actions['attribute_channel'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if ($product->isAttributeEditable($attribute)) {
-                $values = array_filter($values, function ($value) use ($attributeLocale) {
-                    return $attributeLocale === $value['locale'] || null === $value['locale'];
+                $values = array_filter($values, function ($value) use ($attributeLocale, $attributeChannel) {
+                    return
+                        ($attributeLocale === $value['locale'] || null === $value['locale']) &&
+                        ($attributeChannel === $value['scope'] || null === $value['scope']) ;
                 });
 
                 $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());

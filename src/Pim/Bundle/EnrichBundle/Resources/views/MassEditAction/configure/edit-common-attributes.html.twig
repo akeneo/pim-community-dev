@@ -7,6 +7,7 @@
 
     {{ form_widget(form.operation.values) }}
     {{ form_widget(form.operation.attribute_locale) }}
+    {{ form_widget(form.operation.attribute_channel) }}
 
     <script>
         require(
@@ -14,13 +15,15 @@
                     'jquery',
                     'pim/fetcher-registry',
                     'pim/form-builder',
-                    'oro/mediator'
+                    'oro/mediator',
+                    'pim/user-context'
                 ],
                 function (
                         $,
                         FetcherRegistry,
                         FormBuilder,
-                        mediator
+                        mediator,
+                        UserContext
                 ) {
                     $(function () {
                         var userData = "{{ form.vars.data.getValues|escape('js') }}";
@@ -32,8 +35,12 @@
                             values: '' !== userData ? JSON.parse(userData) : {}
                         };
 
-                        FetcherRegistry.initialize().done(function () {
-                            FormBuilder.build('pim-mass-product-edit-form').then(function (form) {
+                        FetcherRegistry.initialize().then(function() {
+                            $.when(
+                                FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
+                                FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalogLocale')),
+                                FormBuilder.build('pim-mass-product-edit-form')
+                            ).then(function (channel, locale, form) {
                                 form.setData(product);
                                 mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                                 form.setElement('#product-edit-form').render();
@@ -46,9 +53,18 @@
                                 if (!_.isEmpty(errors)) {
                                     form.trigger('pim_enrich:form:entity:bad_request', event);
                                 }
+
+                                $('#mass-edit-common-attribute-description').html(_.__(
+                                    'pim_enrich.mass_edit_action.edit_common_attributes.description',
+                                    {'locale': locale.label, 'channel': channel.label}
+                                ));
                             });
                         });
                     });
                 });
     </script>
+{% endblock %}
+
+{% block formDescription %}
+    <h4 id="mass-edit-common-attribute-description"></h4>
 {% endblock %}

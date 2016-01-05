@@ -52,6 +52,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $attributeLocale;
 
     /** @var string */
+    protected $attributeChannel;
+
+    /** @var string */
     protected $errors;
 
     /**
@@ -172,7 +175,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $actions = [
             'normalized_values' => $this->getValues(),
             'ui_locale'         => $this->userContext->getUiLocale()->getCode(),
-            'attribute_locale'  => $this->getAttributeLocale()
+            'attribute_locale'  => $this->getAttributeLocale(),
+            'attribute_channel' => $this->getAttributeChannel()
         ];
 
         return $actions;
@@ -265,5 +269,21 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function setAttributeLocale($attributeLocale)
     {
         $this->attributeLocale = $attributeLocale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeChannel()
+    {
+        return $this->attributeChannel;
+    }
+
+    /**
+     * @param string $attributeChannel
+     */
+    public function setAttributeChannel($attributeChannel)
+    {
+        $this->attributeChannel = $attributeChannel;
     }
 }

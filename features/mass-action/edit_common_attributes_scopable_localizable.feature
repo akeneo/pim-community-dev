@@ -18,7 +18,7 @@ Feature: Edit common attributes of many products at once
     Given I filter by "channel" with value "Print"
     And I mass-edit products black_jacket and white_jacket
     And I choose the "Edit common attributes" operation
-#    Then I should see "The selected product's attributes will be edited with the following data for the locale English and the channel Print, chosen in the product grid."
+    Then I should see the text "The selected product's attributes will be edited with the following data for the locale English (United States) and the channel Print, chosen in the products grid."
     When I display the Customer rating attribute
     And I change the "Customer rating" to "5"
     And I move on to the next step
@@ -34,9 +34,9 @@ Feature: Edit common attributes of many products at once
     And I filter by "channel" with value "Ecommerce"
     And I mass-edit products black_jacket and white_jacket
     And I choose the "Edit common attributes" operation
-#    Then I should see "The selected product's attributes will be edited with the following data for the locale French and the channel Ecommerce, chosen in the product grid."
-    When I display the Nom attribute
-    And I change the "Nom" to "Une veste"
+    Then I should see the text "The selected product's attributes will be edited with the following data for the locale German (Germany) and the channel Ecommerce, chosen in the products grid."
+    When I display the Name attribute
+    And I change the "Name" to "Une veste"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the french name of "black_jacket" should be "Une veste"
