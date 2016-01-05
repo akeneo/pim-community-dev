@@ -768,9 +768,10 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
+        $locale = 'unlocalized' === $lang ? null : $this->locales[$lang];
         $value = str_replace('|NL|', "\n", $value);
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
+        $productValue = $this->getProductValue($identifier, strtolower($attribute), $locale, $scope);
 
         $this->assertDataEquals($productValue->getData(), $value);
     }
