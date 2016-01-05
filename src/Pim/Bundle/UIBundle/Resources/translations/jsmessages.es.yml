@@ -44,3 +44,4 @@ jstree:
     unclassified: Productos sin clasificar
   no_tree: Ningún árbol disponible
   include_sub: Incluir subcategorías
+  loading: Cargando...
