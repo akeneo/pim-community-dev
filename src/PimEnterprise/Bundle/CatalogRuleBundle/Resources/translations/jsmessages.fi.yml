@@ -1,0 +1,17 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Koodi
+      condition.label: Ehto
+      action.label: Toiminto
+      no_rule_yet.label: Ei mitään sääntöä toistaiseksi
+  rule:
+    condition:
+      if.label: jos
+    action:
+      then.label: silloin
+      set_value.label: on asetettu
+      copy_value.label: on kopioitu
+      set.label: on asetettu
+      copy.label: on kopioitu
+      add.label: on lisätty
