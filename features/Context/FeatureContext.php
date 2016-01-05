@@ -5,12 +5,13 @@ namespace Context;
 use Behat\Behat\Event\StepEvent;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Pim\Behat\Context\CategoryTreeContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
@@ -58,6 +59,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('technical', new TechnicalContext());
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('category-tree', new CategoryTreeContext());
     }
 
     /**
