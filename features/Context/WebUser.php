@@ -1693,6 +1693,30 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $sku
+     * @param string $categoryCode
+     *
+     * @Then /^the category of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoryOfProductShouldBe($sku, $categoryCode)
+    {
+        $this->clearUOW();
+        $product = $this->getFixturesContext()->getProduct($sku);
+
+        $categoryCodes = $product->getCategoryCodes();
+        assertEquals(
+            [$categoryCode],
+            $categoryCodes,
+            sprintf(
+                'Expecting the category of "%s" to be "%s", not "%s".',
+                $sku,
+                $categoryCode,
+                implode(', ', $categoryCodes)
+            )
+        );
+    }
+
+    /**
      * @param int $count
      *
      * @Then /^there should be (\d+) updates?$/
