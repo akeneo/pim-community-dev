@@ -5,7 +5,11 @@
 
 ## Bug fixes
 - PIM-5405: Fix content type for stream upload
+- PIM-5233: Use an asynchronous dropdown list to mass edit family
 - PIM-5331: Fix product save issue when categories have code as integer
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` dependency
 
 # 1.4.15 (2015-12-30)
 
