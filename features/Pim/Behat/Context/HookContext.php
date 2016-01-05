@@ -13,6 +13,9 @@ use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Parser;
 
+/**
+ * Class HookContext
+ */
 class HookContext extends PimContext
 {
     /** @var string[] */
