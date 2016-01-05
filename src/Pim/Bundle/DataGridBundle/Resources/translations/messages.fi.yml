@@ -1,0 +1,38 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% ei ole olemassa.'
+oro_datagrid.not_found_hint: Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja.
+oro_datagrid.label_add_filter: Hallitse suodattimia
+oro_datagrid.label_loading_mask: Ladataan . . .
+oro.grid.mass_action.selected_rows: Valitut rivit
+oro.grid.mass_action.confirm_title: Massatoiminnan vahvistus
+oro.grid.mass_action.confirm_content: Oletko varma, että haluat tehdä tämän?
+oro.grid.mass_action.confirm_ok: Kyllä, tee se
+oro.grid.mass_action.error_title: Massatoiminnon virhe
+oro.grid.mass_action.error_content: Massatoimintoa ei voi suorittaa
+oro.grid.mass_action.delete.label: Poista
+oro.grid.mass_action.delete.confirm_title: Massapoiston vahvistus
+oro.grid.mass_action.delete.confirm_content: Oletko varma, että haluat poistaa valitut kohteet?
+oro.grid.datagrid.page_size.all: Kaikki
+oro.grid.mass_action.delete.success_message: '{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin'
+datagrid_view:
+  views: Näkymät
+  default: Oletusnäkymä
+  create: Näkymän luominen
+  placeholder: Uuden näkymän nimi
+  remove: Poista näkymä
+  save_changes: Tallenna näkymä
+  choose_label: Valitse näkymälle nimike
+  columns:
+    min_message: Valitse vähintään yksi näytettävä datagrid-sarake
+  label:
+    unique_message: Nimikkeen on oltava yksilöllinen
+    not_blank_message: Nimike ei saa olla tyhjä
+confirmation.remove.datagrid view: Oletko varma, että haluat poistaa tämän datagrid-näkymän?
+flash.datagrid view:
+  created: Datagrid näkymän luominen onnistui
+  updated: Datagrid-näkymä päivitetty
+  removed: Datagrid-näkymä poistettu
+  not removable: Sinulla ei ole oikeuksia poistaa tätä näkymää
+quick_export: Nopea vienti
+import: Tuonti
+export: Vienti
+mass_edit: Massaedit

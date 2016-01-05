@@ -1,0 +1,71 @@
+Item deleted: Kohde poistettu
+Are you sure you want to delete this item?: Haluatko varmasti poistaa tämän kohteen?
+Delete Error: Virhe poistossa
+Are you sure you want to do remove selected items?: Oletko varma, että haluat poistaa valitut kohteet?
+Selected items were removed.: Valitut kohteet poistettiin.
+Selected items were not removed.: Valittuja kohteita ei poistettu.
+Please, select items to remove.: Valitse poistettavat kohteet.
+Cannot delete item.: Kohdetta ei voi poistaa.
+Refresh Confirmation: Päivityksen vahvistus
+Your local changes will be lost. Are you sure you want to refresh grid?: Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää gridin?
+Reset Confirmation: Nollauksen vahvistus
+Your local changes will be lost. Are you sure you want to reset grid?: Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää gridin?
+Confirmation: Vahvistus
+edit: editoi
+copy: kopioi
+remove: poista
+Status: Status
+All: Kaikki
+Per page: Per sivu
+Mass Action Confirmation: Massatoiminnan vahvistus
+Mass action performed.: Massatoiminto suoritettu.
+Mass action is not performed.: Massatoimintoa ei suoritettu.
+Please, select items to perform mass action.: Voitko valita kohteet jossa suorittaa massatoiminnon.
+Execution Confirmation: Valinnan vahvistus
+Are you sure you want to do this?: Oletko varma, että haluat tehdä tämän?
+Action performed.: Toiminto suoritettu.
+Action is not performed.: Toimintoa ei suoritettu.
+Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
+View per page: Sivunäkymä
+oro.datagrid.entityHint: Entiteetti
+oro.datagrid.noentities: Tuloksia ei löytynyt
+oro.datagrid.noresults: Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja.
+oro.datagrid.nocolumns: Sarakkeita ei määritetty tähän ruudukkoon
+oro.datagrid.pagination.label: Sivu
+oro.datagrid.pagination.totalPages: 'koskien {{ totalPages }}'
+oro.datagrid.pagination.totalRecords: '{{ totalRecords }} asiakirjat'
+oro.datagrid.action.reset: Nollaa muutokset
+oro.datagrid.action.refresh: Päivitä
+oro_datagrid.select.all: Kaikki
+oro_datagrid.select.visible: Kaikki näkyvillä olevat
+oro_datagrid.select.none: Ei yhtään
+pim.grid.ajax_choice_filter.label_empty: on tyhjä
+pim.grid.choice_filter:
+  label_empty: Tyhjä
+  label_in_list: Luettelossa
+Available Columns: Käytettävissä olevat sarakkeet
+Displayed Columns: Näytettävät sarakkeet
+datagrid_view.columns.min_message: Valitse vähintään yksi näytettävä datagrid-sarake
+pim_datagrid:
+  column_configurator:
+    label: Sarakkeet
+    title: Sarakkeen valitseminen
+    all_groups: Kaikki ryhmät
+    search: Etsi
+    clear: Tyhjennä
+    displayed_columns: Näytettävät sarakkeet
+    apply: Käytä
+    cancel: Peruuta
+    remove_column: Poista
+  mass_action:
+    delete:
+      confirm_title: Poiston vahvistus.
+      confirm_ok: OK
+      empty_selection: Tuotetta ei ole valittu.
+pim.grid.mass_action.quick_export.title: Nopea vienti
+pim.grid.mass_action.quick_export.launched: Nopea vienti on käynnistetty
+pim.grid.action.launch.title: Käynnistä
+pim.grid.action.show.title: Näytä
+Please select view: Valitse näkymä
+Loading...: Ladataan...
+View: Näytä
