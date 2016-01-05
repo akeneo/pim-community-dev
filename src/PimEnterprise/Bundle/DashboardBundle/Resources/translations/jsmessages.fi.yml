@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Päivämäärä
+      author: Tekijä
+      product: Tuote
+      review: Tarkastus
+      empty: Ei ehdotuksia tarkastettavaksi
+      view_all: Näytä kaikki
