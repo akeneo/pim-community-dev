@@ -8,6 +8,7 @@
 body {
   font-family: @baseFontFamily;
   font-size: @baseFontSize;
+  line-height: 20px;
   color: @bodyColor;
   margin: 0;
   padding: 0 ;
@@ -15,16 +16,19 @@ body {
   background:#fff;
 }
 h2 {
-  font-size: 27px;
+  font-size: @font-size-27;
 }
 h3 {
-  font-size: 21px;
+  font-size: @font-size-19;
 }
 h4 {
-  font-size: 15px;
+  font-size: @font-size-15;
 }
 h5 {
-  font-size: 12px;
+  font-size: @font-size-12;
+}
+h6 {
+  font-size: @font-size-12;
 }
 .btn {
   border: 1px solid #ccc;
@@ -52,7 +56,7 @@ a:focus {
 // Bootstrap - Buttons
 .btn-group {
   > .btn {
-    font-size:13px;
+    font-size:@font-size-14;
   }
 }
 .btn {
@@ -60,7 +64,7 @@ a:focus {
   padding: 0 12px;
   height: 28px;
   line-height: 26px;
-  font-size: 14px;
+  font-size: @font-size-14;
   font-weight:bold;
   background-repeat: none;
   display: inline-block;
@@ -85,10 +89,10 @@ a:focus {
 .btn-small {
   height: 24px;
   line-height: 24px;
-  font-size: 13px;
+  font-size: @font-size-13;
 }
 .btn-large {
-  font-size: 15px;
+  font-size: @font-size-15;
   min-width: 90px;
   padding: 0 20px;
   height: 34px;
@@ -98,7 +102,7 @@ a:focus {
 .btn-mini {
   height: 22px;
   line-height: 20px;
-  font-size: 11px;
+  font-size: @font-size-11;
   padding: 0 6px;
 }
 .btn .caret {
@@ -109,7 +113,7 @@ a:focus {
 .btn-group > .dropdown-menu li a {
   padding-top:1px;
   padding-bottom:1px;
-  font-size:12px;
+  font-size: @font-size-12;
   color:@bodyColor;
   text-shadow:none !important;
   &:hover {
@@ -118,9 +122,9 @@ a:focus {
 }
 
 // Bootstrap - Form
-label, input, button, select, textarea { font-size:13px;}
+label, input, button, select, textarea { font-size: @font-size-13;}
 .form-horizontal .control-label {
-  font-size:13px;
+  font-size: @font-size-13;
   text-align:left;
   line-height:1.2em;
 }
@@ -135,7 +139,7 @@ label, input, button, select, textarea { font-size:13px;}
       padding-top:5px;
       color: #777;
       font-weight: normal;
-      font-size: 13px;
+      font-size: @font-size-13;
       text-align:right;
       &:after {
         content:":";
@@ -161,7 +165,7 @@ input[type="search"],
 select {
   border-color:#ddd;
   color:#333;
-  font-size:13px;
+  font-size: @font-size-13;
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
@@ -204,7 +208,7 @@ select {
 [class^='icon-'].hide-text:before {
   padding:0;
   text-indent:0;
-  font-size:14px;
+  font-size: @font-size-14;
   color: #666;
 
 }
@@ -289,7 +293,7 @@ select {
   border:1px solid #e2e2e2;
   border-width: 1px 0;
   padding: 15px 20px 8px 150px;
-  .icon-remove:before { color:#aaa; font-size:14px; }
+  .icon-remove:before { color:#aaa; font-size: @font-size-14; }
   .filter-list {
     float: left;
     margin: 0 0 0 -120px;
@@ -303,7 +307,7 @@ select {
       padding-top:1px;
       button {
         color:#666;
-        font-size:12px;
+        font-size: @font-size-12;
       }
       .caret { margin-top:11px; }
     }
@@ -316,7 +320,7 @@ select {
       .filter-update {
         .border-radius(0 3px 3px 0);
         position:relative;
-        font-size:14px;
+        font-size: @font-size-14;
         height:29px;
         line-height:28px;
       }
@@ -337,7 +341,7 @@ select {
 .badge-enabled,
 .badge-disabled {
   padding: 3px 10px 3px 5px;
-  font-size: 12px;
+  font-size: @font-size-12;
   font-weight: normal;
 }
 .badge-enabled {
@@ -363,7 +367,7 @@ select {
 .status-disabled,
 .status-enabled {
   [class^='icon-']:before {
-    font-size:12px;
+    font-size: @font-size-12;
   }
 }
 .status-enabled [class^='icon-']:before { color:#4a9938; }
@@ -395,7 +399,7 @@ select {
         .icon-chevron-left:before,
         .icon-chevron-right:before {
           margin:7px 5px;
-          font-size:12px;
+          font-size: @font-size-12;
           color:#eee;
         }
       }
@@ -414,13 +418,13 @@ select {
       padding-left:7px;
       padding-right:9px;
       line-height:26px;
-      font-size:12px;
+      font-size: @font-size-12;
       [class^='icon-'] {
         &:before {
           display:inline-block;
           margin:4px 1px 0 0;
           color:#666;
-          font-size:13px;
+          font-size: @font-size-13;
           line-height:1.3em;
           margin-left:1px;
         }
@@ -478,7 +482,7 @@ select {
 }
 .table thead th {
   padding:0 10px;
-  font-size:11px;
+  font-size: @font-size-11;
   line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
@@ -487,9 +491,8 @@ select {
 }
 .grid {
   .user-name {
-    font-size: 20px;
     margin: 0 0 0 12px;
-    font-size: 20px;
+    font-size: @font-size-20;
     font-weight: bold;
   }
   dl {
@@ -514,7 +517,7 @@ select {
   z-index: 9999;
   .box {
     background: #fff;
-    font-size: 14px;
+    font-size: @font-size-14;
     font-weight: bold;
     line-height:  24px;
   }
@@ -544,12 +547,12 @@ select {
       margin:0;
       &:before {
         display:inline-block;
-        font-size:16px;
+        font-size: @font-size-16;
       }
     }
     .icon-chevron-left.hide-text {
       &:before {
-        font-size:11px;
+        font-size: @font-size-11;
         line-size:19px;
       }
     }
@@ -575,7 +578,7 @@ select {
   border-style: solid;
   border-color: #cccccc #cccccc #b3b3b3;
   border-width: 1px 1px 1px 0;
-  font-size: 18px;
+  font-size: @font-size-18;
   display: inline-block;
   vertical-align: top;
   height: 28px;
@@ -602,7 +605,7 @@ select {
   padding-bottom: 0;
   line-height: 18px;
   .sub-title {
-    font-size: 17px;
+    font-size: @font-size-17;
     color: #999;
     float: left;
   }
@@ -610,11 +613,11 @@ select {
     float: left;
     padding: 0 3px;
     color: #999;
-    font-size: 18px;
+    font-size: @font-size-18;
   }
   .user-name {
     margin: 0 10px 5px 0;
-    font-size: 19px;
+    font-size: @font-size-19;
     line-height: 22px;
     float: left;
     font: bold 17px/18px 'HelveticaNeue bold', Arial, Helvetica, sans-serif;
@@ -647,7 +650,7 @@ select {
     li {
       padding: 0 10px;
       border-left: 1px solid #e6e6e6;
-      font-size: 11px;
+      font-size: @font-size-11;
       line-height: 14px;
       &:first-child {
         padding: 0 10px 0 0;
@@ -671,7 +674,7 @@ select {
         > li a {
           padding:5px 15px;
           color:#666;
-          font-size:13px;
+          font-size: @font-size-13;
         }
         > li a:hover {
           border-bottom:3px solid #ddd;
@@ -717,7 +720,7 @@ label.required em,
 .form-horizontal label.required em {
   padding: 0 3px;
   color: #c30b25;
-  font-size: 15px;
+  font-size: @font-size-15;
 }
 
 input, textarea { width:280px; }
@@ -735,7 +738,7 @@ textarea {
   border-width:1px 0;
   margin: 0 0 0 -20px;
   color:lighten(@bodyColor,20%);
-  font-size:13px;
+  font-size: @font-size-13;
   font-weight:normal;
   text-shadow:0 1px 0 #fff;
   line-height:18px;
@@ -847,7 +850,7 @@ textarea {
 .filter-box .filter-item .divider {
   background: none;
   line-height: 40px;
-  font-size: 16px;
+  font-size: @font-size-16;
   padding: 0;
   margin: 0;
   position: relative;
@@ -858,7 +861,7 @@ textarea {
 }
 
 .btn-group > .btn-small {
-  font-size: 11px;
+  font-size: @font-size-11;
 }
 .btn-group > a.btn {
   height: 34px;
@@ -867,7 +870,7 @@ textarea {
 .oro-action .btn-group > .btn,
 .oro-action .btn-group > .dropdown-menu,
 .oro-action .btn-group > .popover {
-  font-size: 14px;
+  font-size: @font-size-14;
 }
 .oro-action .btn-group {
   margin-right: 0;
@@ -896,7 +899,7 @@ select {
   .forScreen(@mediumScreen, background, none);
 }
 h5.user-fiedset {
-  font-size:15px;
+  font-size: @font-size-15;
   line-height:18px;
   margin: 0 10px 10px 0;
 }
@@ -944,7 +947,7 @@ select:focus:invalid:focus {
     border:1px solid rgba(241,216,103,.3);
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
     .close {
-      font-size: 18px;
+      font-size: @font-size-18;
       color: @warningClose;
       opacity: 1;
     }
@@ -1034,9 +1037,8 @@ label.radio.error {
 .scrollable-container {
   .oro-subtitle {
     margin:0 5px 0 -25px;
-    font-size: 24px;
     line-height: 28px;
-    font-size: 20px;
+    font-size: @font-size-20;
     padding: 0;
   }
 }
@@ -1072,7 +1074,7 @@ button.filter-update {
   }
 }
 .filter-separator {
-  font-size: 16px;
+  font-size: @font-size-16;
   padding: 0 3px;
   position: relative;
   top: -3px;
@@ -1113,7 +1115,7 @@ button.filter-update {
 .btn.favorite-button .icon-star:before,
 .btn.minimize-button .icon-pushpin:before {
   color:#e7e7e7;
-  font-size:19px;
+  font-size: @font-size-19;
 }
 .btn.favorite-button .icon-gold:before,
 .btn.minimize-button .icon-gold:before,

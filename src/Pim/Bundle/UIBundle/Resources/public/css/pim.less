@@ -18,6 +18,20 @@ body {
   }
 }
 
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 a {
   color: @color-purple_dark;
 }
@@ -141,7 +155,7 @@ a.back-link i {
 }
 
 .icon-collapse-alt, .icon-expand-alt {
-  font-size: 14px;
+  font-size: @font-size-14;
 }
 
 .btn.scope-filter {
@@ -171,12 +185,12 @@ a.back-link i {
     padding-top: 5px;
   }
   .big-icon {
-    font-size: 2.5em;
+    font-size: @font-size-25em;
     padding-top: 15px;
   }
   h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: @font-size-18;
     color: @color-new-purple-medium;
     font-weight: normal;
   }
@@ -284,7 +298,7 @@ a[data-toggle-channel] {
 
   td {
     padding: 15px 0;
-    font-size: 12px;
+    font-size: @font-size-12;
   }
   td:nth-child(1) {
     width: 5%;
@@ -312,7 +326,7 @@ a[data-toggle-channel] {
   margin-bottom: 20px;
   thead td {
     padding: 10px;
-    font-size: 1.1em;
+    font-size: @font-size-11em;
     font-weight: bold;
     background: @color-purple_hover;
   }
@@ -341,10 +355,10 @@ span.link-label {
   padding-right: 8px;
   padding-left: 8px;
   margin-right: 5px;
-  font-size: 11px;
+  font-size: @font-size-11;
   line-height: 24px;
   &.large {
-    font-size: 14px;
+    font-size: @font-size-14;
   }
 }
 
@@ -397,7 +411,7 @@ span.link-label {
 #header-notification-widget {
 
   i.icon-bell {
-    font-size: 18px !important;
+    font-size: @font-size-18 !important;
     line-height: 20px;
     height: 20px;
     text-align: center;
@@ -409,7 +423,7 @@ span.link-label {
     top: 2px;
 
     .badge-square {
-      font-size: 11px;
+      font-size: @font-size-11;
       font-weight: initial;
       padding: 0 3px;
       background: linear-gradient(#f93a43, darken(#f93a43, 20%));
@@ -440,7 +454,7 @@ span.link-label {
 
   input[type="text"] {
     padding: 2px 3px;
-    font-size: 12px;
+    font-size: @font-size-12;
     width: 100%;
     box-sizing: border-box;
     height: 26px;
@@ -552,7 +566,7 @@ span.link-label {
       box-shadow: none;
       text-shadow: none;
       line-height: 24px;
-      font-size: 12px;
+      font-size: @font-size-12;
       padding-left: 20px;
       padding-right: 25px;
       color: @textColor;
@@ -636,7 +650,7 @@ header.tab-header {
   h3 {
     line-height: 24px;
     margin-left: 20px;
-    font-size: 16px;
+    font-size: @font-size-16;
   }
 }
 
@@ -797,7 +811,7 @@ h3.tab-header {
       .align-items(center);
 
       h1 {
-        font-size: 18px;
+        font-size: @font-size-18;
         font-weight: 400;
         color: @color-new-purple-medium;
         margin: 0;
@@ -817,7 +831,7 @@ h3.tab-header {
       .flex(1);
 
       > span {
-        font-size: 11px;
+        font-size: @font-size-11;
         color: @color-form-info;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -891,7 +905,7 @@ h3.tab-header {
       border-radius: 2px;
       text-shadow: none;
       opacity: 1;
-      font-size: 14px;
+      font-size: @font-size-14;
     }
 
     h1 {
@@ -951,7 +965,7 @@ h3.tab-header {
       .flex(1);
       margin: 0;
       margin-left: 10px;
-      font-size: 14px;
+      font-size: @font-size-14;
       color: #333;
       font-weight: 200;
       line-height: 35px;
@@ -985,7 +999,7 @@ h3.tab-header {
       box-shadow: none;
       padding: 4px 12px;
       color: #333;
-      font-size: 20px;
+      font-size: @font-size-20;
       height: 100%;
     }
   }
@@ -999,7 +1013,7 @@ h3.tab-header {
 
     .channel {
       display: block;
-      font-size: 13px;
+      font-size: @font-size-13;
       margin-bottom: 3px;
       text-transform: capitalize;
     }
@@ -1085,8 +1099,8 @@ h3.tab-header {
   }
 
   .language {
-    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    font-size: 11px;
+    font-family: @sansFontFamily;
+    font-size: @font-size-11;
     color: @color-form-label;
     font-weight: normal;
   }
@@ -1098,7 +1112,7 @@ h3.tab-header {
   min-width: @min-field-width;
 
   label {
-    font-size: 12px;
+    font-size: @font-size-12;
     color: @color-form-label;
     font-weight: normal;
     display: inline-block;
@@ -1109,7 +1123,7 @@ h3.tab-header {
     .align-items(top);
 
     .field-info {
-      font-size: 11px;
+      font-size: @font-size-11;
     }
 
     label {
@@ -1140,7 +1154,7 @@ h3.tab-header {
 
   .footer-elements-container {
     color: @color-form-info;
-    font-size: 12px;
+    font-size: @font-size-12;
 
     > * {
       display: block;
@@ -1150,7 +1164,7 @@ h3.tab-header {
   input:not([type="file"]),
   textarea {
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-    font-size: 12px;
+    font-size: @font-size-12;
     color: @color-form-input;
     min-height: 30px;
     margin-bottom: 0;
@@ -1171,7 +1185,7 @@ h3.tab-header {
 
     .input-append .add-on {
       box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-      font-size: 11px;
+      font-size: @font-size-11;
       padding: 5px;
       color: @color-form-label;
       .border-radius(0);
@@ -1314,7 +1328,7 @@ h3.tab-header {
     }
 
     .file i {
-      font-size: 90px;
+      font-size: @font-size-90;
       margin-left: 10px;
       color: #999;
     }
@@ -1345,7 +1359,7 @@ h3.tab-header {
         }
 
         i {
-          font-size: 20px;
+          font-size: @font-size-20;
           color: #444;
         }
       }
@@ -1413,7 +1427,7 @@ h3.tab-header {
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
   background-image: none;
   background-color: white;
-  font-size: 12px;
+  font-size: @font-size-12;
   color: @color-form-input;
   min-height: 30px;
   .border-radius(0);
@@ -1561,7 +1575,7 @@ h3.tab-header {
     }
 
     .flag-language .language {
-      font-family: Helvetica;
+      font-family: @sansFontFamily;
       color: #555;
       padding-top: 1px;
     }
