@@ -39,6 +39,8 @@ pimee_workflow:
         invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
   proposal:
     to_review: '%author.firstname% %author.lastname% a envoyé une proposition à examiner pour le produit %product.label%'
+    individual_import: "%author.firstname% %author.lastname% a envoyé des propositions de relectures venant d'un import"
+    generic_import: "Vous avez des propositions de relectures venant d'un import"
     original_value: Original
     new_value: Nouveau
   published_product:
@@ -65,6 +67,7 @@ pimee_workflow:
   steps:
     product_draft_processor.title: Processeur de proposition
 pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
+pimee_workflow_import_notification_new_proposals: "Nouvelles propositions de relectures venant d'un import"
 btn.publish: Publier
 btn.unpublish: Dépublier
 pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée

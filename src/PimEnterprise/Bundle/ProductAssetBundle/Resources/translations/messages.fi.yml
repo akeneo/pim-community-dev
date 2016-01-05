@@ -1,0 +1,161 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Rikasta resurssia
+      create: Luo resurssi
+      remove: Poista resurssi
+      categories_view: Konsultoi resurssin kategoriaa
+      mass_upload: Resurssien massatuonti
+    category_asset_picker:
+      list: Listaa resurssien kategoriat resurssivalitsimessa
+    category:
+      create: Luo resurssikategoria
+      edit: Muokkaa resurssikategoriaa
+      list: Listaa resusrssikategoriat
+      remove: Poista resurssikategoria
+      manage: Hallinnoi resurssikategorioiden käyttöoikeuksia
+      history: Näytä resurssikategorian historia
+  acl_group:
+    asset: Tuoteresurssit
+    category: Resurssikategoriat
+  enrich_asset:
+    button:
+      upload: Tuo
+      delete: Poista
+      download: Lataa
+      generate_from_reference: Luo viittauksesta
+      reset_variations: Nollaa variaatiot
+    confirmation.remove: 'Oletko varma, että haluat poistaa resurssin "%asset%" ?'
+    grid:
+      edit: Muokkaa resurssin ominaisuuksia
+    view:
+      title: Tuoteresurssi
+      code: Koodi
+      description: Kuvaus
+      end_of_use: Käyttö loppuu
+      reference: Viittaus
+      filename: Tiedostonimi
+      width: Leveys
+      height: Korkeus
+      resolution: Resoluutio
+      colors: Väriavaruus
+      filesize: Tiedoston koko
+      filetype: Tiedoston tyyppi
+      actions: Toiminnot
+      download: Lataa
+      tag: Asiasanat
+      no_reference: Viitetiedostoa ei ole vielä tuotu järjestelmään.
+      no_variation: Variaatiotiedostoa ei ole vielä luotu.
+    flash:
+      update:
+        success: Resurssi on päivitetty.
+        error: Resurssia ei ole päivitetty. Tapahtui virhe.
+      create:
+        success: Resurssi on luotu.
+        error: Resurssia ei ole luotu. Tapahtui virhe.
+      remove:
+        success: Resurssi on poistettu.
+  enrich_reference:
+    flash:
+      delete:
+        success: Viitetiedosto on poistettu.
+        error: Viitetiedostoa ei ole poistettu. Tapahtui virhe.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 'Virheellisten asetusten takia variaatio %channel% n luominen on mahdotonta.'
+        image_width_error: 'Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian kapea.'
+        image_height_error: 'Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian matala.'
+        not_applicable: 'Variaatio %channel% n luominen on mahdotonta.'
+        non_registered: '%transformation% muutosta ei rekisteröity mime tyypille %mimeType%. Mahdotonta luoda variaatio %channel%.'
+        error: 'Ei voida luoda variaatiota %channel%.'
+        success: Variaatiotiedoston luotu onnistuneesti.
+      update:
+        success: Variaatiotiedosto päivitetty.
+        error: Variaatiotiedostoa ei ole päivitetty. Tapahtui virhe.
+      delete:
+        success: Variaatiotiedosto on poistettu.
+        error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
+  popin.create:
+    title: Luo uusi resurssi
+    is_localized: Lokalisoitavissa
+  menu: Resurssit
+  page_tab:
+    title:
+      view: 'Tuoteresurssi %asset.code% | Näkymä'
+      edit: 'Tuoteresurssi %asset.code% | Muokkaa'
+      index: Tuoteresurssit
+  code:
+    label: Koodi
+  thumbnail:
+    label: Pikkukuva
+  status:
+    label: Status
+  description:
+    label: Kuvaus
+  endOfUse:
+    label: Käyttö loppuu
+  createdAt:
+    label: Luotu
+  updatedAt:
+    label: Viimeksi päivitetty
+  tags:
+    label: Asiasanat
+  tabs:
+    properties.title: Ominaisuudet
+    variations.title: Variaatiot
+    categories.title: Kategoriat
+  validation:
+    code:
+      not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
+      unique: Koodin tulee olla uniikki.
+      new_generation: Loimme sinulle uuden koodin.
+  jobs:
+    csv_asset_import.title: Resurssien tuonti csv-muodossa
+    csv_asset_export.title: Resurssien vienti csv-muotoon
+    csv_asset_variation_export.title: Resurssien variaatioiden vienti csv-muotoon
+    csv_tag_import.title: Asiasanojen tuonti csv-muodossa
+    csv_asset_category_import.title: Resurssikategorioiden tuonti csv-muodossa
+    csv_asset_configuration_import.title: Resurssikanavien konfiguraation tuonti csv-muodossa
+    yml_asset_configuration_export.title: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
+    csv_asset_category_export.title: Resurssikategorioiden vienti csv-muodossa
+    yml_asset_channel_configuration_import.title: Resurssikanavien konfiguraation tuonti Yaml muodossa
+  steps:
+    channel_configuration.processor.title: Prosessikanavien konfiguraatiot
+  notAvailable:
+    label: ei saatavissa
+  asset:
+    title: Resurssi
+  mass_upload:
+    menu: Tuo resursseja
+    new: Uusi resurssi luodaan
+    add_files: lisää tiedostoja
+    start: Aloita tuonti
+    cancel: Keskeytä tuonti
+    schedule: aikataulu
+    executed: Massatuonti suoritettu
+    error:
+      upload: Tuonnin yhteydessä tapahtui virhe
+      code: Vääränmuotoinen koodi resurssille
+      localizable: Resurssi on olemassa, mutta sitä ei voi lokalisoida
+      invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
+  category:
+    menu: Resurssikategoriat
+    permissions:
+      view.label: Resurssien katselu sallittu
+      view.help: Salli tässä kategoriassa olevien resurssien katselu
+      edit.label: Resurssien muokkaaminen sallittu
+      edit.help: Salli tässä kategoriassa olevien resurssien katselu (tarkoittaa katseluoikeuksia)
+      no_access_to_products: Sinulla ei ole käyttöoikeuksia minkään puun resursseihin, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+      apply_on_children.label: Tee muutokset myös alatasolle
+      apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
+btn.create.asset: Luo resurssi
+btn.drag_or_upload: Vedä ja tiputa tiedosto tai klikkaa tästä
+job_execution.summary:
+  asset_file_processed: Resurssitiedosto kästelty
+  variations_not_generated: Variaatioita ei luotu
+  pimee_product_asset.mass_upload.new: Resurssi luotu tiedostosta
+  pimee_product_asset.mass_upload.updated: Resurssi päivitetty
+assets_mass_upload.steps:
+  asset_mass_upload.title: Resurssien massatuonti
+mass_upload: Massatuo resursseja
