@@ -262,7 +262,7 @@ class Form extends Base
     {
         $this->spin(function () {
             return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+        }, 20, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
 
         $list = $this->getElement('Available attributes list');
         if (!$list->isVisible()) {
@@ -276,6 +276,7 @@ class Form extends Base
                 function () use ($list, $attributeLabel) {
                     return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
                 },
+                20,
                 sprintf('Could not find available attribute "%s".', $attributeLabel)
             );
 
