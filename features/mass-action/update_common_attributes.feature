@@ -70,40 +70,6 @@ Feature: Edit common attributes of many products at once
       | dry   |
       | hot   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3281
-  Scenario: Successfully update localized values on selected locale
-    Given I add the "french" locale to the "mobile" channel
-    And I add the "french" locale to the "tablet" channel
-    When I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit common attributes" operation
-    And I switch the locale to "fr_FR"
-    And I display the [name] attribute
-    And I change the "[name]" to "chaussure"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the french name of "boots" should be "chaussure"
-    And the french name of "sandals" should be "chaussure"
-    And the french name of "sneakers" should be "chaussure"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-3281
-  Scenario: Successfully update localized and scoped values on selected locale
-    Given I add the "french" locale to the "mobile" channel
-    And I add the "french" locale to the "tablet" channel
-    And I set product "pump" family to "boots"
-    And I mass-edit products boots and pump
-    And I choose the "Edit common attributes" operation
-    And I switch the locale to "fr_FR"
-    And I display the [description] attribute
-    And I change the "[description]" to "Bar Fr"
-    And I switch the scope to "mobile"
-    And I change the "[description]" to "Foo Fr"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the french mobile description of "boots" should be "Foo Fr"
-    And the french tablet description of "boots" should be "Bar Fr"
-    And the french mobile description of "pump" should be "Foo Fr"
-    And the french tablet description of "pump" should be "Bar Fr"
-
   @jira https://akeneo.atlassian.net/browse/PIM-4528
   Scenario: See previously selected fields on mass edit error
     Given I mass-edit products boots and sandals
