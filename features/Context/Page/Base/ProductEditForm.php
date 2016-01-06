@@ -63,7 +63,7 @@ class ProductEditForm extends Form
         // because select2 selects the first element on TAB key press.
         $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');");
 
-        $groupLabels = $this->spin( function () use ($list, $group) {
+        $groupLabels = $this->spin(function () use ($list, $group) {
                 return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
         }, 5);
 

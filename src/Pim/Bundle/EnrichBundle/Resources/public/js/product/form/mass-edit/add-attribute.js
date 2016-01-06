@@ -14,17 +14,11 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/attribute-manager',
-        'pim/user-context',
-        'pim/fetcher-registry',
         'pim/product-edit-form/attributes/add-attribute'
     ],
     function (
         $,
         _,
-        AttributeManager,
-        UserContext,
-        FetcherRegistry,
         BaseAddAttribute
     ) {
         return BaseAddAttribute.extend({
