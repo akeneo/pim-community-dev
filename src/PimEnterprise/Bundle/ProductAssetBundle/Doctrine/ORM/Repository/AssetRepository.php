@@ -141,6 +141,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     public function createAssetDatagridQueryBuilder(array $parameters = [])
     {
         $qb = $this->createQueryBuilder($this->getAlias());
+        $qb->addGroupBy($this->getAlias().'.id');
 
         return $qb;
     }

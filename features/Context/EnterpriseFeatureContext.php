@@ -7,6 +7,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use PimEnterprise\Behat\Context\HookContext;
 
 /**
  * A context for creating entities
@@ -23,7 +24,7 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
-        $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('webUser', new EnterpriseWebUser());
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new EnterpriseDataGridContext());
         $this->useContext('navigation', new EnterpriseNavigationContext($parameters['base_url']));
@@ -35,18 +36,9 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
 
         $this->setTimeout($parameters);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function registerConfigurationDirectory()
-    {
-        $this
-            ->getSubcontext('catalogConfiguration')
-            ->addConfigurationDirectory(__DIR__.'/catalog');
     }
 
     /**
