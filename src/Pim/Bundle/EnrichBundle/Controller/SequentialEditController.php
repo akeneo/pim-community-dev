@@ -67,8 +67,6 @@ class SequentialEditController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_product_edit_attributes")
-     *
      * @return RedirectResponse
      */
     public function sequentialEditAction(Request $request)
@@ -102,8 +100,6 @@ class SequentialEditController
 
     /**
      * @param Request $request
-     *
-     * @AclAncestor("pim_enrich_product_edit_attributes")
      *
      * @return JsonResponse
      */

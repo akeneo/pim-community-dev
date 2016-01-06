@@ -16,6 +16,7 @@
 ## Bug fixes
 - PIM-5405: Fix content type for stream upload
 - PIM-5331: Fix product save issue when categories have code as integer
+- PIM-5395: Fix tab redirection on different right cases
 
 ## BC Breaks
 - Changed constructor `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` to add `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface` dependency
