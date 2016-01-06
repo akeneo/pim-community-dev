@@ -63,7 +63,7 @@ class AttributeController
             $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
         if ($request->query->has('types')) {
-            $options['attributeType'] = explode(',', $request->query->get('types'));
+            $options['types'] = explode(',', $request->query->get('types'));
         }
         if (empty($options)) {
             $options = $request->query->get('options', ['limit' => 20, 'locale' => null]);
