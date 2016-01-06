@@ -27,18 +27,6 @@ extensions:
         aclResourceId: pim_enrich_product_add_attribute
         position: 90
 
-    pim-mass-product-edit-form-attribute-scope-switcher:
-        module: pim/product-edit-form/scope-switcher
-        parent: pim-mass-product-edit-form-attributes
-        targetZone: other-actions
-        position: 70
-
-    pim-mass-product-edit-form-attribute-locale-switcher:
-        module: pim/product-edit-form/locale-switcher
-        parent: pim-mass-product-edit-form-attributes
-        targetZone: other-actions
-        position: 80
-
     pim-mass-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation
         parent: pim-mass-product-edit-form-attributes

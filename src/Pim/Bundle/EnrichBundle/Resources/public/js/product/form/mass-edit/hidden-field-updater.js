@@ -23,9 +23,6 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                UserContext.off('change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
