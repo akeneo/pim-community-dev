@@ -10,28 +10,22 @@
 define(
     [
         'jquery',
-        'backbone',
         'underscore',
         'pim/form',
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute',
         'pim/user-context',
         'pim/fetcher-registry',
-        'oro/loading-mask',
-        'pim/formatter/choices/base',
-        'jquery.multiselect',
-        'jquery.multiselect.filter'
+        'pim/formatter/choices/base'
     ],
     function (
         $,
-        Backbone,
         _,
         BaseForm,
         AttributeManager,
         template,
         UserContext,
         FetcherRegistry,
-        LoadingMask,
         ChoicesFormatter
     ) {
         return BaseForm.extend({
