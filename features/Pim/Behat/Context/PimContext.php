@@ -9,25 +9,20 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class PimContext extends RawMinkContext implements KernelAwareInterface
 {
     /** @var array */
-    protected $placeholderValues = [];
+    protected static $placeholderValues = [];
 
     /** @var KernelInterface */
     private $kernel;
 
-    public function __construct()
-    {
-        $this->resetPlaceholderValues();
-    }
+    /** @var string */
+    private static $kernelRootDir;
 
-    /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
+    public static function resetPlaceholderValues()
     {
-        $this->placeholderValues = [
+        self::$placeholderValues = [
             '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
             //TODO: change that later
-            '%fixtures%' => __DIR__ . '/../../../Context/fixtures'
+            '%fixtures%' => self::$kernelRootDir . '/../features/Context/fixtures/'
         ];
     }
 
@@ -37,6 +32,7 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+        self::$kernelRootDir = $kernel->getRootDir();
     }
 
     /**
@@ -44,9 +40,9 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
-        return strtr($value, $this->placeholderValues);
+        return strtr($value, self::$placeholderValues);
     }
 
     /**
@@ -59,7 +55,15 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
         return $this->kernel->getContainer()->get($id);
     }
 
-
+    /**
+     * @param string $name
+     *
+     * @return object
+     */
+    protected function getParameter($name)
+    {
+        return $this->kernel->getContainer()->getParameter($name);
+    }
 
     /*************************************************************/
     /**** transitional methods that should be deleted ideally ****/

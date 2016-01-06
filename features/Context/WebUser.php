@@ -29,41 +29,8 @@ class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
 
-    protected $windowWidth;
-
-    protected $windowHeight;
-
-    /**
-     * Constructor
-     *
-     * @param int $windowWidth
-     * @param int $windowHeight
-     */
-    public function __construct($windowWidth, $windowHeight)
-    {
-        $this->windowWidth  = $windowWidth;
-        $this->windowHeight = $windowHeight;
-    }
     /* -------------------- Page-related methods -------------------- */
 
-    /**
-     * @BeforeScenario
-     */
-    public function maximize()
-    {
-        try {
-            $this->getSession()->resizeWindow($this->windowWidth, $this->windowHeight);
-        } catch (UnsupportedDriverActionException $e) {
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearRecordedMails()
-    {
-        $this->getMailRecorder()->clear();
-    }
 
     /**
      * @param string $name
@@ -2243,7 +2210,7 @@ class WebUser extends RawMinkContext
      */
     public function anEmailToShouldHaveBeenSent($email)
     {
-        $recorder = $this->getMailRecorder();
+        $recorder = $this->getMainContext()->getMailRecorder();
         if (0 === count($recorder->getMailsSentTo($email))) {
             throw $this->createExpectationException(
                 sprintf(
@@ -2925,16 +2892,6 @@ class WebUser extends RawMinkContext
     protected function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
-    }
-
-    /**
-     * Get the mail recorder
-     *
-     * @return MailRecorder
-     */
-    protected function getMailRecorder()
-    {
-        return $this->getMainContext()->getMailRecorder();
     }
 
     /**

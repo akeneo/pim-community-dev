@@ -4,8 +4,6 @@ namespace Pim\Behat\Context;
 
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
-use Behat\Behat\Event\BaseScenarioEvent;
-use Behat\Behat\Event\StepEvent;
 use Context\Page\Base\Base;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -67,8 +65,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function __construct($baseUrl)
     {
-        parent::__construct();
-
         $this->baseUrl = $baseUrl;
     }
 
@@ -86,21 +82,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function getPageMapping()
     {
         return $this->pageMapping;
-    }
-
-    /**
-     * @param BaseScenarioEvent $event
-     *
-     * @AfterScenario
-     */
-    public function resetCurrentPage(BaseScenarioEvent $event)
-    {
-        if ($event->getResult() !== StepEvent::UNDEFINED) {
-            $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-            $this->getMainContext()->executeScript($script);
-        }
-
-        $this->currentPage = null;
     }
 
     /**
