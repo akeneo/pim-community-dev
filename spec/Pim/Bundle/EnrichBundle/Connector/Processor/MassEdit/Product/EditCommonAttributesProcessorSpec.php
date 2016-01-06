@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -25,14 +24,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry,
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith(
             $validator,
             $attributeRepository,
             $jobConfigurationRepo,
-            $localizerRegistry,
             $productUpdater
         );
     }
@@ -106,7 +103,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_sets_values_to_attributes(
         $validator,
-        $localizerRegistry,
         $productUpdater,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
@@ -122,21 +118,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
-        $expectedValues = [
-            'number' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => '2.5'
-                ]
-            ]
-        ];
         $values = [
             'number' => [
                 [
                     'scope' => null,
                     'locale' => null,
-                    'data' => '2,5'
+                    'data' => '2.5'
                 ]
             ]
         ];
@@ -164,10 +151,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
 
-        $localizerRegistry->getLocalizer('number')->willReturn($localizer);
-        $localizer->delocalize('2,5', ['locale' => 'fr_FR'])->willReturn('2.5');
-
-        $productUpdater->update($product, $expectedValues)->shouldBeCalled();
+        $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
     }

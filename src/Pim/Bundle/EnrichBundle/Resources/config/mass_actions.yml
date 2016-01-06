@@ -42,11 +42,12 @@ services:
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_user.context.user'
-            - '@pim_serializer'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_internal_api_serializer'
             - '@pim_localization.localizer.converter'
+            - '@pim_localization.localizer.registry'
             - %tmp_storage_dir%
         tags:
             -

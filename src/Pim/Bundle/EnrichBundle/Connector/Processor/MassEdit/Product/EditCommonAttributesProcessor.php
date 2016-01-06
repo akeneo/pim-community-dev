@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -29,9 +28,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var array */
     protected $skippedAttributes = [];
 
-    /** @var LocalizerRegistryInterface */
-    protected $localizerRegistry;
-
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
@@ -39,21 +35,18 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      * @param ValidatorInterface                  $validator
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param LocalizerRegistryInterface          $localizerRegistry
      * @param ObjectUpdaterInterface              $productUpdater
      */
     public function __construct(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry,
         ObjectUpdaterInterface $productUpdater
     ) {
         parent::__construct($jobConfigurationRepo);
 
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
-        $this->localizerRegistry   = $localizerRegistry;
         $this->productUpdater      = $productUpdater;
     }
 
@@ -148,30 +141,12 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function prepareProductValues(ProductInterface $product, array $actions)
     {
         $normalizedValues = json_decode($actions['normalized_values'], true);
-        $attributeLocale  = $actions['attribute_locale'];
-        $attributeChannel = $actions['attribute_channel'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if ($product->isAttributeEditable($attribute)) {
-                $values = array_filter($values, function ($value) use ($attributeLocale, $attributeChannel) {
-                    return
-                        ($attributeLocale === $value['locale'] || null === $value['locale']) &&
-                        ($attributeChannel === $value['scope'] || null === $value['scope']) ;
-                });
-
-                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
-                if (null !== $localizer) {
-                    $locale = $actions['ui_locale'];
-                    $values = array_map(function ($value) use ($localizer, $locale) {
-                        $value['data'] = $localizer->delocalize($value['data'], ['locale' => $locale]);
-
-                        return $value;
-                    }, $values);
-                }
-
                 $filteredValues[$attributeCode] = $values;
             }
         }

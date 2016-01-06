@@ -5,7 +5,9 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -30,9 +32,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var UserContext */
     protected $userContext;
 
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
@@ -44,6 +43,12 @@ class EditCommonAttributes extends AbstractMassEditOperation
 
     /** @var LocalizedAttributeConverterInterface */
     protected $localizedConverter;
+
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var string */
     protected $tmpStorageDir;
@@ -60,32 +65,36 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * @param ProductBuilderInterface              $productBuilder
      * @param UserContext                          $userContext
-     * @param NormalizerInterface                  $normalizer
+     * @param AttributeRepositoryInterface         $attributeRepository
      * @param ObjectUpdaterInterface               $productUpdater
      * @param ValidatorInterface                   $productValidator
      * @param NormalizerInterface                  $internalNormalizer
      * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param LocalizerRegistryInterface           $localizerRegistry
      * @param string                               $tmpStorageDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
-        NormalizerInterface $normalizer,
+        AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         NormalizerInterface $internalNormalizer,
         LocalizedAttributeConverterInterface $localizedConverter,
+        LocalizerRegistryInterface $localizerRegistry,
         $tmpStorageDir
     ) {
-        $this->productBuilder     = $productBuilder;
-        $this->userContext        = $userContext;
-        $this->normalizer         = $normalizer;
-        $this->productUpdater     = $productUpdater;
-        $this->productValidator   = $productValidator;
-        $this->tmpStorageDir      = $tmpStorageDir;
-        $this->internalNormalizer = $internalNormalizer;
-        $this->localizedConverter = $localizedConverter;
-        $this->values             = '';
+        $this->productBuilder      = $productBuilder;
+        $this->userContext         = $userContext;
+        $this->attributeRepository = $attributeRepository;
+        $this->productUpdater      = $productUpdater;
+        $this->productValidator    = $productValidator;
+        $this->tmpStorageDir       = $tmpStorageDir;
+        $this->internalNormalizer  = $internalNormalizer;
+        $this->localizedConverter  = $localizedConverter;
+        $this->localizerRegistry   = $localizerRegistry;
+
+        $this->values = '';
     }
 
     /**
@@ -134,27 +143,18 @@ class EditCommonAttributes extends AbstractMassEditOperation
 
     /**
      * {@inheritdoc}
-     *
-     * Before sending configuration to the job, we store uploaded files.
-     * This way, the job process can have access to uploaded files.
      */
     public function finalize()
     {
         $data = json_decode($this->values, true);
-        $filesystem = new Filesystem();
 
-        foreach ($data as $attributeCode => $attributeValues) {
-            foreach ($attributeValues as $index => $value) {
-                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
-                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
-                    $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
-
-                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
-
-                    $data[$attributeCode][$index]['data']['filePath'] = $newPath;
-                }
-            }
-        }
+        $data = $this->filterScopableAndLocalizableData(
+            $data,
+            $this->getAttributeLocale(),
+            $this->getAttributeChannel()
+        );
+        $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
+        $data = $this->storeUploadedFile($data);
 
         $this->values = json_encode($data);
     }
@@ -285,5 +285,85 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function setAttributeChannel($attributeChannel)
     {
         $this->attributeChannel = $attributeChannel;
+    }
+
+    /**
+     * Before sending configuration to the job, we store uploaded files.
+     * This way, the job process can have access to uploaded files.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function storeUploadedFile(array $data)
+    {
+        $filesystem = new Filesystem();
+
+        foreach ($data as $code => $values) {
+            foreach ($values as $index => $value) {
+                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
+                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
+                    $newPath = $this->tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
+
+                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
+
+                    $data[$code][$index]['data']['filePath'] = $newPath;
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Filter scopable and localisable data to keep only the attributes values that
+     * conform to the locale and scope that have been chosen in the grid.
+     *
+     * @param array  $data
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return array
+     */
+    protected function filterScopableAndLocalizableData(array $data, $localeCode, $channelCode)
+    {
+        foreach ($data as $code => $values) {
+            $values = array_filter($values, function ($value) use ($localeCode, $channelCode) {
+                return
+                    ($localeCode === $value['locale'] || null === $value['locale']) &&
+                    ($channelCode === $value['scope'] || null === $value['scope']) ;
+            });
+            $data[$code] = $values;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Change users' data (example: "12,45") into storable data (example: "12.45").
+     *
+     * @param array  $data
+     * @param string $uiLocaleCode
+     *
+     * @return array
+     */
+    protected function delocalizeData(array $data, $uiLocaleCode)
+    {
+        foreach ($data as $code => $values) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+
+            if (null !== $localizer) {
+                $values = array_map(function ($value) use ($localizer, $uiLocaleCode) {
+                    $value['data'] = $localizer->delocalize($value['data'], ['locale' => $uiLocaleCode]);
+
+                    return $value;
+                }, $values);
+
+                $data[$code] = $values;
+            }
+        }
+
+        return $data;
     }
 }

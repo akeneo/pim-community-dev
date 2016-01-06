@@ -7,9 +7,9 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "apparel" catalog configuration
     And the following products:
-      | sku          | family  | name-en_US     | name-fr_FR        | customer_rating-ecommerce | customer_rating-print|
-      | black_jacket | jackets | A black jacket | Une veste noire   | 1                         | 2                    |
-      | white_jacket | jackets | A white jacket | Une veste blanche | 3                         | 4                    |
+      | sku          | family  | name-en_US     | name-de_DE          | customer_rating-ecommerce | customer_rating-print|
+      | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                    |
+      | white_jacket | jackets | A white jacket | Ein weißer Jacke    | 3                         | 4                    |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -30,7 +30,7 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
-    Given I switch the locale to "French (France)"
+    Given I switch the locale to "German (Germany)"
     And I filter by "channel" with value "Ecommerce"
     And I mass-edit products black_jacket and white_jacket
     And I choose the "Edit common attributes" operation
@@ -39,7 +39,7 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "Une veste"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the french name of "black_jacket" should be "Une veste"
-    And the french name of "white_jacket" should be "Une veste"
+    Then the german name of "black_jacket" should be "Une veste"
+    And the german name of "white_jacket" should be "Une veste"
     And the english name of "black_jacket" should be "A black jacket"
     And the english name of "white_jacket" should be "A white jacket"

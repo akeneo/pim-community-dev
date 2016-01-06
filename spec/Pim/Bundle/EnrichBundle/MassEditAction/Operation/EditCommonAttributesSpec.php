@@ -6,32 +6,37 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
-        
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
-        NormalizerInterface $normalizer,
+        AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         NormalizerInterface $internalNormalizer,
         LocalizedAttributeConverterInterface $localizedConverter,
+        LocalizerRegistryInterface $localizerRegistry,
         $tmpStorageDir = '/tmp/pim/file_storage'
     ) {
         $this->beConstructedWith(
             $productBuilder,
             $userContext,
-            $normalizer,
+            $attributeRepository,
             $productUpdater,
             $productValidator,
             $internalNormalizer,
             $localizedConverter,
+            $localizerRegistry,
             $tmpStorageDir
         );
     }
@@ -78,5 +83,79 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $userContext->getUiLocale()->willReturn($locale);
         $this->getBatchConfig()->shouldReturn($expected);
+    }
+
+    function it_sanitizes_data_during_finalization(
+        $userContext,
+        $attributeRepository,
+        $localizerRegistry,
+        LocaleInterface $fr,
+        AttributeInterface $normalAttr,
+        AttributeInterface $scopableAttr,
+        AttributeInterface $localisableAttr,
+        AttributeInterface $localiedAttr,
+        LocalizerInterface $localizer
+    ) {
+        $attributeRepository->findOneByIdentifier('normal_attr')->willReturn($normalAttr);
+        $attributeRepository->findOneByIdentifier('scopable_attr')->willReturn($scopableAttr);
+        $attributeRepository->findOneByIdentifier('localisable_attr')->willReturn($localisableAttr);
+        $attributeRepository->findOneByIdentifier('localised_attr')->willReturn($localiedAttr);
+
+        $normalAttr->getAttributeType()->willReturn('not_localized');
+        $scopableAttr->getAttributeType()->willReturn('not_localized');
+        $localisableAttr->getAttributeType()->willReturn('not_localized');
+        $localiedAttr->getAttributeType()->willReturn('localized');
+
+        $localizerRegistry->getLocalizer('not_localized')->willReturn(null);
+        $localizerRegistry->getLocalizer('localized')->willReturn($localizer);
+
+        $fr->getCode()->willReturn('fr');
+        $userContext->getUiLocale()->willReturn($fr);
+
+        $this->setAttributeLocale('fr');
+        $this->setAttributeChannel('tablet');
+
+        $rawData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+                ['data' => 'bar', 'scope' => 'ecommerce', 'locale' => null]
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+                ['data' => 'bar', 'scope' => null, 'locale' => 'de']
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45,59', 'currency' => 'EUR'],
+                    ['data' => '18,22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+        $this->setValues(json_encode($rawData));
+
+        $localizer->delocalize(
+            [['data' => '45,59', 'currency' => 'EUR'],['data' => '18,22', 'currency' => 'USD']],
+            ["locale" => "fr"]
+        )->willReturn([['data' => '45.59', 'currency' => 'EUR'],['data' => '18.22', 'currency' => 'USD']]);
+
+        $sanitizedData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45.59', 'currency' => 'EUR'],
+                    ['data' => '18.22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+
+        $this->finalize();
+        $this->getValues()->shouldReturn(json_encode($sanitizedData));
     }
 }
