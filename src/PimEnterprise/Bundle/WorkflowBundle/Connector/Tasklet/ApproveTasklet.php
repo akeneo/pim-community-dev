@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -64,11 +65,11 @@ class ApproveTasklet extends AbstractReviewTasklet
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 

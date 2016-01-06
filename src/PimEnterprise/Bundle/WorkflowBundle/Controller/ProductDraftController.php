@@ -12,16 +12,16 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -145,7 +145,7 @@ class ProductDraftController extends AbstractController
      */
     public function indexAction()
     {
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN_AT_LEAST_ONE_CATEGORY)) {
             throw new AccessDeniedException();
         }
 
@@ -172,11 +172,11 @@ class ProductDraftController extends AbstractController
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -232,11 +232,11 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

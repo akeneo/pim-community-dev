@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -43,7 +43,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             if (null !== $this->authorizationChecker &&
-                false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
+                !$this->authorizationChecker->isGranted(Attributes::FULL_REVIEW, $record->getRootEntity())
             ) {
                 return ['approve' => false, 'refuse' => false, 'remove' => false];
             }
