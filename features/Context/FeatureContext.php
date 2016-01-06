@@ -4,13 +4,14 @@ namespace Context;
 
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
@@ -54,6 +55,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
+        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('domain-tree', new TreeContext());
         $this->useContext('job', new JobContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
