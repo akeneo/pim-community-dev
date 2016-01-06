@@ -1,7 +1,9 @@
 parameters:
     pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\ProductDraftRepository
     pimee_workflow.repository.published_product.class:   PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository
+
     pimee_workflow.subscriber.synchronize_product_draft_categories.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SynchronizeProductDraftCategoriesSubscriber
+    pimee_workflow.subscriber.remove_outdated_product_draft.class:        PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM\RemoveOutdatedProductDraftSubscriber
 
 services:
     pimee_workflow.object_manager.product_draft:
@@ -58,3 +60,11 @@ services:
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
             - { name: doctrine.event_subscriber }
+
+    pimee_workflow.subscriber.remove_outdated_product_draft:
+        class: %pimee_workflow.subscriber.remove_outdated_product_draft.class%
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.remover.product_draft'
+        tags:
+            - { name: kernel.event_subscriber }
