@@ -1,16 +1,16 @@
-{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), record.rootEntity) %}
-    <span class="label label-{{ value == 1 ? 'success' : 'info' }}">
+<span class="badge-info-large">
+    {% if is_granted(constant('PimEnterprise\\Bundle\\WorkflowBundle\\Security\\Attributes::FULL_REVIEW'), record.rootEntity) %}
         {{ ('pimee_workflow.product_draft.status.' ~ (value == 1 ? 'ready' : 'in_progress'))|trans }}
-    </span>
-{% else %}
-    {% if value == 1 %}
-        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_approved' %}
-        {% set status = 'pimee_workflow.product_draft.status.can_not_be_approved' %}
+    {% elseif is_granted(constant('PimEnterprise\\Bundle\\WorkflowBundle\\Security\\Attributes::PARTIAL_REVIEW'), record.rootEntity) %}
+        {{ ('pimee_workflow.product_draft.status.' ~ (value == 1 ? 'can_be_partially_reviewed' : 'in_progress'))|trans }}
     {% else %}
-        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_deleted' %}
-        {% set status = 'pimee_workflow.product_draft.status.can_not_be_deleted' %}
-    {% endif %}
-    <span class="label label-error" title="{{ message|trans }}">
+        {% if value == 1 %}
+            {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_approved' %}
+            {% set status = 'pimee_workflow.product_draft.status.can_not_be_approved' %}
+        {% else %}
+            {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_deleted' %}
+            {% set status = 'pimee_workflow.product_draft.status.can_not_be_deleted' %}
+        {% endif %}
         {{ status|trans }}
-    </span>
-{% endif %}
+    {% endif %}
+</span>
