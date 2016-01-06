@@ -12,3 +12,4 @@ services:
             - '@pimee_workflow.builder.draft'
             - '@pimee_workflow.applier.product_draft'
             - '@pimee_workflow.repository.product_draft'
+            - '@pim_localization.localizer.converter'

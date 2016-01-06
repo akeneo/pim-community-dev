@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -31,7 +32,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
         ProductDraftRepositoryInterface $productDraftRepo,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
@@ -40,7 +42,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $validator,
             $productDraftBuilder,
             $productDraftApplier,
-            $productDraftRepo
+            $productDraftRepo,
+            $localizedConverter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -52,9 +55,24 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
+    function it_has_decimal_separator_and_date_format_configuration()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn([
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.decimalSeparator.label',
+                    'help'  => 'pim_connector.import.decimalSeparator.help'
+                ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.dateFormat.label',
+                    'help'  => 'pim_connector.import.dateFormat.help'
+                ]
+            ]
+        ]);
     }
 
     function it_creates_a_proposal(
@@ -64,6 +82,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         ProductDraft $productDraft,
@@ -79,8 +98,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
+        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+            'decimal_separator' => '.',
+            'date_format'       => 'yyyy-MM-dd'
+        ])->willReturn($values['converted_localized_values']);
+        $localizedConverter->getViolations()->willReturn($violationList);;
+
         $updater
-            ->update($product, $values['converted_values'])
+            ->update($product, $values['converted_localized_values'])
             ->shouldBeCalled();
 
         $validator
@@ -101,7 +126,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     function it_skips_a_proposal_if_there_is_no_identifier(
         $arrayConverter,
         $repository,
-        ProductInterface $product
+        $localizedConverter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
@@ -110,10 +137,17 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         unset($values['original_values']['sku']);
         unset($values['converted_values']['sku']);
+        unset($values['converted_localized_values']['sku']);
 
         $arrayConverter
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
+
+        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+            'decimal_separator' => '.',
+            'date_format'       => 'yyyy-MM-dd'
+        ])->willReturn($values['converted_localized_values']);
+        $localizedConverter->getViolations()->willReturn($violationList);;
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Identifier property "sku" is expected'))
@@ -123,8 +157,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             );
     }
 
-    function it_skips_a_proposal_if_product_does_not_exist($arrayConverter, $repository, $stepExecution)
-    {
+    function it_skips_a_proposal_if_product_does_not_exist(
+        $arrayConverter,
+        $repository,
+        $stepExecution,
+        $localizedConverter,
+        ConstraintViolationListInterface $violationList
+    ) {
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn(null);
 
@@ -133,6 +172,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $arrayConverter
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
+
+        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+            'decimal_separator' => '.',
+            'date_format'       => 'yyyy-MM-dd'
+        ])->willReturn($values['converted_localized_values']);
+        $localizedConverter->getViolations()->willReturn($violationList);;
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
@@ -150,6 +195,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
@@ -164,8 +210,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
+        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+            'decimal_separator' => '.',
+            'date_format'       => 'yyyy-MM-dd'
+        ])->willReturn($values['converted_localized_values']);
+        $localizedConverter->getViolations()->willReturn($violationList);;
+
         $updater
-            ->update($product, $values['converted_values'])
+            ->update($product, $values['converted_localized_values'])
             ->shouldBeCalled();
 
         $validator
@@ -188,9 +240,11 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $updater,
         $validator,
         $stepExecution,
+        $localizedConverter,
         ProductInterface $product,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
@@ -201,11 +255,17 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
+        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+            'decimal_separator' => '.',
+            'date_format'       => 'yyyy-MM-dd'
+        ])->willReturn($values['converted_localized_values']);
+        $localizedConverter->getViolations()->willReturn($violationList);;
+
         $updater
-            ->update($product, $values['converted_values'])
+            ->update($product, $values['converted_localized_values'])
             ->willThrow(new \InvalidArgumentException('A locale must be provided to create a value for the localizable attribute name'));
 
-        $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
+        $violation  = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($product)
             ->willReturn($violations);
@@ -226,11 +286,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     function getValues()
     {
         return [
-            'original_values' => [
+            'original_values'  => [
                 'sku'                        => 'my-sku',
                 'main_color'                 => 'white',
                 'description-fr_FR-ecommerce'=> '<p>description</p>',
-                'description-en_US-ecommerce'=> '<p>description</p>'
+                'description-en_US-ecommerce'=> '<p>description</p>',
+                'release_date'               => '19/08/1977',
+                'price-EUR'                  => '10,25',
+                'price-USD'                  => '11,25',
             ],
             'converted_values' => [
                 'sku'          => [
@@ -258,7 +321,81 @@ class ProductDraftProcessorSpec extends ObjectBehavior
                         'scope'  => 'ecommerce',
                         'data'   => '<p>description</p>'
                     ],
-                ]
+                ],
+                'release_date' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '19/08/1977'
+                    ]
+                ],
+                'price'        => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            [
+                                'currency' => 'EUR',
+                                'data'     => '10,25'
+                            ],
+                            [
+                                'currency' => 'USD',
+                                'data'     => '11,5'
+                            ],
+                        ]
+                    ]
+                ],
+            ],
+            'converted_localized_values' => [
+                'sku'          => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data' => 'my-sku'
+                    ]
+                ],
+                'main_color'   => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   =>'white'
+                    ]
+                ],
+                'description'  => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'data'   => '<p>description</p>'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'data'   => '<p>description</p>'
+                    ],
+                ],
+                'release_date' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '1977-08-19'
+                    ]
+                ],
+                'price'        => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            [
+                                'currency' => 'EUR',
+                                'data'     => '10.25'
+                            ],
+                            [
+                                'currency' => 'USD',
+                                'data'     => '11.5'
+                            ],
+                        ]
+                    ]
+                ],
             ]
         ];
     }
