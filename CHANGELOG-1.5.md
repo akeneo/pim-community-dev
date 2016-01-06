@@ -87,3 +87,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistry` to inject `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Oro\Bundle\SecurityBundle\SecurityFacade`
 - Update schema of `Pim\Component\Catalog\Model\Metric`. Increase precision of data and baseData.
 - Change constructor of `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor` to add `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface`
+- Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric` to fix PHP7 compatibility
+- Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\NumericValidator` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumericValidator` to fix PHP7 compatibility
+- Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\String` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsString` to fix PHP7 compatibility
+- Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\StringValidator` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsStringValidator` to fix PHP7 compatibility

@@ -159,8 +159,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
         FileInfoInterface $fileInfo,
-        FileInfoInterface $fromMedia,
-        FileInfoInterface $toMedia,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product,

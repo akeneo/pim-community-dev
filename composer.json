@@ -75,8 +75,8 @@
         "behat/symfony2-extension": "1.1.2",
         "behat/transliterator":"1.0.1",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "phpspec/phpspec": "2.1.*",
-        "akeneo/phpspec-skip-example-extension": "1.1.*",
+        "phpspec/phpspec": "2.4.*",
+        "akeneo/phpspec-skip-example-extension": "1.2.*",
         "akeneo/php-coupling-detector": "dev-master"
     },
     "suggest": {

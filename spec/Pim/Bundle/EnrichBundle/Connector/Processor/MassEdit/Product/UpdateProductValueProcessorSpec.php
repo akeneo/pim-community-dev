@@ -66,7 +66,6 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         ConstraintViolationListInterface $violations,
-        StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration

@@ -77,7 +77,6 @@ class ProductTransformerSpec extends ObjectBehavior
         ColumnInfo $columnInfoAssocGroups,
         ColumnInfo $columnInfoAssocProducts,
         ColumnInfo $columnInfoDesc,
-        IdentifiableObjectRepositoryInterface $productRepository,
         ProductInterface $product,
         ObjectManager $objectManager,
         ClassMetadata $productMetadata,

@@ -108,7 +108,6 @@ class DateAttributeSetterSpec extends ObjectBehavior
     function it_allows_setting_attribute_data_to_null(
         ProductInterface $product,
         AttributeInterface $attribute,
-        ProductInterface $product,
         ProductValueInterface $value
     ) {
         $attribute->getCode()->willReturn('attributeCode');

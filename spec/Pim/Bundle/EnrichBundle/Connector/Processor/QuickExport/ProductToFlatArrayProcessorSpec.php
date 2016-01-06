@@ -120,9 +120,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         FileInfoInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
-        AttributeInterface $attribute,
-        $serializer,
-        $productBuilder
+        AttributeInterface $attribute
     ) {
         $this->setLocale('en_US');
 
