@@ -72,7 +72,7 @@ define(
                     maxFilesize: 1000
                 });
 
-                myDropzone.on('removedfile', function (file) {
+                myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
                         this.$('.navbar-buttons .btn.schedule').addClass('hide');
                     }
