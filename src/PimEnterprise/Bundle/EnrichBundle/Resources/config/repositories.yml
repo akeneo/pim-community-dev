@@ -1,5 +1,5 @@
 parameters:
-    pimee_enrich.repository.attribute.search.class:  PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
+    pimee_enrich.repository.attribute.search.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
 
 services:
     pimee_enrich.repository.attribute.search:
@@ -7,3 +7,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.attribute.class%
+            - %pimee_security.entity.attribute_group_access.class%

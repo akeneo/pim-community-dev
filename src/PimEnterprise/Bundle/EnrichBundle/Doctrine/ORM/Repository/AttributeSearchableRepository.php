@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository as BaseAttributeSearchableRepository;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Attribute searchable repository
@@ -14,6 +22,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttributeSearchableRepository extends BaseAttributeSearchableRepository
 {
+    /** @var string */
+    protected $attrGpAccessClass;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $attributeClass
+     * @param string                 $attrGpAccessClass
+     */
+    public function __construct(EntityManagerInterface $entityManager, $attributeClass, $attrGpAccessClass)
+    {
+        parent::__construct($entityManager, $attributeClass);
+
+        $this->attrGpAccessClass = $attrGpAccessClass;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -25,7 +48,7 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
         $options = $this->resolveOptions($options);
 
         $qb->leftJoin(
-            'PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess',
+            $this->attrGpAccessClass,
             'aga',
             'WITH',
             'ag.id = aga.attributeGroup'
