@@ -41,6 +41,7 @@ config:
                         identifier_type: pim_catalog_identifier
                         urls:
                             list: pim_enrich_attribute_rest_index
+                            get: pim_enrich_attribute_rest_get
                 family:
                     module: pim/base-fetcher
                     options:

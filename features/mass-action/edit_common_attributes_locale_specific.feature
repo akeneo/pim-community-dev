@@ -30,8 +30,7 @@ Feature: Edit common attributes of many products at once with locale specific ca
     Given I mass-edit products tshirt
     And I choose the "Edit common attributes" operation
     And I switch the locale to "en_US"
-    And I display the Description attribute
-    And I display the Weight attribute
+    And I display the Description, Weight attributes
     And I visit the "General" group
     And I change the Description to "Bar tablet"
     And I visit the "Additional information" group
