@@ -39,8 +39,6 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
 
     /**
      * {@inheritdoc}
-     *
-     * @return QueryBuilder
      */
     public function findBySearchQb($search = null, array $options = [])
     {
