@@ -915,7 +915,7 @@ class WebUser extends RawMinkContext
      */
     public function iChangeTheTo($field, $value = null, $language = null)
     {
-        if ($language) {
+        if (null !== $language) {
             try {
                 $field = $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
             } catch (\BadMethodCallException $e) {

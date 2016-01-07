@@ -23,9 +23,6 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                UserContext.off('change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
@@ -36,16 +33,21 @@ define(
             /**
              * {@inheritdoc}
              *
-             * To respect current mass edit common attributes behavior, on locale change,
-             * we need to remove localized values if they don't match the current selected locale.
+             * We need to set values to null if they don't match the current selected locale or scope.
+             * We can't directly delete them as the structure (scope/channel) is used for validation.
+             * These unused values will be removed later in the back office.
              */
             render: function () {
                 var selectedLocale = UserContext.get('catalogLocale');
+                var selectedChannel = UserContext.get('catalogScope');
                 var data = this.getFormData().values;
 
                 data = _.mapObject(data, function (attributeValues) {
                     return _.map(attributeValues, function (value) {
                         if (null !== value.locale && selectedLocale !== value.locale) {
+                            value.data = null;
+                        }
+                        if (null !== value.scope && selectedChannel !== value.scope) {
                             value.data = null;
                         }
 
@@ -58,6 +60,7 @@ define(
                 var stringData = JSON.stringify(data, null, 0);
                 $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
                 $('#pim_enrich_mass_edit_choose_action_operation_attribute_locale').val(selectedLocale);
+                $('#pim_enrich_mass_edit_choose_action_operation_attribute_channel').val(selectedChannel);
 
                 return this;
             }

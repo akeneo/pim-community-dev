@@ -33,6 +33,7 @@ class EditCommonAttributesType extends AbstractType
     {
         $builder->add('values', 'hidden');
         $builder->add('attribute_locale', 'hidden');
+        $builder->add('attribute_channel', 'hidden');
     }
 
     /**

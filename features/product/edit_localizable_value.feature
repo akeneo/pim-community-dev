@@ -13,7 +13,7 @@ Feature: Edit a localizable value
     And I am on the "tshirt" product page
 
   @jira https://akeneo.atlassian.net/browse/PIM-4536
-  Scenario: Handle the display of a localizable field if not locale not in channel
+  Scenario: Handle the display of a localizable field if the locale is not in channel
     And I switch the locale to "de_DE"
     And I switch the scope to "tablet"
     Then I should see the text "This localizable field is not available for locale 'de_DE' and channel 'tablet'"

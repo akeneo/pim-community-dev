@@ -119,7 +119,7 @@ pim_enrich:
 
         edit-common-attributes:
             label:         Edit attributes
-            description:   The selected product's attributes will be edited with following data for the chosen locale.
+            description:   The selected product's attributes will be edited with the following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
             success_flash: The job updating product(s) status is currently running
             launched_flash: The bulk action "edit common attributes" has been launched. You will be notified when it is done.
@@ -793,7 +793,7 @@ pim_enrich.mass_edit_action:
 
     edit-common-attributes:
         label:         Edit common attributes
-        description:   The selected product's attributes will be edited with following data for the chosen locale.
+        description:   The selected product's attributes will be edited with the following data for the chosen locale.
         empty:         Please select the attribute(s) you want to edit
         success_flash: Product(s) attribute(s) have been updated
         message.warning: There is no attribute in common for the selected products. Please change your selection.
