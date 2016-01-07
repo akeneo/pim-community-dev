@@ -20,7 +20,6 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
      */
     public function findBySearch($search = null, array $options = [])
     {
-        /** @var QueryBuilder $qb */
         $qb = $this->findBySearchQb($search, $options);
 
         if ($options['editable']) {
@@ -31,7 +30,8 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
                 'ag.id = aga.attributeGroup'
             );
             $qb->groupBy('a.id');
-            $qb->andWhere('aga.userGroup IN (:userGroupsIds)')->setParameter('userGroupsIds', $options['user_groups_ids']);
+            $qb->andWhere('aga.userGroup IN (:userGroupsIds)')
+                ->setParameter('userGroupsIds', $options['user_groups_ids']);
             $qb->andWhere('aga.editAttributes = 1');
         }
 
