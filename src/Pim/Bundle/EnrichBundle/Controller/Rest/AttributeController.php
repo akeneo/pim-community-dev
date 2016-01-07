@@ -3,9 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,27 +25,21 @@ class AttributeController extends Controller
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchRepository;
 
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
-     * @param CollectionFilterInterface     $collectionFilter
      * @param SearchableRepositoryInterface $attributeSearchRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter,
         SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
         $this->attributeRepository       = $attributeRepository;
         $this->normalizer                = $normalizer;
-        $this->collectionFilter          = $collectionFilter;
         $this->attributeSearchRepository = $attributeSearchRepository;
     }
 
@@ -86,9 +78,7 @@ class AttributeController extends Controller
             $attributes = $this->attributeRepository->findBy($options);
         }
 
-        $filteredAttributes = $this->collectionFilter
-            ->filterCollection($attributes, 'pim.internal_api.attribute.view');
-        $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
+        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api');
 
         return new JsonResponse($normalizedAttributes);
     }

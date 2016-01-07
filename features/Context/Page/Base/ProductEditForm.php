@@ -70,16 +70,19 @@ class ProductEditForm extends Form
         // Maybe a "No matches found"
         $firstResult = current($groupLabels);
         $text = $firstResult->getText();
-        $attributeElement = null;
+        $results = [];
+
         if ('No matches found' !== $text) {
-            // Let's assume there is not the same Attribute name for the same attribute group
-            $attributeElement = $firstResult->getParent()->find('css', '.attribute-label');
+            foreach ($groupLabels as $groupLabel) {
+                $li = $groupLabel->getParent();
+                $results[$li->find('css', '.attribute-label')->getText()] = $li;
+            }
         }
 
         // Close select2
         $selector->click();
 
-        return $attributeElement;
+        return isset($results[$attribute]) ? $results[$attribute] : null;
     }
 
     /**
