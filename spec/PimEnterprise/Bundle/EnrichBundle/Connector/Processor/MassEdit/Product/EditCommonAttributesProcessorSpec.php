@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
@@ -27,7 +26,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry,
         ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
@@ -37,7 +35,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $validator,
             $attributeRepository,
             $jobConfigurationRepo,
-            $localizerRegistry,
             $productUpdater,
             $userManager,
             $tokenStorage,

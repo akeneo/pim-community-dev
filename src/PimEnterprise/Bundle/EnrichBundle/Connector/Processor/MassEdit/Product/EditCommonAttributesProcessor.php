@@ -36,7 +36,6 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ValidatorInterface                  $validator
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param LocalizerRegistryInterface          $localizerRegistry
      * @param ObjectUpdaterInterface              $productUpdater
      * @param UserManager                         $userManager
      * @param TokenStorageInterface               $tokenStorage
@@ -46,7 +45,6 @@ class EditCommonAttributesProcessor extends BaseProcessor
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        LocalizerRegistryInterface $localizerRegistry,
         ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
@@ -56,7 +54,6 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $validator,
             $attributeRepository,
             $jobConfigurationRepo,
-            $localizerRegistry,
             $productUpdater
         );
 
