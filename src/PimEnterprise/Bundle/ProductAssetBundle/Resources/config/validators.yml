@@ -1,6 +1,7 @@
 parameters:
-    pimee_product_asset.validator.constraint.localizable_asset.class:     PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAssetValidator
-    pimee_product_asset.validator.constraint.channel_configuration.class: PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\ChannelConfigurationValidator
+    pimee_product_asset.validator.constraint.localizable_asset.class:           PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAssetValidator
+    pimee_product_asset.validator.constraint.channel_configuration.class:       PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\ChannelConfigurationValidator
+    pimee_product_asset.validator.constraint.attribute_assets_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\AssetsCollectionValidator
 
 services:
     pimee_product_asset.validator.constraint.localizable_asset:
@@ -16,3 +17,8 @@ services:
             - '@akeneo_file_transformer.transformation.registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_product_asset_channel_configuration_validator }
+
+    pimee_product_asset.validator.constraint.attribute_assets_collection:
+        class: %pimee_product_asset.validator.constraint.attribute_assets_collection.class%
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_product_asset_attribute_assets_collection_validator }
