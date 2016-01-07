@@ -296,7 +296,6 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
             - '@pim_enrich.repository.attribute.search'
         calls:
             - [ setContainer, [ @service_container ] ]
