@@ -39,7 +39,6 @@ define(
                 emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
                 classes: 'pim-add-attributes-multiselect',
                 minimumInputLength: 0,
-                width: '300px',
                 dropdownCssClass: 'add-attribute',
                 closeOnSelect: false
             },
@@ -61,13 +60,19 @@ define(
             },
 
             /**
-             * Initialize jQuery multiselect and its filter plugin
+             * Initialize select2 and format elements.
              */
             initializeSelectWidget: function () {
                 var queryTimer;
                 var $select = this.$('input[type="hidden"]');
 
                 var opts = {
+                    /**
+                     * Format result (attribute list) method of select2.
+                     *
+                     * This way we can display attributes and their attribute group beside them.
+                     * This method also handles the correct check of the ckeckbox element, whick is, purely visual.
+                     */
                     formatResult: function (item) {
                         var $checkbox = $('<input>', {'type': 'checkbox', 'data-code': item.id});
                         var $attributeLabel = $('<span>', {'class': 'attribute-label'}).text(item.text);
@@ -88,6 +93,13 @@ define(
 
                         return $div;
                     }.bind(this),
+
+                    /**
+                     * The query function called by select2 when searching for attributes.
+                     *
+                     * We prepare the query (ask for server to exlude product attributes), and
+                     * handles its response with ChoicesFormatter (for i18n label translation)
+                     */
                     query: function (options) {
                         window.clearTimeout(queryTimer);
                         queryTimer = window.setTimeout(function () {
@@ -130,6 +142,7 @@ define(
 
                 var select2 = $select.select2(opts);
 
+                // On select2 "selecting" event, we bypass the selection to handle it ourself.
                 select2.on('select2-selecting', function (event) {
                     if (_.contains(this.selection, event.val)) {
                         this.selection = _.without(this.selection, event.val);
