@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\StorageUtils\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
 /**
  * Searchable repository interface
  *
