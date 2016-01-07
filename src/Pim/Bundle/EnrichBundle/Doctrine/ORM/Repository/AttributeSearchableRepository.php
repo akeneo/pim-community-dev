@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,13 +34,76 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return AttributeInterface[]
      */
     public function findBySearch($search = null, array $options = [])
     {
+        $qb = $this->findBySearchQb($search, $options);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'identifiers'          => [],
+                'excluded_identifiers' => [],
+                'limit'                => null,
+                'page'                 => null,
+                'locale'               => null,
+                'exclude_unique'       => false,
+                'editable'             => false,
+                'user_groups_ids'      => null,
+                'types'                => null,
+            ]
+        );
+        $resolver->setAllowedTypes('identifiers', 'array');
+        $resolver->setAllowedTypes('excluded_identifiers', 'array');
+        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('locale', ['string', 'null']);
+        $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
+        $resolver->setAllowedTypes('editable', ['string', 'bool']);
+        $resolver->setAllowedTypes('user_groups_ids', ['string', 'null']);
+        $resolver->setAllowedTypes('types', ['array', 'null']);
+
+        $options = $resolver->resolve($options);
+
+        if (null !== $options['page']) {
+            $options['page'] = (int) $options['page'];
+        }
+        if (null !== $options['limit']) {
+            $options['limit'] = (int) $options['limit'];
+        }
+        if (null !== $options['exclude_unique']) {
+            $options['exclude_unique'] = (bool) $options['exclude_unique'];
+        }
+        if (null !== $options['editable']) {
+            $options['editable'] = (int) $options['editable'];
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param string        $search
+     * @param array         $options
+     *
+     * @return QueryBuilder
+     */
+    protected function findBySearchQb($search, array $options)
+    {
         //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
         //TODO: and should be put in Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
-        $qb      = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
+        $qb = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
         $options = $this->resolveOptions($options);
 
         if (null !== $search) {
@@ -85,48 +149,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         $qb->groupBy('a.id');
 
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-            [
-                'identifiers'          => [],
-                'excluded_identifiers' => [],
-                'limit'                => null,
-                'page'                 => null,
-                'locale'               => null,
-                'exclude_unique'       => false,
-                'types'                => null
-            ]
-        );
-        $resolver->setAllowedTypes('identifiers', 'array');
-        $resolver->setAllowedTypes('excluded_identifiers', 'array');
-        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('locale', ['string', 'null']);
-        $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
-        $resolver->setAllowedTypes('types', ['array', 'null']);
-
-        $options = $resolver->resolve($options);
-
-        if (null !== $options['page']) {
-            $options['page'] = (int) $options['page'];
-        }
-        if (null !== $options['limit']) {
-            $options['limit'] = (int) $options['limit'];
-        }
-        if (null !== $options['exclude_unique']) {
-            $options['exclude_unique'] = (bool) $options['exclude_unique'];
-        }
-
-        return $options;
+        return $qb;
     }
 }
