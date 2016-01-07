@@ -36,7 +36,8 @@ define(
 
                 return $.extend(true, parameters, {
                     options: {
-                        exclude_unique: 1
+                        exclude_unique: 1,
+                        editable: 1
                     }
                 });
             }

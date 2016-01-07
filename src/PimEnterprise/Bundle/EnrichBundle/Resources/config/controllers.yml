@@ -118,3 +118,13 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_category'
             - '@pimee_catalog.filter.category'
+
+    pim_enrich.controller.rest.attribute:
+        class: %pim_enrich.controller.rest.attribute.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@pimee_enrich.repository.attribute.search'
+        calls:
+            - [ setContainer, [ @service_container ] ]
