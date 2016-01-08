@@ -101,7 +101,6 @@ pim_enrich:
       launched_flash: 'Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     edit-common-attributes:
       label: Attribute bearbeiten
-      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
       launched_flash: 'Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
@@ -548,6 +547,7 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
+Useable as grid filter: Verwendbar im Raster
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
 Locale specific: Gebietsschema-spezifisch
@@ -702,7 +702,6 @@ pim_enrich.mass_edit_action:
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
     label: Gemeinsame Attribute bearbeiten
-    description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
