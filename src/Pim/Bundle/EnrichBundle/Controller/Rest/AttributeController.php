@@ -4,10 +4,10 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeController extends Controller
+class AttributeController
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -28,18 +28,24 @@ class AttributeController extends Controller
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchRepository;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
+     * @param TokenStorageInterface         $tokenStorage
      * @param SearchableRepositoryInterface $attributeSearchRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
+        TokenStorageInterface $tokenStorage,
         SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
         $this->attributeRepository       = $attributeRepository;
         $this->normalizer                = $normalizer;
+        $this->tokenStorage              = $tokenStorage;
         $this->attributeSearchRepository = $attributeSearchRepository;
     }
 
@@ -64,7 +70,8 @@ class AttributeController extends Controller
             $options = $request->query->get('options', ['limit' => 20, 'locale' => null]);
         }
 
-        $options['user_groups_ids'] = implode(', ', $this->getUser()->getGroupsIds());
+        $token = $this->tokenStorage->getToken();
+        $options['user_groups_ids'] = implode(', ', $token->getUser()->getGroupsIds());
 
         if (null !== $this->attributeSearchRepository) {
             $attributes = $this->attributeSearchRepository->findBySearch(
