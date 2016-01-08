@@ -4,6 +4,7 @@ namespace Context\Page\Asset;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
+use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -18,12 +19,17 @@ class Edit extends Form
     /** @var string */
     protected $path = '/enrich/asset/{id}/edit';
 
+    /** @var JsTreeManipulator */
+    protected $jsTreeManipulator;
+
     /**
      * {@inheritdoc}
      */
     public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
+
+        $this->jsTreeManipulator = new JsTreeManipulator();
 
         $this->elements = array_merge(
             $this->elements,
@@ -241,10 +247,7 @@ class Edit extends Form
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category)->getParent();
-        if ($category->hasClass('jstree-closed')) {
-            $category->getParent()->find('css', 'ins')->click();
-        }
+        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
 
         return $this;
     }
@@ -258,11 +261,6 @@ class Edit extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (null === $elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find asset category "%s" in the tree', $category));
-        }
-
-        return $elt;
+        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }

@@ -9,6 +9,7 @@ use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use PimEnterprise\Behat\Context\HookContext;
+use Pim\Behat\Context\Domain\TreeContext;
 use PimEnterprise\Behat\Context\JobContext;
 
 /**
@@ -38,6 +39,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('domain-tree', new TreeContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
 
         $this->useContext('job', new JobContext());
