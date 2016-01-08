@@ -85,17 +85,28 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             $this->ownerGroupsProvider->getOwnerGroupIds($product)
         );
 
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        $author->getUsername()
+                    ]
+                ],
+                'product' => [
+                    'value' => [
+                        $product->getId()
+                    ]
+                ]
+            ],
+        ];
+
         if (!empty($usersToNotify)) {
             $this->notificationManager->notify(
                 $usersToNotify,
                 'pimee_workflow.proposal.to_review',
                 'add',
                 [
-                    'route'         => 'pim_enrich_product_edit',
-                    'routeParams'   => [
-                        'id'          => $product->getId(),
-                        'redirectTab' => 'pim-product-edit-form-proposals'
-                    ],
+                    'route'         => 'pimee_workflow_proposal_index',
                     'comment'       => $comment,
                     'messageParams' => [
                         '%product.label%'    => $product->getLabel(),
@@ -104,7 +115,8 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                     ],
                     'context'       => [
                         'actionType'       => static::NOTIFICATION_TYPE,
-                        'showReportButton' => false
+                        'showReportButton' => false,
+                        'gridParameters'   => http_build_query($gridParameters, 'flags_')
                     ]
                 ]
             );

@@ -62,17 +62,55 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         $this->saveGroupIdsToNotify($event);
 
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getAlias()->willReturn('csv_product_proposal_import');
+        $jobInstance->getCode()->willReturn('clothing_product_proposal_import');
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getUser()->willReturn('mary');
+
         $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
         $usersProvider->getUsersToNotify(['42'])->willReturn([$author, $owner]);
 
         $author->getFirstName()->willReturn('firstname');
         $author->getLastName()->willReturn('lastname');
 
-        $notificationManager->notify([1 => $owner], Argument::any(), Argument::any(), Argument::any())->willReturn(null);
-        $notificationManager->notify([$author], Argument::any(), Argument::any(), Argument::any())->willReturn(null);
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        'clothing_product_proposal_import'
+                    ]
+                ]
+            ],
+        ];
+        $parameters = [
+            'route'   => 'pimee_workflow_proposal_index',
+            'context' => [
+                'actionType'       => 'pimee_workflow_import_notification_new_proposals',
+                'showReportButton' => false,
+                'gridParameters'   => http_build_query($gridParameters, 'flags_')
+            ]
+        ];
+
+        $notificationManager->notify(
+            [$author],
+            'pimee_workflow.proposal.generic_import',
+            'add',
+            $parameters
+        )->shouldBeCalled();
+
+        $parameters['messageParams'] = [
+            '%author.firstname%' => 'firstname',
+            '%author.lastname%'  => 'lastname'
+        ];
+
+        $notificationManager->notify(
+            [1 => $owner],
+            'pimee_workflow.proposal.individual_import',
+            'add',
+            $parameters
+        )->shouldBeCalled();
+
         $this->notifyUsers($jobExecutionEvent);
     }
 }

@@ -65,10 +65,14 @@ Feature: Send a product draft for approval
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type | message                                                          |
-      | add  | Mary Smith has sent a proposal to review for the product my-pant |
+      | type | message                                                          | comment                                        |
+      | add  | Mary Smith has sent a proposal to review for the product my-pant | This product had the wrong name, I changed it. |
     When I click on the notification "Mary Smith has sent a proposal to review for the product my-pant"
-    Then I should be on the product "my-pant" edit page
+    Then I should be on the proposals index page
+    And the grid should contain 1 element
+    And I should see the following proposal:
+      | product | author | attribute  | original  | new   |
+      | my-pant | Mary   | name       |           | Baggy |
 
   Scenario: Fail to send a product draft for approval with a comment longer than 255 characters
     When I change the "Name" to "Baggy"
