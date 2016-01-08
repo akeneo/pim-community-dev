@@ -124,6 +124,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
+            - '@security.token_storage'
             - '@pimee_enrich.repository.attribute.search'
         calls:
             - [ setContainer, [ @service_container ] ]
