@@ -10,6 +10,7 @@
 - PIM-5217: Create a Buffer component and new file writer implementations that use it
 - PIM-4646: TinyMCE wysiwyg editor is replaced by Summernote in the mass-edit and variant group
 - PIM-4999: jQuery UI datepicker is replaced by bootstrap datepicker in the mass-edit and variant group
+- A new twig extension (StyleExtension) in UIBundle now provides a "highlight" string filter
 
 ## Bug fixes
 
