@@ -1,0 +1,9 @@
+parameters:
+    pim_ui.twig.style_extension.class: Pim\Bundle\UIBundle\Twig\StyleExtension
+
+services:
+    pim_ui.twig.style_extension:
+        class: %pim_ui.twig.style_extension.class%
+        public: false
+        tags:
+            - { name: twig.extension }
