@@ -10,8 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Attribute searchable repository
+ *
  * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Soatware License (OSL 3.0)
  */
 class AttributeSearchableRepository implements SearchableRepositoryInterface
@@ -94,8 +95,8 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     }
 
     /**
-     * @param string        $search
-     * @param array         $options
+     * @param string $search
+     * @param array  $options
      *
      * @return QueryBuilder
      */

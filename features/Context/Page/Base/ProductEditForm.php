@@ -57,18 +57,18 @@ class ProductEditForm extends Form
 
         $list = $this->spin(function () {
             return $this->getElement('Available attributes list');
-        }, 5);
+        }, 5, sprintf('Cannot find the attribute list element'));
 
         // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
         // because select2 selects the first element on TAB key press.
         $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');");
 
         $groupLabels = $this->spin(function () use ($list, $group) {
-                return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, 5);
+            return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
+        }, 5, sprintf('Cannot find element in the attribute list'));
 
         // Maybe a "No matches found"
-        $firstResult = current($groupLabels);
+        $firstResult = $groupLabels[0];
         $text = $firstResult->getText();
         $results = [];
 
@@ -104,12 +104,14 @@ class ProductEditForm extends Form
 
         $list = $this->spin(function () {
             return $this->getElement('Available attributes list');
-        }, 5);
+        }, 5, sprintf('Cannot find the attribute list element'));
 
         foreach ($attributes as $attributeLabel) {
             // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
             // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attributeLabel . "').trigger('input');");
+            $this->getSession()->evaluateScript(
+                sprintf("jQuery('%s').val('%s').trigger('input');", $searchSelector, $attributeLabel)
+            );
             $label = $this->spin(
                 function () use ($list, $attributeLabel) {
                     return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));

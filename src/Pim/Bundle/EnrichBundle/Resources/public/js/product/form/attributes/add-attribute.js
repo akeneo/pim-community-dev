@@ -207,7 +207,7 @@ define(
              * @param {string} term
              * @param {int}    page
              *
-             * @returns {Object}
+             * @return {Object}
              */
             getSelectSearchParameters: function (term, page) {
                 return {
