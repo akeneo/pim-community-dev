@@ -4,6 +4,7 @@ namespace Context\Page\Category;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
+use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Abstract page view for categories
@@ -16,6 +17,9 @@ use Context\Page\Base\Form;
  */
 abstract class CategoryView extends Form
 {
+    /** @var JsTreeManipulator */
+    protected $jsTreeManipulator;
+
     /**
      * {@inheritdoc}
      */
@@ -23,6 +27,7 @@ abstract class CategoryView extends Form
     {
         parent::__construct($session, $pageFactory, $parameters);
 
+        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -31,22 +36,6 @@ abstract class CategoryView extends Form
                 'Right click menu' => ['css' => '#vakata-contextmenu'],
             ]
         );
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        $elt = $this->spin(function () use ($category) {
-            return $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        }, sprintf('Unable to find category "%s" in the tree', $category));
-
-        return $elt;
     }
 
     /**
@@ -80,19 +69,6 @@ abstract class CategoryView extends Form
     }
 
     /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function expandCategory($category)
-    {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
-
-        return $this;
-    }
-
-    /**
      * @param string $category1
      * @param string $category2
      *
@@ -100,11 +76,34 @@ abstract class CategoryView extends Form
      */
     public function dragCategoryTo($category1, $category2)
     {
-        $category1 = $this->findCategoryInTree($category1);
-        $category2 = $this->findCategoryInTree($category2);
+        //TODO need to be reworked
+        $category1 = $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category1);
+        $category2 = $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category2);
 
         $this->dragElementTo($category1, $category2);
 
         return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return Classify
+     */
+    public function expandCategory($category)
+    {
+        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return NodeElement
+     */
+    public function findCategoryInTree($category)
+    {
+        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }

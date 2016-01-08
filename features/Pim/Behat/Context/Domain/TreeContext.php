@@ -3,10 +3,13 @@
 namespace Pim\Behat\Context\Domain;
 
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 class TreeContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string $tree
      *
@@ -15,7 +18,7 @@ class TreeContext extends PimContext
     public function iSelectTheTree($tree)
     {
         $this->getCurrentPage()->selectTree($tree);
-        $this->wait();
+        $this->wait(); //TODO remove this wait
     }
 
     /**
@@ -25,9 +28,8 @@ class TreeContext extends PimContext
      */
     public function iExpandTheNode($node)
     {
-        $this->wait(); // Make sure that the tree is loaded
         $this->getCurrentPage()->expandCategory($node);
-        $this->wait();
+        $this->wait(); //TODO remove this wait
     }
 
     /**
@@ -39,7 +41,7 @@ class TreeContext extends PimContext
     public function iDragTheNodeToTheNode($node1, $node2)
     {
         $this->getCurrentPage()->dragCategoryTo($node1, $node2);
-        $this->wait();
+        $this->wait(); //TODO remove this wait
     }
 
     /**
@@ -53,8 +55,6 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $this->wait(); // Make sure that the tree is loaded
-
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
         $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
@@ -77,7 +77,6 @@ class TreeContext extends PimContext
     public function iBlurTheNode()
     {
         $this->getCurrentPage()->find('css', '#container')->click();
-        $this->wait();
     }
 
     /**

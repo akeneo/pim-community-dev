@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\ProductEditForm;
 use Context\Page\Category\CategoryView;
+use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Product edit page
@@ -24,6 +25,9 @@ class Edit extends ProductEditForm
      */
     protected $path = '/enrich/product/{id}';
 
+    /** @var JsTreeManipulator */
+    protected $jsTreeManipulator;
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +35,7 @@ class Edit extends ProductEditForm
     {
         parent::__construct($session, $pageFactory, $parameters);
 
+        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -764,14 +769,11 @@ class Edit extends ProductEditForm
     /**
      * @param string $category
      *
-     * @return CategoryView
+     * @return Classify
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category)->getParent();
-        if ($category->hasClass('jstree-closed')) {
-            $category->getParent()->find('css', 'ins')->click();
-        }
+        $this->jsTreeManipulator->expandNode($this->getCategoryTree(), $category);
 
         return $this;
     }
@@ -785,12 +787,7 @@ class Edit extends ProductEditForm
      */
     public function findCategoryInTree($category)
     {
-        $leaf = $this->getCategoryTree()->find('css', sprintf('li a:contains("%s")', $category));
-        if (null === $leaf) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $leaf;
+        return $this->jsTreeManipulator->findNodeInTree($this->getCategoryTree(), $category);
     }
 
     /**

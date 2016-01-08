@@ -3,6 +3,7 @@
 namespace Context\Page\Batch;
 
 use Context\Page\Base\Wizard;
+use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Batch Classify page
@@ -13,6 +14,9 @@ use Context\Page\Base\Wizard;
  */
 class Classify extends Wizard
 {
+    /** @var JsTreeManipulator */
+    protected $jsTreeManipulator;
+
     /**
      * {@inheritdoc}
      */
@@ -20,6 +24,7 @@ class Classify extends Wizard
     {
         parent::__construct($session, $pageFactory, $parameters);
 
+        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -49,12 +54,11 @@ class Classify extends Wizard
     /**
      * @param string $category
      *
-     * @return CategoryView
+     * @return Classify
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
+        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
 
         return $this;
     }
@@ -68,11 +72,6 @@ class Classify extends Wizard
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $elt;
+        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }
