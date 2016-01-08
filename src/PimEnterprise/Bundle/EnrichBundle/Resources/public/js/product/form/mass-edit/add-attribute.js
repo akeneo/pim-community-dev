@@ -27,8 +27,6 @@ define(
     ) {
         return BaseAddAttribute.extend({
             /**
-             * TODO we MUST exclude attribute we can't add (rights)
-             *
              * {@inheritdoc}
              */
             getSelectSearchParameters: function (term, page) {
