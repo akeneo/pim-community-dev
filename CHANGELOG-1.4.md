@@ -1,3 +1,6 @@
+## Bug fixes
+- Github-3610: Fix orm version of grid pager to support ONLY_FULL_GROUP_BY mysql mode (MySQL 5.7)
+
 # 1.4.16 (2016-01-07)
 
 ## Bug fixes
