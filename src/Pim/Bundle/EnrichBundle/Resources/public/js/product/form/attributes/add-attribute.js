@@ -14,6 +14,7 @@ define(
         'pim/form',
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute',
+        'pim/attribute/add-attribute-line',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base'
@@ -24,6 +25,7 @@ define(
         BaseForm,
         AttributeManager,
         template,
+        AttributeLine,
         UserContext,
         FetcherRegistry,
         ChoicesFormatter
@@ -44,6 +46,7 @@ define(
             },
             resultsPerPage: 20,
             selection: [],
+            attributeViews: [],
 
             /**
              * Render this extension
@@ -69,29 +72,20 @@ define(
                 var opts = {
                     /**
                      * Format result (attribute list) method of select2.
-                     *
                      * This way we can display attributes and their attribute group beside them.
-                     * This method also handles the correct check of the ckeckbox element, whick is, purely visual.
                      */
                     formatResult: function (item) {
-                        var $checkbox = $('<input>', {'type': 'checkbox', 'data-code': item.id});
-                        var $attributeLabel = $('<span>', {'class': 'attribute-label'}).text(item.text);
-                        var $groupLabel = $('<span>', {'class': 'group-label'}).text(item.group.text);
-
-                        if (_.contains(this.selection, item.id)) {
-                            $checkbox.prop('checked', true);
+                        if (!_.has(this.attributeViews, item.id)) {
+                            this.attributeViews[item.id] = new AttributeLine({
+                                checked: _.contains(this.selection, item.id),
+                                attributeItem: item
+                            });
                         }
 
-                        var $div = $('<div>', {'class': 'select2-result-label-attribute'})
-                            .append($checkbox)
-                            .append($attributeLabel)
-                            .append($groupLabel);
+                        var line = this.attributeViews[item.id];
+                        line.render();
 
-                        $div.on('click', function () {
-                            $checkbox.prop('checked', _.contains(this.selection, item.id));
-                        }.bind(this));
-
-                        return $div;
+                        return line.$el;
                     }.bind(this),
 
                     /**
@@ -144,20 +138,24 @@ define(
 
                 // On select2 "selecting" event, we bypass the selection to handle it ourself.
                 select2.on('select2-selecting', function (event) {
-                    if (_.contains(this.selection, event.val)) {
-                        this.selection = _.without(this.selection, event.val);
-                        $('.add-attribute input[data-code="' + event.val + '"]').prop('checked', false);
+                    var attributeCode = event.val;
+                    var alreadySelected = _.contains(this.selection, attributeCode);
+
+                    if (alreadySelected) {
+                        this.selection = _.without(this.selection, attributeCode);
                     } else {
-                        this.selection.push(event.val);
-                        $('.add-attribute input[data-code="' + event.val + '"]').prop('checked', true);
+                        this.selection.push(attributeCode);
                     }
 
+                    this.attributeViews[attributeCode].setCheckedCheckbox(!alreadySelected);
                     this.updateSelectedCounter();
+
                     event.preventDefault();
                 }.bind(this));
 
                 select2.on('select2-open', function () {
                     this.selection = [];
+                    this.attributeViews = [];
                     this.updateSelectedCounter();
                 }.bind(this));
 
