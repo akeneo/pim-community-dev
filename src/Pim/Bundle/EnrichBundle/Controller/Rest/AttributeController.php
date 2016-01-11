@@ -67,7 +67,10 @@ class AttributeController
             $options['types'] = explode(',', $request->query->get('types'));
         }
         if (empty($options)) {
-            $options = $request->query->get('options', ['limit' => 20, 'locale' => null]);
+            $options = $request->query->get(
+                'options',
+                ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
+            );
         }
 
         $token = $this->tokenStorage->getToken();

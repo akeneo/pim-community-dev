@@ -11,6 +11,8 @@ namespace Akeneo\Component\StorageUtils\Repository;
  */
 interface SearchableRepositoryInterface
 {
+    const FETCH_LIMIT = 20;
+
     /**
      * Returns an array of option ids and values
      *
