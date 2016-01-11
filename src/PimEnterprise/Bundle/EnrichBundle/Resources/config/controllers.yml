@@ -125,4 +125,5 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
+            - '@pim_catalog.filter.chained'
             - '@pimee_enrich.repository.attribute.search'
