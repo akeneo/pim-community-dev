@@ -298,8 +298,6 @@ services:
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
             - '@pim_enrich.repository.attribute.search'
-        calls:
-            - [ setContainer, [ @service_container ] ]
 
     pim_enrich.controller.rest.attribute_group:
         class: %pim_enrich.controller.rest.attribute_group.class%
