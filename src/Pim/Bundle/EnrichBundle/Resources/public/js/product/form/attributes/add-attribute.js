@@ -36,21 +36,28 @@ define(
             tagName: 'div',
             className: 'add-attribute',
             template: _.template(template),
-            defaultOptions: {
-                placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
-                title: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
-                buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
-                emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
-                classes: 'pim-add-attributes-multiselect',
-                minimumInputLength: 0,
-                dropdownCssClass: 'add-attribute',
-                closeOnSelect: false
-            },
+            defaultOptions: {},
             resultsPerPage: 20,
             selection: [],
             attributeViews: [],
             footerView: null,
             queryTimer: null,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
+                this.defaultOptions = {
+                    placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
+                    title: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
+                    buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
+                    emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
+                    classes: 'pim-add-attributes-multiselect',
+                    minimumInputLength: 0,
+                    dropdownCssClass: 'add-attribute',
+                    closeOnSelect: false
+                };
+            },
 
             /**
              * Render this extension
@@ -70,7 +77,6 @@ define(
              * Initialize select2 and format elements.
              */
             initializeSelectWidget: function () {
-                var queryTimer;
                 var $select = this.$('input[type="hidden"]');
 
                 var opts = {
