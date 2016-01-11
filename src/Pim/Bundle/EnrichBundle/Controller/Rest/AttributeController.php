@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,21 +32,27 @@ class AttributeController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var ObjectFilterInterface */
+    protected $attributeFilter;
+
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
      * @param TokenStorageInterface         $tokenStorage
+     * @param ObjectFilterInterface         $attributeFilter
      * @param SearchableRepositoryInterface $attributeSearchRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
+        ObjectFilterInterface $attributeFilter,
         SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
         $this->attributeRepository       = $attributeRepository;
         $this->normalizer                = $normalizer;
         $this->tokenStorage              = $tokenStorage;
+        $this->attributeFilter           = $attributeFilter;
         $this->attributeSearchRepository = $attributeSearchRepository;
     }
 
@@ -103,6 +110,9 @@ class AttributeController
     public function getAction($identifier)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
+
+        $attribute = $this->attributeFilter
+            ->filterObject($attribute, 'pim.internal_api.attribute.view') ? null : $attribute;
 
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
