@@ -101,7 +101,7 @@ class Pager extends AbstractPager implements PagerInterface
         $rootField  = $rootAlias.'.id';
         $qb->groupBy($rootField);
 
-        $qb->select($rootField)
+        $qb->select()
             ->setFirstResult(null)
             ->setMaxResults(null)
             ->resetDQLPart('orderBy');
