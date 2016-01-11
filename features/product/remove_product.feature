@@ -14,7 +14,7 @@ Feature: Remove a product
       | product | actions                                                                                           | result | username |
       | jean    | [{"type": "set_data", "field": "name", "data": "Jean", "locale": "en_US", "scope": null}]         | {}     | Mary     |
       | jean    | [{"type": "set_data", "field": "name", "data": "Jean bootcut", "locale": "en_US", "scope": null}] | {}     | Sandra   |
-      | short   | [{"type": "set_data", "field": "name", "data": "Short", "locale": "en_US", "scope": null}]        | {}     | Mary   |
+      | short   | [{"type": "set_data", "field": "name", "data": "Short", "locale": "en_US", "scope": null}]        | {}     | Mary     |
     And I should get the following proposals:
       | product | username | result                                                                             |
       | jean    | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean"}]}}         |
