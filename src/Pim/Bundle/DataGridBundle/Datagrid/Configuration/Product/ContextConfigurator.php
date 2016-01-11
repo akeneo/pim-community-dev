@@ -80,11 +80,11 @@ class ContextConfigurator implements ConfiguratorInterface
         ObjectManager $objectManager,
         GroupRepositoryInterface $productGroupRepository = null
     ) {
-        $this->productRepository   = $productRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->requestParams       = $requestParams;
-        $this->userContext         = $userContext;
-        $this->objectManager       = $objectManager;
+        $this->productRepository      = $productRepository;
+        $this->attributeRepository    = $attributeRepository;
+        $this->requestParams          = $requestParams;
+        $this->userContext            = $userContext;
+        $this->objectManager          = $objectManager;
         $this->productGroupRepository = $productGroupRepository;
     }
 
@@ -366,7 +366,14 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $attributeIds  = $this->getAttributeIds();
+        $attributeCodes = null;
+        $userFilters    = $this->getUserGridFilters();
+        $userColumns    = $this->getUserGridColumns();
+        if (null !== $userFilters || null !== $userColumns) {
+            $attributeCodes = array_merge((array) $this->getUserGridFilters(), (array) $this->getUserGridColumns());
+        }
+
+        $attributeIds = $this->getAttributeIds($attributeCodes);
         if (empty($attributeIds)) {
             return [];
         }
@@ -388,6 +395,22 @@ class ContextConfigurator implements ConfiguratorInterface
 
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get user configured datagrid filters
+     *
+     * @return null|string[]
+     */
+    protected function getUserGridFilters()
+    {
+        $params = $this->requestParams->get('_filter');
+
+        if ($params) {
+            return array_keys($params);
         }
 
         return null;
