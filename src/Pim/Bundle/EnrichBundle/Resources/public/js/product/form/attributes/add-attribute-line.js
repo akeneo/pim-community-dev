@@ -37,8 +37,6 @@ define(
              * {@inheritdoc}
              */
             render: function() {
-                console.log(this.attributeItem.text, this.checked);
-
                 this.$el.html(this.template({
                     item:    this.attributeItem,
                     checked: this.checked
@@ -50,7 +48,7 @@ define(
             /**
              * Update the checkbox status then render the view
              *
-             * @param checked
+             * @param {bool} checked
              */
             setCheckedCheckbox: function(checked) {
                 this.checked = checked;

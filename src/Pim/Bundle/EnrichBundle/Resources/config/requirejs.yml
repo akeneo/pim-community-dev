@@ -196,6 +196,7 @@ config:
 
         # Add attribute component
         pim/attribute/add-attribute-line:   pimenrich/js/product/form/attributes/add-attribute-line
+        pim/attribute/add-attribute-footer: pimenrich/js/product/form/attributes/add-attribute-footer
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field
@@ -261,5 +262,6 @@ config:
         pim/template/attribute-option/form:                          pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:              pimenrich/templates/attribute-option/validation-error.html
         pim/template/attribute/add-attribute-line:                   pimenrich/templates/attribute/add-attribute-line.html
+        pim/template/attribute/add-attribute-footer:                 pimenrich/templates/attribute/add-attribute-footer.html
         pim/template/i18n/flag:                                      pimenrich/templates/i18n/flag.html
         pim/template/error/error:                                    pimenrich/templates/error/error.html

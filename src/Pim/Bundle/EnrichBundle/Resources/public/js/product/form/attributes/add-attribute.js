@@ -15,6 +15,7 @@ define(
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute',
         'pim/attribute/add-attribute-line',
+        'pim/attribute/add-attribute-footer',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base'
@@ -26,6 +27,7 @@ define(
         AttributeManager,
         template,
         AttributeLine,
+        AttributeFooter,
         UserContext,
         FetcherRegistry,
         ChoicesFormatter
@@ -47,6 +49,7 @@ define(
             resultsPerPage: 20,
             selection: [],
             attributeViews: [],
+            footerView: null,
 
             /**
              * Render this extension
@@ -83,9 +86,8 @@ define(
                         }
 
                         var line = this.attributeViews[item.id];
-                        line.render();
 
-                        return line.$el;
+                        return line.render().$el;
                     }.bind(this),
 
                     /**
@@ -161,23 +163,18 @@ define(
 
                 var $menu = this.$('.select2-drop');
 
-                var $footerContainer = $('<div>', {'class': 'ui-multiselect-footer'});
+                this.footerView = new AttributeFooter({
+                    buttonTitle: this.defaultOptions.buttonTitle
+                });
 
-                var $saveButton = $('<button>', {'class': 'btn btn-small btn-primary pull-right', 'type': 'button'})
-                    .append($('<i>', {'class': 'icon-plus'}))
-                    .append(this.defaultOptions.buttonTitle)
-                    .on('click', function () {
-                        $select.select2('close');
-                        if (this.selection.length > 0) {
-                            this.addAttributes();
-                        }
-                    }.bind(this));
+                this.footerView.on('add-attributes', function () {
+                    $select.select2('close');
+                    if (this.selection.length > 0) {
+                        this.addAttributes();
+                    }
+                }.bind(this));
 
-                var $selectedCount = $('<span>', {'class': 'attribute-counter'});
-
-                $footerContainer.append($selectedCount);
-                $footerContainer.append($saveButton);
-                $menu.append($footerContainer);
+                $menu.append(this.footerView.render().$el);
             },
 
             /**
@@ -191,12 +188,7 @@ define(
              * Update the "selected attributes" counter in the select2 footer
              */
             updateSelectedCounter: function () {
-                $('.add-attribute .attribute-counter').text(
-                    _.__(
-                        'pim_enrich.form.product.tab.attributes.info.attributes_selected',
-                        {'attributeCount': this.selection.length}
-                    )
-                );
+                this.footerView.updateNumberOfAttributes(this.selection.length);
             },
 
             /**
