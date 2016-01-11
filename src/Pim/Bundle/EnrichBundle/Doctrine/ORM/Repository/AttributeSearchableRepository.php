@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -78,18 +79,37 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         $options = $resolver->resolve($options);
 
-        if (null !== $options['page']) {
-            $options['page'] = (int) $options['page'];
-        }
-        if (null !== $options['limit']) {
-            $options['limit'] = (int) $options['limit'];
-        }
-        if (null !== $options['exclude_unique']) {
-            $options['exclude_unique'] = (bool) $options['exclude_unique'];
-        }
-        if (null !== $options['editable']) {
-            $options['editable'] = (int) $options['editable'];
-        }
+        $resolver->setNormalizer('page', function (Options $options, $value) {
+            if (null !== $value) {
+                $value = (int) $value;
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('limit', function (Options $options, $value) {
+            if (null !== $value) {
+                $value = (int) $value;
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('exclude_unique', function (Options $options, $value) {
+            if (null !== $value) {
+                $value = (bool) $value;
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('editable', function (Options $options, $value) {
+            if (null !== $value) {
+                $value = (int) $value;
+            }
+
+            return $value;
+        });
 
         return $options;
     }
