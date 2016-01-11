@@ -50,6 +50,7 @@ define(
             selection: [],
             attributeViews: [],
             footerView: null,
+            queryTimer: null,
 
             /**
              * Render this extension
@@ -97,8 +98,8 @@ define(
                      * handles its response with ChoicesFormatter (for i18n label translation)
                      */
                     query: function (options) {
-                        window.clearTimeout(queryTimer);
-                        queryTimer = window.setTimeout(function () {
+                        clearTimeout(this.queryTimer);
+                        this.queryTimer = setTimeout(function () {
                             var page = 1;
                             if (options.context && options.context.page) {
                                 page = options.context.page;
