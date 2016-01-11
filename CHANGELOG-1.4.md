@@ -1,7 +1,17 @@
 # 1.4.x
 
 ## Bug fixes
+- Github-3610: Fix orm version of grid pager to support ONLY_FULL_GROUP_BY mysql mode (MySQL 5.7)
+- PIM-5233: Use an asynchronous dropdown list to mass edit family
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType` to add `Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface` dependency
+
+# 1.4.16 (2016-01-07)
+
+## Bug fixes
 - PIM-5405: Fix content type for stream upload
+- PIM-5331: Fix product save issue when categories have code as integer
 
 # 1.4.15 (2015-12-30)
 

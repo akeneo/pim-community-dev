@@ -164,7 +164,7 @@ define(
                     var $categoryElement = this.$('#node_' + id);
                     var $rootElement     = $categoryElement.closest('.root-unselectable');
                     this.cache[id] = {
-                        code: $categoryElement.data('code'),
+                        code: String($categoryElement.data('code')),
                         rootId: $rootElement.data('tree-id')
                     };
                 }
