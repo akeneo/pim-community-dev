@@ -776,7 +776,9 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
-        $cells = $row->findAll('css', 'td');
+        // $row->findAll('css', 'td') will not work in the case of nested table (like proposals changes)
+        // because we only need to find the direct children cells
+        $cells = $row->findAll('xpath', './td');
         if (!isset($cells[$position])) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -818,7 +820,8 @@ class Grid extends Index
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $headers = $this->getGrid()->findAll('css', 'thead th');
+        $head    = $this->getGrid()->find('css', 'thead');
+        $headers = $head->findAll('css', 'th');
 
         if (!$withActions) {
             $headers = array_filter($headers, function ($header) {
