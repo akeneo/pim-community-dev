@@ -3,14 +3,16 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangeFamilyTypeSpec extends ObjectBehavior
 {
-    function let()
+    function let(FamilyRepositoryInterface $repository)
     {
         $this->beConstructedWith(
-            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily'
+            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily',
+            $repository
         );
     }
 
