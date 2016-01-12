@@ -9,7 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
-use Pim\Behat\Context\JobContext;
+use PimEnterprise\Behat\Context\JobContext;
 use PimEnterprise\Behat\Context\HookContext;
 
 /**

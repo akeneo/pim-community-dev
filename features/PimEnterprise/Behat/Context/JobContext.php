@@ -18,6 +18,6 @@ class JobContext extends BaseJobContext
         $jobPage           = sprintf('%s show', ucfirst($job->getType()));
         $jobExecutionId    = $job->getJobExecutions()->last()->getId();
         $expectedAddress   = $this->getPage($jobPage)->getUrl(['id' => $jobExecutionId]);
-        $this->getMainContext()->assertAddress($expectedAddress);
+        $this->getMainContext()->getSubcontext('navigation')->assertAddress($expectedAddress);
     }
 }
