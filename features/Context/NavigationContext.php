@@ -94,31 +94,11 @@ class NavigationContext extends BaseNavigationContext
     /**
      * @param JobInstance $job
      *
-     * @Given /^I am on the ("([^"]*)" import job) page$/
-     */
-    public function iAmOnTheImportJobPage(JobInstance $job)
-    {
-        $this->openPage('Import show', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
      * @Given /^I am on the ("([^"]*)" export job) page$/
      */
     public function iAmOnTheExportJobPage(JobInstance $job)
     {
         $this->openPage('Export show', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" import job) edit page$/
-     */
-    public function iAmOnTheImportJobEditPage(JobInstance $job)
-    {
-        $this->openPage('Import edit', ['id' => $job->getId()]);
     }
 
     /**
@@ -143,16 +123,6 @@ class NavigationContext extends BaseNavigationContext
         $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
         $this->wait();
         $this->currentPage = sprintf('%s creation', $jobType);
-    }
-
-    /**
-     * @param string $jobType
-     *
-     * @Given /^I try to create an unknown (import|export)$/
-     */
-    public function iTryToCreateAnUnknownJob($jobType)
-    {
-        $this->openPage(sprintf('%s creation', ucfirst($jobType)));
     }
 
     /**
@@ -207,33 +177,6 @@ class NavigationContext extends BaseNavigationContext
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @When /^I launch the ("([^"]*)" (import|export) job)$/
-     */
-    public function iLaunchTheExportJob(JobInstance $job)
-    {
-        $jobType = ucfirst($job->getType());
-        $this->openPage(sprintf('%s launch', $jobType), ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param string      $action
-     * @param JobInstance $job
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
-     */
-    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
-    {
-        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
-
-        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**

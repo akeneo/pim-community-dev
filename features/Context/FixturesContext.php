@@ -7,7 +7,6 @@ use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
@@ -543,31 +542,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string    $code
-     * @param TableNode $table
-     *
-     * @Given /^the following job "([^"]*)" configuration:$/
-     */
-    public function theFollowingJobConfiguration($code, TableNode $table)
-    {
-        $jobInstance   = $this->getJobInstance($code);
-        $configuration = $jobInstance->getRawConfiguration();
-
-        foreach ($table->getRowsHash() as $property => $value) {
-            $value = $this->replacePlaceholders($value);
-            if (in_array($value, ['yes', 'no'])) {
-                $value = 'yes' === $value;
-            }
-
-            $configuration[$property] = $value;
-        }
-
-        $jobInstance->setRawConfiguration($configuration);
-        // TODO use a Saver
-        $this->flush();
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Given /^the following product groups?:$/
@@ -844,31 +818,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string       $extension
-     * @param PyStringNode $string
-     *
-     * @Given /^the following ([^"]*) file to import:$/
-     */
-    public function theFollowingFileToImport($extension, PyStringNode $string)
-    {
-        $extension = strtolower($extension);
-
-        $string = $this->replacePlaceholders($string);
-
-        self::$placeholderValues['%file to import%'] = $filename =
-            sprintf(
-                '%s/pim-import/behat-import-%s.%s',
-                self::$placeholderValues['%tmp%'],
-                substr(md5(rand()), 0, 7),
-                $extension
-            );
-        @rmdir(dirname($filename));
-        @mkdir(dirname($filename), 0777, true);
-
-        file_put_contents($filename, (string) $string);
-    }
-
-    /**
      * @Given /^the following random files:$/
      */
     public function theFollowingRandomFiles(TableNode $table)
@@ -886,38 +835,6 @@ class FixturesContext extends BaseFixturesContext
             touch($filepath);
             file_put_contents($filepath, $content);
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     *
-     * @Given /^the following CSV configuration to import:$/
-     */
-    public function theFollowingCSVToImport(TableNode $table)
-    {
-        $delimiter = ';';
-
-        $data    = $table->getRowsHash();
-        $columns = implode($delimiter, array_keys($data));
-
-        $rows = [];
-        foreach ($data as $values) {
-            foreach ($values as $index => $value) {
-                $value          = in_array($value, ['yes', 'no']) ? (int) $value === 'yes' : $value;
-                $rows[$index][] = $value;
-            }
-        }
-        $rows = array_map(
-            function ($row) use ($delimiter) {
-                return implode($delimiter, $row);
-            },
-            $rows
-        );
-
-        array_unshift($rows, $columns);
-
-        return $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
     }
 
     /**
