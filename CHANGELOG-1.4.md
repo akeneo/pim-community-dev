@@ -1,7 +1,6 @@
 # 1.4.x
 
 ## Bug fixes
-- Github-3610: Fix orm version of grid pager to support ONLY_FULL_GROUP_BY mysql mode (MySQL 5.7)
 - PIM-5233: Use an asynchronous dropdown list to mass edit family
 
 ## BC Breaks
