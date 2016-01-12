@@ -85,16 +85,21 @@ define(
                      * This way we can display attributes and their attribute group beside them.
                      */
                     formatResult: function (item) {
-                        if (!_.has(this.attributeViews, item.id)) {
-                            this.attributeViews[item.id] = new AttributeLine({
-                                checked: _.contains(this.selection, item.id),
-                                attributeItem: item
-                            });
+                        var line = _.findWhere(this.attributeViews, {attributeCode: item.id});
+
+                        if (null == line) {
+                            line = {
+                                attributeCode: item.id,
+                                attributeView: new AttributeLine({
+                                    checked: _.contains(this.selection, item.id),
+                                    attributeItem: item
+                                })
+                            };
+
+                            this.attributeViews.push(line);
                         }
 
-                        var line = this.attributeViews[item.id];
-
-                        return line.render().$el;
+                        return line.attributeView.render().$el;
                     }.bind(this),
 
                     /**
@@ -156,9 +161,10 @@ define(
                         this.selection.push(attributeCode);
                     }
 
-                    this.attributeViews[attributeCode].setCheckedCheckbox(!alreadySelected);
-                    this.updateSelectedCounter();
+                    var line = _.findWhere(this.attributeViews, {attributeCode: attributeCode});
+                    line.attributeView.setCheckedCheckbox(!alreadySelected);
 
+                    this.updateSelectedCounter();
                     event.preventDefault();
                 }.bind(this));
 
