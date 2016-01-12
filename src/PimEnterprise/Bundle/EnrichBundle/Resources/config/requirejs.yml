@@ -48,8 +48,7 @@ config:
         pimee/product-edit-form/status-switcher:                      pimenterpriseenrich/js/product/form/status-switcher
 
         # Mass product edit form
-        pimee/mass-product-edit-form/add-attribute:   pimenterpriseenrich/js/product/form/mass-edit/add-attribute
-        pimee/mass-product-edit-form/locale-switcher: pimenterpriseenrich/js/product/form/mass-edit/locale-switcher
+        pimee/mass-product-edit-form/add-attribute: pimenterpriseenrich/js/product/form/mass-edit/add-attribute
 
         # Templates
         pimee/template/product/meta/owner-groups:               pimenterpriseenrich/templates/product/meta/owner-groups.html
