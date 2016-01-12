@@ -9,6 +9,8 @@ Feature: Manage notifications preferences
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
+      | 2014_collection  | Manager    | own    |
+      | 2014_collection  | IT support | view   |
     And the following products:
       | sku     | family   | categories      |
       | tshirt  | jackets  | 2014_collection |

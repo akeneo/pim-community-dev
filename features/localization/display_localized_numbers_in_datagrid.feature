@@ -1,5 +1,5 @@
 @javascript
-Feature: Localize numbers in the datagrid
+Feature: Localize numbers in the published product grid
   In order to have localized UI
   As a product manager
   I need to be able to show localized numbers in the published product grid
@@ -12,10 +12,10 @@ Feature: Localize numbers in the datagrid
     And the following published products:
       | sku     | big_price   | rate_sale    | weight             |
       | sandals | 1000.12 USD | 1000.1234    | 1000.3456 KILOGRAM |
-    And I am logged in as "Julia"
 
   Scenario: Successfully show English format numbers for English UI
-    Given I am on the published index page
+    Given I am logged in as "Julia"
+    And I am on the published index page
     When I display in the published products grid the columns sku, big_price, rate_sale, weight
     Then the row "sandals" should contain:
       | column       | value               |
@@ -24,11 +24,7 @@ Feature: Localize numbers in the datagrid
       | weight       | 1,000.3456 Kilogram |
 
   Scenario: Successfully show French format numbers for French UI
-    Given I edit my profile
-    And I visit the "Interfaces" tab
-    And I fill in the following information:
-      | Ui locale | French (France) |
-    And I save the user
+    Given I am logged in as "Julien"
     When I am on the published index page
     And I display in the published products grid the columns sku, big_price, rate_sale, weight
     Then the row "sandals" should contain:
@@ -38,12 +34,13 @@ Feature: Localize numbers in the datagrid
       | weight       | 1 000,3456 Kilogramme |
 
   Scenario: Successfully show English format numbers for French catalog
-    Given I add the "french" locale to the "mobile" channel
+    Given I am logged in as "Julia"
+    And I add the "french" locale to the "mobile" channel
     And I am on the published index page
-    When I switch the locale to "French (France)"
     And I display in the published products grid the columns sku, big_price, rate_sale, weight
+    When I switch the locale to "French (France)"
     Then the row "sandals" should contain:
-      | column       | value               |
-      | big_price    | $1,000.12           |
-      | Rate of Sale | 1,000.1234          |
-      | weight       | 1,000.3456 Kilogram |
+      | column        | value               |
+      | big_price     | $1,000.12           |
+      | Taux de vente | 1,000.1234          |
+      | Poids         | 1,000.3456 Kilogram |
