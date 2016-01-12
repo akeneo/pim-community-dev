@@ -7,20 +7,22 @@ use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class SendForApprovalSubscriberSpec extends ObjectBehavior
 {
     function let(
         NotificationManager $notificationManager,
-        CategoryAccessRepository $categoryAccessRepo,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        OwnerGroupsProvider $ownerGroupsProvider,
+        UsersToNotifyProvider $usersProvider
     ) {
-        $this->beConstructedWith($notificationManager, $categoryAccessRepo, $userRepository);
+        $this->beConstructedWith($notificationManager, $userRepository, $ownerGroupsProvider, $usersProvider);
     }
 
     function it_subscribes_to_approve_event()
@@ -32,8 +34,9 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
 
     function it_sends_notification_to_owners_which_want_to_receive_them(
         $notificationManager,
-        $categoryAccessRepo,
         $userRepository,
+        $ownerGroupsProvider,
+        $usersProvider,
         GenericEvent $event,
         ProductDraftInterface $productDraft,
         ProductInterface $product,
@@ -43,6 +46,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         UserInterface $author
     ) {
         $event->getSubject()->willReturn($productDraft);
+        $event->getArgument('comment')->willReturn('comment');
 
         $product->getId()->willReturn(666);
         $product->getLabel()->willReturn('Light Saber');
@@ -57,33 +61,23 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $owner2->hasProposalsToReviewNotification()->willReturn(false);
         $owner3->hasProposalsToReviewNotification()->willReturn(true);
 
-        $owners   = [$owner1, $owner2, $owner3];
-        $groupIds = [
-            [
-                'id' => 2,
-                'label' => 'Admin'
-            ],
-            [
-                'id' => 4,
-                'label' => 'Catalog Manager'
-            ]
-        ];
+        $ownerGroupsProvider->getOwnerGroupIds($product)->willReturn([2, 4]);
 
-        $categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS)->willReturn($groupIds);
-
-        $userRepository->findByGroupIds([2, 4])->willReturn($owners);
+        $usersProvider->getUsersToNotify([2, 4])->willReturn([$owner1, $owner3]);
         $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
 
+        $this->sendNotificationToOwners($event);
         $notificationManager->notify(
             [$owner1, $owner3],
             'pimee_workflow.proposal.to_review',
-            'success',
+            'add',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => [
                     'id'  => 666,
                     'redirectTab' => 'pim-product-edit-form-proposals'
                 ],
+                'comment'       => 'comment',
                 'messageParams' => [
                     '%product.label%'    => 'Light Saber',
                     '%author.firstname%' => 'Mary',
@@ -94,6 +88,6 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
                     'showReportButton' => false
                 ]
             ]
-        );
+        )->shouldBeCalled();
     }
 }
