@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5402: Product catalog disappears from dropdown menu when no permissions given
+
 # 1.4.16 (2016-01-07)
 
 ## Bug fixes

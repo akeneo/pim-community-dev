@@ -119,3 +119,14 @@ Feature: Enforce no permissions for a category
     And I save the category
     Given I am on the "hm_jackets" variant group page
     Then the grid should contain 0 elements
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5402
+  Scenario: Successfully manage a product category when there is no permission
+    Given I am logged in as "Mary"
+    When I edit the "2014_collection" category
+    And I visit the "Permissions" tab
+    And I fill in "Allowed to view products" with "" on the current page
+    And I save the category
+    Then I should see the "Winter collection" category under the "2014 collection" category
+    And I should see the "Summer collection" category under the "2014 collection" category
+    And I expand the "2014 collection" category
