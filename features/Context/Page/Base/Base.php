@@ -22,6 +22,7 @@ class Base extends Page
     use SpinCapableTrait;
 
     protected $elements = [
+        'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
         'Title'            => ['css' => '.navbar-title'],
         'Product title'    => ['css' => '.product-title'],

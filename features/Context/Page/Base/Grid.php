@@ -58,16 +58,12 @@ class Grid extends Index
     {
         return $this->spin(
             function () {
-                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']) +
-                    $this->getElement('Dialog')->findAll('css', $this->elements['Grid']['css']);
-
-                foreach ($grids as $grid) {
-                    if ($grid->isVisible()) {
-                        return $grid;
-                    }
+                $modal = $this->getElement('Body')->find('css', $this->elements['Dialog']['css']);
+                if (null !== $modal && $modal->isVisible()) {
+                    return $modal->find('css', $this->elements['Grid']['css']);
                 }
 
-                return false;
+                return $this->getElement('Container')->find('css', $this->elements['Grid']['css']);
             },
             'No visible grid found'
         );

@@ -1,8 +1,8 @@
 @javascript
-Feature: Localize numbers in the datagrid
+Feature: Localize numbers in the product grid
   In order to have localized UI
   As a product manager
-  I need to be able to show localized numbers in the datagrid
+  I need to be able to show localized numbers in the product grid
 
   Background:
     Given a "footwear" catalog configuration
