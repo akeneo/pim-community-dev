@@ -32,7 +32,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function() {
+            initialize: function () {
                 this.buttonTitle   = this.options.buttonTitle;
                 this.onAddCallback = this.options.onAddCallback;
             },
@@ -40,7 +40,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function() {
+            render: function () {
                 this.$el.html(this.template({
                     buttonTitle:        this.buttonTitle,
                     numberOfAttributes: this.numberOfAttributes
@@ -54,7 +54,7 @@ define(
              *
              * @param {int|string} number
              */
-            updateNumberOfAttributes: function(number) {
+            updateNumberOfAttributes: function (number) {
                 this.numberOfAttributes = number;
 
                 this.render();

@@ -29,14 +29,14 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function() {
+            initialize: function () {
                 this.attributeItem = this.options.attributeItem;
             },
 
             /**
              * {@inheritdoc}
              */
-            render: function() {
+            render: function () {
                 this.$el.html(this.template({
                     item:    this.attributeItem,
                     checked: this.checked
@@ -50,7 +50,7 @@ define(
              *
              * @param {bool} checked
              */
-            setCheckedCheckbox: function(checked) {
+            setCheckedCheckbox: function (checked) {
                 this.checked = checked;
 
                 this.render();

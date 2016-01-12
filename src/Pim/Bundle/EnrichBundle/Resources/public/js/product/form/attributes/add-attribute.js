@@ -87,7 +87,7 @@ define(
                     formatResult: function (item) {
                         var line = _.findWhere(this.attributeViews, {attributeCode: item.id});
 
-                        if (null == line) {
+                        if (undefined === line || null === line) {
                             line = {
                                 attributeCode: item.id,
                                 attributeView: new AttributeLine({
