@@ -105,14 +105,6 @@ class ProductSaver extends BaseProductSaver
             } else {
                 $productsToUpdate[] = $product;
             }
-
-            if (true === $options['schedule'] || true === $options['recalculate']) {
-                $this->completenessManager->schedule($product);
-            }
-
-            if (true === $options['recalculate']) {
-                $this->completenessManager->generateMissingForProduct($product);
-            }
         }
 
         $insertDocs = $this->getDocsFromProducts($productsToInsert);
@@ -124,6 +116,12 @@ class ProductSaver extends BaseProductSaver
 
         if (count($updateDocs) > 0) {
             $this->updateDocuments($updateDocs);
+        }
+        
+        if (true === $options['recalculate']) {
+            foreach ($products as $product) {
+                $this->completenessManager->generateMissingForProduct($product);
+            }
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);
