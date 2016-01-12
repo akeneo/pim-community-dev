@@ -1,4 +1,4 @@
-@javascript @skip
+@javascript
 Feature: Classify a product in the trees I have access
   In order to classify products
   As a product manager
@@ -26,6 +26,7 @@ Feature: Classify a product in the trees I have access
       | classy           | Manager    | view   |
     And I am logged in as "Julia"
 
+  @skip
   Scenario: Associate a product to categories
     Given I edit the "rangers" product
     When I visit the "Categories" tab
@@ -36,3 +37,15 @@ Feature: Classify a product in the trees I have access
     And I press the "Save" button
     Then I should see "Shoes (2)"
     And I should not see "Slippers"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5402
+  Scenario: Display only granted categories in the PEF
+    Given I edit the "Slippers" category
+    And I visit the "Permissions" tab
+    Then I fill in "Allowed to view products" with "" on the current page
+    And I save the category
+    When I edit the "rangers" product
+    And I visit the "Categories" tab
+    Then I should see the text "Boots"
+    And I should see the text "Shoes"
+    But I should not see the text "Slippers"
