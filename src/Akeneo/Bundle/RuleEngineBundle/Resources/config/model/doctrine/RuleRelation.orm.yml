@@ -1,6 +1,6 @@
-PimEnterprise\Component\CatalogRule\Model\RuleRelation:
+Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation:
     type: entity
-    table: pimee_catalog_rule_rule_relation
+    table: akeneo_rule_engine_rule_relation
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         resource_name_resource_id_idx:
@@ -23,6 +23,7 @@ PimEnterprise\Component\CatalogRule\Model\RuleRelation:
     manyToOne:
         rule:
             targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+            inversedBy: relations
             joinColumn:
                 name: rule_id
                 referencedColumnName: id

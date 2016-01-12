@@ -22,6 +22,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             $this->gridNames,
             [
                 'published products' => 'published-product-grid',
+                'rules'              => 'rule-grid',
             ]
         );
     }

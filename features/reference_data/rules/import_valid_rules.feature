@@ -54,14 +54,10 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     And I am on the "sleeve_color" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule conditions:
-      | rule               | field              | operator | value           |
-      | set_reference_data | sleeve_color.code  | IN       | red, orange     |
-      | set_reference_data | sleeve_fabric.code | IN       | kevlar, chiffon |
-    Then I should see the following rule setter actions:
-      | rule               | field         | value                        | locale | scope |
-      | set_reference_data | sleeve_color  | yellow                       |        |       |
-      | set_reference_data | sleeve_fabric | kevlar, chiffon, satin, wool |        |       |
-    Then I should see the following rule copier actions:
-      | rule               | from_field | to_field  | from_locale | to_locale | from_scope | to_scope |
-      | set_reference_data | zip_color  | zip_color | en          | en        | mobile     | tablet   |
+    Then the row "set_reference_data" should contain the texts:
+      | column    | value                                                                     |
+      | Condition | If sleeve_color.code in red, orange                                       |
+      | Condition | If sleeve_fabric.code in kevlar, chiffon                                  |
+      | Action    | Then yellow is set into sleeve_color                                      |
+      | Action    | Then kevlar, chiffon, satin, wool is set into sleeve_fabric               |
+      | Action    | Then zip_color [ en \| mobile ] is copied into zip_color [ en \| tablet ] |

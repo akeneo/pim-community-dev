@@ -8,6 +8,6 @@ services:
             - '@form.factory'
             - '@oro_filter.filter_utility'
             - %pim_catalog.entity.attribute.class%
-            - %pimee_catalog_rule.model.rule_relation.class%
+            - %akeneo_rule_engine.model.rule_relation.class%
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: attribute_is_smart }

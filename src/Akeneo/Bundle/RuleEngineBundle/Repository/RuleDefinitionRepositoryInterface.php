@@ -11,6 +11,7 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Repository;
 
+use Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -27,4 +28,9 @@ interface RuleDefinitionRepositoryInterface extends IdentifiableObjectRepository
      * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface[]
      */
     public function findAllOrderedByPriority();
+
+    /**
+     * @return RuleQueryBuilder
+     */
+    public function createDatagridQueryBuilder();
 }

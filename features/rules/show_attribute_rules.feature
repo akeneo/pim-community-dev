@@ -100,25 +100,25 @@ Feature: Show all rules related to an attribute
   Scenario: Successfully show rules of an attribute
     Given I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule conditions:
-      | rule                   | field                   | operator    | value          | locale | scope |
-      | copy_description       | name                    | =           | My nice tshirt | en     |       |
-      | copy_description       | weather_conditions.code | IN          | dry, wet       |        |       |
-      | copy_description       | comment                 | STARTS WITH | promo          |        |       |
-      | update_tees_collection | categories.code         | IN          | tees           |        |       |
-    Then I should see the following rule setter actions:
-      | rule                   | field           | value                 | locale | scope  |
-      | copy_description       | rating          | 4                     |        |        |
-      | update_tees_collection | description     | une belle description | fr     | mobile |
-      | update_tees_collection | number_in_stock | 800                   |        | tablet |
-      | update_tees_collection | release_date    | 05/26/2015            |        | mobile |
-      | update_tees_collection | price           | €12.00                |        |        |
-      | update_tees_collection | side_view       | image.jpg             |        |        |
-      | update_tees_collection | length          | 10 Centimeter         |        |        |
-    Then I should see the following rule copier actions:
-      | rule                   | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | copy_description       | description | description | en          | en        | mobile     | tablet   |
-      | copy_description       | description | description | en          | fr        | mobile     | mobile   |
-      | copy_description       | description | description | en          | fr        | mobile     | tablet   |
-      | update_tees_collection | name        | name        | en          | fr        |            |          |
-      | update_tees_collection | name        | name        | en          | de        |            |          |
+
+    Then the row "copy_description" should contain the texts:
+      | column    | value                                                                         |
+      | Condition | If name equals My nice tshirt [ en ]                                          |
+      | Condition | If weather_conditions.code in dry, wet                                        |
+      | Condition | If comment starts with promo                                                  |
+      | Action    | Then 4 is set into rating                                                     |
+      | Action    | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
+      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
+      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
+
+    And the row "update_tees_collection" should contain the texts:
+      | column    | value                                                               |
+      | Condition | If categories.code in tees                                          |
+      | Action    | Then une belle description is set into description [ fr \| mobile ] |
+      | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
+      | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
+      | Action    | Then €12.00 is set into price                                       |
+      | Action    | Then image.jpg is set into side_view                                |
+      | Action    | Then 10 Centimeter is set into length                               |
+      | Action    | Then name [ en ] is copied into name [ fr ]                         |
+      | Action    | Then name [ en ] is copied into name [ de ]                         |

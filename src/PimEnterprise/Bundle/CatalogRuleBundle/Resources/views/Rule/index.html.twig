@@ -1,0 +1,9 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+    {{ elements.page_header('pimee_catalog_rule.datagrid.rule-grid.title'|trans) }}
+
+    {{ dataGrid.renderGrid('rule-grid') }}
+{% endblock %}

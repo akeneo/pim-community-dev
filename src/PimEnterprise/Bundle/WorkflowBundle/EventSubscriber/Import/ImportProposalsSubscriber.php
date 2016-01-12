@@ -19,8 +19,8 @@ use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -171,7 +171,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     {
         return null !== $this->jobRepository->findOneBy([
             'alias' => self::PROPOSAL_IMPORT_ALIAS,
-            'code' => $code
+            'code'  => $code
         ]);
     }
 }

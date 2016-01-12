@@ -1,0 +1,22 @@
+{% for action in value.actions %}
+    <p class="no-margin">
+        {% if action.type in ["copy", "copy_value"] %}
+            {% set parameters = {
+                '%from_field%': action.from_field|append_locale_and_scope_context(action.from_locale|default, action.from_scope|default)|highlight,
+                '%to_field%': action.to_field|append_locale_and_scope_context(action.to_locale|default, action.to_scope|default)|highlight
+            } %}
+        {% elseif action.type in ["add"] %}
+            {% set parameters = {
+                '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
+                '%value%': action.items|present_rule_action_value(action.field)|highlight,
+            } %}
+        {% else %}
+            {% set parameters = {
+                '%value%': action.value|present_rule_action_value(action.field)|highlight,
+                '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight
+            } %}
+        {% endif %}
+
+        {{ ('pimee_catalog_rule.actions.type.' ~ action.type) |trans(parameters)|raw }}
+    </p>
+{% endfor %}

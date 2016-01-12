@@ -1,9 +1,5 @@
-<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    <div id="attribute-rule-list" data-attribute-id="{{ form.vars.value.id }}"></div>
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
-    <script type="text/javascript">
-        require(['jquery', 'pimee/catalogrule/ruletableview'], function($, ruletableview) {
-            ruletableview($('#attribute-rule-list'));
-        });
-    </script>
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ dataGrid.renderStatefulGrid('rule-grid', { resourceName: "Pim\\Bundle\\CatalogBundle\\Entity\\Attribute", resourceId: form.vars.value.id }) }}
 </div>

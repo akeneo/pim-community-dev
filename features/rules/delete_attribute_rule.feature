@@ -27,8 +27,8 @@ Feature: Delete a rule
       """
     And I am on the "description" attribute page
     And I visit the "Rules" tab
-    And I delete the rule "set_tees_description"
-    And I should see the text "Delete this rule"
-    And I should see the text "Are you sure you want to delete this rule? It is not possible to undo this action"
+    And I click on the "Delete" action of the row which contains "set_tees_description"
+    And I should see the text "Delete Confirmation"
+    And I should see the text "Are you sure you want to delete this item?"
     And I confirm the deletion
-    Then I should see the text "No rule for now"
+    Then I should see the text "No records found"

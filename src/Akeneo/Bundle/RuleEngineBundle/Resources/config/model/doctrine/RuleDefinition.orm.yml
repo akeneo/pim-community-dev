@@ -27,3 +27,7 @@ Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition:
             nullable: false
             options:
                 default: 0
+    oneToMany:
+        relations:
+            targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface
+            mappedBy: rule

@@ -14,10 +14,9 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Rule controller
@@ -26,79 +25,59 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class RuleController
 {
-    /** @var RuleRelationManager */
-    protected $ruleRelationManager;
+    /** @var RuleDefinitionRepositoryInterface */
+    protected $repository;
 
     /** @var RemoverInterface */
-    protected $ruleRemover;
-
-    /** @var RuleDefinitionRepositoryInterface */
-    protected $ruleDefinitionRepo;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected $remover;
 
     /**
      * Constructor
      *
-     * @param RuleRelationManager               $ruleRelationManager
-     * @param RemoverInterface                  $ruleRemover
-     * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
-     * @param NormalizerInterface               $normalizer
+     * @param RuleDefinitionRepositoryInterface $repository
+     * @param RemoverInterface                  $remover
      */
-    public function __construct(
-        RuleRelationManager $ruleRelationManager,
-        RemoverInterface $ruleRemover,
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
-        NormalizerInterface $normalizer
-    ) {
-        $this->ruleRelationManager = $ruleRelationManager;
-        $this->ruleRemover         = $ruleRemover;
-        $this->ruleDefinitionRepo  = $ruleDefinitionRepo;
-        $this->normalizer          = $normalizer;
+    public function __construct(RuleDefinitionRepositoryInterface $repository, RemoverInterface $remover)
+    {
+        $this->repository = $repository;
+        $this->remover    = $remover;
     }
 
     /**
-     * List all rules for the given resource
+     * List all rules
      *
-     * @param string $resourceName
-     * @param int    $resourceId
+     * @Template
      *
      * @return JsonResponse
      *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      */
-    public function indexAction($resourceName, $resourceId)
+    public function indexAction()
     {
-        $rules = $this->ruleRelationManager->getRulesForResource($resourceId, $resourceName);
-        $normalizedRules = $this->normalizer->normalize($rules, 'array');
-
-        return new JsonResponse($normalizedRules);
+        return [];
     }
 
     /**
-     * Delete an rule of a resource
+     * Delete a rule
      *
-     * @param string $resourceName
-     * @param int    $resourceId
-     * @param int    $ruleId
+     * @param int $id
      *
-     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
+     * @AclAncestor("pimee_catalog_rule_rule_delete_permissions")
      *
      * @throws NotFoundHttpException
      * @throws \Exception
      *
      * @return JsonResponse
      */
-    public function deleteAction($resourceName, $resourceId, $ruleId)
+    public function deleteAction($id)
     {
-        if (null === $rule = $this->ruleDefinitionRepo->find($ruleId)) {
+        if (null === $rule = $this->repository->find($id)) {
             throw new NotFoundHttpException(
-                sprintf('Rule definition with id "%s" can not be found.', (string) $ruleId)
+                sprintf('Rule definition with id "%s" can not be found.', (string) $id)
             );
         }
 
-        $this->ruleRemover->remove($rule);
+        $this->remover->remove($rule);
 
         return new JsonResponse();
     }

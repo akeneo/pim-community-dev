@@ -43,7 +43,7 @@ services:
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%
         arguments:
-            - '@pimee_catalog_rule.repository.rule_relation'
+            - '@akeneo_rule_engine.repository.rule_relation'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.resolver.fqcn'
 

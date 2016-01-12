@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Rule definition stored in database
  *
@@ -32,6 +34,17 @@ class RuleDefinition implements RuleDefinitionInterface
 
     /** @var int */
     protected $priority = 0;
+
+    /** @var ArrayCollection */
+    protected $relations;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->relations = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -111,5 +124,23 @@ class RuleDefinition implements RuleDefinitionInterface
         $this->priority = $priority;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRelations($relations)
+    {
+        $this->relations = $relations;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRelations()
+    {
+        return $this->relations;
     }
 }
