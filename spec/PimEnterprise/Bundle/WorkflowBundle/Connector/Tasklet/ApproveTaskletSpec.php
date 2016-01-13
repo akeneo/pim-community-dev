@@ -4,18 +4,19 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Validator\Exception\ValidatorException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ApproveTaskletSpec extends ObjectBehavior
 {
@@ -58,13 +59,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
@@ -95,13 +96,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -134,13 +135,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(false);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -173,13 +174,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(false);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(false);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -213,13 +214,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $productDraftManager->approve($productDraft1, ['comment' => null])->willThrow(new ValidatorException());
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
@@ -256,13 +257,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft2)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);

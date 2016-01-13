@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes;
 use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -72,10 +72,12 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             if (null !== $this->authorizationChecker &&
-                false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
+                !$this->authorizationChecker->isGranted(Attributes::FULL_REVIEW, $record->getRootEntity())
             ) {
                 return ['approve' => false, 'refuse' => false];
             }
+
+            return [];
         };
     }
 

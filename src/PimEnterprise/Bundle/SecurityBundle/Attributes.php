@@ -18,33 +18,23 @@ namespace PimEnterprise\Bundle\SecurityBundle;
  */
 final class Attributes
 {
-    /** @staticvar string */
     const VIEW = 'VIEW_RESOURCE';
 
-    /** @staticvar string */
     const EDIT = 'EDIT_RESOURCE';
 
-    /** @staticvar string */
     const EXECUTE = 'EXECUTE_RESOURCE';
 
-    /** @staticvar string */
     const OWN = 'OWN_RESOURCE';
 
-    /** @staticvar string */
     const VIEW_ATTRIBUTES = 'VIEW_ATTRIBUTES';
 
-    /** @staticvar string */
     const EDIT_ATTRIBUTES = 'EDIT_ATTRIBUTES';
 
-    /** @staticvar string */
     const VIEW_ITEMS = 'VIEW_ITEMS';
 
-    /** @staticvar string */
     const EDIT_ITEMS = 'EDIT_ITEMS';
 
-    /** @staticvar string */
     const OWN_PRODUCTS = 'OWN_PRODUCTS';
 
-    /** @staticvar string */
     const OWN_AT_LEAST_ONE_CATEGORY = 'OWN_AT_LEAST_ONE_CATEGORY';
 }

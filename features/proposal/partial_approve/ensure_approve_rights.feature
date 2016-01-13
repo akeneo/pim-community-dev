@@ -25,6 +25,26 @@ Feature: Partial approve
     And I edit the "jacket" product
     Then I should not see the "Proposals" tab
 
+  Scenario: I am informed if a proposal can be only partially reviewed
+    Given Mary proposed the following change to "tshirt":
+      | field | value         | tab                 |
+      | Name  | Summer jacket | Product information |
+      | Price | 10 USD        | Marketing           |
+    And the following attribute group accesses:
+      | attribute group | user group | access |
+      | info            | Manager    | edit   |
+      | marketing       | Manager    | view   |
+    And I am logged in as "Julia"
+    When I edit the "tshirt" product
+    And I visit the "Proposals" tab
+    Then the row "Mary" should contain:
+      | column | value                     |
+      | Status | Can be partially reviewed |
+    When I am on the proposals page
+    Then the row "tshirt" should contain:
+      | column | value                     |
+      | Status | Can be partially reviewed |
+
   Scenario: I can partially approve only attribute that I can edit
     Given Mary proposed the following change to "tshirt":
       | field | value         | tab                 |

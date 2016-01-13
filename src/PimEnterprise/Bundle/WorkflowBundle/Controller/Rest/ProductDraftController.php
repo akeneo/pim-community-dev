@@ -16,10 +16,11 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -112,7 +113,7 @@ class ProductDraftController
         $productDraft = $this->findDraftForProductOr404($product);
         $comment      = ("" === $request->get('comment')) ? null : $request->get('comment');
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -146,11 +147,11 @@ class ProductDraftController
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ATTRIBUTES, $attribute->getGroup())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -202,11 +203,11 @@ class ProductDraftController
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -236,11 +237,11 @@ class ProductDraftController
     {
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -266,11 +267,11 @@ class ProductDraftController
     {
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

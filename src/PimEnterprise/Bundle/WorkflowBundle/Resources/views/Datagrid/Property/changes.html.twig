@@ -5,7 +5,22 @@
                 is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) and
                 (not is_attribute_localizable(code) or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ITEMS'), change.locale))
             %}
-            <table class="table table-bordered proposal-changes" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
+            {%
+                set canReview = (
+                    is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), code) and
+                    is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product) and
+                    record.rootEntity.getStatus() == constant('PimEnterprise\\Bundle\\WorkflowBundle\\Model\\ProductDraft::READY')
+                )
+            %}
+            <table
+                class="table table-bordered proposal-changes{% if not canReview %} readonly{% endif %}"
+                data-product="{{ record.rootEntity.product.identifier }}"
+                data-scope="{{ change.scope }}"
+                data-locale="{{ change.locale }}"
+                data-attribute="{{ code }}"
+                data-product-draft="{{ record.rootEntity.id }}"
+                data-author="{{ record.rootEntity.author }}"
+            >
                 <thead>
                     <tr>
                         <th class="label-cell">{{ get_attribute_label_from_code(code) }}</th>
@@ -17,11 +32,7 @@
                             {% endif %}
                         </th>
                         <th class="action-cell">
-                            {% if
-                                is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), code) and
-                                is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product) and
-                                record.rootEntity.getStatus() == constant('PimEnterprise\\Bundle\\WorkflowBundle\\Model\\ProductDraft::READY')
-                            %}
+                            {% if canReview %}
                                 <span class="partial-approve pull-right">
                                     <a href="#" class="partial-approve-link hide-text" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
                                         <i class="icon-ok hide-text">

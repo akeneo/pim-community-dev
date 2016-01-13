@@ -13,7 +13,7 @@
                     <td>{{ transformationType|trans }}</td>
                     <td>
                         {% for optionKey, optionValue in options %}
-                            <span>
+                            <span class="badge-info-large">
                                 {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
                                 {{ optionType|trans({'%value%': optionValue}) }}
                             </span>
