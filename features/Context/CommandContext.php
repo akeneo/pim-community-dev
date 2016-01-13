@@ -25,10 +25,9 @@ class CommandContext extends PimContext
     public function iLaunchedTheCompletenessCalculator()
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $this
-            ->getContainer()
-            ->get('pim_catalog.manager.completeness')
-            ->generateMissing();
+
+        $commandLauncher = $this->getService('pim_catalog.command_launcher');
+        $commandLauncher->executeForeground('pim:completeness:calculate');
     }
 
     /**
