@@ -19,10 +19,8 @@ Feature: Toggle status of a product
     Then the row "CD player" should contain:
       | column | value    |
       | status | Disabled |
-    And I should see flash message "Product has been disabled"
 
     When I click on the "Toggle status" action of the row which contains "CD player"
     Then the row "CD player" should contain:
       | column | value   |
       | status | Enabled |
-    And I should see flash message "Product has been enabled"
