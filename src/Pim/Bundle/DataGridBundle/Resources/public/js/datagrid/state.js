@@ -39,8 +39,9 @@ define(
                     }
                 }
             });
+
             return parsedValue;
-        }
+        };
 
         var _set = function (alias, key, value) {
             if (storageEnabled) {
@@ -115,6 +116,29 @@ define(
                 }
 
                 return this;
+            },
+            refreshFiltersFromUrl: function (alias) {
+                var storageHash = this.get(alias, 'filters');
+                var hash        = location.hash;
+
+                if (-1 === hash.indexOf('|g/')) {
+                    return;
+                }
+
+                var urlHash = hash.split('|g/').pop();
+
+                if (!storageHash) {
+                    this.set(alias, {'filters': urlHash});
+
+                    return;
+                }
+
+                var storageFilters = storageHash.split('&');
+                var urlFilters     = urlHash.split('&');
+
+                if (!_.isEqual(urlFilters.sort(), storageFilters.sort())) {
+                    this.set(alias, {'filters': urlHash});
+                }
             }
         };
     }

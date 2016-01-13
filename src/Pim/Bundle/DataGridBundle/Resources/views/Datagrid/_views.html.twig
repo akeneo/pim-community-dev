@@ -51,6 +51,13 @@ require(
             Backbone.history.navigate(url, true);
         };
 
+        var reloadPageWithoutFilters = function() {
+            var url = window.location.hash.split('|g/').shift();
+
+            Backbone.history.fragment = new Date().getTime();
+            Backbone.history.navigate(url, true);
+        };
+
         var $selector = $('#view-selector');
 
         var activateView = function(viewId) {
@@ -85,7 +92,7 @@ require(
                         data: { _method: 'DELETE' },
                         success: function() {
                             DatagridState.remove('{{ alias }}', ['view', 'filters', 'columns']);
-                            reloadPage();
+                            reloadPageWithoutFilters();
                         }
                     });
                 });
@@ -242,7 +249,7 @@ require(
             var gridViewId = $(this).find('input').val();
             activateView(gridViewId);
 
-            reloadPage();
+            reloadPageWithoutFilters();
         });
     }
 );
