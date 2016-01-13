@@ -40,13 +40,13 @@
 
     <h3>MongoDB support</h3>
         {% if collector.hasMongoDb %}
-            <p>Your current installation has {{ collector.getProductValueCount }} product values and support is enabled on your installation.</p>
+            <p>MongoDB is enabled on your installation.</p>
         {% else %}
             {% if collector.requireMongoDb %}
-                <p>Your current installation has {{ collector.getProductValueCount }} product values but MongoDB isn't installed yet. <br />
+                <p>Your current installation has more than 5M product values but MongoDB isn't installed yet. <br />
                 You should consider enabling MongoDB.</p>
             {% elseif not collector.requireMongoDb %}
-                <p>Your current installation has {{ collector.getProductValueCount }} product values and MongoDB isn't installed yet.<br />
+                <p>Your current installation has less than 5M product values and MongoDB isn't installed yet.<br />
                 Please note that if you  were to have more than 5M of product values, you will have to consider enabling MongoDB.</p>
             {% endif %}
             <p>Please read <a href="http://docs.akeneo.com/{{ collector.version.minor }}/reference/performances_guide/index.html#more-than-5-millions-of-product-values">this documentation</a> for more details.<br />

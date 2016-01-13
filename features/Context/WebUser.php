@@ -1387,26 +1387,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $file
-     * @param string $field
-     *
-     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
-     */
-    public function attachFileToField($file, $field)
-    {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
-                .DIRECTORY_SEPARATOR.$file;
-            if (is_file($fullPath)) {
-                $file = $fullPath;
-            }
-        }
-
-        $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->wait();
-    }
-
-    /**
      * @param string $field
      *
      * @Given /^I remove the "([^"]*)" file$/
@@ -1693,6 +1673,30 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $sku
+     * @param string $categoryCode
+     *
+     * @Then /^the category of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoryOfProductShouldBe($sku, $categoryCode)
+    {
+        $this->clearUOW();
+        $product = $this->getFixturesContext()->getProduct($sku);
+
+        $categoryCodes = $product->getCategoryCodes();
+        assertEquals(
+            [$categoryCode],
+            $categoryCodes,
+            sprintf(
+                'Expecting the category of "%s" to be "%s", not "%s".',
+                $sku,
+                $categoryCode,
+                implode(', ', $categoryCodes)
+            )
+        );
+    }
+
+    /**
      * @param int $count
      *
      * @Then /^there should be (\d+) updates?$/
@@ -1808,16 +1812,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $type
-     *
-     * @When /^I launch the (import|export) job$/
-     */
-    public function iExecuteTheJob($type)
-    {
-        $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-    }
-
-    /**
      * @param string $code
      *
      * @When /^I wait for the "([^"]*)" job to finish$/
@@ -1930,35 +1924,6 @@ class WebUser extends RawMinkContext
     public function iWaitForTheOptionsToLoad()
     {
         $this->iWaitSeconds(10);
-        $this->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^I upload and import the file "([^"]*)"$/
-     */
-    public function iUploadAndImportTheFile($file)
-    {
-        $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
-        $this->getCurrentPage()->pressButton('Upload and import now');
-
-        sleep(10);
-        $this->getMainContext()->reload();
-        $this->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^I upload and import an invalid file "([^"]*)"$/
-     */
-    public function iUploadAndImportAnInvalidFile($file)
-    {
-        $this->getCurrentPage()->clickLink('Upload and import');
-        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
-        $this->getCurrentPage()->pressButton('Upload and import now');
         $this->wait();
     }
 
@@ -2276,193 +2241,6 @@ class WebUser extends RawMinkContext
     public function iClickOnTheAkeneoLogo()
     {
         $this->getCurrentPage()->clickOnAkeneoLogo();
-    }
-
-    /**
-     * @Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
-     */
-    public function thePathOfTheExportedFileOfShouldBe($code, $path)
-    {
-        $executionPath = $this->getJobInstancePath($code);
-
-        if ($path !== $executionPath) {
-            throw $this->createExpectationException(
-                sprintf('Expected file name "%s" got "%s"', $path, $executionPath)
-            );
-        }
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return string
-     */
-    public function getJobInstancePath($code)
-    {
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $configuration = $this->getFixturesContext()->findEntity('JobConfiguration', [
-            'jobExecution' => $jobInstance->getJobExecutions()->first()
-        ]);
-
-        $step = $this->getMainContext()
-            ->getContainer()
-            ->get('akeneo_batch.connectors')
-            ->getJob($jobInstance)
-            ->getSteps()[0];
-
-        $context = json_decode(stripcslashes($configuration->getConfiguration()), true);
-
-        if (null !== $context) {
-            $step->setConfiguration($context);
-        }
-
-        return $step->getWriter()->getPath();
-    }
-
-    /**
-     * @param string       $code
-     * @param PyStringNode $csv
-     *
-     * @Then /^exported file of "([^"]*)" should contain:$/
-     *
-     * @throws ExpectationException
-     * @throws \Exception
-     */
-    public function exportedFileOfShouldContain($code, PyStringNode $csv)
-    {
-        $config = $this
-            ->getFixturesContext()
-            ->getJobInstance($code)->getRawConfiguration();
-
-        $path = $this->getJobInstancePath($code);
-
-        if (!is_file($path)) {
-            throw $this->createExpectationException(
-                sprintf('File "%s" doesn\'t exist', $path)
-            );
-        }
-
-        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
-        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
-
-        $csvFile = new \SplFileObject($path);
-        $csvFile->setFlags(
-            \SplFileObject::READ_CSV   |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
-        );
-        $csvFile->setCsvControl($delimiter, $enclosure, $escape);
-
-        $expectedLines = [];
-        foreach ($csv->getLines() as $line) {
-            if (!empty($line)) {
-                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
-            }
-        }
-
-        $actualLines = [];
-        while ($data = $csvFile->fgetcsv()) {
-            if (!empty($data)) {
-                $actualLines[] = array_map(
-                    function ($item) use ($enclosure) {
-                        return str_replace($enclosure, '', $item);
-                    },
-                    $data
-                );
-            }
-        }
-
-        $expectedCount = count($expectedLines);
-        $actualCount   = count($actualLines);
-        assertSame(
-            $expectedCount,
-            $actualCount,
-            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
-        );
-
-        if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
-            throw new \Exception(
-                sprintf(
-                    'Header in the file %s does not match expected one: %s',
-                    $path,
-                    implode(' | ', $actualLines[0])
-                )
-            );
-        }
-        unset($actualLines[0]);
-        unset($expectedLines[0]);
-
-        foreach ($expectedLines as $expectedLine) {
-            $originalLines = [];
-            $originalExpectedLine = $expectedLine;
-            sort($expectedLine);
-            $found = false;
-            foreach ($actualLines as $index => $actualLine) {
-                $originalLines[] = implode(' | ', $actualLine);
-                // Order of columns is not ensured
-                // Sorting the line values allows to have two identical lines
-                // with values in different orders
-                sort($actualLine);
-
-                // Same thing for the rows
-                // Order of the rows is not reliable
-                // So we generate a hash for the current line and ensured that
-                // the generated file contains a line with the same hash
-                if (md5(json_encode($actualLine)) === md5(json_encode($expectedLine))) {
-                    $found = true;
-
-                    // Unset line to prevent comparing it twice
-                    unset($actualLines[$index]);
-
-                    break;
-                }
-            }
-            if (!$found) {
-                throw new \Exception(
-                    sprintf(
-                        "Could not find a line in %s containing\n    %s\nAvailable lines are:\n    %s",
-                        $path,
-                        implode(' | ', $originalExpectedLine),
-                        implode("\n    ", $originalLines)
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * @param string    $code
-     * @param TableNode $table
-     *
-     * @Then /^export directory of "([^"]*)" should contain the following media:$/
-     *
-     * @throws ExpectationException
-     */
-    public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
-    {
-        $config = $this
-            ->getFixturesContext()
-            ->getJobInstance($code)->getRawConfiguration();
-
-        $path = dirname($config['filePath']);
-
-        if (!is_dir($path)) {
-            throw $this->createExpectationException(
-                sprintf('Directory "%s" doesn\'t exist', $path)
-            );
-        }
-
-        foreach ($table->getRows() as $data) {
-            $file = rtrim($path, '/') . '/' .$data[0];
-
-            if (!is_file($file)) {
-                throw $this->createExpectationException(
-                    sprintf('File \"%s\" doesn\'t exist', $file)
-                );
-            }
-        }
     }
 
     /**

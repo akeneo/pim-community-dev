@@ -230,7 +230,7 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
 
-  Scenario: Successfully import a csv file of products without enabled column
+  Scenario: Successfully import a csv file of products without enabled column default yes
     Given the following product:
       | sku     | name-en_US | description-en_US-tablet                    | enabled |
       | SKU-001 | John Deere | Best of tractors                            | no      |
@@ -256,7 +256,7 @@ Feature: Execute a job
     And product "SKU-003" should be disabled
     And product "SKU-004" should be enabled
 
-  Scenario: Successfully import a csv file of products without enabled column
+  Scenario: Successfully import a csv file of products without enabled column default no
     Given the following product:
       | sku     | name-en_US | description-en_US-tablet                    | enabled |
       | SKU-001 | John Deere | Best of tractors                            | no      |
@@ -281,3 +281,23 @@ Feature: Execute a job
     And product "SKU-002" should be enabled
     And product "SKU-003" should be disabled
     And product "SKU-004" should be disabled
+
+  Scenario: Successfully import products when category code is integer
+    Given the following products:
+      | sku    |
+      | jacket |
+    And I am on the category "2014_collection" node creation page
+    And I fill in the following information:
+      | Code | 123 |
+    And I save the category
+    And the following CSV file to import:
+      """
+      sku;categories
+      jacket;123
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then the category of the product "jacket" should be "123"

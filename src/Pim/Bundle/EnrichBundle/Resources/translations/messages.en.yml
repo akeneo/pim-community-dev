@@ -619,7 +619,7 @@ Cancel:               Cancel
 Choose a family:      Choose a family
 Choose a unit:        Choose a unit
 No matches found:     No matches found
-Create:                   Create
+Create:               Create
 
 Category tree: Category tree
 Completeness: Completeness
@@ -808,6 +808,7 @@ pim_enrich.mass_edit_action:
         label:         Change the family of products
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
+        no_family:     No family
 
     add-to-groups:
         label:         Add to groups

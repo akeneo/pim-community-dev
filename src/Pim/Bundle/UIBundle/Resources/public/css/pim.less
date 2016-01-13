@@ -650,7 +650,7 @@ body {
 @min-field-width: 300px;
 
 header.tab-header {
-  height: 44px;
+  min-height: 44px;
   border-left: none;
   border-bottom: solid 1px #ccc;
   background: @color-new-grey;
@@ -676,6 +676,11 @@ h3.tab-header {
 .attribute-actions {
   .attribute-edit-actions {
     margin-right: 0;
+    flex-wrap: wrap;
+
+    .context-selectors {
+      min-width: 250px;
+    }
   }
 
   & > div {
@@ -690,6 +695,7 @@ h3.tab-header {
       .display-flex();
       .flex(1);
       .justify-content(flex-end);
+      min-width: 300px;
     }
   }
 

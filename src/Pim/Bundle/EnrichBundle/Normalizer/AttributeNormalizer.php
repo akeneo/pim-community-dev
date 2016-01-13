@@ -73,6 +73,12 @@ class AttributeNormalizer implements NormalizerInterface
             'sort_order'            => $attribute->getSortOrder(),
         ];
 
+        if (null !== $attribute->getGroup()) {
+            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
+        } else {
+            $normalizedAttribute['group'] = null;
+        }
+
         return $normalizedAttribute;
     }
 

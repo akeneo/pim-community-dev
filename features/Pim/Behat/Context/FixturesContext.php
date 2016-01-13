@@ -364,7 +364,7 @@ class FixturesContext extends PimContext
     /**
      * @param object $object
      */
-    protected function flush($object = null)
+    public function flush($object = null)
     {
         if (!$object) {
             $this->flushAll();

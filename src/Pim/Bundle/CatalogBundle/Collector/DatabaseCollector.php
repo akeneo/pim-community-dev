@@ -57,8 +57,8 @@ class DatabaseCollector extends DataCollector
     {
         $this->data = [
             'mongodb_enabled'     => $this->isMongoDbEnabled(),
-            'product_value_count' => $this->productValueRepository->count(),
             'require_mongodb'     => !($this->isMongoDbEnabled() || !$this->isMongoDbRequired()),
+            'product_value_count' => $this->isMongoDbEnabled() ? null : $this->getProductValueCount(),
             'version'             => [
                 'patch' => $this->versionProvider->getPatch(),
                 'minor' => $this->versionProvider->getMinor()
@@ -125,7 +125,7 @@ class DatabaseCollector extends DataCollector
      */
     public function getProductValueCount()
     {
-        return $this->data['product_value_count'];
+        return $this->productValueRepository->count();
     }
 
     /**

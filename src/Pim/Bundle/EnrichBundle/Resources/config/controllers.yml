@@ -299,7 +299,9 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
+            - '@security.token_storage'
             - '@pim_catalog.filter.chained'
+            - '@pim_enrich.repository.attribute.search'
 
     pim_enrich.controller.rest.attribute_group:
         class: %pim_enrich.controller.rest.attribute_group.class%
