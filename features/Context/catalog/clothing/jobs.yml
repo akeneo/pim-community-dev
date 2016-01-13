@@ -150,12 +150,14 @@ jobs:
         label:     Demo product draft import
         type:      import
         configuration:
-            uploadAllowed: true
-            multiple:      false
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-            enabled:       true
+            uploadAllowed:    true
+            multiple:         false
+            delimiter:        ;
+            enclosure:        '"'
+            escape:           '\'
+            enabled:          true
+            decimalSeparator: .
+            dateFormat:       mm/dd/yyyy
     add_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value_with_permission
