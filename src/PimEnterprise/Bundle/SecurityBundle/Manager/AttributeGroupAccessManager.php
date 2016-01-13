@@ -28,19 +28,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AttributeGroupAccessManager
 {
-    /**
-     * @var ManagerRegistry
-     */
+    /** @var ManagerRegistry */
     protected $registry;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attGroupAccessClass;
 
     /**
-     * Constructor
-     *
      * @param ManagerRegistry $registry
      * @param string          $attGroupAccessClass
      */
