@@ -14,6 +14,18 @@ use Context\DataGridContext as BaseDataGridContext;
  */
 class EnterpriseDataGridContext extends BaseDataGridContext
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->gridNames = array_merge(
+            $this->gridNames,
+            [
+                'published products' => 'published-product-grid',
+            ]
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +42,18 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
             throw $e;
         }
+    }
+
+    /**
+     * @param string $elements
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see published products? (.*)$/
+     */
+    public function iShouldSeeEntities($elements)
+    {
+        parent::iShouldSeeEntities($elements);
     }
 
     /**

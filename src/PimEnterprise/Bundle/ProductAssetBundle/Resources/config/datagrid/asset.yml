@@ -35,16 +35,16 @@ datagrid:
 #                template:      PimDataGridBundle:Property:enabled.html.twig
 #                frontend_type: html
             endOfUseAt:
-                type:          field
                 frontend_type: date
+                type:          product_value_date
                 label:         pimee_product_asset.endOfUse.label
             createdAt:
-                type:          field
                 frontend_type: date
+                type:          product_value_date
                 label:         pimee_product_asset.createdAt.label
             updatedAt:
-                type:          field
                 frontend_type: date
+                type:          product_value_date
                 label:         pimee_product_asset.updatedAt.label
         sorters:
             columns:

@@ -1,0 +1,10 @@
+parameters:
+    pimee_user.twig_extension.visible_user_preferences.class: PimEnterprise\Bundle\UserBundle\Twig\VisibleUserPreferencesExtension
+
+services:
+    pimee_user.twig_extension.visible_user_preferences:
+        class: %pimee_user.twig_extension.visible_user_preferences.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: twig.extension }

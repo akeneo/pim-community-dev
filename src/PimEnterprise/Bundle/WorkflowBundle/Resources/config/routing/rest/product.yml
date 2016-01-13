@@ -1,0 +1,5 @@
+pimee_workflow_rest_product_index:
+    path: /rest/product/{productId}
+    defaults: { _controller: pimee_workflow.controller.rest.product:indexAction }
+    requirements:
+        _method: GET

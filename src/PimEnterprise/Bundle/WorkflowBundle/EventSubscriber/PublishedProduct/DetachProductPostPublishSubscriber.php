@@ -2,9 +2,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,15 +19,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class DetachProductPostPublishSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /**
-     * @param ProductManager $productManager
+     * @param ObjectManager $objectManager
      */
-    public function __construct(ProductManager $productManager)
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->productManager = $productManager;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -105,6 +105,6 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
      */
     protected function getObjectManager()
     {
-        return $this->productManager->getObjectManager();
+        return $this->objectManager;
     }
 }

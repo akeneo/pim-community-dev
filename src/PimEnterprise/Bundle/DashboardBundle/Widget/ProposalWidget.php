@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -37,6 +38,9 @@ class ProposalWidget implements WidgetInterface
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var PresenterInterface */
+    protected $presenter;
+
     /**
      * Constructor
      *
@@ -44,17 +48,20 @@ class ProposalWidget implements WidgetInterface
      * @param ProductDraftRepositoryInterface $ownershipRepository
      * @param UserManager                     $userManager
      * @param TokenStorageInterface           $tokenStorage
+     * @param PresenterInterface              $presenter
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $ownershipRepository,
         UserManager $userManager,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PresenterInterface $presenter
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository           = $ownershipRepository;
         $this->userManager          = $userManager;
         $this->tokenStorage         = $tokenStorage;
+        $this->presenter            = $presenter;
     }
 
     /**
@@ -93,13 +100,14 @@ class ProposalWidget implements WidgetInterface
         $user = $this->tokenStorage->getToken()->getUser();
         $result = [];
         $proposals = $this->repository->findApprovableByUser($user, 10);
+        $locale = $user->getUiLocale()->getCode();
 
         foreach ($proposals as $proposal) {
             $result[] = [
                 'productId'    => $proposal->getProduct()->getId(),
                 'productLabel' => $proposal->getProduct()->getLabel(),
                 'author'       => $this->getAuthorFullName($proposal->getAuthor()),
-                'createdAt'    => $proposal->getCreatedAt()->format('U')
+                'createdAt'    => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
             ];
         }
 

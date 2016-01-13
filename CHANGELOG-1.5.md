@@ -1,0 +1,80 @@
+# 1.5.x
+
+## Bug fixes
+
+## BC breaks
+
+- Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
+- Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
+- Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
+- Remove class `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Pim\Component\Localization\Localizer\LocalizerInterface`.
+- Rename service `pimee_product_asset.extension.formatter.property.product_value.product_asset_property` to `pimee_product_asset.datagrid.extension.formatter.property.product_value.product_asset_property`
+- Column 'comment' has been added on the `pim_notification_notification` table.
+- Columns 'proposalsToReviewNotification' and 'proposalsStateNotification' has been added on the `oro_user` table (only EE).
+- PropertySetterInterface and PropertyCopierInterface were removed from the PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater and replaced by Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface
+- Removed $actionClasses from the PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer constructor
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueAction to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction
+- Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`..
+- Change constructor of `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Component\ProductAsset\Upload\UploadChecker`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Added argument `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Changed constructor of `PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer`, we now inject two renderer instead of one.
+- Changed constructor of `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension`, added AttributeRepositoryInterface as argument.
+- Changed constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`, added ProductDraftGrantedAttributeProvider and RequestStack as arguments.
+- Interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` have changed in order to add `hasChanges`, `getChangeForAttribute` and `removeChangeForAttribute` functions.
+- Interface `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface` have changed in order to add method `findApprovableByUserAndProductId`.
+- Added an argument to the `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` constructor.
+- Updated `PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface`, removed present method, added presentOriginal and presentNew.
+- Updated `PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface`, removed renderDiff method, added renderOriginalDiff and renderNewDiff.
+- Replaced renderer `pimee_workflow.renderer.html.simple_list` by `pimee_workflow.renderer.html.base_only` and `pimee_workflow.renderer.html.changed_only`.
+- Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type`. Add argument `PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`.
+- Remove ProductValue repository from container
+- Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Presenter\MetricPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Presenter\PricesPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter`. Add `Pim\Component\Localization\Presenter\DatePresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter`. Add `Pim\Component\Localization\Presenter\NumberPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization\RuleDefinitionProcessor
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine\RuleDefinitionWriter to PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine\RuleDefinitionWriter
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\YamlFile\RuleDefinitionWriter to PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionDenormalizer to PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer to PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator to PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder to PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector to PimEnterprise\Component\CatalogRule\Engine\ProductRuleSelector
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface to PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition to PimEnterprise\Component\CatalogRule\Model\ProductCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface to PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface to PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation to PimEnterprise\Component\CatalogRule\Model\RuleRelation
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface to PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner to PimEnterprise\Component\CatalogRule\Runner\ProductRuleRunner
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingAddField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingCopyFields to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingCopyFields
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator to PimEnterprise\Component\CatalogRule\Validator\ExistingFieldValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFilterField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingSetField to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingSetField
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyActionValidator to PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\SupportedOperatorCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator to PimEnterprise\Component\CatalogRule\Validator\SupportedOperatorConditionValidator
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition
+- Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
+- Update schema of `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric`. Increase precision of data and baseData.
+- Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.

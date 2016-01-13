@@ -44,10 +44,11 @@ Feature: Edit product assets properties
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "men"
 
+  @unstable
   Scenario: Successfully edit the end of use at of an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
-    When I change the end of use at to "2050-06-20"
+    When I change the end of use at to "06/20/2050"
     And I press the "Save" button
     Then I should be on the "blue_shirt" asset edit page
-    And the field End of use at should contain "2050-06-20"
+    And the field End of use at should contain "06/20/2050"

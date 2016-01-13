@@ -12,11 +12,12 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -37,24 +38,33 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface        $productManager
-     * @param LocaleManager                  $localeManager
-     * @param CurrencyManager                $currencyManager
-     * @param AssociationTypeManager         $assocTypeManager
-     * @param CatalogContext                 $catalogContext
-     * @param AttributeGroupAccessRepository $accessRepository
-     * @param TokenStorageInterface          $tokenStorage
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param LocaleRepositoryInterface          $localeRepository
+     * @param CurrencyManager                    $currencyManager
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
+     * @param CatalogContext                     $catalogContext
+     * @param AttributeGroupAccessRepository     $accessRepository
+     * @param TokenStorageInterface              $tokenStorage
      */
     public function __construct(
-        ProductManagerInterface $productManager,
-        LocaleManager $localeManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($productManager, $localeManager, $currencyManager, $assocTypeManager, $catalogContext);
+        parent::__construct(
+            $productRepository,
+            $attributeRepository,
+            $localeRepository,
+            $currencyManager,
+            $assocTypeRepo,
+            $catalogContext
+        );
 
         $this->accessRepository = $accessRepository;
         $this->tokenStorage     = $tokenStorage;

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 class AttributeOptionPublisherSpec extends ObjectBehavior
 {
@@ -19,6 +19,6 @@ class AttributeOptionPublisherSpec extends ObjectBehavior
 
     function it_publishes_attribute_option(AttributeOptionInterface $value)
     {
-        $this->publish($value)->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface');
+        $this->publish($value)->shouldReturnAnInstanceOf('Pim\Component\Catalog\Model\AttributeOptionInterface');
     }
 }

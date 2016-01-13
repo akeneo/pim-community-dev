@@ -19,10 +19,10 @@ use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -153,14 +153,14 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     protected function addRuleRelations(RuleDefinitionInterface $definition)
     {
         $rule = $this->productRuleBuilder->build($definition);
-        $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($rule);
+        $relatedElements = $this->ruleRelationManager->getImpactedElements($rule);
 
         $ruleRelations = [];
-        foreach ($relatedAttributes as $relatedAttribute) {
+        foreach ($relatedElements as $relatedElement) {
             $ruleRelation = new $this->ruleRelationClass();
             $ruleRelation->setRuleDefinition($definition);
-            $ruleRelation->setResourceName(ClassUtils::getClass($relatedAttribute));
-            $ruleRelation->setResourceId($relatedAttribute->getId());
+            $ruleRelation->setResourceName(ClassUtils::getClass($relatedElement));
+            $ruleRelation->setResourceId($relatedElement->getId());
 
             $ruleRelations[] = $ruleRelation;
         }

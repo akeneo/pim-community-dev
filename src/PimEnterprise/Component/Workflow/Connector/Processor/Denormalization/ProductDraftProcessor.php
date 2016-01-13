@@ -11,12 +11,14 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -35,6 +37,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductDraftProcessor extends AbstractProcessor
 {
+    /** @var string */
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var string */
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
+
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
@@ -53,14 +61,18 @@ class ProductDraftProcessor extends AbstractProcessor
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter         array converter
-     * @param IdentifiableObjectRepositoryInterface $repository             product repository
-     * @param ObjectUpdaterInterface                $updater                product updater
-     * @param ValidatorInterface                    $validator              product validator
-     * @param ProductDraftBuilderInterface          $productDraftBuilder    product draft builder
-     * @param ProductDraftApplierInterface          $productDraftApplier    product draft applier
-     * @param ProductDraftRepositoryInterface       $productDraftRepo       product draft repository
+     * @param StandardArrayConverterInterface       $arrayConverter      array converter
+     * @param IdentifiableObjectRepositoryInterface $repository          product repository
+     * @param ObjectUpdaterInterface                $updater             product updater
+     * @param ValidatorInterface                    $validator           product validator
+     * @param ProductDraftBuilderInterface          $productDraftBuilder product draft builder
+     * @param ProductDraftApplierInterface          $productDraftApplier product draft applier
+     * @param ProductDraftRepositoryInterface       $productDraftRepo    product draft repository
+     * @param LocalizedAttributeConverterInterface  $localizedConverter  attributes localized converter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -69,7 +81,8 @@ class ProductDraftProcessor extends AbstractProcessor
         ValidatorInterface $validator,
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
-        ProductDraftRepositoryInterface $productDraftRepo
+        ProductDraftRepositoryInterface $productDraftRepo,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         parent::__construct($repository);
 
@@ -79,6 +92,7 @@ class ProductDraftProcessor extends AbstractProcessor
         $this->productDraftBuilder = $productDraftBuilder;
         $this->productDraftApplier = $productDraftApplier;
         $this->productDraftRepo    = $productDraftRepo;
+        $this->localizedConverter  = $localizedConverter;
     }
 
     /**
@@ -87,7 +101,15 @@ class ProductDraftProcessor extends AbstractProcessor
     public function process($item)
     {
         $convertedItem = $this->convertItemData($item);
-        $identifier    = $this->getIdentifier($convertedItem);
+
+        $convertedItem = $this->convertLocalizedAttributes($convertedItem);
+        $violations    = $this->localizedConverter->getViolations();
+
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+
+        $identifier = $this->getIdentifier($convertedItem);
 
         $product = $this->findProduct($identifier);
         if (!$product) {
@@ -108,6 +130,84 @@ class ProductDraftProcessor extends AbstractProcessor
         }
 
         return $this->buildDraft($product, $item);
+    }
+
+    /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the format for date field
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the format for the date field
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.decimalSeparator.label',
+                    'help'  => 'pim_connector.import.decimalSeparator.help'
+                ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.dateFormat.label',
+                    'help'  => 'pim_connector.import.dateFormat.help'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Checks and converts localized attributes to default format
+     *
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function convertLocalizedAttributes(array $convertedItem)
+    {
+        return $this->localizedConverter->convertLocalizedToDefaultValues($convertedItem, [
+            'decimal_separator' => $this->decimalSeparator,
+            'date_format'       => $this->dateFormat
+        ]);
     }
 
     /**

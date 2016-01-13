@@ -4,4 +4,9 @@
     {{ form_row(form.defaultTree) }}
     {{ form_row(form.defaultAssetTree) }}
     {{ form_row(form.productGridFilters) }}
+    {% for child in form.children %}
+        {% if child.vars.attr['data-type'] is defined %}
+            {{ form_row(child) }}
+        {% endif %}
+    {% endfor %}
 </div>

@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle;
 
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\ResolveDoctrineTargetModelPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\Compiler\RegisterRuleDenormalizerPass;
+use PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -29,11 +30,12 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogRuleBundle\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\CatalogRule\Model'
         ];
 
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new RegisterRuleDenormalizerPass())
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,

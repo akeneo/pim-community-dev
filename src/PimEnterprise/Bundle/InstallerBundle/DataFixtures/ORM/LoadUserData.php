@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData as BaseLoadUserData;
+use Pim\Component\Catalog\Model\CategoryInterface;
 
 /**
  * Load fixtures for users
@@ -30,6 +30,10 @@ class LoadUserData extends BaseLoadUserData
 
         $tree = $this->getAssetTree($data['default_asset_tree']);
         $user->setDefaultAssetTree($tree);
+
+        $user->setProposalsToReviewNotification($data['proposals_to_review_notification']);
+
+        $user->setProposalsStateNotification($data['proposals_state_notifications']);
 
         return $user;
     }

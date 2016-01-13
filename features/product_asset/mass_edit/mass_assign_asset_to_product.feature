@@ -1,0 +1,37 @@
+@javascript
+Feature: Edit asset collection of many products at once
+  In order to update many products with the same assets
+  As a product manager
+  I need to be able to edit asset collection of many products at once
+
+  Background:
+    Given the "clothing" catalog configuration
+    And the following family:
+      | code       | attributes      |
+      | high_heels | sku, front_view |
+    And the following products:
+      | sku            | family     |
+      | boots          | high_heels |
+      | sneakers       | high_heels |
+      | sandals        | high_heels |
+    And I am logged in as "Julia"
+    And I am on the products page
+
+
+  Scenario: Allow editing all attributes on configuration screen
+    Given I mass-edit products boots, sneakers and sandals
+    And I choose the "Edit common attributes" operation
+    And I display the Front view attribute
+    And I start to manage assets for "Front view"
+    And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
+    And I change the page size to 100
+    And I check the row "paint"
+    And I check the row "machine"
+    Then the asset basket should contain paint, machine
+    And I confirm the asset modification
+    Then the "Front view" asset gallery should contain paint, machine
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I am on the "boots" product page
+    And I visit the "Media" group
+    Then the "Front view" asset gallery should contain paint, machine

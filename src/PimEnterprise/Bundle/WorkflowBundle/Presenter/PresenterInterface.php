@@ -28,12 +28,22 @@ interface PresenterInterface
     public function supports($data);
 
     /**
-     * Present the provided change into html
+     * Present the original part of a change into html
      *
      * @param mixed $data
      * @param array $change
      *
      * @return string
      */
-    public function present($data, array $change);
+    public function presentOriginal($data, array $change);
+
+    /**
+     * Present the new part of a change into html
+     *
+     * @param mixed $data
+     * @param array $change
+     *
+     * @return string
+     */
+    public function presentNew($data, array $change);
 }

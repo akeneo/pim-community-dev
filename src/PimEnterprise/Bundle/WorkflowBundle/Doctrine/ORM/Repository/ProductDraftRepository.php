@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -51,26 +51,41 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     /**
      * {@inheritdoc}
      */
+    public function findByProductExcludingAuthor(ProductInterface $product, UserInterface $user)
+    {
+        return $this->createQueryBuilder('ProductDraft')
+            ->where('ProductDraft.product = :product')
+            ->andWhere('ProductDraft.author <> :author')
+            ->setParameter('product', $product)
+            ->setParameter('author', $user->getUsername())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createApprovableByUserQueryBuilder($user);
 
-        $qb
-            ->join('p.product', 'product')
-            ->leftJoin('product.categories', 'category')
-            ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
-            ->where(
-                $qb->expr()->eq('a.ownItems', true)
-            )
-            ->andWhere(
-                $qb->expr()->in('a.userGroup', ':userGroups')
-            )
-            ->andWhere(
-                $qb->expr()->eq('p.status', ProductDraftInterface::READY)
-            )
-            ->orderBy('p.createdAt', 'desc')
-            ->setParameter('userGroups', $user->getGroups()->toArray())
-            ->groupBy('p.id');
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findApprovableByUserAndProductId(UserInterface $user, $productId = null, $limit = null)
+    {
+        $qb = $this->createApprovableByUserQueryBuilder($user);
+
+        if (null !== $productId) {
+            $qb->andWhere('product.id = :productId')->setParameter('productId', $productId);
+        }
 
         if (null !== $limit) {
             $qb->setMaxResults($limit);
@@ -176,6 +191,9 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
             case Operators::LOWER_THAN:
                 $this->applyFilterLowerThan($qb, $field, $value);
                 break;
+            case Operators::IN_ARRAY_KEYS:
+                $this->applyFilterInArrayKeys($qb, $field, $value);
+                break;
         }
     }
 
@@ -261,6 +279,27 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
+     * @param UserInterface $user
+     *
+     * @return QueryBuilder
+     */
+    protected function createApprovableByUserQueryBuilder(UserInterface $user)
+    {
+        $qb = $this->createQueryBuilder('product_draft');
+
+        return $qb
+            ->join('product_draft.product', 'product')
+            ->leftJoin('product.categories', 'category')
+            ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
+            ->where($qb->expr()->eq('a.ownItems', true))
+            ->andWhere($qb->expr()->in('a.userGroup', ':userGroups'))
+            ->andWhere($qb->expr()->eq('product_draft.status', ProductDraftInterface::READY))
+            ->orderBy('product_draft.createdAt', 'desc')
+            ->setParameter('userGroups', $user->getGroups()->toArray())
+            ->groupBy('product_draft.id');
+    }
+
+    /**
      * Build field name with root alias
      *
      * @param QueryBuilder $qb
@@ -270,7 +309,11 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
      */
     protected function getRootFieldName(QueryBuilder $qb, $field)
     {
-        return sprintf("%s.%s", current($qb->getRootAliases()), $field);
+        if (false === strpos($field, '.')) {
+            $field = sprintf("%s.%s", current($qb->getRootAliases()), $field);
+        }
+
+        return $field;
     }
 
     /**
@@ -343,6 +386,30 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     protected function applyFilterLowerThan(QueryBuilder $qb, $field, $value)
     {
         $qb->andWhere($qb->expr()->lt($field, $qb->expr()->literal($this->getDateValue($value))));
+    }
+
+    /**
+     * Apply a in array keys filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterInArrayKeys(QueryBuilder $qb, $field, $value)
+    {
+        $expr = $qb->expr()->orX();
+        foreach ($value as $index => $code) {
+            $paramKey = sprintf('field_%s', (string) $index);
+
+            // In the ODM version we store that kind of fields in a sub-path
+            // named values that need to be removed in ORM
+            $field = preg_replace('/\.values$/', '', $field);
+
+            $expr->add($qb->expr()->like($this->getRootFieldName($qb, $field), sprintf(':%s', $paramKey)));
+            $qb->setParameter($paramKey, sprintf('%%\"%s\":%%', $code));
+        }
+
+        $qb->andWhere($expr);
     }
 
     /**

@@ -31,7 +31,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
                 default: false
     manyToOne:
         category:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
             joinColumns:
                 category_id:
                     referencedColumnName: id

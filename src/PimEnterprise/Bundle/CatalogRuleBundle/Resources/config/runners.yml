@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.runner.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner
+    pimee_catalog_rule.runner.product.class: PimEnterprise\Component\CatalogRule\Runner\ProductRuleRunner
 
 services:
     pimee_catalog_rule.runner.product:

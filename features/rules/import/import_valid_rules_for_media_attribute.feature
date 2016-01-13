@@ -15,7 +15,7 @@ Feature: Import rules
         canon_beautiful_description:
             conditions: []
             actions:
-                - type:        copy_value
+                - type:        copy
                   from_field:  side_view
                   to_field:    side_view
     """
@@ -25,12 +25,12 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "side_view"
-    Then I should see "is copied into"
+    Then I should see the text "side_view"
+    Then I should see the text "is copied into"
 
   Scenario: Import valid rule for "media" attribute in conditions and "set value" actions
     Given the following yaml file to import:
@@ -42,7 +42,7 @@ Feature: Import rules
                 operator: =
                 value:    akeneo.jpg
             actions:
-                - type:  set_value
+                - type:  set
                   field: side_view
                   value:
                        filePath:         %fixtures%/akeneo.jpg
@@ -54,8 +54,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_media\" as it does not appear to be valid."
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "akeneo.jpg"
+    Then I should see the text "akeneo.jpg"

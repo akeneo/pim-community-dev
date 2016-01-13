@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events as DoctrineEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior

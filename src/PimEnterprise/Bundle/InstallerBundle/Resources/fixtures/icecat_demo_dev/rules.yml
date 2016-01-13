@@ -9,7 +9,7 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: camera_brand
               value: canon_brand
     camera_copy_name_to_model:
@@ -19,7 +19,7 @@ rules:
               value:
                 - camcorders
         actions:
-            - type:       copy_value
+            - type:       copy
               from_field: name
               to_field:   camera_model_name
     camera_set_camera_type:
@@ -32,9 +32,9 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: camera_type
-              value: compact
+              value:  compact
     camera_set_autofocus:
         conditions:
             - field:    family.code
@@ -45,9 +45,9 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: auto_focus_lock
-              value: true
+              value:  true
     camera_set_autofocus_point:
         conditions:
             - field:    family.code
@@ -58,7 +58,7 @@ rules:
               operator: CONTAINS
               value:    Canon
         actions:
-            - type:  set_value
+            - type:  set
               field: auto_focus_points
               value: 4
     copy_description_print_us_to_ecommerce_us:
@@ -68,11 +68,11 @@ rules:
               value:
                 - camcorders
         actions:
-            - type:        copy_value
+            - type:        copy
               from_field:  description
+              to_field:    description
               from_locale: en_US
               from_scope:  print
-              to_field:    description
               to_locale:   en_US
               to_scope:    ecommerce
     set_purple_tshirt_ecommerce_description:
@@ -86,18 +86,18 @@ rules:
               value:
                 - purple
         actions:
-            - type:   set_value
+            - type:   set
               field:  description
+              value:  My very new description for purple tshirt
               locale: en_US
               scope:  ecommerce
-              value:  My very new description for purple tshirt
     set_tshirt_price:
         conditions:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: price
               value:
                   - data:     12
@@ -108,7 +108,7 @@ rules:
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: weight
               value:
                    data: 500
@@ -119,7 +119,7 @@ rules:
               operator: CONTAINS
               value:    AKNTS_PB
         actions:
-            - type:  set_value
+            - type:  set
               field: tshirt_style
               value:
                 - sportwear

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer;
+use PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

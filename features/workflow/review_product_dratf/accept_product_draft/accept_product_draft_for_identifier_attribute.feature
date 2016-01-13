@@ -33,6 +33,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "SKU"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product SKU should be "your-jacket"

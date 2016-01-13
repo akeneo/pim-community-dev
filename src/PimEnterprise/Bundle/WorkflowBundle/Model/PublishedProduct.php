@@ -11,17 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Akeneo\Component\Versioning\Model\Version;
+use Pim\Component\Catalog\Model\AbstractProduct;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**
  * Published product
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @ExclusionPolicy("all")
  */
 class PublishedProduct extends AbstractProduct implements ReferableInterface, PublishedProductInterface
 {

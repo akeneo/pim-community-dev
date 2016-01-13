@@ -65,6 +65,6 @@ connector:
                     services:
                         reader:    pimee_workflow.connector.reader.mass_edit.published_product
                         processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
-                        writer:    pim_base_connector.writer.file.csv_product
+                        writer:    pim_connector.writer.file.csv_product
                     parameters:
                         batch_size: 1000

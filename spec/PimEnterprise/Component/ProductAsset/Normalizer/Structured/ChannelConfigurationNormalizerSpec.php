@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 
 class ChannelConfigurationNormalizerSpec extends ObjectBehavior

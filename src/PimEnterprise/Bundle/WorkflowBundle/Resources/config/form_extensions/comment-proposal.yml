@@ -1,0 +1,3 @@
+extensions:
+    pimee-workflow-partial-approve-proposal-comment:
+        module: pimee/proposal/partial-approve-proposal-comment

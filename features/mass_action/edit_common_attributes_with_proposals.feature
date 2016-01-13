@@ -9,19 +9,30 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And the following family:
       | code       | attributes |
       | high_heels | sku, name  |
+    And the following category:
+      | code | label-en_US | parent          |
+      | hat  | Hat         | 2014_collection |
+    And the following product category accesses:
+      | product category | user group | access |
+      | hat              | Redactor   | own    |
+      | tees             | Redactor   | edit   |
+      | pants            | Redactor   | view   |
+      | hat              | Manager    | own    |
+      | tees             | Manager    | own    |
+      | pants            | Manager    | own    |
     And the following products:
       | sku          | categories | family     |
-      | owned        | tops       | high_heels |
+      | owned        | hat        | high_heels |
       | editable     | tees       | high_heels |
       | viewable     | pants      | high_heels |
       | notviewable  | jeans      | high_heels |
       | unclassified |            | high_heels |
-    And I am logged in as "Mary"
-    And I am on the products page
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980 https://akeneo.atlassian.net/browse/PIM-4775
   Scenario: Successfully creates proposal on editable products
-    Given I mass-edit products viewable, editable and owned
+    Given I am logged in as "Mary"
+    And I am on the products page
+    And I mass-edit products viewable, editable and owned
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I display the Name attribute
@@ -32,7 +43,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I should see "skipped products 1"
     And I should see "processed 1"
     Then I logout
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "viewable" product
     And I visit the "Proposals" tab
     Then I should not see "My awesome name"

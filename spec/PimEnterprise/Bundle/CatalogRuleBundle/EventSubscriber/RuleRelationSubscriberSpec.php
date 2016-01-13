@@ -8,13 +8,13 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
+use Pim\Component\Catalog\Model\AbstractAttribute;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -33,7 +33,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
             $ruleRelationRemover,
             $ruleRelationRepo,
             $productRuleBuilder,
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation'
+            'PimEnterprise\Component\CatalogRule\Model\RuleRelation'
         );
     }
 
@@ -96,7 +96,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 
         // add new resources
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
-        $ruleRelationManager->getImpactedAttributes($rule)
+        $ruleRelationManager->getImpactedElements($rule)
             ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
 
         $ruleRelationSaver->saveAll(Argument::any())

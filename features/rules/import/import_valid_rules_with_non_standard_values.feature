@@ -40,7 +40,7 @@ Feature: Import rules
                       data:     0
                       currency: EUR
             actions:
-                - type:        copy_value
+                - type:        copy
                   from_field:  side_view
                   to_field:    side_view
     """
@@ -50,8 +50,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "side_view"
-    Then I should see "is copied into"
+    Then I should see the text "side_view"
+    Then I should see the text "is copied into"

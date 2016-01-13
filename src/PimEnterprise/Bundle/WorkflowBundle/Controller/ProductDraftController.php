@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
@@ -19,9 +18,10 @@ use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -145,7 +145,7 @@ class ProductDraftController extends AbstractController
      */
     public function indexAction()
     {
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN_AT_LEAST_ONE_CATEGORY)) {
             throw new AccessDeniedException();
         }
 
@@ -172,16 +172,19 @@ class ProductDraftController extends AbstractController
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
         try {
-            $this->manager->approve($productDraft);
+            $this->manager->approve($productDraft, [
+                'comment' => $request->request->get('comment')
+            ]);
+
             $status = 'success';
             $messageParams = [];
         } catch (ValidatorException $e) {
@@ -229,15 +232,17 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->refuse($productDraft);
+        $this->manager->refuse($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(
@@ -269,10 +274,14 @@ class ProductDraftController extends AbstractController
     public function massApproveAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $jobExecution = $this->launchMassReviewJob(
-            self::MASS_APPROVE_JOB_CODE,
-            $this->gridFilterAdapter->adapt($request)
-        );
+        $params           = $this->gridFilterAdapter->adapt($request);
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
+        $rawConfiguration = addslashes(json_encode([
+            'draftIds' => $params['values'],
+            'comment'  => $request->get('comment'),
+        ]));
+
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
 
         return $this->redirect(
             $this->generateUrl(
@@ -292,10 +301,14 @@ class ProductDraftController extends AbstractController
     public function massRefuseAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $jobExecution = $this->launchMassReviewJob(
-            self::MASS_REFUSE_JOB_CODE,
-            $this->gridFilterAdapter->adapt($request)
-        );
+        $params           = $this->gridFilterAdapter->adapt($request);
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
+        $rawConfiguration = addslashes(json_encode([
+            'draftIds' => $params['values'],
+            'comment'  => $request->get('comment'),
+        ]));
+
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
 
         return $this->redirect(
             $this->generateUrl(
@@ -303,24 +316,6 @@ class ProductDraftController extends AbstractController
                 ['id' => $jobExecution->getId()]
             )
         );
-    }
-
-    /**
-     * Launch the specified mass review job
-     *
-     * @param string $jobCode
-     * @param array  $params
-     *
-     * @return JobExecution
-     */
-    protected function launchMassReviewJob($jobCode, array $params)
-    {
-        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier($jobCode);
-        $rawConfiguration = addslashes(json_encode(['draftIds' => $params['values']]));
-
-        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
-
-        return $jobExecution;
     }
 
     /**

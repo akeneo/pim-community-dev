@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 
 /**
  * Rule relation repository

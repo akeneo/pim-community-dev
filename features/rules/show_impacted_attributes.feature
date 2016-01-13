@@ -13,14 +13,19 @@ Feature: On a product edit/show display impacted attributes
     Given the following products:
       | sku       | family  |
       | my-loafer | sandals |
-    And the following product rules:
-      | code     | priority |
-      | set_rule | 10       |
-    And the following product rule conditions:
-      | rule     | field | operator | value     |
-      | set_rule | sku   | =        | my-loafer |
-    And the following product rule setter actions:
-      | rule     | field | value     | locale |
-      | set_rule | name  | My loafer | en_US  |
+    And the following product rule definitions:
+      """
+      set_rule:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-loafer
+        actions:
+          - type:   set
+            field:  name
+            value:  My loafer
+            locale: en_US
+      """
     Then I am on the "my-loafer" product page
     And I should see that Name is a smart

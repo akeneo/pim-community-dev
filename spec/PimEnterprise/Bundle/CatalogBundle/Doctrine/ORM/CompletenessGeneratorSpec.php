@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Prophecy\Argument;
@@ -19,7 +19,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepository,
         $assetClass
     ) {
-        $productClass = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
+        $productClass = 'Pim\Component\Catalog\Model\ProductInterface';
 
         $this->beConstructedWith(
             $manager,

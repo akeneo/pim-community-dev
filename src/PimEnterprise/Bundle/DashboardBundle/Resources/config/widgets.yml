@@ -9,5 +9,6 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@oro_user.manager'
             - '@security.token_storage'
+            - '@pim_localization.presenter.datetime'
         tags:
             - { name: pim_dashboard.widget, position: 100 }

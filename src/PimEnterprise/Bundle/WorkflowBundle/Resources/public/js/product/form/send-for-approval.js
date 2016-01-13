@@ -15,7 +15,8 @@ define(
         'oro/messenger',
         'pim/form',
         'pim/product-manager',
-        'text!pimee/template/product/submit-draft'
+        'text!pimee/template/product/submit-draft',
+        'pim/form-modal'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         messenger,
         BaseForm,
         ProductManager,
-        submitTemplate
+        submitTemplate,
+        FormModal
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -95,21 +97,44 @@ define(
              * Callback triggered on "send for approval" button click
              */
             onSubmitDraft: function () {
-                this.getRoot().trigger('pim_enrich:form:state:confirm', {
-                    message: this.confirmationMessage,
-                    title: this.confirmationTitle,
-                    action: this.submitDraft.bind(this)
-                });
+                var callback = function () {
+                    var deferred = $.Deferred();
+
+                    deferred.resolve();
+
+                    return deferred;
+                };
+                var myFormModal = new FormModal(
+                    'pimee-workflow-send-for-approval-comment',
+                    callback,
+                    {
+                        title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
+                        okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
+                    }
+                );
+
+                myFormModal
+                    .open()
+                    .then(function (myFormData) {
+                        var comment = _.isUndefined(myFormData.comment) ? null : myFormData.comment;
+
+                        this.getRoot().trigger('pim_enrich:form:state:confirm', {
+                            message: this.confirmationMessage,
+                            title:   this.confirmationTitle,
+                            action:  this.submitDraft.bind(this, comment)
+                        });
+                    }.bind(this));
             },
 
             /**
              * Submit the current draft to backend for approval
              */
-            submitDraft: function () {
+            submitDraft: function (comment) {
                 $.post(
                     Routing.generate(
                         this.routes.ready,
-                        {productId: this.getProductId()}
+                        {productId: this.getProductId(), comment: comment}
                     )
                 )
                 .then(ProductManager.generateMissing.bind(ProductManager))

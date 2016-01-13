@@ -41,7 +41,7 @@ class SetValueActionDenormalizerSpec extends ObjectBehavior
     function it_does_not_support_denormalization_for_wrong_object()
     {
         $data['type'] = ProductSetValueActionInterface::ACTION_TYPE;
-        $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
+        $type = '\PimEnterprise\Component\CatalogRule\Model\ProductCondition';
 
         $this->supportsDenormalization($data, $type)->shouldReturn(false);
     }

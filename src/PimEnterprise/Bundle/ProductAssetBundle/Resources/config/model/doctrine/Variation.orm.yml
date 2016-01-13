@@ -18,7 +18,7 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
                 referencedColumnName: id
     manyToOne:
         channel:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
             joinColumn:
                 name: channel_id
                 referencedColumnName: id

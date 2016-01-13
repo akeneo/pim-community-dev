@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
+use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -39,7 +39,7 @@ class RuleRelationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($ruleRelation, $format = null, array $context = array())
+    public function normalize($ruleRelation, $format = null, array $context = [])
     {
         return [
             'rule'      => $ruleRelation->getRuleDefinition()->getCode(),

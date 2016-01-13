@@ -25,12 +25,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var string[] */
-    protected $supportedFormats = array('array');
+    protected $supportedFormats = ['array'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $rules = [];
 

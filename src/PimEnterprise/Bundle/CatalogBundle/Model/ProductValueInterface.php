@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface as BaseProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface as BaseProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**

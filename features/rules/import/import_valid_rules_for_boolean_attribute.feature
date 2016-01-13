@@ -18,7 +18,7 @@ Feature: Import rules
                   operator: =
                   value:    true
             actions:
-                - type:  set_value
+                - type:  set
                   field: handmade
                   value: true
     """
@@ -28,11 +28,11 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    Then I should see "created 1"
+    Then I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_boolean\" as it does not appear to be valid."
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
-    Then I should see "true"
+    Then I should see the text "true"
 
   Scenario: Import a copy value rule with valid values for attribute of type boolean in actions
     Given the following yaml file to import:
@@ -41,7 +41,7 @@ Feature: Import rules
         canon_beautiful_description:
             conditions: []
             actions:
-                - type:       copy_value
+                - type:       copy
                   from_field: handmade
                   to_field:   handmade
     """
@@ -51,9 +51,9 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
-    Then I should see "handmade"
-    Then I should see "is copied into"
+    Then I should see the text "handmade"
+    Then I should see the text "is copied into"

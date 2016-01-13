@@ -29,6 +29,7 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('action_appliers.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');

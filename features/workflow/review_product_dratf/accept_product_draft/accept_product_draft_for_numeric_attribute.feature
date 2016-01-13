@@ -33,6 +33,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Number in stock"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -49,6 +50,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Price"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -64,6 +66,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Release date"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Release date for scope "mobile" should be "2014-05-20"
@@ -77,7 +80,8 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Length"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Sizes" group
-    Then the product Length should be "40 CENTIMETER"
+    Then the product Length should be "40 Centimeter"

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
 
 class ParsedFilenameSpec extends ObjectBehavior

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -43,7 +43,7 @@ class JobProfileVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(Attributes::EXECUTE, Attributes::EDIT));
+        return in_array($attribute, [Attributes::EXECUTE, Attributes::EDIT]);
     }
 
     /**

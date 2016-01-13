@@ -4,14 +4,17 @@ config:
         pimee/asset-collection-field: pimenterpriseproductasset/js/product/field/asset-collection-field
 
         # Templates
-        pimee/template/product/field/asset-collection: pimenterpriseproductasset/templates/product/field/asset-collection.html
+        pimee/template/picker/asset-collection: pimenterpriseproductasset/templates/picker/asset-collection.html
         pimee/template/picker/asset-grid: pimenterpriseproductasset/templates/picker/asset-grid.html
         pimee/template/picker/basket: pimenterpriseproductasset/templates/picker/basket.html
         pimee/template/asset/mass-upload: pimenterpriseproductasset/templates/productAsset/mass-upload.html
         pimee/template/asset/mass-upload-row: pimenterpriseproductasset/templates/productAsset/mass-upload-row.html
 
         # Extensions
-        pimee/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid
+        pimee/picker/asset-grid:       pimenterpriseproductasset/js/picker/asset-grid
+
+        # Views
+        pimee/picker/asset-collection: pimenterpriseproductasset/js/picker/asset-collection
 
         pimee/productasset/variations:  pimenterpriseproductasset/js/form/variations
         pimee/productasset/uploader:    pimenterpriseproductasset/js/form/uploader

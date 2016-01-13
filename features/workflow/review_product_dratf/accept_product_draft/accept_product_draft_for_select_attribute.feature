@@ -33,6 +33,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Manufacturer"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "Nike"
@@ -46,6 +47,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Weather conditions"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "cold, dry, hot and wet"

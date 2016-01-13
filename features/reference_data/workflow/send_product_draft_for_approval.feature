@@ -31,7 +31,7 @@ Feature: Send a product draft with reference data for approval
     Then I fill in the following information:
       | Lace color | Red |
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
@@ -42,7 +42,7 @@ Feature: Send a product draft with reference data for approval
     Then I fill in the following information:
       | Lace color | Red |
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then I fill in the following information:
       | Lace color  | Blue |
     And I save the product
@@ -64,7 +64,7 @@ Feature: Send a product draft with reference data for approval
     Then I fill in the following information:
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
@@ -75,7 +75,7 @@ Feature: Send a product draft with reference data for approval
     Then I fill in the following information:
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then I fill in the following information:
       | Sleeve fabric | Leather, PVC |
     And I save the product

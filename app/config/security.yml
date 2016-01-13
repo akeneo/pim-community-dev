@@ -8,12 +8,9 @@ security:
     providers:
         chain_provider:
             chain:
-                providers:                  [in_memory, oro_user]
+                providers:                  [oro_user]
         oro_user:
             id:                             oro_user.security.provider
-        in_memory:
-            memory:
-                users:                      []
 
     encoders:
         Pim\Bundle\UserBundle\Entity\User: sha512

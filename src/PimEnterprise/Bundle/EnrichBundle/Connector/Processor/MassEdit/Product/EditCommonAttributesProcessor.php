@@ -2,15 +2,14 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -34,20 +33,16 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $authorizationChecker;
 
     /**
-     * @param PropertySetterInterface              $propertySetter
-     * @param ValidatorInterface                   $validator
-     * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
-     * @param ObjectUpdaterInterface               $productUpdater
-     * @param UserManager                          $userManager
-     * @param TokenStorageInterface                $tokenStorage
-     * @param AuthorizationCheckerInterface        $authorizationChecker
+     * @param ValidatorInterface                  $validator
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param ObjectUpdaterInterface              $productUpdater
+     * @param UserManager                         $userManager
+     * @param TokenStorageInterface               $tokenStorage
+     * @param AuthorizationCheckerInterface       $authorizationChecker
      */
     public function __construct(
-        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
@@ -56,9 +51,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         BaseProcessor::__construct(
-            $propertySetter,
             $validator,
-            $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
             $productUpdater

@@ -18,14 +18,13 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.4.x-dev@dev",
+        "akeneo/pim-community-dev": "1.5.x-dev",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "sensio/generator-bundle": "2.3.5",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
-        "akeneo/phpspec-skip-example-extension": "1.1.*",
         "behat/behat": "2.5.5",
         "behat/common-contexts": "1.2.0",
         "behat/gherkin":"2.3.5",
@@ -38,7 +37,8 @@
         "kriswallsmith/buzz": ">=0.5",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
-        "phpspec/phpspec": "2.1.*",
+        "phpspec/phpspec": "2.4.*",
+        "akeneo/phpspec-skip-example-extension": "1.2.*",
         "phpunit/phpunit": "3.7.*",
         "sensiolabs/behat-page-object-extension": "1.0.1",
         "squizlabs/php_codesniffer": "1.*"
@@ -50,11 +50,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/platform.git",
             "branch": "master"
         }
     ],

@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Denormalize product set value rule actions.
+ * @deprecated will be removed in 1.6 please use
+ *             PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -46,7 +48,6 @@ class SetValueActionDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === $this->setValueActionClass && isset($data['type'])
-               && ProductSetValueActionInterface::ACTION_TYPE === $data['type'];
+        return isset($data['type']) && ProductSetValueActionInterface::ACTION_TYPE === $data['type'];
     }
 }

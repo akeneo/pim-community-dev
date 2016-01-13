@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product draft interface
@@ -78,6 +81,37 @@ interface ProductDraftInterface
      * @return array
      */
     public function getChanges();
+
+    /**
+     * @return bool
+     */
+    public function hasChanges();
+
+    /**
+     * @param AttributeInterface    $attribute
+     * @param ChannelInterface|null $channel
+     * @param LocaleInterface|null  $locale
+     *
+     * @return array|null
+     */
+    public function getChangeForAttribute(
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    );
+
+    /**
+     * Remove the change associated to the attribute if it exists
+     *
+     * @param AttributeInterface    $attribute
+     * @param ChannelInterface|null $channel
+     * @param LocaleInterface|null  $locale
+     */
+    public function removeChangeForAttribute(
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    );
 
     /**
      * Set status

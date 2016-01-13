@@ -8,17 +8,34 @@ Feature: Show all rules related to an attribute
     Given a "footwear" catalog configuration
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "sole_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
-    And the following product rules:
-      | code     | priority |
-      | set_sole | 10       |
-    And the following product rule conditions:
-      | rule     | field            | operator | value                         |
-      | set_sole | sole_color.code  | IN       | Red, Green, Light green, Blue |
-      | set_sole | sole_fabric.code | IN       | PVC, Nylon                    |
-    And the following product rule setter actions:
-      | rule     | field       | value                |
-      | set_sole | sole_color  | Yellow               |
-      | set_sole | sole_fabric | PVC, Nylon, Neoprene |
+    And the following product rule definitions:
+      """
+      set_sole:
+        priority: 10
+        conditions:
+          - field:    sole_color.code
+            operator: IN
+            value:
+              - Red
+              - Green
+              - Light green
+              - Blue
+          - field:    sole_fabric.code
+            operator: IN
+            value:
+              - PVC
+              - Nylon
+        actions:
+          - type:   set_value
+            field:  sole_color
+            value:  Yellow
+          - type:   set_value
+            field:  sole_fabric
+            value:
+              - PVC
+              - Nylon
+              - Neoprene
+      """
     And I am logged in as "Julia"
 
   Scenario: Successfully show rules of a reference data attribute

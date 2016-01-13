@@ -53,9 +53,9 @@ class RuleController
         NormalizerInterface $normalizer
     ) {
         $this->ruleRelationManager = $ruleRelationManager;
-        $this->ruleRemover        = $ruleRemover;
-        $this->ruleDefinitionRepo = $ruleDefinitionRepo;
-        $this->normalizer         = $normalizer;
+        $this->ruleRemover         = $ruleRemover;
+        $this->ruleDefinitionRepo  = $ruleDefinitionRepo;
+        $this->normalizer          = $normalizer;
     }
 
     /**

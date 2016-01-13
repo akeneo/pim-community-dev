@@ -38,5 +38,5 @@ Feature: Save a product draft
     When I change the "Description" to "Hammer time"
     And I save the product
     Then I should see the text "Draft status: In progress"
-    When I press the "Send for approval" button
+    When I press the Send for approval button
     Then I should see the text "Draft status: Waiting for approval"

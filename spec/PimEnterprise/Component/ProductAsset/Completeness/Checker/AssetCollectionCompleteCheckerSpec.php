@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
@@ -41,7 +41,7 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
     }
 
-    public function it_succesfully_checks_incomplete_asset_collection(
+    public function it_successfully_checks_incomplete_asset_collection(
         ProductValueInterface $productValue,
         ChannelInterface $channel,
         LocaleInterface $locale,

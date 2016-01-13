@@ -35,7 +35,7 @@ class VersionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = array())
+    public function normalize($version, $format = null, array $context = [])
     {
         $normalizedVersion = $this->versionNormalizer->normalize($version, $format, $context);
         $publishedProduct = $this->repository->findOneByVersionId($version->getId());

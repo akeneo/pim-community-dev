@@ -1,3 +1,13 @@
 parameters:
-    pim_user.view_element.user.tab.group_and_role.template: 'PimEnterpriseEnrichBundle:User/Tab:group_and_role.html.twig'
-    pim_user.view_element.user.tab.additional.template:     'PimEnterpriseEnrichBundle:User/Tab:additional.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template:  'PimEnterpriseEnrichBundle:User/Tab:group_and_role.html.twig'
+    pim_user.view_element.user.tab.additional.template:      'PimEnterpriseEnrichBundle:User/Tab:additional.html.twig'
+    pimee_user.view_element.user.tab.notifications.template: 'PimEnterpriseEnrichBundle:User/Tab:notifications.html.twig'
+
+services:
+    pimee_user.view_element.user.tab.notifications:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_user.user.tab.notifications'
+            - %pimee_user.view_element.user.tab.notifications.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 140 }

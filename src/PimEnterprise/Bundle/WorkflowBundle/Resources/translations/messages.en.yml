@@ -6,11 +6,14 @@ pimee_workflow:
         locale:  Locale context
         product:
             label: Product label
+        attribute:
+            label: Attribute
         status:
             label: Status
             working_copy: Working copy
             in_progress: In progress
             ready: Waiting for approval
+            can_be_partially_reviewed: Can be partially reviewed
             can_not_be_approved: Can't be reviewed
             can_not_be_deleted: Can't be deleted
         status_message:
@@ -20,6 +23,12 @@ pimee_workflow:
             approve: Approve
             refuse:  Refuse
             remove:  Remove
+            partial_approve: Approve changes on attribute %attribute% of the product %product%
+        notification:
+            partial_approve: %owner% has accepted the value for %attribute% for the product: %product%
+            approve: %owner% has accepted your proposal for the product %product%
+            refuse: %owner% has rejected your proposal for the product %product%
+            remove: %owner% has deleted your proposal for the product %product%
         mass_review_action:
             approve: Approve selected
             refuse:  Reject selected
@@ -28,6 +37,12 @@ pimee_workflow:
                 not_product_owner: You don't own the product related to this proposal
                 cannot_edit_attributes: You can't edit the attributes modified by this proposal
                 invalid_draft: This proposal can't be applied due to the following error. %error%
+    proposal:
+        to_review: %author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%
+        individual_import: %author.firstname% %author.lastname% has sent proposals to review from job import
+        generic_import: You have proposals to review from job import
+        original_value: Original
+        new_value: New
     published_product:
         index: Published Products
         title:  Published product
@@ -51,8 +66,16 @@ pimee_workflow:
             perform.title: Refuse proposals
     steps:
         product_draft_processor.title: Proposal processor
+pimee_workflow_product_draft_notification_new_proposal: New proposal
+pimee_workflow_import_notification_new_proposals: New proposals from import
+
 btn.publish: Publish
 btn.unpublish: Unpublish
+
+pimee_workflow_product_draft_notification_partial_approve: Proposal partially approved
+pimee_workflow_product_draft_notification_approve: Proposal approved
+pimee_workflow_product_draft_notification_refuse: Proposal rejected
+pimee_workflow_product_draft_notification_remove: Proposal deleted
 
 flash:
     product:
@@ -64,6 +87,8 @@ flash:
             error: The proposal can't be applied due to the following error. %error%
         refuse:
             success: The proposal has been rejected.
+        remove:
+            success: The proposal has been removed.
 
 pim_menu:
     item:
@@ -105,3 +130,5 @@ job_execution.summary:
     proposal_updated: updated proposal
     proposal_created: created proposal
     proposal_skipped: skipped proposal (no differences)
+
+published products: Published products

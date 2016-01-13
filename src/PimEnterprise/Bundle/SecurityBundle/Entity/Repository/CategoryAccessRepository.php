@@ -17,8 +17,8 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -327,7 +327,7 @@ class CategoryAccessRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true));
         $qb->leftJoin('ca.userGroup', 'ug');
         $qb->select('DISTINCT (ug.id) as id, ug.name');
-        $groups = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $groups = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return $groups;
     }

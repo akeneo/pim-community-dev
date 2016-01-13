@@ -17,9 +17,9 @@ Feature: Filter product assets
       | Tags        | in list women                     | mouette                                                                                                     |
       | Tags        | in list lacework,men              | eagle, minivan                                                                                              |
       | Tags        | is empty                          | photo                                                                                                       |
-      | End of use  | between 2006-01-01 and 2008-01-01 | paint, dog                                                                                                  |
-      | End of use  | more than 2015-09-01              | autumn, tiger                                                                                               |
-      | End of use  | less than 2030-01-01              | dog, autumn, paint, akene                                                                                   |
+      | End of use  | between 01/01/2006 and 01/01/2008 | paint, dog                                                                                                  |
+      | End of use  | more than 09/01/2015              | autumn, tiger                                                                                               |
+      | End of use  | less than 01/01/2030              | dog, autumn, paint, akene                                                                                   |
       | Description | contains animal                   | dog, mouette                                                                                                |
       | Description | does not contain water            | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger                                         |
 

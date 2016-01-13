@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -36,7 +37,7 @@ class RefuseTasklet extends AbstractReviewTasklet
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             try {
-                $this->refuseDraft($productDraft);
+                $this->refuseDraft($productDraft, $configuration['comment']);
                 $this->stepExecution->incrementSummaryInfo('refused');
             } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
@@ -54,19 +55,20 @@ class RefuseTasklet extends AbstractReviewTasklet
      * Refuse a draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param string|null           $comment
      *
      * @throws DraftNotReviewableException If draft cannot be refused
      */
-    protected function refuseDraft(ProductDraftInterface $productDraft)
+    protected function refuseDraft(ProductDraftInterface $productDraft, $comment)
     {
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 
-        $this->productDraftManager->refuse($productDraft);
+        $this->productDraftManager->refuse($productDraft, ['comment' => $comment]);
     }
 }

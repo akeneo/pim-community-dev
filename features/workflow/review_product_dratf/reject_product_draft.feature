@@ -33,6 +33,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "reject" action of the row which contains "Name"
+    And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |

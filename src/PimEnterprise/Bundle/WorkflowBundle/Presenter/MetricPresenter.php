@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Localization\LocaleResolver;
+use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present change on metric data
@@ -21,6 +23,22 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 class MetricPresenter extends AbstractProductValuePresenter implements TranslatorAwareInterface
 {
     use TranslatorAware;
+
+    /** @var BasePresenterInterface */
+    protected $metricPresenter;
+
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
+    /**
+     * @param BasePresenterInterface $metricPresenter
+     * @param LocaleResolver         $localeResolver
+     */
+    public function __construct(BasePresenterInterface $metricPresenter, LocaleResolver $localeResolver)
+    {
+        $this->metricPresenter = $metricPresenter;
+        $this->localeResolver  = $localeResolver;
+    }
 
     /**
      * {@inheritdoc}
@@ -39,7 +57,10 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
             return '';
         }
 
-        return sprintf('%s %s', $data->getData(), $this->translator->trans($data->getUnit()));
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $structuredMetric = ['data' => $data->getData(), 'unit' => $data->getUnit()];
+
+        return $this->metricPresenter->present($structuredMetric, $options);
     }
 
     /**
@@ -47,6 +68,8 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     protected function normalizeChange(array $change)
     {
-        return sprintf('%s %s', $change['data']['data'], $this->translator->trans($change['data']['unit']));
+        $options = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        return $this->metricPresenter->present($change['data'], $options);
     }
 }

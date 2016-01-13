@@ -11,14 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Component\Catalog\Model\AbstractMetric;
 
 /**
  * Published product metric
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @ExclusionPolicy("all")
  */
 class PublishedProductMetric extends AbstractMetric implements PublishedProductMetricInterface
 {

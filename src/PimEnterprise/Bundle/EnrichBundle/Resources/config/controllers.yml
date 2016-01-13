@@ -15,7 +15,7 @@ services:
         class: %pim_enrich.controller.product.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
             - '@pim_versioning.manager.version'
@@ -40,6 +40,7 @@ services:
             - '@pimee_enrich.filter.product_edit_data'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+            - '@pim_localization.localizer.converter'
 
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%

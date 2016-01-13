@@ -6,7 +6,7 @@ services:
         class: %pimee_product_asset.attribute_type.asset_collection.class%
         arguments:
             - reference_data_options
-            - pim_ajax_reference_data
+            - pim_assets_collection
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@pim_reference_data.registry'
         tags:

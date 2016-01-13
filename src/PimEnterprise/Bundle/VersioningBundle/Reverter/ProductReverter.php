@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;

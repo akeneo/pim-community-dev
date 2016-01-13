@@ -1,48 +1,77 @@
 users:
     admin:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     mobile
         defaultTree:      2014_collection
         defaultAssetTree: asset_main_catalog
         roles:            [ ROLE_ADMINISTRATOR ]
         groups:           [ IT support ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
     Julia:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     tablet
         defaultTree:      2014_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Stark
         roles:            [ ROLE_CATALOG_MANAGER ]
         groups:           [ Manager ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
     Peter:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     mobile
         defaultTree:      2014_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Williams
         roles:            [ ROLE_ADMINISTRATOR ]
         groups:           [ IT support ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
     Mary:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     tablet
         defaultTree:      summer_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Smith
         roles:            [ ROLE_USER ]
         groups:           [ Redactor ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
     Sandra:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     mobile
         defaultTree:      winter_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Harvey
         roles:            [ ROLE_USER ]
         groups:           [ Redactor ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
     Pamela:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     mobile
         defaultTree:      winter_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Rose
         roles:            [ ROLE_ASSET_MANAGER ]
         groups:           [ Manager ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true
+    Julien:
+        catalogLocale:    fr_FR
+        uiLocale:         fr_FR
+        catalogScope:     mobile
+        defaultTree:      winter_collection
+        defaultAssetTree: asset_main_catalog
+        last_name:        Février
+        roles:            [ ROLE_USER ]
+        groups:           [ Redactor ]
+        proposals_to_review_notification: true
+        proposals_state_notifications:    true

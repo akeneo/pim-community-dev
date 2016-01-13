@@ -10,3 +10,9 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.action.type, type: reject-proposal }
+
+    pimee_datagrid.extension.action.type.remove_proposal:
+        class: %oro_datagrid.extension.action.type.ajax.class%
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: remove-proposal }

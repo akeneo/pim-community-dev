@@ -62,7 +62,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "hm_jackets" variant group page
     And I press the "Delete" button
     And I confirm the removal
-    When I am on the product groups page
+    When I am on the variant groups page
     Then I should not see group hm_jackets
 
   Scenario: Fail to remove an attribute that is linked to a published product

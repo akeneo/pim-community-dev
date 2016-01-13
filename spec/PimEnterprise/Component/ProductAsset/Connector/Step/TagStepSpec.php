@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Step;
 
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
 use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
@@ -24,8 +24,8 @@ class TagStepSpec extends ObjectBehavior
 
     function it_is_a_step()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepInterface');
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\AbstractStep');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\AbstractStep');
     }
 
     function it_executes(

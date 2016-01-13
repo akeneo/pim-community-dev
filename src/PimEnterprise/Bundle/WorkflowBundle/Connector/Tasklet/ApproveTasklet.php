@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -36,7 +37,7 @@ class ApproveTasklet extends AbstractReviewTasklet
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             try {
-                $this->approveDraft($productDraft);
+                $this->approveDraft($productDraft, $configuration['comment']);
                 $this->stepExecution->incrementSummaryInfo('approved');
             } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
@@ -54,25 +55,26 @@ class ApproveTasklet extends AbstractReviewTasklet
      * Approve a draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param string|null           $comment
      *
      * @throws DraftNotReviewableException If draft cannot be approved
      */
-    protected function approveDraft(ProductDraftInterface $productDraft)
+    protected function approveDraft(ProductDraftInterface $productDraft, $comment)
     {
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 
         try {
-            $this->productDraftManager->approve($productDraft);
+            $this->productDraftManager->approve($productDraft, ['comment' => $comment]);
         } catch (ValidatorException $e) {
             throw new DraftNotReviewableException(self::ERROR_INVALID_DRAFT, 0, $e);
         }

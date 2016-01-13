@@ -19,7 +19,7 @@ Feature: Import rules
                   value:    Super Name
                   locale:   fr_FR
             actions:
-                - type:  set_value
+                - type:  set
                   field: name
                   value: My new Super Name
                   locale: en_US
@@ -33,7 +33,7 @@ Feature: Import rules
     And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_name\" as it does not appear to be valid."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
-    Then I should see "My new Super Name"
+    Then I should see the text "My new Super Name"
 
   Scenario: Import valid rule for "textarea" attribute in conditions and "set value" actions
     Given the following yaml file to import:
@@ -47,7 +47,7 @@ Feature: Import rules
                   locale:   fr_FR
                   scope:    tablet
             actions:
-                - type:   set_value
+                - type:   set
                   field:  description
                   value:  My new description
                   locale: en_US
@@ -60,10 +60,10 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
-    And I should see "created 1"
+    And I should see the text "created 1"
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see "My new description"
+    Then I should see the text "My new description"
 
   Scenario: Import a copy value rule with valid values for attribute of type textarea in actions
     Given the following yaml file to import:
@@ -72,7 +72,7 @@ Feature: Import rules
         canon_beautiful_description:
             conditions: []
             actions:
-                - type:        copy_value
+                - type:        copy
                   from_field:  description
                   to_field:    description
                   from_scope:  mobile
@@ -86,15 +86,15 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see "description"
-    Then I should see "mobile"
-    Then I should see "is copied into"
-    Then I should see "description"
-    Then I should see "tablet"
+    Then I should see the text "description"
+    Then I should see the text "mobile"
+    Then I should see the text "is copied into"
+    Then I should see the text "description"
+    Then I should see the text "tablet"
 
   Scenario: Import a copy value rule with valid values for attribute of type text and text in actions
     Given the following yaml file to import:
@@ -103,7 +103,7 @@ Feature: Import rules
         canon_beautiful_description:
             conditions: []
             actions:
-                - type:        copy_value
+                - type:        copy
                   from_field:  name
                   to_field:    name
                   from_locale: en_US
@@ -115,10 +115,10 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should see "created 1"
+    And I should see the text "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
-    Then I should see "description"
-    Then I should see "en"
-    Then I should see "is copied into"
+    Then I should see the text "description"
+    Then I should see the text "en"
+    Then I should see the text "is copied into"

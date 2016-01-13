@@ -6,11 +6,13 @@ services:
     pimee_workflow.manager.published_product:
         class: %pimee_workflow.manager.published_product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.repository.attribute'
             - '@event_dispatcher'
             - '@pimee_workflow.publisher.chained'
             - '@pimee_workflow.unpublisher.product'
+            - '@pim_catalog.object_manager.product'
 
     pimee_workflow.manager.published_product_category:
         class: %pim_catalog.manager.product_category.class%

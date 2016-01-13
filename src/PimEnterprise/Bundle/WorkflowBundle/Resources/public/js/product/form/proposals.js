@@ -42,6 +42,7 @@ define(
                 this.listenTo(root, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
                 this.listenTo(root, 'pim_enrich:form:proposal:post_approve:error', this.onPostApproveError);
                 this.listenTo(root, 'pim_enrich:form:proposal:post_reject:success', this.onPostRejectSuccess);
+                this.listenTo(root, 'pim_enrich:form:proposal:post_remove:success', this.onPostRemoveSuccess);
 
                 this.trigger('tab:register', {
                     code: this.code,
@@ -96,6 +97,16 @@ define(
                 messenger.notificationFlashMessage(
                     'success',
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                );
+            },
+
+            /**
+             * Callback triggered when a proposal is removed from the grid
+             */
+            onPostRemoveSuccess: function () {
+                messenger.notificationFlashMessage(
+                    'success',
+                    _.__('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
                 );
             },
 

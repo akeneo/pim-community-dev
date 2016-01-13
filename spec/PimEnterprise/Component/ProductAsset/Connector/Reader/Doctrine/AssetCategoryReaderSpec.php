@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
@@ -16,8 +16,8 @@ class AssetCategoryReaderSpec extends ObjectBehavior
 
     function it_is_a_reader()
     {
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemReaderInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_returns_an_asset_category(

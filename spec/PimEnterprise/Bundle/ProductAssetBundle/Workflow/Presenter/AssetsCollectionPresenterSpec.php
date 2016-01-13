@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -45,10 +45,10 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
 
         $assetRepository->findBy(['code' => ['Leather', 'Kevlar']])->willReturn([$leather, $kevlar]);
 
-        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two assets collection');
+        $renderer->renderOriginalDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two assets collection');
         $this->setRenderer($renderer);
 
         $productValue->getData()->willReturn([$leather, $neoprene]);
-        $this->present($productValue, ['data' => ['Leather', 'Kevlar']])->shouldReturn('diff between two assets collection');
+        $this->presentOriginal($productValue, ['data' => ['Leather', 'Kevlar']])->shouldReturn('diff between two assets collection');
     }
 }

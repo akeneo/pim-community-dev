@@ -46,4 +46,36 @@ interface UserInterface extends BaseUserInterface
      * @return UserInterface
      */
     public function setDefaultAssetTree(CategoryInterface $defaultAssetTree);
+
+    /**
+     * Does the user want to be notified of new proposals to review ?
+     *
+     * @return bool
+     */
+    public function hasProposalsToReviewNotification();
+
+    /**
+     * Set whether the user wants to be notified of new proposals.
+     *
+     * @param bool $proposalsToReviewNotification
+     *
+     * @return UserInterface
+     */
+    public function setProposalsToReviewNotification($proposalsToReviewNotification);
+
+    /**
+     * Does the user want to be notified when its proposals are accepted or rejected ?
+     *
+     * @return bool
+     */
+    public function hasProposalsStateNotification();
+
+    /**
+     * Set whether the user wants to be notified when its proposals are accepted or rejected.
+     *
+     * @param bool $proposalsStateNotification
+     *
+     * @return UserInterface
+     */
+    public function setProposalsStateNotification($proposalsStateNotification);
 }

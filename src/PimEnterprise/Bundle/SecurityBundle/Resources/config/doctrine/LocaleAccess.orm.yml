@@ -25,7 +25,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess:
                 default: false
     manyToOne:
         locale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     referencedColumnName: id

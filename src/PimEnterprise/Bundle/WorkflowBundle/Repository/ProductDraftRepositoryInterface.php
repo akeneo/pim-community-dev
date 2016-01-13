@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,6 +48,17 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return ProductDraftInterface[]|null
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
+
+    /**
+     * Return product drafts related to a product that can be approved by the given user
+     *
+     * @param UserInterface $user
+     * @param string        $productId
+     * @param int           $limit
+     *
+     * @return ProductDraftInterface[]|null
+     */
+    public function findApprovableByUserAndProductId(UserInterface $user, $productId = null, $limit = null);
 
     /**
      * Apply the context of the datagrid to the query
@@ -87,6 +98,16 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return ProductDraftInterface|null
      */
     public function findUserProductDraft(ProductInterface $product, $username);
+
+    /**
+     * Retrieve all product drafts of a product not authored by the given user
+     *
+     * @param ProductInterface $product
+     * @param UserInterface    $user
+     *
+     * @return ProductDraftInterface[]
+     */
+    public function findByProductExcludingAuthor(ProductInterface $product, UserInterface $user);
 
     /**
      * Find all by product

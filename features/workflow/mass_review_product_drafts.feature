@@ -118,7 +118,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       | 2015-01-01 00:00:00 |
     And I am on the proposals page
     And I show the filter "Proposed at"
-    And I filter by "Proposed at" with value "between 2013-06-01 and 2014-06-01"
+    And I filter by "Proposed at" with value "between 06/01/2013 and 06/01/2014"
     Then the grid should contain 1 element
     When I select all products
     And I press the "Approve selected" button

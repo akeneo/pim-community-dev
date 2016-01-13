@@ -24,7 +24,7 @@ define(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
-                        '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
+                        '<span class="rule-item-emphasize action-type set-value"><%= set_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
@@ -38,10 +38,46 @@ define(
                             '<%= rulePart.from_field %>' +
                             '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize action-type"><%= copy_value_label %></span>' +
+                        '<span class="rule-item-emphasize action-type copy-value"><%= copy_label %></span>' +
                         '<span class="action-field to-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'set': _.template(
+                    '<div class="rule-item rule-action set-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
+                        '<span class="rule-item-emphasize action-type set-value"><%= set_label %></span>' +
+                        '<span class="action-field">' +
+                            '<%= rulePart.field %>' +
+                            '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'copy': _.template(
+                    '<div class="rule-item rule-action copy-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-field from-field">' +
+                            '<%= rulePart.from_field %>' +
+                            '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
+                        '</span>' +
+                        '<span class="rule-item-emphasize action-type copy-value"><%= copy_label %></span>' +
+                        '<span class="action-field to-field">' +
+                            '<%= rulePart.to_field %>' +
+                            '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
+                        '</span>' +
+                    '</div>'
+                ),
+                'add': _.template(
+                    '<div class="rule-item rule-action add-value-action">' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
+                        '<span class="action-value"><%= renderValue(rulePart.items) %></span>' +
+                        '<span class="rule-item-emphasize action-type add-value"><%= add_label %></span>' +
+                        '<span class="action-field">' +
+                            '<%= rulePart.field %>' +
+                            '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
                     '</div>'
                 )
@@ -49,14 +85,12 @@ define(
         };
 
         var valueTemplates = {
-            'metric': _.template('<%= value.data %> <%= value.unit %>'),
             'collection': _.template(
                 '<% for (var i in value) { %>' +
                     '<%= renderValue(value[i]) %>' +
                     '<% if (i < value.length - 1) { %>, ' + '<% } %>' +
                 '<% } %>'
             ),
-            'price': _.template('<%= value.data %> <%= value.currency %> '),
             'file': _.template('<i class="icon-file"></i> <%= value.originalFilename %>'),
             'default': _.template('<%= value %>')
         };
@@ -85,12 +119,6 @@ define(
             var template;
 
             switch (true) {
-                case typeof value.unit !== 'undefined':
-                    template = 'metric';
-                    break;
-                case typeof value.currency !== 'undefined':
-                    template = 'price';
-                    break;
                 case typeof value.originalFilename !== 'undefined':
                     template = 'file';
                     break;
@@ -151,8 +179,9 @@ define(
                     'renderValue': renderValue,
                     'if_label': __('pimee_catalog_rule.rule.condition.if.label'),
                     'then_label': __('pimee_catalog_rule.rule.action.then.label'),
-                    'set_value_label': __('pimee_catalog_rule.rule.action.set_value.label'),
-                    'copy_value_label': __('pimee_catalog_rule.rule.action.copy_value.label')
+                    'set_label': __('pimee_catalog_rule.rule.action.set.label'),
+                    'copy_label': __('pimee_catalog_rule.rule.action.copy.label'),
+                    'add_label': __('pimee_catalog_rule.rule.action.add.label')
                 });
             },
             renderTemplate: function () {
