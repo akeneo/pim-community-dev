@@ -187,12 +187,44 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string    $code
      * @param TableNode $table
      *
+     * @Then /^the row "([^"]*)" should contain the texts:$/
+     */
+    public function theRowShouldContainText($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsText($code, $data['column'], $data['value']);
+        }
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Then /^the row "([^"]*)" should contain the images:$/
      */
     public function theRowShouldContainImages($code, TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $this->assertColumnContainsImage($code, $data['column'], $data['title']);
+        }
+    }
+
+    /**
+     * @param string $row
+     * @param string $column
+     * @param string $expectation
+     *
+     * @throws ExpectationException
+     */
+    public function assertColumnContainsText($row, $column, $expectation)
+    {
+        $column = strtoupper($column);
+        $actual = $this->datagrid->getColumnValue($column, $row);
+
+        if (!preg_match('/'.preg_quote($expectation, '/').'/ui', $actual)) {
+            throw $this->createExpectationException(
+                sprintf('Expecting column "%s" to contain the text "%s", got "%s"', $column, $expectation, $actual)
+            );
         }
     }
 
