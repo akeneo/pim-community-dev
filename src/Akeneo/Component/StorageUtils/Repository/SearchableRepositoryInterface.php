@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\StorageUtils\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
 /**
  * Searchable repository interface
  *
@@ -13,6 +11,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface SearchableRepositoryInterface
 {
+    const FETCH_LIMIT = 20;
+
     /**
      * Returns an array of option ids and values
      *

@@ -25,9 +25,7 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
-                'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
-                'Available attributes form'       => [
+                'Available attributes form' => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
                 ],
             ]

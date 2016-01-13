@@ -77,7 +77,7 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I switch the locale to "fr_FR"
-    And I display the [name] attribute
+    And I display the name attribute
     And I change the "[name]" to "chaussure"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
@@ -93,7 +93,7 @@ Feature: Edit common attributes of many products at once
     And I mass-edit products boots and pump
     And I choose the "Edit common attributes" operation
     And I switch the locale to "fr_FR"
-    And I display the [description] attribute
+    And I display the description attribute
     And I change the "[description]" to "Bar Fr"
     And I switch the scope to "mobile"
     And I change the "[description]" to "Foo Fr"

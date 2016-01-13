@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Scalability improvements
+- PIM-5213: Paginate loading of attributes on Product Edit Form and Mass Edit Common Attributes action
+
 ## Bug fixes
 - PIM-5233: Use an asynchronous dropdown list to mass edit family
 
@@ -11,6 +14,9 @@
 ## Bug fixes
 - PIM-5405: Fix content type for stream upload
 - PIM-5331: Fix product save issue when categories have code as integer
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` to add `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface` dependency
 
 # 1.4.15 (2015-12-30)
 

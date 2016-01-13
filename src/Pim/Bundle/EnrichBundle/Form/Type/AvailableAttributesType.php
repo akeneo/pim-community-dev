@@ -71,8 +71,8 @@ class AvailableAttributesType extends AbstractType
                     'excluded_attribute_ids' => $options['excluded_attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                 ],
-                'multiple' => true,
-                'expanded' => false,
+                'multiple'           => true,
+                'expanded'           => false,
             ]
         );
     }
