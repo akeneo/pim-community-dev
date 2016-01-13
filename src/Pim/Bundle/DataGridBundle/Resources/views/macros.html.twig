@@ -34,6 +34,11 @@
                     urlParams.params = {{ params|json_encode|raw }};
 
                     {% set hasDefaultView = defaultView is not empty %}
+                    var viewStored = DatagridState.get('{{ name }}', ['view']);
+                    if (!viewStored.view) {
+                        DatagridState.refreshFiltersFromUrl('{{ name }}');
+                    }
+
                     var hasDefaultView = {% if hasDefaultView %}true{% else %}false{% endif %};
                     var state          = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
 
