@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: PIM-5194: to rework on master
  */
 class FamilyController
 {
@@ -26,18 +24,18 @@ class FamilyController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var FamilySearchableRepository */
+    /** @var SearchableRepositoryInterface */
     protected $familySearchableRepo;
 
     /**
-     * @param FamilyRepositoryInterface  $familyRepository
-     * @param NormalizerInterface        $normalizer
-     * @param FamilySearchableRepository $familySearchableRepo
+     * @param FamilyRepositoryInterface     $familyRepository
+     * @param NormalizerInterface           $normalizer
+     * @param SearchableRepositoryInterface $familySearchableRepo
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         NormalizerInterface $normalizer,
-        FamilySearchableRepository $familySearchableRepo = null
+        SearchableRepositoryInterface $familySearchableRepo
     ) {
         $this->familyRepository     = $familyRepository;
         $this->normalizer           = $normalizer;
@@ -53,15 +51,10 @@ class FamilyController
      */
     public function indexAction(Request $request)
     {
-        #TODO: PIM-5194: to rework on master, drop the if condition
-        if (null !== $this->familySearchableRepo) {
-            $query  = $request->query;
-            $search = $query->get('search');
+        $query  = $request->query;
+        $search = $query->get('search');
 
-            $families = $this->familySearchableRepo->findBySearch($search, $query->get('options', []));
-        } else {
-            $families = $this->familyRepository->findAll();
-        }
+        $families = $this->familySearchableRepo->findBySearch($search, $query->get('options', []));
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
