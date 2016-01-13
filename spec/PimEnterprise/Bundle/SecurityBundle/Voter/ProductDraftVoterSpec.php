@@ -4,8 +4,10 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -20,9 +22,11 @@ class ProductDraftVoterSpec extends ObjectBehavior
 {
     function let(
         AttributeGroupRepositoryInterface $attrGroupRepository,
-        AttributeGroupAccessManager $attrGroupAccessManager
+        LocaleRepositoryInterface $localeRepository,
+        AttributeGroupAccessManager $attrGroupAccessManager,
+        VoterInterface $localeVoter
     ) {
-        $this->beConstructedWith($attrGroupRepository, $attrGroupAccessManager);
+        $this->beConstructedWith($attrGroupRepository, $localeRepository, $attrGroupAccessManager, $localeVoter);
     }
 
     function it_is_initializable()
@@ -38,7 +42,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
     function it_supports_product_drafts()
     {
         $this->supportsClass(new ProductDraft())->shouldReturn(true);
-        $this->supportsClass(Argument::any())->shouldReturn(false);
+        $this->supportsClass(new \stdClass())->shouldReturn(false);
     }
 
     function it_supports_the_right_attributes()
@@ -46,46 +50,75 @@ class ProductDraftVoterSpec extends ObjectBehavior
         $this->supportsAttribute(WorkflowAttributes::FULL_REVIEW)->shouldReturn(true);
         $this->supportsAttribute(WorkflowAttributes::PARTIAL_REVIEW)->shouldReturn(true);
         $this->supportsAttribute(SecurityAttributes::OWN)->shouldReturn(true);
+        $this->supportsAttribute('not_supported')->shouldReturn(false);
     }
 
     function it_grants_full_review_access_if_the_user_can_edit_all_values_contained_in_the_draft(
         $attrGroupRepository,
+        $localeRepository,
         $attrGroupAccessManager,
+        $localeVoter,
         UserInterface $user,
         TokenInterface $token,
         ProductDraftInterface $draft,
-        AttributeGroupInterface $group
+        AttributeGroupInterface $group,
+        LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn($this->getChanges(['description']));
+        $draft->getChanges()->willReturn([
+            'values' => [
+                'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
+            ]
+        ]);
 
         $attrGroupRepository
             ->getAttributeGroupsFromAttributeCodes(['description'])
             ->willReturn([$group]);
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
 
         $attrGroupAccessManager
             ->isUserGranted($user, $group, SecurityAttributes::EDIT_ATTRIBUTES)
             ->shouldBeCalled()
             ->willReturn(true);
 
+        $localeVoter
+            ->vote($token, $enLocale, [SecurityAttributes::EDIT_ITEMS])
+            ->shouldBeCalled()
+            ->willReturn(VoterInterface::ACCESS_GRANTED);
+
         $this->vote($token, $draft, [WorkflowAttributes::FULL_REVIEW])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_full_review_access_if_the_user_cannot_edit_one_of_the_values_contained_in_the_draft(
         $attrGroupRepository,
+        $localeRepository,
         $attrGroupAccessManager,
+        $localeVoter,
         UserInterface $user,
         TokenInterface $token,
         ProductDraftInterface $draft,
         AttributeGroupInterface $groupGranted,
-        AttributeGroupInterface $groupDenied
+        AttributeGroupInterface $groupDenied,
+        LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn($this->getChanges(['description', 'price']));
+        $draft->getChanges()->willReturn([
+            'values' => [
+                'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
+                'price'       => [['locale' => null, 'scope' => null, 'data' => '']],
+            ]
+        ]);
 
         $attrGroupRepository
-            ->getAttributeGroupsFromAttributeCodes(['description', 'price'])
-            ->willReturn([$groupGranted, $groupDenied]);
+            ->getAttributeGroupsFromAttributeCodes(['description'])
+            ->willReturn([$groupGranted]);
+
+        $attrGroupRepository
+            ->getAttributeGroupsFromAttributeCodes(['price'])
+            ->willReturn([$groupDenied]);
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
 
         $attrGroupAccessManager
             ->isUserGranted($user, $groupGranted, SecurityAttributes::EDIT_ATTRIBUTES)
@@ -96,54 +129,87 @@ class ProductDraftVoterSpec extends ObjectBehavior
             ->isUserGranted($user, $groupDenied, SecurityAttributes::EDIT_ATTRIBUTES)
             ->shouldBeCalled()
             ->willReturn(false);
+
+        $localeVoter
+            ->vote($token, $enLocale, [SecurityAttributes::EDIT_ITEMS])
+            ->shouldBeCalled()
+            ->willReturn(VoterInterface::ACCESS_GRANTED);
 
         $this->vote($token, $draft, [WorkflowAttributes::FULL_REVIEW])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
     function it_grants_partial_review_access_if_the_user_can_edit_at_least_one_value_contained_in_the_draft(
         $attrGroupRepository,
+        $localeRepository,
         $attrGroupAccessManager,
+        $localeVoter,
         UserInterface $user,
         TokenInterface $token,
         ProductDraftInterface $draft,
         AttributeGroupInterface $groupGranted,
-        AttributeGroupInterface $groupDenied
+        AttributeGroupInterface $groupDenied,
+        LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn($this->getChanges(['description', 'price']));
+        $draft->getChanges()->willReturn([
+            'values' => [
+                'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
+                'price'       => [['locale' => null, 'scope' => null, 'data' => '']],
+            ]
+        ]);
 
         $attrGroupRepository
-            ->getAttributeGroupsFromAttributeCodes(['description', 'price'])
-            ->willReturn([$groupDenied, $groupGranted]);
+            ->getAttributeGroupsFromAttributeCodes(['description'])
+            ->willReturn([$groupGranted]);
 
-        $attrGroupAccessManager
-            ->isUserGranted($user, $groupDenied, SecurityAttributes::EDIT_ATTRIBUTES)
-            ->shouldBeCalled()
-            ->willReturn(false);
+        $attrGroupRepository
+            ->getAttributeGroupsFromAttributeCodes(['price'])
+            ->willReturn([$groupDenied]);
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
 
         $attrGroupAccessManager
             ->isUserGranted($user, $groupGranted, SecurityAttributes::EDIT_ATTRIBUTES)
             ->shouldBeCalled()
             ->willReturn(true);
 
+        $localeVoter
+            ->vote($token, $enLocale, [SecurityAttributes::EDIT_ITEMS])
+            ->shouldBeCalled()
+            ->willReturn(VoterInterface::ACCESS_GRANTED);
+
         $this->vote($token, $draft, [WorkflowAttributes::PARTIAL_REVIEW])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_all_review_accesses_if_the_user_can_edit_none_of_the_values_contained_in_the_draft(
         $attrGroupRepository,
+        $localeRepository,
         $attrGroupAccessManager,
+        $localeVoter,
         UserInterface $user,
         TokenInterface $token,
         ProductDraftInterface $draft,
         AttributeGroupInterface $groupDenied1,
-        AttributeGroupInterface $groupDenied2
+        AttributeGroupInterface $groupDenied2,
+        LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn($this->getChanges(['description', 'price']));
+        $draft->getChanges()->willReturn([
+            'values' => [
+                'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
+                'price'       => [['locale' => null, 'scope' => null, 'data' => '']],
+            ]
+        ]);
 
         $attrGroupRepository
-            ->getAttributeGroupsFromAttributeCodes(['description', 'price'])
-            ->willReturn([$groupDenied1, $groupDenied2]);
+            ->getAttributeGroupsFromAttributeCodes(['description'])
+            ->willReturn([$groupDenied1]);
+
+        $attrGroupRepository
+            ->getAttributeGroupsFromAttributeCodes(['price'])
+            ->willReturn([$groupDenied2]);
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
 
         $attrGroupAccessManager
             ->isUserGranted($user, $groupDenied1, SecurityAttributes::EDIT_ATTRIBUTES)
@@ -207,17 +273,5 @@ class ProductDraftVoterSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $this->vote($token, $product, [SecurityAttributes::OWN])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
-    }
-
-    private function getChanges(array $attributeCodes)
-    {
-        $changes = [];
-        foreach ($attributeCodes as $code) {
-            $changes[$code] = ['value' => ''];
-        }
-
-        return [
-            'values' => $changes
-        ];
     }
 }

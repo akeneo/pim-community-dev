@@ -13,7 +13,7 @@ services:
     pimee_security.voter.attribute:
         class: %pimee_security.voter.attribute.class%
         arguments:
-            - @pimee_security.voter.attribute_group
+            - '@pimee_security.voter.attribute_group'
         tags:
             - { name: security.voter }
 
@@ -49,8 +49,10 @@ services:
     pimee_security.voter.product_draft:
         class: %pimee_security.voter.product_draft.class%
         arguments:
-            - @pim_catalog.repository.attribute_group
-            - @pimee_security.manager.attribute_group_access
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_security.manager.attribute_group_access'
+            - '@pimee_security.voter.locale'
         tags:
             - { name: security.voter }
 

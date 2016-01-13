@@ -22,7 +22,7 @@ Feature: Partial approve
       | field | value         |
       | Name  | Summer jacket |
     And I am logged in as "Mary"
-    And I edit the "jacket" product
+    When I edit the "jacket" product
     Then I should not see the "Proposals" tab
 
   Scenario: I am informed if a proposal can be only partially reviewed
@@ -55,7 +55,7 @@ Feature: Partial approve
       | info            | Manager    | edit   |
       | marketing       | Manager    | view   |
     And I am logged in as "Julia"
-    And I edit the "tshirt" product
+    When I edit the "tshirt" product
     And I visit the "Proposals" tab
     Then I should not see the following partial approve button:
       | product | author | attribute |
@@ -65,24 +65,23 @@ Feature: Partial approve
       | tshirt  | Mary   | name      | en_US  |
 
   Scenario: I can partially approve only on locale I can edit
-    Given I am logged in as "Mary"
-    And I edit the "tshirt" product
-    And I change the Description to "Body whool"
-    And I switch the locale to "fr_FR"
-    And I change the Description to "Maillot de corps"
-    And I save the product
-    And I press the "Send for approval" button
-    And I press the "Send" button in the popin
-    And I logout
-    When I am logged in as "Julia"
-    And I edit the "tshirt" product
+    Given the following locale accesses:
+      | locale | user group | access |
+      | fr_FR  | Redactor   | edit   |
+      | fr_FR  | Manager    | view   |
+    And Mary proposed the following change to "tshirt":
+      | field       | locale | value            |
+      | Description | en_US  | Body whool       |
+      | Description | fr_FR  | Maillot de corps |
+    And I am logged in as "Julia"
+    When I edit the "tshirt" product
     And I visit the "Proposals" tab
-    And I partially approve:
-      | product | author | attribute   | locale | scope  |
-      | tshirt  | Mary   | description | fr_FR  | mobile |
-    Then the product "tshirt" should have the following values:
-      | description-en_US-mobile |                  |
-      | description-fr_FR-mobile | Maillot de corps |
+    Then I should see the following partial approve button:
+      | product | author | attribute   | locale |
+      | tshirt  | Mary   | description | en_US  |
+    But I should not see the following partial approve button:
+      | product | author | attribute   | locale |
+      | tshirt  | Mary   | description | fr_FR  |
 
   Scenario: I should not be able to partially accept a value on a draft in progress
     Given I am logged in as "Mary"
@@ -90,8 +89,8 @@ Feature: Partial approve
     And I change the Name to "The only one"
     And I save the product
     And I logout
-    When I am logged in as "Julia"
-    And I edit the "tshirt" product
+    And I am logged in as "Julia"
+    When I edit the "tshirt" product
     And I visit the "Proposals" tab
     Then I should not see the following partial approve button:
       | product | author | attribute | locale |
