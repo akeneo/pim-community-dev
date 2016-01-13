@@ -3,7 +3,6 @@
 {% block formContent %}
     <label class="control-label">{{ 'Family'|trans }}</label>
     {{ form_row(
-        form.operation.family,
-        {'attr': {'data-placeholder': form.operation.family.vars.attr['data-placeholder']|trans } }
+        form.operation.family
     ) }}
 {% endblock %}
