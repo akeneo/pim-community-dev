@@ -230,6 +230,26 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
 
+  Scenario: Successfully import products when category code is integer
+    Given the following products:
+      | sku    |
+      | jacket |
+    And I am on the category "2014_collection" node creation page
+    And I fill in the following information:
+      | Code | 123 |
+    And I save the category
+    And the following CSV file to import:
+      """
+      sku;categories
+      jacket;123
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then the category of the product "jacket" should be "123"
+
   Scenario: Successfully import a csv file of products without enabled column
     Given the following product:
       | sku     | name-en_US | description-en_US-tablet                    | enabled |

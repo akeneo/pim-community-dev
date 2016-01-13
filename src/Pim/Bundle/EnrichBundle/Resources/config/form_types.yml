@@ -352,6 +352,7 @@ services:
         class: %pim_enrich.form.type.change_family.class%
         arguments:
             - %pim_enrich.mass_edit_action.change_family.class%
+            - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_enrich_mass_change_family }
 
