@@ -183,11 +183,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             $data = array_merge(
-                ['tab' => ''],
+                ['locale' => '', 'tab' => ''],
                 $data
             );
             if ('' !== $data['tab']) {
                 $steps[] = new Step\Given(sprintf('I visit the "%s" group', $data['tab']));
+            }
+            if ('' !== $data['locale']) {
+                $steps[] = new Step\Given(sprintf('I switch the locale to "%s"', $data['locale']));
             }
             if ($scopable) {
                 $steps[] = new Step\Given(
