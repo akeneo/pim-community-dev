@@ -57,15 +57,17 @@ class ProductEditForm extends Form
 
         $list = $this->spin(function () {
             return $this->getElement('Available attributes list');
-        }, sprintf('Cannot find the attribute list element'));
+        }, 'Cannot find the attribute list element');
 
         // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
         // because select2 selects the first element on TAB key press.
-        $this->getSession()->evaluateScript("jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');");
+        $this->getSession()->evaluateScript(
+            "jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');"
+        );
 
         $groupLabels = $this->spin(function () use ($list, $group) {
             return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, sprintf('Cannot find element in the attribute list'));
+        }, 'Cannot find element in the attribute list');
 
         // Maybe a "No matches found"
         $firstResult = $groupLabels[0];
