@@ -61,9 +61,14 @@ function(_, Backbone, groupTemplate) {
                 return undefined !== launcher.getGroup();
             });
 
-            _.each(simpleLaunchers, function(launcher) {
-                this.$el.append(launcher.render().$el);
-            }, this);
+            if (simpleLaunchers.length) {
+                var $container = $('<div></div>');
+                _.each(simpleLaunchers, function (launcher) {
+                    $container.append(launcher.render().$el);
+                }, this);
+
+                this.$el.append($container.addClass('btn-group'));
+            }
 
             if (groupedLaunchers.length) {
                 this.renderGroupedLaunchers(groupedLaunchers);
@@ -72,6 +77,13 @@ function(_, Backbone, groupTemplate) {
             return this;
         },
 
+        /**
+         * Render launchers belonging to actions groups
+         *
+         * @param {Array} launchers
+         *
+         * @return {*}
+         */
         renderGroupedLaunchers: function (launchers) {
             var groupedLaunchers = _.groupBy(launchers, function (launcher) { return launcher.getGroup() });
             var activeGroups = _.pick(this.actionsGroups, _.keys(groupedLaunchers));
@@ -79,18 +91,31 @@ function(_, Backbone, groupTemplate) {
             _.each(activeGroups, function (group, name) {
                 this.$el.append(
                     this.groupTemplate({
-                        name: name,
+                        classname: this.getGroupClassname(name),
                         group: group
                     })
                 );
             }.bind(this));
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
-                var $dropdown = this.$el.find('.' + groupName + '-actions-group .dropdown-menu');
+                var $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .dropdown-menu');
                 _.each(groupLaunchers, function (launcher) {
                     $dropdown.append(launcher.renderAsListItem().$el);
                 });
             }.bind(this));
+
+            return this;
+        },
+
+        /**
+         * Build the class name for the specified action group
+         *
+         * @param {String} groupName
+         *
+         * @return {String}
+         */
+        getGroupClassname: function (groupName) {
+            return groupName.replace('_', '-') + '-actions-group';
         },
 
         /**

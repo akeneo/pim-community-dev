@@ -1,10 +1,10 @@
 <li>
-    <<%= tagName %> href="<%= link %>" class="<%= className %><% if (!enabled) { %> disabled<% } %>"
+    <<%- tagName %> href="<%= link %>" class="<%- className %><% if (!enabled) { %> disabled<% } %>"
         <% _.each(attributes, function(attribute, name) { %>
-            <%= name %>="<%= attribute %>"
+            <%- name %>="<%- attribute %>"
         <% }) %>
         title="<%- label %>"
     >
         <%- label %>
-    </<%= tagName %>>
+    </<%- tagName %>>
 </li>

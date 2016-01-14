@@ -123,7 +123,7 @@ define([
         },
 
         /**
-         * Render actions
+         * Render the launcher as a simple button
          *
          * @return {*}
          */
@@ -138,7 +138,6 @@ define([
                 link: this.link,
                 action: this.action,
                 attributes: this.attributes,
-                attributesTemplate: this.attributesTemplate,
                 enabled: this.enabled,
                 tagName: this.tagName
             }));
@@ -148,18 +147,20 @@ define([
             return this;
         },
 
+        /**
+         * Render the launcher as a list item
+         *
+         * @return {*}
+         */
         renderAsListItem: function () {
             this.$el.empty();
 
             var $el = $(this.listItemTemplate({
                 label: _.__(this.label || this.action.label),
-                icon: this.icon,
-                className: this.className,
-                iconClassName: this.iconClassName,
+                className: 'action' + (this.className ? ' ' + this.className : ''),
                 link: this.link,
                 action: this.action,
                 attributes: this.attributes,
-                attributesTemplate: this.attributesTemplate,
                 enabled: this.enabled,
                 tagName: this.tagName
             }));
@@ -217,7 +218,7 @@ define([
         /**
          * Return the action group
          *
-         * @returns {String}
+         * @return {String}
          */
         getGroup: function () {
             return this.group;
