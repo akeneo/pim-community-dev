@@ -103,6 +103,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 options.icon = this.icon;
             }
             _.defaults(options, this.launcherOptions);
+
             return new (this.launcherPrototype)(options);
         },
 

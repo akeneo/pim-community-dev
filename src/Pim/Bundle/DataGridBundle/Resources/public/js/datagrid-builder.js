@@ -48,6 +48,7 @@ define(function (require) {
                     options: {},
                     state: {},
                     rowActions: {},
+                    massActionsGroups: [],
                     massActions: {}
                 }, self.$el.data('metadata'));
 
@@ -186,6 +187,7 @@ define(function (require) {
                     name: metadata.options.gridName,
                     columns: columns,
                     rowActions: rowActions,
+                    massActionsGroups: metadata.massActionsGroups,
                     massActions: massActions,
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,

@@ -79,6 +79,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                 rowClickAction:      undefined,
                 multipleSorting:     true,
                 rowActions:          [],
+                massActionsGroups:   [],
                 massActions:         []
             },
 
@@ -221,9 +222,10 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              */
             _createToolbar: function (toolbarOptions) {
                 return new this.toolbar(_.extend({}, toolbarOptions, {
-                    collection:  this.collection,
-                    actions:     this._getToolbarActions(),
-                    massActions: this._getToolbarMassActions()
+                    collection:        this.collection,
+                    actions:           this._getToolbarActions(),
+                    massActionsGroups: this.massActionsGroups,
+                    massActions:       this._getToolbarMassActions()
                 }));
             },
 

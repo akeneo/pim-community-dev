@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone'],
-function(_, Backbone) {
+define(['underscore', 'backbone', 'text!pim/template/datagrid/actions-group'],
+function(_, Backbone, groupTemplate) {
     'use strict';
 
     /**
@@ -14,11 +14,17 @@ function(_, Backbone) {
         /** @property String */
         className: 'btn-group',
 
+        /** @property {Array} */
+        actionsGroups: [],
+
         /** @property {Array.<oro.datagrid.AbstractAction>} */
         actions: [],
 
         /** @property {Array.<oro.datagrid.ActionLauncher>} */
         launchers: [],
+
+        /** @property {Function} */
+        groupTemplate: _.template(groupTemplate),
 
         /**
          * Initialize view
@@ -28,6 +34,10 @@ function(_, Backbone) {
          */
         initialize: function(options) {
             options = options || {};
+
+            if (options.actionsGroups) {
+                this.actionsGroups = options.actionsGroups;
+            }
 
             if (options.actions) {
                 this.setActions(options.actions);
@@ -44,11 +54,43 @@ function(_, Backbone) {
         render: function () {
             this.$el.empty();
 
-            _.each(this.launchers, function(launcher) {
+            var simpleLaunchers = _.filter(this.launchers, function (launcher) {
+                return undefined === launcher.getGroup();
+            });
+            var groupedLaunchers = _.filter(this.launchers, function (launcher) {
+                return undefined !== launcher.getGroup();
+            });
+
+            _.each(simpleLaunchers, function(launcher) {
                 this.$el.append(launcher.render().$el);
             }, this);
 
+            if (groupedLaunchers.length) {
+                this.renderGroupedLaunchers(groupedLaunchers);
+            }
+
             return this;
+        },
+
+        renderGroupedLaunchers: function (launchers) {
+            var groupedLaunchers = _.groupBy(launchers, function (launcher) { return launcher.getGroup() });
+            var activeGroups = _.pick(this.actionsGroups, _.keys(groupedLaunchers));
+
+            _.each(activeGroups, function (group, name) {
+                this.$el.append(
+                    this.groupTemplate({
+                        name: name,
+                        group: group
+                    })
+                );
+            }.bind(this));
+
+            _.each(groupedLaunchers, function (groupLaunchers, groupName) {
+                var $dropdown = this.$el.find('.' + groupName + '-actions-group .dropdown-menu');
+                _.each(groupLaunchers, function (launcher) {
+                    $dropdown.append(launcher.renderAsListItem().$el);
+                });
+            }.bind(this));
         },
 
         /**
