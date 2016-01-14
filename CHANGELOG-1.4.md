@@ -8,6 +8,7 @@
 - PIM-5233: Use an asynchronous dropdown list to mass edit family
 - PIM-5418: Fix limit on localizable families search
 - PIM-5379, PIM-5429: Fix memory leak on MongoDB `ProductSaver` and wrong completeness generation
+- PIM-5446: Replace rest attribute configuration action from GET to POST to prevent too long URI
 
 ## BC Breaks
 - Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType` to add `Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface` dependency
