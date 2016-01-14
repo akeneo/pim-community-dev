@@ -109,7 +109,26 @@ class ProductDraftManager
         LocaleInterface $locale = null,
         array $context = []
     ) {
-        $change = $productDraft->getChangeForAttribute($attribute, $channel, $locale);
+        $attributeCode = $attribute->getCode();
+
+        if ($attribute->isScopable() && null === $channel) {
+            throw new \LogicException(sprintf(
+                'Trying to partial approve for the scopable attribute "%s" without scope.',
+                $attributeCode
+            ));
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException(sprintf(
+                'Trying to partial approve for the localizable attribute "%s" without locale.',
+                $attributeCode
+            ));
+        }
+
+        $localeCode = (null !== $locale) ? $locale->getCode() : null;
+        $channelCode = (null !== $channel) ? $channel->getCode() : null;
+
+        $change = $productDraft->getChange($attributeCode, $localeCode, $channelCode);
 
         if (null === $change) {
             throw new \LogicException(sprintf(
@@ -134,7 +153,7 @@ class ProductDraftManager
 
         $this->approve($temporaryDraft, $context);
 
-        $productDraft->removeChangeForAttribute($attribute, $channel, $locale);
+        $productDraft->removeChange($attribute, $channel, $locale);
 
         if (!$productDraft->hasChanges()) {
             $this->productDraftRemover->remove($productDraft, ['flush' => false]);
@@ -158,7 +177,26 @@ class ProductDraftManager
         array $context = []
     )
     {
-        $change = $productDraft->getChangeForAttribute($attribute, $channel, $locale);
+        $attributeCode = $attribute->getCode();
+
+        if ($attribute->isScopable() && null === $channel) {
+            throw new \LogicException(sprintf(
+                'Trying to partial approve for the scopable attribute "%s" without scope.',
+                $attributeCode
+            ));
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException(sprintf(
+                'Trying to partial approve for the localizable attribute "%s" without locale.',
+                $attributeCode
+            ));
+        }
+
+        $localeCode = (null !== $locale) ? $locale->getCode() : null;
+        $channelCode = (null !== $channel) ? $channel->getCode() : null;
+
+        $change = $productDraft->getChange($attributeCode, $localeCode, $channelCode);
 
         if (null === $change) {
             throw new \LogicException(sprintf(
@@ -169,12 +207,14 @@ class ProductDraftManager
             ));
         }
 
-        $localeCode = (null !== $locale) ? $locale->getCode() : null;
-        $channelCode = (null !== $channel) ? $channel->getCode() : null;
+        $productDraft->setReviewStatusForChange(
+            ProductDraftInterface::CHANGE_REJECTED,
+            $attributeCode,
+            (null !== $locale) ? $locale->getCode() : null,
+            (null !== $channel) ? $channel->getCode() : null
+        );
 
-        $this->updateStatusForChange($productDraft, ProductDraftInterface::CHANGE_REJECTED, $attribute->getCode(), $localeCode, $channelCode);
         $this->productDraftSaver->save($productDraft);
-
         //TODO: if all changes are rejected, the draft should be put IN_PROGRESS
     }
 
@@ -276,37 +316,5 @@ class ProductDraftManager
             ProductDraftEvents::POST_READY,
             new GenericEvent($productDraft, ['comment' => $comment])
         );
-    }
-
-    /**
-     * Update the status of a change in a draft.
-     * TODO: move elsewhere,
-     * TODO:   in the entity itself (not real good to work with codes in the entity)?
-     * TODO:   in a ChangeHelper class?
-     *
-     * @param ProductDraftInterface $draft
-     * @param string                $status
-     * @param string                $changeCode
-     * @param string|null           $localeCode
-     * @param string|null           $channelCode
-     */
-    private function updateStatusForChange(ProductDraftInterface $draft, $status, $changeCode, $localeCode = null, $channelCode = null)
-    {
-        $statuses = $draft->getReviewStatuses();
-
-        if (!isset($statuses[$changeCode])) {
-            //TODO: message
-            throw new \LogicException();
-        }
-
-        $changes = $statuses[$changeCode];
-        foreach ($changes as $index => $change) {
-            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                $change['status'] = $status;
-                $statuses[$changeCode][$index] = $change;
-            }
-        }
-
-        $draft->setReviewStatuses($statuses);
     }
 }

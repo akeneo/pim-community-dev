@@ -140,44 +140,19 @@ class ProductDraft implements ProductDraftInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \LogicException
      */
-    public function getChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    ) {
-        $code = $attribute->getCode();
-
-        if ($attribute->isScopable() && null === $channel) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the scopable attribute "%s" without scope.',
-                $code
-            ));
-        }
-
-        if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the localizable attribute "%s" without locale.',
-                $code
-            ));
-        }
-
-        //todo: all this should go in a helper
+    public function getChange($changeCode, $localeCode, $channelCode)
+    {
         if (!isset($this->changes['values'])) {
             return null;
         }
 
-        if (!isset($this->changes['values'][$code])) {
+        if (!isset($this->changes['values'][$changeCode])) {
             return null;
         }
 
-        foreach ($this->changes['values'][$code] as $change) {
-            if (
-                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
-                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
-            ) {
+        foreach ($this->changes['values'][$changeCode] as $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 return $change['data'];
             }
         }
@@ -187,56 +162,88 @@ class ProductDraft implements ProductDraftInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \LogicException
      */
-    public function removeChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    ) {
-        $code = $attribute->getCode();
-
-        if ($attribute->isScopable() && null === $channel) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the scopable attribute "%s" without scope.',
-                $code
-            ));
-        }
-
-        if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the localizable attribute "%s" without locale.',
-                $code
-            ));
-        }
-
-        //TODO: all this should go in a helper
+    public function removeChange($changeCode, $localeCode, $channelCode)
+    {
         if (!isset($this->changes['values'])) {
             return;
         }
 
-        if (!isset($this->changes['values'][$code])) {
+        if (!isset($this->changes['values'][$changeCode])) {
             return;
         }
 
-        foreach ($this->changes['values'][$code] as $index => $change) {
-            if (
-                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
-                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
-            ) {
-                unset($this->changes['values'][$code][$index]);
-                //TODO: CRAPPYYYYY should not use them the same index...
-                unset($this->reviewStatuses[$code][$index]);
+        foreach ($this->changes['values'][$changeCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                unset($this->changes['values'][$changeCode][$index]);
+                $this->removeReviewStatusForChange($channelCode, $localeCode, $channelCode);
             }
         }
 
-        $this->changes['values'][$code] = array_values($this->changes['values'][$code]);
-        //TODO: CRAPPYYYYY too
-        $this->reviewStatuses['values'][$code] = array_values($this->reviewStatuses[$code]);
+        $this->changes['values'][$changeCode] = array_values($this->changes['values'][$changeCode]);
 
-        if (empty($this->changes['values'][$code])) {
-            unset($this->changes['values'][$code]);
+        if (empty($this->changes['values'][$changeCode])) {
+            unset($this->changes['values'][$changeCode]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReviewStatusForChange($changeCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->reviewStatuses[$changeCode])) {
+            return null;
+        }
+
+        foreach ($this->reviewStatuses[$changeCode] as $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                return $change['status'];
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->reviewStatuses[$changeCode])) {
+            //TODO: throw exception
+            return;
+        }
+
+        foreach ($this->reviewStatuses[$changeCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                $this->reviewStatuses[$changeCode][$index]['status'] = $status;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->reviewStatuses[$changeCode])) {
+            return;
+        }
+
+        foreach ($this->reviewStatuses[$changeCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                unset($this->reviewStatuses[$changeCode][$index]);
+            }
+        }
+
+        $this->reviewStatuses[$changeCode] = array_values($this->reviewStatuses[$changeCode]);
+
+        if (empty($this->reviewStatuses[$changeCode])) {
+            unset($this->reviewStatuses[$changeCode]);
         }
     }
 

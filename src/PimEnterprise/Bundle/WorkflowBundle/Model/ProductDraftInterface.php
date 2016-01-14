@@ -88,30 +88,56 @@ interface ProductDraftInterface
     public function hasChanges();
 
     /**
-     * @param AttributeInterface    $attribute
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * Get the change associated to the the given attribute code if it exists.
+     *
+     * @param string $changeCode
+     * @param string $localeCode
+     * @param string $channelCode
      *
      * @return array|null
      */
-    public function getChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    );
+    public function getChange($changeCode, $localeCode, $channelCode);
 
     /**
-     * Remove the change associated to the attribute if it exists
+     * Remove the change associated to the attribute code if it exists
      *
-     * @param AttributeInterface    $attribute
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * @param string $changeCode
+     * @param string $localeCode
+     * @param string $channelCode
      */
-    public function removeChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    );
+    public function removeChange($changeCode, $localeCode, $channelCode);
+
+    /**
+     * Get the review status associated to the the given attribute code if it exists.
+     *
+     * @param string $changeCode
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return array|null
+     */
+    public function getReviewStatusForChange($changeCode, $localeCode, $channelCode);
+
+    /**
+     * Set the review status associated to the the given attribute code if it exists.
+     *
+     * @param string $status
+     * @param string $changeCode
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return ProductInterface
+     */
+    public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode);
+
+    /**
+     * Remove the review status associated to the attribute code if it exists
+     *
+     * @param string $changeCode
+     * @param string $localeCode
+     * @param string $channelCode
+     */
+    public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode);
 
     /**
      * Set status of the draft. Either IN_PROGRESS or READY for review.

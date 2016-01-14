@@ -180,7 +180,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         $statuses = $changes['values'];
         foreach ($statuses as $code => &$items) {
             foreach ($items as &$item) {
-                $status = $this->getStatusForChange($draft, $code, $item['locale'], $item['scope']);
+                $status = $draft->getReviewStatusForChange($code, $item['locale'], $item['scope']);
                 if (null === $status) {
                     $status = ProductDraftInterface::CHANGE_TO_REVIEW;
                 }
@@ -190,36 +190,5 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         }
 
         return $statuses;
-    }
-
-    /**
-     * Get the status of a change in a draft. If the change is not yet present in the draft, null is returned.
-     * TODO: move elsewhere,
-     * TODO:   in the entity itself (not real good to work with codes in the entity)?
-     * TODO:   in a ChangeHelper class?
-     *
-     * @param ProductDraftInterface $draft
-     * @param                       $changeCode
-     * @param                       $localeCode
-     * @param                       $channelCode
-     *
-     * @return string|null
-     */
-    private function getStatusForChange(ProductDraftInterface $draft, $changeCode, $localeCode = null, $channelCode = null)
-    {
-        $statuses = $draft->getReviewStatuses();
-
-        if (!isset($statuses[$changeCode])) {
-            return null;
-        }
-
-        $changes = $statuses[$changeCode];
-        foreach ($changes as $change) {
-            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                return $change['status'];
-            }
-        }
-
-        return null;
     }
 }
