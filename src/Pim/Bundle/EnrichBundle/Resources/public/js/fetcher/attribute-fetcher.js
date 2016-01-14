@@ -42,6 +42,22 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
         },
 
         /**
+         * This method overrides the base method, to send a POST query instead of a GET query, because the request
+         * URI can be too long.
+         * TODO Should be deleted to set it back to GET.
+         *
+         * {@inheritdoc}
+         */
+        getListAsJSON: function (identifiers) {
+            return $.post(
+                Routing.generate(this.options.urls.list),
+                { identifiers: identifiers.join(',') },
+                null,
+                'json'
+            );
+        },
+
+        /**
          * {@inheritdoc}
          */
         clear: function () {

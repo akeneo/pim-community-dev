@@ -114,7 +114,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             }
 
             return $.when(
-                    $.getJSON(Routing.generate(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') }))
+                    this.getListAsJSON(uncachedIdentifiers)
                         .then(_.identity),
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {
@@ -124,6 +124,17 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
                     return getObjects(_.pick(this.entityPromises, identifiers));
                 }.bind(this));
+        },
+
+        /**
+         * Get the list of elements in JSON format.
+         *
+         * @param {Array} identifiers
+         *
+         * @returns {Promise}
+         */
+        getListAsJSON: function (identifiers) {
+            return $.getJSON(Routing.generate(this.options.urls.list, { identifiers: identifiers.join(',') }));
         },
 
         /**

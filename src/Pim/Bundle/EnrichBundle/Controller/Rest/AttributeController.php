@@ -57,7 +57,10 @@ class AttributeController
     }
 
     /**
-     * Get the attribute collection
+     * Get the attribute collection.
+     *
+     * TODO This action is only accessible via a POST query, because of too long query URI. To respect standards, a
+     * refactor must be done.
      *
      * @param Request $request
      *
@@ -66,15 +69,15 @@ class AttributeController
     public function indexAction(Request $request)
     {
         $options = [];
-        if ($request->query->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        if ($request->request->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
         }
 
-        if ($request->query->has('types')) {
-            $options['types'] = explode(',', $request->query->get('types'));
+        if ($request->request->has('types')) {
+            $options['types'] = explode(',', $request->request->get('types'));
         }
         if (empty($options)) {
-            $options = $request->query->get(
+            $options = $request->request->get(
                 'options',
                 ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
             );
@@ -85,7 +88,7 @@ class AttributeController
 
         if (null !== $this->attributeSearchRepository) {
             $attributes = $this->attributeSearchRepository->findBySearch(
-                $request->query->get('search'),
+                $request->request->get('search'),
                 $options
             );
         } else {
