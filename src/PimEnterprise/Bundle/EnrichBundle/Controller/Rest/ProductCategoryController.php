@@ -36,7 +36,7 @@ class ProductCategoryController extends BaseProductCategoryController
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductCategoryRepositoryInterface $productCategoryRepository,
-        ObjectFilterInterface $objectFilter = null
+        ObjectFilterInterface $objectFilter
     ) {
         parent::__construct($productRepository, $productCategoryRepository);
 
@@ -44,26 +44,21 @@ class ProductCategoryController extends BaseProductCategoryController
     }
 
     /**
-     * {@inheritdoc}
+     * Overridden trees to return only granted categories 
      *
-     * @AclAncestor("pim_enrich_product_categories_view")
+     * @param array $trees
+     *
+     * @return array
      */
-    public function listAction($id)
+    protected function buildTrees(array $trees)
     {
-        $product = $this->findProductOr404($id);
-        $trees   = $this->productCategoryRepository->getProductCountByTree($product);
+        $result = [];
 
-        $result = [
-            'trees'      => [],
-            'categories' => []
-        ];
         foreach ($trees as $tree) {
             $category = $tree['tree'];
 
-            if (null === $this->objectFilter || (null !== $this->objectFilter &&
-                !$this->objectFilter->filterObject($category, 'pim.internal_api.product_category.view'))) {
-
-                $result['trees'][] = [
+            if (!$this->objectFilter->filterObject($category, 'pim.internal_api.product_category.view')) {
+                $result[] = [
                     'id'         => $category->getId(),
                     'code'       => $category->getCode(),
                     'label'      => $category->getLabel(),
@@ -72,14 +67,6 @@ class ProductCategoryController extends BaseProductCategoryController
             }
         }
 
-        foreach ($product->getCategories() as $category) {
-            $result['categories'][] = [
-                'id'     => $category->getId(),
-                'code'   => $category->getCode(),
-                'rootId' => $category->getRoot(),
-            ];
-        }
-
-        return new JsonResponse($result);
+        return $result;
     }
 }
