@@ -30,8 +30,8 @@ pimee_workflow:
             refuse: %owner% has rejected your proposal for the product %product%
             remove: %owner% has deleted your proposal for the product %product%
         mass_review_action:
-            approve: Approve selected
-            refuse:  Reject selected
+            approve: Approve all selected
+            refuse:  Reject all selected
             error:
                 draft_not_ready: This proposal is not ready to be approved
                 not_product_owner: You don't own the product related to this proposal
