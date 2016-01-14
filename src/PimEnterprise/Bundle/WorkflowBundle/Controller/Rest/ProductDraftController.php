@@ -144,6 +144,7 @@ class ProductDraftController
      * @param Request $request
      * @param mixed   $id
      * @param string  $code
+     * @param string  $action either "approve" or "reject"
      *
      * @throws NotFoundHttpException
      * @throws \LogicException
@@ -151,9 +152,13 @@ class ProductDraftController
      *
      * @return JsonResponse
      */
-    public function partialApproveAction(Request $request, $id, $code)
+    public function partialReviewAction(Request $request, $id, $code, $action)
     {
         $productDraft = $this->findProductDraftOr404($id);
+
+        if (!in_array($action, ['approve', 'reject'])) {
+            throw new \LogicException('Only "approve" or "reject" are valid review actions.');
+        }
 
         if (null === $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" not found', $code));
@@ -190,7 +195,8 @@ class ProductDraftController
         }
 
         try {
-            $this->manager->partialApprove($productDraft, $attribute, $channel, $locale, [
+            $method = 'partial' . ucfirst($action);
+            $this->manager->$method($productDraft, $attribute, $channel, $locale, [
                 'comment' => $request->query->get('comment')
             ]);
         } catch (ValidatorException $e) {

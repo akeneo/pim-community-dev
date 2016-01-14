@@ -105,6 +105,9 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $productDraft->setChanges($diff);
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
 
+            $changeStatuses = $this->buildChangeStatuses($productDraft, $diff);
+            $productDraft->setReviewStatuses($changeStatuses);
+
             return $productDraft;
         }
 
@@ -164,5 +167,59 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected function getOriginalValue(array $originalValues, $code, $index)
     {
         return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
+    }
+
+    /**
+     * @param ProductDraftInterface $draft
+     * @param array                 $changes
+     *
+     * @return array
+     */
+    protected function buildChangeStatuses(ProductDraftInterface $draft, array $changes)
+    {
+        $statuses = $changes['values'];
+        foreach ($statuses as $code => &$items) {
+            foreach ($items as &$item) {
+                $status = $this->getStatusForChange($draft, $code, $item['locale'], $item['scope']);
+                if (null === $status) {
+                    $status = ProductDraftInterface::CHANGE_TO_REVIEW;
+                }
+                $item['status'] = $status;
+                unset($item['data']);
+            }
+        }
+
+        return $statuses;
+    }
+
+    /**
+     * Get the status of a change in a draft. If the change is not yet present in the draft, null is returned.
+     * TODO: move elsewhere,
+     * TODO:   in the entity itself (not real good to work with codes in the entity)?
+     * TODO:   in a ChangeHelper class?
+     *
+     * @param ProductDraftInterface $draft
+     * @param                       $changeCode
+     * @param                       $localeCode
+     * @param                       $channelCode
+     *
+     * @return string|null
+     */
+    private function getStatusForChange(ProductDraftInterface $draft, $changeCode, $localeCode = null, $channelCode = null)
+    {
+        $statuses = $draft->getReviewStatuses();
+
+        if (!isset($statuses[$changeCode])) {
+            return null;
+        }
+
+        $changes = $statuses[$changeCode];
+        foreach ($changes as $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                return $change['status'];
+            }
+        }
+
+        return null;
     }
 }

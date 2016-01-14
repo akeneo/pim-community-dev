@@ -144,6 +144,41 @@ class ProductDraftManager
     }
 
     /**
+     * @param ProductDraftInterface $productDraft
+     * @param AttributeInterface    $attribute
+     * @param ChannelInterface|null $channel
+     * @param LocaleInterface|null  $locale
+     * @param array                 $context
+     */
+    public function partialReject(
+        ProductDraftInterface $productDraft,
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null,
+        array $context = []
+    )
+    {
+        $change = $productDraft->getChangeForAttribute($attribute, $channel, $locale);
+
+        if (null === $change) {
+            throw new \LogicException(sprintf(
+                'Change for attribute "%s" on scope "%s" and locale "%s" not found in the product.',
+                $attribute->getLabel(),
+                $channel->getLabel(),
+                $locale->getName()
+            ));
+        }
+
+        $localeCode = (null !== $locale) ? $locale->getCode() : null;
+        $channelCode = (null !== $channel) ? $channel->getCode() : null;
+
+        $this->updateStatusForChange($productDraft, ProductDraftInterface::CHANGE_REJECTED, $attribute->getCode(), $localeCode, $channelCode);
+        $this->productDraftSaver->save($productDraft);
+
+        //TODO: if all changes are rejected, the draft should be put IN_PROGRESS
+    }
+
+    /**
      * Approve a product draft
      *
      * @param ProductDraftInterface $productDraft
@@ -241,5 +276,37 @@ class ProductDraftManager
             ProductDraftEvents::POST_READY,
             new GenericEvent($productDraft, ['comment' => $comment])
         );
+    }
+
+    /**
+     * Update the status of a change in a draft.
+     * TODO: move elsewhere,
+     * TODO:   in the entity itself (not real good to work with codes in the entity)?
+     * TODO:   in a ChangeHelper class?
+     *
+     * @param ProductDraftInterface $draft
+     * @param string                $status
+     * @param string                $changeCode
+     * @param string|null           $localeCode
+     * @param string|null           $channelCode
+     */
+    private function updateStatusForChange(ProductDraftInterface $draft, $status, $changeCode, $localeCode = null, $channelCode = null)
+    {
+        $statuses = $draft->getReviewStatuses();
+
+        if (!isset($statuses[$changeCode])) {
+            //TODO: message
+            throw new \LogicException();
+        }
+
+        $changes = $statuses[$changeCode];
+        foreach ($changes as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                $change['status'] = $status;
+                $statuses[$changeCode][$index] = $change;
+            }
+        }
+
+        $draft->setReviewStatuses($statuses);
     }
 }

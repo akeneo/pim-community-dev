@@ -164,6 +164,7 @@ class ProductDraft implements ProductDraftInterface
             ));
         }
 
+        //todo: all this should go in a helper
         if (!isset($this->changes['values'])) {
             return null;
         }
@@ -210,6 +211,7 @@ class ProductDraft implements ProductDraftInterface
             ));
         }
 
+        //TODO: all this should go in a helper
         if (!isset($this->changes['values'])) {
             return;
         }
@@ -224,10 +226,14 @@ class ProductDraft implements ProductDraftInterface
                 && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
             ) {
                 unset($this->changes['values'][$code][$index]);
+                //TODO: CRAPPYYYYY should not use them the same index...
+                unset($this->reviewStatuses[$code][$index]);
             }
         }
 
         $this->changes['values'][$code] = array_values($this->changes['values'][$code]);
+        //TODO: CRAPPYYYYY too
+        $this->reviewStatuses['values'][$code] = array_values($this->reviewStatuses[$code]);
 
         if (empty($this->changes['values'][$code])) {
             unset($this->changes['values'][$code]);
