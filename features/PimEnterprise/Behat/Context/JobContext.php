@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Behat\Context;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
 use Pim\Behat\Context\JobContext as BaseJobContext;
 
