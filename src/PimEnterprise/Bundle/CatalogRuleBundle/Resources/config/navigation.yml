@@ -1,0 +1,18 @@
+oro_menu_config:
+    items:
+        pim_catalog_rule_rule:
+            label: pimee_catalog_rule.datagrid.rule-grid.title
+            route: pimee_catalog_rule_rule_index
+            aclResourceId: pimee_catalog_rule_rule_view_permissions
+            extras:
+                routes: ['/^pimee_catalog_rule_rule_\w+$/']
+
+    tree:
+        application_menu:
+            children:
+                pim_configuration_tab:
+                    children:
+                        pim_catalog_rule_rule: ~
+
+oro_titles:
+    pimee_catalog_rule_rule_index: pimee_catalog_rule.datagrid.rule-grid.title

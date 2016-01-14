@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\CatalogRule\Model;
-
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
 /**
  * Link between a rule and a resource to know that the rule if applicable to the resource.

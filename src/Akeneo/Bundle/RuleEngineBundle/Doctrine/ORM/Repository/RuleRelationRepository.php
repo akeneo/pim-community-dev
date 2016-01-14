@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 
 /**
  * Rule relation repository
@@ -21,17 +21,13 @@ use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterfa
  */
 class RuleRelationRepository extends EntityRepository implements RuleRelationRepositoryInterface
 {
-    /** @var string */
-    protected $ruleRelationClass;
-
     /**
      * {@inheritdoc}
      */
     public function isResourceImpactedByRule($resourceId, $resourceName)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder()
+        $qb = $this->createQueryBuilder('rlr')
             ->select('1')
-            ->from($this->getClassName(), 'rlr')
             ->where('rlr.resourceName = :resource_name AND rlr.resourceId = :resource_id')
             ->setMaxResults(1)
             ->setParameters([':resource_name' => $resourceName, ':resource_id' => $resourceId]);

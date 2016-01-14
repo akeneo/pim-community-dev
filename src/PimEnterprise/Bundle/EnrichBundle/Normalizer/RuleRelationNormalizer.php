@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

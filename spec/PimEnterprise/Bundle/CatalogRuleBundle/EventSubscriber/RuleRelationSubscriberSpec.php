@@ -5,6 +5,8 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -13,8 +15,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Component\CatalogRule\Model\RuleRelationInterface;
-use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -32,8 +32,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
             $ruleRelationSaver,
             $ruleRelationRemover,
             $ruleRelationRepo,
-            $productRuleBuilder,
-            'PimEnterprise\Component\CatalogRule\Model\RuleRelation'
+            $productRuleBuilder
         );
     }
 
@@ -87,6 +86,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
         RuleRelationInterface $oldResource1,
         RuleRelationInterface $oldResource2
     ) {
+        $ruleRelationRepo->getClassName()->willReturn('Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation');
         $event->getDefinition()->shouldBeCalled()->willReturn($definition);
         $definition->getId()->willReturn(42);
 

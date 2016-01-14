@@ -40,24 +40,20 @@ Feature: Show localized rules
     Given I am logged in as "Julia"
     And I am on the "another_decimal_number" attribute page
     When I visit the "Rules" tab
-    Then I should see the following rule conditions:
-      | rule    | field          | operator | value |
-      | my_rule | decimal_number | =        | 10.50 |
-    And I should see the following rule setter actions:
-      | rule    | field                  | value            |
-      | my_rule | another_decimal_number | 5.5679           |
-      | my_rule | decimal_price          | €12.50           |
-      | my_rule | decimal_metric         | 10.50 Centimeter |
+    Then the row "my_rule" should contain the texts:
+      | column    | value                                            |
+      | Condition | If decimal_number equals 10.5                    |
+      | Action    | Then 5.5679 is set into another_decimal_number   |
+      | Action    | Then €12.50 is set into decimal_price            |
+      | Action    | Then 10.50 Centimeter is set into decimal_metric |
 
   Scenario: Successfully show french rules of an attribute
     Given I am logged in as "Julien"
     And I am on the "another_decimal_number" attribute page
     When I visit the "Règles" tab
-    Then I should see the following rule conditions:
-      | rule    | field          | operator | value |
-      | my_rule | decimal_number | =        | 10,50 |
-    And I should see the following rule setter actions:
-      | rule    | field                  | value            |
-      | my_rule | another_decimal_number | 5,5679           |
-      | my_rule | decimal_price          | 12,50 €          |
-      | my_rule | decimal_metric         | 10,50 Centimètre |
+    Then the row "my_rule" should contain the texts:
+      | column    | value                                              |
+      | Condition | Si decimal_number est égal à 10.5                  |
+      | Action    | Alors 5,5679 est mis dans another_decimal_number   |
+      | Action    | Alors 12,50 € est mis dans decimal_price           |
+      | Action    | Alors 10,50 Centimètre est mis dans decimal_metric |

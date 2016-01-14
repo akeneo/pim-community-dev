@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Decores a rule definition to be able to select its subjects and apply it.
  *
@@ -27,6 +29,9 @@ class Rule implements RuleInterface
     /** @var ActionInterface[] */
     protected $actions;
 
+    /** @var ArrayCollection */
+    protected $relations;
+
     /**
      * The constructor
      *
@@ -35,8 +40,9 @@ class Rule implements RuleInterface
     public function __construct(RuleDefinitionInterface $definition)
     {
         $this->definition = $definition;
-        $this->actions = [];
+        $this->actions    = [];
         $this->conditions = [];
+        $this->relations  = new ArrayCollection();
     }
 
     /**
@@ -173,5 +179,23 @@ class Rule implements RuleInterface
         $this->definition->setPriority($priority);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRelations($relations)
+    {
+        $this->relation = $relations;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRelations()
+    {
+        return $this->relations;
     }
 }

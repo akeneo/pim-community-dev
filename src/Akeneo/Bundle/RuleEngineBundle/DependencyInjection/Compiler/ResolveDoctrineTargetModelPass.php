@@ -25,10 +25,12 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
      */
     protected function getParametersMapping()
     {
-        $class = 'akeneo_rule_engine.model.rule_definition.class';
+        $definitionClass = 'akeneo_rule_engine.model.rule_definition.class';
+        $relationClass   = 'akeneo_rule_engine.model.rule_relation.class';
 
         return [
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface' => $class,
+            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface' => $definitionClass,
+            'Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface'   => $relationClass,
         ];
     }
 }

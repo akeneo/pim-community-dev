@@ -8,8 +8,7 @@ services:
             - '@pimee_catalog_rule.manager.rule_relation'
             - '@pimee_catalog_rule.saver.rule_relation'
             - '@pimee_catalog_rule.remover.rule_relation'
-            - '@pimee_catalog_rule.repository.rule_relation'
+            - '@akeneo_rule_engine.repository.rule_relation'
             - '@pimee_catalog_rule.builder.product'
-            - %pimee_catalog_rule.model.rule_relation.class%
         tags:
             - { name: kernel.event_subscriber}

@@ -1,0 +1,47 @@
+datagrid:
+    rule-grid:
+        source:
+            acl_resource: pimee_catalog_rule_rule_view_permissions
+            repository_method: createDatagridQueryBuilder
+            type: pim_datasource_rule
+            entity: %akeneo_rule_engine.model.rule_definition.class%
+        columns:
+            code:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.code
+            conditions:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.conditions
+                type: twig
+                template: PimEnterpriseCatalogRuleBundle:Rule:_conditions.html.twig
+                frontend_type: html
+                data_name: content
+            actions:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.actions
+                type: twig
+                template: PimEnterpriseCatalogRuleBundle:Rule:_actions.html.twig
+                frontend_type: html
+                data_name: content
+        properties:
+            id: ~
+            delete_link:
+                type: url
+                route: pimee_catalog_rule_rule_delete
+                params:
+                    - id
+        actions:
+            delete:
+                type: delete
+                label: pimee_catalog_rule.datagrid.rule-grid.actions.delete
+                icon: trash
+                link: delete_link
+                acl_resource:  pimee_catalog_rule_rule_delete_permissions
+        filters:
+            columns:
+                code:
+                    type: string
+                    data_name:   r.code
+        sorters:
+            columns:
+                code:
+                    data_name: r.code
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC

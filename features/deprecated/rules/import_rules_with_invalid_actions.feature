@@ -114,9 +114,9 @@ Feature: Import rules
     And I should see "actions[0].fromField: The key \"from_field\" is missing or empty."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with missing to_field key for copy action
@@ -169,9 +169,9 @@ Feature: Import rules
     And I should see "actions[0].toField: The key \"to_field\" is missing or empty."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with missing value key for set action
@@ -673,9 +673,9 @@ Feature: Import rules
     And I should see "actions[0]: You cannot copy data from \"another wrong\" field to the \"description\" field."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with non existing to_field for copy action
@@ -732,9 +732,9 @@ Feature: Import rules
     And I should see "actions[0]: You cannot copy data from \"description\" field to the \"another wrong\" field."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with incompatible fields for copy action
@@ -790,9 +790,9 @@ Feature: Import rules
     And I should see "actions[0]: No copier found for fields \"description\" and \"side_view\""
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with wrong locale fields for copy action
@@ -851,9 +851,9 @@ Feature: Import rules
     And I should see "actions[0]: Attribute or field \"name\" excepts valid data, scope and locale (for copier base). Attribute \"name\" expects an existing and activated locale, \"wrong\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Skip rules with wrong scope fields for copy action
@@ -916,6 +916,6 @@ Feature: Import rules
     And I should see "actions[0]: Attribute or field \"description\" excepts valid data, scope and locale (for copier base). Attribute \"description\" expects an existing scope, \"wrong\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule copier actions:
-      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                                                          |
+      | Action | Then description [ en \| mobile ] is coppied into description [ en \| tablet ] |

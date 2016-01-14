@@ -34,12 +34,10 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     And I am on the "description" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule conditions:
-      | rule                        | field | operator | value |
-      | canon_beautiful_description | name  | CONTAINS | Canon |
-    Then I should see the following rule setter actions:
-      | rule                        | field       | value                   | locale | scope  |
-      | canon_beautiful_description | description | A beautiful description | en     | tablet |
+    Then the row "canon_beautiful_description" should contain the texts:
+      | column    | value                                                                 |
+      | Condition | If name contains Canon                                                |
+      | Action    | Then A beautiful description is set into description [ en \| tablet ] |
 
   @deprecated
   Scenario: Import valid rule for "text" attribute in conditions and "set value" actions

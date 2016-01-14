@@ -6,7 +6,5 @@ services:
         scope: request
         class: %pimee_catalog_rule.controller.rule.class%
         arguments:
-            - '@pimee_catalog_rule.manager.rule_relation'
-            - '@akeneo_rule_engine.remover.rule_definition'
             - '@akeneo_rule_engine.repository.rule_definition'
-            - '@pim_internal_api_serializer'
+            - '@akeneo_rule_engine.remover.rule_definition'

@@ -1,0 +1,12 @@
+parameters:
+    pimee_catalog_rule.twig.rule_extension.class: PimEnterprise\Bundle\CatalogRuleBundle\Twig\RuleExtension
+
+services:
+    pimee_catalog_rule.twig.rule_extension:
+        class: %pimee_catalog_rule.twig.rule_extension.class%
+        public: false
+        arguments:
+            - @pim_localization.presenter.registry
+            - @pim_localization.resolver.locale
+        tags:
+            - { name: twig.extension }

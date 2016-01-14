@@ -41,11 +41,9 @@ Feature: Show all rules related to an attribute
   Scenario: Successfully show rules of a reference data attribute
     Given I am on the "sole_color" attribute page
     And I visit the "Rules" tab
-    Then I should see the following rule conditions:
-      | rule     | field            | operator | value                         | locale | scope |
-      | set_sole | sole_color.code  | IN       | Red, Green, Light green, Blue |        |       |
-      | set_sole | sole_fabric.code | IN       | PVC, Nylon                    |        |       |
-    Then I should see the following rule setter actions:
-      | rule     | field       | value                | locale | scope |
-      | set_sole | sole_color  | Yellow               |        |       |
-      | set_sole | sole_fabric | PVC, Nylon, Neoprene |        |       |
+    Then the row "set_sole" should contain the texts:
+      | column    | value                                               |
+      | Condition | If sole_color.code in Red, Green, Light green, Blue |
+      | Condition | If sole_fabric.code in PVC, Nylon                   |
+      | Action    | Then Yellow is set into sole_color                  |
+      | Action    | Then PVC, Nylon, Neoprene is set into sole_fabric   |

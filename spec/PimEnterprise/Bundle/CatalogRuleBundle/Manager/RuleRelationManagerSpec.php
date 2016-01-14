@@ -4,6 +4,8 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +14,6 @@ use Pim\Component\Catalog\Model\AbstractAttribute;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\RuleRelation;
-use PimEnterprise\Component\CatalogRule\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use Prophecy\Argument;
 

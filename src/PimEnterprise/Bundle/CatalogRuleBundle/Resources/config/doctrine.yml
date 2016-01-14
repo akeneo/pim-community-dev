@@ -5,7 +5,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_catalog_rule.model.rule_relation.class%
+            - %akeneo_rule_engine.model.rule_relation.class%
 
     pimee_catalog_rule.remover.rule_relation:
         class: %pim_catalog.remover.base.class%
@@ -13,4 +13,4 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_catalog_rule.model.rule_relation.class%
+            - %akeneo_rule_engine.model.rule_relation.class%

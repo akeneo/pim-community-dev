@@ -30,6 +30,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
 
+    pim_datagrid.datasource.rule:
+        class: %pim_datagrid.datasource.default.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_rule }
+
     pim_datagrid.datasource.support_resolver:
         class: %pim_datagrid.datasource.support_resolver.class%
         arguments:

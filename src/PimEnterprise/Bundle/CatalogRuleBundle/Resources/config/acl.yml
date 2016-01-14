@@ -1,4 +1,9 @@
 pimee_catalog_rule_rule_view_permissions:
     type: action
-    label: pimee_catalog_rule.attribute.acl.rule.view_permissions
-    group_name: pim_enrich.acl_group.attribute
+    label: pimee_catalog_rule.acl.rule.view_permissions
+    group_name: pimee_catalog_rule.acl_group.rule
+
+pimee_catalog_rule_rule_delete_permissions:
+    type: action
+    label: pimee_catalog_rule.acl.rule.delete_permissions
+    group_name: pimee_catalog_rule.acl_group.rule

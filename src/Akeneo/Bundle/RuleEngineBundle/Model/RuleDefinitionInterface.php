@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Rule interface
  *
@@ -73,4 +75,16 @@ interface RuleDefinitionInterface
      * @return RuleDefinitionInterface
      */
     public function setPriority($priority);
+
+    /**
+     * @param ArrayCollection $relations
+     *
+     * @return RuleDefinitionInterface
+     */
+    public function setRelations($relations);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRelations();
 }

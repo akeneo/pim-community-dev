@@ -11,6 +11,7 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -21,6 +22,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class RuleDefinitionRepository extends EntityRepository implements RuleDefinitionRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = new RuleQueryBuilder($this->_em);
+        $qb->select('r.id, r.code, r.content');
+        $qb->from($this->_entityName, 'r');
+
+        return $qb;
+    }
+
     /**
      * {@inheritdoc}
      */
