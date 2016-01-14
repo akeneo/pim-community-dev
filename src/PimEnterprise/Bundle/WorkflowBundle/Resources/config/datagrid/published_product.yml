@@ -3,7 +3,6 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
