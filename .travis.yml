@@ -21,9 +21,8 @@ cache:
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then composer remove --no-update doctrine/mongodb-odm-bundle; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console assets:install; fi;'
