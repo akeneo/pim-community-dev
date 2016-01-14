@@ -23,12 +23,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 interface ProductDraftInterface
 {
-    /** @staticvar integer */
     const IN_PROGRESS = 0;
-
-    /** @staticvar integer */
     const READY = 1;
 
+    const CHANGE_TO_REVIEW = 'to_review';
+    const CHANGE_REJECTED = 'rejected';
+    const CHANGE_APPROVED = 'approved';
     /**
      * @return int
      */
@@ -114,18 +114,36 @@ interface ProductDraftInterface
     );
 
     /**
-     * Set status
+     * Set status of the draft. Either IN_PROGRESS or READY for review.
      *
      * @param int $status
      */
     public function setStatus($status);
 
     /**
-     * Get status
+     * Get status of the draft. Either IN_PROGRESS or READY for review.
      *
      * @return int
      */
     public function getStatus();
+
+    /**
+     * TODO: could be removed if merged with setChanges
+     *
+     * Set statuses of the changes
+     *
+     * @param array $statuses
+     */
+    public function setReviewStatuses(array $statuses);
+
+    /**
+     * TODO: could be removed if merged with getChanges
+     *
+     * Get statuses of the changes
+     *
+     * @return array
+     */
+    public function getReviewStatuses();
 
     /**
      * Whether or not product draft is in progress

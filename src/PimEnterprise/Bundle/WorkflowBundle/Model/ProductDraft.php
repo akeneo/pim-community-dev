@@ -38,6 +38,9 @@ class ProductDraft implements ProductDraftInterface
     /** @var array */
     protected $changes = [];
 
+    /** @var array */
+    protected $reviewStatuses = [];
+
     /** @var int */
     protected $status;
 
@@ -245,6 +248,8 @@ class ProductDraft implements ProductDraftInterface
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -253,6 +258,24 @@ class ProductDraft implements ProductDraftInterface
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReviewStatuses(array $statuses)
+    {
+        $this->reviewStatuses = $statuses;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReviewStatuses()
+    {
+        return $this->reviewStatuses;
     }
 
     /**
