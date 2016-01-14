@@ -4,6 +4,7 @@
 - PIM-5213: Paginate loading of attributes on Product Edit Form and Mass Edit Common Attributes action
 
 ## Bug fixes
+- PIM-5021: Forbid the use of code `category` for an attribute
 - PIM-5233: Use an asynchronous dropdown list to mass edit family
 - PIM-5418: Fix limit on localizable families search
 
