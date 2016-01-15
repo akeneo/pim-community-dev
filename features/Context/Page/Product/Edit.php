@@ -1013,4 +1013,22 @@ class Edit extends ProductEditForm
 
         return $this->getElement('Category tree');
     }
+
+    /**
+     * @return NodeElement
+     */
+    public function getSaveAndBackButton()
+    {
+        $submit = $this->spin(function () {
+            return $this->find('css', '.submit-form');
+        }, 'Submit button not found');
+
+        $submit->find('css', '.dropdown-toggle')->click();
+
+        $dropdownMenu = $submit->find('css', '.dropdown-menu');
+
+        return $this->spin(function () use ($dropdownMenu) {
+            return $dropdownMenu->find('css', '.save-product-and-back');
+        }, '"Save and back" button not found');
+    }
 }

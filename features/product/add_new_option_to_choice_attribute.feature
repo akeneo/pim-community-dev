@@ -34,7 +34,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
       | en   | Extremely wet |
-    And I press "Save and back" on the "Save" dropdown button
+    And I save and back to the grid
     And I click on the "shoes" row
     When I fill in the following information:
       | Weather conditions | Extremely wet |
