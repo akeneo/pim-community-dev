@@ -9,7 +9,6 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\ProductEditForm;
 use Context\Page\Category\CategoryView;
-use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Product edit page
@@ -25,9 +24,6 @@ class Edit extends ProductEditForm
      */
     protected $path = '/enrich/product/{id}';
 
-    /** @var JsTreeManipulator */
-    protected $jsTreeManipulator;
-
     /**
      * {@inheritdoc}
      */
@@ -35,7 +31,6 @@ class Edit extends ProductEditForm
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -764,30 +759,6 @@ class Edit extends ProductEditForm
         }
 
         $node->click();
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Classify
-     */
-    public function expandCategory($category)
-    {
-        $this->jsTreeManipulator->expandNode($this->getCategoryTree(), $category);
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        return $this->jsTreeManipulator->findNodeInTree($this->getCategoryTree(), $category);
     }
 
     /**

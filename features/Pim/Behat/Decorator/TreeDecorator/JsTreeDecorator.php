@@ -1,16 +1,22 @@
 <?php
 
-namespace Pim\Behat\Manipulator\TreeManipulator;
+namespace Pim\Behat\Decorator\TreeDecorator;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Js tree lib manipulator to ease the dom manipulation and assertion arround it.
+ * Js tree lib Decorator to ease the dom manipulation and assertion arround it.
  */
-class JsTreeManipulator
+class JsTreeDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
+
+    public function construct(NodeElement $element)
+    {
+        $this->element = $element;
+    }
 
     /**
      * @param NodeElement $rootElement
@@ -18,10 +24,10 @@ class JsTreeManipulator
      *
      * @return NodeElement
      */
-    public function findNodeInTree(NodeElement $rootElement, $nodeName)
+    public function findNodeInTree($nodeName)
     {
         $node = $this->spin(function () use ($rootElement, $nodeName) {
-            return $rootElement->find('css', sprintf('li a:contains("%s")', $nodeName));
+            return $this->element->find('css', sprintf('li a:contains("%s")', $nodeName));
         }, sprintf('Unable to find node "%s" in the tree', $nodeName));
 
         return $node;
@@ -32,9 +38,9 @@ class JsTreeManipulator
      *
      * @return Edit
      */
-    public function expandNode(NodeElement $rootElement, $nodeName)
+    public function expandNode($nodeName)
     {
-        $node = $this->findNodeInTree($rootElement, $nodeName)->getParent();
+        $node = $this->findNodeInTree($nodeName)->getParent();
         if ($node->hasClass('jstree-closed')) {
             $nodeElement = $this->spin(function () use ($node) {
                 return $node->find('css', 'ins');

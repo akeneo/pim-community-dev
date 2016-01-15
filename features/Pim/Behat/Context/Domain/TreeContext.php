@@ -28,8 +28,9 @@ class TreeContext extends PimContext
      */
     public function iExpandTheNode($node)
     {
-        $this->getCurrentPage()->expandCategory($node);
-        $this->wait(); //TODO remove this wait
+        $this->getCurrentPage()
+            ->getElement('Category tree')
+            ->expandNode($node);
     }
 
     /**
@@ -55,7 +56,10 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
+        $parentNode = $this->getCurrentPage()
+            ->getElement('Category tree')
+            ->findCategory($parent);
+
         $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
@@ -87,7 +91,9 @@ class TreeContext extends PimContext
      */
     public function iClickOnTheNode($right, $node)
     {
-        $node = $this->getCurrentPage()->findCategoryInTree($node);
+        $node = $this->getCurrentPage()
+            ->getElement('Category tree')
+            ->findCategory($node);
 
         if ($right) {
             $node->rightClick();

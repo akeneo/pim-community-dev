@@ -36,11 +36,15 @@ class Base extends Page
     /**
      * {@inheritdoc}
      */
-    public function getElement($name, $message = 'no message')
+    public function getElement($name)
     {
-        return $this->spin(function () use ($name) {
-            return parent::getElement($name);
-        }, $message);
+        $element = parent::getElement($name);
+
+        if (isset($this->elements[$name]['decorator'])) {
+            $element = new $this->elements[$name]['decorator']($element);
+        }
+
+        return $element;
     }
 
     /**

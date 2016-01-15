@@ -3,7 +3,6 @@
 namespace Context\Page\Batch;
 
 use Context\Page\Base\Wizard;
-use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Batch Classify page
@@ -14,9 +13,6 @@ use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
  */
 class Classify extends Wizard
 {
-    /** @var JsTreeManipulator */
-    protected $jsTreeManipulator;
-
     /**
      * {@inheritdoc}
      */
@@ -49,29 +45,5 @@ class Classify extends Wizard
         $link->click();
 
         return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Classify
-     */
-    public function expandCategory($category)
-    {
-        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }

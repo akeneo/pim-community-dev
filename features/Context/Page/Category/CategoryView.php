@@ -4,7 +4,6 @@ namespace Context\Page\Category;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
-use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Abstract page view for categories
@@ -17,9 +16,6 @@ use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
  */
 abstract class CategoryView extends Form
 {
-    /** @var JsTreeManipulator */
-    protected $jsTreeManipulator;
-
     /**
      * {@inheritdoc}
      */
@@ -27,7 +23,6 @@ abstract class CategoryView extends Form
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -83,27 +78,5 @@ abstract class CategoryView extends Form
         $this->dragElementTo($category1, $category2);
 
         return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Classify
-     */
-    public function expandCategory($category)
-    {
-        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }
