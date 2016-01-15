@@ -40,7 +40,7 @@ class PimVersioningBundle extends Bundle
             )
         );
 
-        $currentStorageDriver = $container->get('pim_catalog_product_storage_driver');
+        $currentStorageDriver = $container->getParameter('pim_catalog_product_storage_driver');
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $currentStorageDriver) {
             $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
