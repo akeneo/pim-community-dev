@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -51,8 +51,8 @@ class PimEnterpriseCatalogBundle extends Bundle
             )
         );
 
-        $mongoDBClass = AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
-        if ($mongoDBClass === $this->container->get('pim_catalog_product_storage_driver')) {
+        if (class_exists(AkeneoStorageUtilsBundle::DOCTRINE_MONGODB)) {
+            $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $productMappings,
