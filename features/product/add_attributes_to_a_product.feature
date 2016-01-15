@@ -30,7 +30,7 @@ Feature: Add attributes to a product
   Scenario: Successfully add a metric attribute to a product
     Given I am on the "boots" product page
     And I add available attribute Length
-    Then I should see "Length"
+    Then I should see the text "Length"
     And I should see "Centimeter"
     When I change the Length to "29 CENTIMETER"
     And I save the product

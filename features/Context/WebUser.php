@@ -199,6 +199,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
+     * @Then /^I should be on the "([^"]*)" tab$/
+     */
+    public function iShouldBeOnTheTab($tab)
+    {
+        $tabElement = $this->getCurrentPage()->getFormTab($tab);
+
+        if (!$tabElement->getParent()->hasClass('active')) {
+            throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
+        }
+    }
+
+    /**
      * @Then /^I should (not )?see the "([^"]*)" tab$/
      */
     public function iShouldSeeTheTab($not, $tab)

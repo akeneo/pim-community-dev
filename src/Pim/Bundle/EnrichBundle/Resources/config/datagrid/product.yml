@@ -61,12 +61,17 @@ datagrid:
                     - id
         actions:
             edit:
+                type:      navigate
+                label:
+                icon:
+                link:      edit_link
+                rowAction: true
+            edit_attributes:
                 type:      tab-redirect
                 label:     Edit attributes of the product
                 tab:       pim-product-edit-form-attributes
                 icon:      edit
                 link:      edit_link
-                rowAction: true
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
