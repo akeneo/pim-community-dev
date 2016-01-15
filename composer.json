@@ -34,6 +34,7 @@
         "behat/mink-selenium2-driver": "1.2.0",
         "behat/symfony2-extension": "1.1.2",
         "behat/transliterator":"1.0.1",
+        "doctrine/mongodb-odm-bundle": "v3.0.1",
         "kriswallsmith/buzz": ">=0.5",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
