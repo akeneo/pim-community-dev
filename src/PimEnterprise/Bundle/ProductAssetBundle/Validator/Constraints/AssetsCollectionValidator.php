@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
