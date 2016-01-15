@@ -13,12 +13,19 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-before_script:
+before_install:
+    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then
+        phpenv config-rm xdebug.ini;
+      fi
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
+
+install:
+    - if [ "$TRAVIS_PHP_VERSION" = "hhvm" ] || [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
+        composer remove --dev --no-update doctrine/mongodb-odm-bundle;
+      else
+        echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+      fi;
     - composer update --prefer-dist --no-interaction
     - ./app/console oro:requirejs:generate-config
     - ./app/console assets:install
