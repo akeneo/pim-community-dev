@@ -52,7 +52,7 @@ class PimEnterpriseCatalogBundle extends Bundle
         );
 
         $mongoDBClass = AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
-        if ($mongoDBClass === $this->container->get('pim_catalog_product_storage_driver')) {
+        if ($mongoDBClass === $this->container->getParameter('pim_catalog_product_storage_driver')) {
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $productMappings,
