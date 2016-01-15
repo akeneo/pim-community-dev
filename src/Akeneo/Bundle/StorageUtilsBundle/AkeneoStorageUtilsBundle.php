@@ -2,7 +2,6 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -50,9 +49,7 @@ class AkeneoStorageUtilsBundle extends Bundle
     {
         $container->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('akeneo_repository'));
 
-        $currentStorageDriver = $container->get('pim_catalog_product_storage_driver');
-
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $currentStorageDriver) {
+        if (class_exists(self::DOCTRINE_MONGODB)) {
             // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
             // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
             $definition = $container->register(

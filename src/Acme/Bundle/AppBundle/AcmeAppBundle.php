@@ -3,7 +3,6 @@
 namespace Acme\Bundle\AppBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -31,9 +30,7 @@ class AcmeAppBundle extends Bundle
             )
         );
 
-        $currentStorageDriver = $container->get('pim_catalog_product_storage_driver');
-
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $currentStorageDriver) {
+        if (class_exists(AkeneoStorageUtilsBundle::DOCTRINE_MONGODB)) {
             $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
