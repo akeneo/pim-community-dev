@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -19,7 +20,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -48,6 +48,9 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
+    /** @var string */
+    protected $storageDriver;
+
     /**
      * @param ObjectManager                   $objectManager
      * @param NormalizerInterface             $normalizer
@@ -55,6 +58,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $productDraftRepo
+     * @param string                          $storageDriver
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -62,7 +66,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepo
+        ProductDraftRepositoryInterface $productDraftRepo,
+        $storageDriver
     ) {
         $this->objectManager          = $objectManager;
         $this->normalizer             = $normalizer;
@@ -70,6 +75,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         $this->attributeRepository    = $attributeRepository;
         $this->factory                = $factory;
         $this->productDraftRepository = $productDraftRepo;
+        $this->storageDriver          = $storageDriver;
     }
 
     /**
@@ -133,7 +139,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getOriginalValues(ProductInterface $product)
     {
-        if (class_exists(PimEnterpriseWorkflowBundle::DOCTRINE_MONGODB)) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
             $originalProduct = $this->objectManager->find(ClassUtils::getClass($product), $product->getId());
             $this->objectManager->refresh($originalProduct);
             $originalValues = $originalProduct->getValues();

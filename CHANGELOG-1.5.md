@@ -4,6 +4,7 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder`. Add parameter `pim_catalog_product_storage_driver`
 - Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
 - Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
 - Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`

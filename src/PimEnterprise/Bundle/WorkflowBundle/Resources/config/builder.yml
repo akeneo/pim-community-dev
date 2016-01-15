@@ -11,3 +11,4 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
+            - %pim_catalog_product_storage_driver%
