@@ -17,8 +17,9 @@ pimee_workflow:
             can_not_be_approved: Can't be reviewed
             can_not_be_deleted: Can't be deleted
         status_message:
-            can_not_be_approved: You can't approve or reject this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
-            can_not_be_deleted: You can't delete this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
+            can_be_partially_reviewed: You can review this proposal only partially because some changes apply on values you can't edit. Please contact your administrator to change your rights.
+            can_not_be_approved: You can't review this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
+            can_not_be_deleted: You can't delete this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
         action:
             approve: Approve
             refuse:  Refuse
