@@ -48,13 +48,8 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
          *
          * {@inheritdoc}
          */
-        getListAsJSON: function (identifiers) {
-            return $.post(
-                Routing.generate(this.options.urls.list),
-                { identifiers: identifiers.join(',') },
-                null,
-                'json'
-            );
+        getJSON: function (url, parameters) {
+            return $.post(Routing.generate(url), parameters, null, 'json');
         },
 
         /**
