@@ -320,22 +320,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder()->eagerCursor(true);
-
-        $qb->field('groupIds')->in([$variantGroup->getId()]);
-
-        foreach ($criteria as $item) {
-            $andExpr = $qb
-                ->expr()
-                ->field('values')
-                ->elemMatch(['attribute' => (int) $item['attribute']->getId(), 'option' => $item['option']->getId()]);
-
-            $qb->addAnd($andExpr);
-        }
-
+        $qb     = $this->findAllForVariantGroupQB($variantGroup, $criteria);
         $cursor = $qb->getQuery()->execute();
+
         $products = [];
         foreach ($cursor as $product) {
             $products[] = $product;
@@ -397,7 +386,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -409,11 +398,9 @@ class ProductRepository extends DocumentRepository implements
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->execute();
+        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
-        if (0 === $result->count() ||
-            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
-        ) {
+        if (null === $result || (null !== $result && $value->getEntity()->getId() === (string) $result['_id'])) {
             return false;
         }
 
@@ -455,7 +442,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createVariantGroupDatagridQueryBuilder(array $params = array())
+    public function createVariantGroupDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -471,7 +458,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createAssociationDatagridQueryBuilder(array $params = array())
+    public function createAssociationDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -585,7 +572,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function getFullProducts(array $productIds, array $attributeIds = [])
     {
         $qb = $this->createQueryBuilder('p');
         $qb->field('_id')->in($productIds);
@@ -745,5 +732,53 @@ class ProductRepository extends DocumentRepository implements
         $count = $qb->getQuery()->execute()->count();
 
         return $count;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb
+            ->select('_id')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        $products = [];
+        foreach ($cursor as $product) {
+            $product['id'] = (string) $product['_id'];
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
+
+        $qb->field('groupIds')->in([$variantGroup->getId()]);
+
+        foreach ($criteria as $item) {
+            $andExpr = $qb
+                ->expr()
+                ->field('values')
+                ->elemMatch(['attribute' => (int) $item['attribute']->getId(), 'option' => $item['option']->getId()]);
+
+            $qb->addAnd($andExpr);
+        }
+
+        return $qb;
     }
 }
