@@ -36,7 +36,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
          * @return {Promise}
          */
         fetchByTypes: function (attributeTypes) {
-            return $.getJSON(Routing.generate(this.options.urls.list, { types: attributeTypes.join(',') }))
+            return this.getJSON(this.options.urls.list, { types: attributeTypes.join(',') })
                 .then(_.identity)
                 .promise();
         },
