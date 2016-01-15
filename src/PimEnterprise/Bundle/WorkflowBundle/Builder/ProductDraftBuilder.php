@@ -102,11 +102,10 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
+            $diff = $this->buildReviewStatusesInChanges($productDraft, $diff);
             $productDraft->setChanges($diff);
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
 
-            $changeStatuses = $this->buildChangeStatuses($productDraft, $diff);
-            $productDraft->setReviewStatuses($changeStatuses);
 
             return $productDraft;
         }
@@ -175,7 +174,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      *
      * @return array
      */
-    protected function buildChangeStatuses(ProductDraftInterface $draft, array $changes)
+    protected function buildReviewStatusesInChanges(ProductDraftInterface $draft, array $changes)
     {
         $statuses = $changes['values'];
         foreach ($statuses as $code => &$items) {
@@ -189,6 +188,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             }
         }
 
-        return $statuses;
+        $changes['review_statuses'] = $statuses;
+
+        return $changes;
     }
 }

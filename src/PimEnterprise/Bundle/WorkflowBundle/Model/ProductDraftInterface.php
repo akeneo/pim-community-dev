@@ -154,24 +154,6 @@ interface ProductDraftInterface
     public function getStatus();
 
     /**
-     * TODO: could be removed if merged with setChanges
-     *
-     * Set statuses of the changes
-     *
-     * @param array $statuses
-     */
-    public function setReviewStatuses(array $statuses);
-
-    /**
-     * TODO: could be removed if merged with getChanges
-     *
-     * Get statuses of the changes
-     *
-     * @return array
-     */
-    public function getReviewStatuses();
-
-    /**
      * Whether or not product draft is in progress
      *
      * @return bool

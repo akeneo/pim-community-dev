@@ -38,9 +38,6 @@ class ProductDraft implements ProductDraftInterface
     /** @var array */
     protected $changes = [];
 
-    /** @var array */
-    protected $reviewStatuses = [];
-
     /** @var int */
     protected $status;
 
@@ -192,11 +189,11 @@ class ProductDraft implements ProductDraftInterface
      */
     public function getReviewStatusForChange($changeCode, $localeCode, $channelCode)
     {
-        if (!isset($this->reviewStatuses[$changeCode])) {
+        if (!isset($this->changes['review_statuses'][$changeCode])) {
             return null;
         }
 
-        foreach ($this->reviewStatuses[$changeCode] as $change) {
+        foreach ($this->changes['review_statuses'][$changeCode] as $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 return $change['status'];
             }
@@ -211,14 +208,14 @@ class ProductDraft implements ProductDraftInterface
      */
     public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode)
     {
-        if (!isset($this->reviewStatuses[$changeCode])) {
+        if (!isset($this->changes['review_statuses'][$changeCode])) {
             //TODO: throw exception
             return;
         }
 
-        foreach ($this->reviewStatuses[$changeCode] as $index => $change) {
+        foreach ($this->changes['review_statuses'][$changeCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                $this->reviewStatuses[$changeCode][$index]['status'] = $status;
+                $this->changes['review_statuses'][$changeCode][$index]['status'] = $status;
             }
         }
 
@@ -230,20 +227,20 @@ class ProductDraft implements ProductDraftInterface
      */
     public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode)
     {
-        if (!isset($this->reviewStatuses[$changeCode])) {
+        if (!isset($this->changes['review_statuses'][$changeCode])) {
             return;
         }
 
-        foreach ($this->reviewStatuses[$changeCode] as $index => $change) {
+        foreach ($this->changes['review_statuses'][$changeCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                unset($this->reviewStatuses[$changeCode][$index]);
+                unset($this->changes['review_statuses'][$changeCode][$index]);
             }
         }
 
-        $this->reviewStatuses[$changeCode] = array_values($this->reviewStatuses[$changeCode]);
+        $this->changes['review_statuses'][$changeCode] = array_values($this->changes['review_statuses'][$changeCode]);
 
-        if (empty($this->reviewStatuses[$changeCode])) {
-            unset($this->reviewStatuses[$changeCode]);
+        if (empty($this->changes['review_statuses'][$changeCode])) {
+            unset($this->changes['review_statuses'][$changeCode]);
         }
     }
 
@@ -271,24 +268,6 @@ class ProductDraft implements ProductDraftInterface
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setReviewStatuses(array $statuses)
-    {
-        $this->reviewStatuses = $statuses;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReviewStatuses()
-    {
-        return $this->reviewStatuses;
     }
 
     /**
