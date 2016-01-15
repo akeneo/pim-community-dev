@@ -50,7 +50,7 @@ class AkeneoStorageUtilsBundle extends Bundle
     {
         $container->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('akeneo_repository'));
 
-        $currentStorageDriver = $container->getParameter('pim_catalog_product_storage_driver');
+        $currentStorageDriver = $container->get('pim_catalog_product_storage_driver');
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $currentStorageDriver) {
             // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
