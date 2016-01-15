@@ -14,6 +14,9 @@ confirmation:
     user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr de vouloir supprimer ce rôle ?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Export rapide
   mass_action:
     delete:
       confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
