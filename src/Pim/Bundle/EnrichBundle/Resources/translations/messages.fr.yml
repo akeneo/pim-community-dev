@@ -102,7 +102,7 @@ pim_enrich:
         L'action de masse "changement de statut" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     edit-common-attributes:
       label: Modifier les attributs
-      description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
+      description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: "Le processus de mise à jour du statut de produit(s) est en cours d'exécution"
       launched_flash: |-

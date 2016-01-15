@@ -101,7 +101,6 @@ pim_enrich:
       launched_flash: 'Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
     edit-common-attributes:
       label: Muokkaa attribuutteja
-      description: 'Valitun tuotteen attribuutit muokkautuvat seuraavalla datalla valitulla alueella. '
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: 'Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä'
       launched_flash: 'Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
@@ -703,7 +702,6 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa yleisiä attribuutteja
-    description: Valitun tuotteen attribuutit muokkautuvat seuraavalla datalla valitulla alueella.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.

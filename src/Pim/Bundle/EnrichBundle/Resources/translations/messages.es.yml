@@ -101,7 +101,7 @@ pim_enrich:
       launched_flash: 'La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.'
     edit-common-attributes:
       label: Editar atributos
-      description: Atributos del producto seleccionado serán editados con los siguientes datos de la configuración elegida.
+      description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
       success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
       launched_flash: 'La acción en masa "editar atributos comunes" ha sido lanzada. Será notificado una vez finalizada.'
@@ -703,7 +703,7 @@ pim_enrich.mass_edit_action:
     success_flash: Estado de los producto(s) han sido cambiados
   edit-common-attributes:
     label: Editar atributos comunes
-    description: Los atributos del producto seleccionado serán editados con los siguientes datos para el local seleccionado.
+    description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
     empty: Por favor, seleccione atributo(s) que desea editar
     success_flash: Atributo(s) del producto(s) han sido actualizados
     message.warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
