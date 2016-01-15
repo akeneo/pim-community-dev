@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5422: Fix memory leak on import product
+
 # 1.3.35 (2015-12-29)
 
 # 1.3.34 (2015-12-17)
