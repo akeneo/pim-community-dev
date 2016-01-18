@@ -40,8 +40,10 @@ class Base extends Page
     {
         $element = parent::getElement($name);
 
-        if (isset($this->elements[$name]['decorator'])) {
-            $element = new $this->elements[$name]['decorator']($element);
+        if (isset($this->elements[$name]['decorators'])) {
+            foreach ($this->elements[$name]['decorators'] as $decorator) {
+                $element = new $decorator($element);
+            }
         }
 
         return $element;

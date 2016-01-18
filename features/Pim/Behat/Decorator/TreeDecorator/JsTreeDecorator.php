@@ -13,11 +13,6 @@ class JsTreeDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
-    public function construct(NodeElement $element)
-    {
-        $this->element = $element;
-    }
-
     /**
      * @param NodeElement $rootElement
      * @param string      $nodeName

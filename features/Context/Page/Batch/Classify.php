@@ -20,12 +20,14 @@ class Classify extends Wizard
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
                 'Trees list'    => ['css' => '#trees-list'],
-                'Category tree' => ['css' => '#trees'],
+                'Category tree' => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
             ]
         );
     }

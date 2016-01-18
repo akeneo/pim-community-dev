@@ -26,7 +26,10 @@ abstract class CategoryView extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Category tree'    => ['css' => '#tree'],
+                'Category tree'    => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
                 'Tree select'      => ['css' => '#tree_select'],
                 'Right click menu' => ['css' => '#vakata-contextmenu'],
             ]

@@ -42,7 +42,10 @@ class Edit extends ProductEditForm
                 'Image preview'           => ['css' => '#lbImage'],
                 'Completeness'            => ['css' => '.completeness-block'],
                 'Category pane'           => ['css' => '#product-categories'],
-                'Category tree'           => ['css' => '#trees'],
+                'Category tree'    => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
                 'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
                 'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],

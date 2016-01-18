@@ -4,21 +4,30 @@ namespace Pim\Behat\Decorator;
 
 use Behat\Mink\Element\NodeElement;
 
+/**
+ * Simple abstract class to ease the decorator pattern on Mink elements
+ */
 abstract class ElementDecorator
 {
+    /** @var mixed The decorated element */
     protected $element;
 
+    /**
+     * @param NodeElement $element
+     */
     public function construct(NodeElement $element)
     {
         $this->element = $element;
     }
 
-    public function __call (string $name, array $arguments)
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call(string $name, array $arguments)
     {
-        if (!method_exists($this->elements, $name)) {
-            return call_user_func_array(array($this->elements, $name), $arguments);
-        } else {
-            throw new \InvalidArgumentException(sprintf('No method found called %s on this element', $name));
-        }
+        return call_user_func_array(array($this->elements, $name), $arguments);
     }
 }
