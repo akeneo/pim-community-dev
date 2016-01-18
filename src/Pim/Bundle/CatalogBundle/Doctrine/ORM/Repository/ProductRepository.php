@@ -160,37 +160,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder('Product');
-
-        $qb
-            ->where(':variantGroup MEMBER OF Product.groups')
-            ->setParameter('variantGroup', $variantGroup);
-
-        $index = 0;
-        foreach ($criteria as $item) {
-            $code = $item['attribute']->getCode();
-            ++$index;
-            $qb
-                ->innerJoin(
-                    'Product.values',
-                    sprintf('Value_%s', $code),
-                    'WITH',
-                    sprintf('Value_%s.attribute = ?%d', $code, $index)
-                )
-                ->setParameter($index, $item['attribute']);
-
-            if (isset($item['option'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
-                    ->setParameter($index, $item['option']);
-            } elseif (isset($item['referenceData'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
-                    ->setParameter($index, $item['referenceData']['data']);
-            }
-        }
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
 
         return $qb->getQuery()->getResult();
     }
@@ -296,7 +268,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -402,10 +374,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $criteria = array(
+        $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
-        );
+        ];
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
 
         return (
@@ -552,7 +524,7 @@ class ProductRepository extends EntityRepository implements
             ->groupBy('a.id');
 
         $attributes = $qb->getQuery()->getArrayResult();
-        $attributeIds = array();
+        $attributeIds = [];
         foreach ($attributes as $attribute) {
             $attributeIds[] = $attribute['id'];
         }
@@ -620,5 +592,60 @@ class ProductRepository extends EntityRepository implements
             ->getSingleScalarResult();
 
         return $count;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb->select('Product.id');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return QueryBuilder
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder('Product');
+
+        $qb
+            ->where(':variantGroup MEMBER OF Product.groups')
+            ->setParameter('variantGroup', $variantGroup);
+
+        $index = 0;
+        foreach ($criteria as $item) {
+            $code = $item['attribute']->getCode();
+            ++$index;
+            $qb
+                ->innerJoin(
+                    'Product.values',
+                    sprintf('Value_%s', $code),
+                    'WITH',
+                    sprintf('Value_%s.attribute = ?%d', $code, $index)
+                )
+                ->setParameter($index, $item['attribute']);
+
+            if (isset($item['option'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
+                    ->setParameter($index, $item['option']);
+            } elseif (isset($item['referenceData'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
+                    ->setParameter($index, $item['referenceData']['data']);
+            }
+        }
+
+        return $qb;
     }
 }
