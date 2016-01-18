@@ -94,7 +94,7 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then the category of "sandals" should be "winter_collection"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3765
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-3765
   Scenario: Fail to revert attribute affected by a variant group
     Given the following product:
       | sku          | family  | size |

@@ -6,7 +6,10 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
+use PimEnterprise\Behat\Context\JobContext;
 use PimEnterprise\Behat\Context\HookContext;
 
 /**
@@ -37,6 +40,10 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+
+        $this->useContext('job', new JobContext());
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
 
         $this->setTimeout($parameters);
     }

@@ -101,8 +101,8 @@ class CategoryTreeController extends BaseCategoryTreeController
             throw new AccessDeniedException();
         }
 
-        $selectNodeId  = $request->get('select_node_id', -1);
-        $context       = $request->get('context', false);
+        $selectNodeId = $request->get('select_node_id', -1);
+        $context      = $request->get('context', false);
 
         try {
             $selectNode = $this->findGrantedCategory($selectNodeId, $context);
@@ -112,8 +112,12 @@ class CategoryTreeController extends BaseCategoryTreeController
             $selectNode = $this->userContext->getAccessibleUserTree();
         }
 
-        $grantedCategoryIds = $this->getGrantedCategories();
-        $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
+        if (self::CONTEXT_MANAGE === $context) {
+            $grantedTrees = $this->categoryRepository->getTrees();
+        } else {
+            $grantedCategoryIds = $this->getGrantedCategories();
+            $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
+        }
 
         return [
             'trees'          => $grantedTrees,
@@ -130,7 +134,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected function getChildrenCategories(Request $request, $selectNode)
     {
         $parent        = $this->findCategory($request->get('id'));
-        $isEditGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
+        $isEditGranted = $this->securityFacade->isGranted($this->buildAclName('category_edit'));
         $context       = $request->get('context', false);
 
         if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
@@ -178,11 +182,16 @@ class CategoryTreeController extends BaseCategoryTreeController
             throw new AccessDeniedException('You can not access this category');
         }
 
-        if (self::CONTEXT_MANAGE === $context && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            throw new AccessDeniedException('You can not access this category');
+        $category = $this->findCategory($categoryId);
+
+        if (self::CONTEXT_MANAGE === $context) {
+            if (!$this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
+                throw new AccessDeniedException('You can not access this category');
+            }
+
+            return $category;
         }
 
-        $category = $this->findCategory($categoryId);
         if (false === $this->securityFacade->isGranted(Attributes::VIEW_ITEMS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }

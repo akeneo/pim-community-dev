@@ -44,8 +44,7 @@ Feature: On a product edit/show display impacted attributes
               - Neoprene
       """
     When I am on the "red-heels" product page
-    And I add available attributes New sole fabric
-    And I add available attributes New sole color
+    And I add available attributes New sole fabric, New sole color
     Then I should see that New sole color is a smart
     And I should see that New sole fabric is a smart
 

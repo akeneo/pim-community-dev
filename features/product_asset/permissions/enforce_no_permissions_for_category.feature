@@ -62,3 +62,14 @@ Feature: Enforce no permissions for an asset category
     And I change the page size to 25
     And I click on the "grantedOne" row
     And I should see the "Save" button
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5402
+  Scenario: Successfully manage an asset category when there is no permission
+    Given I am logged in as "Mary"
+    When I edit the "asset_main_catalog" asset category
+    And I visit the "Permissions" tab
+    And I fill in "Allowed to view assets" with "" on the current page
+    And I save the category
+    Then I should see the "Images" category under the "Asset main catalog" category
+    And I should see the "Print" category under the "Asset main catalog" category
+    And I expand the "Asset main catalog" category

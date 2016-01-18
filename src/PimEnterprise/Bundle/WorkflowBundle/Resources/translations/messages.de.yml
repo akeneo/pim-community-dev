@@ -39,6 +39,8 @@ pimee_workflow:
         invalid_draft: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
   proposal:
     to_review: '%author.firstname% %author.lastname% hat einen Vorschlag für das Produkt %product.label% übermittelt'
+    individual_import: '%author.firstname% %author.lastname% hat Vorschläge aus Job-Import zur Überprüfung geschickt'
+    generic_import: Sie haben Vorschläge aus Job-Import zum Prüfen
     original_value: Original
     new_value: Neu
   published_product:
@@ -65,6 +67,7 @@ pimee_workflow:
   steps:
     product_draft_processor.title: Vorschlag-Prozessor
 pimee_workflow_product_draft_notification_new_proposal: Neuer Vorschlag
+pimee_workflow_import_notification_new_proposals: Neue Vorschläge aus Import
 btn.publish: Veröffentlichen
 btn.unpublish: Veröffentlichung entziehen
 pimee_workflow_product_draft_notification_partial_approve: Vorschlag teilweise genehmigt
@@ -118,3 +121,4 @@ job_execution.summary:
   proposal_updated: Vorschlag aktualisiert
   proposal_created: Vorschlag erstellt
   proposal_skipped: Übersprungener Vorschlag (keine Unterschiede)
+published products: Veröffentlichte Produkte

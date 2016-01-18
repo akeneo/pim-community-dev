@@ -48,7 +48,7 @@ Feature: Display proposal widget
     And I expand the "2014 collection" category
     And I expand the "Summer collection" category
     And I click on the "Jackets" category
-    And I press the "Save" button
+    And I save the product
     And I logout
     And I am logged in as "Julia"
     And I go to the dashboard page
