@@ -69,7 +69,7 @@ class CommandLauncher
     {
         $cmd  = $this->buildCommandString($command);
         if (null === $logfile) {
-            $logfile = sprintf('%s/logs/command_execute.log', $this->rootDir);
+            $logfile = sprintf('%s/logs/%s.log', $this->rootDir, $logfile);
         }
         $cmd .= sprintf(' >> %s 2>&1', $logfile);
         exec($cmd);
