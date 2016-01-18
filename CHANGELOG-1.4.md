@@ -1,7 +1,18 @@
-# 1.4.x
+# 1.4.17 (2016-01-18)
+
+## Scalability improvements
+- PIM-5213: Paginate loading of attributes on Product Edit Form and Mass Edit Common Attributes action
 
 ## Bug fixes
 - PIM-5402: Product catalog disappears from dropdown menu when no permissions given
+- PIM-5021: Forbid the use of code `category` for an attribute
+- PIM-5233: Use an asynchronous dropdown list to mass edit family
+- PIM-5418: Fix limit on localizable families search
+- PIM-5379, PIM-5429: Fix memory leak on MongoDB `ProductSaver` and wrong completeness generation
+- PIM-5446: Replace rest attribute configuration action from GET to POST to prevent too long URI
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType` to add `Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface` dependency
 
 # 1.4.16 (2016-01-07)
 
