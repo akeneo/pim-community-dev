@@ -9,8 +9,11 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\HookContext;
+use Pim\Behat\Context\JobContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -51,8 +54,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
-        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('job', new JobContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
+        $this->useContext('domain-variant-group', new VariantGroupContext());
 
         $this->setTimeout($parameters);
     }
@@ -163,7 +169,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @param string $condition
      *
-     * @throws BehaviorException
+     * @throws BehaviorException If timeout is reached
      */
     public function wait($condition = null)
     {

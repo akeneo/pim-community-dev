@@ -37,3 +37,15 @@ Feature: Classify a product
     And I press the "Save" button
     And I visit the "Categories" tab
     Then I should see 2 category count
+
+  Scenario: Successfully save product when category code is integer
+    Given I am on the category "2014_collection" node creation page
+    And I fill in the following information:
+      | Code | 123 |
+    And I save the category
+    And I edit the "tea" product
+    And I visit the "Categories" tab
+    And I expand the "2014 collection" category
+    And I click on the "123" category
+    When I save the product
+    Then I should see "Product successfully updated"

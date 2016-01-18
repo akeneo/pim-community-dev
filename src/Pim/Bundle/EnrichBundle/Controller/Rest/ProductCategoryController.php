@@ -50,26 +50,8 @@ class ProductCategoryController
         $product = $this->findProductOr404($id);
         $trees   = $this->productCategoryRepository->getProductCountByTree($product);
 
-        $result = [
-            'trees'      => [],
-            'categories' => []
-        ];
-        foreach ($trees as $tree) {
-            $result['trees'][] = [
-                'id'         => $tree['tree']->getId(),
-                'code'       => $tree['tree']->getCode(),
-                'label'      => $tree['tree']->getLabel(),
-                'associated' => $tree['itemCount'] > 0
-            ];
-        }
-
-        foreach ($product->getCategories() as $category) {
-            $result['categories'][] = [
-                'id'     => $category->getId(),
-                'code'   => $category->getCode(),
-                'rootId' => $category->getRoot(),
-            ];
-        }
+        $result['trees']      = $this->buildTrees($trees);
+        $result['categories'] = $this->buildCategories($product);
 
         return new JsonResponse($result);
     }
@@ -94,5 +76,48 @@ class ProductCategoryController
         }
 
         return $product;
+    }
+
+    /**
+     * @param array $trees
+     *
+     * @return array
+     */
+    protected function buildTrees(array $trees)
+    {
+        $result = [];
+
+        foreach ($trees as $tree) {
+            $category = $tree['tree'];
+
+            $result[] = [
+                'id'         => $category->getId(),
+                'code'       => $category->getCode(),
+                'label'      => $category->getLabel(),
+                'associated' => $tree['itemCount'] > 0
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function buildCategories(ProductInterface $product)
+    {
+        $result = [];
+
+        foreach ($product->getCategories() as $category) {
+            $result[] = [
+                'id'     => $category->getId(),
+                'code'   => $category->getCode(),
+                'rootId' => $category->getRoot(),
+            ];
+        }
+
+        return $result;
     }
 }
