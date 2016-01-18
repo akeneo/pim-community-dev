@@ -164,15 +164,11 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
 
         $productDrafts = $this->getProductDrafts($product);
         foreach ($productDrafts as $productDraft) {
-            $uow->scheduleExtraUpdate(
-                $productDraft,
-                [
-                    'categoryIds' => [
-                        $productDraft->getCategoryIds(),
-                        $categoryIds
-                    ]
-                ]
-            );
+            $oldCategories = $productDraft->getCategoryIds();
+            $productDraft->setCategoryIds($categoryIds);
+            // TODO: Refactor this
+            $uow->propertyChanged($productDraft, 'categoryIds', $oldCategories, $categoryIds);
+            $uow->scheduleForUpdate($productDraft);
         }
     }
 
@@ -181,7 +177,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductInterface $product
      *
-     * @return array
+     * @return ProductDraftInterface[]|null
      */
     protected function getProductDrafts(ProductInterface $product)
     {
