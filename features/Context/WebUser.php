@@ -244,7 +244,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
-        $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+        $actualVersions = $this->spin(function () {
+            return $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+        });
 
         if ((int) $expectedCount !== count($actualVersions)) {
             throw new \Exception(
