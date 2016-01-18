@@ -5,13 +5,16 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -20,7 +23,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupSaver implements SaverInterface
+class GroupSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -32,13 +35,16 @@ class GroupSaver implements SaverInterface
     protected $templateMediaManager;
 
     /** @var ProductTemplateApplierInterface */
-    protected $productTemplateApplier;
+    protected $productTplApplier;
 
     /** @var VersionContext */
     protected $versionContext;
 
     /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var string */
     protected $productClassName;
@@ -47,26 +53,29 @@ class GroupSaver implements SaverInterface
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateMediaManager     $templateMediaManager
-     * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param ProductTemplateApplierInterface $productTplApplier
      * @param VersionContext                  $versionContext
      * @param SavingOptionsResolverInterface  $optionsResolver
+     * @param EventDispatcherInterface        $eventDispatcher
      * @param string                          $productClassName
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $productTemplateApplier,
+        ProductTemplateApplierInterface $productTplApplier,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher,
         $productClassName
     ) {
         $this->objectManager          = $objectManager;
         $this->productSaver           = $productSaver;
         $this->templateMediaManager   = $templateMediaManager;
-        $this->productTemplateApplier = $productTemplateApplier;
+        $this->productTplApplier      = $productTplApplier;
         $this->versionContext         = $versionContext;
         $this->optionsResolver        = $optionsResolver;
+        $this->eventDispatcher        = $eventDispatcher;
         $this->productClassName       = $productClassName;
     }
 
@@ -75,7 +84,6 @@ class GroupSaver implements SaverInterface
      */
     public function save($group, array $options = [])
     {
-        /** @var GroupInterface */
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -84,6 +92,8 @@ class GroupSaver implements SaverInterface
                 )
             );
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -104,17 +114,45 @@ class GroupSaver implements SaverInterface
             $this->objectManager->flush();
         }
 
-        if (count($options['add_products']) > 0) {
-            $this->addProducts($options['add_products']);
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
+        } else {
+            if (0 < count($options['add_products'])) {
+                $this->addProducts($options['add_products']);
+            }
         }
 
-        if (count($options['remove_products']) > 0) {
+        if (0 < count($options['remove_products'])) {
             $this->removeProducts($options['remove_products']);
         }
 
-        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
-            $this->copyVariantGroupValues($group);
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $groups, array $options = [])
+    {
+        if (empty($groups)) {
+            return;
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
+
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($groups as $group) {
+            $this->save($group, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups));
     }
 
     /**
@@ -142,6 +180,6 @@ class GroupSaver implements SaverInterface
     {
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
-        $this->productTemplateApplier->apply($template, $products);
+        $this->productTplApplier->apply($template, $products);
     }
 }

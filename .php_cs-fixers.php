@@ -11,8 +11,8 @@ return [
     '-unary_operators_spaces',
     '-unalign_equals',
     '-unalign_double_arrow',
-    '-ordered_use',
     'align_double_arrow',
     'newline_after_open_tag',
+    'ordered_use',
     'phpdoc_order'
 ];

@@ -20,27 +20,27 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 class AttributeRequirement implements AttributeRequirementInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var Family $family
+     * @var Family
      */
     protected $family;
 
     /**
-     * @var AttributeInterface $attribute
+     * @var AttributeInterface
      */
     protected $attribute;
 
     /**
-     * @var ChannelInterface $channel
+     * @var ChannelInterface
      */
     protected $channel;
 
     /**
-     * @var boolean $required
+     * @var bool
      */
     protected $required = false;
 

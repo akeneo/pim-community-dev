@@ -54,7 +54,6 @@ class SmartManagerRegistrySpec extends ObjectBehavior
         $customRegistry->getAliasNamespace('foo')->willReturn('\Foo');
 
         $this->getAliasNamespace('foo')->shouldReturn('\Foo');
-
     }
 
     function its_getAliasNamespace_method_throws_exception_when_no_doctrine_registry_is_able_to_get_alias_namespace(

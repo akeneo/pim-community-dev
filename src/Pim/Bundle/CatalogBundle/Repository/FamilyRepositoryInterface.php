@@ -1,7 +1,8 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -20,11 +21,9 @@ interface FamilyRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @param object  $qb
-     * @param boolean $inset
-     * @param mixed   $values
-     *
-     * @return null
+     * @param object $qb
+     * @param bool   $inset
+     * @param mixed  $values
      *
      * @deprecated will be removed in 1.4
      */
@@ -64,4 +63,20 @@ interface FamilyRepositoryInterface extends
      * @return array '<f_id>' => array(<attribute ids>)
      */
     public function findAttributeIdsFromFamilies(array $familyIds);
+
+    /**
+     * @param array $familyIds
+     *
+     * @throws \InvalidArgumentException array of id should not be empty
+     *
+     * @return array
+     */
+    public function findByIds(array $familyIds);
+
+    /**
+     * Return the number of existing families
+     *
+     * @return int
+     */
+    public function countAll();
 }

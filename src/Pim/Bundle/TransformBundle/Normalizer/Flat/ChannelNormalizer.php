@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class ChannelNormalizer extends Structured\ChannelNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 

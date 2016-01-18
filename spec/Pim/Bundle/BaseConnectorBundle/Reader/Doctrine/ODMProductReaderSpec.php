@@ -8,9 +8,9 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -86,7 +86,6 @@ class ODMProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read()->shouldReturn($sku1);
-
     }
 
     function it_converts_metric_values(

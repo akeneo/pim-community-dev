@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\Category;
 
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
@@ -34,7 +35,7 @@ class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CategoryEvents::PRE_REMOVE_TREE => 'checkChannels'
+            StorageEvents::PRE_REMOVE => 'checkChannels'
         ];
     }
 
@@ -47,8 +48,13 @@ class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
      */
     public function checkChannels(GenericEvent $event)
     {
-        $tree = $event->getSubject();
-        if (count($tree->getChannels()) > 0) {
+        $subject = $event->getSubject();
+
+        if (!$subject instanceof CategoryInterface || !$subject->isRoot()) {
+            return;
+        }
+
+        if (count($subject->getChannels()) > 0) {
             throw new ConflictHttpException($this->translator->trans('flash.tree.not removable'));
         }
     }

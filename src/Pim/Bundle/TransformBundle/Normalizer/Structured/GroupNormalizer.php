@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -21,14 +22,19 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
     /** @var TranslationNormalizer $transNormalizer */
     protected $transNormalizer;
 
+    /** @var DenormalizerInterface */
+    protected $valuesDenormalizer;
+
     /**
      * Constructor
      *
      * @param TranslationNormalizer $transNormalizer
+     * @param DenormalizerInterface $valuesDenormalizer
      */
-    public function __construct(TranslationNormalizer $transNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer, DenormalizerInterface $valuesDenormalizer)
     {
         $this->transNormalizer = $transNormalizer;
+        $this->valuesDenormalizer = $valuesDenormalizer;
     }
 
     /**
@@ -48,10 +54,14 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
 
         $results += $this->transNormalizer->normalize($object, $format, $context);
 
+        if (isset($context['versioning']) && true === $context['versioning']) {
+            $context['with_variant_group_values'] = true;
+        }
+
         if (isset($context['with_variant_group_values']) && true === $context['with_variant_group_values']) {
             $variantGroupValues = $this->normalizeVariantGroupValues($object, $format, $context);
             if (!empty($variantGroupValues)) {
-                $results += $variantGroupValues;
+                $results['values'] = $variantGroupValues;
             }
         }
 

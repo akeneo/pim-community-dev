@@ -1,6 +1,6 @@
 define(
     ['backbone', 'underscore'],
-    function(Backbone, _) {
+    function (Backbone, _) {
         'use strict';
 
         var Indicator = Backbone.Model.extend({
@@ -15,27 +15,29 @@ define(
         var IndicatorView = Backbone.View.extend({
             model: Indicator,
 
-            template: _.template('<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'),
+            template: _.template(
+                '<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'
+            ),
 
-            initialize: function() {
+            initialize: function () {
                 this.listenTo(this.model, 'change', this.render);
 
                 this.render();
             },
 
-            render: function() {
+            render: function () {
                 this.$el.html(this.template(this.model.toJSON()));
 
                 return this;
             }
         });
 
-        return function(opts) {
+        return function (opts) {
             var el = opts.el || null;
             delete opts.el;
             var indicator = new Indicator(opts);
             var indicatorView = new IndicatorView({el: el, model: indicator});
-            indicator.setElement = function() {
+            indicator.setElement = function () {
                 indicatorView.setElement.apply(indicatorView, arguments);
                 return indicatorView.render();
             };

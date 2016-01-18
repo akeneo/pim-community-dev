@@ -54,20 +54,23 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function normalize($metric, $format = null, array $context = [])
     {
-        if (null === $metric->getData() || "" === $metric->getData() ||
-            null === $metric->getUnit() || "" === $metric->getUnit()) {
-            return null;
+        $data = [
+            '_id'    => $this->mongoFactory->createMongoId(),
+            'family' => $metric->getFamily()
+        ];
+
+        if (null === $metric->getData() || '' === $metric->getData() ||
+            null === $metric->getUnit() || '' === $metric->getUnit()
+        ) {
+            return $data;
         }
 
         $this->createMetricBaseValues($metric);
 
-        $data = [];
-        $data['_id']      = $this->mongoFactory->createMongoId();
         $data['unit']     = $metric->getUnit();
         $data['data']     = $metric->getData();
         $data['baseUnit'] = $metric->getBaseUnit();
         $data['baseData'] = $metric->getBaseData();
-        $data['family']   = $metric->getFamily();
 
         return $data;
     }

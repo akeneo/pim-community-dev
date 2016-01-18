@@ -4,23 +4,15 @@ define(
     function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
         'use strict';
         var initialized = false;
-        return function() {
+        return function () {
             if (initialized) {
                 return;
             }
             initialized = true;
-            var setFullHeight = function ($target) {
-                if (!$target) {
-                    $target = $('body');
-                }
-                $target.find('.fullheight').filter(':visible').each(function () {
-                    $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
-                });
-            };
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
-                    $target.find('form.form-horizontal').each(function() {
+                    $target.find('form.form-horizontal, [data-saveformstate]').each(function () {
                         saveformstate($(this).attr('id'), loadTab);
                     });
                 }
@@ -35,7 +27,9 @@ define(
 
                 // Toogle accordion icon
                 $target.find('.accordion').on('show hide', function (e) {
-                    $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
+                    $(e.target).siblings('.accordion-heading')
+                        .find('.accordion-toggle i')
+                        .toggleClass('icon-chevron-down icon-chevron-right');
                 });
 
                 var $localizableIcon = $('<i>', {
@@ -60,80 +54,72 @@ define(
                     $(this).hide();
                 });
 
-                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function() {
+                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
-
-                setFullHeight($target);
             };
 
-            $(function(){
-                if ($.isPlainObject($.uniform)) {
-                    $.uniform.restore();
-                }
-
-                $(document).on('uniformInit', function () {
-                    $.uniform.restore();
-                });
-
-                $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
+            $(function () {
+                $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
                 });
 
-                $(document).on('shown', 'a[data-toggle="tab"]', function() {
-                    var target = $(this).attr('href');
-                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
-                        setFullHeight($(target).parent());
-                    }
-                });
-
-                var secret = "38384040373937396665";
-                var input = "";
+                var secret = '38384040373937396665';
+                var input = '';
                 var timer;
-                $(document).keyup(function(e) {
+                $(document).keyup(function (e) {
                     input += e.which;
                     clearTimeout(timer);
-                    timer = setTimeout(function() { input = ""; }, 500);
-                    if (input == secret) {
+                    timer = setTimeout(function () {
+                        input = '';
+                    }, 500);
+                    if (input === secret) {
                         $(document.body).addClass('konami');
                     }
                 });
 
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
-                    var $el      = $(this),
-                        message  = $el.data('message'),
-                        title    = $el.data('title'),
-                        doAction = function () {
+                    var $el      = $(this);
+                    var message  = $el.data('message');
+                    var title    = $el.data('title');
+                    var doAction = function () {
+                        var loadingMask = new LoadingMask();
+                        loadingMask.render().$el.appendTo($(document.body)).css(
+                            {
+                                'position': 'absolute',
+                                'top': '0px',
+                                'left': '0px',
+                                'width': '100%',
+                                'height': '100%'
+                            }
+                        );
+                        loadingMask.show();
 
-                            var loadingMask = new LoadingMask();
-                            loadingMask.render().$el.appendTo($(document.body)).css({ 'position': 'absolute', 'top': '0px', 'left': '0px', 'width': '100%', 'height': '100%'});
-                            loadingMask.show();
-
-                            $.ajax({
-                                url: $el.attr('data-url'),
-                                type: 'POST',
-                                headers: { accept:'application/json' },
-                                data: { _method: $el.data('method') },
-                                success: function() {
-                                    loadingMask.hide().$el.remove();
-                                    var navigation = Navigation.getInstance();
-                                    var targetUrl = '#url=' + $el.attr('data-redirect-url');
-                                    // If already on the desired page, make sure it is refreshed
-                                    Backbone.history.fragment = new Date().getTime();
-                                    navigation.navigate(targetUrl, { trigger: true });
-                                    navigation.addFlashMessage('success', $el.attr('data-success-message'));
-                                },
-                                error: function(xhr) {
-                                    loadingMask.hide().$el.remove();
-                                    messenger.notificationFlashMessage(
-                                        'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message) ?
-                                            xhr.responseJSON.message :
-                                            $el.attr('data-error-message'));
-                                }
-                            });
-                        };
+                        $.ajax({
+                            url: $el.attr('data-url'),
+                            type: 'POST',
+                            headers: { accept: 'application/json' },
+                            data: { _method: $el.data('method') },
+                            success: function () {
+                                loadingMask.hide().$el.remove();
+                                var navigation = Navigation.getInstance();
+                                var targetUrl = '#url=' + $el.attr('data-redirect-url');
+                                // If already on the desired page, make sure it is refreshed
+                                Backbone.history.fragment = new Date().getTime();
+                                navigation.navigate(targetUrl, { trigger: true });
+                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                            },
+                            error: function (xhr) {
+                                loadingMask.hide().$el.remove();
+                                messenger.notificationFlashMessage(
+                                    'error',
+                                    (xhr.responseJSON && xhr.responseJSON.message) ?
+                                        xhr.responseJSON.message :
+                                        $el.attr('data-error-message'));
+                            }
+                        });
+                    };
                     $el.off('click');
                     if ($el.data('dialog') === 'confirm') {
                         Dialog.confirm(message, title, doAction);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Component\StorageUtils\Cursor;
 
 /**

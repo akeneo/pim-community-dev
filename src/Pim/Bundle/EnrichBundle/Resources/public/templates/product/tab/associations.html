@@ -1,0 +1,50 @@
+<% if (!associationTypes.length) { %>
+    <div class="buffer-top buffer-left">
+        <span class="buffer-small-right">
+            <%- _.__('pim_enrich.form.product.tab.associations.info.none_exist') %>
+        </span>
+    </div>
+<% } else { %>
+    <div class="tabbable tabs-left">
+        <div class="sidebar">
+            <ul class="nav nav-tabs tab-groups" id="associations-list">
+                <% _.each(associationTypes, function (associationType) { %>
+                    <li data-association-type="<%- associationType.code %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
+                        <a href="javascript:void(0);">
+                            <%- associationType.label[locale] || '[' + associationType.code + ']'  %>
+                        </a>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div id="association-buttons" class="navbar-extra pull-right">
+                <button type="button" class="btn pull-right hide" data-association-target="products">
+                    <i class="icon-random"></i>
+                    <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
+                </button>
+                <button type="button" class="btn pull-right" data-association-target="groups">
+                    <i class="icon-random"></i>
+                    <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
+                </button>
+            </div>
+
+            <div id="association-product-grid">
+                <div id="grid-association-product-grid" data-type="datagrid"></div>
+            </div>
+
+            <div id="association-group-grid" class="hide">
+                <div id="grid-association-group-grid" data-type="datagrid"></div>
+            </div>
+
+            <div class="selection-inputs">
+                <% _.each(associationTypes, function (associationType) { %>
+                    <input type="hidden" id="<%- associationType.code %>-products-appendfield"/>
+                    <input type="hidden" id="<%- associationType.code %>-products-removefield"/>
+                    <input type="hidden" id="<%- associationType.code %>-groups-appendfield"/>
+                    <input type="hidden" id="<%- associationType.code %>-groups-removefield"/>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+<% } %>

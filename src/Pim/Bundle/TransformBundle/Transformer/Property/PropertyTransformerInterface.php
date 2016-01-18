@@ -20,6 +20,7 @@ interface PropertyTransformerInterface
      * @param array        $options
      *
      * @throws PropertyTransformerException
+     *
      * @return mixed
      */
     public function transform($value, array $options = array());

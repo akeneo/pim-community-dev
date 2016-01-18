@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
@@ -26,8 +26,6 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
 
         $option->getAttribute()->willReturn($attribute);
         $optionValue->getOption()->willReturn($option);
-
-        $this->beConstructedWith($registry, 'product');
     }
 
     function it_is_an_update_guesser()

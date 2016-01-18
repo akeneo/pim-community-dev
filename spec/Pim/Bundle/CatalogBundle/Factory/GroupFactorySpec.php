@@ -4,14 +4,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 class GroupFactorySpec extends ObjectBehavior
 {
     const GROUP_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
 
-    function let()
+    function let(GroupTypeRepositoryInterface $groupTypeRepository)
     {
-        $this->beConstructedWith(self::GROUP_CLASS);
+        $this->beConstructedWith($groupTypeRepository, self::GROUP_CLASS);
     }
 
     function it_creates_a_group()
@@ -19,8 +20,18 @@ class GroupFactorySpec extends ObjectBehavior
         $this->createGroup()->shouldReturnAnInstanceOf(self::GROUP_CLASS);
     }
 
-    function it_creates_a_group_with_a_type(GroupTypeInterface $type)
+    function it_creates_a_group_with_a_type($groupTypeRepository, GroupTypeInterface $groupType)
     {
-        $this->createGroup($type)->shouldReturnAnInstanceOf(self::GROUP_CLASS);
+        $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($groupType);
+        $this->createGroup('VARIANT')->shouldReturnAnInstanceOf(self::GROUP_CLASS);
+    }
+
+    function it_throws_an_exception_if_no_group_types_are_found($groupTypeRepository)
+    {
+        $groupTypeRepository->findOneByIdentifier('INVALID_GROUP_TYPE_CODE')->willReturn(null);
+
+        $this->shouldThrow(
+            new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', 'INVALID_GROUP_TYPE_CODE'))
+        )->during('createGroup', ['INVALID_GROUP_TYPE_CODE']);
     }
 }

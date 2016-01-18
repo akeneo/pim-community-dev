@@ -44,8 +44,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      * Override catalogLocale, catalogScope and defautTree fields
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function preSetData(FormEvent $event)
     {
@@ -62,8 +60,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param Form $form
-     *
-     * @return null
      */
     protected function updateCatalogLocale(Form $form)
     {
@@ -83,8 +79,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param Form $form
-     *
-     * @return null
      */
     protected function updateCatalogScope(Form $form)
     {
@@ -101,8 +95,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param Form $form
-     *
-     * @return null
      */
     protected function updateDefaultTree(Form $form)
     {

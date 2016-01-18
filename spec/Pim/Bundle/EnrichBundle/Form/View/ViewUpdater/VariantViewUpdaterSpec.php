@@ -9,10 +9,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Prophecy\Argument;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater;
 
 class VariantViewUpdaterSpec extends ObjectBehavior
 {

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Classification\Model\Category as BaseCategory;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -16,264 +17,35 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *
  * @ExclusionPolicy("all")
  */
-class Category implements CategoryInterface
+class Category extends BaseCategory implements CategoryInterface
 {
-    /**
-     * @var integer $id
-     */
-    protected $id;
-
-    /**
-     * @var string $code
-     */
-    protected $code;
-
-    /**
-     * @var integer $left
-     */
-    protected $left;
-
-    /**
-     * @var integer $level
-     */
-    protected $level;
-
-    /**
-     * @var integer $right
-     */
-    protected $right;
-
-    /**
-     * @var integer $root
-     */
-    protected $root;
-
-    /**
-     * @var CategoryInterface $parent
-     */
-    protected $parent;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection $children
-     */
-    protected $children;
-
-    /**
-     * @var ArrayCollection $products
-     */
+    /** @var ArrayCollection of ProductInterface */
     protected $products;
-
-    /**
-     * @var \DateTime
-     */
-    protected $created;
 
     /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
-    /**
-     * @var ArrayCollection $translations
-     */
+    /** @var ArrayCollection of CategoryTranslation */
     protected $translations;
 
-    /**
-     * @var ArrayCollection $channels
-     */
+    /** @var ArrayCollection of Channel */
     protected $channels;
 
-    /**
-     * Constructor
-     */
+    /** @var \DateTime */
+    protected $created;
+
     public function __construct()
     {
+        parent::__construct();
+
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels     = new ArrayCollection();
-        $this->children     = new ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return CategoryInterface
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set left
-     * @param integer $left
-     *
-     * @return CategoryInterface
-     */
-    public function setLeft($left)
-    {
-        $this->left = $left;
-
-        return $this;
-    }
-
-    /**
-     * Get left
-     *
-     * @return integer
-     */
-    public function getLeft()
-    {
-        return $this->left;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
-     * Set right
-     * @param integer $right
-     *
-     * @return CategoryInterface
-     */
-    public function setRight($right)
-    {
-        $this->right = $right;
-
-        return $this;
-    }
-
-    /**
-     * Get right
-     *
-     * @return integer
-     */
-    public function getRight()
-    {
-        return $this->right;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRoot($root)
-    {
-        $this->root = $root;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoot()
-    {
-        return $this->root;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParent(CategoryInterface $parent = null)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addChild(CategoryInterface $child)
-    {
-        $child->setParent($this);
-        $this->children[] = $child;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeChild(CategoryInterface $children)
-    {
-        $this->children->removeElement($children);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasChildren()
-    {
-        return count($this->getChildren()) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRoot()
-    {
-        return ($this->getParent() === null);
     }
 
     /**
@@ -295,7 +67,7 @@ class Category implements CategoryInterface
     /**
      * Get products count
      *
-     * @return integer
+     * @return int
      */
     public function getProductsCount()
     {

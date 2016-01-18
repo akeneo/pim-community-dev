@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Attribute manager
@@ -19,33 +21,39 @@ class AttributeManager
     /** @var string */
     protected $attributeClass;
 
-    /** @var string */
-    protected $productClass;
-
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /** @var AttributeTypeRegistry */
     protected $registry;
+
+    /** @var BulkSaverInterface */
+    protected $optionSaver;
+
+    /** @var AttributeRepositoryInterface */
+    protected $repository;
+
+    /** @var AttributeFactory */
+    protected $factory;
 
     /**
      * Constructor
      *
-     * @param string                $attributeClass Attribute class
-     * @param string                $productClass   Product class
-     * @param ObjectManager         $objectManager  Object manager
-     * @param AttributeTypeRegistry $registry       Attribute type registry
+     * @param string                       $attributeClass Attribute class
+     * @param AttributeTypeRegistry        $registry       Attribute type registry
+     * @param BulkSaverInterface           $optionSaver    Attribute option saver
+     * @param AttributeRepositoryInterface $repository     Attribute repository
+     * @param AttributeFactory             $factory        Attribute factory
      */
     public function __construct(
         $attributeClass,
-        $productClass,
-        ObjectManager $objectManager,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        BulkSaverInterface $optionSaver,
+        AttributeRepositoryInterface $repository,
+        AttributeFactory $factory
     ) {
-        $this->attributeClass  = $attributeClass;
-        $this->productClass    = $productClass;
-        $this->objectManager   = $objectManager;
-        $this->registry        = $registry;
+        $this->attributeClass = $attributeClass;
+        $this->registry       = $registry;
+        $this->optionSaver    = $optionSaver;
+        $this->repository     = $repository;
+        $this->factory        = $factory;
     }
 
     /**
@@ -53,27 +61,21 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return AttributeInterface
+     *
+     * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
      */
     public function createAttribute($type = null)
     {
-        $class = $this->getAttributeClass();
-        $attribute = new $class();
-        $attribute->setEntityType($this->productClass);
-
-        if ($type) {
-            $attributeType = $this->registry->get($type);
-            $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setAttributeType($attributeType->getName());
-        }
-
-        return $attribute;
+        return $this->factory->createAttribute($type);
     }
 
     /**
      * Get the attribute FQCN
      *
      * @return string
+     *
+     * @deprecated will be removed in 1.5 please use %pim_catalog.entity.attribute.class%
      */
     public function getAttributeClass()
     {
@@ -111,43 +113,29 @@ class AttributeManager
             } else {
                 $option->setSortOrder(0);
             }
-
-            $this->objectManager->persist($option);
         }
-
-        $this->objectManager->flush();
+        $this->optionSaver->saveAll($attribute->getOptions()->toArray());
     }
 
     /**
      * Get an attribute or throw an exception
      *
-     * @param integer $id
+     * @param int $id
      *
      * @throws EntityNotFoundException
      *
      * @return AttributeInterface
+     *
+     * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
      */
     public function getAttribute($id)
     {
-        $attribute = $this->objectManager->find($this->getAttributeClass(), $id);
+        $attribute = $this->repository->find($id);
 
         if (null === $attribute) {
             throw new EntityNotFoundException();
         }
 
         return $attribute;
-    }
-
-    /**
-     * Remove an attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @deprecated will be removed in 1.4, replaced by AttributeRemover::remove
-     */
-    public function remove(AttributeInterface $attribute)
-    {
-        $this->objectManager->remove($attribute);
-        $this->objectManager->flush();
     }
 }

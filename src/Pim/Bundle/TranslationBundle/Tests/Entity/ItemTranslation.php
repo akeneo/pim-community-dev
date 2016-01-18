@@ -14,7 +14,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class ItemTranslation extends AbstractTranslation
 {
     /**
-     * @var string $name
+     * @var string
      */
     protected $name;
 

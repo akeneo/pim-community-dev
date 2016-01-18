@@ -27,9 +27,9 @@ class FamilyFilter extends AjaxChoiceFilter
         }
 
         if (Operators::IS_EMPTY === strtoupper($data['type'])) {
-            $this->util->applyFilter($dataSource, 'family.id', Operators::IS_EMPTY, null);
+            $this->util->applyFilter($dataSource, 'family.code', Operators::IS_EMPTY, null);
         } else {
-            $this->util->applyFilter($dataSource, 'family.id', Operators::IN_LIST, $data['value']);
+            $this->util->applyFilter($dataSource, 'family.code', Operators::IN_LIST, $data['value']);
         }
 
         return true;
@@ -43,7 +43,7 @@ class FamilyFilter extends AjaxChoiceFilter
         $metadata = parent::getMetadata();
 
         $metadata['emptyChoice'] = true;
-        $metadata[FilterUtility::TYPE_KEY] = 'select2-choice';
+        $metadata[FilterUtility::TYPE_KEY] = 'select2-rest-choice';
 
         return $metadata;
     }
@@ -51,13 +51,11 @@ class FamilyFilter extends AjaxChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function parseData($data)
+    protected function getFormOptions()
     {
-        $data = parent::parseData($data);
-        if (is_array($data['value'])) {
-            $data['value'] = array_map('intval', $data['value']);
-        }
-
-        return $data;
+        return array_merge(
+            parent::getFormOptions(),
+            ['choice_url' => 'pim_enrich_family_rest_index']
+        );
     }
 }

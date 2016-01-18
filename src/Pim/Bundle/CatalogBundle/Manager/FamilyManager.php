@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -13,6 +12,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated not used anymore, will be removed in 1.5
  */
 class FamilyManager
 {
@@ -45,6 +46,8 @@ class FamilyManager
     /**
      * Get choices
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return array
      */
     public function getChoices()
@@ -52,18 +55,5 @@ class FamilyManager
         return $this->repository->getChoices(
             ['localeCode' => $this->userContext->getCurrentLocaleCode()]
         );
-    }
-
-    /**
-     * Remove a family
-     *
-     * @param FamilyInterface $family
-     *
-     * @deprecated will be removed in 1.4, replaced by FamilyRemover::remove
-     */
-    public function remove(FamilyInterface $family)
-    {
-        $this->objectManager->remove($family);
-        $this->objectManager->flush();
     }
 }

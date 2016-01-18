@@ -1,0 +1,137 @@
+Pim\Bundle\UserBundle\Entity\User:
+    type: entity
+    table: oro_user
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        username:
+            type: string
+            length: 255
+            unique: true
+        email:
+            type: string
+            length: 255
+            unique: true
+        namePrefix:
+            type: string
+            length: 255
+            nullable: true
+            column: name_prefix
+        firstName:
+            type: string
+            length: 255
+            nullable: true
+            column: first_name
+        middleName:
+            type: string
+            length: 255
+            nullable: true
+            column: middle_name
+        lastName:
+            type: string
+            length: 255
+            nullable: true
+            column: last_name
+        nameSuffix:
+            type: string
+            length: 255
+            nullable: true
+            column: name_suffix
+        birthday:
+            type: date
+            nullable: true
+        image:
+            type: string
+            length: 255
+            nullable: true
+        enabled:
+            type: boolean
+            options:
+                default: true
+        salt:
+            type: string
+        password:
+            type: string
+        confirmationToken:
+            type: string
+            nullable: true
+            column: confirmation_token
+        passwordRequestedAt:
+            type: datetime
+            nullable: true
+            column: password_requested
+        lastLogin:
+            type: datetime
+            nullable: true
+            column: last_login
+        loginCount:
+            type: integer
+            column: login_count
+            nullable: false
+            options:
+                unsigned: true
+                default: "0"
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+                    on: create
+        productGridFilters:
+            type: json_array
+            nullable: true
+            column: product_grid_filters
+        emailNotifications:
+            type: boolean
+            options:
+                default: false
+    manyToMany:
+        roles:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            joinTable:
+                name: oro_user_access_role
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    role_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        groups:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            joinTable:
+                name: oro_user_access_group
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    manyToOne:
+        catalogLocale:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+        catalogScope:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+        defaultTree:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+    oneToOne:
+        api:
+            targetEntity: Oro\Bundle\UserBundle\Entity\UserApi
+            mappedBy: user
+            orphanRemoval: true
+            fetch: EXTRA_LAZY
+            cascade:
+                - persist
+                - remove

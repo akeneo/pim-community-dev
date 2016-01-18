@@ -1,0 +1,23 @@
+{% set localeParamName = localeParamName|default('dataLocale') %}
+<div id="locale-switcher" class="btn-group">
+    <span class="btn dropdown-toggle" data-toggle="dropdown">
+        {{ currentLocaleCode|flag }}
+        <i class="icon-caret-down"></i>
+    </span>
+    <ul class="dropdown-menu">
+        {% for locale in locales %}
+            <li{% if currentLocaleCode == locale.code %} class="active"{% endif %}>
+                {% set routeParams = routeParams|default({})|merge({ (localeParamName): locale.code }) %}
+                <a href="{{ path(routeName, routeParams) }}"
+                   title="{{ locale_label(locale.code) }}">
+                    <span class="indicator">
+                        {% if currentLocaleCode == locale.code %}
+                            <i class="icon-circle"></i>
+                        {% endif %}
+                    </span>
+                    {{ locale.code|flag }}
+                </a>
+            </li>
+        {%  endfor %}
+    </ul>
+</div>

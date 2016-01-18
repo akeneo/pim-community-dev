@@ -1,0 +1,24 @@
+<% if (!copying) { %>
+    <div class="btn start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
+<% } else { %>
+    <div data-drop-zone="context-selectors" class="context-selectors"></div>
+    <div data-drop-zone="other-actions" class="other-actions">
+        <div data-drop-zone="copy-actions" class="copy-actions">
+            <div class="btn-group selection-dropdown">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <%- _.__('pim_enrich.entity.product.copy.select') %>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="select-all"><%- _.__('pim_enrich.entity.product.copy.all') %></a>
+                        <a class="select-all-visible"><%- _.__('pim_enrich.entity.product.copy.all_visible') %></a>
+                        <a class="select-none"><%- _.__('pim_enrich.entity.product.copy.none') %></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn copy">Copy</div>
+            <div class="btn stop-copying">&times;</div>
+        </div>
+    </div>
+<% } %>

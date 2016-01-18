@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -149,6 +149,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field']);
-        $resolver->setOptional(['locale', 'scope']);
+        $resolver->setDefined(['locale', 'scope']);
     }
 }

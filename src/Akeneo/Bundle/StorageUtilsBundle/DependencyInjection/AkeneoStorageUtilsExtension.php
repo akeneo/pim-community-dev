@@ -33,6 +33,8 @@ class AkeneoStorageUtilsExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         self::$storageDriver = $config['storage_driver'];
 
+        $container->setParameter($this->getAlias() . '.mapping_overrides', $config['mapping_overrides']);
+
         $container->setParameter($this->getAlias() . '.storage_driver', self::$storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
         $container->setParameter($this->getAlias() . '.storage_driver.' . self::$storageDriver, true);
@@ -40,6 +42,8 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
+        $loader->load('repositories.yml');
+        $loader->load('savers.yml');
 
         $this->loadStorageDriver($container, __DIR__);
     }

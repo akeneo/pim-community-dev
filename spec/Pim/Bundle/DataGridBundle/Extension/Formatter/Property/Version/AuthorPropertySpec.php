@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

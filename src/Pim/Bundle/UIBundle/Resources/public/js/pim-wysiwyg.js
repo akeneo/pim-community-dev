@@ -1,7 +1,7 @@
 /* global tinymce */
 define(
     ['jquery', 'underscore', 'backbone', 'tinymce'],
-    function($, _, Backbone) {
+    function ($, _, Backbone) {
         'use strict';
 
         var config = {
@@ -10,21 +10,21 @@ define(
             menubar:   false,
             toolbar:   'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
             readonly:  false,
-            setup:     function(ed) {
+            setup:     function (ed) {
                 var $el = $('#' + ed.id);
                 $el.data('value', $el.val());
-                ed.on('change', function() {
+                ed.on('change', function () {
                     $el.data('dirty', true);
                     $el.trigger('change');
                 });
-                ed.on('saveContent', function(e) {
+                ed.on('saveContent', function (e) {
                     if (true !== $el.data('dirty')) {
                         e.content = $el.data('value');
                     }
                 });
             }
         };
-        var destroyEditor = function(id) {
+        var destroyEditor = function (id) {
             var instance = tinymce.get(id);
             if (instance) {
                 tinymce.execCommand('mceRemoveControl', true, id);
@@ -35,7 +35,7 @@ define(
             }
         };
 
-        var isAlreadyRendered = function(id) {
+        var isAlreadyRendered = function (id) {
             for (var i = tinymce.editors.length - 1; i >= 0; i--) {
                 if (tinymce.editors[i].id === id) {
                     return true;
@@ -43,7 +43,7 @@ define(
             }
 
             return false;
-        }
+        };
 
         Backbone.Router.prototype.on('route', function () {
             for (var i = tinymce.editors.length - 1; i >= 0; i--) {
@@ -53,7 +53,7 @@ define(
 
         return {
             settings: [],
-            init: function($el, options) {
+            init: function ($el, options) {
 
                 var id = $el.attr('id');
 
@@ -67,10 +67,12 @@ define(
                 // X times on the same element.
                 if (!$el.data('bind-wysiwyg')) {
 
-                    $el.on('click', _.bind(function() {
+                    $el.on('click', _.bind(function () {
                         if (!isAlreadyRendered(id)) {
                             tinymce.init(this);
-                            setTimeout(_.bind(function() {tinymce.execCommand('mceFocus', true, this); }, this), 200);
+                            setTimeout(_.bind(function () {
+                                tinymce.execCommand('mceFocus', true, this);
+                            }, this), 200);
                         }
                     }, this.settings[id]));
 
@@ -80,18 +82,18 @@ define(
 
                 return this;
             },
-            destroy: function($el) {
+            destroy: function ($el) {
                 destroyEditor($el.attr('id'));
 
                 return this;
             },
-            reinit: function($el) {
+            reinit: function ($el) {
                 var id = $el.attr('id');
                 this.settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
 
                 return this.destroy($el).init($el, this.settings);
             },
-            readonly: function($el, state) {
+            readonly: function ($el, state) {
                 this.destroy($el).init($el, { readonly: state });
 
                 return this;

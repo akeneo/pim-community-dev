@@ -21,7 +21,7 @@ services:
         scope: request
         class: %oro_user.form.type.user.class%
         arguments:
-            - '@security.context'
+            - '@security.token_storage'
             - '@request'
             - '@pim_user.form.subscriber.user_preferences'
             - '@pim_user.repository.role'

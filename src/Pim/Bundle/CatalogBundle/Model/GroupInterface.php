@@ -23,7 +23,7 @@ interface GroupInterface extends
     /**
      * Get the id
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
@@ -54,6 +54,7 @@ interface GroupInterface extends
 
     /**
      * Get group type
+     *
      * @return GroupTypeInterface
      */
     public function getType();

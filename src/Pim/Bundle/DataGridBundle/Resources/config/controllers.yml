@@ -23,13 +23,15 @@ services:
 
     pim_datagrid.controller.product_export:
         class: %pim_datagrid.controller.product_export.class%
-        parent: pim_datagrid.controller.export
         scope: request
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.context.catalog'
-            - '@pim_datagrid.extension.mass_action.util.product_fields_builder'
+            - '@request'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_import_export.repository.job_instance'
+            - '@security.token_storage'
+            - '@pim_connector.launcher.simple_job_launcher'
+            - '@oro_datagrid.datagrid.manager'
 
     pim_datagrid.controller.datagrid_view:
         scope: request

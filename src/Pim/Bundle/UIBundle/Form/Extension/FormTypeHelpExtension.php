@@ -5,7 +5,7 @@ namespace Pim\Bundle\UIBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type extension to allow adding a help message
@@ -29,9 +29,9 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setOptional(array('help'));
+        $resolver->setDefined(array('help'));
     }
 
     /**

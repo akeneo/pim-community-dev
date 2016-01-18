@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -23,4 +23,11 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
      * @return mixed
      */
     public function createDatagridQueryBuilder();
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getTypeByGroup($code);
 }

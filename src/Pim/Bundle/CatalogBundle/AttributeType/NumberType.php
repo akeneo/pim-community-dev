@@ -66,6 +66,6 @@ class NumberType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_number';
+        return AttributeTypes::NUMBER;
     }
 }

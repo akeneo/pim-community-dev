@@ -1,0 +1,15 @@
+parameters:
+    pim_enrich.doctrine.counter.category_items.class:    Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter
+    pim_enrich.doctrine.counter.category_registry.class: Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistry
+
+services:
+    pim_enrich.doctrine.counter.category_product:
+        class: %pim_enrich.doctrine.counter.category_items.class%
+        arguments:
+            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: pim_enrich.doctrine.counter.category_item, type: product }
+
+    pim_enrich.doctrine.counter.category_registry:
+        class: %pim_enrich.doctrine.counter.category_registry.class%

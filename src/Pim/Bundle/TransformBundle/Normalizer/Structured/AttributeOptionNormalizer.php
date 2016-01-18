@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeOptionNormalizer implements NormalizerInterface
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 

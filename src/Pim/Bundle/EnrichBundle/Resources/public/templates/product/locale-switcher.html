@@ -1,0 +1,9 @@
+<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    <%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %>
+    <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+    <% _.each(locales, function (locale) { %>
+        <li><a data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a></li>
+    <% }); %>
+</ul>

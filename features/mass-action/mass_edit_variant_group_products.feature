@@ -12,6 +12,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | sneakers     | sneakers |                   | 42   | red   |
       | sandals      | sandals  |                   | 42   | blue  |
       | gold_sandals | sandals  |                   | 42   | white |
+      | gold_boots   | sandals  |                   | 42   | white |
 
   @javascript
   Scenario: Add products to a variant group
@@ -19,38 +20,18 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am on the products page
     And I mass-edit products moon_boots, gold_sandals and sneakers
     And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    You cannot group the following products (moon_boots) because they are already in a variant group or doesn't have the group axis.
-    """
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
+    And I wait for the "add-to-variant-group" mass-edit job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message                                               |
+      | success | Mass edit Mass add products to variant group finished |
 
   @javascript
-  Scenario: Filters variant groups not having all their attributes in common with products
-    Given the following product groups:
-      | code        | label            | axis                  | type    |
-      | magic_shoes | Some magic shoes | length, color         | VARIANT |
-      | ultra_shoes | Ultra shoes      | handmade, color, size | VARIANT |
-    And I am logged in as "Julia"
-    And I am on the products page
-    When I mass-edit products moon_boots, gold_sandals and sneakers
-    And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    The following variant groups have been skipped because they don't share attributes with selected products : Similar boots [similar_boots], Some magic shoes [magic_shoes], Ultra shoes [ultra_shoes]
-    """
-    And the field "Group" should have the following options:
-    """
-    Caterpillar boots
-    """
-    When I select the "Caterpillar boots" variant group
-    And I move on to the next step
-    Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
-
-  @javascript
-  Scenario: No valid variant group based on product attributes is available for mass assign
+  Scenario: Add products to a variant group with invalid axis
     Given the following families:
       | code      |
       | computers |
@@ -63,25 +44,34 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am on the products page
     When I mass-edit products gold_watch, laptop
     And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    No variant group is sharing attributes with selected products.
-    """
-    And I should see:
-    """
-    The following variant groups have been skipped because they don't share attributes with selected products : Caterpillar boots [caterpillar_boots]
-    """
+    When I select the "Caterpillar boots" variant group
+    And I move on to the next step
+    And I wait for the "add-to-variant-group" mass-edit job to finish
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message                                                                  |
+      | warning | Mass edit Mass add products to variant group finished with some warnings |
+    Then I go on the last executed job resume of "add_to_variant_group"
+    And I should see "skipped products 2"
+    And I should see "first warnings displayed 2/2"
+    And I should see "EXCLUDED PRODUCT"
+    And I should see "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
 
   @javascript
-  Scenario: No variant group is available for mass assign
-    Given I am logged in as "Julia"
-    And I am on the variant groups page
-    And I click on the "Delete" action of the row which contains "caterpillar_boots"
-    And I confirm the deletion
+  Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
+    And I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products moon_boots, sandals and sneakers
+    When I mass-edit products gold_sandals, gold_boots
     And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    No variant group for now. Please start by creating a variant group.
-    """
+    When I select the "Caterpillar boots" variant group
+    And I move on to the next step
+    And I wait for the "add-to-variant-group" mass-edit job to finish
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message                                                                  |
+      | warning | Mass edit Mass add products to variant group finished with some warnings |
+    Then I go on the last executed job resume of "add_to_variant_group"
+    And I should see "skipped products 2"
+    And I should see "first warnings displayed 2/2"
+    And I should see "DUPLICATED AXIS"
+    And I should see "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"

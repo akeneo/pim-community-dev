@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -103,8 +103,8 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param AttributeInterface $attribute the attribute
-     * @param string             $joinAlias the join alias
+     * @param AttributeInterface $attribute      the attribute
+     * @param string             $joinAlias      the join alias
      * @param string             $joinAliasMedia the join alias
      */
     protected function addMediaLeftJoin(AttributeInterface $attribute, $joinAlias, $joinAliasMedia)
@@ -151,6 +151,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
     /**
      * Prepare conditions of the filter
+     *
      * @param string       $backendField
      * @param string|array $operator
      * @param string|array $value

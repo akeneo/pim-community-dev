@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
@@ -18,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetAttributeRequirements extends FamilyMassEditOperation
+class SetAttributeRequirements extends AbstractMassEditOperation
 {
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -32,6 +31,12 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /** @var ArrayCollection */
     protected $attRequirements;
 
+    /** @var array */
+    protected $channels;
+
+    /** @var array */
+    protected $attributes;
+
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -42,10 +47,10 @@ class SetAttributeRequirements extends FamilyMassEditOperation
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
-        $this->channelRepository = $channelRepository;
+        $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->factory = $factory;
-        $this->attRequirements = new ArrayCollection();
+        $this->factory             = $factory;
+        $this->attRequirements     = new ArrayCollection();
     }
 
     /**
@@ -88,6 +93,22 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     }
 
     /**
+     * @return array
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFormType()
@@ -116,17 +137,52 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(FamilyInterface $family)
+    public function getActions()
     {
+        $attrRequirements = [];
+
         foreach ($this->attRequirements as $attributeRequirement) {
-            $family->addAttribute($attributeRequirement->getAttribute());
-            $family->addAttributeRequirement(
-                $this->factory->createAttributeRequirement(
-                    $attributeRequirement->getAttribute(),
-                    $attributeRequirement->getChannel(),
-                    $attributeRequirement->isRequired()
-                )
-            );
+            $attrRequirements[] = [
+                'attribute_code' => $attributeRequirement->getAttribute()->getCode(),
+                'channel_code'   => $attributeRequirement->getChannel()->getCode(),
+                'is_required'    => $attributeRequirement->isRequired()
+            ];
         }
+
+        return $attrRequirements;
+    }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperationAlias()
+    {
+        return 'set-attribute-requirements';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'set_attribute_requirements';
     }
 }

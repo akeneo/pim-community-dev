@@ -101,13 +101,13 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+    And the following attributes:
+      | code                      | type | localizable | available_locales |
+      | locale_specific_attribute | text | yes         | en_US,fr_FR       |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
       | tshirt-black | tshirts |                              | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
-    Given the following attributes:
-      | code                      | type | localizable | availableLocales |
-      | locale_specific_attribute | text | yes         | en_US            |
     And the following product values:
       | product      | attribute                 | value               | locale | scope |
       | tshirt-white | name                      | White t-shirt       | en_US  |       |
@@ -148,7 +148,7 @@ Feature: Export products
       | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
       | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
       | tshirt-white | number_in_stock          | 186                               |           | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
       | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
       | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
       | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
@@ -162,7 +162,7 @@ Feature: Export products
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";186;10.90;9.00;15.00;;size_M;;;
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;4.20;3.80;6.00;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";186;10.90;9.00;15.00;;size_M;;;
     tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";98;10.90;9.00;15.00;;size_L;;;
     """
 
@@ -181,7 +181,7 @@ Feature: Export products
       | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
       | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
       | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
       | tshirt-white | washing_temperature      | 40 CELSIUS                        |           |              |
       | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
       | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
@@ -196,6 +196,27 @@ Feature: Export products
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";;10.90;9.00;15.00;;size_M;;40;CELSIUS;
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;4.20;3.80;6.00;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";;10.90;9.00;15.00;;size_M;;40;CELSIUS;
     tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";;10.90;9.00;15.00;;size_L;;40;CELSIUS;
+    """
+
+  Scenario: Export attributes with full numeric codes
+    Given a "footwear" catalog configuration
+    And the following job "footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv |
+    And the following products:
+      | sku      | family   | categories        | price          | size | color    | name-en_US | 123 |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | aaa |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | bbb |
+      | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | ccc |
+    And I am logged in as "Julia"
+    When I am on the "footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "footwear_product_export" job to finish
+    Then exported file of "footwear_product_export" should contain:
+    """
+    sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    SNKRS-1B;aaa;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+    SNKRS-1R;bbb;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+    SNKRS-1C;ccc;summer_collection;charcoal;;1;sneakers;;;;"Model 1";55.00;75.00;;;45;;
     """

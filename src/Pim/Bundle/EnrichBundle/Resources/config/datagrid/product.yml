@@ -51,7 +51,7 @@ datagrid:
                     - dataLocale
             delete_link:
                 type: url
-                route: pim_enrich_product_remove
+                route: pim_enrich_product_rest_remove
                 params:
                     - id
             toggle_status_link:
@@ -61,16 +61,21 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      tab-redirect
-                label:     Edit attributes of the product
-                tab:       pim_enrich-product-tab-attribute
-                icon:      edit
+                type:      navigate
+                label:
+                icon:
                 link:      edit_link
                 rowAction: true
+            edit_attributes:
+                type:      tab-redirect
+                label:     Edit attributes of the product
+                tab:       pim-product-edit-form-attributes
+                icon:      edit
+                link:      edit_link
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
-                tab:   pim_enrich-product-tab-category
+                tab:   pim-product-edit-form-categories
                 icon:  folder-close
                 link:  edit_link
             delete:
@@ -110,10 +115,11 @@ datagrid:
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
+                    _jobCode: csv_product_quick_export
                 context:
                     withHeader: true
                 messages:
-                    empty_selection: No products selected
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
 
             mass_edit:
                 type: edit
@@ -157,10 +163,9 @@ datagrid:
                     data_name: family
                     options:
                         field_options:
+                            multiple: true
                             attr:
                                 empty_choice: true
-                            multiple: true
-                            choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
                     type:      product_groups
                     label:     Groups
@@ -185,10 +190,6 @@ datagrid:
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
-                category:
-                    type:      product_category
-                    label:     Category
-                    data_name: category
                 completeness:
                     type:      product_completeness
                     label:     Complete

@@ -1,0 +1,27 @@
+parameters:
+    pim_reference_data.registry.class: Pim\Component\ReferenceData\ConfigurationRegistry
+    pim_reference_data.method_guesser.class: Pim\Component\ReferenceData\MethodNameGuesser
+    pim_reference_data.repository_resolver.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver
+    pim_reference_data.id_resolver.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver
+    pim_reference_data.label_renderer.class: Pim\Component\ReferenceData\LabelRenderer
+
+services:
+    pim_reference_data.registry:
+        class: %pim_reference_data.registry.class%
+
+    pim_reference_data.method_guesser:
+        class: %pim_reference_data.method_guesser.class%
+
+    pim_reference_data.repository_resolver:
+        class: %pim_reference_data.repository_resolver.class%
+        arguments:
+            - '@pim_reference_data.registry'
+            - '@doctrine'
+
+    pim_reference_data.id_resolver:
+        class: %pim_reference_data.id_resolver.class%
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+
+    pim_reference_data.label_renderer:
+        class: %pim_reference_data.label_renderer.class%

@@ -30,7 +30,7 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var boolean */
+    /** @var bool */
     protected $initialized = false;
 
     /** @var ObjectManager */
@@ -73,9 +73,7 @@ class ReferencedCollection extends AbstractLazyCollection
     /**
      * Sets the initialized flag of the collection, forcing it into that state.
      *
-     * @param boolean $bool
-     *
-     * @return null
+     * @param bool $bool
      */
     public function setInitialized($bool)
     {
@@ -169,8 +167,6 @@ class ReferencedCollection extends AbstractLazyCollection
     /**
      * Initializes the collection by loading its contents from the database
      * if the collection is not yet initialized.
-     *
-     * @return null
      */
     protected function doInitialize()
     {

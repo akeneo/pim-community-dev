@@ -18,6 +18,7 @@ parameters:
     pim_transform.transformer.property.metric.class:             Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer
     pim_transform.transformer.property.prices.class:             Pim\Bundle\TransformBundle\Transformer\Property\PricesTransformer
     pim_transform.transformer.property.skip.class:               Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer
+    pim_transform.transformer.property.reference_data.class:     Pim\Bundle\TransformBundle\Transformer\Property\ReferenceDataTransformer
     pim_transform.transformer.column_info_transformer.class:     Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformer
     pim_transform.transformer.column_info.class:                 Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo
 
@@ -36,14 +37,18 @@ services:
             - '@pim_transform.transformer.guesser'
             - '@pim_transform.transformer.column_info_transformer'
 
+    # Deprecated: This service is deprecated and will be removed in 1.5
     pim_transform.transformer.product:
         class: %pim_transform.transformer.product.class%
         parent: pim_transform.transformer.entity
         arguments:
-            - '@pim_catalog.manager.product'
             - '@pim_transform.cache.attribute_cache'
             - '@pim_base_connector.reader.cached_association'
             - '@pim_catalog.updater.product_template'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.repository.product'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product.class% }
 
@@ -89,6 +94,13 @@ services:
         tags:
             - { name: pim_transform.transformer.entity, entity: %akeneo_batch.entity.job_instance.class% }
 
+    pim_transform.transformer.property.reference_data:
+        class: %pim_transform.transformer.property.reference_data.class%
+        arguments:
+            - '@?pim_reference_data.registry'
+        tags:
+            - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product_value.class% }
+
     pim_transform.transformer.column_info_transformer:
         class: %pim_transform.transformer.column_info_transformer.class%
         arguments:
@@ -121,7 +133,7 @@ services:
         class: %pim_transform.transformer.property.media.class%
         public: false
         arguments:
-            - %pim_catalog.entity.product_media.class%
+            - '@akeneo_file_storage.file_storage.file.file_storer'
         tags:
             - name: pim_transform.transformer.attribute
               backend_type: media

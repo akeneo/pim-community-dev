@@ -1,22 +1,20 @@
 /*jslint vars: true, nomen: true, browser: true*/
 /*jshint browser: true*/
-/*global define, require*/
+/*global define*/
 define(function (require) {
     'use strict';
 
     var $ = require('jquery');
     var _ = require('underscore');
-    var __ = require('oro/translator');
     var tools = require('oro/tools');
     var mediator = require('oro/mediator');
-    var LoadingMask = require('oro/loading-mask');
     var PageableCollection = require('oro/pageable-collection');
     var Grid = require('oro/datagrid/grid');
     var GridRouter = require('oro/datagrid/router');
     var GridViewsView = require('oro/datagrid/grid-views/view');
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
-        gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
+        gridGridViewsSelector = '.page-title > .navbar-extra .span10:last',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         cellTypes = {

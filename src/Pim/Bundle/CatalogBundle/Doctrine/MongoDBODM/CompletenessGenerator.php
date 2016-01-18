@@ -5,11 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -123,7 +124,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function getCompletenesses(array $normalizedData, array $normalizedReqs)
     {
-        $completenesses = array();
+        $completenesses = [];
         $allCompletenesses = false;
 
         if ((!isset($normalizedData['completenesses'])) ||
@@ -149,40 +150,67 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $dataFields = array_keys($normalizedData);
 
         foreach ($missingComps as $missingComp) {
-            $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
-            $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
-            $requiredCount = count($attributesReqs) + count($pricesReqs);
-
-            $missingAttributes = array_diff($attributesReqs, $dataFields);
-
-            $missingPricesCount = count($pricesReqs);
-
-            foreach ($pricesReqs as $priceField => $currencies) {
-                if (isset($normalizedData[$priceField]) &&
-                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
-                    $missingPricesCount --;
-                }
-            }
-
-            $missingCount = count($missingAttributes) + $missingPricesCount;
+            $requiredCount = $this->getRequiredCount($normalizedReqs, $missingComp);
+            $missingCount  = $this->getMissingCount($normalizedReqs, $normalizedData, $dataFields, $missingComp);
 
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
-            $compObject = array(
+            $compObject = [
                 'missingCount'  => $missingCount,
                 'requiredCount' => $requiredCount,
                 'ratio'         => $ratio,
                 'channel'       => $normalizedReqs[$missingComp]['channel'],
                 'locale'        => $normalizedReqs[$missingComp]['locale']
-            );
+            ];
 
-            $completenesses[$missingComp] = array(
+            $completenesses[$missingComp] = [
                 'object' => $compObject,
                 'ratio'  => $ratio
-            );
+            ];
         }
 
-        return array('completenesses' => $completenesses, 'all' => $allCompletenesses);
+        return ['completenesses' => $completenesses, 'all' => $allCompletenesses];
+    }
+
+    /**
+     * @param array  $normalizedReqs
+     * @param string $missingComp
+     *
+     * @return int
+     */
+    protected function getRequiredCount(array $normalizedReqs, $missingComp)
+    {
+        $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+
+        return count($attributesReqs) + count($pricesReqs);
+    }
+
+    /**
+     * @param array  $normalizedReqs
+     * @param array  $normalizedData
+     * @param array  $dataFields
+     * @param string $missingComp
+     *
+     * @return int
+     */
+    protected function getMissingCount(array $normalizedReqs, array $normalizedData, array $dataFields, $missingComp)
+    {
+        $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+
+        $missingAttributes = array_diff($attributesReqs, $dataFields);
+
+        $missingPricesCount = count($pricesReqs);
+
+        foreach ($pricesReqs as $priceField => $currencies) {
+            if (isset($normalizedData[$priceField]) &&
+                count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
+                $missingPricesCount--;
+            }
+        }
+
+        return count($missingAttributes) + $missingPricesCount;
     }
 
     /**
@@ -198,12 +226,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $collection = $this->documentManager->getDocumentCollection($this->productClass);
 
-        $query = array('_id' => $productId);
-        $options = array('multiple' => false);
+        $query = ['_id' => $productId];
+        $options = ['multiple' => false];
 
         if ($all) {
-            $compObjects = array();
-            $normalizedComps = array();
+            $compObjects = [];
+            $normalizedComps = [];
 
             foreach ($completenesses as $key => $value) {
                 $compObject = $value['object'];
@@ -211,20 +239,20 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $compObjects[] = $compObject;
                 $normalizedComps[$key] = $value['ratio'];
             }
-            $normalizedComps = array('normalizedData.completenesses' => $normalizedComps);
+            $normalizedComps = ['normalizedData.completenesses' => $normalizedComps];
 
-            $compObject = array('$set' => array('completenesses' => $compObjects));
+            $compObject = ['$set' => ['completenesses' => $compObjects]];
             $collection->update($query, $compObject, $options);
 
-            $normalizedComp = array('$set' => $normalizedComps);
+            $normalizedComp = ['$set' => $normalizedComps];
             $collection->update($query, $normalizedComp, $options);
         } else {
             foreach ($completenesses as $key => $value) {
-                $compObject = array('$push' => array('completenesses' => $value['object']));
+                $compObject = ['$push' => ['completenesses' => $value['object']]];
 
                 $collection->update($query, $compObject, $options);
 
-                $normalizedComp = array('$set' => array('normalizedData.completenesses.'.$key => $value['ratio']));
+                $normalizedComp = ['$set' => ['normalizedData.completenesses.'.$key => $value['ratio']]];
                 $collection->update($query, $normalizedComp, $options);
             }
         }
@@ -247,11 +275,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $selectFamily = $product->getFamily();
         }
         $families = $this->familyRepository->getFullFamilies($selectFamily, $channel);
-        $familyRequirements = array();
+        $familyRequirements = [];
 
         foreach ($families as $family) {
-            $reqsByChannels = array();
-            $channels = array();
+            $reqsByChannels = [];
+            $channels = [];
 
             foreach ($family->getAttributeRequirements() as $attributeReq) {
                 $channel = $attributeReq->getChannel();
@@ -259,7 +287,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $channels[$channel->getCode()] = $channel;
 
                 if (!isset($reqsByChannels[$channel->getCode()])) {
-                    $reqsByChannels[$channel->getCode()] = array();
+                    $reqsByChannels[$channel->getCode()] = [];
                 }
 
                 $reqsByChannels[$channel->getCode()][] = $attributeReq;
@@ -276,34 +304,39 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * to be defined as complete for channels and family
      * Familyreqs must be indexed by channel code
      *
-     * @param array $channels
-     * @param array $familyReqs
+     * @param ChannelInterface[] $channels
+     * @param array              $familyReqs
      *
      * @return array
      */
     protected function getFieldsNames(array $channels, array $familyReqs)
     {
-        $fields = array();
+        $fields = [];
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {
                 $expectedCompleteness = $channel->getCode().'-'.$locale->getCode();
-                $fields[$expectedCompleteness] = array();
+                $fields[$expectedCompleteness] = [];
                 $fields[$expectedCompleteness]['channel'] = $channel->getId();
                 $fields[$expectedCompleteness]['locale'] = $locale->getId();
-                $fields[$expectedCompleteness]['reqs'] = array();
-                $fields[$expectedCompleteness]['reqs']['attributes'] = array();
-                $fields[$expectedCompleteness]['reqs']['prices'] = array();
+                $fields[$expectedCompleteness]['reqs'] = [];
+                $fields[$expectedCompleteness]['reqs']['attributes'] = [];
+                $fields[$expectedCompleteness]['reqs']['prices'] = [];
 
                 foreach ($familyReqs[$channel->getCode()] as $requirement) {
-                    $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
+                    $attribute = $requirement->getAttribute();
+                    $fieldName = $this->getNormalizedFieldName($attribute, $channel, $locale);
 
-                    if ('prices' === $requirement->getAttribute()->getBackendType()) {
-                        $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = array();
-                        foreach ($channel->getCurrencies() as $currency) {
-                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                    $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
+
+                    if ($shouldExistInLocale) {
+                        if (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
+                            foreach ($channel->getCurrencies() as $currency) {
+                                $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                            }
+                        } else {
+                            $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
                         }
-                    } else {
-                        $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
                     }
                 }
             }
@@ -378,8 +411,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function getChannelLocaleCombinations(ChannelInterface $channel = null)
     {
-        $channels = array();
-        $combinations = array();
+        $channels = [];
+        $combinations = [];
 
         if (null !== $channel) {
             $channels = [$channel];

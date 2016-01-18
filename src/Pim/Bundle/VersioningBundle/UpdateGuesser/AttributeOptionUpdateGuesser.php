@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
@@ -16,22 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
  */
 class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $productClass;
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param string          $productClass
-     */
-    public function __construct(ManagerRegistry $registry, $productClass)
-    {
-        $this->registry     = $registry;
-        $this->productClass = $productClass;
-    }
-
     /**
      * {@inheritdoc}
      */

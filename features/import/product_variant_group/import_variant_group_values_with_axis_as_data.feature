@@ -22,8 +22,8 @@ Feature: Execute an import
   Scenario: Skip variant group if one axis is used as values
     Given the following CSV file to import:
       """
-      code;name-en_US;description-en_US-tablet;color
-      SANDAL;My sandal;My sandal description for locale en_US and channel tablet;white
+      code;type;name-en_US;description-en_US-tablet;color
+      SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;white
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -39,8 +39,8 @@ Feature: Execute an import
   Scenario: Skip variant group if many axis are used as values
     Given the following CSV file to import:
       """
-      code;name-en_US;description-en_US-tablet;color;size
-      SANDAL;My sandal;My sandal description for locale en_US and channel tablet;white;37
+      code;type;name-en_US;description-en_US-tablet;color;size
+      SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;white;37
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -56,8 +56,8 @@ Feature: Execute an import
   Scenario: Skip variant group if identifier is used as value
     Given the following CSV file to import:
       """
-      code;name-en_US;description-en_US-tablet;sku
-      SANDAL;My sandal;My sandal description for locale en_US and channel tablet;my-common-sku
+      code;type;name-en_US;description-en_US-tablet;sku
+      SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet;my-common-sku
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |

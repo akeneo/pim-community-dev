@@ -4,11 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**

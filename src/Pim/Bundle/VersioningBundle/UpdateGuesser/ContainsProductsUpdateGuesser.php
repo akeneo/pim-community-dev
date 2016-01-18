@@ -3,8 +3,8 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 
 /**
  * Contains product update guesser

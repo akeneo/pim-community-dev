@@ -1,21 +1,21 @@
 define(
-    ['jquery', 'underscore', 'pimdashboard/js/abstract-widget'],
+    ['jquery', 'underscore', 'pim/dashboard/abstract-widget'],
     function ($, _, AbstractWidget) {
         'use strict';
 
-        var CompletenessWidget = AbstractWidget.extend({
+        return AbstractWidget.extend({
             tagName: 'table',
 
             id: 'completeness-widget',
 
             options: {
                 completeBar: 'bar-success',
-                inCompleteBar: 'bar-warning',
+                inCompleteBar: 'bar-warning'
             },
 
             template: _.template(
                 [
-                    '<% _.each(data, function(channelResult, channel) { %>',
+                    '<% _.each(data, function (channelResult, channel) { %>',
                         '<tr class="channel">',
                             '<td>',
                                 '<a href="#" data-toggle-channel="<%= channel %>">',
@@ -32,14 +32,16 @@ define(
                             '</td>',
                             '<td>&nbsp;</td>',
                         '</tr>',
-                        '<% _.each(channelResult.locales, function(localeResult, locale) { %>',
+                        '<% _.each(channelResult.locales, function (localeResult, locale) { %>',
                             '<tr data-channel="<%= channel %>">',
                                 '<td>&nbsp;</td>',
                                 '<td><%= locale %></td>',
                                 '<td><%= localeResult.ratio %>%</td>',
                                 '<td class="progress-cell">',
                                     '<div class="progress">',
-                                        '<div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%;"></div>',
+                                        '<div class="bar ' + '<%= localeResult.ratio === 100 ? ' +
+                                            'options.completeBar : options.inCompleteBar %>" ' +
+                                            'style="width: <%= localeResult.ratio %>%;"></div>',
                                     '</div>',
                                     '<small><%= localeResult.complete %>/<%= channelResult.total %></small>',
                                 '</td>',
@@ -53,7 +55,7 @@ define(
                 'click a[data-toggle-channel]': 'toggleChannel'
             },
 
-            toggleChannel: function(e) {
+            toggleChannel: function (e) {
                 e.preventDefault();
 
                 var channel = $(e.currentTarget).data('toggle-channel');
@@ -62,8 +64,8 @@ define(
                     .toggleClass('icon-caret-right icon-caret-down');
             },
 
-            _processResponse: function(data) {
-                _.each(data, function(channelResult) {
+            _processResponse: function (data) {
+                _.each(data, function (channelResult) {
                     channelResult.locales = channelResult.locales || {};
                     var divider = channelResult.total * _.keys(channelResult.locales).length;
 
@@ -71,7 +73,7 @@ define(
                         0 :
                         Math.round(channelResult.complete / divider * 100);
 
-                    _.each(channelResult.locales, function(localeResult, locale) {
+                    _.each(channelResult.locales, function (localeResult, locale) {
                         var divider = channelResult.total;
                         var ratio = divider === 0 ?
                             0 :
@@ -87,18 +89,5 @@ define(
                 return data;
             }
         });
-
-        var instance = null;
-
-        return {
-            init: function(options) {
-                if (!instance) {
-                    instance = new CompletenessWidget(options);
-                } else if (_.has(options, 'el')) {
-                    instance.setElement(options.el);
-                }
-                instance.render().delayedLoad();
-            }
-        };
     }
 );

@@ -4,7 +4,6 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,11 +33,9 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if ($data === null || $data === '') {
-            return null;
-        }
+        $data = ('' === $data) ? null : $data;
 
         $resolver = new OptionsResolver();
         $this->configContext($resolver);
@@ -93,12 +90,13 @@ class PricesDenormalizer extends AbstractValueDenormalizer
 
     /**
      * Define context requirements
-     * @param OptionsResolverInterface $resolver
+     *
+     * @param OptionsResolver $resolver
      */
-    protected function configContext(OptionsResolverInterface $resolver)
+    protected function configContext(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired(['value', 'price_currency'])
-            ->setOptional(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
+            ->setDefined(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }

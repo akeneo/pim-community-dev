@@ -2,9 +2,12 @@
 
 namespace Context\Page\Base;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\Spin\SpinCapableTrait;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Base page
@@ -15,14 +18,36 @@ use Behat\Mink\Exception\ElementNotFoundException;
  */
 class Base extends Page
 {
-    protected $elements = array(
-        'Dialog'         => array('css' => 'div.modal'),
-        'Title'          => array('css' => '.navbar-title'),
-        'HeadTitle'      => array('css' => 'title'),
-        'Flash messages' => array('css' => '.flash-messages-holder'),
-        'Navigation Bar' => array('css' => 'header#oroplatform-header'),
-        'Container'      => array('css' => '#container'),
-    );
+    use SpinCapableTrait;
+
+    protected $elements = [
+        'Dialog'           => ['css' => 'div.modal'],
+        'Title'            => ['css' => '.navbar-title'],
+        'Product title'    => ['css' => '.product-title'],
+        'HeadTitle'        => ['css' => 'title'],
+        'Flash messages'   => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
+        'Container'        => ['css' => '#container'],
+        'Locales dropdown' => ['css' => '#locale-switcher'],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getElement($name, $timeout = 20, $message = 'no message')
+    {
+        return $this->spin(function () use ($name) {
+            return parent::getElement($name);
+        }, $timeout, $message);
+    }
+
+    /**
+     * Verify that page is loaded after login
+     */
+    public function verifyAfterLogin()
+    {
+        return true;
+    }
 
     /**
      * {@inheritdoc}
@@ -59,8 +84,8 @@ class Base extends Page
     /**
      * Toggle the bootstrapSwitch on or off
      *
-     * @param string  $locator
-     * @param boolean $on
+     * @param string $locator
+     * @param bool   $on
      */
     public function toggleSwitch($locator, $on = true)
     {
@@ -83,7 +108,7 @@ class Base extends Page
      *
      * @return string
      */
-    public function getUrl(array $options = array())
+    public function getUrl(array $options = [])
     {
         $url = $this->getPath();
 
@@ -96,6 +121,9 @@ class Base extends Page
 
     /**
      * Get page title
+     *
+     * @throws \Exception
+     *
      * @return string
      */
     public function getTitle()
@@ -107,7 +135,12 @@ class Base extends Page
         $name      = $elt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name) {
-            throw new \Exception('Could not find the page title');
+            $title = $this->getElement('Product title')->find('css', '.product-label')->getText();
+            if (!$title) {
+                throw new \Exception('Could not find the page title');
+            }
+
+            return $title;
         }
 
         return sprintf(
@@ -130,12 +163,12 @@ class Base extends Page
         $button = $this->getButton($locator);
 
         if (!$button) {
-            $button =  $this->find(
+            $button = $this->find(
                 'named',
-                array(
+                [
                     'link',
                     $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                )
+                ]
             );
         }
 
@@ -177,7 +210,7 @@ class Base extends Page
     {
         $element = $this->getConfirmDialog();
 
-        $button = $element->find('css', 'a.btn.ok');
+        $button = $element->find('css', '.ok');
 
         if (!$button) {
             throw new \Exception('Could not find the confirmation button');
@@ -188,7 +221,9 @@ class Base extends Page
 
     /**
      * Get the confirm dialog element
+     *
      * @throws \Exception
+     *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
      */
     protected function getConfirmDialog()
@@ -204,6 +239,7 @@ class Base extends Page
 
     /**
      * Get the confirm dialog title
+     *
      * @return string
      */
     public function getConfirmDialogTitle()
@@ -217,6 +253,7 @@ class Base extends Page
 
     /**
      * Get confirm dialog content
+     *
      * @return string
      */
     public function getConfirmDialogContent()
@@ -279,6 +316,7 @@ class Base extends Page
      * @param string $text
      *
      * @throws \Exception
+     *
      * @return null|Element
      */
     public function findFlashMessage($text)
@@ -316,5 +354,47 @@ class Base extends Page
         }
 
         return $listItem;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function hasSelectedLocale($locale)
+    {
+        $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
+        if (null === $selectedLocale) {
+            throw new \Exception('Could not find locales in switcher.');
+        }
+
+        $title = $selectedLocale->getAttribute('title');
+        if ($locale !== $title) {
+            throw new \Exception(sprintf('Locale is expected to be "%s", actually is "%s".', $locale, $title));
+        }
+
+        return true;
+    }
+
+    /**
+     * Drags an element on another one.
+     * Works better than the standard dragTo.
+     *
+     * @param NodeElement $element
+     * @param NodeElement $dropZone
+     */
+    public function dragElementTo(NodeElement $element, NodeElement $dropZone)
+    {
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+
+        $from = $session->element('xpath', $element->getXpath());
+        $to = $session->element('xpath', $dropZone->getXpath());
+
+        $session->moveto(['element' => $from->getID()]);
+        $session->buttondown('');
+        $session->moveto(['element' => $to->getID()]);
+        $session->buttonup('');
     }
 }

@@ -37,12 +37,13 @@ class SetAttributeRequirements extends Wizard
      * @param string $channel
      *
      * @throws \Exception
+     *
      * @return NodeElement
      */
     protected function getAttributeRequirementCell($attribute, $channel)
     {
         $attributesTable = $this->getElement('Attributes');
-        $columnIdx = 0;
+        $columnIdx       = 0;
 
         foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
             if ($header->getText() === strtoupper($channel)) {

@@ -4,10 +4,11 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -120,7 +121,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
     public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         if ($attribute->isUseableAsGridFilter()
-            || AbstractProduct::IDENTIFIER_TYPE === $attribute->getAttributeType()
+            || AttributeTypes::IDENTIFIER === $attribute->getAttributeType()
             || $attribute->isUnique()) {
             $this->indexCreator->ensureIndexesFromAttribute($attribute);
         }

@@ -68,11 +68,11 @@ class ProductQueryUtility
     /**
      * Normalize the field name from properties
      *
-     * @param string  $attributeCode
-     * @param boolean $localizable
-     * @param boolean $scopable
-     * @param string  $locale
-     * @param string  $scope
+     * @param string $attributeCode
+     * @param bool   $localizable
+     * @param bool   $scopable
+     * @param string $locale
+     * @param string $scope
      *
      * @throws \LogicException
      *

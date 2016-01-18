@@ -2,15 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AssociationTypeSpec extends ObjectBehavior
+class AttributeRequirementTypeSpec extends ObjectBehavior
 {
     function let()
     {
@@ -27,21 +23,21 @@ class AssociationTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_attribute_requirement');
     }
 
-    function it_build_form_with_keep_non_required_option(FormBuilderInterface $builder)
+    function it_builds_form_with_keep_non_required_option(FormBuilderInterface $builder)
     {
         $builder->add('required', 'hidden')->shouldBeCalled();
 
-        $this->buildForm($builder, ['keep_non_required']);
+        $this->buildForm($builder, ['keep_non_required' => true]);
     }
 
-    function it_build_form(FormBuilderInterface $builder)
+    function it_builds_form(FormBuilderInterface $builder)
     {
         $builder->add('required', 'checkbox')->shouldBeCalled();
 
-        $this->buildForm($builder, []);
+        $this->buildForm($builder, ['keep_non_required' => false]);
     }
 
-    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)
+    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

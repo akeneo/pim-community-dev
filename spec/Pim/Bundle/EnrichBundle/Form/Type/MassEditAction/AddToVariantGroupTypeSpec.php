@@ -3,14 +3,19 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AddToGroupsTypeSpec extends ObjectBehavior
+class AddToVariantGroupTypeSpec extends ObjectBehavior
 {
-    function let()
-    {
+    function let(
+        ProductMassActionRepositoryInterface $prodMassActionRepo,
+        GroupRepositoryInterface $groupRepository
+    ) {
         $this->beConstructedWith(
+            $prodMassActionRepo,
+            $groupRepository,
             'Pim\CatalogBundle\Model\Group',
             'Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroups'
         );
@@ -26,7 +31,7 @@ class AddToGroupsTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_mass_add_to_variant_group');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

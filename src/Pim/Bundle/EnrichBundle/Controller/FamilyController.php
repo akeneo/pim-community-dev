@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -23,9 +24,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family controller
@@ -43,7 +44,7 @@ class FamilyController extends AbstractDoctrineController
     protected $channelManager;
 
     /** @var FamilyFactory */
-    protected $factory;
+    protected $familyFactory;
 
     /** @var HandlerInterface */
     protected $familyHandler;
@@ -66,7 +67,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -74,7 +75,7 @@ class FamilyController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
-     * @param FamilyFactory            $factory
+     * @param FamilyFactory            $familyFactory
      * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param SaverInterface           $familySaver
@@ -85,7 +86,7 @@ class FamilyController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -93,7 +94,7 @@ class FamilyController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         FamilyManager $familyManager,
         ChannelManager $channelManager,
-        FamilyFactory $factory,
+        FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm,
         SaverInterface $familySaver,
@@ -104,7 +105,7 @@ class FamilyController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -114,7 +115,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->familyManager  = $familyManager;
         $this->channelManager = $channelManager;
-        $this->factory        = $factory;
+        $this->familyFactory  = $familyFactory;
         $this->familyHandler  = $familyHandler;
         $this->familyForm     = $familyForm;
         $this->attributeClass = $attributeClass;
@@ -127,6 +128,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
+     *
      * @return Response
      */
     public function indexAction()
@@ -139,6 +141,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_create")
+     *
      * @return array
      */
     public function createAction()
@@ -147,7 +150,7 @@ class FamilyController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_family_index');
         }
 
-        $family = $this->factory->createFamily();
+        $family = $this->familyFactory->createFamily();
 
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.created');
@@ -174,6 +177,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
+     *
      * @return array
      */
     public function editAction(Family $family)
@@ -199,6 +203,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_history")
+     *
      * @return Response
      */
     public function historyAction(Family $family)
@@ -217,6 +222,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_remove")
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Family $family)
@@ -236,6 +242,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Family $family)
@@ -261,10 +268,11 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove an attribute
      *
-     * @param integer $familyId
-     * @param integer $attributeId
+     * @param int $familyId
+     * @param int $attributeId
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
+     *
      * @throws DeleteException
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -276,7 +284,7 @@ class FamilyController extends AbstractDoctrineController
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
-        } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));

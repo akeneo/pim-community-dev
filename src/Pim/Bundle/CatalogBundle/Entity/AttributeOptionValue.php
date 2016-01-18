@@ -18,24 +18,24 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 class AttributeOptionValue implements AttributeOptionValueInterface
 {
     /**
-     * @var int $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var AttributeOptionInterface $option
+     * @var AttributeOptionInterface
      */
     protected $option;
 
     /**
      * LocaleInterface scope
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
     /**
-     * @var string $value
+     * @var string
      */
     protected $value;
 

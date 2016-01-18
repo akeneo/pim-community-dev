@@ -41,7 +41,7 @@ interface ViewElementInterface
      *
      * @param array $context The twig context
      *
-     * @return boolean
+     * @return bool
      */
     public function isVisible(array $context = []);
 

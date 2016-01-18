@@ -22,6 +22,7 @@ services:
         class: %pim_serializer.normalizer.mongodb.product_value.class%
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
+            - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 

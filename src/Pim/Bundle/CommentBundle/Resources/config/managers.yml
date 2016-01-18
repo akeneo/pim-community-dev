@@ -6,4 +6,5 @@ services:
         class: %pim_comment.manager.comment.class%
         arguments:
             - '@pim_comment.repository.comment'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_comment.saver.comment'
+            - '@pim_comment.remover.comment'

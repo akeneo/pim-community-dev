@@ -1,0 +1,8 @@
+services:
+    pim_versioning.saver.version:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@pim_versioning.object_manager.version'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_versioning.entity.version.class%

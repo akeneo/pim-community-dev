@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use League\Flysystem\Filesystem;
 
 /**
  * Base archiver
@@ -13,7 +14,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
  */
 abstract class AbstractFilesystemArchiver implements ArchiverInterface
 {
-    /** @var \Gaufrette\Filesystem */
+    /** @var Filesystem */
     protected $filesystem;
 
     /**
@@ -21,10 +22,11 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $archives = array();
-        $keys = $this->filesystem->listKeys(dirname($this->getRelativeArchivePath($jobExecution)));
-        foreach ($keys['keys'] as $key) {
-            $archives[basename($key)] = $key;
+        $directory = dirname($this->getRelativeArchivePath($jobExecution));
+        $archives = [];
+
+        foreach ($this->filesystem->listFiles($directory) as $key) {
+            $archives[basename($key['path'])] = $key['path'];
         }
 
         return $archives;
@@ -43,7 +45,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
             );
         }
 
-        return $this->filesystem->createStream($archives[$key]);
+        return $this->filesystem->readStream($archives[$key]);
     }
 
     /**
@@ -57,12 +59,11 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     {
         $jobInstance = $jobExecution->getJobInstance();
 
-        return sprintf(
-            '%s/%s/%s/%s/%%filename%%',
-            $jobInstance->getType(),
-            $jobInstance->getAlias(),
-            $jobExecution->getId(),
-            $this->getName()
-        );
+        return
+            $jobInstance->getType() . DIRECTORY_SEPARATOR .
+            $jobInstance->getAlias() . DIRECTORY_SEPARATOR .
+            $jobExecution->getId() . DIRECTORY_SEPARATOR .
+            $this->getName() . DIRECTORY_SEPARATOR .
+            '%filename%';
     }
 }

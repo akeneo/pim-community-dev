@@ -29,6 +29,7 @@ class Index extends Base
 
     /**
      * Fill in quick search form
+     *
      * @param string $search
      * @param string $typeSearch
      */
@@ -43,6 +44,7 @@ class Index extends Base
 
     /**
      * Fill type search field
+     *
      * @param string $typeSearch
      */
     protected function fillTypeSearchField($typeSearch)
@@ -87,8 +89,9 @@ class Index extends Base
 
     /**
      * Check if the list is in (or not) the type search field list
-     * @param array   $list
-     * @param boolean $in
+     *
+     * @param array $list
+     * @param bool  $in
      */
     public function checkTypeSearchFieldList(array $list, $in = true)
     {

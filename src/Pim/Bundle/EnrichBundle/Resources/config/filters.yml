@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog.filter.product_edit_data.class: Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter
+
+services:
+    pim_enrich.filter.product_edit_data:
+        class: %pim_catalog.filter.product_edit_data.class%
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'

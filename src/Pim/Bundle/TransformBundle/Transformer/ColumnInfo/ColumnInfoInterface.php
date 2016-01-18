@@ -70,4 +70,11 @@ interface ColumnInfoInterface
      * @return AttributeInterface
      */
     public function getAttribute();
+
+    /**
+     * @param string $propertyPath
+     *
+     * @return ColumnInfoInterface
+     */
+    public function setPropertyPath($propertyPath);
 }

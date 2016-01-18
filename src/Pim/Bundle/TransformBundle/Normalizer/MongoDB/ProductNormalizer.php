@@ -18,13 +18,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @staticvar string */
-    const FORMAT = "mongodb_document";
+    const FORMAT = 'mongodb_document';
 
     /** @staticvar string */
     const MONGO_ID = '_id';
 
     /** @staticvar string */
     const MONGO_COLLECTION_NAME = 'collection_name';
+
+    /** @staticvar string */
+    const MONGO_DATABASE_NAME = 'database_name';
 
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -83,8 +86,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data['updated'] = $this->mongoFactory->createMongoDate();
 
-        $data['family']         = $product->getFamily() ? $product->getFamily()->getId() : null;
-        $data['enabled']        = $product->isEnabled();
+        if (null !== $product->getFamily()) {
+            $data['family'] = $product->getFamily()->getId();
+        }
+
+        $data['enabled'] = $product->isEnabled();
 
         $data['groupIds']       = $this->normalizeGroups($product->getGroups());
         $data['categoryIds']    = $this->normalizeCategories($product->getCategories());

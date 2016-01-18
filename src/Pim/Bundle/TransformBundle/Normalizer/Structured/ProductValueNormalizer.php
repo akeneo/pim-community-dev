@@ -21,7 +21,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected $serializer;
 
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['json', 'xml'];
 
@@ -39,18 +39,19 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     public function normalize($entity, $format = null, array $context = [])
     {
         if ($entity->getData() instanceof Collection) {
-            $value = [];
+            $data = [];
             foreach ($entity->getData() as $item) {
-                $value[] = $this->serializer->normalize($item, $format, $context);
+                $data[] = $this->serializer->normalize($item, $format, $context);
+                sort($data);
             }
         } else {
-            $value = $this->serializer->normalize($entity->getData(), $format, $context);
+            $data = $this->serializer->normalize($entity->getData(), $format, $context);
         }
 
         return [
             'locale' => $entity->getLocale(),
             'scope'  => $entity->getScope(),
-            'value'  => $value
+            'data'   => $data
         ];
     }
 

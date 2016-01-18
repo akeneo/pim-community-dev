@@ -1,80 +1,93 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { "%product.sku%": product.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include 'PimEnrichBundle:Product:_js-handler.html.twig' %}
-{% endblock %}
-
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
-
-{% block content %}
-
-    {% if resource_granted('pim_enrich_product_add_attribute') %}
-        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
-            'form': attributesForm,
-            'action': path('pim_enrich_product_addattributes', {'id': product.id, 'dataLocale': dataLocale})
-        } %}
-    {% endif %}
-
-    {% block sequentialEdit %}
-        {% include 'PimEnrichBundle:Product:_sequentialEdit.html.twig' %}
-    {% endblock %}
-
-    {% set formAction = path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }) %}
-    {% if sequentialEdit and sequentialEdit.next is not null %}
-        {% set formAction = formAction ~ '&action=SaveAndNext' %}
-    {% elseif sequentialEdit and sequentialEdit.next is null %}
-        {% set formAction = formAction ~ '&action=SaveAndFinish' %}
-    {% endif %}
-
-    {{ JSFV(form) }}
-    {{ form_start(form, {
-        'action': formAction,
-        'attr': {
-            'class': 'product-edit',
-            'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
-        }
-    }) }}
-        {% set title = 'product.title'|trans %}
-
-        {% set buttons %}
-            {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
-        {% endset %}
-
-        {% if subtitle is not defined %}
-            {% set subtitle %}
-                {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
-                {{ elements.enabledLabel(form) }}
-            {% endset %}
-        {% endif %}
-
-        {% set left %}
-            <ul class="inline">
-                {% include 'PimEnrichBundle:Product:_left-details.html.twig' %}
-            </ul>
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
-
-        <div class="layout-content">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-
-            <div class="row-fluid tab-content">
-                {{ elements.form_errors(form) }}
-
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
-
-                {{ form_row(form.id) }}
+{% block main %}
+    <div id="main">
+        {% block before_content %}
+        <div class="container-fluid breadcrumb-pin">
+            <div id="breadcrumb">
+                {% block breadcrumb %}
+                    {% placeholder breadcrumb %}
+                {% endblock breadcrumb %}
+            </div>
+            {% placeholder pin_button %}
+            <div id="flash-messages">
+                {% block messages %}
+                    <div class="flash-messages-frame">
+                        <div class="flash-messages-holder"></div>
+                    </div>
+                    <script type="text/template" id="message-item-template">
+                        <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <div class="message"><%= message %></div>
+                        </div>
+                    </script>
+                    <script type="text/javascript">
+                        require(['jquery', 'oro/messenger'],
+                                function($, messenger) {
+                                    messenger.setup({
+                                        container: '#flash-messages .flash-messages-holder',
+                                        template: _.template($.trim($('#message-item-template').html()))
+                                    });
+                                    {% if app.session.flashbag.peekAll|length > 0 %}
+                                        $(function() {
+                                            {% for type, messages in app.session.flashbag.all %}
+                                                {% for message in messages %}
+                                                    messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                                {% endfor %}
+                                            {% endfor %}
+                                        });
+                                    {% endif %}
+                                });
+                    </script>
+                {% endblock messages %}
             </div>
         </div>
-    {{ form_end(form) }}
+        {% endblock before_content %}
+        <div class="hash-loading-mask"></div>
+        <div id="container">
+            {% block page_container %}
+                {% block content %}
+                    {% placeholder content_before %}
+                    <div id="product-edit-form">
 
-    <a href="javascript:void(0);"
-        id="create-product"
-        data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
-{% endblock %}
+                    </div>
+                    <script>
+                        require(
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation) {
+                                $(function() {
+                                    FetcherRegistry.initialize().done(function () {
+                                        ProductManager.get('{{ productId }}')
+                                            .then(function (product) {
+                                                var sku      = _.escape(product.meta.label[UserContext.get('catalogLocale')]);
+                                                var newTitle = document.title.replace('%product.sku%', sku);
+
+                                                document.title  = newTitle;
+                                                var navigation  = Navigation.getInstance();
+                                                var navTitle    = navigation.getPinButtonsData('title');
+                                                navTitle.params = {'%product.sku%': sku};
+                                                navigation.setPinButtonsData('title', navTitle);
+                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+
+                                                FormBuilder.build(product.meta.form)
+                                                    .then(function (form) {
+                                                        form.setData(product);
+
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+
+                                                        form.setElement('#product-edit-form').render();
+                                                    });
+                                            }).fail(function(response, textStatus, errorThrown) {
+                                                var errorView = new Error(response.responseJSON.message, response.status);
+                                                errorView.setElement('#product-edit-form').render();
+                                            });
+                                    })
+                                });
+                            });
+                    </script>
+                    {% placeholder content_after %}
+                {% endblock content %}
+            {% endblock page_container %}
+        </div>
+    </div>
+{% endblock main %}

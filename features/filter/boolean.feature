@@ -7,11 +7,11 @@ Feature: Filter on boolean
     Given a "footwear" catalog configuration
     And the following products:
       | sku     | enabled | handmade |
-      | BOOTBXS | true    | true     |
-      | BOOTWXS | false   | false    |
-      | BOOTBS  | true    |          |
-      | BOOTBL  | true    | true     |
-      | BOOTRXS | false   | false    |
+      | BOOTBXS | 1       | 1        |
+      | BOOTWXS | 0       | 0        |
+      | BOOTBS  | 1       |          |
+      | BOOTBL  | 1       | 1        |
+      | BOOTRXS | 0       | 0        |
     Then I should get the following results for the given filters:
       | filter                                                 | result                          |
       | [{"field":"enabled", "operator":"=", "value": true}]   | ["BOOTBXS", "BOOTBL", "BOOTBS"] |

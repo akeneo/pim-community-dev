@@ -1,17 +1,32 @@
+{#
+    Renders datagrid widget
+#}
 {% macro renderGrid(name, params = {}, renderParams = {}) %}
-    {% import 'OroDataGridBundle::macros.html.twig' as oroDataGrid %}
-    {{ oroDataGrid.renderGrid(name, params, renderParams) }}
+    {% set metaData = oro_datagrid_metadata(name, params) %}
+
+    <div id="grid-{{ name }}" data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
+         {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
+         data-metadata="{{ metaData|json_encode }}"></div>
+    <script type="text/javascript">
+        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        function ($, datagridBuilder) {
+            var builders = _.toArray(arguments).slice(2);
+            $(function () {
+                datagridBuilder(builders);
+            });
+        });
+    </script>
 {% endmacro %}
 
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderStatefulGrid(name, params = {}, renderParams = {}) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}, categoryBaseRoute = null) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
-            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state'],
-            function ($, Routing, datagridBuilder, PageableCollection, DatagridState) {
+            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state', 'oro/datafilter/product_category-filter'],
+            function ($, Routing, datagridBuilder, PageableCollection, DatagridState, CategoryFilter) {
                 'use strict';
                 $(function() {
                     var urlParams = {{ params|json_encode|raw }};
@@ -36,11 +51,19 @@
                                     'DESC' :
                                     'ASC';
                         }
+
+                        if (undefined != filters.pageSize) {
+                            urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
+                        }
                     }
 
                     if (state.columns) {
                         urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
+
+                    {% if categoryBaseRoute is not null %}
+                    var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
+                    {% endif %}
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
                         if (state.columns) {

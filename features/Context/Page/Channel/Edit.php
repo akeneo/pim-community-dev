@@ -12,7 +12,7 @@ namespace Context\Page\Channel;
 class Edit extends Creation
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/configuration/channel/{id}/edit';
 }

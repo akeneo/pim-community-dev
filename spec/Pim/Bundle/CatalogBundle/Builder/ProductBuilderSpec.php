@@ -2,90 +2,156 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductBuilderSpec extends ObjectBehavior
 {
     const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
     const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
     const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
+    const ASSOCIATION_CLASS = 'Pim\Bundle\CatalogBundle\Model\Association';
 
     function let(
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        CurrencyRepositoryInterface $currencyRepository
+        AttributeRepositoryInterface $attributeRepository,
+        FamilyRepositoryInterface $familyRepository,
+        CurrencyRepositoryInterface $currencyRepository,
+        AssociationTypeRepositoryInterface $assocTypeRepository,
+        EventDispatcherInterface $eventDispatcher,
+        AttributeValuesResolver $valuesResolver
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,
             'product_value' => self::VALUE_CLASS,
-            'product_price' => self::PRICE_CLASS
+            'product_price' => self::PRICE_CLASS,
+            'association' => self::ASSOCIATION_CLASS
         );
 
         $this->beConstructedWith(
-            $channelRepository,
-            $localeRepository,
+            $attributeRepository,
+            $familyRepository,
             $currencyRepository,
+            $assocTypeRepository,
+            $eventDispatcher,
+            $valuesResolver,
             $entityConfig
         );
     }
 
+    function it_creates_product_without_family($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
+    {
+        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
+
+        $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
+    }
+
+    function it_creates_product_with_a_family($attributeRepository, $familyRepository, $eventDispatcher, AttributeInterface $skuAttribute, FamilyInterface $tshirtFamily)
+    {
+        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getBackendType()->willReturn('varchar');
+        $skuAttribute->isLocalizable()->willReturn(false);
+        $skuAttribute->isScopable()->willReturn(false);
+        $skuAttribute->isLocaleSpecific()->willReturn(false);
+        $skuAttribute->isBackendTypeReferenceData()->willReturn(false);
+        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
+
+        $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
+        $tshirtFamily->getId()->shouldBeCalled();
+        $tshirtFamily->getAttributes()->willReturn([]);
+
+        $this->createProduct("mysku", "tshirt")->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
+    }
+
     function it_adds_missing_product_values_from_family_on_new_product(
+        $valuesResolver,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
-        $localeRepository,
-        LocaleInterface $fr,
-        LocaleInterface $en,
-        $channelRepository,
-        ChannelInterface $ecom,
-        ChannelInterface $print,
         ProductValueInterface $skuValue
     ) {
-        // get expected attributes
-        $product->getAttributes()->willReturn([$sku]);
-        $product->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn([$sku, $name, $desc]);
-
-        // get expected values
         $sku->getCode()->willReturn('sku');
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
-        $sku->isLocaleSpecific()->willReturn(false);
 
         $name->getCode()->willReturn('name');
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
-        $name->isLocaleSpecific()->willReturn(false);
 
-        $desc->getCode()->willReturn('desc');
+        $desc->getCode()->willReturn('description');
         $desc->getAttributeType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
-        $desc->isLocaleSpecific()->willReturn(false);
 
-        $fr->getCode()->willReturn('fr_FR');
-        $en->getCode()->willReturn('fr_FR');
-        $localeRepository->getActivatedLocales()->willReturn([$fr, $en]);
+        // get expected attributes
+        $product->getAttributes()->willReturn([$sku]);
+        $family->getAttributes()->willReturn([$sku, $name, $desc]);
+        $product->getFamily()->willReturn($family);
 
-        $ecom->getCode()->willReturn('ecom');
-        $ecom->getLocales()->willReturn([$en, $fr]);
-        $print->getCode()->willReturn('print');
-        $print->getLocales()->willReturn([$en, $fr]);
-        $channelRepository->findAll()->willReturn([$ecom, $print]);
+        // get eligible values
+        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc], null, null)
+            ->willReturn([
+                [
+                    'attribute' => 'sku',
+                    'type' => 'pim_catalog_identifier',
+                    'locale' => null,
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'fr_FR',
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'en_US',
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce'
+                ],
+                [
+                    'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'fr_FR',
+                    'scope' => 'ecommerce'
+                ],
+                [
+                    'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'en_US',
+                    'scope' => 'print'
+                ],
+                [
+                    'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
+                    'locale' => 'fr_FR',
+                    'scope' => 'print'
+                ]
+            ]);
 
         // get existing values
         $skuValue->getAttribute()->willReturn($sku);
@@ -97,6 +163,21 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
 
         $this->addMissingProductValues($product);
+    }
+
+    function it_adds_missing_product_associations(
+        $assocTypeRepository,
+        ProductInterface $productOne,
+        ProductInterface $productTwo,
+        AssociationTypeInterface $type
+    ) {
+        $assocTypeRepository->findMissingAssociationTypes($productOne)->willReturn([$type]);
+        $productOne->addAssociation(Argument::any())->shouldBeCalled();
+        $this->addMissingAssociations($productOne);
+
+        $assocTypeRepository->findMissingAssociationTypes($productTwo)->willReturn([]);
+        $productTwo->addAssociation(Argument::any())->shouldNotBeCalled();
+        $this->addMissingAssociations($productTwo);
     }
 
     function it_adds_product_value(ProductInterface $product, AttributeInterface $size)

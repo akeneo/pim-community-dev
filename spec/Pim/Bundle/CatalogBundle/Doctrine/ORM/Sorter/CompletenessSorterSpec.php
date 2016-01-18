@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -51,7 +51,6 @@ class CompletenessSorterSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($qb);
-        ;
         $qb
             ->leftJoin(
                 'PimCatalogBundle:Channel',
@@ -61,7 +60,6 @@ class CompletenessSorterSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($qb);
-        ;
         $qb
             ->leftJoin(
                 'CompletenessClass',

@@ -3,15 +3,15 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductImportValidatorSpec extends ObjectBehavior
 {
@@ -23,7 +23,17 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $this->beConstructedWith($validator, $constraintGuesser, $productManager);
     }
 
-    function it_check_unicity_of_product_value(
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator');
+    }
+
+    function it_is_an_import_validator()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface');
+    }
+
+    function it_checks_unicity_of_product_value(
         Product $product1,
         Product $product2,
         ColumnInfo $columnInfo1,
@@ -78,6 +88,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $product2->getValue("sku", null, null)->shouldBeCalled()->willReturn($productValue3);
         $product2->getValue("test_unique_attribute", null, null)->shouldBeCalled()->willReturn($productValue4);
 
+        $product1->__toString()->willReturn('product1');
+        $product2->__toString()->willReturn('product2');
+
         $productValue1->getAttribute()->willReturn($attribute1);
         $productValue2->getAttribute()->willReturn($attribute2);
 
@@ -96,17 +109,18 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $productValue3->__toString()->willReturn("17727158");
         $productValue4->__toString()->willReturn("1200000011a");
 
-        $validator->validateValue('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
 
         $validator->validate($product1, Argument::any())->shouldBeCalled()->willReturn($constraint);
         $validator->validate($product2, Argument::any())->shouldBeCalled()->willReturn($constraint);
         $constraint->count()->willReturn(0);
 
         $errors = [
-            '17727158' =>
-                [["The value \"1200000011a\" for unique attribute \"test_unique_attribute\" was already read in this file"]]
+            '17727158' => [
+                ['The value "1200000011a" for unique attribute "test_unique_attribute" was already read in this file']
+            ]
         ];
 
         $this->validate($product1, $columnsInfo, $values[0])->shouldReturn([]);

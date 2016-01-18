@@ -38,6 +38,7 @@ class AttributeCache
 
     /**
      * Constructor
+     *
      * @param RegistryInterface $doctrine
      * @param string            $attributeClass
      */

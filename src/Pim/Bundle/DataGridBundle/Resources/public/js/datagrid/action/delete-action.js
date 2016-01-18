@@ -1,12 +1,33 @@
-define(
-    ['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmation', 'oro/modal', 'oro/datagrid/delete-action'],
-    function(_, messenger, __, DeleteConfirmation, Modal, DeleteAction) {
+/* global define */
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmation', 'oro/modal', 'oro/datagrid/model-action'],
+    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction) {
         'use strict';
 
         /**
-         * Override delete action to display more specific messages
+         * Delete action with confirm dialog, triggers REST DELETE request
+         *
+         * @export  oro/datagrid/delete-action
+         * @class   oro.datagrid.DeleteAction
+         * @extends oro.datagrid.ModelAction
          */
-        return DeleteAction.extend({
+        return ModelAction.extend({
+
+            /** @type oro.Modal */
+            errorModal: undefined,
+
+            /** @type oro.Modal */
+            confirmModal: undefined,
+
+            /**
+             * Execute delete model
+             */
+            execute: function() {
+                this.getConfirmDialog().open();
+            },
+
+            /**
+             * Confirm delete item
+             */
             doDelete: function() {
                 var self = this;
                 this.model.destroy({
@@ -22,6 +43,11 @@ define(
                 });
             },
 
+            /**
+             * Get view for confirm modal
+             *
+             * @return {oro.Modal}
+             */
             getConfirmDialog: function() {
                 if (!this.confirmModal) {
                     this.confirmModal = new DeleteConfirmation({
@@ -32,6 +58,11 @@ define(
                 return this.confirmModal;
             },
 
+            /**
+             * Get view for error modal
+             *
+             * @return {oro.Modal}
+             */
             getErrorDialog: function() {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({

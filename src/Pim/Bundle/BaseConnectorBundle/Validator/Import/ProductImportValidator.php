@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -12,7 +13,7 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validates an imported product
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be remove in 1.5
  */
 class ProductImportValidator extends ImportValidator
 {
@@ -160,7 +163,7 @@ class ProductImportValidator extends ImportValidator
             return new \Symfony\Component\Validator\ConstraintViolationList();
         }
 
-        return $this->validator->validateValue(
+        return $this->validator->validate(
             $value->getData(),
             $this->getAttributeConstraints($columnInfo->getAttribute())
         );
@@ -212,7 +215,7 @@ class ProductImportValidator extends ImportValidator
         $label = null;
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                ProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                AttributeTypes::IDENTIFIER === $columnInfo->getAttribute()->getAttributeType()) {
                 $label = $columnInfo->getLabel();
                 break;
             }

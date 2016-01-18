@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Datagrid view entity
@@ -16,18 +16,16 @@ class DatagridView
     /** @staticvar string */
     const TYPE_PUBLIC = 'public';
 
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var string */
     protected $label;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $type = self::TYPE_PUBLIC;
 
-    /** @var User */
+    /** @var UserInterface */
     protected $owner;
 
     /** @var string */
@@ -42,7 +40,7 @@ class DatagridView
     /**
      * Indicates whether a view can be seen by users who don't own it
      *
-     * @return boolean
+     * @return bool
      */
     public function isPublic()
     {
@@ -52,7 +50,7 @@ class DatagridView
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -110,11 +108,11 @@ class DatagridView
     /**
      * Set owner
      *
-     * @param User $owner
+     * @param UserInterface $owner
      *
      * @return DatagridView
      */
-    public function setOwner(User $owner)
+    public function setOwner(UserInterface $owner)
     {
         $this->owner = $owner;
 
@@ -124,7 +122,7 @@ class DatagridView
     /**
      * Get owner
      *
-     * @return User
+     * @return UserInterface
      */
     public function getOwner()
     {
@@ -200,7 +198,7 @@ class DatagridView
      */
     public function getOrder()
     {
-        return join(',', $this->columns);
+        return implode(',', $this->columns);
     }
 
     /**

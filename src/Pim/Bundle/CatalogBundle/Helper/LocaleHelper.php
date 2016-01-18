@@ -27,6 +27,7 @@ class LocaleHelper
 
     /**
      * Constructor
+     *
      * @param UserContext   $userContext
      * @param LocaleManager $localeManager
      */
@@ -123,9 +124,9 @@ class LocaleHelper
     /**
      * Returns the flag icon for a locale
      *
-     * @param string  $code
-     * @param boolean $fullLabel
-     * @param string  $translateIn
+     * @param string $code
+     * @param bool   $fullLabel
+     * @param string $translateIn
      *
      * @return string
      *
@@ -164,6 +165,30 @@ class LocaleHelper
     public function getRegion($code)
     {
         return \Locale::getRegion($code);
+    }
+
+    /**
+     * Get the language from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getDisplayLanguage($code)
+    {
+        return \Locale::getDisplayLanguage($code);
+    }
+
+    /**
+     * Get the region from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getDisplayRegion($code)
+    {
+        return \Locale::getDisplayRegion($code);
     }
 
     /**

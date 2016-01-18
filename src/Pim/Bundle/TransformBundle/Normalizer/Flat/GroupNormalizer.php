@@ -14,10 +14,23 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
  */
 class GroupNormalizer extends Structured\GroupNormalizer
 {
-    /**
-     * @var array $supportedFormats
-     */
+    /** @var string[] */
     protected $supportedFormats = array('csv');
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        $result = parent::normalize($object, $format, $context);
+
+        if (isset($result['values'])) {
+            $result = $result + $result['values'];
+            unset($result['values']);
+        }
+
+        return $result;
+    }
 
     /**
      * {@inheritdoc}
@@ -39,11 +52,11 @@ class GroupNormalizer extends Structured\GroupNormalizer
         }
 
         $valuesData = $group->getProductTemplate()->getValuesData();
-        $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'json');
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues = array_merge(
+            $normalizedValues = array_replace(
                 $normalizedValues,
                 $this->serializer->normalize($value, $format, ['entity' => 'product'] + $context)
             );

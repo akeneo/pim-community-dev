@@ -6,10 +6,7 @@ services:
         scope: request
         class: %pim_comment.controller.comment.class%
         arguments:
-            - '@templating'
-            - '@security.context'
-            - '@form.factory'
+            - '@security.token_storage'
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_comment.manager.comment'
-            - '@pim_comment.builder.comment'
             - %pim_comment.entity.comment.class%

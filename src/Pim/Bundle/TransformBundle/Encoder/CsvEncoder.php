@@ -19,12 +19,12 @@ class CsvEncoder implements EncoderInterface
     const FORMAT = 'csv';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $firstExecution = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $hasHeader      = false;
 
@@ -152,6 +152,7 @@ class CsvEncoder implements EncoderInterface
      * @param mixed $csvResource
      *
      * @throws \Exception
+     *
      * @return string
      */
     private function readCsv($csvResource)

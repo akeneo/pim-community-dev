@@ -17,11 +17,11 @@ Feature: Execute an import
 
   Scenario: Import a variant group with empty data from the template should not change the structure of the variant
     Given the following CSV file to import:
-    """
-    code;axis;description-de_DE-ecommerce;description-de_DE-print;description-en_GB-ecommerce;description-en_GB-tablet;description-en_US-ecommerce;description-en_US-print;description-en_US-tablet;description-fr_FR-ecommerce;label-de_DE;label-en_GB;label-en_US;label-fr_FR;name-de_DE;name-en_GB;name-en_US;name-fr_FR;type
-    tshirts;color,size;;;;;;;;;;;;;;;The T-Shirt;;variant
-    hoodies;color,size;;;;;;;;;;;;;;;Hoodies;;variant
-    """
+      """
+      code;type;axis;description-de_DE-ecommerce;description-de_DE-print;description-en_GB-ecommerce;description-en_GB-tablet;description-en_US-ecommerce;description-en_US-print;description-en_US-tablet;description-fr_FR-ecommerce;label-de_DE;label-en_GB;label-en_US;label-fr_FR;name-de_DE;name-en_GB;name-en_US;name-fr_FR;type
+      tshirts;VARIANT;color,size;;;;;;;;;;;;;;;The T-Shirt;;variant
+      hoodies;VARIANT;color,size;;;;;;;;;;;;;;;Hoodies;;variant
+      """
     And the following job "variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "variant_group_import" import job page

@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -15,9 +17,6 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  */
 abstract class AbstractProduct implements ProductInterface
 {
-    /** @staticvar string */
-    const IDENTIFIER_TYPE = 'pim_catalog_identifier';
-
     /** @var int|string */
     protected $id;
 
@@ -29,13 +28,15 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * Not persisted but allow to force locale for values
-     * @var string $locale
+     *
+     * @var string
      */
     protected $locale;
 
     /**
      * Not persisted but allow to force scope for values
-     * @var string $scope
+     *
+     * @var string
      */
     protected $scope;
 
@@ -329,7 +330,7 @@ abstract class AbstractProduct implements ProductInterface
      *
      * @param string $attributeCode
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($attributeCode)
     {
@@ -395,7 +396,7 @@ abstract class AbstractProduct implements ProductInterface
     public function getIdentifier()
     {
         foreach ($this->values as $value) {
-            if (self::IDENTIFIER_TYPE === $value->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
                 return $value;
             }
         }
@@ -408,7 +409,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        $attributes = array();
+        $attributes = [];
 
         foreach ($this->values as $value) {
             $attributes[] = $value->getAttribute();
@@ -436,7 +437,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getOrderedGroups()
     {
-        $groups = array();
+        $groups = [];
 
         foreach ($this->getAttributes() as $attribute) {
             $group = $attribute->getGroup();
@@ -485,7 +486,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addCategory(CategoryInterface $category)
+    public function addCategory(BaseCategoryInterface $category)
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -497,7 +498,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCategory(CategoryInterface $category)
+    public function removeCategory(BaseCategoryInterface $category)
     {
         $this->categories->removeElement($category);
 
@@ -509,12 +510,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategoryCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
+        sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**
@@ -522,13 +524,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getGroupCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getGroups() as $group) {
             $codes[] = $group->getCode();
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**
@@ -552,27 +554,63 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function isAttributeRemovable(AttributeInterface $attribute)
+    public function hasAttributeInFamily(AttributeInterface $attribute)
     {
-        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
-            return false;
-        }
+        return null !== $this->family && $this->family->getAttributes()->contains($attribute);
+    }
 
-        if (null !== $this->family && $this->family->getAttributes()->contains($attribute)) {
-            return false;
-        }
-
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
+    {
         foreach ($this->groups as $group) {
             if ($group->getType()->isVariant()) {
-                if ($group->getAttributes()->contains($attribute)) {
-                    return false;
+                if ($group->getAxisAttributes()->contains($attribute)) {
+                    return true;
                 }
 
                 $template = $group->getProductTemplate();
                 if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return false;
+                    return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAttributeRemovable(AttributeInterface $attribute)
+    {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+            return false;
+        }
+
+        if ($this->hasAttributeInFamily($attribute)) {
+            return false;
+        }
+
+        if ($this->hasAttributeInVariantGroup($attribute)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAttributeEditable(AttributeInterface $attribute)
+    {
+        if (!$this->hasAttributeInFamily($attribute)) {
+            return false;
+        }
+
+        if ($this->hasAttributeInVariantGroup($attribute)) {
+            return false;
         }
 
         return true;
@@ -641,11 +679,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getMedia()
     {
-        $media = array();
+        $media = [];
         foreach ($this->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                [AttributeTypes::IMAGE, AttributeTypes::FILE]
             )) {
                 $media[] = $value->getData();
             }

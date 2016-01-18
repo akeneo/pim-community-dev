@@ -3,14 +3,13 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Type for group form
@@ -60,8 +59,6 @@ class GroupType extends AbstractType
 
         $this->addLabelField($builder);
 
-        $this->addAttributesField($builder);
-
         $this->addProductsField($builder);
 
         foreach ($this->subscribers as $subscriber) {
@@ -72,7 +69,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -103,8 +100,6 @@ class GroupType extends AbstractType
      * Add type field
      *
      * @param FormBuilderInterface $builder
-     *
-     * @return null
      */
     protected function addTypeField(FormBuilderInterface $builder)
     {
@@ -142,34 +137,6 @@ class GroupType extends AbstractType
                 'property_path'     => 'translations'
             ]
         );
-    }
-
-    /**
-     * Add attributes field
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return null
-     */
-    protected function addAttributesField(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add(
-                'attributes',
-                'entity',
-                [
-                    'label'         => 'Axis',
-                    'required'      => true,
-                    'multiple'      => true,
-                    'class'         => $this->attributeClass,
-                    'query_builder' => function (AttributeRepositoryInterface $repository) {
-                        return $repository->findAllAxisQB();
-                    },
-                    'help'     => 'pim_enrich.group.axis.help',
-                    'select2'  => true
-                ]
-            )
-            ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
 
     /**

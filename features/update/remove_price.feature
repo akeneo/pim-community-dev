@@ -1,0 +1,22 @@
+Feature: Remove price fields
+  In order to update products
+  As an internal process or any user
+  I need to be able to remove a price field of a product
+
+  Scenario: Successfully remove a price field
+    Given a "default" catalog configuration
+    And the following attributes:
+      | code   | type   | localizable | scopable |
+      | price  | prices | yes         | no       |
+    And the following products:
+      | sku  | price-fr_FR   | price-en_US   |
+      | BOX1 | 5 EUR, 5 USD  | 5 EUR, 5 USD  |
+      | BOX2 | 10 EUR, 5 USD | 10 EUR, 5 USD |
+      | BOX3 |               |               |
+      | BOX4 | 5 EUR, 5 USD  | 5 EUR, 5 USD  |
+    Then I should get the following products after apply the following updater to it:
+      | product | actions                                                                                                                                                                                                                                            | result                                                                                                                                                                                                                    |
+      | BOX1    | [{"type": "remove_data", "field": "price", "data": [{"data": "", "currency": "EUR"}], "locale": "fr_FR", "scope": null}]                                                                                                                           | {"values": {"price": [{"locale": "fr_FR", "scope": null, "data": [{"data": "5", "currency": "USD"}]}, {"locale": "en_US", "scope": null, "data": [{"data": "5", "currency": "EUR"}, {"data": "5", "currency": "USD"}]}]}} |
+      | BOX2    | [{"type": "remove_data", "field": "price", "data": [{"data": null, "currency": "EUR"}, {"data": null, "currency": "USD"}], "locale": "fr_FR", "scope": null}]                                                                                      | {"values": {"price": [{"locale": "fr_FR", "scope": null, "data": []}, {"locale": "en_US", "scope": null, "data": [{"data": "5", "currency": "USD"}, {"data": "10", "currency": "EUR"}]}]}}                                |
+      | BOX3    | [{"type": "remove_data", "field": "price", "data": [{"data": 5.3, "currency": "EUR"}], "locale": "fr_FR", "scope": null}]                                                                                                                          | {"values": []}                                                                                                                                                                                                            |
+      | BOX4    | [{"type": "remove_data", "field": "price", "data": [{"data": "5", "currency": "USD"}], "locale": "fr_FR", "scope": null}, {"type": "remove_data", "field": "price", "data": [{"data": "5", "currency": "EUR"}], "locale": "en_US", "scope": null}] | {"values": {"price": [{"locale": "fr_FR", "scope": null, "data": [{"data": "5", "currency": "EUR"}]}, {"locale": "en_US", "scope": null, "data": [{"data": "5", "currency": "USD"}]}]}}                                   |

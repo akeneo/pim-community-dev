@@ -1,7 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\AssociationType:
     type: entity
     table: pim_catalog_association_type
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository
     fields:
         id:
             type: integer
@@ -28,3 +29,4 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach

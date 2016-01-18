@@ -3,7 +3,7 @@ datagrid:
         options:
             entityHint: group
         source:
-            acl_resource: oro_user_group_view
+            acl_resource: pim_user_group_index
             type: orm
             query:
                 select:
@@ -28,7 +28,7 @@ datagrid:
 
             delete_link:
                 type: url
-                route: oro_api_delete_group
+                route: oro_user_group_delete
                 params:
                     - id
 
@@ -38,14 +38,14 @@ datagrid:
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_group_update
+                acl_resource:  pim_user_group_edit
                 rowAction:     true
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_group_remove
+                acl_resource:  pim_user_group_remove
 
         sorters:
             columns:

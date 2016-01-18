@@ -1,0 +1,79 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+.filter-box {
+  box-shadow: none;
+  background: @color-new-grey;
+  border: none;
+  padding: 15px 20px 8px 150px;
+
+  .icon-remove:before { 
+    color: #aaa; 
+    font-size: 14px; 
+  }
+
+  .filter-list {
+    float: left;
+    margin: 0 0 0 -120px;
+    position: relative;
+  }
+
+  .filter-item {
+    .filter-criteria-selector, [class$=dropdown-toggle].btn {
+      height: 30px;
+      line-height: 30px;
+      font-weight: normal;
+      padding-top: 0;
+      box-sizing: border-box;
+      
+      button {
+        color: #666;
+        font-size: 12px;
+      }
+      
+      .caret { 
+        margin-top: 13px;
+      }
+    }
+
+    .select-filter-widget .caret {
+      margin-top: 8px; 
+    }
+
+    .choicefilter {
+      input[type="text"] {
+        margin-right: -7px;
+        .border-radius(0);
+      }
+
+      .filter-update {
+        .border-radius(0 3px 3px 0);
+        position: relative;
+        font-size: 14px;
+        height: 29px;
+        line-height: 29px;
+      }
+    }
+
+    .disable-filter {
+      line-height: 18px !important;
+      background-color: transparent !important;
+      background-image: none;
+      border: none !important;
+      color: #67768A;
+
+      .icon-remove:before{
+        color: #67768A;
+      }
+    }
+
+  }
+}
+
+.btn .caret {
+  margin-left: 5px;
+}
+
+.filter-box .btn-group {
+  margin-bottom: 7px;
+}

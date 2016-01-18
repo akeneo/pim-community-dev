@@ -1,85 +1,18 @@
-/* Login Form *******************************************************************************************************/
-
-form.form-signin {
-  .title-box {
-    padding: 0;
-    #gradient .vertical(@color-header_top, @color-header_bottom);
-    border: 1px solid #d4d4d4;
-    .border-radius(6px 6px 0 0);
-    h1.oro-title {
-      padding: 0;
-      img {
-        vertical-align: top;
-      }
-    }
-    h2.title {
-      font-size: 20px;
-      line-height: 40px;
-      text-align: center;
-    }
-  }
-  .input-prepend {
-    margin-bottom: 3px;
-    input[type="text"],
-    input[type="password"] {
-      width: 265px;
-      color: @textColor;
-      background-color: #fbfbfb;
-    }
-    .add-on {
-      width: 36px;
-      color: @textColor;
-      #gradient .vertical(#f4f4f4, #dcdcdc);
-    }
-    .input-request {
-      border-radius: 3px;
-    }
-    #prepended-input-request {
-      width: 458px;
-    }
-  }
-  button.btn-primary {
-    float: none;
-  }
-  .form-row {
-    padding: 0;
-  }
-  .signin-help {
-    margin-top: 15px;
-    a {
-      font-size: 13px;
-    }
-  }
-  fieldset.oro-forgot-password {
-    button {
-      float: right;
-      margin-right: 3px;
-    }
-  }
-  div.alert {
-    margin: 0;
-    .border-radius(0);
-  }
-  &.form-reset {
-    max-width: 550px;
-    .add-on {
-      width: auto;
-    }
-  }
-}
+@import 'less/variables';
+@import 'less/mixins';
 
 /* Basic Form *******************************************************************************************************/
 
 // Form navbar
 #form-navbar li {
-  a:hover {
-    border-bottom: 3px solid @textColor + #999;
-  }
-  &.active a, a {
+  a {
     padding-bottom: 4px;
     color: @textColor;
     background-color: transparent;
     border-bottom: 3px solid transparent;
+    &:hover {
+      border-bottom: 3px solid @textColor + #999;
+    }
   }
   &.active a {
     border-bottom: 3px solid @textColor + #111;
@@ -104,10 +37,6 @@ form.form-signin {
   }
 }
 
-a.select2-choice {
-  outline: none;
-}
-
 .form-row {
   button.btn {
     height: 32px;
@@ -127,14 +56,18 @@ a.select2-choice {
   text-shadow: 0 1px 0 darken(@btnPrimaryBackgroundLight, 16%);
   #gradient > .vertical(@btnPrimaryBackgroundLight, darken(@btnPrimaryBackgroundLight, 5%));
   border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
-  filter: dropshadow(color=darken(@btnPrimaryBackgroundLight, 42%), offx=1, offy=1);
   .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
+  .border-radius(4px);
+  color: #fff;
+  font-weight: bold;
   &:hover {
+    color: #fff;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
   }
   &:active,
   &:focus {
+    color: #fff;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnPrimaryBackgroundLight, 10%));
   }
@@ -145,20 +78,24 @@ a.select2-choice {
   text-shadow: 0 1px 0 darken(@btnInfoBackgroundLight, 16%);
   #gradient > .vertical(@btnInfoBackgroundLight, darken(@btnInfoBackgroundLight, 5%));
   border-color: darken(@btnInfoBackgroundLight, 7%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%);
-  filter: dropshadow(color=darken(@btnInfoBackgroundLight, 42%), offx=1, offy=1);
   .box-shadow(inset 0 1px 0 0 lighten(@btnInfoBackgroundLight, 7%));
   &:hover {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnInfoBackgroundLight);
+    color: #fff;
   }
   &:active,
   &:focus {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnInfoBackgroundLight, 10%));
+    color: #fff;
   }
   &.disabled {
     background-color: lighten(@btnInfoBackgroundLight, 10%);
   }
+}
+.btn.hide {
+  display: none;
 }
 
 .navbar-buttons .btn-group>.btn {
@@ -166,12 +103,10 @@ a.select2-choice {
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
-  .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+  background-color: darken(@color-new-green, 10%)
 }
 
 .scrollspy-title {
-  padding: 10px;
-  margin-top: 0;
   background-color: @color-grey_tab;
 }
 
@@ -191,7 +126,7 @@ a.accordion-toggle {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   label.control-label {
     &:not(.add-on) {
       max-height: 25px;
@@ -208,11 +143,7 @@ a.accordion-toggle {
   margin-left: 25%;
 }
 
-.controls .switch label{
-  float: none;
-}
-
-span.handle, td.handle {
+.handle {
   cursor: move;
 }
 
@@ -285,12 +216,20 @@ a.add-attribute-option {
 .has-switch {
   margin-right: 3px;
   margin-bottom: -6px;
+  border-radius: 0;
+
+  label {
+    z-index: 10;
+  }
   span {
     padding: 4px 7px;
     font-size: 12px;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+      background-color: @color-new-green;
+      background-image: none;
+      border-radius: 0;
+      text-shadow: none;
     }
   }
   &>div.switch-off,
@@ -300,34 +239,6 @@ a.add-attribute-option {
 }
 div.btn-group > .has-switch {
   display: block;
-}
-
-.select2-results .select2-highlighted {
-  background: @color-purple_light;
-}
-.select2-container.select2-container-disabled .select2-choice {
-  border: none;
-}
-.select2-container.input-large:not(.jstree-tree-select) {
-  width: 250px!important;
-}
-.select2-container.input-medium {
-  width: 200px!important;
-}
-.select2-container-multi.select2-container-active .select2-choices {
-  border: none;
-}
-.select2-allowclear abbr.select2-search-choice-close,
-.select2-container-multi .select2-search-choice-close {
-  font-family: FontAwesome;
-  font-size: 12px;
-  color: @textColor + #333;
-  &:before {
-    content: "\f00d";
-  }
-}
-.select2-allowclear abbr.select2-search-choice-close {
-  margin-top: 2px;
 }
 
 #attribute-buttons {
@@ -478,79 +389,6 @@ div.btn-group > .has-switch {
   }
 }
 
-/* Collapsable sidebar **********************************************************************************************/
-
-.sidebarized {
-  .sidebar-separator {
-    background-color: #f3f3f3;
-    i {
-      cursor: pointer;
-    }
-  }
-  .sidebar-controls {
-    background-color: #f7f7f7;
-    i {
-      color: @textColor;
-      cursor: pointer;
-    }
-    a, button {
-      display: block;
-      float: left;
-      width: 30px;
-      font-size: 13px;
-      color: #000;
-      text-align: center;
-      text-decoration: none;
-      background-color: #f3f3f3;
-      border: 0;
-      border-right: 1px solid #d3d3d3;
-    }
-    .btn-group .dropdown-toggle {
-      border-radius: 0;
-      .caret {
-        vertical-align: middle;
-      }
-    }
-    li {
-      text-align: left;
-    }
-    a {
-      cursor: pointer;
-    }
-  }
-  .sidebar-content {
-    background-color: #fcfcfc;
-    .sidebar-list {
-      ul {
-        margin: 0;
-        li {
-          padding: 0 10px;
-          line-height: 35px;
-          list-style: none;
-          cursor: pointer;
-          &:hover {
-            background-color: @color-grey_tab;
-          }
-          &.active, &.active:hover {
-            background-color: @color-purple_hover;
-          }
-          a {
-            display: block;
-            color: @textColor;
-            &:hover {
-              text-decoration: none;
-            }
-          }
-          span.handle {
-            float: left;
-            padding-right: 5px;
-          }
-        }
-      }
-    }
-  }
-}
-
 /* Accordion ********************************************************************************************************/
 .accordion-inner {
   td { border: none; }
@@ -560,91 +398,10 @@ div.btn-group > .has-switch {
   border-top: 1px solid #e5e5e5;
 }
 
-/* Dialog ***********************************************************************************************************/
-
-div.ui-dialog {
-  &:focus {
-    outline: none;
-  }
-  .ui-widget-content {
-    border: 1px solid #c3c3c3;
-    border-width: 1px 0;
-  }
-  .ui-dialog-titlebar {
-    margin: 0;
-    #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
-    border: none;
-    .ui-dialog-title {
-      font-weight: bold;
-    }
-  }
-  .ui-dialog-titlebar-buttonpane {
-    border: none;
-    .ui-dialog-titlebar-close {
-      top: 5px;
-      right: 6px;
-      width: 22px;
-      height: 22px;
-      font-family: FontAwesome!important; // Override ORO !important
-      .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
-      border: @border-purple;
-      .border-radius(3px);
-      span.ui-button-text {
-        font-size: 0;
-      }
-    }
-  }
-  form {
-    margin: 0;
-  }
-  .ui-dialog-buttonpane {
-    background-color: @color-grey_tab;
-    background-image: none;
-    border-top: none;
-    >div.ui-dialog-buttonset>button {
-      float: right;
-      margin: 10px 8px 12px 0;
-    }
-  }
-}
-
-.modal{
-  top: 20%;
-  background-color: @backgroundColor-white;
-}
-.modal .modal-header{
-  background-color: @color-purple_light;
-  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  -webkit-border-radius: 6px 6px 0 0;
-  border-radius: 6px 6px 0 0;
-}
-.modal-header h3{
-  color: @backgroundColor-white;
-}
-
-.modal-primary {
-  top: 20%;
-  background-color: @backgroundColor-white;
-
-  .modal-header {
-    background-color: @color-purple_light;
-    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-    -webkit-border-radius: 6px 6px 0 0;
-    border-radius: 6px 6px 0 0;
-  }
-  .modal-header h3 {
-    font: @backgroundColor-white;
-  }
-}
-
 .form-inline {
   label {
     width: 200px;
     text-align: left;
-  }
-  .select2-search-field, .select2-container {
-      width: 314px!important;
-      min-width: 314px!important;
   }
   input {
     width: 300px;
@@ -667,9 +424,8 @@ div.ui-dialog {
     -ms-transition: background-color 0.5s;
     transition: background-color 0.5s;  }
   i {
-    padding-top: 10px;
-    line-height: 30px;
-    font-size: 30px;
+    line-height: 34px;
+    font-size: 20px;
   }
 }
 .attribute-type-selector {
@@ -681,12 +437,6 @@ div.ui-dialog {
     &:nth-child(even) {
       margin-left: 2%;
     }
-  }
-}
-
-#sortable_options {
-  th {
-    text-align: center;
   }
 }
 
@@ -737,9 +487,6 @@ table i {
     background-color: @color-grey_tab;
     border-bottom: 1px solid #e5e5e5;
   }
-  .modal-header h3 {
-    background-color: @color-purple_light;
-  }
 }
 
 #edit-family {
@@ -751,11 +498,6 @@ table i {
 .submit-form .dropdown-menu.right-align {
   right: 0;
   left: auto;
-}
-
-.product-edit #pim_enrich-product-tab-attribute {
-  .select2-container { max-width: 365px;}
-  .select2-container { width: 365px!important; } /* important statement come from bap */
 }
 
 .attribute-field {
@@ -946,13 +688,6 @@ h1 {
   line-height: 33px;
   color: @textColor + #555;
 }
-.page-title {
-  padding: 10px 7px 10px 12px;
-  h1 {
-    margin: 0;
-    line-height: 33px;
-  }
-}
 
 .navbar-extra {
   padding: 10px 7px 10px 12px;
@@ -1054,17 +789,33 @@ div.dropdown-menu.channel {
 
 #locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
-    padding: 5px 6px 3px 6px;
+    padding: 0px 44px 0px 10px;
+    height: 34px;
+    line-height: 34px;
     margin-bottom: 0;
     color: @textColor;
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 2px;
     box-shadow: none;
-    > i {
-      font-size: 14px;
-      vertical-align: middle;
+    position: relative;
+    background-color: @color-new-grey;
+    overflow: hidden;
+
+    & > i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      margin: 0;
+      background-color: #CCC;
+      text-align: center;
+      line-height: 34px;
+      background-color: darken(@color-new-grey, 10%);
     }
+
     .flag-language .language {
       width: auto;
       padding-right: 3px;
@@ -1131,9 +882,16 @@ div.dropdown-menu.channel {
   cursor: default;
   opacity: 0;
   .label-warning {
-    color: @textColor + #333;
+    color: @color-form-info;
     text-shadow: none;
-    background-color: #fefecb;
+    background-color: #fdd9b6;
+    border-radius: 10px;
+    font-weight: 400;
+    padding: 2px 10px 2px 2px;
+
+    .icon {
+      color: #fa9f47;
+    }
   }
 }
 
@@ -1308,9 +1066,6 @@ button.pimmultiselect {
 .attribute-field.scopable>div:not(.first) .controls.metric input {
   height: 21px;
 }
-.product-edit #pim_enrich-product-tab-attribute .metric .select2-container {
-  width: 160px !important;
-}
 
 /** Product completeness *******************************************************************************/
 div#legend {
@@ -1366,41 +1121,35 @@ table#progress-table {
   }
 }
 
-.progress-disabled .bar,
-.progress .bar-disabled {
-  background-color: #cccccc;
-  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
-}
-
 /** mass-edition *****************************************************************************************************/
 .mass-edit-form {
   padding: 25px;
   background-color: lighten(@color-light_grey, 4%);
+  .product-edit-form {
+    min-height: 300px;
+  }
+  .product-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
+    border-left: 0;
+  }
   hr {
     height: 3px;
     background-color: lighten(@color-light_grey, 2%);
     border-top: 1px solid lighten(@color-light_grey, 5%);
     border-bottom: 1px solid lighten(@color-light_grey, 4%);
   }
+  .tab-content {
+    padding: 0;
+    border-left: solid 1px #ccc;
+  }
+  header {
+    display: none;
+  }
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-.column-configurator-modal {
-  width: 90%;
-  left: 5%;
-  margin-left: 0;
-  top: 5%;
-  .modal-body {
-    max-height: inherit;
-    padding: 0;
-    background-color: #edf1f2;
-  }
+.column-configurator-modal .modal-body {
+  padding: 0;
+  background-color: #edf1f2;
 }
 #column-configurator {
   h4 {
@@ -1519,51 +1268,5 @@ button.view-button {
   font-size: 13px;
   &.hide {
     display: none;
-  }
-}
-
-/** Role form ********************************************************************************************************/
-div.acl-permission {
-  display: list-item;
-  margin-left: 20px;
-  line-height: 40px;
-  list-style: none;
-  &>div[id] {
-    display: inline-block;
-  }
-}
-.acl-permission {
-  &.default-field {
-    display: none;
-  }
-  i.acl-permission-toggle {
-    padding: 5px;
-    cursor: pointer;
-    font-size: 1.5em;
-    &.granted {
-      color: #33be00;
-    }
-    &.non-granted {
-      padding: 5px 7px;
-      color: red;
-    }
-  }
-}
-i.acl-group-permission-toggle {
-  cursor: pointer;
-  font-size: 1.2em;
-  margin: 0;
-  &.icon-circle {
-    padding: 1px 7px 0 6px;
-    font-size: 1em;
-    color: #b9b9b9;
-  }
-  &.icon-ok {
-    padding: 0 5px 0 4px;
-    color: #33be00;
-  }
-  &.icon-remove {
-    padding: 0 6px;
-    color: red;
   }
 }

@@ -3,16 +3,22 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Pim\Bundle\ConnectorBundle\Writer\File\ContextableCsvWriter;
+use Pim\Component\Connector\Writer\File\FileExporterInterface;
 
 /**
- * Write product data into a csv file on the filesystem
+ * Write product data into a csv file on the local filesystem
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvProductWriter extends CsvWriter
+class CsvProductWriter extends ContextableCsvWriter
 {
+    /** @var FileExporterInterface */
+    protected $fileExporter;
+
     /** @var string */
     protected $bufferFile;
 
@@ -20,12 +26,23 @@ class CsvProductWriter extends CsvWriter
     protected $headers = [];
 
     /**
+     * @param FileExporterInterface $fileExporter
+     */
+    public function __construct(FileExporterInterface $fileExporter)
+    {
+        parent::__construct();
+
+        $this->fileExporter = $fileExporter;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function write(array $items)
     {
-        if (!is_dir(dirname($this->getPath()))) {
-            mkdir(dirname($this->getPath()), 0777, true);
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
         }
 
         foreach ($items as $item) {
@@ -52,7 +69,7 @@ class CsvProductWriter extends CsvWriter
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
-            mkdir(dirname($exportDirectory), 0777, true);
+            $this->localFs->mkdir($exportDirectory);
         }
 
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
@@ -87,35 +104,26 @@ class CsvProductWriter extends CsvWriter
      */
     protected function copyMedia(array $media)
     {
-        $target = sprintf('%s/%s', dirname($this->getPath()), $media['exportPath']);
+        $target = dirname($this->getPath()) . DIRECTORY_SEPARATOR . $media['exportPath'];
 
         if (!is_dir(dirname($target))) {
-            mkdir(dirname($target), 0777, true);
+            $this->localFs->mkdir(dirname($target));
         }
-        if (is_file($media['filePath'])) {
-            $this->copyFile($media, $target);
-        } else {
+
+        try {
+            $this->fileExporter->export($media['filePath'], $target, $media['storageAlias']);
+            $this->writtenFiles[$target] = $media['exportPath'];
+        } catch (FileTransferException $e) {
             $this->stepExecution->addWarning(
                 $this->getName(),
                 'The media has not been found or is not currently available',
                 [],
                 $media
             );
-        }
-    }
-
-    /**
-     * @param array  $media
-     * @param string $target
-     */
-    protected function copyFile(array $media, $target)
-    {
-        if (copy($media['filePath'], $target)) {
-            $this->writtenFiles[$target] = $media['exportPath'];
-        } else {
+        } catch (\LogicException $e) {
             $this->stepExecution->addWarning(
                 $this->getName(),
-                'The media has not been copied',
+                sprintf('The media has not been copied. %s', $e->getMessage()),
                 [],
                 $media
             );

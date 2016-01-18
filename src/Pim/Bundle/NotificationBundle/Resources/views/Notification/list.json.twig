@@ -5,7 +5,10 @@
         type: item.notification.type,
         message: item.notification.message|trans(item.notification.messageParams),
         viewed: item.viewed,
-        url: item.notification.route ? path(item.notification.route, item.notification.routeParams) : null
+        url: item.notification.route ? path(item.notification.route, item.notification.routeParams) : null,
+        createdAt: item.notification.created|date("Y-m-d H:i:s"),
+        actionType: item.notification.context.actionType ? item.notification.context.actionType : null,
+        actionTypeMessage: item.notification.context.actionType ? item.notification.context.actionType|trans : null,
     }]) %}
 {% endfor %}
 {% set data = { notifications: notifications, unreadCount: notification_count() } %}

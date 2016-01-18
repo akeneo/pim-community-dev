@@ -12,7 +12,7 @@ The description of what the PR does
 | ----------------- | ---
 | Added Specs       |
 | Added Behats      |
-| Travis CI is ok   |
+| Travis CI is ok   |
 | Changelog updated |
 ```
 
@@ -30,12 +30,12 @@ For a Story,
 | ----------------- | ---
 | Specs             |
 | Behats            |
-| Blue CI           |
+| Blue CI           |
 | Changelog updated |
 | Review and 2 GTM  |
 | Micro Demo (PO)   |
 | Migration script  |
-| Tech Doc          |
+| Tech Doc          |
 ```
 
 For a Bug Fix,
@@ -45,7 +45,7 @@ For a Bug Fix,
 | ----------------- | ---
 | Specs             |
 | Behats            |
-| Blue CI           |
+| Blue CI           |
 | Changelog updated |
 | Review and 2 GTM  |
 ```

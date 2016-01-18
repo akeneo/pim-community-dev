@@ -3,19 +3,21 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group import processor, allows to,
  *  - create / update groups (except variant group)
- *  - return the valid groups, throw exceptions to skip invalid ones
+ *  - return the valid groups, throw exceptions to skip invalid ones.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Processor\Denormalization\
  */
 class GroupProcessor extends AbstractProcessor
 {
@@ -53,7 +55,7 @@ class GroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        /** @var GroupInterface $group */
+        /* @var GroupInterface $group */
         $this->checkItemData($item);
         $group = $this->findOrCreateGroup($item);
         $this->updateGroup($group, $item);
@@ -73,7 +75,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Find or create the group
+     * Find or create the group.
      *
      * @param array $groupData
      *
@@ -101,7 +103,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group fields
+     * Update the variant group fields.
      *
      * @param GroupInterface $group
      * @param array          $groupData

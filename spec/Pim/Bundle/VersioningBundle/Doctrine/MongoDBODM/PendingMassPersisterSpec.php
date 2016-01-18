@@ -11,7 +11,6 @@ use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -76,11 +75,9 @@ class PendingMassPersisterSpec extends ObjectBehavior
         $versionBuilder->createPendingVersion($product2, 'julia', $normalizedProduct2, 'CSV Import')
             ->willReturn($pendingVersion2);
 
-
         $mongoVersions = [$normalizedProduct1, $normalizedProduct2];
         $normalizer->normalize($pendingVersion1, VersionNormalizer::FORMAT)->willReturn($normalizedProduct1);
         $normalizer->normalize($pendingVersion2, VersionNormalizer::FORMAT)->willReturn($normalizedProduct2);
-
 
         $manager->getDocumentCollection('VersionClass')->willReturn($collection);
 

@@ -1,0 +1,12 @@
+parameters:
+    pim_translation.twig.translations_extension.class: Pim\Bundle\TranslationBundle\Twig\TranslationsExtension
+
+services:
+    pim_translation.twig.translations_extension:
+        class: %pim_translation.twig.translations_extension.class%
+        arguments:
+            - '@pim_catalog.command_launcher'
+            - '@oro_locale.settings'
+            - %assetic.write_to%
+        tags:
+            - { name: twig.extension }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -57,4 +57,11 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
      * @return array the list of deleted locales
      */
     public function getDeletedLocalesForChannel(ChannelInterface $channel);
+
+    /**
+     * Return the number of activated locales
+     *
+     * @return int
+     */
+    public function countAllActivated();
 }

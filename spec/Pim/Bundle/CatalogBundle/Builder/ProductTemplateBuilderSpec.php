@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -61,7 +60,6 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $productBuilder
             ->addAttributeToProduct(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'), $name)
             ->shouldBeCalled();
-
         $productBuilder
             ->addMissingProductValues(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))
             ->shouldBeCalled();

@@ -76,7 +76,7 @@ class NotificationController
     /**
      * Mark user notifications as viewed
      *
-     * @param integer|null $id If null, all notifications will be marked as viewed
+     * @param int|null $id If null, all notifications will be marked as viewed
      *
      * @return JsonResponse
      */
@@ -94,7 +94,7 @@ class NotificationController
     /**
      * Remove a notification
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return JsonResponse
      */

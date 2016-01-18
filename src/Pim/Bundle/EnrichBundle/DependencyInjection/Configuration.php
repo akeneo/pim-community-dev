@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('record_mails')->defaultFalse()->end()
+                ->scalarNode('max_products_category_removal')->defaultValue('100')->end()
             ->end()
         ->end();
 

@@ -1,3 +1,4 @@
+@javascript
 Feature: Remove an attribute from a product
   In order to reduce undesired amount of attributes on a product
   As a product manager
@@ -14,7 +15,6 @@ Feature: Remove an attribute from a product
     Given I am on the "nike" product page
     Then I should not see a remove link next to the "Manufacturer" field
 
-  @javascript
   Scenario: Successfully remove an attribute from a product
     Given the following product values:
       | product | attribute  | value       |
@@ -22,10 +22,10 @@ Feature: Remove an attribute from a product
     And I am on the "nike" product page
     And I visit the "Colors" group
     When I remove the "Lace color" attribute
-    Then I should see flash message "Attribute successfully removed from the product"
+    Then I confirm the deletion
+    And I press the "Save" button
     And attribute in group "Colors" should be Color
 
-  @javascript
   Scenario: Successfully remove a scopable attribute from a product
     Given the following attribute:
       | code            | label           | scopable | group |
@@ -34,5 +34,6 @@ Feature: Remove an attribute from a product
     And I am on the "nike" product page
     When I visit the "Sizes" group
     And I remove the "Scopable length" attribute
-    Then I should see flash message "Attribute successfully removed from the product"
+    Then I confirm the deletion
+    And I press the "Save" button
     And attribute in group "Sizes" should be Size

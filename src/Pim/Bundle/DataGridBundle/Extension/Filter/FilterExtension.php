@@ -53,9 +53,10 @@ class FilterExtension extends AbstractExtension
         TranslatorInterface $translator,
         DatasourceAdapterResolver $adapterResolver
     ) {
-        $this->translator = $translator;
-        $this->adapterResolver = $adapterResolver;
         parent::__construct($requestParams);
+
+        $this->translator      = $translator;
+        $this->adapterResolver = $adapterResolver;
     }
 
     /**
@@ -90,10 +91,10 @@ class FilterExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        $adapterClass = $this->adapterResolver->getAdapterClass($datasourceType);
+        $filters           = $this->getFiltersToApply($config);
+        $values            = $this->getValuesToApply($config);
+        $datasourceType    = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $adapterClass      = $this->adapterResolver->getAdapterClass($datasourceType);
         $datasourceAdapter = new $adapterClass($datasource);
 
         foreach ($filters as $filter) {
@@ -118,6 +119,7 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+        $filtersConfig   = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
@@ -126,7 +128,7 @@ class FilterExtension extends AbstractExtension
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
 
-            if ($value !== false) {
+            if (false !== $value) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
@@ -137,11 +139,14 @@ class FilterExtension extends AbstractExtension
                 }
             }
 
-            $metadata          = $filter->getMetadata();
-            $filtersMetaData[] = array_merge(
-                $metadata,
-                ['label' => $this->translator->trans($metadata['label'])]
-            );
+            if (isset($filtersConfig[$filter->getName()])) {
+                $metadata = $filter->getMetadata();
+
+                $filtersMetaData[] = array_merge(
+                    $metadata,
+                    ['label' => $this->translator->trans($metadata['label'])]
+                );
+            }
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])
@@ -193,7 +198,35 @@ class FilterExtension extends AbstractExtension
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
+        // TODO: Try to make filter without views, to remove this kind of stuff
+        $gridName = $config->offsetGetByPath('[name]');
+        $gridCategoryConfig = $this->getCategoryFilterConfig($gridName);
+
+        if (!isset($filtersConfig['category']) && null !== $gridCategoryConfig) {
+            $filters[] = $this->getFilterObject('category', $gridCategoryConfig);
+        }
+
         return $filters;
+    }
+
+    /**
+     * Return the category filter config for the given $gridname,
+     * if this $gridname is not filterable by category, return null.
+     *
+     * @param $gridname
+     *
+     * @return array|null
+     */
+    protected function getCategoryFilterConfig($gridname)
+    {
+        $gridConfigs = [
+            'product-grid' => [
+                'type'      => 'product_category',
+                'data_name' => 'category'
+            ]
+        ];
+
+        return isset($gridConfigs[$gridname]) ? $gridConfigs[$gridname] : null;
     }
 
     /**
@@ -213,7 +246,7 @@ class FilterExtension extends AbstractExtension
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if (isset($filters[$column])) {
+            if (isset($filters[$column]) || 'category' === $column) {
                 $result[$column] = $value;
             }
         }

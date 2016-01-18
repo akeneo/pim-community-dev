@@ -1,0 +1,78 @@
+<div class="comment-threads">
+    <ol class="unstyled">
+        <li class="comment-create">
+            <form class="unspaced">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <textarea class="new-comment-value" placeholder="<%- _.__('comment.placeholder.new') %>"></textarea>
+                        <span class="comment-buttons">
+                            <input class="btn cancel" type="reset" value="<%- _.__('btn.cancel') %>">
+                            <button class="btn btn-success send-comment"><%- _.__('btn.post') %></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </li>
+        <% if (comments.length) { %>
+            <% _.each(comments, function(comment) { %>
+                <li>
+                    <ol class="comment-thread unstyled" data-comment-id="<%- comment.id %>">
+                        <li class="comment-topic">
+                            <div class="row-fluid">
+                                <div class="span1 text-right">
+                                    <img width="35" src="/bundles/pimui/img/info-user.png" alt="<%- comment.author.username %>"/>
+                                </div>
+                                <div class="span11">
+                                    <div class="comment-meta">
+                                        <span class="author"><strong><%- comment.author.fullName %></strong></span>
+                                        <span class="date"><%- comment.created %></span>
+                                        <% if (comment.author.username === currentUser.username) { %>
+                                            <span class="remove-comment" title="Delete" data-comment-id="<%- comment.id %>">
+                                                <i class="icon-trash"></i>
+                                            </span>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <span class="message"><%- comment.body %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <% _.each(comment.replies, function(reply) { %>
+                            <li class="row-fluid comment-reply">
+                                <div class="span1 text-right">
+                                    <img width="25" src="/bundles/pimui/img/info-user.png" alt="<%- reply.author.username %>">
+                                </div>
+                                <div class="span11">
+                                    <div class="comment-meta">
+                                        <span class="author"><strong><%- reply.author.fullName %></strong></span>
+                                        <span class="date"><%- reply.created %></span>
+                                        <% if (reply.author.username === currentUser.username) { %>
+                                            <span class="remove-comment" title="Delete" data-comment-id="<%- reply.id %>">
+                                                <i class="icon-trash"></i>
+                                            </span>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <span class="message"><%- reply.body %></span>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }); %>
+                        <li class="reply-to-comment">
+                            <textarea name="body" required="required" placeholder="<%- _.__('comment.placeholder.reply') %>" class="exclude span12 input-large"></textarea>
+                            <span class="comment-buttons">
+                               <button class="btn cancel-comment" type="reset"><%- _.__('btn.cancel') %></button>
+                               <button class="btn btn-success send-comment" alt="<%- _.__('btn.reply') %>"><%- _.__('btn.reply') %></button>
+                            </span>
+                        </li>
+                    </ol>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <li class="no-data">
+                <p><%- _.__('comment.index.empty') %></p>
+            </li>
+        <% } %>
+    </ol>
+</div>

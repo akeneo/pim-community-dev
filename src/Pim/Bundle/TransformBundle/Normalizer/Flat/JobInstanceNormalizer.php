@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class JobInstanceNormalizer extends Structured\JobInstanceNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 

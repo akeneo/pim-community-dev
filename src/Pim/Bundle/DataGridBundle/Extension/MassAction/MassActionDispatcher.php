@@ -9,6 +9,8 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,21 +24,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MassActionDispatcher
 {
-    /** @var MassActionHandlerRegistry $handlerRegistry */
+    /** @staticvar string */
+    const FAMILY_GRID_NAME = 'family-grid';
+
+    /** @var MassActionHandlerRegistry */
     protected $handlerRegistry;
 
-    /** @var Manager $manager */
+    /** @var ManagerInterface */
     protected $manager;
 
-    /** @var RequestParameters $requestParams */
+    /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var MassActionParametersParser $parametersParser */
+    /** @var MassActionParametersParser */
     protected $parametersParser;
 
     /**
-     * Constructor
-     *
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
@@ -65,6 +68,80 @@ class MassActionDispatcher
      */
     public function dispatch(Request $request)
     {
+        $parameters = $this->prepareMassActionParameters($request);
+        $datagrid   = $parameters['datagrid'];
+        $massAction = $parameters['massAction'];
+        $inset      = $parameters['inset'];
+        $values     = $parameters['values'];
+
+        return $this->performMassAction($datagrid, $massAction, $inset, $values);
+    }
+
+    /**
+     * Extract applied filters from the datasource, only implemented for ProductDatasource
+     *
+     * If Inset is defined, it returns filter on entity ids, else it returns all applied filters on the grid
+     *
+     * @param Request $request
+     *
+     * @throws \LogicException
+     *
+     * @return array
+     */
+    public function getRawFilters(Request $request)
+    {
+        $parameters = $this->prepareMassActionParameters($request);
+        $datagrid   = $parameters['datagrid'];
+        $datasource = $datagrid->getDatasource();
+
+        if (!$datasource instanceof ProductDatasource) {
+            throw new \LogicException('getRawFilters is only implemented for ProductDatasource');
+        }
+
+        if (true === $parameters['inset']) {
+            $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
+        } else {
+            if (empty($parameters['values'])) {
+                $filters = $datasource->getProductQueryBuilder()->getRawFilters();
+            } else {
+                $filters = array_merge(
+                    $datasource->getProductQueryBuilder()->getRawFilters(),
+                    [['field' => 'id', 'operator' => 'NOT IN', 'value' => $parameters['values']]]
+                );
+            }
+        }
+
+        $datasourceParams = $datasource->getParameters();
+        $contextParams = [];
+        if (is_array($datasourceParams)) {
+            $contextParams = [
+                'locale' => $datasourceParams['dataLocale'],
+                'scope'  => $datasourceParams['scopeCode']
+            ];
+        }
+
+        foreach ($filters as &$filter) {
+            if (isset($filter['context'])) {
+                $filter['context'] = array_merge($filter['context'], $contextParams);
+            } else {
+                $filter['context'] = $contextParams;
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Dispatch datagrid mass action
+     *
+     * @param Request $request
+     *
+     * @throws \LogicException
+     *
+     * @return array
+     */
+    protected function prepareMassActionParameters(Request $request)
+    {
         $parameters = $this->parametersParser->parse($request);
         $inset   = $this->prepareInsetParameter($parameters);
         $values  = $this->prepareValuesParameter($parameters);
@@ -80,13 +157,31 @@ class MassActionDispatcher
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        return $this->performMassAction($datagrid, $massAction, $inset, $values);
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+
+        if (self::FAMILY_GRID_NAME === $datagridName) {
+            $qbLocaleParameter = $qb->getParameter('localeCode');
+
+            if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
+                $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+            }
+        }
+
+        $repository = $datagrid->getDatasource()->getMassActionRepository();
+        $repository->applyMassActionParameters($qb, $inset, $values);
+
+        return [
+            'datagrid'   => $datagrid,
+            'massAction' => $massAction,
+            'inset'      => $inset,
+            'values'     => $values
+        ];
     }
 
     /**
      * @param array $parameters
      *
-     * @return boolean
+     * @return bool
      */
     protected function prepareInsetParameter(array $parameters)
     {
@@ -118,22 +213,13 @@ class MassActionDispatcher
      *
      * @param DatagridInterface   $datagrid
      * @param MassActionInterface $massAction
-     * @param boolean             $inset
-     * @param string              $values
      *
      * @return MassActionResponseInterface
      */
     protected function performMassAction(
         DatagridInterface $datagrid,
-        MassActionInterface $massAction,
-        $inset,
-        $values
+        MassActionInterface $massAction
     ) {
-        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-
-        $repository = $datagrid->getDatasource()->getMassActionRepository();
-        $repository->applyMassActionParameters($qb, $inset, $values);
-
         $handler = $this->getMassActionHandler($massAction);
 
         return $handler->handle($datagrid, $massAction);
@@ -157,7 +243,7 @@ class MassActionDispatcher
             }
         );
 
-        /** @var MassActionExtension|boolean $extension */
+        /** @var MassActionExtension|bool $extension */
         $extension = reset($extensions);
         if ($extension === false) {
             throw new \LogicException("MassAction extension is not applied to datagrid.");

@@ -1,0 +1,62 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+/* jQuery UI dialog ***************************************************************************************************/
+
+.ui-dialog {
+  border-radius: 0;
+  box-shadow: 0 1px 22px rgba(0,0,0,.4);
+  z-index: 900;
+  background: @bodyBackground;
+  position: absolute;
+  &:focus {
+    outline: none;
+  }
+  form {
+    margin: 0;
+  }
+}
+
+.ui-dialog-titlebar {
+  border-radius: 0;
+  cursor: move;
+  padding: 0 15px;
+  background-color: @color-new-purple-medium;
+  position: relative;
+  padding-right: 30px;
+  height: 44px;
+  line-height: 44px;
+}
+
+.ui-dialog-titlebar-close {
+  display: none;
+}
+
+.ui-dialog-title {
+  font-weight: normal;
+  color: #fff;
+  font-size: 13px;
+  display: block;
+  text-overflow: ellipsis;
+}
+
+.ui-dialog-content {
+  padding: @verticalPadding/2 @horizontalPadding/2;
+  min-width: 250px;
+}
+
+.ui-widget-header {
+  border: 0;
+}
+
+.ui-dialog-buttonpane {
+  background-color: @color-grey_tab;
+  background-image: none;
+  border-top: none;
+  border-radius: 0;
+}
+
+.ui-dialog-buttonset button {
+  float: right;
+  margin: 10px 8px 12px 0;
+}

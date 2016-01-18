@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 {

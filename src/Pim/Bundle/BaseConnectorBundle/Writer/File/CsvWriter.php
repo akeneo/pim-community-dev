@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +18,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
+     *
      * @var string
      */
     protected $delimiter = ';';
@@ -24,24 +26,33 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
+     *
      * @var string
      */
     protected $enclosure = '"';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $withHeader = true;
 
     /**
      * @var array
      */
-    protected $writtenFiles = array();
+    protected $writtenFiles = [];
 
     /**
      * @var array
      */
     protected $items = [];
+
+    /** @var Filesystem */
+    protected $localFs;
+
+    public function __construct()
+    {
+        $this->localFs = new Filesystem();
+    }
 
     /**
      * Set the csv delimiter character
@@ -86,7 +97,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * Set whether or not to print a header row into the csv
      *
-     * @param boolean $withHeader
+     * @param bool $withHeader
      */
     public function setWithHeader($withHeader)
     {
@@ -96,7 +107,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * Get whether or not to print a header row into the csv
      *
-     * @return boolean
+     * @return bool
      */
     public function isWithHeader()
     {
@@ -116,6 +127,11 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     public function flush()
     {
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
+
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
 
         $uniqueKeys = $this->getAllKeys($this->items);
@@ -146,27 +162,27 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         return
             array_merge(
                 parent::getConfigurationFields(),
-                array(
-                    'delimiter' => array(
-                        'options' => array(
+                [
+                    'delimiter' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.delimiter.label',
                             'help'  => 'pim_base_connector.export.delimiter.help'
-                        )
-                    ),
-                    'enclosure' => array(
-                        'options' => array(
+                        ]
+                    ],
+                    'enclosure' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.enclosure.label',
                             'help'  => 'pim_base_connector.export.enclosure.help'
-                        )
-                    ),
-                    'withHeader' => array(
+                        ]
+                    ],
+                    'withHeader' => [
                         'type'    => 'switch',
-                        'options' => array(
+                        'options' => [
                             'label' => 'pim_base_connector.export.withHeader.label',
                             'help'  => 'pim_base_connector.export.withHeader.help'
-                        )
-                    ),
-                )
+                        ]
+                    ],
+                ]
             );
     }
 
@@ -218,7 +234,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         $uniqueKeys = array_fill_keys($uniqueKeys, '');
         $fullItems = [];
         foreach ($this->items as $item) {
-            $fullItems[] = array_merge($uniqueKeys, $item);
+            $fullItems[] = array_replace($uniqueKeys, $item);
         }
 
         return $fullItems;

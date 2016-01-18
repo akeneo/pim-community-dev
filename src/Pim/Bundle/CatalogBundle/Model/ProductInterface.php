@@ -1,6 +1,9 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
@@ -19,7 +22,8 @@ interface ProductInterface extends
     TimestampableInterface,
     VersionableInterface,
     CommentSubjectInterface,
-    ReferableInterface
+    ReferableInterface,
+    CategoryAwareInterface
 {
     /**
      * Get the ID of the product
@@ -45,38 +49,6 @@ interface ProductInterface extends
      * @return ProductValueInterface the identifier of the product
      */
     public function getIdentifier();
-
-    /**
-     * Get the product categories
-     *
-     * @return ArrayCollection
-     */
-    public function getCategories();
-
-    /**
-     * Remove a category
-     *
-     * @param CategoryInterface $category
-     *
-     * @return ProductInterface
-     */
-    public function removeCategory(CategoryInterface $category);
-
-    /**
-     * Add a category
-     *
-     * @param CategoryInterface $category
-     *
-     * @return ProductInterface
-     */
-    public function addCategory(CategoryInterface $category);
-
-    /**
-     * Get a string with categories linked to product
-     *
-     * @return string
-     */
-    public function getCategoryCodes();
 
     /**
      * Get values
@@ -154,30 +126,30 @@ interface ProductInterface extends
     public function getVariantGroup();
 
     /**
-     * Get a string with groups
+     * Get groups code
      *
-     * @return string
+     * @return array
      */
     public function getGroupCodes();
 
     /**
-     * Get the product associations
+     * Get types of associations
      *
      * @return AssociationInterface[]|null
      */
     public function getAssociations();
 
     /**
-     * Set product associations
+     * Set types of associations
      *
      * @param AssociationInterface[] $associations
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = array());
+    public function setAssociations(array $associations = []);
 
     /**
-     * Add product association
+     * Add a type of an association
      *
      * @param AssociationInterface $association
      *
@@ -188,7 +160,7 @@ interface ProductInterface extends
     public function addAssociation(AssociationInterface $association);
 
     /**
-     * Remove product association
+     * Remove a type of an association
      *
      * @param AssociationInterface $association
      *
@@ -233,14 +205,14 @@ interface ProductInterface extends
     /**
      * Get product completenesses
      *
-     * @return ArrayCollection
+     * @return Collection of CompletenessInterface
      */
     public function getCompletenesses();
 
     /**
      * Set product completenesses
      *
-     * @param ArrayCollection $completenesses
+     * @param Collection $completenesses CompletenessInterface
      *
      * @return ProductInterface
      */
@@ -270,6 +242,20 @@ interface ProductInterface extends
     public function getUsedAttributeCodes();
 
     /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    public function hasAttributeInFamily(AttributeInterface $attribute);
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    public function hasAttributeInVariantGroup(AttributeInterface $attribute);
+
+    /**
      * Check if an attribute can be removed from the product
      *
      * @param AttributeInterface $attribute
@@ -277,6 +263,15 @@ interface ProductInterface extends
      * @return bool
      */
     public function isAttributeRemovable(AttributeInterface $attribute);
+
+    /**
+     * Check if an attribute can be edited from the product
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
      * Mark the indexed as outdated
@@ -290,7 +285,7 @@ interface ProductInterface extends
      *
      * @deprecated will be removed in 1.4
      *
-     * @return ProductMediaInterface[]
+     * @return FileInfoInterface[]
      */
     public function getMedia();
 

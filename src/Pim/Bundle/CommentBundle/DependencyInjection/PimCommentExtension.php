@@ -23,13 +23,15 @@ class PimCommentExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('entities.yml');
-        $loader->load('forms.yml');
-        $loader->load('form_types.yml');
         $loader->load('builders.yml');
-        $loader->load('managers.yml');
-        $loader->load('repositories.yml');
         $loader->load('controllers.yml');
-        $loader->load('view_elements/product.yml');
+        $loader->load('entities.yml');
+        $loader->load('form_types.yml');
+        $loader->load('forms.yml');
+        $loader->load('managers.yml');
+        $loader->load('normalizers.yml');
+        $loader->load('removers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('savers.yml');
     }
 }

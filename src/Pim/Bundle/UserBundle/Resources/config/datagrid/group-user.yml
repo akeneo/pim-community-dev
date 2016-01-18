@@ -2,7 +2,7 @@ datagrid:
     pim-group-user-grid:
         extend: pim-user-relation-grid
         source:
-            acl_resource: oro_user_group_update
+            acl_resource: pim_user_group_edit
             query:
                 select:
                     - >

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,24 +15,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array $supportedFormats
-     */
-    protected $supportedFormats = array('json', 'xml');
+    /** @var string[] */
+    protected $supportedFormats = ['json', 'xml'];
 
-    /**
-     * @var TranslationNormalizer $transNormalizer
-     */
+    /** @var TranslationNormalizer */
     protected $transNormalizer;
+
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $transNormalizer
+     * @param TranslationNormalizer          $transNormalizer
+     * @param CollectionFilterInterface|null $collectionFilter
      */
-    public function __construct(TranslationNormalizer $transNormalizer)
-    {
-        $this->transNormalizer = $transNormalizer;
+    public function __construct(
+        TranslationNormalizer $transNormalizer,
+        CollectionFilterInterface $collectionFilter = null
+    ) {
+        $this->transNormalizer  = $transNormalizer;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -64,12 +68,19 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes(FamilyInterface $family)
     {
-        $attributes = array();
-        foreach ($family->getAttributes() as $attribute) {
-            $attributes[] = $attribute->getCode();
+        $filteredAttributes = $this->collectionFilter ?
+            $this->collectionFilter->filterCollection(
+                $family->getAttributes(),
+                'pim.internal_api.attribute.view'
+            ) :
+            $family->getAttributes();
+
+        $normalizedAttributes = array();
+        foreach ($filteredAttributes as $attribute) {
+            $normalizedAttributes[] = $attribute->getCode();
         }
 
-        return $attributes;
+        return $normalizedAttributes;
     }
 
     /**

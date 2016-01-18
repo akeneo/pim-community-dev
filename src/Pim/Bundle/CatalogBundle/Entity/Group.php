@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Group implements GroupInterface
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
     /** @var string $code */
@@ -44,7 +44,7 @@ class Group implements GroupInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
@@ -336,11 +336,12 @@ class Group implements GroupInterface
 
     /**
      * Return the identifier-based validation group for validation of properties
+     *
      * @return string[]
      */
     public function getGroupSequence()
     {
-        return array('Default', strtolower($this->getType()->getCode()));
+        return array('Group', strtolower($this->getType()->getCode()));
     }
 
     /**

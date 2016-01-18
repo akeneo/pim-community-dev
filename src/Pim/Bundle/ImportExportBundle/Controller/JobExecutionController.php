@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gaufrette\StreamMode;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Job execution controller
@@ -50,10 +50,11 @@ class JobExecutionController extends AbstractDoctrineController
 
     /**
      * Constructor
+     *
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -69,7 +70,7 @@ class JobExecutionController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -85,7 +86,7 @@ class JobExecutionController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -116,7 +117,7 @@ class JobExecutionController extends AbstractDoctrineController
      * Show a report
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
@@ -156,16 +157,16 @@ class JobExecutionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'execution' => $jobExecution,
-            )
+            ]
         );
     }
 
     /**
      * Download the log file of the job execution
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -184,9 +185,9 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Download an archived file
      *
-     * @param integer $id
-     * @param string  $archiver
-     * @param string  $key
+     * @param int    $id
+     * @param string $archiver
+     * @param string $key
      *
      * @return StreamedResponse
      */
@@ -196,19 +197,9 @@ class JobExecutionController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
-        $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
+        $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return new StreamedResponse(
-            function () use ($stream) {
-                $stream->open(new StreamMode('rb'));
-                while (!$stream->eof()) {
-                    echo $stream->read(8192);
-                }
-                $stream->close();
-            },
-            200,
-            array('Content-Type' => 'application/octet-stream')
-        );
+        return new StreamedFileResponse($stream);
     }
 
     /**

@@ -2,13 +2,12 @@
 
 namespace Context\Loader;
 
-use Oro\Bundle\UserBundle\Entity\Group;
-use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Loader for users
@@ -31,7 +30,7 @@ class UserLoader extends LoadUserData
     {
         $this->om = $manager;
 
-        $configuration = Yaml::parse(realpath($this->getFilePath()));
+        $configuration = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         if (isset($configuration['users'])) {
             foreach ($configuration['users'] as $username => $data) {
@@ -81,19 +80,13 @@ class UserLoader extends LoadUserData
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
-        $unit = $this->getOwner('Main');
-
         $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)
-            ->setApi($api)
-            ->setOwner($unit)
-            ->setBusinessUnits(
-                new ArrayCollection(array($unit))
-            );
+            ->setApi($api);
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));
@@ -109,9 +102,8 @@ class UserLoader extends LoadUserData
 
         $this->getUserManager()->updateUser($user);
         // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
-        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\User');
+        $this->getUserManager()->getStorageManager()->clear('Pim\Bundle\UserBundle\Entity\User');
         $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
-        $this->getUserManager()->getStorageManager()->clear('OroEmail\Cache\OroEmailBundle\Entity\EmailAddressProxy');
     }
 
     /**
@@ -125,6 +117,7 @@ class UserLoader extends LoadUserData
 
         if (!$role) {
             $role = new Role($code);
+            // TODO use a Saver
             $this->om->persist($role);
             $this->om->flush();
         }

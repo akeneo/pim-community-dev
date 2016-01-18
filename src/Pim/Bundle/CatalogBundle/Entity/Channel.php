@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  */
 class Channel implements ChannelInterface
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
     /** @var string $code */
@@ -64,7 +64,7 @@ class Channel implements ChannelInterface
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return Channel
      */
@@ -259,5 +259,21 @@ class Channel implements ChannelInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChoiceValue()
+    {
+        return $this->getCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChoiceLabel()
+    {
+        return $this->getLabel();
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Locale manager
+ *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,7 +28,7 @@ class LocaleManager
     /**
      * Get active locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return LocaleInterface[]
      */
     public function getActiveLocales()
     {
@@ -36,11 +38,11 @@ class LocaleManager
     /**
      * Get disabled locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return LocaleInterface[]
      */
     public function getDisabledLocales()
     {
-        $criterias = array('activated' => false);
+        $criterias = ['activated' => false];
 
         return $this->getLocales($criterias);
     }
@@ -50,9 +52,11 @@ class LocaleManager
      *
      * @param array $criterias
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @deprecated not used anymore, only internaly in this class, will be removed in 1.5
+     *
+     * @return LocaleInterface[]
      */
-    public function getLocales($criterias = array())
+    public function getLocales($criterias = [])
     {
         return $this->repository->findBy($criterias);
     }
@@ -62,11 +66,11 @@ class LocaleManager
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return LocaleInterface
      */
     public function getLocaleByCode($code)
     {
-        return $this->repository->findOneBy(array('code' => $code));
+        return $this->repository->findOneByIdentifier($code);
     }
 
     /**
@@ -77,10 +81,33 @@ class LocaleManager
     public function getActiveCodes()
     {
         return array_map(
-            function ($locale) {
+            function (LocaleInterface $locale) {
                 return $locale->getCode();
             },
             $this->getActiveLocales()
         );
+    }
+
+    /**
+     * Check if a locale is activated
+     *
+     * @param LocaleInterface[] $locales
+     * @param string            $localeCode
+     *
+     * @throws \RuntimeException
+     *
+     * @return bool
+     */
+    public function isLocaleActivated(array $locales, $localeCode)
+    {
+        $foundLocale = null;
+
+        foreach ($locales as $locale) {
+            if ($localeCode === $locale->getCode()) {
+                return $locale->isActivated();
+            }
+        }
+
+        throw new \RuntimeException(sprintf('locale code %s is unknown', $localeCode));
     }
 }

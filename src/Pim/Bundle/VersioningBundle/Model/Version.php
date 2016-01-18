@@ -12,7 +12,7 @@ namespace Pim\Bundle\VersioningBundle\Model;
 class Version
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -47,7 +47,7 @@ class Version
     protected $context;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $version;
 
@@ -57,7 +57,7 @@ class Version
     protected $loggedAt;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $pending;
 
@@ -82,7 +82,7 @@ class Version
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -92,7 +92,7 @@ class Version
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return Version
      */
@@ -136,7 +136,7 @@ class Version
     /**
      * Get version
      *
-     * @return integer
+     * @return int
      */
     public function getVersion()
     {
@@ -146,7 +146,7 @@ class Version
     /**
      * Set version
      *
-     * @param integer $version
+     * @param int $version
      *
      * @return Version
      */
@@ -228,7 +228,7 @@ class Version
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPending()
     {

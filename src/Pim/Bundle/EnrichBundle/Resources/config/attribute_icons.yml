@@ -13,3 +13,6 @@ parameters:
         pim_catalog_boolean:          check
         pim_catalog_date:             calendar
         pim_catalog_metric:           beaker
+
+        pim_reference_data_multiselect:  tags
+        pim_reference_data_simpleselect: tag

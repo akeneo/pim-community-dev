@@ -1,4 +1,6 @@
 # PIM
+pim_analytics:
+    resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
 
 pim_datagrid:
     resource: "@PimDataGridBundle/Resources/config/routing.yml"
@@ -11,6 +13,9 @@ pim_enrich:
 
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
+
+pim_user:
+    resource: "@PimUserBundle/Resources/config/routing.yml"
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
@@ -26,6 +31,9 @@ pim_pdf_generator:
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
+
+pim_reference_data:
+    resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
 # Oro platform
 
@@ -48,9 +56,8 @@ nelmio_api_doc:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
-_imagine:
-    resource: .
-    type:     imagine
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
 _apy_jsformvalidation:
     resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

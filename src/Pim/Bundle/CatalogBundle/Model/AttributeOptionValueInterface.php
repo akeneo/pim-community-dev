@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
@@ -12,14 +13,15 @@ interface AttributeOptionValueInterface
 {
     /**
      * Get id
-     * @return integer
+     *
+     * @return int
      */
     public function getId();
 
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return AttributeOptionValueInterface
      */
@@ -36,12 +38,14 @@ interface AttributeOptionValueInterface
 
     /**
      * Get option
+     *
      * @return AttributeOptionInterface
      */
     public function getOption();
 
     /**
      * Get used locale
+     *
      * @return string $locale
      */
     public function getLocale();
@@ -66,12 +70,14 @@ interface AttributeOptionValueInterface
 
     /**
      * Get value
+     *
      * @return string
      */
     public function getValue();
 
     /**
      * Returns the label of the attribute
+     *
      * @return string
      */
     public function getLabel();

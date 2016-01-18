@@ -1,0 +1,26 @@
+btn:
+  post: Ajouter un nouveau commentaire
+  reply: Répondre
+  cancel: Annuler
+confirmation:
+  remove:
+    comment: Voulez-vous vraiment supprimer ce commentaire?
+flash:
+  comment:
+    create:
+      success: Votre commentaire a été ajouté.
+      error: "Une erreur s'est produite lors de la création de votre commentaire."
+    delete:
+      success: Votre commentaire a été supprimé.
+      error: "Une erreur s'est produite lors de la suppression de votre commentaire."
+    reply:
+      success: Votre réponse a été ajoutée.
+      error: "Une erreur s'est produite lors de la création de votre réponse."
+comment:
+  index:
+    empty: "Aucun commentaire pour l'instant"
+  placeholder:
+    new: Ajouter un nouveau commentaire...
+    reply: Répondre à ce commentaire...
+pim_comment:
+  product.panel.comment.title: Commentaires

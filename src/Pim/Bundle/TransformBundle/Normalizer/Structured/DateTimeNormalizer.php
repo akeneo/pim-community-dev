@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class DateTimeNormalizer implements NormalizerInterface
 {
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['json', 'xml'];
 

@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Edit extends Form
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/configuration/family/{id}/edit';
 
@@ -141,7 +141,7 @@ class Edit extends Form
      * @param string $attributeCode
      * @param string $channelCode
      *
-     * @return boolean
+     * @return bool
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
@@ -177,6 +177,7 @@ class Edit extends Form
      * @param string $channel
      *
      * @throws \Exception
+     *
      * @return NodeElement
      */
     protected function getAttributeRequirementCell($attribute, $channel)

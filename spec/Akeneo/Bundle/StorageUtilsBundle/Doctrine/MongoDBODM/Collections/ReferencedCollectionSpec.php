@@ -1,4 +1,5 @@
 <?php
+
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections;
 
 use Doctrine\Common\Persistence\ManagerRegistry;

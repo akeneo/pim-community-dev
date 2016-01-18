@@ -5,7 +5,6 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
-use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
@@ -35,7 +34,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(['postLoad', 'preUpdate']);
     }
 
-    function it_transforms_value_of_a_entity_field_into_lazy_reference_to_an_entity (
+    function it_transforms_value_of_a_entity_field_into_lazy_reference_to_an_entity(
         LifecycleEventArgs $args,
         ValueStub $entity,
         DocumentManager $dm,

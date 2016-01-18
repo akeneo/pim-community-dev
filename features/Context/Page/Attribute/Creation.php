@@ -50,17 +50,18 @@ class Creation extends Form
 
     /**
      * Add an attribute option
+     *
      * @param string $name
      */
     public function addOption($name)
     {
         if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
             $this->getElement('add_option_button')->click();
-            $this->getSession()->wait(1000);
+            $this->getSession()->wait(10000);
         }
 
         $rows = $this->getOptionsElement();
-        $row = end($rows);
+        $row  = end($rows);
 
         $row->find('css', '.attribute_option_code')->setValue($name);
         $row->find('css', '.btn.update-row')->click();
@@ -68,6 +69,7 @@ class Creation extends Form
 
     /**
      * Edit an attribute option
+     *
      * @param string $name
      * @param string $newValue
      */
@@ -82,6 +84,7 @@ class Creation extends Form
 
     /**
      * Edit and cancel edition on an attribute option
+     *
      * @param string $name
      * @param string $newValue
      */
@@ -96,7 +99,8 @@ class Creation extends Form
 
     /**
      * Count the number of attribute options
-     * @return integer
+     *
+     * @return int
      */
     public function countOptions()
     {
@@ -105,7 +109,8 @@ class Creation extends Form
 
     /**
      * Count the number of attribute options
-     * @return integer
+     *
+     * @return int
      */
     public function countOrderableOptions()
     {
@@ -114,6 +119,7 @@ class Creation extends Form
 
     /**
      * Remove a specific option name
+     *
      * @param string $optionName
      *
      * @throws \InvalidArgumentException
@@ -134,6 +140,7 @@ class Creation extends Form
 
     /**
      * Get option elements
+     *
      * @return array
      */
     protected function getOptionsElement()
@@ -143,6 +150,7 @@ class Creation extends Form
 
     /**
      * Get a specific option row from the option code
+     *
      * @param string $optionName
      *
      * @throws \InvalidArgumentException

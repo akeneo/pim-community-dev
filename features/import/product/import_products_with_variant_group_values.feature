@@ -40,8 +40,8 @@ Feature: Execute a product import
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Read 4"
-    And I should see "Updated 2"
+    Then I should see "read lines 4"
+    And I should see "Processed 2"
     And I should see "Created 2"
     And there should be 8 products
     And the english name of "sandal-white-38" should be "My VG US name"

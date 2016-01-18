@@ -77,7 +77,7 @@ class DatabaseCommand extends ContainerAwareCommand
             if (!$connection->isConnected()) {
                 $connection->connect();
             }
-            $this->commandExecutor->runCommand('doctrine:database:drop', array('--force' => true));
+            $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
         } catch (\PDOException $e) {
             $output->writeln(' <error>Database does not exist yet</error>');
         }
@@ -97,20 +97,41 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor
             ->runCommand('doctrine:schema:create')
-            ->runCommand('oro:entity-config:init')
-            ->runCommand('oro:entity-extend:init')
-            ->runCommand('oro:entity-extend:update-config')
-            ->runCommand('oro:entity-extend:clear')
             ->runCommand(
                 'doctrine:schema:update',
-                array('--force' => true, '--no-interaction' => true)
+                ['--force' => true, '--no-interaction' => true]
             );
+
+        $this->createNotMappedTables($output);
 
         $this
             ->loadFixturesStep($input, $output)
             ->launchCommands($input, $output);
 
         return $this;
+    }
+
+    /**
+     * Create tables not mapped to Doctrine entities
+     *
+     * @param OutputInterface $output
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function createNotMappedTables(OutputInterface $output)
+    {
+        $output->writeln('<info>Create session table</info>');
+
+        $sessionTableSql = "CREATE TABLE pim_session (
+                `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
+                `sess_data` BLOB NOT NULL,
+                `sess_time` INTEGER UNSIGNED NOT NULL,
+                `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
+            ) COLLATE utf8_bin, ENGINE = InnoDB";
+
+        $db = $this->getContainer()->get('doctrine');
+
+        $db->getConnection()->exec($sessionTableSql);
     }
 
     /**
@@ -142,16 +163,16 @@ class DatabaseCommand extends ContainerAwareCommand
             )
         );
 
-        $params = array(
+        $params = [
                 '--no-interaction' => true,
                 '--append'         => true
-            )
+            ]
             + $this->getFixturesList($input->getOption('fixtures'));
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
-            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', array('--append' => true));
+            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', ['--append' => true]);
         }
 
         $output->writeln('');
@@ -175,10 +196,10 @@ class DatabaseCommand extends ContainerAwareCommand
             $fixtures = $this->getOroFixturesList();
             $fixtures[] = realpath(__DIR__ . '/../DataFixtures/ORM/Base');
 
-            return array('--fixtures' => $fixtures);
+            return ['--fixtures' => $fixtures];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -240,7 +261,7 @@ class DatabaseCommand extends ContainerAwareCommand
             ->path('/^DataFixtures$/')
             ->directories();
 
-        $oroFixtures = array();
+        $oroFixtures = [];
         foreach ($directories as $directory) {
             $oroFixtures[] = $directory->getPathName();
         }

@@ -127,4 +127,3 @@
 - Replace `@security.context` by `@pim_user.context.user` in `ContextConfigurator`
 - Delete the attribute virtual group and the `getVirtualGroup` method of the class `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
 - Render the attribute group mandatory for the creation and the edition of an attribute
-

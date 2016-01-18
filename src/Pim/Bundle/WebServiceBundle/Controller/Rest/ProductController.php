@@ -33,6 +33,7 @@ class ProductController extends FOSRestController
      *      description="Get a single product",
      *      resource=true
      * )
+     *
      * @return Response
      */
     public function getAction(Request $request, $identifier)
@@ -77,8 +78,8 @@ class ProductController extends FOSRestController
      */
     protected function handleGetRequest($identifier, $channels, $locales)
     {
-        $manager = $this->get('pim_catalog.manager.product');
-        $product = $manager->findByIdentifier($identifier);
+        $productRepository = $this->container->get('pim_catalog.repository.product');
+        $product = $productRepository->findOneByIdentifier($identifier);
 
         if (!$product) {
             return new Response(sprintf('Product "%s" not found', $identifier), 404);
@@ -111,7 +112,7 @@ class ProductController extends FOSRestController
             ),
             true
         );
-        $handler = $this->get('pim_webservice.handler.rest.product');
+        $handler = $this->container->get('pim_webservice.handler.rest.product');
         $data = $handler->get($product, $channels, $locales, $url);
 
         return $data;

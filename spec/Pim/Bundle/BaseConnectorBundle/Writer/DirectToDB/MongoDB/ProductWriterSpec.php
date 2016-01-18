@@ -7,7 +7,6 @@ use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
@@ -21,7 +20,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
-        ProductManager $productManager,
         DocumentManager $documentManager,
         PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer,
@@ -34,7 +32,6 @@ class ProductWriterSpec extends ObjectBehavior
         $documentManager->getDocumentCollection('pim_product')->willReturn($collection);
         $collection->getName()->willReturn('pim_product_collection');
         $this->beConstructedWith(
-            $productManager,
             $documentManager,
             $pendingPersister,
             $normalizer,
@@ -61,7 +58,7 @@ class ProductWriterSpec extends ObjectBehavior
         $mongoFactory,
         $pendingPersister,
         $eventDispatcher,
-        $productManager,
+        $mediaManager,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -85,8 +82,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $collection->batchInsert([['normalized_product_1'], ['normalized_product_2']])->shouldBeCalled();
         $collection->update(Argument::cetera())->shouldNotBeCalled();
-
-        $productManager->handleAllMedia([$product1, $product2])->shouldBeCalled();
+        $collection->update(Argument::cetera())->shouldNotBeCalled();
 
         $pendingPersister->persistPendingVersions([$product1, $product2])->shouldBeCalled();
 
@@ -114,7 +110,6 @@ class ProductWriterSpec extends ObjectBehavior
         $mongoFactory,
         $pendingPersister,
         $eventDispatcher,
-        $productManager,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -147,8 +142,6 @@ class ProductWriterSpec extends ObjectBehavior
             ['_id' => 'my_product_2', 'normalized_product_2']
         )->shouldBeCalled();
 
-        $productManager->handleAllMedia([$product1, $product2])->shouldBeCalled();
-
         $pendingPersister->persistPendingVersions([$product1, $product2])->shouldBeCalled();
 
         $eventDispatcher
@@ -175,7 +168,6 @@ class ProductWriterSpec extends ObjectBehavior
         $mongoFactory,
         $pendingPersister,
         $eventDispatcher,
-        $productManager,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -230,8 +222,6 @@ class ProductWriterSpec extends ObjectBehavior
             ['_id' => 'my_product_3'],
             ['_id' => 'my_product_3', 'normalized_product_3']
         )->shouldBeCalled();
-
-        $productManager->handleAllMedia([$product1, $product2, $product3, $product4])->shouldBeCalled();
 
         $pendingPersister->persistPendingVersions([$product1, $product2, $product3, $product4])->shouldBeCalled();
 

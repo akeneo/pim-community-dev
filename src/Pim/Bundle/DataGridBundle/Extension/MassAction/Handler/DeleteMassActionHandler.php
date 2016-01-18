@@ -21,22 +21,22 @@ use Symfony\Component\Translation\TranslatorInterface;
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var HydratorInterface $hydrator
+     * @var HydratorInterface
      */
     protected $hydrator;
 
     /**
-     * @var TranslatorInterface $translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @var EventDispatcher $eventDispatcher
+     * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
-     * @var string $responseMessage
+     * @var string
      */
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
 
@@ -91,7 +91,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      * Prepare mass action response
      *
      * @param MassActionInterface $massAction
-     * @param integer             $countRemoved
+     * @param int                 $countRemoved
      *
      * @return MassActionResponse
      */

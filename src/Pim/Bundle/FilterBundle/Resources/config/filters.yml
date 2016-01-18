@@ -8,7 +8,7 @@ parameters:
     pim_filter.product_groups_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
     pim_filter.product_family_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\FamilyFilter
     pim_filter.product_completeness_filter.class:  Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
-    pim_filter.product_category_filter.class:      Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter
+    pim_filter.product_category_filter.class:      Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.product_date_filter.class:          Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
     pim_filter.product_enabled_filter.class:       Pim\Bundle\FilterBundle\Filter\Product\EnabledFilter
     pim_filter.product_in_group_filter.class:      Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter
@@ -46,7 +46,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.repository.category'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }
 
@@ -97,7 +97,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_datagrid.datagrid.request_parameters_extractor'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_in_group }
 
@@ -106,7 +106,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_datagrid.datagrid.request_parameters_extractor'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.manager.product'
         tags:
@@ -136,6 +136,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_number }
 

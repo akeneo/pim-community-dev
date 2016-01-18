@@ -29,11 +29,12 @@ class NumericValidator extends ConstraintValidator
             return;
         }
         if (!is_numeric($value)) {
+            $violation = $this->context->buildViolation($constraint->message);
             if (isset($propertyPath)) {
-                $this->context->addViolationAt($propertyPath, $constraint->message);
-            } else {
-                $this->context->addViolation($constraint->message);
+                $violation->atPath($propertyPath);
             }
+
+            $violation->addViolation();
         }
     }
 }

@@ -5,14 +5,12 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class VariantGroupWriterSpec extends ObjectBehavior
@@ -46,7 +44,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $groupSaver->save($variantGroupOne)->shouldBeCalled();
 
         $variantGroupTwo->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $groupSaver->save($variantGroupTwo)->shouldBeCalled();
 
         $variantGroupOne->getProductTemplate()->willReturn(null);
@@ -71,7 +69,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
@@ -104,7 +102,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
@@ -138,7 +136,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);

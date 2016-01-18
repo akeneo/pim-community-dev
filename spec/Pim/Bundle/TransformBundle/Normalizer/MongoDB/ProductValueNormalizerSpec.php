@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -13,11 +14,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(MongoObjectsFactory $mongoFactory, SerializerInterface $serializer)
+    function let(MongoObjectsFactory $mongoFactory, ManagerRegistry $managerRegistry, SerializerInterface $serializer)
     {
-         $this->beConstructedWith($mongoFactory);
-         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-         $this->setSerializer($serializer);
+        $this->beConstructedWith($mongoFactory, $managerRegistry);
+        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->setSerializer($serializer);
     }
 
     function it_is_a_normalizer()
@@ -48,13 +49,14 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         \MongoDBRef $mongoDBRef,
         \MongoId $mongoId
     ) {
-        $context = ['_id' => $mongoId, 'collection_name' => 'product'];
+        $context = ['_id' => $mongoId, 'collection_name' => 'product', 'database_name' => 'my_db'];
 
         $mongoFactory->createMongoId()->willReturn($mongoId);
-        $mongoFactory->createMongoDBRef('product', $mongoId)->willReturn($mongoDBRef);
+        $mongoFactory->createMongoDBRef('product', $mongoId, 'my_db')->willReturn($mongoDBRef);
 
         $attribute->getId()->willReturn(123);
         $attribute->getBackendType()->willReturn('text');
+        $attribute->getReferenceDataName()->willReturn(null);
 
         $value->getAttribute()->willReturn($attribute);
         $value->getData()->willReturn('my description');

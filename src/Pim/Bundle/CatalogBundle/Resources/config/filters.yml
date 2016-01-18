@@ -1,0 +1,38 @@
+parameters:
+    pim_catalog.filter.chained.class:                        Pim\Bundle\CatalogBundle\Filter\ChainedFilter
+    pim_enrich.filter.product_value.locale.class:            Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter
+    pim_enrich.filter.product_value.channel.class:           Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
+    pim_catalog.comparator.filter.product.class:             Pim\Component\Catalog\Comparator\Filter\ProductFilter
+    pim_catalog.comparator.filter.product_association.class: Pim\Component\Catalog\Comparator\Filter\ProductAssociationFilter
+
+services:
+    pim_catalog.filter.chained:
+        class: %pim_catalog.filter.chained.class%
+
+    pim_enrich.filter.product_value.locale:
+        class: %pim_enrich.filter.product_value.locale.class%
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+
+    pim_enrich.filter.product_value.channel:
+        class: %pim_enrich.filter.product_value.channel.class%
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+
+    pim_catalog.comparator.filter.product:
+        class: %pim_catalog.comparator.filter.product.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.comparator.registry'
+            - '@pim_catalog.repository.attribute'
+            - ['family', 'enabled', 'groups', 'variant_group', 'categories']
+
+    pim_catalog.comparator.filter.product_association:
+        class: %pim_catalog.comparator.filter.product_association.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.comparator.registry'

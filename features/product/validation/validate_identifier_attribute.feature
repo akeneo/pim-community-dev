@@ -17,9 +17,8 @@ Feature: Validate identifier attribute of a product
     When I am on the "bar" product page
     And I change the SKU to "sku-001"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation tooltip "The value sku-001 is already set on another product for the unique attribute sku"
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of identifier attribute
     Given I edit the "sku" attribute
@@ -29,8 +28,7 @@ Feature: Validate identifier attribute of a product
     And I change the SKU to "sku-0000000"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the regexp validation rule constraint of identifier attribute
     Given I edit the "sku" attribute
@@ -41,8 +39,7 @@ Feature: Validate identifier attribute of a product
     And I change the SKU to "001"
     And I save the product
     Then I should see validation tooltip "This value is not valid."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3447
   Scenario: Validate the max database value length of identifier attribute
@@ -50,5 +47,4 @@ Feature: Validate identifier attribute of a product
     When I change the SKU to an invalid value
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab

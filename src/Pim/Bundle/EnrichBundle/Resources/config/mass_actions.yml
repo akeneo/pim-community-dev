@@ -1,132 +1,105 @@
 parameters:
-    pim_enrich.mass_edit_action.operator.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
-    pim_enrich.mass_edit_action.operator.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
-    pim_enrich.mass_edit_action.operator.product.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator
-    pim_enrich.mass_edit_action.operator.family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
+    pim_enrich.mass_edit_action.operation.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistry
     pim_enrich.mass_edit_action.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
     pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
     pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
     pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
-    pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
+    pim_enrich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
+    pim_enrich.mass_edit_action.form_resolver.class: Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver
 
 services:
-    # Mass edit action operator registry
-    pim_enrich.mass_edit_action.operator.registry:
-        class: %pim_enrich.mass_edit_action.operator.registry.class%
-
-    # Mass edit action operators
-    pim_enrich.mass_edit_action.operator:
-        public: false
-        abstract: true
-        class: %pim_enrich.mass_edit_action.operator.class%
+    # Mass edit action operation registry
+    pim_enrich.mass_edit_action.operation.registry:
+        class: %pim_enrich.mass_edit_action.operation.registry.class%
         arguments:
+            - '@security.token_storage'
             - '@oro_security.security_facade'
 
-    pim_enrich.mass_edit_action.operator.product:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pim_enrich.mass_edit_action.operator.product.class%
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: product-grid }
-
-    pim_enrich.mass_edit_action.operator.family:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pim_enrich.mass_edit_action.operator.family.class%
+    pim_enrich.mass_edit_action.form_resolver:
+        class: %pim_enrich.mass_edit_action.form_resolver.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: family-grid }
+            - '@pim_enrich.mass_edit_action.operation.registry'
+            - '@form.factory'
+            - '@pim_enrich.form.type.choose_action'
 
     # Product Grid Mass edit actions
     pim_enrich.mass_edit_action.change_status:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
-        arguments:
-            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: change-status
                 acl: pim_enrich_product_change_state
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
+                form_type: pim_enrich_mass_change_status
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
             - '@pim_user.context.user'
             - '@pim_catalog.context.catalog'
-            - '@pim_catalog.manager.product_mass_action'
+            - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
-            - '@pim_catalog.saver.product'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pim_catalog.manager.product_mass_action'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_internal_api_serializer'
+            - %tmp_storage_dir%
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: edit-common-attributes
                 acl: pim_enrich_product_edit_attributes
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     pim_enrich.mass_edit_action.classify:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
-        arguments:
-            - '@pim_catalog.manager.category'
-            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: classify
                 acl: pim_enrich_product_categories_view
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
-        arguments:
-            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: change-family
                 acl: pim_enrich_product_change_family
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: add-to-groups
                 acl: pim_enrich_product_add_to_groups
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_variant_group:
         class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.updater.product_template'
-            - '@validator'
-            - '@pim_catalog.repository.product_mass_action'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: add-to-variant-group
                 acl: pim_enrich_product_add_to_variant_group
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     # Family Grid Mass edit actions
-    pim_entich.mass_edit_action.set_attribute_requirements:
+    pim_enrich.mass_edit_action.set_attribute_requirements:
         public: false
-        class: %pim_entich.mass_edit_action.set_attribute_requirements.class%
+        class: %pim_enrich.mass_edit_action.set_attribute_requirements.class%
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
@@ -136,4 +109,4 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: set-attribute-requirements
                 acl: pim_enrich_family_edit_attributes
-                operator: pim_enrich.mass_edit_action.operator.family
+                datagrid: family-grid

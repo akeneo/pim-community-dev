@@ -3,22 +3,39 @@ php:
     - "5.4"
     - "5.5"
     - "5.6"
+    - "7.0"
     - "hhvm"
+
+# Allow to use container infrastructure
+sudo: false
 
 matrix:
     allow_failures:
+        - php: "7.0"
         - php: "hhvm"
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-    - echo "extension=mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - composer require --no-update doctrine/mongodb-odm v1.0.0-beta10@dev
-    - composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev
-    - composer update --prefer-dist --no-scripts --no-interaction
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then composer remove --no-update doctrine/mongodb-odm-bundle; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console assets:install; fi;'
+    - npm install -g grunt-cli
+    - npm install
+    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    - ./app/console oro:localization:dump
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
+    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then grunt travis; else grunt codestyle; fi;'
+
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo

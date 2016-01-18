@@ -25,9 +25,10 @@ Feature: Edit a boolean value
     Then attribute boolean of "tshirt" should be "false"
 
   Scenario: Successfully update a scopable boolean value
-    When I check the "ecommerce Scopable boolean" switch
+    Given I switch the scope to "ecommerce"
+    When I check the "Scopable boolean" switch
     And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "true"
-    When I uncheck the "ecommerce Scopable boolean" switch
+    When I uncheck the "Scopable boolean" switch
     And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "false"

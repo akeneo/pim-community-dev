@@ -14,7 +14,7 @@ define(
             itemClass: null,
             itemViewClass: null,
             rendered: false,
-            initialize: function(options) {
+            initialize: function (options) {
                 this.$target         = options.$target;
                 this.collectionClass = options.collectionClass;
                 this.itemClass       = options.itemClass;
@@ -25,13 +25,13 @@ define(
 
                 this.load();
             },
-            render: function() {
+            render: function () {
                 this.$el.empty();
                 this.$el.html(this.renderTemplate());
 
-                _.each(this.collection.models, function(ruleItem) {
+                _.each(this.collection.models, function (ruleItem) {
                     this.addItem({item: ruleItem});
-                }, this);
+                }.bind(this));
 
                 if (!this.rendered) {
                     this.$target.html(this.$el);
@@ -41,21 +41,21 @@ define(
 
                 return this;
             },
-            renderTemplate: function() {
+            renderTemplate: function () {
                 return this.template({});
             },
-            load: function() {
+            load: function () {
                 this.itemViews = [];
                 this.inLoading(true);
                 this.collection
                     .fetch({
-                        success: _.bind(function() {
+                        success: function () {
                             this.inLoading(false);
                             this.render();
-                        }, this)
+                        }.bind(this)
                     });
             },
-            addItem: function(opts) {
+            addItem: function (opts) {
                 var options = opts || {};
 
                 var newItemView = this.createItemView(options.item);
@@ -64,7 +64,7 @@ define(
                     this.$el.children('tbody').append(newItemView.$el);
                 }
             },
-            createItemView: function(item) {
+            createItemView: function (item) {
                 var itemView = new this.itemViewClass({
                     model:    item,
                     parent:   this
@@ -77,11 +77,11 @@ define(
 
                 return itemView;
             },
-            deleteItem: function(item) {
+            deleteItem: function (item) {
                 this.inLoading(true);
 
                 item.model.destroy({
-                    success: _.bind(function() {
+                    success: function () {
                         this.inLoading(false);
 
                         this.collection.remove(item);
@@ -94,8 +94,8 @@ define(
                         } else {
                             item.$el.hide(500);
                         }
-                    }, this),
-                    error: _.bind(function(data, response) {
+                    }.bind(this),
+                    error: function (data, response) {
                         this.inLoading(false);
                         var message;
 
@@ -106,10 +106,10 @@ define(
                         }
 
                         Dialog.alert(message, __('pim_enrich.item.list.delete.error'));
-                    }, this)
+                    }.bind(this)
                 });
             },
-            inLoading: function(loading) {
+            inLoading: function (loading) {
                 if (loading) {
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo(this.$el);

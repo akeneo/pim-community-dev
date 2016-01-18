@@ -4,11 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 
 /**
@@ -36,9 +39,15 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args,
         MetricInterface $metric,
         MeasureManager $manager,
-        MeasureConverter $converter
+        MeasureConverter $converter,
+        ProductInterface $product,
+        ProductValueInterface $productValue,
+        DocumentManager $dm
     ) {
-        $args->getObject()->willReturn($metric);
+        $args->getObject()->willReturn($product);
+        $product->getValues()->willReturn([$productValue]);
+        $productValue->getData()->willReturn($metric);
+        $metric->getId()->willReturn(null);
 
         $metric->getUnit()->willReturn('cm');
         $metric->getFamily()->willReturn('distance');
@@ -51,6 +60,10 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
         $metric->setBaseData(1)->shouldBeCalled()->willReturn($metric);
         $metric->setBaseUnit('m')->shouldBeCalled();
 
+        $metric->getValue()->willReturn($productValue);
+        $productValue->getEntity()->willReturn($product);
+        $args->getObjectManager()->willReturn($dm);
+
         $this->prePersist($args);
     }
 
@@ -60,9 +73,16 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
         MeasureManager $manager,
         MeasureConverter $converter,
         DocumentManager $dm,
-        UnitOfWork $uow
+        ProductInterface $product,
+        ProductValueInterface $productValue,
+        UnitOfWork $uow,
+        ClassMetadata $metadata
     ) {
-        $args->getObject()->willReturn($metric);
+        $args->getObject()->willReturn($product);
+        $product->getValues()->willReturn([$productValue]);
+        $productValue->getData()->willReturn($metric);
+        $metric->getId()->willReturn(12);
+
         $args->getObjectManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
         $uow->recomputeSingleDocumentChangeSet(
@@ -80,6 +100,13 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
         $metric->setBaseData(1)->shouldBeCalled()->willReturn($metric);
         $metric->setBaseUnit('m')->shouldBeCalled();
+
+        $dm->getClassMetadata(Argument::any())->willReturn($metadata);
+        $dm->getUnitOfWork()->willReturn($uow);
+        $uow->recomputeSingleDocumentChangeSet(
+            $metadata,
+            $metric
+        )->shouldBeCalled();
 
         $this->preUpdate($args);
     }

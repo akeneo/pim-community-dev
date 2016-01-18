@@ -49,6 +49,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
                 $criterias['attribute'] = $attribute->getId();
             }
 
+            //TODO: do not hydrate them, use a scalar result
             $entity = $repository->findOneBy($criterias);
 
             if (!$entity) {

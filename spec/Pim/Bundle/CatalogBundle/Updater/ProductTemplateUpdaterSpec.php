@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 
 class ProductTemplateUpdaterSpec extends ObjectBehavior
 {
-    function let(ProductUpdaterInterface $productUpdater)
+    function let(PropertySetterInterface $productFieldUpdater)
     {
-        $this->beConstructedWith($productUpdater);
+        $this->beConstructedWith($productFieldUpdater);
     }
 
     function it_is_initializable()
@@ -25,7 +25,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_products_with_variant_group_template_values_using_product_updater(
-        $productUpdater,
+        $productFieldUpdater,
         ProductTemplateInterface $template,
         ProductInterface $product
     ) {
@@ -34,26 +34,26 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                 [
                     'locale' => 'en_US',
                     'scope'  => 'ecommerce',
-                    'value'  => 'Foo'
+                    'data'   => 'Foo'
                 ],
                 [
                     'locale' => 'en_US',
                     'scope'  => 'mobile',
-                    'value'  => 'Bar'
+                    'data'   => 'Bar'
                 ]
             ],
             'color' => [
                 [
                     'locale' => null,
                     'scope'  => null,
-                    'value'  => 'red'
+                    'data'   => 'red'
                 ]
             ],
             'price' => [
                 [
                     'locale' => 'fr_FR',
-                    'scope' => null,
-                    'value' => [
+                    'scope'  => null,
+                    'data'   => [
                         ['data' => 10, 'currency' => 'EUR'],
                         ['data' => 20, 'currency' => 'USD']
                     ]
@@ -62,8 +62,8 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             'image' => [
                 [
                     'locale' => null,
-                    'scope' => 'mobile',
-                    'value' => [
+                    'scope'  => 'mobile',
+                    'data'   => [
                         'filePath' => '/uploads/image.jpg',
                         'originalFilename' => 'Image.jpg'
                     ]
@@ -73,25 +73,23 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
 
         $template->getValuesData()->willReturn($updates);
 
-        $productUpdater->setValue([$product], 'description', 'Foo', 'en_US', 'ecommerce')->shouldBeCalled();
-        $productUpdater->setValue([$product], 'description', 'Bar', 'en_US', 'mobile')->shouldBeCalled();
-        $productUpdater->setValue([$product], 'color', 'red', null, null)->shouldBeCalled();
-        $productUpdater
-            ->setValue(
-                [$product],
+        $productFieldUpdater->setData($product, 'description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
+        $productFieldUpdater->setData($product, 'description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile'])->shouldBeCalled();
+        $productFieldUpdater->setData($product, 'color', 'red', ['locale' => null, 'scope' => null])->shouldBeCalled();
+        $productFieldUpdater
+            ->setData(
+                $product,
                 'price',
                 [['data' => 10, 'currency' => 'EUR'], ['data' => 20, 'currency' => 'USD']],
-                'fr_FR',
-                null
+                ['locale' => 'fr_FR', 'scope' => null]
             )
             ->shouldBeCalled();
-        $productUpdater
-            ->setValue(
-                [$product],
+        $productFieldUpdater
+            ->setData(
+                $product,
                 'image',
                 ['filePath' => '/uploads/image.jpg', 'originalFilename' => 'Image.jpg'],
-                null,
-                'mobile'
+                ['locale' => null, 'scope' => 'mobile']
             )
             ->shouldBeCalled();
 

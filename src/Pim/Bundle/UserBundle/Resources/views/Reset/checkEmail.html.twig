@@ -1,17 +1,4 @@
-{% extends 'OroUserBundle::layout.html.twig' %}
-
-{% block head %}
-    {{ parent() }}
-    {% stylesheets
-        'bundles/pimui/css/pim.less'
-
-        debug=false
-        filter='cssrewrite,lessphp'
-        output='css/pim_all.css'
-    %}
-    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
+{% extends 'PimUserBundle::layout.html.twig' %}
 
 {% block bodyClass %}login-page{% endblock %}
 
@@ -19,7 +6,7 @@
 <div class="container">
     <form action="" class="form-signin form-reset">
         <div class="title-box">
-            <h1 class="oro-title">
+            <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
             </h1>
             <h2 class="title">{{ 'Check Email'|trans }}</h2>

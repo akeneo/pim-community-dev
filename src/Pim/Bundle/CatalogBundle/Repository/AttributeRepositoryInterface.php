@@ -1,7 +1,8 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
@@ -19,6 +20,8 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
+     *
      * @return AttributeInterface[]
      */
     public function findAllWithTranslations();
@@ -35,6 +38,8 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Find all attributes that belongs to the default group
+     *
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
      *
      * @return AttributeInterface[]
      */
@@ -65,7 +70,10 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Find all axis
+     *
      * @see findAllAxisQB
+     *
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
      *
      * @return array
      */
@@ -74,6 +82,8 @@ interface AttributeRepositoryInterface extends
     /**
      * Get available attributes as label as a choice
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return array
      */
     public function getAvailableAttributesAsLabelChoice();
@@ -81,9 +91,9 @@ interface AttributeRepositoryInterface extends
     /**
      * Get attribute as array indexed by code
      *
-     * @param boolean $withLabel translated label should be joined
-     * @param string  $locale    the locale code of the label
-     * @param array   $ids       the attribute ids
+     * @param bool   $withLabel translated label should be joined
+     * @param string $locale    the locale code of the label
+     * @param array  $ids       the attribute ids
      *
      * @return array
      */
@@ -103,6 +113,8 @@ interface AttributeRepositoryInterface extends
      * Get ids from codes
      *
      * @param mixed $codes the attribute codes
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -134,4 +146,29 @@ interface AttributeRepositoryInterface extends
      * @return AttributeInterface[]
      */
     public function getNonIdentifierAttributes();
+
+    /**
+     * Get attribute type by code attributes
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getAttributeTypeByCodes(array $codes);
+
+    /**
+     * Get attribute codes by attribute type
+     *
+     * @param string $type
+     *
+     * @return string[]
+     */
+    public function getAttributeCodesByType($type);
+
+    /**
+     * Return the number of existing attributes
+     *
+     * @return int
+     */
+    public function countAll();
 }

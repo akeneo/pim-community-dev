@@ -1,0 +1,7 @@
+user_rest:
+    resource: '@PimUserBundle/Resources/config/routing/user_rest.yml'
+    prefix: /rest/user
+
+security_rest:
+    resource: '@PimUserBundle/Resources/config/routing/security_rest.yml'
+    prefix: /rest/security

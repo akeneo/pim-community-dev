@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Creation extends Form
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/user/create';
 
@@ -35,6 +35,7 @@ class Creation extends Form
 
     /**
      * Check role
+     *
      * @param string $role
      */
     public function selectRole($role)

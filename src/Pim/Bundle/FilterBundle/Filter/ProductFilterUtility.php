@@ -26,19 +26,4 @@ class ProductFilterUtility extends BaseFilterUtility
     {
         $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
-
-    /**
-     * Applies filter to query by attribute
-     *
-     * @param FilterDatasourceAdapterInterface $ds
-     * @param string                           $field
-     * @param mixed                            $value
-     * @param string                           $operator
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
-    {
-        $this->applyFilter($ds, $field, $operator, $value);
-    }
 }

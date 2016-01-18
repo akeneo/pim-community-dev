@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -75,7 +75,6 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.%s', $field, $value['currency']);
         $fieldData = sprintf('%s.data', $field);
-
         $this->applyFilter($operator, $fieldData, $value['data']);
 
         return $this;

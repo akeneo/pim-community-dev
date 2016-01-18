@@ -63,11 +63,11 @@ class PimRequirements extends OroRequirements
     /**
      * Adds an Akeneo PIM specific requirement
      *
-     * @param boolean     $fulFilled   Whether the requirement is fulfilled
+     * @param bool        $fulFilled   Whether the requirement is fulfilled
      * @param string      $testMessage The message for testing the requirement
      * @param string      $helpHtml    The help text formatted in HTML for resolving the problem
      * @param string|null $helpText    The help text
-     *     (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
+     *                                 (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
      */
     public function addPimRequirement($fulFilled, $testMessage, $helpHtml, $helpText = null)
     {

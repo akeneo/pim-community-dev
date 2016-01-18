@@ -1,0 +1,8 @@
+services:
+    pim_connector.saver.job_configuration:
+        class:  %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_connector.model.job_configuration.class%

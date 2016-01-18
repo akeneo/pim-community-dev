@@ -28,7 +28,7 @@ attribute_option:
 
 categorytree:
     resource: '@PimEnrichBundle/Resources/config/routing/categorytree.yml'
-    prefix: /enrich/category-tree
+    prefix: /enrich/product-category-tree
 
 product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
@@ -61,3 +61,19 @@ grouptype:
 sequential_edit:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
     prefix: /enrich/sequential_edit
+
+job_tracker:
+    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
+    prefix: /job
+
+measures:
+    resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
+    prefix: /configuration/measures
+
+form_extensions:
+    resource: '@PimEnrichBundle/Resources/config/routing/form_extensions.yml'
+    prefix: /form/
+
+media_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/media_rest.yml'
+    prefix: /rest/media

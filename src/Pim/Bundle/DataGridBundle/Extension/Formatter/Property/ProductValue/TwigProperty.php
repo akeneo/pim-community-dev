@@ -31,11 +31,7 @@ class TwigProperty extends FieldProperty
     protected function convertValue($value)
     {
         if ($value) {
-            return $this->getTemplate()->render(
-                array(
-                    'value' => $value,
-                )
-            );
+            return $this->getTemplate()->render(['value' => $value]);
         }
 
         return null;

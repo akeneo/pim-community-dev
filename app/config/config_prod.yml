@@ -19,3 +19,9 @@ monolog:
             type: stream
             path: %kernel.logs_dir%/%kernel.environment%.log
             level: info
+        console:
+            type:  console
+
+oro_assetic:
+    css_debug:      ~
+    css_debug_all:  false

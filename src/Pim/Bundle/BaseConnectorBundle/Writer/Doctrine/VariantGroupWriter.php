@@ -18,6 +18,8 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Writer\Doctrine\VariantGroupWriter
  */
 class VariantGroupWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
@@ -33,24 +35,24 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     protected $cacheClearer;
 
     /** @var ProductTemplateApplierInterface */
-    protected $productTemplateApplier;
+    protected $productTplApplier;
 
-    /** @var boolean */
+    /** @var bool */
     protected $copyValues = true;
 
     /**
      * @param SaverInterface                  $groupSaver
      * @param CacheClearer                    $cacheClearer
-     * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param ProductTemplateApplierInterface $productTplApplier
      */
     public function __construct(
         SaverInterface $groupSaver,
         CacheClearer $cacheClearer,
-        ProductTemplateApplierInterface $productTemplateApplier
+        ProductTemplateApplierInterface $productTplApplier
     ) {
-        $this->groupSaver             = $groupSaver;
-        $this->cacheClearer           = $cacheClearer;
-        $this->productTemplateApplier = $productTemplateApplier;
+        $this->groupSaver        = $groupSaver;
+        $this->cacheClearer      = $cacheClearer;
+        $this->productTplApplier = $productTplApplier;
     }
 
     /**
@@ -87,7 +89,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Set copy values on products behavior
      *
-     * @param boolean $apply
+     * @param bool $apply
      */
     public function setCopyValues($apply)
     {
@@ -97,7 +99,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Is copy values on products
      *
-     * @return boolean
+     * @return bool
      */
     public function isCopyValues()
     {
@@ -133,7 +135,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
-            $skippedMessages = $this->productTemplateApplier->apply($template, $products->toArray());
+            $skippedMessages = $this->productTplApplier->apply($template, $products->toArray());
             $nbSkipped       = count($skippedMessages);
             $nbUpdated       = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);
@@ -151,12 +153,12 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         if (null === $group->getId()) {
             $this->stepExecution->incrementSummaryInfo('create');
         } else {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         }
     }
 
     /**
-     * @param integer $nbProducts
+     * @param int $nbProducts
      */
     protected function incrementUpdatedProductsCount($nbProducts)
     {
@@ -164,8 +166,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param integer $nbSkippedProducts
-     * @param array   $skippedMessages
+     * @param int   $nbSkippedProducts
+     * @param array $skippedMessages
      */
     protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
     {

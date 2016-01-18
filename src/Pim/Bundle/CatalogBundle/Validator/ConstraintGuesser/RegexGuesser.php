@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,10 +23,10 @@ class RegexGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
-                'pim_catalog_text',
-                'pim_catalog_identifier',
-            )
+            [
+                AttributeTypes::TEXT,
+                AttributeTypes::IDENTIFIER,
+            ]
         );
     }
 
@@ -34,10 +35,10 @@ class RegexGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ('regexp' === $attribute->getValidationRule() && $pattern = $attribute->getValidationRegexp()) {
-            $constraints[] = new Assert\Regex(array('pattern' => $pattern));
+            $constraints[] = new Assert\Regex(['pattern' => $pattern]);
         }
 
         return $constraints;

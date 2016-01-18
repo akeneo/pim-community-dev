@@ -19,7 +19,7 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
      * Entities configured as versionable without implementing interface because coming
      * from third party bundles
      *
-     * @var array $versionableEntities
+     * @var array
      */
     protected $versionableEntities;
 
@@ -47,8 +47,8 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
-        if ($entity instanceof VersionableInterface
-            || in_array(ClassUtils::getClass($entity), $this->versionableEntities)
+        if ($entity instanceof VersionableInterface ||
+            in_array(ClassUtils::getClass($entity), $this->versionableEntities)
         ) {
             $pendings[] = $entity;
         }

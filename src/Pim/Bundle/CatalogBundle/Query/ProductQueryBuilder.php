@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
@@ -11,9 +12,7 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes
@@ -41,6 +40,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
     /** CursorFactoryInterface */
     protected $cursorFactory;
+
+    /** @var array */
+    protected $rawFilters = [];
 
     /**
      * Constructor
@@ -132,6 +134,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $this->addFieldFilter($filter, $field, $operator, $value, $context);
         }
 
+        $this->rawFilters[] = [
+            'field'    => $field,
+            'operator' => $operator,
+            'value'    => $value,
+            'context'  => $context
+        ];
+
         return $this;
     }
 
@@ -162,6 +171,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRawFilters()
+    {
+        return $this->rawFilters;
     }
 
     /**
@@ -263,11 +280,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
-     *
-     * @return null
+     * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolverInterface $resolver)
+    protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(
             [

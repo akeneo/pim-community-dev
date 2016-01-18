@@ -19,12 +19,9 @@ Feature: Fail to import products with multiple variant groups
     When I am on the "product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
-    Then I should see:
-    """
-    The product "first" cannot belong to many variant groups: "[tshirts], [sweaters], [jackets]"
-    """
+    Then I should see "Failed"
     And I should see:
     """
-    The product "second" cannot belong to many variant groups: "[tshirts], [sweaters]"
+    The product cannot belong to many variant groups: tshirts, sweaters, jackets
     """
-    And there should be 1 product
+    And there should be 0 products

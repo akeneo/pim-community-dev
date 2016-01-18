@@ -21,6 +21,7 @@ class FieldFilterHelper
 
     /**
      * Get field code part
+     *
      * @param string $field
      *
      * @return string
@@ -34,6 +35,7 @@ class FieldFilterHelper
 
     /**
      * Get field property part
+     *
      * @param string $field
      * @param string $default
      *
@@ -48,9 +50,10 @@ class FieldFilterHelper
 
     /**
      * Test if the field has a property
+     *
      * @param string $field
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasProperty($field)
     {
@@ -59,6 +62,7 @@ class FieldFilterHelper
 
     /**
      * Check if value is an array
+     *
      * @param string $field
      * @param mixed  $value
      * @param string $filter
@@ -72,6 +76,7 @@ class FieldFilterHelper
 
     /**
      * Check if value is a valid identifier
+     *
      * @param string $field
      * @param mixed  $value
      * @param string $filter

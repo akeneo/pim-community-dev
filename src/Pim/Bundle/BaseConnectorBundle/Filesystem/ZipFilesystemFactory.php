@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Filesystem;
 
-use Gaufrette\Adapter;
-use Gaufrette\Filesystem;
+use League\Flysystem\Filesystem;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
- * Factory of Gaufrette Filesystem configured with the Zip adapter
+ * Factory of Flysystem Filesystem configured with the Zip adapter
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,16 +17,16 @@ class ZipFilesystemFactory
     /**
      * Create a Zip filesystem configured with the given path
      *
-     * @param string $path
+     * @param string $absolutePath
      *
      * @return Filesystem
      */
-    public function createZip($path)
+    public function createZip($absolutePath)
     {
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
+        if (!is_dir(dirname($absolutePath))) {
+            throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory'));
         }
 
-        return new Filesystem(new Adapter\Zip($path));
+        return new Filesystem(new ZipArchiveAdapter($absolutePath));
     }
 }

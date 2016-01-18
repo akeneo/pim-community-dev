@@ -165,7 +165,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param boolean $localizable
+     * @param bool $localizable
      *
      * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */

@@ -5,7 +5,7 @@ Feature: Change family of many products at once
   I need to be able to change the family of many products at once
 
   Background:
-    Given the "default" catalog configuration
+    Given the "footwear" catalog configuration
     And the following families:
       | code     |
       | Food     |
@@ -22,7 +22,8 @@ Feature: Change family of many products at once
     Given I mass-edit products coffee and hamburger
     And I choose the "Change the family of products" operation
     And I change the Family to "Food"
-    When I move on to the next step
+    And I move on to the next step
+    And I wait for the "change-family" mass-edit job to finish
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
 
@@ -30,13 +31,8 @@ Feature: Change family of many products at once
     Given I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
-    When I move on to the next step
-    Then the row "coffee" should contain:
-      | column | value |
-      | family |       |
-    Then the row "hamburger" should contain:
-      | column | value |
-      | family |       |
-    Then the row "jeans" should contain:
-      | column | value |
-      | family |       |
+    And I move on to the next step
+    And I wait for the "change-family" mass-edit job to finish
+    Then the family of product "coffee" should be ""
+    And the family of product "hamburger" should be ""
+    And the family of product "jeans" should be ""

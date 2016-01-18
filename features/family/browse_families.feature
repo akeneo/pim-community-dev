@@ -8,16 +8,16 @@ Feature: Browse families
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the families page
-    Then the grid should contain 3 elements
+    Then the grid should contain 4 elements
     And I should see the columns Code, Label and Attribute as label
     And I should see families boots, sandals and sneakers
-    And the rows should be sorted ascending by code
-    And I should be able to sort the rows by code, label and attribute as label
+    And the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code, Label and Attribute as label
     And I should be able to use the following filters:
-      | filter             | value | result                      |
-      | Code               | a     | sandals and sneakers        |
-      | Label              | Boo   | boots                       |
-      | Attribute as label | Name  | boots, sandals and sneakers |
+      | filter             | value | result                             |
+      | Code               | a     | sandals and sneakers               |
+      | Label              | Boo   | boots                              |
+      | Attribute as label | Name  | boots, heels, sandals and sneakers |
 
   Scenario: Successfully keep descending sorting order after refreshing the page
     Given a "footwear" catalog configuration
@@ -26,7 +26,7 @@ Feature: Browse families
     And I sort by "code" value descending
     When I refresh current page
     And I wait 3 seconds
-    Then the rows should be sorted descending by code
+    Then the rows should be sorted descending by Code
 
   Scenario: Successfully keep ascending sorting order after refreshing the page
     Given a "footwear" catalog configuration

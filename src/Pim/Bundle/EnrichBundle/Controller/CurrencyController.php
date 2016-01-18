@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -13,9 +14,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Currency controller for configuration
@@ -35,7 +36,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -47,7 +48,7 @@ class CurrencyController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -59,7 +60,7 @@ class CurrencyController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -77,6 +78,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_currency_index")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -90,6 +92,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param Currency $currency
      *
      * @AclAncestor("pim_enrich_currency_toggle")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)
@@ -99,6 +102,8 @@ class CurrencyController extends AbstractDoctrineController
             $this->currencySaver->save($currency);
 
             $this->addFlash('success', 'flash.currency.updated');
+        } catch (LinkedChannelException $e) {
+            $this->addFlash('error', 'flash.currency.error.linked_to_channel');
         } catch (\Exception $e) {
             $this->addFlash('error', 'flash.error ocurred');
         }

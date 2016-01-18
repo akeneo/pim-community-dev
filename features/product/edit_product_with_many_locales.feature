@@ -7,6 +7,7 @@ Feature: Edit a product
   Background:
     Given a "apparel" catalog configuration
     And I add the "english" locale to the "ecommerce" channel
+    And I add the "english UK" locale to the "ecommerce" channel
     And I add the "french" locale to the "ecommerce" channel
     And I add the "german" locale to the "ecommerce" channel
     And I add the "spanish" locale to the "ecommerce" channel
@@ -14,6 +15,24 @@ Feature: Edit a product
     And I add the "portuguese" locale to the "ecommerce" channel
     And I add the "russian" locale to the "ecommerce" channel
     And I add the "japanese" locale to the "ecommerce" channel
+    And I add the "english" locale to the "print" channel
+    And I add the "english UK" locale to the "print" channel
+    And I add the "french" locale to the "print" channel
+    And I add the "german" locale to the "print" channel
+    And I add the "spanish" locale to the "print" channel
+    And I add the "italian" locale to the "print" channel
+    And I add the "portuguese" locale to the "print" channel
+    And I add the "russian" locale to the "print" channel
+    And I add the "japanese" locale to the "print" channel
+    And I add the "english" locale to the "tablet" channel
+    And I add the "english UK" locale to the "tablet" channel
+    And I add the "french" locale to the "tablet" channel
+    And I add the "german" locale to the "tablet" channel
+    And I add the "spanish" locale to the "tablet" channel
+    And I add the "italian" locale to the "tablet" channel
+    And I add the "portuguese" locale to the "tablet" channel
+    And I add the "russian" locale to the "tablet" channel
+    And I add the "japanese" locale to the "tablet" channel
     And the following products:
       | sku          | family  |
       | tshirt-white | tshirts |

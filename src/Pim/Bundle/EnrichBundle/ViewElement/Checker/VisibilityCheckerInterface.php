@@ -17,7 +17,7 @@ interface VisibilityCheckerInterface
      * @param array $config  The visibility checker configuration
      * @param array $context The twig context
      *
-     * @return boolean
+     * @return bool
      */
     public function isVisible(array $config = [], array $context = []);
 }

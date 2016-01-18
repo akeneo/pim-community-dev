@@ -15,6 +15,10 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use the BaseWriter to avoid to have persist()/flush() calls everywhere in
+ * the stack, we prefer rely on the BulkSaverInterface to decouple from Doctrine, you can also notice that we don't use
+ * anymore massive cache clearer, the changeTrackingPolicy: DEFERRED_EXPLICIT allows to avoid magic around persistence
  */
 class Writer extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
@@ -101,7 +105,7 @@ class Writer extends AbstractConfigurableStepElement implements
     protected function incrementCount($item)
     {
         if ($item->getId()) {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }

@@ -3,15 +3,16 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangeFamilyTypeSpec extends ObjectBehavior
 {
-    function let()
+    function let(FamilyRepositoryInterface $repository)
     {
         $this->beConstructedWith(
-            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily'
+            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily',
+            $repository
         );
     }
 
@@ -25,7 +26,7 @@ class ChangeFamilyTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_mass_change_family');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

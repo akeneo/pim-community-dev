@@ -123,6 +123,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
     /**
      * Get queries for the given entity and updated field
+     *
      * @param object $entity
      * @param string $field
      * @param string $oldValue
@@ -143,6 +144,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
     /**
      * Inject query generator
+     *
      * @param NormalizedDataQueryGeneratorInterface $queryGenerator
      */
     public function addQueryGenerator(NormalizedDataQueryGeneratorInterface $queryGenerator)

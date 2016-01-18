@@ -1,0 +1,53 @@
+# User
+pim_user_user_index:
+    type: action
+    label: oro_security.acl.user.view
+    group_name: oro_security.acl_group.user
+pim_user_user_create:
+    type: action
+    label: oro_security.acl.user.create
+    group_name: oro_security.acl_group.user
+pim_user_user_edit:
+    type: action
+    label: oro_security.acl.user.edit
+    group_name: oro_security.acl_group.user
+pim_user_user_remove:
+    type: action
+    label: oro_security.acl.user.delete
+    group_name: oro_security.acl_group.user
+
+# Group
+pim_user_group_index:
+    type: action
+    label: oro_security.acl.group.view
+    group_name: oro_security.acl_group.group
+pim_user_group_create:
+    type: action
+    label: oro_security.acl.group.create
+    group_name: oro_security.acl_group.group
+pim_user_group_edit:
+    type: action
+    label: oro_security.acl.group.edit
+    group_name: oro_security.acl_group.group
+pim_user_group_remove:
+    type: action
+    label: oro_security.acl.group.delete
+    group_name: oro_security.acl_group.group
+
+# Role
+pim_user_role_index:
+    type: action
+    label: oro_security.acl.role.view
+    group_name: oro_security.acl_group.role
+pim_user_role_create:
+    type: action
+    label: oro_security.acl.role.create
+    group_name: oro_security.acl_group.role
+pim_user_role_edit:
+    type: action
+    label: oro_security.acl.role.edit
+    group_name: oro_security.acl_group.role
+pim_user_role_remove:
+    type: action
+    label: oro_security.acl.role.delete
+    group_name: oro_security.acl_group.role

@@ -14,10 +14,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SequentialEdit
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
-    /** @var integer[] $objectSet */
+    /** @var int[] $objectSet */
     protected $objectSet = [];
 
     /** @var UserInterface $user */
@@ -35,7 +35,7 @@ class SequentialEdit
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -45,7 +45,7 @@ class SequentialEdit
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return SequentialEdit
      */
@@ -83,7 +83,7 @@ class SequentialEdit
     /**
      * Get product set
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getObjectSet()
     {
@@ -93,7 +93,7 @@ class SequentialEdit
     /**
      * Set product set
      *
-     * @param integer[] $objectSet
+     * @param int[] $objectSet
      *
      * @return SequentialEdit
      */
@@ -167,7 +167,7 @@ class SequentialEdit
     /**
      * Count number of products to edit
      *
-     * @return integer
+     * @return int
      */
     public function countObjectSet()
     {
@@ -179,7 +179,7 @@ class SequentialEdit
      *
      * @param ProductInterface $product
      *
-     * @return integer
+     * @return int
      */
     public function countEditedProducts(ProductInterface $product)
     {
@@ -189,9 +189,9 @@ class SequentialEdit
     /**
      * Get the next Product id from a product
      *
-     * @param integer $productId
+     * @param int $productId
      *
-     * @return integer
+     * @return int
      */
     public function getNextId($productId)
     {

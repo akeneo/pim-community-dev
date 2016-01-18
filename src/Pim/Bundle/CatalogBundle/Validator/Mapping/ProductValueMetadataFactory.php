@@ -3,13 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Symfony\Component\Validator\MetadataFactoryInterface;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
  * Create a ClassMetadata instance for an ProductValueInterface instance
@@ -27,6 +27,9 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /** @var ClassMetadataFactory */
     protected $factory;
 
+    /** @var array */
+    protected $attrConstraintsCache;
+
     /**
      * Constructor
      *
@@ -37,6 +40,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     {
         $this->guesser = $guesser;
         $this->factory = $factory ?: new ClassMetadataFactory();
+        $this->attrConstraintsCache = [];
     }
 
     /**
@@ -73,14 +77,17 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     protected function createMetadata(ProductValueInterface $value)
     {
         $class = ClassUtils::getClass($value);
-        $metadata = $this->factory->createMetadata($class);
         $attribute = $value->getAttribute();
-
-        foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
-            $this->addConstraint($metadata, $constraint, $attribute);
+        $cacheKey = $attribute->getCode();
+        if (!isset($this->attrConstraintsCache[$cacheKey])) {
+            $metadata = $this->factory->createMetadata($class);
+            foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
+                $this->addConstraint($metadata, $constraint, $attribute);
+            }
+            $this->attrConstraintsCache[$cacheKey] = $metadata;
         }
 
-        return $metadata;
+        return $this->attrConstraintsCache[$cacheKey];
     }
 
     /**

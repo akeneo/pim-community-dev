@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -93,7 +93,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('boolean');
-        
+
         $value->getData()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '0']);
 

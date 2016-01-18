@@ -4,12 +4,12 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 /**
@@ -24,7 +24,7 @@ interface ProductRepositoryInterface
     /**
      * Load a product entity with related attribute values
      *
-     * @param integer $id
+     * @param int $id
      *
      * @throws NonUniqueResultException
      *
@@ -77,7 +77,7 @@ interface ProductRepositoryInterface
     /**
      * Returns a full product with all relations
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
@@ -89,7 +89,7 @@ interface ProductRepositoryInterface
      *
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     public function valueExists(ProductValueInterface $value);
 
@@ -132,14 +132,14 @@ interface ProductRepositoryInterface
     public function findOneByIdentifier($identifier);
 
     /**
-     * @param string|integer $id
+     * @param string|int $id
      *
      * @return ProductInterface|null
      */
     public function findOneById($id);
 
     /**
-     * @param integer $variantGroupId
+     * @param int $variantGroupId
      *
      * @return array product ids
      */
@@ -159,4 +159,11 @@ interface ProductRepositoryInterface
      * @return int
      */
     public function getProductCountByGroup(GroupInterface $group);
+
+    /**
+     * Return the number of existing products
+     *
+     * @return int
+     */
+    public function countAll();
 }

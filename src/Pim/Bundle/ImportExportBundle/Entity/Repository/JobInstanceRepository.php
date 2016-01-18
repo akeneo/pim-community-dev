@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Job instance repository
@@ -11,9 +13,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.4
+ * @deprecated will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.5
  */
-class JobInstanceRepository extends ReferableEntityRepository
+class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * Create datagrid query builder
@@ -31,5 +33,31 @@ class JobInstanceRepository extends ReferableEntityRepository
             ->andWhere('j.type = :jobType');
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return JobInstance|null
+     */
+    public function findOneBy(array $criteria, array $orderBy = null)
+    {
+        return parent::findOneBy($criteria, $orderBy);
     }
 }

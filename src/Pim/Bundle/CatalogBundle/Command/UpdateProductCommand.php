@@ -2,15 +2,21 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
- * Update a product
+ * Updates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -25,19 +31,24 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $updatesExample = [
             [
-                'type'  => 'set_value',
+                'type'  => 'set_data',
                 'field' => 'name',
-                'value' => 'My name'
+                'data'  => 'My name',
             ],
             [
-                'type'        => 'copy_value',
+                'type'        => 'copy_data',
                 'from_field'  => 'description',
                 'from_scope'  => 'ecommerce',
                 'from_locale' => 'en_US',
                 'to_field'    => 'description',
                 'to_scope'    => 'mobile',
-                'to_locale'   => 'en_US'
-            ]
+                'to_locale'   => 'en_US',
+            ],
+            [
+                'type'  => 'add_data',
+                'field' => 'categories',
+                'data'  => ['tshirt'],
+            ],
         ];
 
         $this
@@ -52,6 +63,11 @@ class UpdateProductCommand extends ContainerAwareCommand
                 'json_updates',
                 InputArgument::REQUIRED,
                 sprintf("The product updates in json, for instance, '%s'", json_encode($updatesExample))
+            )
+            ->addArgument(
+                'username',
+                InputArgument::OPTIONAL,
+                sprintf('The author of updated product')
             );
     }
 
@@ -62,10 +78,16 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (!$product) {
-            $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
+        if (null === $product) {
+            $output->writeln(sprintf('<error>Product with identifier "%s" not found</error>', $identifier));
 
-            return;
+            return -1;
+        }
+
+        if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
+            if (!$this->createToken($output, $username)) {
+                return -1;
+            }
         }
 
         $updates = json_decode($input->getArgument('json_updates'), true);
@@ -76,13 +98,15 @@ class UpdateProductCommand extends ContainerAwareCommand
             $output->writeln(sprintf("<error>%s</error>", $violation->getMessage()));
         }
         if (0 !== $violations->count()) {
-            $output->writeln(sprintf('<error>product "%s" is not valid</error>', $identifier));
+            $output->writeln(sprintf('<error>Product "%s" is not valid</error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $this->save($product);
-        $output->writeln(sprintf('<info>product "%s" has been updated</info>', $identifier));
+        $output->writeln(sprintf('<info>Product "%s" has been updated</info>', $identifier));
+
+        return 0;
     }
 
     /**
@@ -102,44 +126,54 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $updates
      *
-     * @return boolean
+     * @return bool
      */
     protected function update(ProductInterface $product, array $updates)
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_value', 'copy_value']]);
-        $resolver->setOptional(
-            [
-                'field',
-                'value',
-                'locale',
-                'scope',
-                'from_field',
-                'to_field',
-                'from_locale',
-                'to_locale',
-                'from_scope',
-                'to_scope'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'locale'      => null,
-                'scope'       => null,
-                'from_locale' => null,
-                'to_locale'   => null,
-                'from_scope'  => null,
-                'to_scope'    => null
-            ]
-        );
+        $resolver->setRequired(['type'])
+            ->setAllowedValues('type', ['set_data', 'copy_data', 'add_data', 'remove_data'])
+            ->setDefined(
+                [
+                    'field',
+                    'data',
+                    'locale',
+                    'scope',
+                    'from_field',
+                    'to_field',
+                    'from_locale',
+                    'to_locale',
+                    'from_scope',
+                    'to_scope'
+                ]
+            )
+            ->setDefaults(
+                [
+                    'locale'      => null,
+                    'scope'       => null,
+                    'from_locale' => null,
+                    'to_locale'   => null,
+                    'from_scope'  => null,
+                    'to_scope'    => null
+                ]
+            );
 
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
-            if ('set_value' === $update['type']) {
-                $this->applySetValue($product, $update);
-            } else {
-                $this->applyCopyValue($product, $update);
+
+            switch ($update['type']) {
+                case 'set_data':
+                    $this->applySetData($product, $update);
+                    break;
+                case 'copy_data':
+                    $this->applyCopyData($product, $update);
+                    break;
+                case 'add_data':
+                    $this->applyAddData($product, $update);
+                    break;
+                case 'remove_data':
+                    $this->applyRemoveData($product, $update);
+                    break;
             }
         }
     }
@@ -148,15 +182,14 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $update
      */
-    protected function applySetValue(ProductInterface $product, array $update)
+    protected function applySetData(ProductInterface $product, array $update)
     {
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater->setValue(
-            [$product],
+        $updater = $this->getProductPropertySetter();
+        $updater->setData(
+            $product,
             $update['field'],
-            $update['value'],
-            $update['locale'],
-            $update['scope']
+            $update['data'],
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
         );
     }
 
@@ -164,24 +197,97 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $update
      */
-    protected function applyCopyValue(ProductInterface $product, array $update)
+    protected function applyCopyData(ProductInterface $product, array $update)
     {
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater->copyValue(
-            [$product],
+        $updater = $this->getProductPropertyCopier();
+        $updater->copyData(
+            $product,
+            $product,
             $update['from_field'],
             $update['to_field'],
-            $update['from_locale'],
-            $update['to_locale'],
-            $update['from_scope'],
-            $update['to_scope']
+            [
+                'from_locale' => $update['from_locale'],
+                'to_locale'   => $update['to_locale'],
+                'from_scope'  => $update['from_scope'],
+                'to_scope'    => $update['to_scope']
+            ]
         );
     }
 
     /**
      * @param ProductInterface $product
+     * @param array            $update
+     */
+    protected function applyAddData(ProductInterface $product, array $update)
+    {
+        $updater = $this->getProductPropertyAdder();
+        $updater->addData(
+            $product,
+            $update['field'],
+            $update['data'],
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
+        );
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $update
+     */
+    protected function applyRemoveData(ProductInterface $product, array $update)
+    {
+        $updater = $this->getProductPropertyRemover();
+        $updater->removeData(
+            $product,
+            $update['field'],
+            $update['data'],
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
+        );
+    }
+
+    /**
+     * @return PropertySetterInterface
+     */
+    protected function getProductPropertySetter()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_setter');
+    }
+
+    /**
+     * @return PropertyAdderInterface
+     */
+    protected function getProductPropertyAdder()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_adder');
+    }
+
+    /**
+     * @return PropertyRemoverInterface
+     */
+    protected function getProductPropertyRemover()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_remover');
+    }
+
+    /**
+     * @return PropertyCopierInterface
+     */
+    protected function getProductPropertyCopier()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_copier');
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    protected function getTokenStorage()
+    {
+        return $this->getContainer()->get('security.token_storage');
+    }
+
+    /**
+     * @param ProductInterface $product
      *
-     * @return ConstraintViolationListInterface
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */
     protected function validate(ProductInterface $product)
     {
@@ -198,5 +304,30 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $saver = $this->getContainer()->get('pim_catalog.saver.product');
         $saver->save($product);
+    }
+
+    /**
+     * Create a security token from the given username
+     *
+     * @param OutputInterface $output
+     * @param string          $username
+     *
+     * @return bool
+     */
+    protected function createToken(OutputInterface $output, $username)
+    {
+        $userRepository = $this->getContainer()->get('pim_user.repository.user');
+        $user = $userRepository->findOneByIdentifier($username);
+
+        if (null === $user) {
+            $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));
+
+            return false;
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->getTokenStorage()->setToken($token);
+
+        return true;
     }
 }

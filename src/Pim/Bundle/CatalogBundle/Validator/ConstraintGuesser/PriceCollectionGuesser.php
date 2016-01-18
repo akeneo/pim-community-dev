@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints\All;
@@ -24,7 +25,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_price_collection',
+                AttributeTypes::PRICE_COLLECTION,
             )
         );
     }
@@ -37,6 +38,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
         $notDecimalGuesser = new NotDecimalGuesser();
         $rangeGuesser = new RangeGuesser();
         $numericGuesser = new NumericGuesser();
+        $currencyGuesser = new CurrencyGuesser();
 
         return array(
             new All(
@@ -44,12 +46,13 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
                     'constraints' => array_merge(
                         array(
                             new Type(
-                                array('type' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice')
+                                array('type' => 'Pim\Bundle\CatalogBundle\Model\ProductPriceInterface')
                             ),
                         ),
                         $numericGuesser->guessConstraints($attribute),
                         $notDecimalGuesser->guessConstraints($attribute),
-                        $rangeGuesser->guessConstraints($attribute)
+                        $rangeGuesser->guessConstraints($attribute),
+                        $currencyGuesser->guessConstraints($attribute)
                     )
                 )
             )

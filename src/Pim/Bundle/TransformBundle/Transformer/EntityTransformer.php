@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Exception\UnknownColumnException;
@@ -18,6 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Transforms an array in an entity
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -223,16 +223,21 @@ class EntityTransformer implements EntityTransformerInterface
      * @param string $class
      * @param array  $data
      *
+     * @throws \LogicException
+     *
      * @return object|null
      */
     protected function findEntity($class, array $data)
     {
         $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
+        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
+            $identifierProperties = $repository->getIdentifierProperties();
+            $identifier = $this->getEntityIdentifier($identifierProperties, $data);
 
-        $identifierProperties = $this->getEntityIdentifierProperties($repository);
-        $identifier = $this->getEntityIdentifier($identifierProperties, $data);
+            return $repository->findOneByIdentifier($identifier);
+        }
 
-        return $this->findOneByIdentifier($repository, $identifier);
+        return null;
     }
 
     /**
@@ -271,50 +276,5 @@ class EntityTransformer implements EntityTransformerInterface
         );
 
         return $identifier;
-    }
-
-    /**
-     * Transitional method that will be removed in 1.4
-     *
-     * @param $repository
-     *
-     * @return array
-     *
-     * @deprecated will be removed in 1.4
-     */
-    private function getEntityIdentifierProperties($repository)
-    {
-        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
-            return $repository->getIdentifierProperties();
-        }
-
-        if ($repository instanceof ReferableEntityRepositoryInterface) {
-            return $repository->getReferenceProperties();
-        }
-
-        return [];
-    }
-
-    /**
-     * Transitional method that will be removed in 1.4
-     *
-     * @param mixed  $repository
-     * @param string $identifier
-     *
-     * @return mixed|null
-     *
-     * @deprecated will be removed in 1.4
-     */
-    private function findOneByIdentifier($repository, $identifier)
-    {
-        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
-            return $repository->findOneByIdentifier($identifier);
-        }
-
-        if ($repository instanceof ReferableEntityRepositoryInterface) {
-            return $repository->findByReference($identifier);
-        }
-
-        return null;
     }
 }

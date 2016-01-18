@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer $transNormalizer
+     * @var TranslationNormalizer
      */
     protected $transNormalizer;
 

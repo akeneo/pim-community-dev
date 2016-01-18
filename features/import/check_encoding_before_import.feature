@@ -16,10 +16,10 @@ Feature:
 
   Scenario: Import a file that contains only UTF-8 characters
     Given the following CSV file to import:
-    """
-    sku;name-en_US;description-en_US-ecommerce
-    SKU-001;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-    """
+      """
+      sku;name-en_US;description-en_US-ecommerce
+      SKU-001;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      """
     And the following job "footwear_product_import" configuration:
     | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page

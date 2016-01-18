@@ -10,8 +10,8 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products with special characters value for text attribute
     Given the following attribute:
-      | label | type | useable as grid filter |
-      | name  | text | yes                    |
+      | label | type | useable_as_grid_filter | localizable |
+      | name  | text | yes                    | yes         |
     And the following products:
       | sku      | name-en_US                     |
       | 11026270 | HP LA2206xc + WF722A           |
@@ -23,14 +23,21 @@ Feature: Filter products by text field
     Then the grid should contain 4 elements
     And I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And I should be able to use the following filters:
-      | filter | value                | result                                                                                      |
-      | name   | HP LA2206xc + WF722A | HP LA2206xc + WF722A                                                                        |
-      | name   | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
+      | filter | value                            | result                                                                                      |
+      | name   | HP LA2206xc + WF                 | HP LA2206xc + WF722A                                                                        |
+      | name   | Canon 5D + EF 24-105             | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | starts with 5D + EF 24-105 F     |                                                                                             |
+      | name   | starts with HP                   | HP LA2206xc + WF722A                                                                        |
+      | name   | ends with Canon                  |                                                                                             |
+      | name   | ends with IS                     | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | ends with is                     | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | does not contain Canon           | HP LA2206xc + WF722A                                                                        |
+      | name   | is equal to Canon 5D + EF 24-105 |                                                                                             |
+      | name   | f/4L                             | Canon 5D + EF 24-105mm f/4L IS                                                              |
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
-      | label       | type     | localizable | scopable | useable as grid filter |
+      | label       | type     | localizable | scopable | useable_as_grid_filter |
       | name        | text     | no          | no       | yes                    |
       | description | textarea | no          | no       | yes                    |
     And the following products:
@@ -51,7 +58,7 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
-      | label | type | localizable | scopable | useable as grid filter |
+      | label | type | localizable | scopable | useable_as_grid_filter |
       | name  | text | yes         | no       | yes                    |
     And the following products:
       | sku    | name-en_US | name-fr_FR |
@@ -68,7 +75,7 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
-      | label | type | localizable | scopable | useable as grid filter |
+      | label | type | localizable | scopable | useable_as_grid_filter |
       | name  | text | no          | yes      | yes                    |
     And the following products:
       | sku    | name-ecommerce | name-mobile |
@@ -84,8 +91,9 @@ Feature: Filter products by text field
       | name   | empty | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
-    Given the following attributes:
-      | label | type | localizable | scopable | useable as grid filter |
+    Given I add the "english" locale to the "mobile" channel
+    And the following attributes:
+      | label | type | localizable | scopable | useable_as_grid_filter |
       | name  | text | yes         | yes      | yes                    |
     And the following products:
       | sku    | name-en_US-ecommerce | name-en_US-mobile | name-fr_FR-ecommerce | name-fr_FR-mobile |

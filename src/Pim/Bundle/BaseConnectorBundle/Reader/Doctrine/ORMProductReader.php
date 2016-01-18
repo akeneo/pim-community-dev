@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ORMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $limit = 10;
 
@@ -47,7 +47,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $query;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $offset = 0;
 
@@ -87,7 +87,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $stepExecution;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $missingCompleteness;
 
@@ -97,7 +97,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param EntityManager              $entityManager
-     * @param boolean                    $missingCompleteness
+     * @param bool                       $missingCompleteness
      */
     public function __construct(
         ProductRepositoryInterface $repository,
@@ -218,7 +218,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     }
 
     /**
-     * @param integer $limit
+     * @param int $limit
      *
      * @return ORMProductReader
      */

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\AbstractType;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Localized collection type
@@ -38,7 +38,7 @@ class LocalizedCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

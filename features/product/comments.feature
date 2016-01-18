@@ -21,10 +21,10 @@ Feature: Leave a comment on a product
   @javascript
   Scenario: Successfully add a new comment on a product
     Given I am on the "rangers" product page
-    And I visit the "Comments" tab
-    Then I should see "No comment found."
+    And I open the "Comments" panel
+    Then I should see "No comment for now"
     When I add a new comment "My comment"
-    Then I should not see "No comment found."
+    Then I should not see "No comment for now"
     And I should see the following product comments:
       | product | # | author | message    | parent |
       | rangers | 1 | Julia  | My comment |        |
@@ -32,7 +32,7 @@ Feature: Leave a comment on a product
   @javascript
   Scenario: View the list of comments on a product
     Given I am on the "high-heels" product page
-    And I visit the "Comments" tab
+    And I open the "Comments" panel
     Then I should see the following product comments:
       | product    | # | author | message                                                        | parent |
       | high-heels | 1 | Mary   | The price is outdated.                                         |        |
@@ -44,7 +44,7 @@ Feature: Leave a comment on a product
   @javascript
   Scenario: Successfully reply to an existing comment
     Given I am on the "high-heels" product page
-    And I visit the "Comments" tab
+    And I open the "Comments" panel
     When I reply to the comment "Should be associated with red heel." of "Mary" with "No, with black heels."
     Then I should see the following product comments:
       | product    | # | author | message                                                        | parent |
@@ -58,16 +58,17 @@ Feature: Leave a comment on a product
   @javascript
   Scenario: Successfully remove my own comments
     Given I am on the "rangers" product page
-    And I visit the "Comments" tab
+    And I open the "Comments" panel
     And I add a new comment "My comment"
     When I delete the "My comment" comment
-    When I confirm the removal
+    Then I should see "Confirm deletion"
+    And I confirm the removal
     Then I should not see "My comment"
 
   @javascript
   Scenario: Not being able to remove a comment that is not mine
     Given I am on the "high-heels" product page
-    And I visit the "Comments" tab
+    And I open the "Comments" panel
     Then I should not see the link to delete the "Should be associated with red heel." comment of "Mary"
 
   @javascript
@@ -79,6 +80,3 @@ Feature: Leave a comment on a product
     When I am on the "rangers" product page
     Then I should not see "Comments"
     And I reset the "Administrator" rights
-
-
-

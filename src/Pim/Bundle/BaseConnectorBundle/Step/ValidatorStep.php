@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Step;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator;
+use Pim\Component\Connector\Step\ValidatorStep as NewValidatorStep;
 
 /**
  * Validator Step for imports
@@ -13,73 +10,9 @@ use Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use Pim\Component\Connector\Step\ValidatorStep
  */
-class ValidatorStep extends AbstractStep
+class ValidatorStep extends NewValidatorStep
 {
-    /** @var CharsetValidator */
-    protected $charsetValidator;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doExecute(StepExecution $stepExecution)
-    {
-        $this->charsetValidator->setStepExecution($stepExecution);
-        $this->charsetValidator->validate();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        $configuration = array();
-        foreach ($this->getConfigurableStepElements() as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                foreach ($stepElement->getConfiguration() as $key => $value) {
-                    if (!isset($configuration[$key]) || $value) {
-                        $configuration[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->getConfigurableStepElements() as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableStepElements()
-    {
-        return array('charsetValidator' => $this->getCharsetValidator());
-    }
-
-    /**
-     * @param CharsetValidator $charsetValidator
-     */
-    public function setCharsetValidator(CharsetValidator $charsetValidator)
-    {
-        $this->charsetValidator = $charsetValidator;
-    }
-
-    /**
-     * @return CharsetValidator
-     */
-    public function getCharsetValidator()
-    {
-        return $this->charsetValidator;
-    }
 }

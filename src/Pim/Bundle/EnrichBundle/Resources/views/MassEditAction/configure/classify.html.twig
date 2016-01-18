@@ -9,7 +9,10 @@
             function($, _, TreeAssociate){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}');
+                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}', {
+                        list_categories: 'pim_enrich_product_listcategories',
+                        children:        'pim_enrich_categorytree_children'
+                    });
                     var $nextBtn = $('a.next');
                     $nextBtn.hide();
                     $('#{{ form.operation.categories.vars.id }}').on('change', function() {
@@ -29,7 +32,7 @@
 
     {{ form_widget(form.operation.categories) }}
 
-    {% set trees = form.vars.value.operation.trees %}
+    {% set trees = form.operation.vars.trees %}
 
     <div class="classify">
         <div class="tab-pane">

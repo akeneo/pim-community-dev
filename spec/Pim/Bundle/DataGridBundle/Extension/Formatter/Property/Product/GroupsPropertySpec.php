@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class GroupsPropertySpec extends ObjectBehavior

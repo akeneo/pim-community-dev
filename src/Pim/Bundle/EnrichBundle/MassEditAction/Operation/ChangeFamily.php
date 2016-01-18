@@ -3,27 +3,18 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Batch operation to change the family of products
+ * Mass edit operation to change the family of products
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeFamily extends ProductMassEditOperation
+class ChangeFamily extends AbstractMassEditOperation
 {
     /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function affectsCompleteness()
-    {
-        return true;
-    }
 
     /**
      * @param FamilyInterface $family
@@ -56,8 +47,47 @@ class ChangeFamily extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
+    public function getFormOptions()
     {
-        $product->setFamily($this->family);
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperationAlias()
+    {
+        return 'change-family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        $family = $this->getFamily();
+
+        return [
+            [
+                'field' => 'family',
+                'value' => null !== $family ? $family->getCode() : null,
+            ]
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'update_product_value';
     }
 }

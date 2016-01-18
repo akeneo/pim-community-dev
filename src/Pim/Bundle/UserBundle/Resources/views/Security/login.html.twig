@@ -1,17 +1,7 @@
-{% extends 'OroUserBundle::layout.html.twig' %}
+{% extends 'PimUserBundle::layout.html.twig' %}
 
 {% block head %}
     {{ parent() }}
-    <link rel="stylesheet" media="all" href="{{ asset('/css/oro.css') }}" />
-    {% stylesheets
-        'bundles/pimui/css/pim.less'
-
-        debug=false
-        filter='cssrewrite,lessphp'
-        output='css/pim_all.css'
-    %}
-        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
     <script type="text/javascript">
         if (sessionStorage) {
             sessionStorage.clear()
@@ -26,13 +16,13 @@
     {% if error %}
     <div class="alert alert-error">
         <button data-dismiss="alert" class="close" type="button">&times;</button>
-        <div>{{ error|trans }}</div>
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     </div>
     {% endif %}
 
     <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
         <div class="title-box">
-            <h1 class="oro-title">
+            <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
             </h1>
         </div>
@@ -61,4 +51,14 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 </div>
+
+<script type="text/javascript">
+    require(['oro/layout'], function (layout) {
+        $(function () {
+            layout.hideProgressBar();
+            layout.init();
+            document.title = '{{ 'Login'|trans }}';
+        });
+    });
+</script>
 {% endblock content %}

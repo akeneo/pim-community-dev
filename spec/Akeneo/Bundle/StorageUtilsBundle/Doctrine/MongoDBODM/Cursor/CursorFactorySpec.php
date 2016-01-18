@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder

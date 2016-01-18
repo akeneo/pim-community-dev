@@ -101,7 +101,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $event              = $this->getEventMock($this->form, $translatableEntity, array());
 
         $target->preSetData($event);
-        $target->bind($event);
+        $target->submit($event);
         $target->postBind($event);
     }
 
@@ -298,7 +298,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $event = $this->getEventMock($this->form, $translatableEntity, array());
 
-        $target->bind($event);
+        $target->submit($event);
     }
 
     /**
@@ -418,7 +418,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getValidatorMock()
     {
-        return $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        return $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface');
     }
 
     /**

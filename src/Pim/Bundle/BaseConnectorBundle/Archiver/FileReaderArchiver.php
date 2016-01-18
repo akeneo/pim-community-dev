@@ -5,11 +5,12 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
+use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\Reader\File\CsvReader;
 
 /**
- * Archive job execution files into conventional directories
+ * Archive files read by job execution to provide them through a download button
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -45,7 +46,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
                         '%filename%' => basename($reader->getFilePath()),
                     ]
                 );
-                $this->filesystem->write($key, file_get_contents($reader->getFilePath()), true);
+                $this->filesystem->put($key, file_get_contents($reader->getFilePath()));
             }
         }
     }
@@ -59,7 +60,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        return $reader instanceof FileReader;
+        return $reader instanceof FileReader || $reader instanceof CsvReader;
     }
 
     /**

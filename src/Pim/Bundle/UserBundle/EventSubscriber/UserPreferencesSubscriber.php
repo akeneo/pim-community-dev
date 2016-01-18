@@ -7,9 +7,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,17 +22,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserPreferencesSubscriber implements EventSubscriber
 {
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var EntityManager $manager
+     * @var EntityManager
      */
     protected $manager;
 
     /**
-     * @var UnitOfWork $uow
+     * @var UnitOfWork
      */
     protected $uow;
 
@@ -137,6 +137,7 @@ class UserPreferencesSubscriber implements EventSubscriber
 
     /**
      * Get the metadata of an entity
+     *
      * @param object $entity
      *
      * @return array
@@ -153,6 +154,7 @@ class UserPreferencesSubscriber implements EventSubscriber
 
     /**
      * Compute changeset
+     *
      * @param object $entity
      */
     protected function computeChangeset($entity)
@@ -165,8 +167,6 @@ class UserPreferencesSubscriber implements EventSubscriber
      * Update catalog scope of users using a channel that will be removed
      *
      * @param ChannelInterface $channel
-     *
-     * @return null
      */
     protected function onChannelRemoved(ChannelInterface $channel)
     {
@@ -192,13 +192,11 @@ class UserPreferencesSubscriber implements EventSubscriber
      * Update default tree of users using a tree that will be removed
      *
      * @param CategoryInterface $category
-     *
-     * @return null
      */
     protected function onTreeRemoved(CategoryInterface $category)
     {
         $users = $this->findUsersBy(array('defaultTree' => $category));
-        $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
+        $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
 
         $defaultTree = current(
             array_filter(

@@ -1,0 +1,6 @@
+pim_user_security_rest_get:
+    path: /{_format}
+    defaults: { _controller: pim_user.controller.security_rest:getAction, _format: json }
+    requirements:
+        _format: json
+        method: GET

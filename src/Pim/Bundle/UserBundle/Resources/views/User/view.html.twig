@@ -4,24 +4,10 @@
 {% set fullname = entity|oro_format_name|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery'],
-            function ($) {
-                $(function() {
-                    $('#container .navigation .span9').removeClass('span9').addClass('span10');
-                });
-            }
-        );
-    </script>
-{% endblock %}
-
 {% macro api_data_block(user) %}
 <div class="horizontal">
-    <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
-    {% if resource_granted('oro_user_user_update') %}
+    <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
+    {% if resource_granted('pim_user_user_edit') %}
         <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
             {{ 'Generate key'|trans }}
@@ -32,18 +18,17 @@
 
 {% block navButtons %}
     {% if editRoute is defined %}
-        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-pencil ', 'title' : 'Edit profile', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
     {% else %}
-        {% if resource_granted('oro_user_user_update') %}
-            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+        {% if resource_granted('pim_user_user_edit') %}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-pencil ', 'title' : 'Edit user', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
         {% endif %}
     {% endif %}
-    {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
+    {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_user', {'id': entity.id}),
+            'dataUrl': path('oro_user_user_delete', {'id': entity.id}),
             'dataRedirect': path('oro_user_index'),
             'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-user',
             'dataId': entity.id,
             'dataMessage': 'Are you sure you want to delete this user?'|trans,
             'successMessage': 'User deleted'|trans,
@@ -83,13 +68,11 @@
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
-{% block pageActions %}{% endblock pageActions %}
-
 {% block content_data %}
-  <div class="user-profile-cols">
+  <div>
     {% set id = 'user-profile' %}
 
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
 
     {% set dataBlocks = [
         {
@@ -121,6 +104,12 @@
     {#
       EntityExtend fields START
     #}
+
+    {% set filters = [] %}
+    {% for filter in entity.productGridFilters %}
+      {% set filters = filters|merge([filter_label(filter)]) %}
+    {% endfor %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -128,16 +117,15 @@
             'subblocks': [
                 {
                     'title': '',
-                    'useSpan': false,
                     'data': [
                         UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
                         UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-                        UI.attibuteRow('Default tree'|trans, entity.defaultTree)
+                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', ')),
                     ]
                 },
                 {
                     'title': '',
-                    'useSpan': false,
                     'data': [
                         UI.attibuteRow('User salt'|trans, entity.salt)
                     ]
@@ -164,7 +152,6 @@
                 'subblocks': [
                     {
                         'title': '',
-                        'useSpan': false,
                         'data': [additional_data]
                     }
                 ]

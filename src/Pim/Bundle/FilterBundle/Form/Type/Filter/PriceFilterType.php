@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Price filter type for products
@@ -82,18 +82,18 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        parent::configureOptions($resolver);
 
         $currencyChoices = $this->currencyManager->getActiveCodes();
 
-        $resolver->replaceDefaults(array('data_type' => NumberFilterType::DATA_DECIMAL));
         $resolver->setDefaults(
-            array(
+            [
+                'data_type'        => NumberFilterType::DATA_DECIMAL,
                 'currency_choices' => array_combine($currencyChoices, $currencyChoices),
-                'currency_options' => array()
-            )
+                'currency_options' => []
+            ]
         );
     }
 

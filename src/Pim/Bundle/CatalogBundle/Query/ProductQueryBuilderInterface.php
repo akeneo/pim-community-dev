@@ -42,6 +42,13 @@ interface ProductQueryBuilderInterface
     public function addSorter($field, $direction, array $context = []);
 
     /**
+     * Returns applied filters
+     *
+     * @return array
+     */
+    public function getRawFilters();
+
+    /**
      * Get query builder
      *
      * @throws \LogicException in case the query builder has not been configured

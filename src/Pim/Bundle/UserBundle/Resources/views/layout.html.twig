@@ -1,0 +1,24 @@
+{% extends 'PimUIBundle:Default:index.html.twig' %}
+
+{% block hash_nav %}
+{% endblock %}
+
+{% block header %}
+{% endblock header %}
+
+{% block main %}
+    {% block messages %}
+        {% if app.session.flashbag.peekAll|length > 0 %}
+            {% for type, messages in app.session.flashbag.all %}
+                {% for message in messages %}
+                <div class="alert{{ type ? ' alert-'~type : '' }}">
+                {{ message|trans|raw }}
+                </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock content %}
+{% endblock %}

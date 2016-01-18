@@ -1,6 +1,7 @@
+/* jshint unused:vars */
 define(
-    ['jquery', 'underscore', 'jquery.select2'],
-    function ($, _) {
+    ['jquery', 'underscore', 'pim/formatter/choices/base', 'jquery.select2'],
+    function ($, _, ChoicesFormatter) {
         'use strict';
         return {
             resultsPerPage: 20,
@@ -8,35 +9,36 @@ define(
                 var self = this;
 
                 $target.find('input.select2:not(.select2-offscreen)').each(function () {
-                    var $el   = $(this),
-                        value = _.map(_.compact($el.val().split(',')), $.trim),
-                        tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
+                    var $el = $(this);
+                    var value = _.map(_.compact($el.val().split(',')), $.trim);
+                    var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
 
                     tags = _.union(tags, value).sort();
-                    $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
+                    $el.select2({tags: tags, tokenSeparators: [',', ' ']});
                 });
 
                 $target.find('select.select2:not(.select2-offscreen)').each(function () {
-                    var $el    = $(this),
-                        $empty = $el.children('[value=""]');
+                    var $el = $(this);
+                    var $empty = $el.children('[value=""]');
 
                     if ($empty.length && $empty.html()) {
                         $el.attr('data-placeholder', $empty.html());
                         $empty.html('');
                     }
-                    $el.select2({ allowClear: true });
+                    $el.select2({allowClear: true});
                 });
 
-                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
+                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
                     self.initSelect.call(self, $(this));
                 });
             },
-            initSelect: function($select) {
+            initSelect: function ($select) {
                 var options = {
-                        multiple: false,
-                        allowClear: false
-                    },
-                    self = this;
+                    multiple: false,
+                    allowClear: false
+                };
+                var self = this;
+                var queryTimer;
 
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
@@ -45,7 +47,7 @@ define(
                     if (!$select.attr('data-required')) {
                         options.allowClear = true;
                     }
-                    options.placeholder = " ";
+                    options.placeholder = ' ';
                 }
 
                 options.minimumInputLength = $select.attr('data-min-input-length');
@@ -56,50 +58,56 @@ define(
                         page = options.context.page;
                     }
 
-                    $.ajax({
-                        url: $select.attr("data-url"),
-                        data: {
-                            search: options.term,
-                            options: {
-                                limit: self.resultsPerPage,
-                                page: page
-                            }
-                        },
-                        dataType: 'json',
-                        type: 'GET',
-                        success: function (data) {
-                            options.callback({
-                                results: data.results,
-                                more: data.results.length === self.resultsPerPage,
-                                context: {
-                                    page: page + 1
+                    window.clearTimeout(queryTimer);
+                    queryTimer = window.setTimeout(function () {
+                        $.ajax({
+                            url: $select.attr('data-url'),
+                            data: {
+                                search: options.term,
+                                options: {
+                                    limit: self.resultsPerPage,
+                                    page: page
                                 }
-                            });
-                        }
-                    });
+                            },
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function (data) {
+                                if (_.isUndefined(data.results)) {
+                                    data.results = ChoicesFormatter.format(data);
+                                }
+                                options.callback({
+                                    results: data.results,
+                                    more: data.results.length === self.resultsPerPage,
+                                    context: {
+                                        page: page + 1
+                                    }
+                                });
+                            }
+                        });
+                    }, 400);
                 };
-                options.initSelection = function(element, callback) {
+                options.initSelection = function (element, callback) {
                     var choices = $.parseJSON($select.attr('data-choices'));
 
                     callback(choices);
                 };
                 $select.select2(options);
             },
-            getSelectOptions: function(data, options) {
+            getSelectOptions: function (data, options) {
                 return data;
             },
-            getAjaxParameters: function($select) {
+            getAjaxParameters: function ($select) {
                 return {};
             },
-            hasCachableResults: function($select) {
+            hasCachableResults: function ($select) {
                 return true;
             },
-            matchLocalResults: function(data, term) {
-                var matchingResults = _.filter(data.results, function(result) {
+            matchLocalResults: function (data, term) {
+                var matchingResults = _.filter(data.results, function (result) {
                     return $.fn.select2.defaults.matcher(term, result.text);
                 });
 
-                return _.extend({}, data, { results: matchingResults });
+                return _.extend({}, data, {results: matchingResults});
             }
         };
     }

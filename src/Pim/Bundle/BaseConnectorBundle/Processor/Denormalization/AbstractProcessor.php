@@ -8,23 +8,25 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Abstract processor to provide a way to denormalize array data to object by,
  * - fetch an existing object or create it
  * - denormalize item to update the object
  * - validate the object
- * - skip the object if it contains invalid data
+ * - skip the object if it contains invalid data.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Processor\Denormalization\
  */
 abstract class AbstractProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
@@ -113,6 +115,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      *
      * @throws MissingIdentifierException in case the processed data do not allow to retrieve an object
      *                                    by its identifiers properly
+     *
      * @return object|null
      */
     protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data)
@@ -130,7 +133,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Detaches the object from the unit of work
+     * Detaches the object from the unit of work.
      *
      * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
      * skipped items or we should use an explicit persist strategy
@@ -143,7 +146,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Sets an item as skipped and throws an invalid item exception
+     * Sets an item as skipped and throws an invalid item exception.
      *
      * @param array      $item
      * @param \Exception $previousException

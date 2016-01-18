@@ -84,9 +84,9 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param integer $value
-     * @param string  $field
-     * @param string  $operator
+     * @param int    $value
+     * @param string $field
+     * @param string $operator
      */
     protected function applyFilter($value, $field, $operator)
     {

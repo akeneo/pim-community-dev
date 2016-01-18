@@ -9,7 +9,7 @@
         {{ elements.backLink(indexRoute) }}
         <span id="archives"></span>
         <span id="log"></span>
-        {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
+        {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id }), { icon: 'eye-open', class: 'btn-show' }) }}
     {% endset %}
 
     {% set left %}
@@ -135,9 +135,9 @@
             <% if (_.size(archive.files) === 1) { %>
 
                 <% _.each(archive.files, function (file, key) { %>
-                     <a class="btn no-hash icons-holder-text" title="<%= archive.label %>"
+                     <a class="btn no-hash icons-holder-text btn-download" title="<%= archive.label %>"
                      href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
-                         <i class="icon-download"></i> <%= archive.label %>
+                         <i class="icon-download-alt"></i> <%= archive.label %>
                      </a>
                 <% }); %>
 
@@ -145,7 +145,7 @@
 
                 <div class="btn-group">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="icon-download"></i> <%= archive.label %>
+                        <i class="icon-download-alt"></i> <%= archive.label %>
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
@@ -167,8 +167,8 @@
     <script type="text/template" id="job-execution-log-button">
         {% block job_execution_log_button %}
         <% if (hasLog) { %>
-            <a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
-                <i class="icon-download"></i>
+            <a class="btn no-hash icons-holder-text btn-download" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+                <i class="icon-download-alt"></i>
                 <%= downloadLabel %>
             </a>
         <% } %>

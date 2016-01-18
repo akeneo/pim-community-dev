@@ -47,7 +47,7 @@ class VariantGroupAttributeController
     protected $templateBuilder;
 
     /** @var VariantGroupAttributesResolver */
-    protected $groupAttributesResolver;
+    protected $groupAttrResolver;
 
     /**
      * @param RouterInterface                 $router
@@ -56,7 +56,7 @@ class VariantGroupAttributeController
      * @param SaverInterface                  $groupSaver
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductTemplateBuilderInterface $templateBuilder
-     * @param VariantGroupAttributesResolver  $groupAttributesResolver
+     * @param VariantGroupAttributesResolver  $groupAttrResolver
      */
     public function __construct(
         RouterInterface $router,
@@ -65,7 +65,7 @@ class VariantGroupAttributeController
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
         ProductTemplateBuilderInterface $templateBuilder,
-        VariantGroupAttributesResolver $groupAttributesResolver
+        VariantGroupAttributesResolver $groupAttrResolver
     ) {
         $this->router              = $router;
         $this->formFactory         = $formFactory;
@@ -73,16 +73,17 @@ class VariantGroupAttributeController
         $this->groupSaver          = $groupSaver;
         $this->attributeRepository = $attributeRepository;
         $this->templateBuilder     = $templateBuilder;
-        $this->groupAttributesResolver = $groupAttributesResolver;
+        $this->groupAttrResolver   = $groupAttrResolver;
     }
 
     /**
      * Add attributes to variant group
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_group_add_attribute")
+     *
      * @return RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
@@ -109,10 +110,11 @@ class VariantGroupAttributeController
      * Remove an attribute form a variant group
      *
      * @param Request $request
-     * @param integer $groupId
-     * @param integer $attributeId
+     * @param int     $groupId
+     * @param int     $attributeId
      *
      * @AclAncestor("pim_enrich_group_remove_attribute")
+     *
      * @throws NotFoundHttpException
      *
      * @return RedirectResponse
@@ -138,7 +140,7 @@ class VariantGroupAttributeController
     /**
      * Find a variant group by its id or return a 404 response
      *
-     * @param integer $id
+     * @param int $id
      *
      * @throws NotFoundHttpException
      *
@@ -160,7 +162,7 @@ class VariantGroupAttributeController
     /**
      * Find an attribute by its id or return a 404 response
      *
-     * @param integer $id
+     * @param int $id
      *
      * @throws NotFoundHttpException
      *
@@ -192,16 +194,16 @@ class VariantGroupAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            ['excluded_attributes' => $this->groupAttributesResolver->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
         );
     }
 
     /**
      * Create a redirection to a given route
      *
-     * @param string  $route
-     * @param mixed   $parameters
-     * @param integer $status
+     * @param string $route
+     * @param mixed  $parameters
+     * @param int    $status
      *
      * @return RedirectResponse
      */
@@ -213,8 +215,8 @@ class VariantGroupAttributeController
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param integer $status The status code to use for the Response
+     * @param string $url    The URL to redirect to
+     * @param int    $status The status code to use for the Response
      *
      * @return RedirectResponse
      */
@@ -226,9 +228,9 @@ class VariantGroupAttributeController
     /**
      * Generates a URL from the given parameters.
      *
-     * @param string         $route         The name of the route
-     * @param mixed          $parameters    An array of parameters
-     * @param boolean|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     * @param string      $route         The name of the route
+     * @param mixed       $parameters    An array of parameters
+     * @param bool|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
      *
      * @return string The generated URL
      *

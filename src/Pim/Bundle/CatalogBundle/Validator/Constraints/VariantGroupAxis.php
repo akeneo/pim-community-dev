@@ -19,6 +19,9 @@ class VariantGroupAxis extends Constraint
     /** @var string */
     public $unexpectedAxisMessage = 'Group "%group%", which is not variant, can not be defined with axes';
 
+    /** @var string */
+    public $invalidAxisMessage = 'Attribute "%attribute%" cannot be used as axis of variant group "%group%"';
+
     /**
      * {@inheritdoc}
      */

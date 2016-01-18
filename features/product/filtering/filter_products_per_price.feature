@@ -11,7 +11,7 @@ Feature: Filter products per price
       | furniture |
       | library   |
     And the following attributes:
-      | label | scopable | type   | useable as grid filter | decimals_allowed |
+      | label | scopable | type   | useable_as_grid_filter | decimals_allowed |
       | Price | yes      | prices | yes                    | yes              |
     And the following products:
       | sku    | family    | enabled | price-mobile | price-ecommerce |
@@ -28,14 +28,18 @@ Feature: Filter products per price
     And the grid should contain 4 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value      | result          |
-      | Price  | >= 20 EUR  | book            |
-      | Price  | > 12.5 EUR | book            |
-      | Price  | = 12.5 EUR | postit          |
-      | Price  | < 20 EUR   | postit          |
-      | Price  | <= 13 EUR  | postit          |
-      | Price  | <= 23 EUR  | postit and book |
-      | Price  | > 40.5 EUR |                 |
+      | filter | value       | result          |
+      | Price  | >= 20 EUR   | book            |
+      | Price  | > 22.5 EUR  |                 |
+      | Price  | >= 22.5 EUR | book            |
+      | Price  | > 12.5 EUR  | book            |
+      | Price  | >= 12.5 EUR | book, postit    |
+      | Price  | = 12.5 EUR  | postit          |
+      | Price  | < 20 EUR    | postit          |
+      | Price  | < 10.5 EUR  |                 |
+      | Price  | <= 13 EUR   | postit          |
+      | Price  | <= 23 EUR   | postit and book |
+      | Price  | > 40.5 EUR  |                 |
     When I show the filter "Price"
     And I filter by price "Price" with empty value on "EUR" currency
     And I should see product mug and pen

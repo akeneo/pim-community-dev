@@ -2,8 +2,8 @@
 
 namespace Context;
 
-use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
 use Behat\Behat\Context\Step;
+use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
@@ -92,9 +92,9 @@ class WebApiContext extends BehatWebApiContext
     {
         $nonce   = uniqid();
         $created = date('c');
-        $raw = sprintf('%s%s%s', base64_decode($nonce), $created, $apiKey);
+        $raw     = sprintf('%s%s%s', base64_decode($nonce), $created, $apiKey);
         $encoder = new MessageDigestPasswordEncoder('sha1', true, 1);
-        $digest = $encoder->encodePassword($raw, $salt);
+        $digest  = $encoder->encodePassword($raw, $salt);
         $this->addHeader('CONTENT_TYPE: application/json');
         $this->addHeader('Authorization: WSSE profile="UsernameToken"');
         $this->addHeader(

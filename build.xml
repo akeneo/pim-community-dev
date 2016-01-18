@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pim" default="build">
-    <property name="symfony.upload.dir" value="product" />
+<project name="pim" default="build"
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless"
+>
+    <property name="symfony.catalog.storage.dir" value="catalog" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
@@ -10,9 +13,23 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-deprecated" depends="prepare-deprecated-behat,prepare,composer,vendors,install-all-behat,behat"/>
+
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
+
+    <target name="prepare-deprecated-behat" description="Build deprecated behats">
+        <!--
+            In order to keep old import behats with deprecated processor, writer, and reader, we delete
+            the new config file and replace this one with the old one, and we also delete the one in
+            connector bundle to avoid this one to be also called.
+        -->
+        <delete file="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+        <delete file="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/base_connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+    </target>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -63,7 +80,7 @@
                 <include name="parameters*.yml" />
             </fileset>
         </replaceregexp>
-        <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+        <replaceregexp match="catalog_storage_dir:.*$" replace="catalog_storage_dir: %kernel.root_dir%/file_storage/%catalog.storage.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters.yml" />
             </fileset>
@@ -73,7 +90,7 @@
                 <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
-        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
+        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" overwrite="true"/>
         <replaceregexp match="pim-behat" replace="${behat.base_url}" byline="true">
             <fileset dir="${basedir}">
                 <include name="behat.yml" />
@@ -84,6 +101,17 @@
                 <include name="behat.yml" />
             </fileset>
         </replaceregexp>
+        <condition property="hasBuildTags">
+            <and>
+                <isset property="buildTags" />
+                <length string="${buildTags}" trim="true" when="greater" length="0"/>
+            </and>
+        </condition>
+        <replaceregexp match="tags: (.*)$" replace="tags: \1&amp;&amp;${buildTags}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" if="hasBuildTags" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
 
@@ -91,14 +119,8 @@
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}/src/Pim">
+            <fileset dir="${basedir}/src">
                 <include name="**/*.php" />
-                <modified />
-            </fileset>
-
-            <fileset dir="${basedir}/src/Pim">
-                <include name="**/*Test.php" />
-                <modified />
             </fileset>
         </apply>
     </target>
@@ -116,7 +138,7 @@
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/app/build/logs/phploc.csv" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -126,20 +148,20 @@
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
             <arg value="--ignore=Tests" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim,${basedir}/features" />
+            <arg path="${basedir}/src,${basedir}/features" />
             <arg value="text" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -150,7 +172,7 @@
         <exec executable="${basedir}/bin/phpcs">
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -189,7 +211,7 @@
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -200,7 +222,7 @@
             <arg value="Tests" />
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -240,7 +262,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
 
         <exec executable="php">
@@ -296,13 +318,24 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="-c" />
             <arg value="${behat.concurrency}" />
+            <arg value="-x" />
             <arg value="${behat.xdebug}" />
+            <arg value="-d" />
             <arg value="${symfony.database.name}_" />
+            <arg value="-p" />
             <arg value="${behat.profile.prefix}-" />
-            <arg value="${basedir}/bin/behat ${behat.options}" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+            <arg value="-f"/>
+            <arg value="${behat.features} "/>
+            <arg value="-b"/>
+            <arg value="${basedir}/bin/behat ${behat.options}"/>
+            <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+            <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+            <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
+            <env key="BEHAT_CONTEXT" value="JENKINS" />
         </exec>
     </target>
 
@@ -311,7 +344,7 @@
             <arg value="--log" />
             <arg path="${basedir}/app/build/logs" />
             <arg value="--source" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg value="--output" />
             <arg path="${basedir}/app/build/code-browser" />
         </exec>
@@ -335,7 +368,7 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta10@dev" />
+            <arg value="v1.0.0-beta12@dev" />
         </exec>
     </target>
 
@@ -350,7 +383,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -395,27 +428,25 @@
     <target name="setupdb" description="Setup db">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
     <target name="setupdb-test" description="Setup db for test env">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--env=test" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -428,7 +459,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -440,31 +471,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:create-index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:reindex" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 

@@ -32,7 +32,7 @@ Feature: Edit an import
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
-    Then I should see "File file.csv"
+    Then I should see the text "File file.csv"
     And I should see "Allow file upload No"
     And I should see "Delimiter |"
     And I should see "Enclosure '"

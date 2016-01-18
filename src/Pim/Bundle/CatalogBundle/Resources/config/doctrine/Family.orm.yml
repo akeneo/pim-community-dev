@@ -1,7 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\Family:
     type: entity
     table: pim_catalog_family
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
     fields:
         id:
             type: integer
@@ -26,8 +27,6 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         attributes:
             targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             inversedBy: families
-            cascade:
-                - persist
             joinTable:
                 name: pim_catalog_family_attribute
                 joinColumns:
@@ -44,11 +43,15 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
+                - remove
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             mappedBy: family
             cascade:
                 - persist
+                - detach
+                - remove
     manyToOne:
         attributeAsLabel:
             targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface

@@ -1,0 +1,69 @@
+@import 'less/variables';
+
+/* Collapsable sidebar **********************************************************************************************/
+
+.sidebarized {
+  .sidebar-controls {
+    background-color: #f7f7f7;
+    i {
+      color: @textColor;
+      cursor: pointer;
+    }
+    a, button {
+      display: block;
+      float: left;
+      width: 30px;
+      font-size: 13px;
+      color: #000;
+      text-align: center;
+      text-decoration: none;
+      background-color: #f3f3f3;
+      border: 0;
+      border-right: 1px solid #d3d3d3;
+    }
+    .btn-group .dropdown-toggle {
+      border-radius: 0;
+      .caret {
+        vertical-align: middle;
+      }
+    }
+    li {
+      text-align: left;
+    }
+    a {
+      cursor: pointer;
+    }
+  }
+  .sidebar-content {
+    background-color: #fcfcfc;
+  }
+}
+.sidebar-list {
+  ul {
+    margin: 0;
+  }
+  li {
+    padding: 0 10px;
+    line-height: 35px;
+    list-style: none;
+    cursor: pointer;
+    &:hover {
+      background-color: @color-grey_tab;
+    }
+    a {
+      display: block;
+      color: @textColor;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  .active,
+  .active:hover {
+    background-color: @color-purple_hover;
+  }
+  .handle {
+    float: left;
+    padding-right: 5px;
+  }
+}

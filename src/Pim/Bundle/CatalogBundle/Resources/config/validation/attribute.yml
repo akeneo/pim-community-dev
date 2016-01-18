@@ -32,7 +32,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|(.)*_(products|groups))$)/
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
                 message: This code is not available
         localizable:
             - Type: bool
@@ -143,6 +143,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Valid: ~
         group:
             - NotBlank: ~
+
+    getters:
+        group:
             - Valid: ~
 
 Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
@@ -156,6 +159,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
             - attribute
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOption : ~
     properties:
         code:
             - NotBlank: ~

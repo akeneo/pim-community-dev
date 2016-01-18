@@ -30,7 +30,7 @@ interface AttributeSorterInterface extends SorterInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsAttribute(AttributeInterface $attribute);
 }

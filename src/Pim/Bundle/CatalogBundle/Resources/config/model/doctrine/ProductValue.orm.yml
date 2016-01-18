@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Model\ProductValue:
     type: entity
     table: pim_catalog_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         value_idx:
             columns:
@@ -31,8 +32,8 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         decimal:
             type: decimal
             scale: 4
-            nullable: true
             precision: 14
+            nullable: true
             column: value_decimal
         boolean:
             type: boolean
@@ -84,6 +85,17 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+        media:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfoInterface
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
     manyToMany:
         options:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
@@ -102,18 +114,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                         nullable: true
                         onDelete: CASCADE
     oneToOne:
-        media:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
-            inversedBy: value
-            joinColumns:
-                media_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
         metric:
             targetEntity: Pim\Bundle\CatalogBundle\Model\MetricInterface
             cascade:

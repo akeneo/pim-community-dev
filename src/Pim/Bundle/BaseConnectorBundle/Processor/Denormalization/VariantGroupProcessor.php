@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -13,18 +13,20 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Variant group import processor, allows to,
  *  - create / update variant groups
  *  - bind values data into a product template linked to a variant group
  *  - validate values and save values in template (it erases existing values)
- *  - return the valid variant groups, throw exceptions to skip invalid ones
+ *  - return the valid variant groups, throw exceptions to skip invalid ones.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Processor\Denormalization\
  */
 class VariantGroupProcessor extends AbstractProcessor
 {
@@ -238,7 +240,7 @@ class VariantGroupProcessor extends AbstractProcessor
         foreach ($rawProductValues as $index => $data) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($index);
             $attribute      = $attributeInfos['attribute'];
-            if ("" === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
+            if ('' === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
                 unset($rawProductValues[$index]);
             }
         }

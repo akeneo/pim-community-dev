@@ -16,6 +16,7 @@ class ValueJoin
 {
     /**
      * QueryBuilder
+     *
      * @var QueryBuilder
      */
     protected $qb;

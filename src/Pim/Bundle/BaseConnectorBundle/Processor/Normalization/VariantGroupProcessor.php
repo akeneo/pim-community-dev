@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -86,6 +87,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      * @param GroupInterface $group
      *
      * @throws InvalidItemException If a media file is not found
+     *
      * @return array
      */
     protected function prepareVariantGroupMedia(GroupInterface $group)
@@ -130,7 +132,10 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
 
         return $values->filter(
             function ($value) {
-                return in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file']);
+                return in_array(
+                    $value->getAttribute()->getAttributeType(),
+                    [AttributeTypes::IMAGE, AttributeTypes::FILE]
+                );
             }
         )->toArray();
     }

@@ -89,7 +89,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             $this->disableField($form, 'code');
         }
 
-        if (!$this->securityFacade->isGranted('pim_enrich_attribute_group_add_attribute')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_add_attribute')) {
             $form = $event->getForm();
             $this->hideGroupElement($form, $data);
         }

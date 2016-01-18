@@ -3,17 +3,17 @@ define(
     function ($, _, Routing, mediator) {
         'use strict';
 
-        return function (elementId, hiddenCategoryId) {
+        return function (elementId, hiddenCategoryId, routes) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
-                throw new Error('Unable to instantiate tree on this element');
+                return;
             }
-            var self         = this,
-                currentTree  = -1,
-                id           = $el.attr('data-id'),
-                selectedTree = $el.attr('data-selected-tree'),
-                dataLocale   = $el.attr('data-datalocale'),
-                locked       = false;
+            var self         = this;
+            var currentTree  = -1;
+            var id           = $el.attr('data-id');
+            var selectedTree = $el.attr('data-selected-tree');
+            var dataLocale   = $el.attr('data-datalocale');
+            var locked       = false;
 
             this.config = {
                 core: {
@@ -42,23 +42,41 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
-                            if ((!node || (node === -1)) && treeHasProduct) {
+                            if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate('pim_enrich_product_listcategories', { id: id, categoryId: currentTree, _format: 'json', dataLocale: dataLocale, context: 'associate' });
+                                var selected = this.parseHiddenCategories();
+                                return Routing.generate(
+                                    routes.list_categories,
+                                    {
+                                        id: id,
+                                        categoryId: currentTree,
+                                        _format: 'json',
+                                        dataLocale: dataLocale,
+                                        context: 'associate',
+                                        selected: selected
+                                    }
+                                );
                             }
 
-                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'associate' });
-                        },
+                            return Routing.generate(
+                                routes.children,
+                                {
+                                    _format: 'json',
+                                    dataLocale: dataLocale,
+                                    context: 'associate'
+                                }
+                            );
+                        }.bind(this),
                         data: function (node) {
-                            var data           = {},
-                                treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var data           = {};
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
                             } else {
-                                if (!treeHasProduct) {
+                                if (!treeHasItem) {
                                     data.id = currentTree;
                                 }
                                 data.include_parent = 'true';
@@ -79,7 +97,7 @@ define(
                 types: {
                     max_depth: -2,
                     max_children: -2,
-                    valid_children: [ 'folder' ],
+                    valid_children: ['folder'],
                     types: {
                         'default': {
                             valid_children: 'folder'
@@ -116,8 +134,7 @@ define(
 
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.length > 0 ? selected.split(',') : [];
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         if ($.inArray(id, selected) < 0) {
                             selected.push(id);
@@ -126,26 +143,25 @@ define(
                             $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('gray').addClass('green');
+                            $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
                         }
                     }
-                });
+                }.bind(this));
 
                 $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.split(',');
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
-                        selected.splice($.inArray(id, selected),1);
+                        selected.splice($.inArray(id, selected), 1);
                         selected = selected.join(',');
                         $(hiddenCategoryId).val(selected).trigger('change');
                         var treeId = e.target.id;
-                        if ($('#'+treeId).jstree('get_checked').length === 0) {
+                        if ($('#' + treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('green').addClass('gray');
+                            $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
                         }
                     }
-                });
+                }.bind(this));
             };
 
             var setLocked = function () {
@@ -161,12 +177,12 @@ define(
                 });
             };
 
-            this.lock = function() {
+            this.lock = function () {
                 locked = true;
                 setLocked();
             };
 
-            this.unlock = function() {
+            this.unlock = function () {
                 locked = false;
                 setLocked();
             };
@@ -177,6 +193,14 @@ define(
                 });
                 mediator.on('jstree:lock', this.lock);
                 mediator.on('jstree:unlock', this.unlock);
+            };
+
+            /**
+             * @return {Array}
+             */
+            this.parseHiddenCategories = function () {
+                var hiddenValue = $(hiddenCategoryId).val();
+                return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
             };
 
             this.init = function () {

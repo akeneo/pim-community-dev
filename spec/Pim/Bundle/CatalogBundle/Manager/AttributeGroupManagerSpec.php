@@ -2,7 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -15,9 +16,12 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager');
     }
 
-    function let(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($objectManager, $repository);
+    function let(
+        AttributeGroupRepositoryInterface $repository,
+        SaverInterface $groupSaver,
+        BulkSaverInterface $attributeSaver
+    ) {
+        $this->beConstructedWith($repository, $groupSaver, $attributeSaver);
     }
 
     function it_throws_an_exception_when_removing_an_attribute_group_and_the_default_group_does_not_exist(
@@ -32,7 +36,8 @@ class AttributeGroupManagerSpec extends ObjectBehavior
     }
 
     function it_add_attributes_to_attribute_group(
-        $objectManager,
+        $groupSaver,
+        $attributeSaver,
         AttributeGroupInterface $default,
         AttributeGroupInterface $group,
         AttributeInterface $sku,
@@ -42,14 +47,12 @@ class AttributeGroupManagerSpec extends ObjectBehavior
 
         $sku->setSortOrder(6)->shouldBeCalled();
         $group->addAttribute($sku)->shouldBeCalled();
-        $objectManager->persist($sku)->shouldBeCalled();
 
         $name->setSortOrder(7)->shouldBeCalled();
         $group->addAttribute($name)->shouldBeCalled();
-        $objectManager->persist($name)->shouldBeCalled();
 
-        $objectManager->persist($group)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $attributeSaver->saveAll([$sku, $name])->shouldBeCalled();
+        $groupSaver->save($group)->shouldBeCalled();
 
         $this->addAttributes($group, [$sku, $name]);
     }

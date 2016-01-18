@@ -6,19 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
+    function let(SerializerInterface $serializer)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
-        $this->setFilters(array($filter));
     }
 
     function it_is_a_normalizer()
@@ -48,8 +45,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_the_properties_of_product(
         ProductInterface $product,
         ArrayCollection $values,
-        \ArrayIterator $iterator,
-        $filter
+        \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);
 
@@ -59,8 +55,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
         $product->getValues()->willReturn($values);
-
-        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
 
         $this->normalize($product, 'csv')->shouldReturn([
             'family' => null,

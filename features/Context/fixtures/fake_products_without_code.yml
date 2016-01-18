@@ -1,0 +1,8 @@
+products:
+    mug_akeneo_blue:
+        color: blue
+    t_shirt_akeneo_s_purple:
+        color: purple
+        size: S
+    mug_akeneo_purple:
+        color: purple

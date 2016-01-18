@@ -2,16 +2,19 @@
 
 namespace Context;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Yaml\Parser;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
-use Behat\Behat\Event\StepEvent;
-use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Gherkin\Node\PyStringNode;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
+use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
+use Pim\Behat\Context\HookContext;
+use Pim\Behat\Context\JobContext;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Main feature context
@@ -22,167 +25,38 @@ use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    use SpinCapableTrait;
+
+    /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
     protected static $errorMessages = [];
 
     /**
-     * Path of the yaml file containing tables that should be excluded from database purge
-     * @var string
-     */
-    protected $excludedTablesFile = 'excluded_tables.yml';
-
-    /**
      * Register contexts
+     *
      * @param array $parameters
      */
     public function __construct(array $parameters)
     {
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
-        $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('webUser', new WebUser());
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
-        $this->useContext('navigation', new NavigationContext());
+        $this->useContext('navigation', new NavigationContext($parameters['base_url']));
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
-    }
 
-    /**
-     * @BeforeScenario
-     */
-    public function purgeDatabase()
-    {
-        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
-        if (file_exists($excludedTablesFile)) {
-            $parser = new Parser();
-            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
-            $excludedTables = $excludedTables['excluded_tables'];
-        } else {
-            $excludedTables = array();
-        }
+        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
 
-        if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
-            $purgers[] = new MongoDBPurger($this->getDocumentManager());
-            $excludedTables[] = 'pim_catalog_product';
-            $excludedTables[] = 'pim_catalog_product_value';
-            $excludedTables[] = 'pim_catalog_media';
-        }
-
-        $purgers[] = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
-
-        foreach ($purgers as $purger) {
-            $purger->purge();
-        }
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function closeConnection()
-    {
-        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
-            $connection->close();
-        }
-    }
-
-    /**
-     * Take a screenshot when a step fails
-     *
-     * @param StepEvent $event
-     *
-     * @AfterStep
-     */
-    public function takeScreenshotAfterFailedStep(StepEvent $event)
-    {
-        if ($event->getResult() === StepEvent::FAILED) {
-            $driver = $this->getSession()->getDriver();
-            if ($driver instanceof Selenium2Driver) {
-                $dir      = getenv('WORKSPACE');
-                $buildUrl = getenv('BUILD_URL');
-                if (false !== $dir) {
-                    $dir = sprintf('%s/app/build/screenshots', $dir);
-                } else {
-                    $dir = '/tmp/behat/screenshots';
-                }
-
-                $lineNum  = $event->getStep()->getLine();
-                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
-                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
-                $path     = sprintf('%s/%s', $dir, $filename);
-
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
-                $fs->dumpFile($path, $driver->getScreenshot());
-
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
-                }
-
-                $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
-            }
-        }
-    }
-
-    /**
-     * Print error messages
-     *
-     * @AfterFeature
-     */
-    public static function printErrorMessages()
-    {
-        if (!empty(self::$errorMessages)) {
-            echo "\n\033[1;31mAttention!\033[0m\n\n";
-
-            foreach (self::$errorMessages as $message) {
-                echo $message . "\n";
-            }
-
-            self::$errorMessages = [];
-        }
-    }
-
-    /**
-     * Add an error message
-     *
-     * @param string $message
-     */
-    public function addErrorMessage($message)
-    {
-        self::$errorMessages[] = $message;
-    }
-
-    /**
-     * Listen to JS errors
-     *
-     * @BeforeStep
-     */
-    public function listenToErrors()
-    {
-        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
-
-        $this->executeScript($script);
-    }
-
-    /**
-     * Collect and log JS errors
-     *
-     * @AfterStep
-     */
-    public function collectErrors()
-    {
-        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-            $result = $this->getSession()->evaluateScript($script);
-            if ($result) {
-                $this->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
-            }
-        }
+        $this->useContext('job', new JobContext());
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
     }
 
     /**
@@ -198,7 +72,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Returns Container instance.
      *
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -208,7 +82,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Return doctrine manager instance
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getEntityManager()
     {
@@ -216,7 +90,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getDocumentManager()
     {
@@ -224,7 +98,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return Doctrine\Common\Persistence\ManagerRegistry
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
     public function getSmartRegistry()
     {
@@ -249,7 +123,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function listToArray($list)
     {
         if (empty($list)) {
-            return array();
+            return [];
         }
 
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -267,26 +141,36 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         return new ExpectationException($message, $this->getSession());
     }
 
+   /**
+    * Add an error message
+    *
+    * @param string $message
+    */
+    public function addErrorMessage($message)
+    {
+        self::$errorMessages[] = $message;
+    }
+
     /**
      * Wait
      *
-     * @param integer $time
-     * @param string  $condition
+     * @param int    $time
+     * @param string $condition
      *
      * @throws BehaviorException If timeout is reached
      */
-    public function wait($time = 10000, $condition = null)
+    public function wait($time = 30000, $condition = null)
     {
-        if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
+        if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
             return;
         }
 
         $start = microtime(true);
-        $end = $start + $time / 1000.0;
+        $end   = $start + $time / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
-            $conditions = [
+            $conditions       = [
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
@@ -297,6 +181,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
             $condition = implode(' && ', $conditions);
         } else {
+            $conditions = [];
             $defaultCondition = false;
         }
 
@@ -347,11 +232,24 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Fills in form field with specified id|name|label|value.
+     *
+     * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
+     * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
+     */
+    public function fillFieldOnCurrentPage($field, $value)
+    {
+        $field = $this->fixStepArgument($field);
+        $value = $this->fixStepArgument($value);
+        $this->getMainContext()->getSubcontext('navigation')->getCurrentPage()->fillField($field, $value);
+    }
+
+    /**
      * Execute javascript
      *
      * @param string $script
      *
-     * @return boolean Success or failure
+     * @return bool Success or failure
      */
     public function executeScript($script)
     {
@@ -367,10 +265,34 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return MailRecorder
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
      */
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clickLink($link)
+    {
+        $this->spin(function () use ($link) {
+            parent::clickLink($link);
+
+            return true;
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertNumElements($num, $element)
+    {
+        $this->spin(function () use ($num, $element) {
+            parent::assertNumElements($num, $element);
+
+            return true;
+        });
     }
 }

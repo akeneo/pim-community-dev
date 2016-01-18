@@ -100,6 +100,6 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             }
         }
 
-        return join('&nbsp;', array_unique($messages));
+        return implode('&nbsp;', array_unique($messages));
     }
 }

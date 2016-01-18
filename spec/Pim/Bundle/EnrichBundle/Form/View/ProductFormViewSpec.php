@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormView;
 
 class ProductFormViewSpec extends ObjectBehavior
@@ -26,7 +25,6 @@ class ProductFormViewSpec extends ObjectBehavior
         $viewUpdaterRegistry,
         VariantViewUpdater $variantViewUpdater
     ) {
-
         $value->getAttribute()->willReturn($attribute);
         $value->isRemovable()->willReturn(true);
         $value->getLocale()->willReturn(null);

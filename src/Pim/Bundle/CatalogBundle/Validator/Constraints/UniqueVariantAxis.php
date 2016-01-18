@@ -21,6 +21,13 @@ class UniqueVariantAxis extends Constraint
     public $message = 'Group "%variant group%" already contains another product with values "%values%"';
 
     /**
+     * Violation message for missing axis value
+     *
+     * @var string
+     */
+    public $missingAxisMessage = 'Product "%product%" should have value for axis "%axis%" of variant group "%group%"';
+
+    /**
      * {@inheritdoc}
      */
     public function validatedBy()

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
@@ -32,8 +33,8 @@ class FileGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_file',
-                'pim_catalog_image',
+                AttributeTypes::FILE,
+                AttributeTypes::IMAGE,
             )
         );
     }
@@ -54,8 +55,9 @@ class FileGuesser implements ConstraintGuesserInterface
                 $maxSize = intval($maxSize * self::KILOBYTE_MULTIPLIER);
                 $unit    = self::KILOBYTE_UNIT;
             }
-
-            $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);
+            if ($maxSize > 0) {
+                $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);
+            }
         }
 
         if ($allowedExtensions = $attribute->getAllowedExtensions()) {

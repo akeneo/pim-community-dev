@@ -1,0 +1,88 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+/* Login Form *******************************************************************************************************/
+
+.login-page {
+  background: #f7f7f7;
+  height: 100%;
+  min-height: 280px;
+  #page {
+    position: relative;
+    top: 50%;
+    #top-page {
+      margin: -135px 0 0;
+    }
+  }
+}
+
+.form-signin {
+  margin: 0 auto;
+  max-width: 400px;
+  .border-radius(5px);
+  .title-box {
+    overflow: hidden;
+    color: #fff;
+    #gradient .vertical(@color-header_top, @color-header_bottom);
+    border: 1px solid #d4d4d4;
+    .border-radius(6px 6px 0 0);
+  }
+  .title {
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+  }
+  h1 {
+    padding: 0;
+    float: left;
+    margin: 0;
+  }
+  .add-on {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    #gradient .vertical(#f4f4f4, #dcdcdc);
+    padding: 0 10px;
+  }
+  input[type="text"],
+  input[type="password"] {
+    width: 265px;
+    height: 36px;
+    font-size: 14px;
+    padding: 7px 10px;
+    border-left-color:#ccc;
+    background-color: #fbfbfb;
+  }
+  fieldset {
+    border: solid @navbarBorder;
+    border-width: 0 1px 1px 1px;
+    padding: 30px 38px;
+    background: #fff;
+    .border-radius(0 0 5px 5px);
+  }
+  .input-prepend {
+    margin-bottom: 3px;
+  }
+  .form-row {
+    padding: 0;
+  }
+  .signin-help {
+    margin-top: 15px;
+    a {
+      font-size: 13px;
+    }
+  }
+}
+
+.form-reset {
+  max-width: 550px;
+  fieldset {
+    padding: 30px 33px;
+    button {
+      margin-right: 3px;
+    }
+  }
+  input[type="text"] {
+    width: 458px;
+  }
+}

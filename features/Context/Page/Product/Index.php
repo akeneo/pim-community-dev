@@ -2,7 +2,10 @@
 
 namespace Context\Page\Product;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Product index page
@@ -14,43 +17,70 @@ use Context\Page\Base\Grid;
 class Index extends Grid
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/enrich/product/';
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Categories tree'  => array('css' => '#tree'),
-                'Tree select'      => array('css' => '#tree_select'),
-                'Locales dropdown' => array('css' => '#locale-switcher'),
-            )
+            [
+                'Categories tree'  => ['css' => '#tree'],
+                'Tree select'      => ['css' => '#tree_select'],
+                'Locales dropdown' => ['css' => '#locale-switcher'],
+            ]
         );
     }
 
     /**
-     * @param string $locale
+     * @return int
      */
-    public function switchLocale($locale)
+    public function countLocaleLinks()
     {
-        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $elt->click();
+        return count($this->getElement('Locales dropdown')->findAll('css', 'li a'));
+    }
 
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
+    /**
+     * @param string $locale locale code
+     * @param string $locale locale label
+     * @param string $flag   class of the flag icon
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement|null
+     */
+    public function findLocaleLink($locale, $label, $flag = null)
+    {
+        $link = $this->getElement('Locales dropdown')
+            ->find('css', sprintf('li > a[href="/enrich/product/?dataLocale=%s"]', $locale));
+
+        if (!$link) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                sprintf('Locale %s link', $locale)
+            );
         }
-        $elt->click();
+
+        if ($flag) {
+            $flagElement = $link->find('css', 'span.flag-language i');
+            if (!$flagElement) {
+                throw new ElementNotFoundException(
+                    $this->getSession(),
+                    sprintf('Flag not found for locale %s link', $locale)
+                );
+            }
+            if (strpos($flagElement->getAttribute('class'), $flag) === false) {
+                return null;
+            }
+        }
+
+        return $link;
     }
 
     /**
@@ -67,6 +97,8 @@ class Index extends Grid
 
     /**
      * @param Category $category
+     *
+     * @throws \Exception
      */
     public function clickCategoryFilterLink($category)
     {

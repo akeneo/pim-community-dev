@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -46,7 +46,7 @@ class ProductController
      * Generate Pdf and send it to the client for specific product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_pdf_generator_product_download")
      *
@@ -90,7 +90,7 @@ class ProductController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
+     * @param int $id the product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *

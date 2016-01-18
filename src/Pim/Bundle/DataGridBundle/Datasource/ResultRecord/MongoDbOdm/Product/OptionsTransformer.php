@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -25,7 +26,7 @@ class OptionsTransformer
     {
         $attributeCode = $attribute['code'];
         $normalizedData = $result['normalizedData'];
-        $fromNormData = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
+        $fromNormData = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
         if (in_array($attribute['attributeType'], $fromNormData)) {
             $fieldCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,

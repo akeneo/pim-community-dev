@@ -8,8 +8,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Translatable field type for translation entities
@@ -82,9 +82,10 @@ class TranslatableFieldType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        parent::configureOptions($resolver);
+
         $resolver->setRequired(array('entity_class', 'translation_class', 'field', 'required_locale'));
         $resolver->setDefaults(
             array(

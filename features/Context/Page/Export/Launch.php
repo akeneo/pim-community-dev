@@ -12,7 +12,7 @@ namespace Context\Page\Export;
 class Launch extends Show
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/spread/export/{id}/launch';
 }

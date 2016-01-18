@@ -25,7 +25,7 @@ class Reader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var boolean */
+    /** @var bool */
     private $executed = false;
 
     /** @var array */

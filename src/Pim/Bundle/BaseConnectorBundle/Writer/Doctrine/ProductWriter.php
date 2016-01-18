@@ -6,8 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -23,9 +22,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**  @var MediaManager */
-    protected $mediaManager;
-
     /** @var VersionManager */
     protected $versionManager;
 
@@ -35,27 +31,24 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var boolean */
+    /** @var bool */
     protected $realTimeVersioning = true;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     protected $productSaver;
 
     /**
      * Constructor
      *
-     * @param MediaManager   $mediaManager
-     * @param CacheClearer   $cacheClearer
-     * @param VersionManager $versionManager
-     * @param SaverInterface $productSaver
+     * @param CacheClearer       $cacheClearer
+     * @param VersionManager     $versionManager
+     * @param BulkSaverInterface $productSaver
      */
     public function __construct(
-        MediaManager $mediaManager,
         CacheClearer $cacheClearer,
         VersionManager $versionManager,
-        SaverInterface $productSaver
+        BulkSaverInterface $productSaver
     ) {
-        $this->mediaManager   = $mediaManager;
         $this->cacheClearer   = $cacheClearer;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
@@ -80,7 +73,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Set real time versioning
      *
-     * @param boolean $realTime
+     * @param bool $realTime
      */
     public function setRealTimeVersioning($realTime)
     {
@@ -90,7 +83,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Is real time versioning
      *
-     * @return boolean
+     * @return bool
      */
     public function isRealTimeVersioning()
     {
@@ -106,7 +99,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
-        $this->mediaManager->handleAllProductsMedias($items);
         $this->productSaver->saveAll($items, ['recalculate' => false]);
 
         $this->cacheClearer->clear();
@@ -126,7 +118,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected function incrementCount(ProductInterface $product)
     {
         if ($product->getId()) {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }

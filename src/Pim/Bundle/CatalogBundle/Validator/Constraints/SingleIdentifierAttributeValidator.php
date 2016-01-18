@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,19 +17,15 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class SingleIdentifierAttributeValidator extends ConstraintValidator
 {
-    /**
-     * Product manager
-     * @var ProductManager $manager
-     */
-    protected $manager;
+    /** @var AttributeRepositoryInterface $repository */
+    protected $attributeRepository;
 
     /**
-     * Constructor
-     * @param ProductManager $manager
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(ProductManager $manager)
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->manager = $manager;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -39,11 +36,13 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
-        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-            $identifier = $this->manager->getIdentifierAttribute();
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+            $identifier = $this->attributeRepository->getIdentifier();
 
             if ($identifier && $identifier->getId() !== $attribute->getId()) {
-                $this->context->addViolationAt('attributeType', $constraint->message);
+                $this->context->buildViolation($constraint->message)
+                    ->atPath('attributeType')
+                    ->addViolation();
             }
         }
     }

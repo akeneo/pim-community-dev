@@ -10,10 +10,10 @@ Feature: Import partial product information
       | sku               | family |
       | caterpillar-boots | boots  |
     And the following CSV file to import:
-    """
-    sku;name-en_US
-    caterpillar-boots;"Caterpillar boots"
-    """
+      """
+      sku;name-en_US
+      caterpillar-boots;"Caterpillar boots"
+      """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"

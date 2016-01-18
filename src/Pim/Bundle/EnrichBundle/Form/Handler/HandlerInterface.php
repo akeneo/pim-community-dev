@@ -16,7 +16,7 @@ interface HandlerInterface
      *
      * @param mixed $entity
      *
-     * @return boolean
+     * @return bool
      */
     public function process($entity);
 }

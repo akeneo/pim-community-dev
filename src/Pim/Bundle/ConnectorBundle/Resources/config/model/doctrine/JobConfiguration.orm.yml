@@ -1,0 +1,19 @@
+Pim\Component\Connector\Model\JobConfiguration:
+    type: entity
+    table: pim_job_configuration
+    repositoryClass: Pim\Bundle\ConnectorBundle\Doctrine\ORM\Repository\JobConfigurationRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        configuration:
+            type: text
+            column: configuration
+    oneToOne:
+        jobExecution:
+            targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
+            joinColumn:
+                name: job_execution_id
+                onDelete: CASCADE

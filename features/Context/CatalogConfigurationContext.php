@@ -2,9 +2,10 @@
 
 namespace Context;
 
-use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
  * A context for initializing catalog configuration
@@ -39,15 +40,15 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var array Entity loaders and corresponding files
      */
     protected $preEntityLoaders = array(
-        'CurrencyLoader'       => 'currencies',
-        'LocaleLoader'         => null,
+        'CurrencyLoader' => 'currencies',
+        'LocaleLoader'   => null,
     );
 
     /**
      * @var array Entity loaders and corresponding files
      */
     protected $postEntityLoaders = array(
-        'UserLoader'           => 'users',
+        'UserLoader' => 'users',
     );
 
     /**
@@ -84,7 +85,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $treatedFiles = [];
         foreach ($this->preEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $this->getLoaderFile($files, $fileName);
+            $file   = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
@@ -104,11 +105,17 @@ class CatalogConfigurationContext extends RawMinkContext
 
         foreach ($this->postEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $this->getLoaderFile($files, $fileName);
+            $file   = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
             $this->runLoader($loader, $file);
+        }
+
+        $bundles = $this->getContainer()->getParameter('kernel.bundles');
+        if (isset($bundles['AcmeAppBundle'])) {
+            $referenceDataLoader = new ReferenceDataLoader();
+            $referenceDataLoader->load($this->getEntityManager());
         }
     }
 
@@ -128,7 +135,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $files = [];
         foreach ($directories as &$directory) {
             $directory = sprintf('%s/%s', $directory, strtolower($catalog));
-            $files = array_merge($files, glob($directory.'/*'));
+            $files     = array_merge($files, glob($directory.'/*'));
         }
 
         if (empty($files)) {
@@ -180,12 +187,13 @@ class CatalogConfigurationContext extends RawMinkContext
     protected function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
-        $listener = new ORMReferenceListener($this->referenceRepository);
+        $listener                  = new ORMReferenceListener($this->referenceRepository);
         $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
     }
 
     /**
      * Run an entity loader
+     *
      * @param string $loaderClass
      * @param string $filePath
      */

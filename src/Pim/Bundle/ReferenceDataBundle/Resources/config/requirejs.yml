@@ -1,0 +1,13 @@
+config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                reference-data-configuration:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_reference_data_configuration_rest_get
+
+    paths:
+        pim/reference-simple-select-field: pimreferencedata/js/product/field/reference-simple-select-field
+        pim/reference-multi-select-field:  pimreferencedata/js/product/field/reference-multi-select-field

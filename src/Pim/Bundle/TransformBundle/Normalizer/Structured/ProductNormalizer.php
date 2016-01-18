@@ -3,9 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -16,15 +15,16 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer extends SerializerAwareNormalizer implements
-    NormalizerInterface,
-    FilterableNormalizerInterface
+class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /** @staticvar string */
     const FIELD_FAMILY = 'family';
 
     /** @staticvar string */
     const FIELD_GROUPS = 'groups';
+
+    /** @staticvar string */
+    const FIELD_VARIANT_GROUP = 'variant_group';
 
     /** @staticvar string */
     const FIELD_CATEGORY = 'categories';
@@ -38,20 +38,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
     /** @staticvar string */
     const FIELD_VALUES = 'values';
 
-    /** @var  NormalizerFilterInterface[] */
-    protected $valuesFilters;
+    /** @var CollectionFilterInterface */
+    protected $filter;
 
     /** @var string[] $supportedFormats */
     protected $supportedFormats = ['json', 'xml'];
 
     /**
-     * {@inheritdoc}
+     * @param CollectionFilterInterface $filter The collection filter
      */
-    public function setFilters(array $filters)
+    public function __construct(CollectionFilterInterface $filter)
     {
-        $this->valuesFilters = $filters;
-
-        return $this;
+        $this->filter = $filter;
     }
 
     /**
@@ -63,20 +61,34 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $defaultContext = [
+            'only_associations'    => false,
+            'exclude_associations' => false,
+        ];
+
+        $context = array_merge($defaultContext, $context);
         $context['entity'] = 'product';
         $data = [];
 
-        $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
-        $data[self::FIELD_ENABLED]  = $product->isEnabled();
-
-        $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
-
-        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
-
         if (isset($context['resource'])) {
             $data['resource'] = $context['resource'];
+        }
+
+        if (true === $context['only_associations']) {
+            $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
+
+            return $data;
+        }
+
+        $data[self::FIELD_FAMILY]        = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS]        = $this->getGroups($product);
+        $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
+        $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes();
+        $data[self::FIELD_ENABLED]       = $product->isEnabled();
+        $data[self::FIELD_VALUES]        = $this->normalizeValues($product->getValues(), $format, $context);
+
+        if (false === $context['exclude_associations']) {
+            $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
         }
 
         return $data;
@@ -101,9 +113,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
      */
     protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        foreach ($this->valuesFilters as $filter) {
-            $values = $filter->filter($values, $context);
-        }
+        $values = $this->filter->filterCollection(
+            $values,
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
+            $context
+        );
 
         $data = [];
         foreach ($values as $value) {
@@ -137,5 +151,25 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
         }
 
         return $data;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getGroups(ProductInterface $product)
+    {
+        $groups = [];
+
+        if ($product->getGroupCodes()) {
+            $groups = $product->getGroupCodes();
+            if ($product->getVariantGroup()) {
+                $variantGroup = $product->getVariantGroup()->getCode();
+                $groups = array_diff($groups, [$variantGroup]);
+            }
+        }
+
+        return $groups;
     }
 }

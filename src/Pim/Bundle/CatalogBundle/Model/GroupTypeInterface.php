@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;

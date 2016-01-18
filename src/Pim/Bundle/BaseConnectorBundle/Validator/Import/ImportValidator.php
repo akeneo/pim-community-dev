@@ -6,7 +6,7 @@ use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validates an imported entity
@@ -14,6 +14,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be remove in 1.5
  */
 class ImportValidator implements ImportValidatorInterface
 {

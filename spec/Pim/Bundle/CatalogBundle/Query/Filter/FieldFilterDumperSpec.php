@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Query\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class FieldFilterDumperSpec extends ObjectBehavior
 {

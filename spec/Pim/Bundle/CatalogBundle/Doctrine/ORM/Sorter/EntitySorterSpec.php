@@ -72,7 +72,7 @@ class EntitySorterSpec extends ObjectBehavior
         $qb->addOrderBy('sorterOVentity_code.value', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
-        $this->addAttributeSorter($attribute, 'DESC','en_US');
+        $this->addAttributeSorter($attribute, 'DESC', 'en_US');
     }
 
     function it_throws_an_exception_when_the_locale_is_not_provided($qb, AttributeInterface $attribute)

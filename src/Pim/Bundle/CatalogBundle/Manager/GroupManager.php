@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -63,6 +63,8 @@ class GroupManager
     /**
      * Get available axis
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface[]
      */
     public function getAvailableAxis()
@@ -72,6 +74,8 @@ class GroupManager
 
     /**
      * Get axis as choice list
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -91,6 +95,8 @@ class GroupManager
     /**
      * Get choices
      *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return array
      */
     public function getChoices()
@@ -104,7 +110,7 @@ class GroupManager
     /**
      * Get axis as choice list
      *
-     * @param boolean $isVariant
+     * @param bool $isVariant
      *
      * @return array
      */
@@ -124,6 +130,8 @@ class GroupManager
     /**
      * Returns the entity repository
      *
+     * @deprecated not used anymore from the outside of this class, will be passed to protected in 1.5
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepository()
@@ -134,6 +142,8 @@ class GroupManager
     /**
      * Returns the group type repository
      *
+     * @deprecated not used anymore from the outside of this class, will be passed to protected in 1.5
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getGroupTypeRepository()
@@ -142,24 +152,12 @@ class GroupManager
     }
 
     /**
-     * Removes a group
-     *
-     * @param GroupInterface $group
-     *
-     * @deprecated will be removed in 1.4, replaced by GroupRemover::remove
-     */
-    public function remove(GroupInterface $group)
-    {
-        $em = $this->doctrine->getManager();
-        $em->remove($group);
-        $em->flush();
-    }
-
-    /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
      * @param GroupInterface $group
-     * @param integer        $maxResults
+     * @param int            $maxResults
+     *
+     * @deprecated not used anymore, will be removed in 1.5
      *
      * @return array
      */
@@ -173,7 +171,9 @@ class GroupManager
 
     /**
      * Get the attribute repository
-
+     *
+     * @deprecated not used anymore, will be removed in 1.5
+     *
      * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()

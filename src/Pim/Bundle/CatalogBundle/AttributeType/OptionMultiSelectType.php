@@ -84,6 +84,6 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_multiselect';
+        return AttributeTypes::OPTION_MULTI_SELECT;
     }
 }

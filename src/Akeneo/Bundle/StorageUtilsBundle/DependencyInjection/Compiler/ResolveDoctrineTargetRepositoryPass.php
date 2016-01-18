@@ -40,7 +40,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
      */
     protected function resolveTargetRepositories(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('pim_catalog.event_subscriber.resolve_target_repository');
+        $definition = $container->findDefinition('akeneo_storage_utils.event_subscriber.resolve_target_repository');
         foreach ($this->getParametersMapping($container) as $repositoryClass => $objectClass) {
             $definition->addMethodCall(
                 'addResolveTargetRepository',

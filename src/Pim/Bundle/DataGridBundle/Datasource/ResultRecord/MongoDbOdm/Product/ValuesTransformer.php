@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer;
+
 /**
  * Transform sub-part or product
  *
@@ -22,6 +25,7 @@ class ValuesTransformer
     public function transform(array $result, array $attributes, $locale, $scope)
     {
         $optionsTransformer = new OptionsTransformer();
+        $refDataTransformer = new ReferenceDataTransformer();
 
         if (isset($result['values'])) {
             foreach ($result['values'] as $value) {
@@ -35,6 +39,7 @@ class ValuesTransformer
                     $value['attribute'] = $attribute;
                     $result[$attributeCode] = $value;
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
+                    $result[$attributeCode] = $refDataTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
                     $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
                 }
@@ -59,7 +64,7 @@ class ValuesTransformer
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
 
-        if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
+        if (AttributeTypes::DATE === $attribute['attributeType'] && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $value[$backendType] = $dateTransformer->transform($mongoDate);
         }
@@ -78,7 +83,7 @@ class ValuesTransformer
         $attributeCode = $attribute['code'];
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
-        if ($attribute['attributeType'] === 'pim_catalog_image' && isset($value[$backendType])) {
+        if (AttributeTypes::IMAGE === $attribute['attributeType'] && isset($value[$backendType])) {
             $normalizedData = $result['normalizedData'];
             $value[$backendType] = $normalizedData[$attributeCode];
         }

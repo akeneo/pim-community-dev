@@ -22,12 +22,12 @@ class AttributeNormalizer implements NormalizerInterface
     const ALL_LOCALES         = 'All';
 
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer $transNormalizer
+     * @var TranslationNormalizer
      */
     protected $transNormalizer;
 
@@ -59,7 +59,8 @@ class AttributeNormalizer implements NormalizerInterface
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),
-                'default_metric_unit'     => $object->getDefaultMetricUnit()
+                'default_metric_unit'     => $object->getDefaultMetricUnit(),
+                'reference_data_name'     => $object->getReferenceDataName()
             )
         );
         if (isset($context['versioning'])) {

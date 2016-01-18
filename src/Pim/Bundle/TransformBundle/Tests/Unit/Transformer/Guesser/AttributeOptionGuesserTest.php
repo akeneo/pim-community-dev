@@ -60,7 +60,7 @@ class AttributeOptionGuesserTest extends GuesserTestCase
             );
 
         $repository = $this->getMock(
-            'Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface'
+            'Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface'
         );
         $this->doctrine->expects($this->once())
             ->method('getRepository')

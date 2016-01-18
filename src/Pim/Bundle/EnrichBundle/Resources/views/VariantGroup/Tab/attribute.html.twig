@@ -12,7 +12,12 @@
     </div>
     <div class="tab-content">
         <div id="attribute-buttons">
-            {% include 'PimEnrichBundle:VariantGroup:_locale-switcher.html.twig' %}
+            {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
+                'locales':           locales,
+                'currentLocaleCode': dataLocale,
+                'routeName':         'pim_enrich_variant_group_edit',
+                'routeParams':       { 'id': form.vars.data.id }
+            } only %}
             {{ elements.channelSwitcher(channels) }}
         </div>
 

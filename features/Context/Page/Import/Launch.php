@@ -12,7 +12,7 @@ namespace Context\Page\Import;
 class Launch extends Show
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/collect/import/{id}/launch';
 }

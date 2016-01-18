@@ -48,6 +48,6 @@ class TextAreaType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_textarea';
+        return AttributeTypes::TEXTAREA;
     }
 }

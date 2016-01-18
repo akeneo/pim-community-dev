@@ -1,0 +1,8 @@
+parameters:
+    pim_serializer.normalizer.comment.class: Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer
+
+services:
+    pim_serializer.normalizer.comment:
+        class: %pim_serializer.normalizer.comment.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

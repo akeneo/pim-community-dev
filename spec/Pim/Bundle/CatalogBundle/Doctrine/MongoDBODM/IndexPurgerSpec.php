@@ -6,10 +6,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -42,7 +42,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $title->getCode()->willReturn('title');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
             [ "key" => [ "normalizedData.title_left-en_US" => 1 ] ],
@@ -61,7 +61,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $title->getCode()->willReturn('title');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -82,7 +82,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -103,7 +103,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -126,7 +126,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -149,7 +149,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -172,7 +172,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $title->getCode()->willReturn('title');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-en_US" => 1 ] ],
             [ "key" => [ "normalizedData.title-de_DE" => 1 ] ],
             [ "key" => [ "normalizedData.manufacturer_title" => 1 ] ],
@@ -193,7 +193,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $title->getCode()->willReturn('title');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce-en_US" => 1 ] ],
             [ "key" => [ "normalizedData.title-ecommerce-de_DE" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile-de_DE" => 1 ] ],
@@ -216,7 +216,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $ecommerce->getCode()->willReturn('ecommerce');
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce-en_US" => 1 ] ],
             [ "key" => [ "normalizedData.title-ecommerce-de_DE" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile-de_DE" => 1 ] ],
@@ -252,7 +252,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $en_US->isActivated()->willReturn(false);
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce-en_US" => 1 ] ],
             [ "key" => [ "normalizedData.title-ecommerce-de_DE" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile-de_DE" => 1 ] ],
@@ -287,7 +287,7 @@ class IndexPurgerSpec extends ObjectBehavior
         $usd->isActivated()->willReturn(false);
 
         $collection->getIndexInfo()->willReturn([
-            [ "key" => [ "_id" => 1, ] ],
+            [ "key" => [ "_id" => 1] ],
             [ "key" => [ "normalizedData.title-ecommerce-en_US" => 1 ] ],
             [ "key" => [ "normalizedData.title-ecommerce-de_DE" => 1 ] ],
             [ "key" => [ "normalizedData.title-mobile-de_DE" => 1 ] ],

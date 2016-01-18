@@ -2,10 +2,14 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Intl\Exception\NotImplementedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Job execution notifier
@@ -16,6 +20,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
+    /** @staticvar string */
+    const TYPE_MASS_EDIT = 'mass_edit';
+
+    /** @staticvar string */
+    const QUICK_EXPORT = 'quick_export';
+
     /** @var NotificationManager */
     protected $manager;
 
@@ -32,17 +42,15 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
-        );
+        ];
     }
 
     /**
      * Notify a user of the end of the job
      *
      * @param JobExecutionEvent $event
-     *
-     * @return null
      */
     public function afterJobExecution(JobExecutionEvent $event)
     {
@@ -65,19 +73,93 @@ class JobExecutionNotifier implements EventSubscriberInterface
             }
         }
 
-        $type = $jobExecution->getJobInstance()->getType();
+        $jobInstance = $jobExecution->getJobInstance();
+        $type        = $jobInstance->getType();
 
+        // TODO: maybe create a registry or something similar to load routes ?
+        $this->generateNotification($jobExecution, $user, $type, $status);
+    }
+
+    /**
+     * Generates the correct notification for the given job $type.
+     *
+     * @param JobExecution $jobExecution
+     * @param null|string  $user
+     * @param string       $type
+     * @param string       $status
+     *
+     * @throws NotImplementedException
+     */
+    protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
+    {
+        switch ($type) {
+            case JobInstance::TYPE_EXPORT:
+            case JobInstance::TYPE_IMPORT:
+                $this->generateExportImportNotify($jobExecution, $user, $type, $status);
+                break;
+
+            case self::TYPE_MASS_EDIT:
+            case self::QUICK_EXPORT:
+                $this->generateMassEditNotify($jobExecution, $user, $type, $status);
+                break;
+
+            default:
+                throw new NotImplementedException(
+                    sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
+                );
+                break;
+        }
+    }
+
+    /**
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
+     */
+    protected function generateExportImportNotify(JobExecution $jobExecution, $user, $type, $status)
+    {
         $this->manager->notify(
             [$user],
             sprintf('pim_import_export.notification.%s.%s', $type, $status),
             $status,
             [
-                'route'       => sprintf('pim_importexport_%s_execution_show', $type),
+                'route'         => sprintf('pim_importexport_%s_execution_show', $type),
+                'routeParams'   => [
+                    'id' => $jobExecution->getId()
+                ],
+                'messageParams' => [
+                    '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
+     */
+    protected function generateMassEditNotify(JobExecution $jobExecution, $user, $type, $status)
+    {
+        $this->manager->notify(
+            [$user],
+            sprintf('pim_mass_edit.notification.%s.%s', $type, $status),
+            $status,
+            [
+                'route'       => 'pim_enrich_job_tracker_show',
                 'routeParams' => [
                     'id' => $jobExecution->getId()
                 ],
                 'messageParams' => [
                     '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
                 ]
             ]
         );

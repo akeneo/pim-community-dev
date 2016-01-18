@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 
 /**
  * Channel repository interface
@@ -46,7 +47,16 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     /**
      * Get full channels with locales and currencies
      *
-     * @return array
+     * @return ChannelInterface[]
      */
     public function getFullChannels();
+
+    /**
+     * Get channels count for the given currency
+     *
+     * @param CurrencyInterface $currency
+     *
+     * @return int
+     */
+    public function getChannelCountUsingCurrency(CurrencyInterface $currency);
 }

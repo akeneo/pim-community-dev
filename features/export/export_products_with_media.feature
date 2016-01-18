@@ -40,8 +40,8 @@ Feature: Export products with media
   @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
     Given the following family:
-      | code      |
-      | flipflop  |
+      | code      | requirements-tablet | requirements-mobile |
+      | flipflop  | sku                 | sku                 |
     And the following attributes:
       | code    | label   | type  | allowed extensions | families  |
       | picture | Picture | image | jpg                | flipflop  |
@@ -56,6 +56,7 @@ Feature: Export products with media
     And I display the Picture attribute
     And I attach file "akeneo.jpg" to "Picture"
     And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "picture" of products FLIPFLOP-1R and FLIPFLOP-1C should be "akeneo.jpg"
     And I am on the products page
     And I mass-edit products FLIPFLOP-1C
@@ -63,6 +64,7 @@ Feature: Export products with media
     And I display the Picture attribute
     And I attach file "" to "Picture"
     And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     And I launched the completeness calculator
     And I am on the "footwear_product_export" export job page
     When I launch the export job
@@ -73,7 +75,6 @@ Feature: Export products with media
     FLIPFLOP-1R;summer_collection;red;1;flipflop;;"Model 1";files/FLIPFLOP-1R/picture/akeneo.jpg;50.00;70.00;45
     FLIPFLOP-1C;summer_collection;charcoal;1;flipflop;;"Model 1";;55.00;75.00;45
     FLIPFLOP-1B;summer_collection;black;1;flipflop;;"Model 1";;50.00;70.00;45
-
     """
     And export directory of "footwear_product_export" should contain the following media:
       | files/FLIPFLOP-1R/picture/akeneo.jpg |

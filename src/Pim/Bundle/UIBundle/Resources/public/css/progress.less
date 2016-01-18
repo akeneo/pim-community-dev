@@ -1,0 +1,47 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+/* Progress bars ******************************************************************************************************/
+
+#progressbar {
+  display: block;
+  margin-top: 200px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 300px;
+  .progress-striped .bar {
+    #gradient > .striped(#149bdf, -45deg);
+  }
+  .progress.active .bar {
+    -webkit-animation: progress-bar-stripes 1s linear infinite;
+       -moz-animation: progress-bar-stripes 1s linear infinite;
+            animation: progress-bar-stripes 1s linear infinite;
+  }
+}
+
+@-webkit-keyframes progress-bar-stripes {
+  from { background-position: 0 0; }
+  to { background-position: 40px 0; }
+}
+
+@-moz-keyframes progress-bar-stripes {
+  from { background-position: 0 0; }
+  to { background-position: 40px 0; }
+}
+
+@keyframes progress-bar-stripes {
+  from { background-position: 0 0; }
+  to { background-position: 40px 0; }
+}
+
+.progress-disabled .bar,
+.progress .bar-disabled {
+  background-color: #cccccc;
+  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
+  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
+  background-repeat: repeat-x;
+}

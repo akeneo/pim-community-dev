@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Model\Metric:
     type: entity
     table: pim_catalog_metric
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

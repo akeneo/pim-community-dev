@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,43 +21,43 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class AssociationController
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $doctrine;
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepository;
 
-    /**
-     * @var EngineInterface
-     */
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var EngineInterface */
     protected $templating;
-
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry $doctrine
-     * @param EngineInterface $templating
-     * @param ProductManager  $productManager
+     * @param AssociationTypeRepositoryInterface $assocTypeRepository
+     * @param ProductRepositoryInterface         $productRepository
+     * @param ProductBuilderInterface            $productBuilder
+     * @param EngineInterface                    $templating
      */
     public function __construct(
-        ManagerRegistry $doctrine,
-        EngineInterface $templating,
-        ProductManager $productManager
+        AssociationTypeRepositoryInterface $assocTypeRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductBuilderInterface $productBuilder,
+        EngineInterface $templating
     ) {
-        $this->doctrine       = $doctrine;
-        $this->templating     = $templating;
-        $this->productManager = $productManager;
+        $this->assocTypeRepository = $assocTypeRepository;
+        $this->productRepository   = $productRepository;
+        $this->productBuilder      = $productBuilder;
+        $this->templating          = $templating;
     }
 
     /**
      * Display association grids
      *
      * @param Request $request the request
-     * @param integer $id      the product id (owner)
+     * @param int     $id      the product id (owner)
      *
      * @AclAncestor("pim_enrich_associations_view")
      *
@@ -65,10 +66,7 @@ class AssociationController
     public function associationsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
-        $this->productManager->ensureAllAssociationTypes($product);
-
-        $associationTypes = $this->doctrine->getRepository('PimCatalogBundle:AssociationType')->findAll();
+        $associationTypes = $this->assocTypeRepository->findAll();
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Association:_associations.html.twig',
@@ -83,7 +81,7 @@ class AssociationController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
+     * @param int $id the product id
      *
      * @throws NotFoundHttpException
      *
@@ -91,13 +89,13 @@ class AssociationController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
-
+        $product = $this->productRepository->findOneById($id);
         if (!$product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', $id)
             );
         }
+        $this->productBuilder->addMissingAssociations($product);
 
         return $product;
     }

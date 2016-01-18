@@ -3,6 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -19,31 +22,36 @@ abstract class AbstractAttribute implements AttributeInterface
 
     /**
      * Attribute code
-     * @var string $code
+     *
+     * @var string
      */
     protected $code;
 
     /**
      * Attribute label
-     * @var string $label
+     *
+     * @var string
      */
     protected $label;
 
     /**
      * Entity type (FQCN)
-     * @var string $entityType
+     *
+     * @var string
      */
     protected $entityType;
 
     /**
      * Attribute type (service alias))
-     * @var string $attributeType
+     *
+     * @var string
      */
     protected $attributeType;
 
     /**
      * Kind of field to store values
-     * @var string $backendType
+     *
+     * @var string
      */
     protected $backendType;
 
@@ -55,13 +63,15 @@ abstract class AbstractAttribute implements AttributeInterface
 
     /**
      * Is attribute is required
-     * @var bool $required
+     *
+     * @var bool
      */
     protected $required;
 
     /**
      * Is attribute value is required
-     * @var bool $unique
+     *
+     * @var bool
      */
     protected $unique;
 
@@ -104,10 +114,10 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var bool */
     protected $wysiwygEnabled;
 
-    /** @var double */
+    /** @var float */
     protected $numberMin;
 
-    /** @var double */
+    /** @var float */
     protected $numberMax;
 
     /** @var bool */
@@ -129,8 +139,7 @@ abstract class AbstractAttribute implements AttributeInterface
     protected $defaultMetricUnit;
 
     /**
-     * @var double $maxFileSize
-     * expressed in MB so decimal is needed for values < 1 MB
+     * @var float expressed in MB so decimal is needed for values < 1 MB
      */
     protected $maxFileSize;
 
@@ -144,7 +153,7 @@ abstract class AbstractAttribute implements AttributeInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
@@ -427,7 +436,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getGroupSequence()
     {
-        $groups = ['Default', $this->getAttributeType()];
+        $groups = ['Attribute', $this->getAttributeType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';
@@ -534,6 +543,14 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $codes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasLocaleSpecific(LocaleInterface $locale)
+    {
+        return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
     }
 
     /**
@@ -996,7 +1013,7 @@ abstract class AbstractAttribute implements AttributeInterface
     public function setAttributeType($type)
     {
         $this->attributeType = $type;
-        if ($this->attributeType === 'pim_catalog_identifier') {
+        if (AttributeTypes::IDENTIFIER === $this->attributeType) {
             $this->required = true;
         }
 
@@ -1011,5 +1028,34 @@ abstract class AbstractAttribute implements AttributeInterface
         $availableLocale = $this->getAvailableLocales();
 
         return !empty($availableLocale);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceDataName()
+    {
+        return $this->getProperty('reference_data_name');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReferenceDataName($name)
+    {
+        $this->setProperty('reference_data_name', $name);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isBackendTypeReferenceData()
+    {
+        return in_array($this->getBackendType(), [
+            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
+            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+        ]);
     }
 }

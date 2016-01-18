@@ -1,0 +1,8 @@
+parameters:
+    pim_analytics.controller.data.class: Pim\Bundle\AnalyticsBundle\Controller\DataController
+
+services:
+    pim_analytics.controller.data:
+        class: %pim_analytics.controller.data.class%
+        arguments:
+            - '@pim_analytics.data_collector.chained'

@@ -4,8 +4,9 @@ parameters:
     pim_datagrid.event_listener.add_parameters_to_product_grid.class:         Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener
     pim_datagrid.event_listener.add_parameters_to_variant_product_grid.class: Pim\Bundle\DataGridBundle\EventListener\AddParametersToVariantProductGridListener
 
-    pim_datagrid.event_listener.configure_product_grid_listener.class:        Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener
-    pim_datagrid.event_listener.configure_sorters_listener.class:        Pim\Bundle\DataGridBundle\EventListener\ConfigureSortersListener
+    pim_datagrid.event_listener.configure_product_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener
+    pim_datagrid.event_listener.configure_sorters_listener.class:      Pim\Bundle\DataGridBundle\EventListener\ConfigureSortersListener
+    pim_datagrid.event_listener.configure_product_filters.class:       Pim\Bundle\DataGridBundle\EventListener\ConfigureProductFiltersListener
     pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureHistoryGridListener
 
 services:
@@ -15,3 +16,10 @@ services:
             - '@pim_datagrid.datasource.support_resolver'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: onBuildBefore }
+
+    pim_datagrid.event_listener.configure_product_filters:
+        class: %pim_datagrid.event_listener.configure_product_filters.class%
+        arguments:
+            - @pim_user.context.user
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }

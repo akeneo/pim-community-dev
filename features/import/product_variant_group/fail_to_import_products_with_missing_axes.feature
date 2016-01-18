@@ -7,12 +7,12 @@ Feature: Fail to import products with missing axes
   Scenario: Fail to import products with a variant group that have missing axes
     Given an "apparel" catalog configuration
     And the following CSV file to import:
-    """
-    sku;groups;color;size;chest_size;waist_size
-    red_sweat;sweaters;;size_XL;;
-    red_tee;tshirts;red;size_M;;
-    red_jacket;jackets;;;;waist_size_L
-    """
+      """
+      sku;groups;color;size;chest_size;waist_size
+      red_sweat;sweaters;;size_XL;;
+      red_tee;tshirts;red;size_M;;
+      red_jacket;jackets;;;;waist_size_L
+      """
     And the following job "product_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"

@@ -294,4 +294,3 @@ that made the entity too smart for its own good and created performances problem
 - Fix price format different between import and enrich
 - Fix channel datagrid result count
 - Fix end date which is updated for all jobs
-

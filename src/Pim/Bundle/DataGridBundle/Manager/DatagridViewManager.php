@@ -2,14 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -27,24 +25,30 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /** @var DatagridManager */
     protected $datagridManager;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RemoverInterface */
+    protected $remover;
 
     /**
      * Constructor
      *
      * @param EntityRepository $repository
      * @param DatagridManager  $datagridManager
-     * @param ObjectManager    $objectManager
+     * @param SaverInterface   $saver
+     * @param RemoverInterface $remover
      */
     public function __construct(
         EntityRepository $repository,
         DatagridManager $datagridManager,
-        ObjectManager $objectManager
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
         $this->repository      = $repository;
         $this->datagridManager = $datagridManager;
-        $this->objectManager   = $objectManager;
+        $this->saver           = $saver;
+        $this->remover         = $remover;
     }
 
     /**
@@ -66,51 +70,29 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use SaverInterface::save
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof DatagridView) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if ($options['flush']) {
-            $this->objectManager->flush($object);
-        }
+        $this->saver->save($object, $options);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof DatagridView) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->remover->remove($object, $options);
     }
 
     /**
      * Get datagrid column choices for the provided datagrid alias
      *
-     * @param string  $alias
-     * @param boolean $displayedColumns
+     * @param string $alias
+     * @param bool   $displayedColumns
      *
      * @return array
      */

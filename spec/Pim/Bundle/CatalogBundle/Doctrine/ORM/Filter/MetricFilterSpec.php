@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;

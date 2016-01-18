@@ -1,0 +1,51 @@
+<% if (!hasFamily) { %>
+    <p>
+        <%- _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
+    </p>
+<% } else if (_.isEmpty(completenesses)) { %>
+    <p>
+        <%- _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
+    </p>
+<% } else { %>
+    <% _.each(completenesses, function(channels, locale) { %>
+        <% var ratio = (channels['stats']['complete'] / channels['stats']['total']) * 100; %>
+        <div class="completeness-block" data-closed="<%- 100 === ratio ? 'true' : 'false' %>">
+            <header>
+                <span class="locale" data-locale="<%- locale %>"><%= i18n.getFlag(locale, false) %> <%- _.findWhere(locales, {code: locale}).language %></span>
+                <span class="stats">
+                    <span><%- channels['stats']['complete'] %>/<%- channels['stats']['total'] %></span>
+                    <div class="progress <%- 100 === ratio ? 'progress-success' : 'progress-warning' %>">
+                        <div class="bar" data-ratio="<%- ratio %>" style="width: <%- ratio %>%;"></div>
+                    </div>
+                </span>
+                <span class="btn"><i class="icon-angle-down"></i></span>
+                </header>
+            <div class="content">
+                <% _.each(channels['channels'], function(completeness, channel) { %>
+                    <% if (completeness.completeness) { %>
+                        <div>
+                            <span class="channel" data-channel="<%- channel %>"><%- channel %></span>
+                            <span class="literal-progress"><%- completeness.completeness.ratio %>%</span>
+                            <div class="progress <%- completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
+                                <div class="bar" data-ratio="<%- completeness.completeness.ratio %>" style="width: <%- completeness.completeness.ratio %>%;"></div>
+                            </div>
+                            <div class="missing">
+                                <% if (completeness.completeness.missing !== 0) { %>
+                                 missing values:
+                                 <span class="missing-attributes">
+                                    <% _.each(completeness.missing, function(missing) { %>
+                                        <span data-attribute="<%- missing %>" data-locale="<%- locale %>" data-channel="<%- channel %>"><%- missing %></span>
+                                    <% }) %>
+                                </span>
+                                <% } %>
+                                <% if (0 === completeness.completeness.missing && completeness.missing.length > 0) { %>
+                                <span class="label label-important">Completeness error</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }%>
+                <% }); %>
+            </div>
+        </div>
+    <% }); %>
+<% } %>

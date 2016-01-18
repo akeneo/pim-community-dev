@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -27,7 +28,7 @@ interface AssociationTypeInterface extends
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return AssociationTypeInterface
      */

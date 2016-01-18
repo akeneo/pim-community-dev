@@ -45,8 +45,6 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function preSetData(FormEvent $event)
     {
@@ -84,7 +82,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     /**
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     protected function isLocalizable(AttributeInterface $attribute = null)
     {
@@ -94,7 +92,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     /**
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     protected function isInCurrentLocale(ProductValueInterface $value)
     {
@@ -104,7 +102,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     /**
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     protected function isInComparisonLocale(ProductValueInterface $value)
     {

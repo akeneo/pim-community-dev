@@ -1,9 +1,10 @@
 parameters:
-    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
-    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
-    pim_catalog.repository.completeness.class:                       Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRepository
-    pim_catalog.repository.product_mass_action.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository
-    pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
+    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
+    pim_catalog.repository.product_value_counter.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductValueCounterRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
+    pim_catalog.repository.completeness.class:                       Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository
+    pim_catalog.repository.product_mass_action.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
+    pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
@@ -63,8 +64,15 @@ services:
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
+            - [setReferenceDataRegistry, ['@?pim_reference_data.registry']]
         tags:
             - { name: 'pim_repository' }
+
+    pim_catalog.repository.product_value_counter:
+        class: %pim_catalog.repository.product_value_counter.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product_value.class%
 
     pim_catalog.repository.product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%
@@ -73,7 +81,8 @@ services:
             - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.product_category:
-        class: %pim_catalog.repository.product_category.class%
+        class:  %pim_catalog.repository.product_category.class%
+        parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pim_catalog.entity.product.class%

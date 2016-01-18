@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -17,9 +17,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -54,7 +54,7 @@ class GroupController extends AbstractController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -69,7 +69,7 @@ class GroupController extends AbstractController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -84,7 +84,7 @@ class GroupController extends AbstractController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -105,6 +105,7 @@ class GroupController extends AbstractController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -116,10 +117,12 @@ class GroupController extends AbstractController
 
     /**
      * Create a group
+     *
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_group_create")
+     *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
@@ -156,6 +159,7 @@ class GroupController extends AbstractController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_edit")
+     *
      * @return array
      */
     public function editAction(Group $group)
@@ -178,6 +182,7 @@ class GroupController extends AbstractController
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(Group $group)
@@ -192,23 +197,6 @@ class GroupController extends AbstractController
     }
 
     /**
-     * Display the products of a group
-     *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @return array
-     *
-     * @AclAncestor("pim_enrich_product_index")
-     * @Template("PimEnrichBundle:Group:_productList.html.twig")
-     */
-    public function productListAction(Group $group)
-    {
-        return $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
-    }
-
-    /**
      * History of a group
      *
      * TODO : find a way to use param converter with interfaces
@@ -216,6 +204,7 @@ class GroupController extends AbstractController
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_history")
+     *
      * @return Response
      */
     public function historyAction(Group $group)

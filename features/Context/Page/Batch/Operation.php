@@ -2,9 +2,9 @@
 
 namespace Context\Page\Batch;
 
-use Context\Page\Base\Wizard;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Context\Page\Base\Wizard;
 
 /**
  * BatchOperation page
@@ -29,6 +29,7 @@ class Operation extends Wizard
      * @param string $operation
      *
      * @throws ElementNotFoundException
+     *
      * @return Operation
      */
     public function chooseOperation($operation)
@@ -73,6 +74,7 @@ class Operation extends Wizard
      * @param string $operation
      *
      * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function getStep($operation)
@@ -82,7 +84,7 @@ class Operation extends Wizard
                 sprintf(
                     'Unknown operation "%s" (available: "%s")',
                     $operation,
-                    join('", "', array_keys($this->steps))
+                    implode('", "', array_keys($this->steps))
                 )
             );
         }

@@ -2,14 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributeGroupTypeSpec extends ObjectBehavior
 {
@@ -25,7 +21,7 @@ class AttributeGroupTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enrich_attribute_group');
+        $this->getName()->shouldReturn('pim_enrich_attributegroup');
     }
 
     function it_builds_form(FormBuilderInterface $builder)
@@ -48,7 +44,7 @@ class AttributeGroupTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)
+    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

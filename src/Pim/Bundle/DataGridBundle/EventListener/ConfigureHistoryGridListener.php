@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

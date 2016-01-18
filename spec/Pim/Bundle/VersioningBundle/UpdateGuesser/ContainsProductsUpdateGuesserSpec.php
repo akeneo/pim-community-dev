@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 

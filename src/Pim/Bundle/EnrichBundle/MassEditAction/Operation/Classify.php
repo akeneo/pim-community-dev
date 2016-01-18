@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Batch operation to classify products
@@ -13,35 +11,17 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Classify extends ProductMassEditOperation
+class Classify extends AbstractMassEditOperation
 {
-    /** @var CategoryManager $categoryManager */
-    protected $categoryManager;
-
-    /** @var CategoryInterface[] */
-    protected $trees;
-
     /** @var CategoryInterface[] */
     protected $categories;
 
     /**
-     * @param CategoryManager    $categoryManager
-     * @param BulkSaverInterface $productSaver
+     * Constructor.
      */
-    public function __construct(CategoryManager $categoryManager, BulkSaverInterface $productSaver)
+    public function __construct()
     {
-        parent::__construct($productSaver);
-        $this->categoryManager = $categoryManager;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
-        $this->categories      = array();
-    }
-
-    /**
-     * @return CategoryInterface[]
-     */
-    public function getTrees()
-    {
-        return $this->trees;
+        $this->categories = [];
     }
 
     /**
@@ -67,6 +47,14 @@ class Classify extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
+    public function getOperationAlias()
+    {
+        return 'classify';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFormType()
     {
         return 'pim_enrich_mass_classify';
@@ -75,10 +63,54 @@ class Classify extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
+    public function getFormOptions()
     {
-        foreach ($this->categories as $category) {
-            $product->addCategory($category);
-        }
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        $categories = $this->getCategories();
+
+        return [
+            [
+                'field' => 'categories',
+                'value' => $this->getCategoriesCode($categories)
+            ]
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'add_product_value';
+    }
+
+    /**
+     * @param array $categories
+     *
+     * @return array
+     */
+    protected function getCategoriesCode(array $categories)
+    {
+        return array_map(
+            function (CategoryInterface $category) {
+                return $category->getCode();
+            },
+            $categories
+        );
     }
 }

@@ -17,34 +17,22 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ConfigurationRegistry implements ConfigurationRegistryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $bundles;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $cacheDir;
 
-    /**
-     * @var boolean
-     */
+    /** @var bool */
     protected $debug;
 
     /**
@@ -54,7 +42,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      * @param PropertyAccessorInterface $propertyAccessor
      * @param array                     $bundles
      * @param string                    $cacheDir
-     * @param boolean                   $debug
+     * @param bool                      $debug
      */
     public function __construct(
         ContainerInterface $container,
@@ -85,7 +73,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getFixtures(array $filePaths)
     {
-        $ordered = array();
+        $ordered = [];
 
         foreach ($filePaths as $filePath) {
             if (!is_dir($filePath)) {
@@ -94,7 +82,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         }
 
         ksort($ordered);
-        $returned = array();
+        $returned = [];
         foreach ($ordered as $fixtures) {
             $returned = array_merge($returned, $fixtures);
         }
@@ -155,13 +143,13 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
 
             $order = $this->getConfigProperty($fixtureName, 'order');
             if (!isset($ordered[$order])) {
-                $ordered[$order] = array();
+                $ordered[$order] = [];
             }
-            $ordered[$order][] = array(
+            $ordered[$order][] = [
                 'path'      => $filePath,
                 'name'      => $fixtureName,
                 'extension' => $pathInfo['extension']
-            );
+            ];
         }
     }
 
@@ -241,28 +229,18 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function parseConfiguration(ConfigCache $configCache)
     {
-        $config = array();
-        $resources = array();
+        $config    = [];
+        $resources = [];
         foreach ($this->bundles as $class) {
             $reflection = new \ReflectionClass($class);
             $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
             if (file_exists($path)) {
-                $config = Yaml::parse($path) + $config;
+                $config = Yaml::parse(file_get_contents($path)) + $config;
                 $resources[] = new FileResource($path);
             }
         }
         $configCache->write('<?php return ' . var_export($config, true) . ';', $resources);
 
         return $config;
-    }
-
-    /**
-     * Return the ProductManager
-     *
-     * @return ProductManager
-     */
-    public function getProductManager()
-    {
-        return $this->container->get('pim_catalog.manager.product');
     }
 }

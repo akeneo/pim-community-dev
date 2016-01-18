@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,7 +44,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
     public static function getSubscribedEvents()
     {
         return [
-            ProductEvents::POST_REMOVE      => 'removeAssociatedProduct',
+            StorageEvents::POST_REMOVE      => 'removeAssociatedProduct',
             ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts'
         ];
     }
@@ -49,15 +52,19 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
     /**
      * Remove associated product from a single product
      *
-     * @param GenericEvent $event
+     * @param RemoveEvent $event
      */
-    public function removeAssociatedProduct(GenericEvent $event)
+    public function removeAssociatedProduct(RemoveEvent $event)
     {
-        /** @var \Pim\Bundle\CatalogBundle\Model\ProductInterface $product */
-        $product = $event->getSubject();
+        $subject = $event->getSubject();
+
+        if (!$subject instanceof ProductInterface) {
+            return;
+        }
+
         $assocTypeCount = $this->assocTypeRepository->countAll();
 
-        $this->productRepository->removeAssociatedProduct($product->getId(), $assocTypeCount);
+        $this->productRepository->removeAssociatedProduct($event->getSubjectId(), $assocTypeCount);
     }
 
     /**

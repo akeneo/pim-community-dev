@@ -1,7 +1,9 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
@@ -32,7 +34,7 @@ interface AttributeInterface extends
     /**
      * Set required
      *
-     * @param boolean $required
+     * @param bool $required
      *
      * @return AttributeInterface
      */
@@ -40,7 +42,8 @@ interface AttributeInterface extends
 
     /**
      * Is unique
-     * @return boolean $unique
+     *
+     * @return bool $unique
      */
     public function isUnique();
 
@@ -55,12 +58,14 @@ interface AttributeInterface extends
 
     /**
      * Get properties
+     *
      * @return array
      */
     public function getProperties();
 
     /**
      * Get backend type
+     *
      * @return string
      */
     public function getBackendType();
@@ -76,14 +81,15 @@ interface AttributeInterface extends
 
     /**
      * Is scopable
-     * @return boolean $scopable
+     *
+     * @return bool $scopable
      */
     public function isScopable();
 
     /**
      * Set localizable
      *
-     * @param boolean $localizable
+     * @param bool $localizable
      *
      * @return AttributeInterface
      */
@@ -91,6 +97,7 @@ interface AttributeInterface extends
 
     /**
      * Get entity type
+     *
      * @return string
      */
     public function getEntityType();
@@ -121,6 +128,15 @@ interface AttributeInterface extends
     public function getLocaleSpecificCodes();
 
     /**
+     * Test if the attribute have the given locale specific available
+     *
+     * @param LocaleInterface $locale
+     *
+     * @return bool
+     */
+    public function hasLocaleSpecific(LocaleInterface $locale);
+
+    /**
      * Set entity type
      *
      * @param string $entityType
@@ -131,14 +147,15 @@ interface AttributeInterface extends
 
     /**
      * Get maxFileSize
-     * @return double $maxFileSize
+     *
+     * @return float $maxFileSize
      */
     public function getMaxFileSize();
 
     /**
      * Set wysiwygEnabled
      *
-     * @param boolean $wysiwygEnabled
+     * @param bool $wysiwygEnabled
      *
      * @return AttributeInterface
      */
@@ -146,6 +163,7 @@ interface AttributeInterface extends
 
     /**
      * Get metricFamily
+     *
      * @return string $metricFamily
      */
     public function getMetricFamily();
@@ -161,42 +179,49 @@ interface AttributeInterface extends
 
     /**
      * Get defaultMetricUnit
+     *
      * @return string $defaultMetricUnit
      */
     public function getDefaultMetricUnit();
 
     /**
      * Get numberMax
+     *
      * @return mixed $numberMax
      */
     public function getNumberMax();
 
     /**
      * Get families
+     *
      * @return ArrayCollection|null
      */
     public function getFamilies();
 
     /**
      * Get label
+     *
      * @return string
      */
     public function getLabel();
 
     /**
      * Get options
+     *
      * @return \ArrayAccess
      */
     public function getOptions();
 
     /**
      * Predicate for negativeAllowed property
-     * @return boolean $negativeAllowed
+     *
+     * @return bool $negativeAllowed
      */
     public function isNegativeAllowed();
 
     /**
      * Returns the minimum input length for singlechoice and multichoice types
+     *
      * @return int
      */
     public function getMinimumInputLength();
@@ -222,6 +247,7 @@ interface AttributeInterface extends
 
     /**
      * Get allowedExtensions
+     *
      * @return array $allowedExtensions
      */
     public function getAllowedExtensions();
@@ -247,7 +273,7 @@ interface AttributeInterface extends
     /**
      * Set negativeAllowed
      *
-     * @param boolean $negativeAllowed
+     * @param bool $negativeAllowed
      *
      * @return AttributeInterface
      */
@@ -255,7 +281,8 @@ interface AttributeInterface extends
 
     /**
      * Is localizable
-     * @return boolean $localizable
+     *
+     * @return bool $localizable
      */
     public function isLocalizable();
 
@@ -278,7 +305,7 @@ interface AttributeInterface extends
     /**
      * Predicate for useableAsGridFilter property
      *
-     * @return boolean $useableAsGridFilter
+     * @return bool $useableAsGridFilter
      */
     public function isUseableAsGridFilter();
 
@@ -351,7 +378,7 @@ interface AttributeInterface extends
     /**
      * Set maxFileSize
      *
-     * @param double $maxFileSize
+     * @param float $maxFileSize
      *
      * @return AttributeInterface
      */
@@ -359,6 +386,7 @@ interface AttributeInterface extends
 
     /**
      * Get group
+     *
      * @return AttributeGroupInterface
      */
     public function getGroup();
@@ -382,12 +410,13 @@ interface AttributeInterface extends
     /**
      * Predicate for wysiwygEnabled property
      *
-     * @return boolean $wysiwygEnabled
+     * @return bool $wysiwygEnabled
      */
     public function isWysiwygEnabled();
 
     /**
      * Get id
+     *
      * @return int|string
      */
     public function getId();
@@ -411,7 +440,7 @@ interface AttributeInterface extends
     /**
      * Is required
      *
-     * @return boolean $required
+     * @return bool $required
      */
     public function isRequired();
 
@@ -429,7 +458,7 @@ interface AttributeInterface extends
     /**
      * Set Max characters
      *
-     * @param integer $maxCharacters
+     * @param int $maxCharacters
      *
      * @return AttributeInterface
      */
@@ -438,7 +467,7 @@ interface AttributeInterface extends
     /**
      * Set unique
      *
-     * @param boolean $unique
+     * @param bool $unique
      *
      * @return AttributeInterface
      */
@@ -446,6 +475,7 @@ interface AttributeInterface extends
 
     /**
      * Get dateMin
+     *
      * @return \Datetime $dateMin
      */
     public function getDateMin();
@@ -471,7 +501,7 @@ interface AttributeInterface extends
     /**
      * Set useableAsGridFilter
      *
-     * @param boolean $useableAsGridFilter
+     * @param bool $useableAsGridFilter
      *
      * @return AttributeInterface
      */
@@ -487,7 +517,7 @@ interface AttributeInterface extends
     /**
      * Sets the minimum input length for singlechoice and multichoice types
      *
-     * @param integer $minimumInputLength
+     * @param int $minimumInputLength
      *
      * @return AttributeInterface
      */
@@ -505,7 +535,7 @@ interface AttributeInterface extends
     /**
      * Predicate for decimalsAllowed property
      *
-     * @return boolean $decimalsAllowed
+     * @return bool $decimalsAllowed
      */
     public function isDecimalsAllowed();
 
@@ -529,7 +559,8 @@ interface AttributeInterface extends
 
     /**
      * Get Max characters
-     * @return integer $maxCharacters
+     *
+     * @return int $maxCharacters
      */
     public function getMaxCharacters();
 
@@ -545,7 +576,7 @@ interface AttributeInterface extends
     /**
      * Set scopable
      *
-     * @param boolean $scopable
+     * @param bool $scopable
      *
      * @return AttributeInterface
      */
@@ -553,12 +584,14 @@ interface AttributeInterface extends
 
     /**
      * Get sortOrder
-     * @return integer
+     *
+     * @return int
      */
     public function getSortOrder();
 
     /**
      * Get Validation regexp
+     *
      * @return string $validationRegexp
      */
     public function getValidationRegexp();
@@ -575,7 +608,7 @@ interface AttributeInterface extends
     /**
      * Set decimalsAllowed
      *
-     * @param boolean $decimalsAllowed
+     * @param bool $decimalsAllowed
      *
      * @return AttributeInterface
      */
@@ -596,4 +629,19 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isLocaleSpecific();
+
+    /**
+     * @return string
+     */
+    public function getReferenceDataName();
+
+    /**
+     * @param string $name
+     */
+    public function setReferenceDataName($name);
+
+    /**
+     * @return bool
+     */
+    public function isBackendTypeReferenceData();
 }

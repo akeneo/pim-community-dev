@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var AttributeInterface */
-    protected $attribute;
-
     /** @var string */
     protected $optionRepoClass;
 
@@ -77,57 +74,42 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getForm()
-    {
-        $this->loadAttribute();
-
-        $options = array_merge(
-            $this->getOr('options', []),
-            ['csrf_protection' => false]
-        );
-
-        $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
-        $options['choice_url']        = 'pim_ui_ajaxentity_list';
-        $options['choice_url_params'] = $this->getChoiceUrlParams();
-
-        if (!$this->form) {
-            $this->form = $this->formFactory->create($this->getFormType(), [], $options);
-        }
-
-        return $this->form;
-    }
-
-    /**
      * Load the attribute for this filter
      * Required to prepare choice url params and filter configuration
      *
      * @throws \LogicException
+     *
+     * @return AttributeInterface
      */
-    protected function loadAttribute()
+    protected function getAttribute()
     {
-        if (null === $this->attribute) {
-            $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-            $attribute = $this->attributeRepository->findOneByCode($fieldName);
+        $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+        $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
-            if (!$attribute) {
-                throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
-            }
-
-            $this->attribute = $attribute;
+        if (!$attribute) {
+            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
         }
+
+        return $attribute;
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getChoiceUrlParams()
+    protected function getFormOptions()
     {
-        return [
-            'class'        => $this->optionRepoClass,
-            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $this->attribute->getId()
-        ];
+        $attribute = $this->getAttribute();
+
+        return array_merge(
+            parent::getFormOptions(),
+            [
+                'choice_url'        => 'pim_ui_ajaxentity_list',
+                'choice_url_params' => [
+                    'class'        => $this->optionRepoClass,
+                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'collectionId' => $attribute->getId()
+                ]
+            ]
+        );
     }
 }

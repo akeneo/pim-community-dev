@@ -1,0 +1,77 @@
+<% if (!expanded) { %>
+    <div class="history-block">
+        <table class="table table-condensed table-bordered table-hover table-history expanded">
+            <thead>
+                <tr>
+                    <th class="version"><%- _.__('pim_enrich.entity.product.history.version') %></th>
+                    <th class="author"><%- _.__('pim_enrich.entity.product.history.author') %></th>
+                    <th class="logged-at"><%- _.__('pim_enrich.entity.product.history.logged_at') %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% _.each(versions.slice(0, 10), function(version) { %>
+                    <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="product-version">
+                        <td class="version"><%- version.version %></td>
+                        <td class="author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
+                        <td class="logged_at"><%- version.logged_at %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-default pull-right expand-history"><%- _.__('pim_enrich.entity.product.history.more') %></button>
+<% } else { %>
+    <div class="history-block">
+        <table class="table table-condensed table-bordered table-hover expanded">
+            <thead>
+                <tr>
+                    <th class="version"><%- _.__('pim_enrich.entity.product.history.version') %></th>
+                    <th class="author"><%- _.__('pim_enrich.entity.product.history.author') %></th>
+                    <th class="logged-at"><%- _.__('pim_enrich.entity.product.history.logged_at') %></th>
+                    <th class="changes"><%- _.__('pim_enrich.entity.product.history.modified') %></th>
+                    <% if (hasAction) { %><th class="actions"><%- _.__('pim_enrich.entity.product.history.actions') %></th><% } %>
+                </tr>
+            </thead>
+            <tbody>
+                <% _.each(versions, function(version) { %>
+                    <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="product-version">
+                        <td class="version">
+                            <span>
+                                <i class="icon-chevron-right"></i>
+                            </span>
+                            <%- version.version %>
+                        </td>
+                        <td class="author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
+                        <td class="logged-at"><%- version.logged_at %></td>
+                        <td class="changes"><%- _.keys(version.changeset).join(', ') %></td>
+                        <% if (hasAction) { %><td class="actions"></td><% } %>
+                    </tr>
+                    <tr class="changeset hide">
+                        <td colspan="<%- hasAction ? '6' : '5' %>">
+                            <table class="table table-condensed table-bordered table-hover table-history-details">
+                                <thead>
+                                    <tr>
+                                        <th class="property"><%- _.__('pim_enrich.entity.product.history.property') %></th>
+                                        <th class="old-values"><%- _.__('pim_enrich.entity.product.history.old_values') %></th>
+                                        <th class="new-values"><%- _.__('pim_enrich.entity.product.history.new_values') %></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% _.each(version.changeset, function(value) { %>
+                                        <tr>
+                                            <td class="property"><%= value.label %></td>
+                                            <td class="old-values"><%- value.old %></td>
+                                            <td class="onew-values"><%- value.new %></td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-default pull-right collapse-history"><%- _.__('pim_enrich.entity.product.history.less') %></button>
+<% } %>

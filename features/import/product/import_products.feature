@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | axis | type    |
-      | CROSS | Bag Cross |      | VARIANT |
+      | code  | label     | type    |
+      | CROSS | Bag Cross | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
@@ -37,38 +37,25 @@ Feature: Execute a job
     And the english tablet name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
-  Scenario: Successfully import a csv file of products with associations
+  Scenario: Successfully import a csv file of product with carriage return in product description
     Given the following CSV file to import:
       """
-      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
-      SKU-001;boots;CROSS;winter_boots;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;winter_boots;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;sandals;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      """
-    And the following job "footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    Then there should be 3 products
-    Given I edit the "SKU-001" product
-    When I visit the "Associations" tab
-    And I visit the "Cross sell" group
-    Then I should see "2 products and 1 groups"
+      sku;family;groups;categories;name-en_US;description-en_US-tablet
+      SKU-001;boots;CROSS;winter_boots;Donec;"dictum magna. Ut tincidunt
+      orci quis lectus.
 
-  @pim-2445
-  Scenario: Successfully skip associations of invalid product
-    Given the following CSV file to import:
-      """
-      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
-      SKU-001;boots;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      Nullam suscipit,
+      est
+
+      "
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then there should be 0 product
+    Then there should be 1 products
+    And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt|NL|orci quis lectus.|NL||NL|Nullam suscipit,|NL|est|NL||NL|"
 
   Scenario: Successfully ignore duplicate unique data
     Given the following CSV file to import:
@@ -82,7 +69,6 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code \"SKU-001\" was already read in this file"
     Then there should be 1 product
     And the english tablet name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
@@ -193,21 +179,73 @@ Feature: Execute a job
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3377
-  Scenario: Fail when import invalid attribute with nonexistent specific locale
-    Given the following attributes:
-      | code                      | type | localizable | availableLocales |
-      | locale_specific_attribute | text | yes         | en_US            |
-    Then I am on the Attribute index page
-    And I add the "french" locale to the "mobile" channel
-    Given the following CSV file to import:
+  Scenario: Successfully skip a product without modification
+    Given the following product:
+      | sku     | name-en_US | description-en_US-tablet                                          | family | categories   |
+      | SKU-001 | FooBar     | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est | boots  | winter_boots |
+    And the following CSV file to import:
       """
-      sku;locale_specific_attribute-fr_FR
-      SKU-001;test value
+      sku;family;categories;name-en_US;description-en_US-tablet
+      SKU-001;boots;winter_boots;FooBar;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The provided specific locale \"fr_FR\" does not exist for \"locale_specific_attribute\" attribute"
+    Then there should be 1 product
+    And I should see "skipped product (no differences) 1"
+
+  Scenario: Successfully import products with attributes with full numeric codes
+    Given the following CSV file to import:
+      """
+      sku;123;family;groups;categories;name-en_US;description-en_US-tablet
+      SKU-001;aaa;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;bbb;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 product
+    And the product "SKU-001" should have the following values:
+      | name-en_US | Donec |
+      | 123        | aaa   |
+    And the product "SKU-002" should have the following values:
+      | name-en_US | Donex |
+      | 123        | bbb   |
+
+  Scenario: Successfully import a csv file with sku and family column
+    Given the following CSV file to import:
+      """
+      sku;family
+      SKU-001;boots
+      SKU-002;sneakers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 products
+
+  Scenario: Successfully import products when category code is integer
+    Given the following products:
+      | sku    |
+      | jacket |
+    And I am on the category "2014_collection" node creation page
+    And I fill in the following information:
+      | Code | 123 |
+    And I save the category
+    And the following CSV file to import:
+      """
+      sku;categories
+      jacket;123
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then the category of the product "jacket" should be "123"

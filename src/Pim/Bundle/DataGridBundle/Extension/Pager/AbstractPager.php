@@ -14,44 +14,44 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 abstract class AbstractPager implements \Countable, \Serializable, PagerInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $page = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxPerPage = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $lastPage = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $nbResults = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $currentMaxLink = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxRecordLimit = false;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxPageLinks = 10;
 
     /**
      * Constructor.
      *
-     * @param integer $maxPerPage Number of records to display per page
+     * @param int $maxPerPage Number of records to display per page
      */
     public function __construct($maxPerPage = 10)
     {
@@ -61,7 +61,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the current pager's max link.
      *
-     * @return integer
+     * @return int
      */
     public function getCurrentMaxLink()
     {
@@ -71,7 +71,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns an array of page numbers to use in pagination links.
      *
-     * @param integer $nbLinks The maximum number of page numbers to return
+     * @param int $nbLinks The maximum number of page numbers to return
      *
      * @return array
      */
@@ -110,7 +110,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns true if the current datasource requires pagination.
      *
-     * @return boolean
+     * @return bool
      */
     public function haveToPaginate()
     {
@@ -120,7 +120,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the number of results.
      *
-     * @return integer
+     * @return int
      */
     public function getNbResults()
     {
@@ -130,7 +130,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the number of results.
      *
-     * @param integer $number
+     * @param int $number
      */
     protected function setNbResults($number)
     {
@@ -140,7 +140,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the first page number.
      *
-     * @return integer
+     * @return int
      */
     public function getFirstPage()
     {
@@ -150,7 +150,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the last page number.
      *
-     * @return integer
+     * @return int
      */
     public function getLastPage()
     {
@@ -160,7 +160,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the last page number.
      *
-     * @param integer $page
+     * @param int $page
      */
     protected function setLastPage($page)
     {
@@ -174,7 +174,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the current page.
      *
-     * @return integer
+     * @return int
      */
     public function getPage()
     {
@@ -184,7 +184,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the next page.
      *
-     * @return integer
+     * @return int
      */
     public function getNextPage()
     {
@@ -194,7 +194,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the previous page.
      *
-     * @return integer
+     * @return int
      */
     public function getPreviousPage()
     {
@@ -204,7 +204,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the current page.
      *
-     * @param integer $page
+     * @param int $page
      */
     public function setPage($page)
     {
@@ -218,7 +218,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the maximum number of results per page.
      *
-     * @return integer
+     * @return int
      */
     public function getMaxPerPage()
     {
@@ -228,7 +228,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the maximum number of results per page.
      *
-     * @param integer $max
+     * @param int $max
      */
     public function setMaxPerPage($max)
     {
@@ -253,7 +253,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns the maximum number of page numbers.
      *
-     * @return integer
+     * @return int
      */
     public function getMaxPageLinks()
     {
@@ -263,7 +263,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Sets the maximum number of page numbers.
      *
-     * @param integer $maxPageLinks
+     * @param int $maxPageLinks
      */
     public function setMaxPageLinks($maxPageLinks)
     {
@@ -273,7 +273,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns true if on the first page.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFirstPage()
     {
@@ -283,7 +283,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     /**
      * Returns true if on the last page.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLastPage()
     {

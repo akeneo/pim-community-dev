@@ -36,3 +36,8 @@ flash.datagrid view:
     updated:       Datagrid view successfully updated
     removed:       Datagrid view successfully removed
     not removable: You don't have the rights to remove this view
+
+quick_export: Quick Export
+import: Import
+export: Export
+mass_edit: Mass Edit

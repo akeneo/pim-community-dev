@@ -35,18 +35,19 @@ Feature: Set the attribute used as label
       | sku      | family | brand |
       | bag-jean | Bags   | Levis |
     When I am on the "bag-jean" product page
-    Then the title of the product should be "Product/en Levis"
+    Then the title of the product should be "Levis"
 
   Scenario: Successfully display the id as the title of the product
     Given the following products:
       | sku      |
       | bag-jean |
     When I am on the "bag-jean" product page
-    Then the title of the product should be "Product/en bag-jean"
+    Then the title of the product should be "bag-jean"
 
   Scenario: Fail to remove an attribute that is used as the family label
     Given the attribute "Brand" has been chosen as the family "Bags" label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "Brand" attribute
+    And I confirm the deletion
     Then I should see flash message "This attribute can not be removed because it is used as the label of the family"

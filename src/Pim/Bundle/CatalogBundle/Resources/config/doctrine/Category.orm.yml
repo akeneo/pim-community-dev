@@ -1,12 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\Category:
     type: entity
     table: pim_catalog_category
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository
-    inheritanceType: SINGLE_TABLE
-    discriminatorColumn:
-        name: discr
-        type: string
-        length: 20
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     uniqueConstraints:
         pim_category_code_uc:
             columns:
@@ -54,6 +50,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
         channels:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
             mappedBy: category

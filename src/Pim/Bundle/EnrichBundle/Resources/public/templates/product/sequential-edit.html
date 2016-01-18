@@ -1,0 +1,28 @@
+<div class="row-fluid">
+    <span class="span3 right-aligned">
+        <% if (previousObject) { %>
+            <a href="javascript:void(0);" class="previous" data-id="<%- previousObject.id %>" data-original-title="<%- _.__('pim_enrich.form.product.sequential_edit.info.previous', { product: previousObject.label }) %>" data-toggle="tooltip" data-placement="bottom">
+                <i class="icon-chevron-left"></i>
+                &nbsp;&nbsp;
+                <%- previousObject.shortLabel %>
+            </a>
+        <% } %>
+    </span>
+    <span class="span6">
+        <div class="progress progress-bar">
+            <div class="bar" style="width: <%- ratio %>%;">
+            <% if (ratio < 30) { %></div>&nbsp;&nbsp;<% } %>
+            <%- currentIndex %> / <%- objectCount %> <%- _.__('pim_enrich.form.product.sequential_edit.info.products') %>
+            <% if (ratio >= 30) { %></div><% } %>
+        </div>
+    </span>
+    <span class="span3">
+        <% if (nextObject) { %>
+            <a href="javascript:void(0);" class="next" data-id="<%- nextObject.id %>" data-original-title="<%- _.__('pim_enrich.form.product.sequential_edit.info.next', { product: nextObject.label }) %>" data-toggle="tooltip" data-placement="bottom">
+                <%- nextObject.shortLabel %>
+                &nbsp;&nbsp;
+                <i class="icon-chevron-right"></i>
+            </a>
+        <% } %>
+    </span>
+</div>

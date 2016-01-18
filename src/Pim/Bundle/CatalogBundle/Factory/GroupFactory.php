@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Group factory
@@ -16,25 +17,35 @@ class GroupFactory
     /** @var string */
     protected $metricClass;
 
+    /** @var GroupTypeRepositoryInterface */
+    protected $groupTypeRepository;
+
     /**
-     * @param string $groupClass
+     * @param GroupTypeRepositoryInterface $groupTypeRepository
+     * @param string                       $groupClass
      */
-    public function __construct($groupClass)
+    public function __construct(GroupTypeRepositoryInterface $groupTypeRepository, $groupClass)
     {
-        $this->groupClass = $groupClass;
+        $this->groupClass          = $groupClass;
+        $this->groupTypeRepository = $groupTypeRepository;
     }
 
     /**
      * Create and configure a group instance
      *
-     * @param GroupTypeInterface $groupType
+     * @param string $groupTypeCode
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
+     * @return GroupInterface
      */
-    public function createGroup(GroupTypeInterface $groupType = null)
+    public function createGroup($groupTypeCode = null)
     {
         $group = new $this->groupClass();
-        if ($groupType) {
+
+        if (null !== $groupTypeCode) {
+            $groupType = $this->groupTypeRepository->findOneByIdentifier($groupTypeCode);
+            if (null === $groupType) {
+                throw new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', $groupTypeCode));
+            }
             $group->setType($groupType);
         }
 

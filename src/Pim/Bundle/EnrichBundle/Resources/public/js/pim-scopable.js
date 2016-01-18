@@ -1,5 +1,16 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    [
+        'jquery',
+        'backbone',
+        'underscore',
+        'oro/mediator',
+        'wysiwyg',
+        'pim/optionform',
+        'pim/fileinput',
+        'bootstrap',
+        'bootstrap.bootstrapswitch',
+        'jquery.select2'
+    ],
     function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
         /**
@@ -20,7 +31,8 @@ define(
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>"' +
                             '<% if (field.color) { %>' +
-                                ' style="background-color:rgba(<%= field.color %>)<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
+                                ' style="background-color:rgba(<%= field.color %>)' +
+                                    '<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
                             '<% } %>' +
                         '>' +
                             '<%= field.scope[0].toUpperCase() %>' +
@@ -42,9 +54,9 @@ define(
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
                 } else if (this.$el.find('.switch').length) {
-                    var $original = this.$el.find('.switch'),
-                        $wrap = $original.clone().empty().removeClass('has-switch'),
-                        $input = $original.find('input');
+                    var $original = this.$el.find('.switch');
+                    var $wrap = $original.clone().empty().removeClass('has-switch');
+                    var $input = $original.find('input');
 
                     field.id = $input.attr('id');
                     $input.appendTo($wrap);
@@ -81,7 +93,7 @@ define(
 
                     _.each($field.siblings('.validation-tooltip'), function (icon) {
                         $(icon).appendTo(this.$el.find('.icons-container'));
-                    }, this);
+                    }.bind(this));
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -139,7 +151,7 @@ define(
 
                 _.each(this.fields, function ($field) {
                     this._addField($field);
-                }, this);
+                }.bind(this));
 
                 this.label = this.$el.find('.control-label').first().get(0).outerHTML;
 
@@ -151,19 +163,19 @@ define(
 
                 mediator.on('scopablefield:changescope', function (scope) {
                     this._changeDefault(scope);
-                }, this);
+                }.bind(this));
 
                 mediator.on('scopablefield:collapse', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._collapse();
                     }
-                }, this);
+                }.bind(this));
 
                 mediator.on('scopablefield:expand', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._expand();
                     }
-                }, this);
+                }.bind(this));
 
                 var self = this;
                 this.$el.closest('form').on('validate', function () {
@@ -184,13 +196,13 @@ define(
                     );
 
                     if (this.fieldViews.length > 1) {
-                        var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                        var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon });
                         this.$el.find('label').removeAttr('for').prepend($toggleIcon);
                     }
 
                     _.each(this.fieldViews, function (fieldView) {
                         fieldView.render().$el.appendTo(this.$el);
-                    }, this);
+                    }.bind(this));
 
                     this._collapse();
 
@@ -216,9 +228,15 @@ define(
                     this.expanded = true;
 
                     this._destroyUI();
-                    this._refreshFieldsDisplay();
-                    this._initUI();
+                    this._reindexFields();
 
+                    var first = true;
+                    _.each(this.fields, function (field) {
+                        this._showField(field, first);
+                        first = false;
+                    }.bind(this));
+
+                    this._initUI();
                     this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
@@ -231,9 +249,19 @@ define(
                     this.expanded = false;
 
                     this._destroyUI();
-                    this._refreshFieldsDisplay();
-                    this._initUI();
+                    this._reindexFields();
 
+                    var first = true;
+                    _.each(this.fields, function (field) {
+                        if (first) {
+                            this._showField(field, first);
+                            first = false;
+                        } else {
+                            this._hideField(field);
+                        }
+                    }.bind(this));
+
+                    this._initUI();
                     this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
@@ -248,7 +276,7 @@ define(
                     } else {
                         this._hideField($field);
                     }
-                }, this);
+                }.bind(this));
             },
 
             _toggle: function (e) {
@@ -259,7 +287,8 @@ define(
             },
 
             _changeDefault: function (scope) {
-                this._destroyUI();
+                this.skipUIInit = true;
+                this._toggle();
 
                 this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
                 this._refreshFieldsDisplay();
@@ -288,24 +317,25 @@ define(
                 } else {
                     $field.prependTo(this.$el);
                 }
-
-                this._reindexFields();
             },
 
-            _showField: function ($field) {
-                var $icons = $field.find('.icons-container i:not(".validation-tooltip")');
+            _showField: function (field, first) {
+                var $icons = $(field).find('.icons-container i:not(".validation-tooltip")');
 
-                if ($field.hasClass('first')) {
+                if (first) {
+                    $(field).addClass('first');
                     $icons.attr('style', 'display: inline !important');
+                    this._setFieldFirst(field);
                 } else {
+                    $(field).removeClass('first');
                     $icons.attr('style', 'display: none !important');
                 }
 
-                $field.show();
+                $(field).show();
             },
 
-            _hideField: function ($field) {
-                $field.hide();
+            _hideField: function (field) {
+                $(field).hide();
             },
 
             _destroyUI: function () {
@@ -338,7 +368,7 @@ define(
             },
 
             events: {
-                'click label i.field-toggle' : '_toggle'
+                'click label i.field-toggle': '_toggle'
             }
         });
     }

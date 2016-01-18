@@ -3,9 +3,10 @@ parameters:
     pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.transformer.class:                       Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                           Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                          Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.tag.class:                               Pim\Bundle\BaseConnectorBundle\Processor\TagProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
@@ -39,7 +40,8 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
-            - %upload_dir%
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_catalog.builder.product'
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
@@ -65,6 +67,7 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.product:
         class: %pim_base_connector.processor.product.class%
         arguments:
@@ -101,6 +104,7 @@ services:
         arguments:
             - %pim_catalog.entity.attribute.class%
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.attribute_option:
         parent: pim_base_connector.processor.transformer
         arguments:
@@ -123,27 +127,30 @@ services:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
     # deprecated, will be dropped in 1.4, use pim_base_connector.processor.denormalization.csv_group or variant_group
+    # we need to rework the installer fixtures to support groups and variant groups as different fixtures before to drop it
     pim_base_connector.processor.group:
         parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.group.class%
 
+    # Denormalization
     pim_base_connector.processor.denormalization.csv_group:
         class: %pim_base_connector.processor.denormalization.csv_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.group.class%
             - 'csv'
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.denormalization.csv_variant_group:
         class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_serializer'
             - '@pim_catalog.manager.product_template_media'
@@ -152,6 +159,7 @@ services:
             - %pim_catalog.entity.product_template.class%
             - 'csv'
 
+    # Normalization
     pim_base_connector.processor.normalization.csv_group:
         class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
         parent: pim_base_connector.processor.csv_serializer

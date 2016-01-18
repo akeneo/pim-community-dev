@@ -1,0 +1,36 @@
+jobs:
+    update_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value
+        label:     Mass update products
+        type:      mass_edit
+    add_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value
+        label:     Mass add products values
+        type:      mass_edit
+    edit_common_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes
+        label:     Mass edit common product attributes
+        type:      mass_edit
+    set_attribute_requirements:
+        connector: Akeneo Mass Edit Connector
+        alias:     set_attribute_requirements
+        label:     Set family attribute requirements
+        type:      mass_edit
+    add_to_variant_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_variant_group
+        label:     Mass add products to variant group
+        type:      mass_edit
+    csv_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_product_quick_export
+        label: CSV product quick export
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv

@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set entityId = form.vars.value.id %}
 {% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
@@ -8,9 +8,9 @@
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
 {% block navButtons %}
-    {% if entityId and resource_granted('oro_user_group_remove') %}
+    {% if entityId and resource_granted('pim_user_group_remove') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_group', {'id': entityId}),
+            'dataUrl': path('oro_user_group_delete', {'id': entityId}),
             'dataRedirect': path('oro_user_group_index'),
             'aCss': 'no-hash remove-button',
             'dataId': entityId,
@@ -19,12 +19,10 @@
             'successMessage': 'Group removed'|trans,
             'title': 'Delete group',
             'label': 'Delete'
-        })
-        }}
-        {{ UI.buttonSeparator() }}
+        }) }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_group_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
-    {{ UI.saveAndStayButton('oro_user_group_update') }}
+    {{ UI.button({'path' : path('oro_user_group_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
+    {{ UI.saveAndStayButton('pim_user_group_edit') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
@@ -39,7 +37,13 @@
         %}
         {{ parent() }}
     {% else %}
-        {% include 'OroUIBundle::page_title_block.html.twig' %}
+        <div class="pull-left">
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <h1 class="oro-subtitle">{{ title }}</h1>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock pageHeader %}
 
@@ -69,7 +73,6 @@
             [
                 {
                     'title' : null,
-                    'useSpan': false,
                     'data' : [dataGrid.renderGrid(gridName, {group_id: entityId}, { cssClass: 'inner-grid' })]
                 }
             ]

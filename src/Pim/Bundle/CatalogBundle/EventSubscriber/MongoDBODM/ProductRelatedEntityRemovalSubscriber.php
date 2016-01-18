@@ -22,7 +22,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
     /** @var string */
     protected $productClass;
 
-    /** @var string */
+    /** @var string[] */
     protected $entityMapping = [
         'Pim\Bundle\CatalogBundle\Entity\AssociationType'   => 'AssociationType',
         'Pim\Bundle\CatalogBundle\Model\AttributeInterface' => 'Attribute',

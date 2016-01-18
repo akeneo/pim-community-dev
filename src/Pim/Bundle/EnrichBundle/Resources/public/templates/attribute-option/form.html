@@ -1,0 +1,21 @@
+<div class="attribute-option-form form-inline">
+    <div class="row-fluid">
+        <div class="control-group">
+            <label class="control-label">
+                <%- _.__('pim_enrich.entity.attribute_option.code') %>
+                <div class="controls">
+                    <input class="input-large" type="text" name="code">
+                </div>
+            </label>
+        </div>
+        <div class="control-group">
+            <label class="control-label">
+                <%- _.__('pim_enrich.entity.attribute_option.label') %>
+                <span><%= i18n.getFlag(locale) %></span>
+                <div class="controls">
+                    <input class="input-large" type="text" name="label-<%- locale %>" data-locale="<%- locale %>">
+                </div>
+            </label>
+        </div>
+    </div>
+</div>

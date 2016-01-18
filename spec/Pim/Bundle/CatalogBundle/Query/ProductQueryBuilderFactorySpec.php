@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Query;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Prophecy\Argument;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {

@@ -1,17 +1,4 @@
-{% extends 'OroUserBundle::layout.html.twig' %}
-
-{% block head %}
-    {{ parent() }}
-    {% stylesheets
-        'bundles/pimui/css/pim.less'
-
-        debug=false
-        filter='cssrewrite,lessphp'
-        output='css/pim_all.css'
-    %}
-    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
+{% extends 'PimUserBundle::layout.html.twig' %}
 
 {% block bodyClass %}login-page{% endblock %}
 
@@ -19,7 +6,7 @@
 <div class="container">
     <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
         <div class="title-box">
-            <h1 class="oro-title">
+            <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
             </h1>
             <h2 class="title">{{ 'Password Reset'|trans }}</h2>
@@ -30,7 +17,7 @@
             {{ form_widget(form._token) }}
             <div class="form-row">
                 <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn btn-large extra-submit btn-primary">{{ 'Reset'|trans }}</button>
+                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
             </div>
         </fieldset>
     </form>

@@ -27,9 +27,10 @@ class ProductHandlerSpec extends ObjectBehavior
             $product,
             'json',
             [
-                'locales'  => $locales,
-                'channels' => $channels,
-                'resource' => $url
+                'locales'     => $locales,
+                'channels'    => $channels,
+                'resource'    => $url,
+                'filter_type' => 'pim.external_api.product.view'
             ]
         )
         ->shouldBeCalled();

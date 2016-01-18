@@ -1,0 +1,26 @@
+btn:
+  post: Einen neuen Kommentar hinzufügen
+  reply: Antworten
+  cancel: Abbrechen
+confirmation:
+  remove:
+    comment: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
+flash:
+  comment:
+    create:
+      success: Ihr Kommentar wurde erfolgreich erstellt.
+      error: Bei der Erstellung Ihres Kommentars ist ein Fehler aufgetreten.
+    delete:
+      success: Ihr Kommentar wurde erfolgreich gelöscht.
+      error: Beim Löschen Ihres Kommentars ist ein Fehler aufgetreten.
+    reply:
+      success: Ihre Antwort wurde erfolgreich angelegt.
+      error: Bei der Erstellung Ihrer Antwort ist ein Fehler aufgetreten.
+comment:
+  index:
+    empty: Kein Kommentar vorhanden
+  placeholder:
+    new: Einen neuen Kommentar erstellen...
+    reply: Auf diesen Kommentar antworten...
+pim_comment:
+  product.panel.comment.title: Kommentare

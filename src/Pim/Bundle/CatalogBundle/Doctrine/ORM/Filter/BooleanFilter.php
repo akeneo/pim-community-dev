@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**

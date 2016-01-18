@@ -1,0 +1,4 @@
+Pim\Bundle\CatalogBundle\Model\ProductValue:
+    constraints:
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ScopableValue: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\LocalizableValue: ~

@@ -22,7 +22,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
     {
         $locale = $this->container->getParameter('locale');
         $allCurrencies = $this->container->get('pim_catalog.helper.locale')->getCurrencyLabels($locale);
-        $currencies = Yaml::parse(realpath($this->getFilePath()));
+        $currencies = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
         $activatedCurrencies = $currencies['currencies'];
         $removedCurrencies   = $currencies['removed_currencies'];
 
@@ -42,8 +42,9 @@ class LoadCurrencyData extends AbstractInstallerFixture
 
     /**
      * Create currency entity and persist it
-     * @param string  $code      Currency code
-     * @param boolean $activated Define if currency is activated or not
+     *
+     * @param string $code      Currency code
+     * @param bool   $activated Define if currency is activated or not
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Currency
      */

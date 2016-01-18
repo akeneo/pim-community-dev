@@ -5,7 +5,7 @@ namespace Context\Page\Category\Tree;
 use Context\Page\Category\CategoryView;
 
 /**
- * Category tree index page
+ * Product category tree index page
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -16,5 +16,5 @@ class Index extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/category-tree/';
+    protected $path = '/enrich/product-category-tree/';
 }

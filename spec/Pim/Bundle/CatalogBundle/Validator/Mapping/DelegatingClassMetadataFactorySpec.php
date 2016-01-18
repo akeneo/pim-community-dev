@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Validator\MetadataFactoryInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 class DelegatingClassMetadataFactorySpec extends ObjectBehavior
 {
@@ -35,7 +35,7 @@ class DelegatingClassMetadataFactorySpec extends ObjectBehavior
         $this->getMetadataFor($object)->shouldReturn($metadata);
     }
 
-   function its_getMetadataFor_method_throws_exception_when_no_factory_has_metadata_for_object(
+    function its_getMetadataFor_method_throws_exception_when_no_factory_has_metadata_for_object(
         $object,
         $customFactory,
         $defaultFactory
@@ -46,7 +46,7 @@ class DelegatingClassMetadataFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow(new NoSuchMetadataException())
             ->duringGetMetadataFor($object);
-   }
+    }
 
     function it_has_metadata_if_at_least_one_factory_has_one(
         $object,

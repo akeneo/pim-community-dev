@@ -11,8 +11,8 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
-class PriceCollectionTypeSpec extends ObjectBehavior {
-
+class PriceCollectionTypeSpec extends ObjectBehavior
+{
     function let(
         ConstraintGuesserInterface $guesser,
         CurrencyManager $currencyManager,

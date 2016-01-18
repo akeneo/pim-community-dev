@@ -8,8 +8,8 @@ use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Yaml reader
@@ -55,8 +55,8 @@ class YamlReader extends FileReader implements
     /**
      * Constructor
      *
-     * @param boolean $multiple
-     * @param string  $codeField
+     * @param bool   $multiple
+     * @param string $codeField
      */
     public function __construct($multiple = false, $codeField = 'code')
     {
@@ -88,7 +88,7 @@ class YamlReader extends FileReader implements
     /**
      * Set the multiple attribute
      *
-     * @param boolean $multiple
+     * @param bool $multiple
      *
      * @return YamlReader
      */
@@ -100,7 +100,7 @@ class YamlReader extends FileReader implements
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMultiple()
     {
@@ -186,7 +186,7 @@ class YamlReader extends FileReader implements
     public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
-        $this->csv = null;
+        $this->yaml = null;
 
         return $this;
     }
@@ -204,7 +204,7 @@ class YamlReader extends FileReader implements
             $this->yaml->next();
 
             if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read');
+                $this->stepExecution->incrementSummaryInfo('read_lines');
             }
 
             return $data;
@@ -220,7 +220,7 @@ class YamlReader extends FileReader implements
      */
     protected function getFileData()
     {
-        $fileData = current(Yaml::parse($this->filePath));
+        $fileData = current(Yaml::parse(file_get_contents($this->filePath)));
 
         foreach ($fileData as $key => $row) {
             if ($this->codeField && !isset($row[$this->codeField])) {

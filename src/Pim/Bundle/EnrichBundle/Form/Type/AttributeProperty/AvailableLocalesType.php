@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type related to availableLocales property of AttributeInterface
@@ -26,7 +26,7 @@ class AvailableLocalesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

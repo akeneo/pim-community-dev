@@ -10,38 +10,42 @@ parameters:
     pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer
     pim_serializer.normalizer.flat.product.class:           Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
     pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\TransformBundle\Normalizer\Flat\ProductValueNormalizer
+    pim_serializer.normalizer.flat.locale.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\LocaleNormalizer
 
     pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\TransformBundle\Normalizer\Flat\CollectionNormalizer
     pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\TransformBundle\Normalizer\Flat\DateTimeNormalizer
-    pim_serializer.normalizer.flat.media.class:             Pim\Bundle\TransformBundle\Normalizer\Flat\MediaNormalizer
     pim_serializer.normalizer.flat.metric.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\MetricNormalizer
     pim_serializer.normalizer.flat.option.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeOptionNormalizer
     pim_serializer.normalizer.flat.price.class:             Pim\Bundle\TransformBundle\Normalizer\Flat\PriceNormalizer
+    pim_serializer.normalizer.flat.reference_data.class:    Pim\Bundle\TransformBundle\Normalizer\Flat\ReferenceDataNormalizer
+    pim_serializer.normalizer.flat.file.class:              Pim\Bundle\TransformBundle\Normalizer\Flat\FileNormalizer
 
     pim_serializer.filter.flat_product_value.class:         Pim\Bundle\TransformBundle\Normalizer\Filter\FlatProductValueNormalizerFilter
 
-    pim_serializer.denormalizer.flat.product.class:              Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductDenormalizer
-    pim_serializer.denormalizer.flat.family.class:               Pim\Bundle\TransformBundle\Denormalizer\Flat\FamilyDenormalizer
-    pim_serializer.denormalizer.flat.category.class:             Pim\Bundle\TransformBundle\Denormalizer\Flat\CategoryDenormalizer
-    pim_serializer.denormalizer.flat.group.class:                Pim\Bundle\TransformBundle\Denormalizer\Flat\GroupDenormalizer
-    pim_serializer.denormalizer.flat.association.class:          Pim\Bundle\TransformBundle\Denormalizer\Flat\AssociationDenormalizer
-    pim_serializer.denormalizer.flat.product_value.class:        Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValueDenormalizer
-    pim_serializer.denormalizer.flat.product_values.class:       Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer
-    pim_serializer.denormalizer.flat.base_value.class:           Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
-    pim_serializer.denormalizer.flat.attribute_option.class:     Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
-    pim_serializer.denormalizer.flat.attribute_options.class:    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
-    pim_serializer.denormalizer.flat.prices.class:               Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
-    pim_serializer.denormalizer.flat.metric.class:               Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
-    pim_serializer.denormalizer.flat.datetime.class:             Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.flat.media.class:                Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MediaDenormalizer
+    pim_serializer.denormalizer.flat.product.class:                   Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductDenormalizer
+    pim_serializer.denormalizer.flat.family.class:                    Pim\Bundle\TransformBundle\Denormalizer\Flat\FamilyDenormalizer
+    pim_serializer.denormalizer.flat.category.class:                  Pim\Bundle\TransformBundle\Denormalizer\Flat\CategoryDenormalizer
+    pim_serializer.denormalizer.flat.group.class:                     Pim\Bundle\TransformBundle\Denormalizer\Flat\GroupDenormalizer
+    pim_serializer.denormalizer.flat.association.class:               Pim\Bundle\TransformBundle\Denormalizer\Flat\AssociationDenormalizer
+    pim_serializer.denormalizer.flat.product_value.class:             Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValueDenormalizer
+    pim_serializer.denormalizer.flat.product_values.class:            Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer
+    pim_serializer.denormalizer.flat.base_value.class:                Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
+    pim_serializer.denormalizer.flat.attribute_option.class:          Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
+    pim_serializer.denormalizer.flat.attribute_options.class:         Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
+    pim_serializer.denormalizer.flat.prices.class:                    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
+    pim_serializer.denormalizer.flat.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.flat.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
+    pim_serializer.denormalizer.flat.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\FileDenormalizer
+    pim_serializer.denormalizer.flat.reference_data.class:            Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer
+    pim_serializer.denormalizer.flat.reference_data_collection.class: Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer
 
 services:
     # Normalizers
     pim_serializer.normalizer.flat.product:
         public: false
         class: %pim_serializer.normalizer.flat.product.class%
-        calls:
-            - [setFilters, [['@pim_serializer.filter.flat_product_value']]]
+        arguments:
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -76,6 +80,7 @@ services:
         class: %pim_serializer.normalizer.flat.attribute_group.class%
         arguments:
             - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -90,6 +95,7 @@ services:
         class: %pim_serializer.normalizer.flat.group.class%
         arguments:
             - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_serializer.denormalizer.product_values'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -119,13 +125,6 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_serializer.normalizer.flat.media:
-        class: %pim_serializer.normalizer.flat.media.class%
-        arguments:
-            - '@pim_catalog.manager.media'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
     pim_serializer.normalizer.flat.metric:
         class: %pim_serializer.normalizer.flat.metric.class%
         tags:
@@ -141,6 +140,18 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
+    pim_serializer.normalizer.flat.reference_data:
+        class: %pim_serializer.normalizer.flat.reference_data.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.normalizer.flat.file:
+        class: %pim_serializer.normalizer.flat.file.class%
+        arguments:
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
     # Filters
     pim_serializer.filter.flat_product_value:
         class: %pim_serializer.filter.flat_product_value.class%
@@ -152,7 +163,8 @@ services:
             - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.product.class%
             - @pim_catalog.builder.product
-            - @pim_transform.builder.field_name
+            - @pim_connector.array_converter.flat.product.attribute_column_info_extractor
+            - @pim_connector.array_converter.flat.product.association_columns_resolver
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.category.class%
             - %pim_catalog.entity.family.class%
@@ -252,11 +264,28 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_serializer.denormalizer.flat.media:
-        class: %pim_serializer.denormalizer.flat.media.class%
+    pim_serializer.denormalizer.flat.file:
+        class: %pim_serializer.denormalizer.flat.file.class%
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
-            - @pim_catalog.manager.media
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.flat.reference_data:
+        class: %pim_serializer.denormalizer.flat.reference_data.class%
+        arguments:
+            - ['pim_reference_data_simpleselect']
+            - '@?pim_reference_data.repository_resolver'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.flat.reference_data_collection:
+        class: %pim_serializer.denormalizer.flat.reference_data_collection.class%
+        arguments:
+            - ['pim_reference_data_multiselect']
+            - '@?pim_reference_data.repository_resolver'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -264,7 +293,7 @@ services:
         class: %pim_serializer.denormalizer.flat.product_values.class%
         arguments:
             - @pim_serializer.denormalizer.flat.product_value
-            - @pim_transform.builder.field_name
+            - @pim_connector.array_converter.flat.product.attribute_column_info_extractor
             - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

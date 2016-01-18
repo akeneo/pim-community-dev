@@ -6,8 +6,10 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Metric base value listener
@@ -61,9 +63,10 @@ class MetricBaseValuesSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $object = $args->getObject();
-        if ($object instanceof MetricInterface && $object->getUnit()) {
-            $this->createMetricBaseValues($object);
+        $product = $args->getObject();
+        if ($product instanceof ProductInterface) {
+            $dm = $args->getObjectManager();
+            $this->convertMetricValues($dm, $product);
         }
     }
 
@@ -75,12 +78,30 @@ class MetricBaseValuesSubscriber implements EventSubscriber
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
-        $object = $args->getObject();
-        if ($object instanceof MetricInterface && $object->getUnit()) {
-            $this->createMetricBaseValues($object);
+        $product = $args->getObject();
+        if ($product instanceof ProductInterface) {
+            $dm = $args->getObjectManager();
+            $this->convertMetricValues($dm, $product);
+        }
+    }
 
-            $class = new ClassMetadata($object);
-            $args->getObjectManager()->getUnitOfWork()->recomputeSingleDocumentChangeSet($class, $object);
+    /**
+     * Converts metric values
+     *
+     * @param DocumentManager  $dm
+     * @param ProductInterface $product
+     */
+    protected function convertMetricValues(DocumentManager $dm, ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            $metric = $value->getData();
+            if ($metric instanceof MetricInterface && $metric->getUnit()) {
+                $this->createMetricBaseValues($metric);
+                if (null !== $metric->getId()) {
+                    $metadata = $dm->getClassMetadata(ClassUtils::getClass($metric));
+                    $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($metadata, $metric);
+                }
+            }
         }
     }
 

@@ -1,0 +1,189 @@
+connector:
+    name: Akeneo CSV Connector
+    jobs:
+        csv_product_export:
+            title: pim_base_connector.jobs.csv_product_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_product_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.doctrine.product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_base_connector.writer.file.csv_product
+                    parameters:
+                        batch_size: 10
+        csv_category_export:
+            title: pim_base_connector.jobs.csv_category_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_category_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.category
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_base_connector.writer.file
+        csv_attribute_export:
+            title: pim_base_connector.jobs.csv_attribute_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_attribute_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.attribute
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_base_connector.writer.file
+        csv_attribute_option_export:
+            title: pim_base_connector.jobs.csv_attribute_option_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_attribute_option_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.attribute_option
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_base_connector.writer.file
+        csv_association_type_export:
+            title: pim_base_connector.jobs.csv_association_type_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_association_type_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.association_type
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_base_connector.writer.file
+        csv_group_export:
+            title: pim_base_connector.jobs.csv_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.group
+                        processor: pim_base_connector.processor.normalization.csv_group
+                        writer:    pim_base_connector.writer.file
+        csv_variant_group_export:
+            title: pim_base_connector.jobs.csv_variant_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_variant_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.variant_group
+                        processor: pim_base_connector.processor.normalization.csv_variant_group
+                        writer:    pim_base_connector.writer.file.csv_variant_group
+
+        csv_product_import:
+            title: pim_base_connector.jobs.csv_product_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_product_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_product_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_product
+                        processor: pim_base_connector.processor.product
+                        writer:    pim_base_connector.writer.doctrine.product
+                import_associations:
+                    title:     pim_base_connector.jobs.csv_product_import.import_associations.title
+                    services:
+                        reader:    pim_base_connector.reader.cached_association
+                        processor: pim_base_connector.processor.association
+                        writer:    pim_base_connector.writer.doctrine.association
+        csv_category_import:
+            title: pim_base_connector.jobs.csv_category_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_category_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_category_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_category
+                        processor: pim_base_connector.processor.category
+                        writer:    pim_base_connector.writer.doctrine.category
+        csv_attribute_import:
+            title: pim_base_connector.jobs.csv_attribute_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_attribute_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_attribute_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_attribute
+                        processor: pim_base_connector.processor.attribute
+                        writer:    pim_base_connector.writer.doctrine.attribute
+        csv_attribute_option_import:
+            title: pim_base_connector.jobs.csv_attribute_option_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_attribute_option_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_attribute_option_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_attribute_option
+                        processor: pim_base_connector.processor.attribute_option
+                        writer:    pim_base_connector.writer.doctrine.attribute_option
+        csv_association_type_import:
+            title: pim_base_connector.jobs.csv_association_type_import.title
+            type: import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_association_type_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_association_type_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_association_type
+                        processor: pim_base_connector.processor.association_type
+                        writer:    pim_base_connector.writer.doctrine.association_type
+        csv_group_import:
+            title: pim_base_connector.jobs.csv_group_import.title
+            type: import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_group_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_group_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_group
+                        processor: pim_base_connector.processor.denormalization.csv_group
+                        writer:    pim_base_connector.writer.doctrine.group
+        csv_variant_group_import:
+            title: pim_base_connector.jobs.csv_variant_group_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_variant_group_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_variant_group_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_variant_group
+                        processor: pim_base_connector.processor.denormalization.csv_variant_group
+                        writer:    pim_base_connector.writer.doctrine.variant_group
+                    parameters:
+                        batchSize: 1

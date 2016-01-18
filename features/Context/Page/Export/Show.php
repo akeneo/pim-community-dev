@@ -14,7 +14,7 @@ use Context\Page\Job\Show as JobShow;
 class Show extends JobShow
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/spread/export/{id}';
 

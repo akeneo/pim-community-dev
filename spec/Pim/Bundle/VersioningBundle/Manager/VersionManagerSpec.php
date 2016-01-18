@@ -11,6 +11,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class VersionManagerSpec extends ObjectBehavior
 {
@@ -19,9 +20,10 @@ class VersionManagerSpec extends ObjectBehavior
         VersionBuilder $builder,
         ObjectManager $om,
         VersionRepositoryInterface $versionRepository,
-        VersionContext $versionContext
+        VersionContext $versionContext,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($registry, $builder, $versionContext);
+        $this->beConstructedWith($registry, $builder, $versionContext, $eventDispatcher);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
         $registry->getRepository(Argument::any())->willReturn($versionRepository);
@@ -36,7 +38,7 @@ class VersionManagerSpec extends ObjectBehavior
         $this->isRealTimeVersioning()->shouldReturn(false);
     }
 
-    function it_uses_version_builder_to_build_versions($builder, $versionContext, ProductInterface $product)
+    function it_uses_version_builder_to_build_versions($builder, ProductInterface $product)
     {
         $this->setUsername('julia');
         $this->buildVersion($product);

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
+use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
 use Doctrine\ODM\MongoDB\Cursor as CursorMongoDB;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
 
 /**
  * Class Cursor to iterate entities from Builder
@@ -32,12 +32,12 @@ class Cursor extends AbstractCursor
 
     /**
      * @param Builder $queryBuilder
-     * @param int     $batchSize    : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
+     * @param int     $batchSize    set MongoCursor::batchSize — Limits the number of elements returned in one batch.
      */
     public function __construct(Builder $queryBuilder, $batchSize = null)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->batchSize = $batchSize;
+        $this->batchSize    = $batchSize;
         $this->rewind();
     }
 

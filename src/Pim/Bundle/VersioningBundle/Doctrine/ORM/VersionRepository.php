@@ -44,6 +44,14 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
+    public function getNewestLogEntryForRessources($resourceNames)
+    {
+        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPendingVersions($limit = null)
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc'], $limit);
@@ -72,7 +80,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     {
         $userNameExpr = "CONCAT(CONCAT(CONCAT(u.firstName, ' '), CONCAT(u.lastName, ' - ')), u.email)";
         $removedUserNameExpr = "CONCAT(v.author, ' - Removed user')";
-        $userExpr = sprintf('CASE WHEN u IS NOT NULL THEN %s ELSE %s END', $userNameExpr, $removedUserNameExpr);
+        $userExpr = sprintf('CASE WHEN u.id IS NOT NULL THEN %s ELSE %s END', $userNameExpr, $removedUserNameExpr);
         $contextExpr = "CASE WHEN v.context IS NOT NULL THEN CONCAT(CONCAT(' (', v.context), ')') ELSE '' END";
 
         $authorExpr = sprintf('CONCAT(%s, %s)', $userExpr, $contextExpr);
@@ -85,7 +93,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         $qb
             ->addSelect(sprintf('%s as author', $authorExpr))
             ->leftJoin(
-                'OroUserBundle:User',
+                'PimUserBundle:User',
                 'u',
                 'WITH',
                 'u.username = v.author'

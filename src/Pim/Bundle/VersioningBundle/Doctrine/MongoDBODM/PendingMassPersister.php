@@ -6,8 +6,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,6 +17,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated Will be removed in 1.6
  */
 class PendingMassPersister extends AbstractPendingMassPersister
 {

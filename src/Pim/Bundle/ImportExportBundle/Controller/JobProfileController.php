@@ -5,26 +5,27 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\Manager\JobManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Job Profile controller
@@ -41,12 +42,6 @@ class JobProfileController extends AbstractDoctrineController
     /** @var string */
     protected $jobType;
 
-    /** @var string */
-    protected $rootDir;
-
-    /** @var string */
-    protected $environment;
-
     /** @var JobInstanceType */
     protected $jobInstanceType;
 
@@ -56,8 +51,8 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConstraintViolationListInterface  */
     protected $fileError;
 
-    /** @var JobManager */
-    protected $jobManager;
+    /** @var JobLauncherInterface */
+    protected $simpleJobLauncher;
 
     /** @var File */
     protected $file;
@@ -68,7 +63,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -76,17 +71,15 @@ class JobProfileController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
-     * @param string                   $rootDir
-     * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
-     * @param JobManager               $jobManager
+     * @param JobLauncherInterface     $simpleJobLauncher
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -94,17 +87,15 @@ class JobProfileController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
         $jobType,
-        $rootDir,
-        $environment,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        JobManager $jobManager
+        JobLauncherInterface $simpleJobLauncher
     ) {
         parent::__construct(
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -114,14 +105,12 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->connectorRegistry  = $connectorRegistry;
         $this->jobType            = $jobType;
-        $this->rootDir            = $rootDir;
-        $this->environment        = $environment;
 
         $this->jobInstanceType    = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
         $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->jobManager         = $jobManager;
+        $this->simpleJobLauncher  = $simpleJobLauncher;
     }
 
     /**
@@ -133,14 +122,14 @@ class JobProfileController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $jobInstance = $this->jobInstanceFactory->createJobInstance(null, $this->getJobType(), null);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -165,7 +154,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Show a job instance
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -218,7 +207,7 @@ class JobProfileController extends AbstractDoctrineController
      * Edit a job instance
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -239,7 +228,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -269,7 +258,7 @@ class JobProfileController extends AbstractDoctrineController
      * Remove a job
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -287,7 +276,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->jobManager->remove($jobInstance);
+        $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -301,7 +290,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function validate(JobInstance $jobInstance)
     {
@@ -315,7 +304,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function validateUpload(JobInstance $jobInstance)
     {
@@ -329,7 +318,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Launch a job from uploaded file
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -355,7 +344,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Launch a job
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -383,7 +372,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function processUploadForm(JobInstance $jobInstance)
     {
@@ -393,7 +382,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
-                if (null !== $file = $data->getFile()) {
+                if (null !== $file = $data->getUploadedFile()) {
                     $this->file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
                     return true;
@@ -409,7 +398,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Allow to validate and run the job
      *
-     * @param boolean     $isUpload
+     * @param bool        $isUpload
      * @param JobInstance $jobInstance
      *
      * @return JobInstance
@@ -418,13 +407,13 @@ class JobProfileController extends AbstractDoctrineController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $jobExecution = $this->jobManager->launch(
-            $jobInstance,
-            $this->getUser(),
-            $this->rootDir,
-            $this->environment,
-            $isUpload
-        );
+        $rawConfig = $isUpload
+            ? addslashes(json_encode($jobInstance->getJob()->getConfiguration()))
+            : '';
+
+        $jobExecution = $this->simpleJobLauncher
+            ->setConfig(['email' => true])
+            ->launch($jobInstance, $this->getUser(), $rawConfig);
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
@@ -439,7 +428,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param JobInstance $jobInstance
      * @param File        $file
      *
-     * @return boolean
+     * @return bool
      */
     protected function configureUploadJob(JobInstance $jobInstance, File $file)
     {
@@ -452,7 +441,7 @@ class JobProfileController extends AbstractDoctrineController
 
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $constraints = $reader->getUploadedFileConstraints();
-                    $this->fileError = $this->getValidator()->validateValue($file, $constraints);
+                    $this->fileError = $this->getValidator()->validate($file, $constraints);
 
                     if ($this->fileError->count() !== 0) {
                         foreach ($this->fileError as $error) {
@@ -474,8 +463,8 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Get a job instance
      *
-     * @param integer $id
-     * @param boolean $checkStatus
+     * @param int  $id
+     * @param bool $checkStatus
      *
      * @throws NotFoundHttpException
      *
@@ -536,7 +525,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Redirect to the show view
      *
-     * @param integer $jobId
+     * @param int $jobId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -551,7 +540,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Redirect to the report view
      *
-     * @param integer $jobId
+     * @param int $jobId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -570,6 +559,6 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function createUploadForm()
     {
-        return $this->createForm(new UploadType());
+        return $this->createForm(new UploadType(), null, ['validation_groups' => ['upload']]);
     }
 }

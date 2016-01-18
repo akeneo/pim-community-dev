@@ -8,7 +8,7 @@ use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface;
 
 class RendererRegistrySpec extends ObjectBehavior
 {
-    function it_renders_a_document_with_the_right_renderer(RendererInterface $renderer,ProductInterface $blender)
+    function it_renders_a_document_with_the_right_renderer(RendererInterface $renderer, ProductInterface $blender)
     {
         $this->addRenderer($renderer);
 

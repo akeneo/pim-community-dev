@@ -1,8 +1,8 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = ('pim_enrich.mass_edit_action.' ~ operator.name ~  '.page_title')|trans %}
-    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_subtitle')|transchoice(count) %}
+    {% set title = ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.page_title')|trans %}
+    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle')|transchoice(count) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
@@ -24,8 +24,14 @@
 
         <div class="row buffer-top">
             <div class="offset1">
-                {{ elements.link('btn.cancel', path(operator.performedOperationRedirectionRoute)) }}
-                {{ elements.submitBtn('btn.next') }}
+                {% if itemsName == 'family' %}
+                    {% set canceledPath = 'pim_enrich_family_index' %}
+                {% else %}
+                    {% set canceledPath = 'pim_enrich_product_index' %}
+                {% endif %}
+
+                {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'btn-cancel'}) }}
+                {{ elements.submitBtn('btn.next','chevron-right') }}
             </div>
         </div>
 

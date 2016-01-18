@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 
 /**
  * Family filter
@@ -73,10 +73,13 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                 $this->qb->field($fieldCode)->notIn($value);
                 break;
             case Operators::IS_EMPTY:
+                $exists = new Expr();
+                $equals = new Expr();
                 $expr = new Expr();
-                $this->qb->addAnd(
-                    $expr->field($fieldCode)->exists(false)
-                );
+                $exists->field($fieldCode)->exists(false);
+                $equals->field($fieldCode)->equals(null);
+                $expr->addOr($exists)->addOr($equals);
+                $this->qb->addAnd($expr);
                 break;
         }
 

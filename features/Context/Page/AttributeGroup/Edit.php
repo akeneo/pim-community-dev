@@ -29,19 +29,15 @@ class Edit extends Creation
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @param string $attribute
+     * @param int    $position
      *
      * @return Edit
      */
     public function dragAttributeToPosition($attribute, $position)
     {
         $list = $this->getElement('Attribute list')->findAll('css', 'tr');
-        $elt  = $this->getElement('Attribute list')->find('css', sprintf('tr:contains("%s")', $attribute));
-
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Attribute %s was not found', $attribute));
-        }
+        $elt  = $this->getElement('Attribute list')->find('css', sprintf('tr:contains("%s") .handle', $attribute));
 
         if ($position > count($list)) {
             throw new \InvalidArgumentException(
@@ -49,10 +45,7 @@ class Edit extends Creation
             );
         }
 
-        $eltHandle = $elt->find('css', '.handle');
-        $target = $list[$position-1];
-
-        $eltHandle->dragTo($target);
+        $this->dragElementTo($elt, $list[$position-1]);
 
         return $this;
     }
@@ -60,7 +53,7 @@ class Edit extends Creation
     /**
      * @param string $attribute
      *
-     * @return integer
+     * @return int
      */
     public function getAttributePosition($attribute)
     {

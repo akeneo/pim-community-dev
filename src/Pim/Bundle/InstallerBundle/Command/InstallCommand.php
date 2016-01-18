@@ -3,6 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Override OroInstaller command to add PIM custom rules
+ * Installer command to add PIM custom rules
  *
  * @author    Nicolas <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -18,14 +19,10 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class InstallCommand extends ContainerAwareCommand
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const APP_NAME = 'Akeneo PIM';
 
-    /**
-     * @var CommandExecutor $commandExecutor
-     */
+    /** @var CommandExecutor */
     protected $commandExecutor;
 
     /**
@@ -71,14 +68,18 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-            $this->cleanDirectory($this->getContainer()->getParameter('upload_dir'));
-            $this->cleanDirectory($this->getContainer()->getParameter('archive_dir'));
+            foreach ($this->getDirectoriesContainer()->getDirectories() as $directory) {
+                $this->cleanDirectory($directory);
+            }
 
             $this
                 ->checkStep($input, $output)
                 ->databaseStep($input, $output)
                 ->assetsStep($input, $output);
         } catch (\Exception $e) {
+            $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
+            $output->writeln('');
+
             return $e->getCode();
         }
 
@@ -142,7 +143,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param boolean         $installed
+     * @param bool            $installed
      *
      * @return InstallCommand
      */
@@ -150,7 +151,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Updating installed flag.</info>');
 
-        $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
+        $dumper = $this->getContainer()->get('pim_installer.yaml_persister');
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
@@ -168,5 +169,13 @@ class InstallCommand extends ContainerAwareCommand
             $filesystem->remove($folder);
         }
         $filesystem->mkdir($folder);
+    }
+
+    /**
+     * @return PimDirectoriesRegistry
+     */
+    protected function getDirectoriesContainer()
+    {
+        return $this->getContainer()->get('pim_installer.directories_registry');
     }
 }

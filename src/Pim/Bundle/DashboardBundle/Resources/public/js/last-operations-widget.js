@@ -1,9 +1,9 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pimdashboard/js/abstract-widget', 'moment'],
+    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
     function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
-        var LastOperationsWidget = AbstractWidget.extend({
+        return AbstractWidget.extend({
             tagName: 'table',
 
             id: 'last-operations-widget',
@@ -24,25 +24,41 @@ define(
                 contentLoaded: false
             },
 
+            showListBtnTemplate: _.template(
+                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
+                    '<i class="icon-tasks"></i>' +
+                '</a>'
+            ),
+
             template: _.template(
                 [
                     '<% if (!_.isEmpty(data)) { %>',
                         '<thead>',
                             '<tr>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.date") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.type") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.profile name") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.status") %></th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.date") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.type") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.profile name") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.status") %>',
+                                '</th>',
                                 '<th></th>',
                             '</tr>',
                         '</thead>',
                         '<tbody>',
-                            '<% _.each(data, function(operation) { %>',
+                            '<% _.each(data, function (operation) { %>',
                                 '<tr>',
                                     '<td>',
                                         '<%= operation.date %>',
                                     '</td>',
-                                    '<td><%= _.__("pim_dashboard.widget.last_operations.job_type." + operation.type) %></td>',
+                                    '<td>',
+                                        '<%= _.__("pim_dashboard.widget.last_operations.job_type."+operation.type) %>',
+                                    '</td>',
                                     '<td><%= operation.label %></td>',
                                     '<td>',
                                         '<span class="label <%= operation.labelClass %> fullwidth">',
@@ -68,24 +84,53 @@ define(
             ),
 
             events: {
-                'click a.btn': 'followLink'
+                'click a.btn': 'followLink',
+                'click a#btn-show-list': 'showList'
             },
 
-            followLink: function(e) {
+            followLink: function (e) {
+                e.preventDefault();
+                var route;
+                var operationType = $(e.currentTarget).data('operation-type');
+
+                switch (operationType) {
+                    case 'mass_edit':
+                    case 'quick_export':
+                        route = Routing.generate(
+                            'pim_enrich_job_tracker_show',
+                            { id: $(e.currentTarget).data('id') }
+                        );
+                        break;
+                    default:
+                        route = Routing.generate(
+                            'pim_importexport_' + operationType + '_execution_show',
+                            { id: $(e.currentTarget).data('id') }
+                        );
+                        break;
+                }
+
+                Navigation.getInstance().setLocation(route);
+            },
+
+            setShowListBtn: function () {
+                this.$showListBtn = $(this.showListBtnTemplate());
+
+                this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
+                this.$showListBtn.on('click', _.bind(this.showList, this));
+
+                return this;
+            },
+
+            showList: function (e) {
                 e.preventDefault();
 
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_importexport_' + $(e.currentTarget).data('operation-type') + '_execution_show',
-                        { id: $(e.currentTarget).data('id') }
-                    )
-                );
+                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
             },
 
-            _processResponse: function(data) {
+            _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
-                _.each(data, function(operation) {
+                _.each(data, function (operation) {
                     operation.labelClass = this.labelClasses[operation.status] ?
                         'label-' + this.labelClasses[operation.status]
                         : '';
@@ -104,18 +149,5 @@ define(
                 return data;
             }
         });
-
-        var instance = null;
-
-        return {
-            init: function(options) {
-                if (!instance) {
-                    instance = new LastOperationsWidget(options);
-                } else if (_.has(options, 'el')) {
-                    instance.setElement(options.el);
-                }
-                instance.render().delayedLoad();
-            }
-        };
     }
 );

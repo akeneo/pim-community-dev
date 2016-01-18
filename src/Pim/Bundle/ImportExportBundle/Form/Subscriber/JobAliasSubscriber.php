@@ -30,8 +30,6 @@ class JobAliasSubscriber implements EventSubscriberInterface
      * Assigns alias and connector form values to the job instance
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function submit(FormEvent $event)
     {

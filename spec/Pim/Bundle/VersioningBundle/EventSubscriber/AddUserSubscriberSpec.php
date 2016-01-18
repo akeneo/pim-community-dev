@@ -2,22 +2,25 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Prophecy\Argument;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AddUserSubscriberSpec extends ObjectBehavior
 {
-    function let(VersionManager $versionManager, SecurityContextInterface $security, TokenInterface $token)
-    {
-        $this->beConstructedWith($versionManager, $security);
+    function let(
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->beConstructedWith($authorizationChecker, $tokenStorage);
 
-        $security->isGranted(Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Argument::any())->willReturn(true);
     }
 
     function it_is_an_event_listener()
@@ -27,34 +30,26 @@ class AddUserSubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_the_kernel_request_event()
     {
-        $this->getSubscribedEvents()->shouldReturn([KernelEvents::REQUEST => 'onKernelRequest']);
+        $this->getSubscribedEvents()->shouldReturn([BuildVersionEvents::PRE_BUILD => 'preBuild']);
     }
 
     function it_injects_current_username_into_the_version_manager(
-        GetResponseEvent $event,
-        $security,
+        BuildVersionEvent $event,
+        $tokenStorage,
         $token,
-        User $user,
-        $versionManager
+        User $user
     ) {
-        $security->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('foo');
 
-        $versionManager->setUsername('foo')->shouldBeCalled();
-
-        $this->onKernelRequest($event);
+        $this->preBuild($event);
     }
 
-    function it_does_nothing_if_a_token_is_not_present_in_the_security_context(
-        GetResponseEvent $event,
-        $security,
-        $versionManager
-    ) {
-        $security->getToken()->willReturn(null);
+    function it_does_nothing_if_a_token_is_not_present_in_the_security_context(BuildVersionEvent $event, $tokenStorage)
+    {
+        $tokenStorage->getToken()->willReturn(null);
 
-        $versionManager->setUsername(Argument::any())->shouldNotBeCalled();
-
-        $this->onKernelRequest($event);
+        $this->preBuild($event);
     }
 }

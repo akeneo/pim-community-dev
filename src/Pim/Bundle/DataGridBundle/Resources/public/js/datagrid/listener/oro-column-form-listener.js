@@ -43,13 +43,6 @@ function($, _, __, mediator, Modal, AbstractListener) {
 
             this._clearState();
             this._restoreState();
-
-            /**
-             * Restore include/exclude state from pagestate
-             */
-            mediator.bind("pagestate_restored", function () {
-                this._restoreState();
-            }, this);
         },
 
         /**
@@ -233,7 +226,6 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.confirmModal[type] = new Modal(_.extend({
                     title: __('Confirmation'),
                     okText: __('Ok, got it.'),
-                    className: 'modal modal-primary',
                     okButtonClass: 'btn-primary btn-large'
                 }, options));
                 this.confirmModal[type].on('ok', _.bind(callback, this));

@@ -3,12 +3,13 @@ define(
     function ($) {
         'use strict';
 
-        var formId, cb;
+        var formId;
+        var cb;
         function saveFormState() {
-            var $form        = $('#' + formId),
-                activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href'),
-                $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
-                activeGroup;
+            var $form        = $('#' + formId);
+            var activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href');
+            var $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a');
+            var activeGroup;
 
             if ($activeGroup.length) {
                 activeGroup = $activeGroup.attr('href');
@@ -28,20 +29,22 @@ define(
         }
 
         function restoreFormState() {
-            if (!$('.hash-loading-mask .loading-mask').is(':visible')) {
-                var $redirectTab;
-                if (sessionStorage.redirectTab) {
-                    $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
-                }
-                if(!($redirectTab && $redirectTab.length) && sessionStorage[formId + '_activeTab']) {
-                    $redirectTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
-                }
-                if ($redirectTab && $redirectTab.length) {
+            if (sessionStorage.redirectTab) {
+                var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
+                if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
                     $redirectTab.tab('show');
                     if (cb) {
                         cb($redirectTab);
                     }
                     sessionStorage.removeItem('redirectTab');
+                }
+            } else if (sessionStorage[formId + '_activeTab']) {
+                var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
+                if ($activeTab.length && !$('.loading-mask').is(':visible')) {
+                    $activeTab.tab('show');
+                    if (cb) {
+                        cb($activeTab);
+                    }
                 }
             }
 
@@ -61,7 +64,7 @@ define(
             }
         }
 
-        return function(id, callback) {
+        return function (id, callback) {
             if (typeof Storage === 'undefined') {
                 return;
             }

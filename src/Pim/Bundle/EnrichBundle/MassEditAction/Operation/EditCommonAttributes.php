@@ -2,19 +2,22 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Edit common attributes of given products
@@ -23,9 +26,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends ProductMassEditOperation
+class EditCommonAttributes extends AbstractMassEditOperation
 {
-    /** @var ArrayCollection|ProductValueInterface[] */
+    /** @var string */
     protected $values;
 
     /** @var ArrayCollection */
@@ -34,11 +37,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     /** @var LocaleInterface */
     protected $locale;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
-
-    /** @var ProductMassActionManager */
-    protected $massActionManager;
 
     /** @var UserContext */
     protected $userContext;
@@ -47,65 +47,86 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected $catalogContext;
 
     /** @var array */
-    protected $commonAttributes;
-
-    /** @var array */
-    protected $warningMessages;
-
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    protected $allAttributes;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var FileStorerInterface */
+    protected $fileStorer;
+
+    /** @var ProductMassActionManager */
+    protected $massActionManager;
+
+    /** @var string */
+    protected $errors;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
+    /** @var NormalizerInterface */
+    protected $internalNormalizer;
+
+    /** @var string */
+    protected $tmpStorageDir;
+
+    /** @var string */
+    protected $currentLocale;
+
     /**
-     * Constructor
-     *
-     * @param ProductBuilder           $productBuilder
-     * @param ProductUpdaterInterface  $productUpdater
-     * @param UserContext              $userContext
-     * @param CatalogContext           $catalogContext
-     * @param ProductMassActionManager $massActionManager
-     * @param NormalizerInterface      $normalizer
-     * @param BulkSaverInterface       $productSaver
+     * @param ProductBuilderInterface      $productBuilder
+     * @param UserContext                  $userContext
+     * @param CatalogContext               $catalogContext
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param NormalizerInterface          $normalizer
+     * @param FileStorerInterface          $fileStorer
+     * @param ProductMassActionManager     $massActionManager
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param ValidatorInterface           $productValidator
+     * @param NormalizerInterface          $internalNormalizer
+     * @param string                       $tmpStorageDir
      */
     public function __construct(
-        ProductBuilder $productBuilder,
-        ProductUpdaterInterface $productUpdater,
+        ProductBuilderInterface $productBuilder,
         UserContext $userContext,
         CatalogContext $catalogContext,
-        ProductMassActionManager $massActionManager,
+        AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        BulkSaverInterface $productSaver
+        FileStorerInterface $fileStorer,
+        ProductMassActionManager $massActionManager,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        NormalizerInterface $internalNormalizer,
+        $tmpStorageDir = null
     ) {
-        parent::__construct($productSaver);
-
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->userContext = $userContext;
-        $this->catalogContext = $catalogContext;
-        $this->massActionManager = $massActionManager;
+        $this->productBuilder      = $productBuilder;
+        $this->userContext         = $userContext;
+        $this->catalogContext      = $catalogContext;
         $this->displayedAttributes = new ArrayCollection();
-        $this->values = new ArrayCollection();
-        $this->normalizer = $normalizer;
+        $this->values              = '';
+        $this->currentLocale       = '';
+        $this->normalizer          = $normalizer;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileStorer          = $fileStorer;
+        $this->massActionManager   = $massActionManager;
+        $this->productUpdater      = $productUpdater;
+        $this->productValidator    = $productValidator;
+        $this->tmpStorageDir       = $tmpStorageDir;
+        $this->internalNormalizer  = $internalNormalizer;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function affectsCompleteness()
-    {
-        return true;
-    }
-
-    /**
-     * Set values
+     * @param string $values
      *
-     * @param Collection $values
-     *
-     * @return EditCommonAttributes
+     * @return string
      */
-    public function setValues(Collection $values)
+    public function setValues($values)
     {
         $this->values = $values;
 
@@ -113,9 +134,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Get values
-     *
-     * @return Collection
+     * @return string
      */
     public function getValues()
     {
@@ -123,11 +142,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Set locale
-     *
      * @param LocaleInterface $locale
      *
      * @return EditCommonAttributes
+     *
+     * @deprecated Will be removed in 1.5
      */
     public function setLocale(LocaleInterface $locale)
     {
@@ -137,9 +156,9 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Get locale
-     *
      * @return LocaleInterface
+     *
+     * @deprecated Will be removed in 1.5
      */
     public function getLocale()
     {
@@ -151,11 +170,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Set displayed attributes
-     *
      * @param Collection $displayedAttributes
      *
      * @return EditCommonAttributes
+     *
+     * @deprecated Will be removed in 1.5
      */
     public function setDisplayedAttributes(Collection $displayedAttributes)
     {
@@ -165,9 +184,9 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Get displayed attributes
-     *
      * @return Collection
+     *
+     * @deprecated Will be removed in 1.5
      */
     public function getDisplayedAttributes()
     {
@@ -183,17 +202,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
-     * Get form options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormOptions()
     {
-        return array(
-            'locales'           => $this->userContext->getUserLocales(),
-            'common_attributes' => $this->getCommonAttributes(),
-            'current_locale'    => $this->getLocale()->getCode()
-        );
+        return [];
     }
 
     /**
@@ -201,180 +214,165 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     public function initialize()
     {
-        $locale = $this->getLocale()->getCode();
-        $this->catalogContext->setLocaleCode($locale);
-
-        $this->warningMessages  = null;
-        $this->commonAttributes = null;
-
-        $commonAttributes = $this->getCommonAttributes();
-
-        $this->values = new ArrayCollection();
-        foreach ($commonAttributes as $attribute) {
-            $this->addValues($attribute, $this->getLocale());
-        }
+        $this->values = '';
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Before sending configuration to the job, we store uploaded files.
+     * This way, the job process can have access to uploaded files.
      */
-    public function perform()
+    public function finalize()
     {
-        parent::perform();
+        $data = json_decode($this->values, true);
+        $filesystem = new Filesystem();
+
+        foreach ($data as $attributeCode => $attributeValues) {
+            foreach ($attributeValues as $index => $value) {
+                if (isset($value['data']['filePath']) && '' !== $value['data']['filePath']) {
+                    $uploadedFile = new \SplFileInfo($value['data']['filePath']);
+                    $tmpStorageDir = (null !== $this->tmpStorageDir) ? $this->tmpStorageDir : sys_get_temp_dir() . '/pim/file_storage';
+                    $newPath = $tmpStorageDir . DIRECTORY_SEPARATOR . $uploadedFile->getFilename();
+
+                    $filesystem->rename($uploadedFile->getPathname(), $newPath);
+
+                    $data[$attributeCode][$index]['data']['filePath'] = $newPath;
+                }
+            }
+        }
+
+        $this->values = json_encode($data);
     }
 
     /**
-     * Initializes self::commonAtributes with values from the repository
-     * Attribute is not available for mass editing if:
-     *   - it is an identifier
-     *   - it is unique
-     *   - without value AND not link to family
-     *   - is not common to every products
+     * Initializes self::allAttributes with values from the repository
      *
      * @return array
-     */
-    public function getCommonAttributes()
-    {
-        if (null === $this->commonAttributes) {
-            $locale   = $this->getLocale()->getCode();
-            $products = $this->objects;
-
-            $this->commonAttributes = $this->generateCommonAttributes($products, $locale);
-        }
-
-        return $this->commonAttributes;
-    }
-
-    /**
-     * Generate common attributes
-     * @param array  $products
-     * @param string $locale
      *
-     * @return AttributeInterface[]
+     * @deprecated Will be removed in 1.5
      */
-    protected function generateCommonAttributes(array $products, $locale)
+    public function getAllAttributes()
     {
-        $commonAttributes = $this->massActionManager->findCommonAttributes($products);
+        if (null === $this->allAttributes) {
+            $locale = $this->getLocale()->getCode();
+            $allAttributes = $this->attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]]);
 
-        foreach ($commonAttributes as $attribute) {
-            $attribute->setLocale($locale);
-            $attribute->getGroup()->setLocale($locale);
+            foreach ($allAttributes as $attribute) {
+                $attribute->setLocale($locale);
+                $attribute->getGroup()->setLocale($locale);
+            }
+
+            $allAttributes = $this->massActionManager->filterLocaleSpecificAttributes(
+                $allAttributes,
+                $locale
+            );
+
+            $this->allAttributes = $allAttributes;
         }
 
-        $commonAttributes = $this->massActionManager->filterLocaleSpecificAttributes(
-            $commonAttributes,
-            $locale
-        );
-
-        $commonAttributes = $this->massActionManager->filterAttributesComingFromVariant(
-            $commonAttributes,
-            $products
-        );
-
-        return $commonAttributes;
-    }
-
-    /**
-     * Get warning messages
-     *
-     * @return string[]
-     */
-    public function getWarningMessages()
-    {
-        if (null === $this->warningMessages) {
-            $this->warningMessages = $this->generateWarningMessages($this->objects);
-        }
-
-        return $this->warningMessages;
-    }
-
-    /**
-     * Get warning messages to display during the mass edit action
-     * @param ProductInterface[] $products
-     *
-     * @return string[]
-     */
-    protected function generateWarningMessages(array $products)
-    {
-        $messages = [];
-
-        $variantAttributeCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
-        $rootMessageKey = 'pim_enrich.mass_edit_action.edit-common-attributes';
-        if (count($variantAttributeCodes) > 0) {
-            $messages[] = [
-                'key'     => $rootMessageKey.'.truncated_by_variant_attribute.warning',
-                'options' => ['%attributes%' => implode(', ', $variantAttributeCodes)]
-            ];
-        }
-
-        if (count($this->getCommonAttributes()) < 1) {
-            $messages[] = [
-                'key'     => $rootMessageKey.'.no_attribute.warning',
-                'options' => []
-            ];
-        }
-
-        return $messages;
+        return $this->allAttributes;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
+    public function getOperationAlias()
     {
-        $this->setProductValues($product);
+        return 'edit-common-attributes';
     }
 
     /**
-     * Set product values with the one stored inside $this->values
-     *
-     * @param ProductInterface $product
+     * {@inheritdoc}
      */
-    protected function setProductValues(ProductInterface $product)
+    public function getActions()
     {
-        foreach ($this->values as $value) {
-            $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
-            // if the value is localizable, let's use the locale the user has chosen in the form
-            $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
+        $actions = [
+            'normalized_values' => $this->getValues(),
+            'current_locale'    => $this->getCurrentLocale()
+        ];
 
-            $this->productUpdater->setValue(
-                [$product],
-                $value->getAttribute()->getCode(),
-                $rawData,
-                $locale,
-                $value->getScope()
-            );
-        }
+        return $actions;
     }
 
     /**
-     * Add all the values required by the given attribute
+     * Get the code of the JobInstance
      *
-     * @param AttributeInterface $attribute
-     * @param LocaleInterface    $locale
+     * @return string
      */
-    protected function addValues(AttributeInterface $attribute, $locale)
+    public function getBatchJobCode()
     {
-        if ($attribute->isScopable()) {
-            foreach ($locale->getChannels() as $channel) {
-                $key = $attribute->getCode() . '_' . $channel->getCode();
-                $value = $this->productBuilder->createProductValue(
-                    $attribute,
-                    $locale->getCode(),
-                    $channel->getCode()
-                );
+        return 'edit_common_attributes';
+    }
 
-                $this->productBuilder->addMissingPrices($value);
-                $this->values[$key] = $value;
-            }
-        } else {
-            $value = $this->productBuilder->createProductValue(
-                $attribute,
-                $locale->getCode()
-            );
+    /**
+     * Get the name of items this operation applies to
+     *
+     * @return string
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
 
-            $this->productBuilder->addMissingPrices($value);
-            $this->values[$attribute->getCode()] = $value;
-        }
+    /**
+     * Add constraint on product values integrity.
+     *
+     * It registers constraint assertion that "hasValidValues" must return true on
+     * mass edit form submission.
+     *
+     * @param ClassMetadata $metadata
+     */
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addGetterConstraint('validValues', new IsTrue([
+            'message' => 'mass_edit.edit_common_attributes.invalid_values'
+        ]));
+    }
+
+    /**
+     * Apply current values to a fake product and test its integrity with the product validator.
+     * If violations are raised, values are not valid.
+     *
+     * Errors are stored in json format to be useable by the Product Edit Form.
+     *
+     * @return bool
+     */
+    public function hasValidValues()
+    {
+        $data = json_decode($this->values, true);
+
+        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
+        $this->productUpdater->update($product, $data);
+        $violations = $this->productValidator->validate($product);
+
+        $errors = ['values' => $this->internalNormalizer->normalize($violations, 'internal_api')];
+        $this->errors = json_encode($errors);
+
+        return 0 === $violations->count();
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentLocale()
+    {
+        return $this->currentLocale;
+    }
+
+    /**
+     * @param string $currentLocale
+     */
+    public function setCurrentLocale($currentLocale)
+    {
+        $this->currentLocale = $currentLocale;
     }
 }

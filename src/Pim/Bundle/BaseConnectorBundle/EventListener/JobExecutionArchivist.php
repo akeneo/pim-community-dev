@@ -99,7 +99,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Gaufrette\Stream
+     * @return resource
      */
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {

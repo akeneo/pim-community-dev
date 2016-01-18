@@ -1,0 +1,12 @@
+<p>
+    <%- _.__('pim_enrich.form.product.change_family.modal.merge_attributes')%><br />
+    <%- _.__('pim_enrich.form.product.change_family.modal.keep_attributes')%>
+</p>
+<form class="form-horizontal">
+    <label class="control-label"><%- _.__('pim_enrich.form.product.change_family.modal.change_family_to')%>&nbsp;:</label>
+    <input type="hidden" class="input-large family-select2"
+           value="<%- product.family !== null ? product.family.code : '' %>"
+           <%- product.family ? ' selected' : '' %>
+           data-placeholder="<%- _.__('pim_enrich.form.product.change_family.modal.empty_selection') %>"
+    />
+</form>

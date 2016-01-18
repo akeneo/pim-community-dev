@@ -1,0 +1,8 @@
+parameters:
+    pim_user.normalizer.user.class: Pim\Bundle\UserBundle\Normalizer\UserNormalizer
+
+services:
+    pim_user.normalizer.user:
+        class: %pim_user.normalizer.user.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

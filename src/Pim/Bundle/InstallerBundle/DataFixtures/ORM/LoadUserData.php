@@ -3,6 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -26,7 +27,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         $this->om = $manager;
 
-        $dataUsers = Yaml::parse(realpath($this->getFilePath()));
+        $dataUsers = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         foreach ($dataUsers['users'] as $dataUser) {
             $user = $this->buildUser($dataUser);
@@ -65,21 +66,20 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return User
+     * @throws \Exception
+     *
+     * @return UserInterface
      */
     protected function buildUser(array $data)
     {
         $user = $this->getUserManager()->createUser();
-        $owner = $this->getOwner($data['owner']);
         $user
             ->setUsername($data['username'])
             ->setPlainPassword($data['password'])
             ->setEmail($data['email'])
             ->setFirstName($data['firstname'])
             ->setLastName($data['lastname'])
-            ->setEnabled($data['enable'])
-            ->setOwner($owner)
-            ->addBusinessUnit($owner);
+            ->setEnabled($data['enable']);
 
         if (!isset($data['roles'])) {
             throw new \Exception(sprintf('user %s must have defined roles', $data['username']));
@@ -109,20 +109,6 @@ class LoadUserData extends AbstractInstallerFixture
         $user->setDefaultTree($tree);
 
         return $user;
-    }
-
-    /**
-     * Get the owner (business unit) from code
-     *
-     * @param string $owner
-     *
-     * @return \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-     */
-    protected function getOwner($owner)
-    {
-        return $this->om
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => $owner));
     }
 
     /**
@@ -192,9 +178,9 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getTree($categoryCode)
     {
-        $categoryManager = $this->container->get('pim_catalog.manager.category');
-        $category        = $categoryManager->getTreeByCode($categoryCode);
+        $categoryRepository = $this->container->get('pim_catalog.repository.category');
+        $category           = $categoryRepository->findOneBy(['code' => $categoryCode, 'parent' => null]);
 
-        return $category ? $category : current($categoryManager->getTrees());
+        return $category ? $category : current($categoryRepository->getTrees());
     }
 }

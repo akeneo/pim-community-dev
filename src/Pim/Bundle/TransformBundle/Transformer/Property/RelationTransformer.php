@@ -69,7 +69,7 @@ class RelationTransformer implements PropertyTransformerInterface
      *
      * @param string|array $value
      * @param string       $class
-     * @param boolean      $multiple
+     * @param bool         $multiple
      * @param string       $referencePrefix
      *
      * @throws PropertyTransformerException

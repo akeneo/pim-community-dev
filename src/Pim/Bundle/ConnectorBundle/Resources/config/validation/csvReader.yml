@@ -1,0 +1,24 @@
+Pim\Component\Connector\Reader\File\CsvReader:
+    properties:
+        delimiter:
+            - NotBlank: ~
+            - Choice:
+                choices: [",", ";", "|"]
+                message: The value must be one of , or ; or |
+        filePath:
+            - NotBlank:
+                groups: [Execution]
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\File:
+                allowedExtensions: ["csv", "zip"]
+                groups: [Execution]
+        enclosure:
+            - NotBlank: ~
+            - Choice:
+                choices: ['"', "'"]
+                message: The value must be one of " or '
+        escape:
+            - NotBlank: ~
+        uploadAllowed:
+            - Type: bool
+            - 'True':
+                groups: [UploadExecution]

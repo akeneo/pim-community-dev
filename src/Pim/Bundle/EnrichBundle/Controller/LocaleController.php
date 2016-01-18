@@ -20,6 +20,7 @@ class LocaleController extends AbstractController
      *
      * @Template
      * @AclAncestor("pim_enrich_locale_index")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()

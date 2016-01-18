@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
 
@@ -86,7 +87,18 @@ class ColumnInfo implements ColumnInfoInterface
             $this->suffixes = $this->rawSuffixes;
             $this->propertyPath = lcfirst(Inflector::classify($this->name));
         } else {
-            $this->propertyPath = $attribute->getBackendType();
+            if (!in_array(
+                $attribute->getBackendType(),
+                [
+                    AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
+                    AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+                ]
+            )) {
+                $this->propertyPath = $attribute->getBackendType();
+            } else {
+                $this->propertyPath = $attribute->getReferenceDataName();
+            }
+
             $suffixes = $this->rawSuffixes;
             if ($attribute->isLocalizable()) {
                 if (count($suffixes)) {
@@ -166,5 +178,15 @@ class ColumnInfo implements ColumnInfoInterface
     public function getAttribute()
     {
         return $this->attribute;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPropertyPath($propertyPath)
+    {
+        $this->propertyPath = $propertyPath;
+
+        return $this;
     }
 }

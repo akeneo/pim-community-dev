@@ -11,6 +11,7 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    # deprecated: will be removed in 1.6
     pim_versioning.doctrine.orm.pending_mass_persister:
         class: %pim_versioning.doctrine.orm.pending_mass_persister.class%
         arguments:
@@ -21,6 +22,9 @@ services:
             - '@database_connection'
             - '@doctrine.orm.default_entity_manager'
             - '@pim_catalog.doctrine.table_name_builder'
+
+    pim_versioning.object_manager.version:
+        alias: doctrine.orm.entity_manager
 
     pim_versioning.event_subscriber.timestampable:
         class: %pim_versioning.event_subscriber.timestampable.class%

@@ -10,9 +10,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Base abstract controller for managing entities
@@ -21,13 +21,11 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be removed in 1.4, please avoid to use parent controller
+ * @deprecated will be removed in 1.5, please avoid to use parent controller
  */
 abstract class AbstractDoctrineController extends AbstractController
 {
-    /**
-     * @var ManagerRegistry
-     */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
     /**
@@ -36,7 +34,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -47,7 +45,7 @@ abstract class AbstractDoctrineController extends AbstractController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -58,7 +56,7 @@ abstract class AbstractDoctrineController extends AbstractController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -113,8 +111,8 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Persist an object
      *
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function persist($object, $flush = true)
     {
@@ -129,8 +127,8 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Remove an object
      *
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function remove($object, $flush = true)
     {
@@ -145,10 +143,11 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Find an entity or throw a 404
      *
-     * @param string  $className Example: 'PimCatalogBundle:Category'
-     * @param integer $id        The id of the entity
+     * @param string $className Example: 'PimCatalogBundle:Category'
+     * @param int    $id        The id of the entity
      *
      * @throws NotFoundHttpException
+     *
      * @return object
      */
     protected function findOr404($className, $id)

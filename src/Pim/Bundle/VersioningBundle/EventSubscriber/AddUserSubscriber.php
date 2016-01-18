@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Add current user to version manager
+ * Add current user
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,24 +17,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class AddUserSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @var VersionManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $tokenStorage
      */
-    protected $versionManager;
-
-    /**
-     * @param VersionManager           $versionManager
-     * @param SecurityContextInterface $securityContext
-     */
-    public function __construct(VersionManager $versionManager, SecurityContextInterface $securityContext = null)
-    {
-        $this->versionManager  = $versionManager;
-        $this->securityContext = $securityContext;
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage = null
+    ) {
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -42,23 +40,27 @@ class AddUserSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => 'onKernelRequest',
-        );
+        return [
+            BuildVersionEvents::PRE_BUILD => 'preBuild',
+        ];
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param BuildVersionEvent $event
+     *
+     * @return BuildVersionEvent
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function preBuild(BuildVersionEvent $event)
     {
-        if (null === $this->securityContext) {
-            return;
+        if (null === $this->tokenStorage) {
+            return $event;
         }
 
-        $token = $this->securityContext->getToken();
-        if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $this->versionManager->setUsername($token->getUser()->getUsername());
+        $token = $this->tokenStorage->getToken();
+        if (null !== $token && $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $event->setUsername($token->getUser()->getUsername());
         }
+
+        return $event;
     }
 }

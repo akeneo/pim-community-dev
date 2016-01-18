@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\Query\Expr\Comparison;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Comparison;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

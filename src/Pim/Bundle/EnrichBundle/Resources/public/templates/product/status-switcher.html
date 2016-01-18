@@ -1,0 +1,11 @@
+<a class="btn dropdown-toggle btn-status" data-toggle="dropdown" href="#">
+    <span class="product-status" data-status="<%- status ? 'enabled' : 'disabled' %>"><%- status ? _.__('pim_enrich.entity.product.btn.enabled') :  _.__('pim_enrich.entity.product.btn.disabled') %></span>
+    <i class="icon-caret-down"></i>
+</a>
+<ul class="dropdown-menu pull-right">
+    <% if (status) { %>
+        <li><a data-status="disable"><%- _.__('pim_enrich.entity.product.btn.disable') %></a></li>
+    <% } else { %>
+        <li><a data-status="enable"><%- _.__('pim_enrich.entity.product.btn.enable') %></a></li>
+    <% } %>
+</ul>

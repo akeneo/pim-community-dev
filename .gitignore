@@ -2,6 +2,9 @@ web/bundles/*
 web/media/*
 web/css/*
 web/js/*
+web/app_local.php
+app/AppKernel_local.php
+app/console_local
 app/archive/*
 app/cache/*
 app/config/*_local.yml
@@ -11,6 +14,7 @@ app/export/*
 app/emails/*
 app/uploads/*
 app/uploads/product/*
+app/file_storage/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/
@@ -25,3 +29,6 @@ web/log
 uploads_test/
 .phpspec/*.tpl
 composer.lock
+.php_cs.cache
+node_modules/
+.grunt/

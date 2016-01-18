@@ -45,6 +45,7 @@ Feature: Display the attribute group history
 
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
+    And I confirm the deletion
     Then I should see flash message "Attribute successfully removed from the attribute group"
     When I visit the "History" tab
     Then there should be 4 updates

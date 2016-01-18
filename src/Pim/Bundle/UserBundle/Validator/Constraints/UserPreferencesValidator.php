@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Validator\Constraints;
 
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,8 +18,8 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate the user preferences
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     public function validate($user, Constraint $constraint)
     {
@@ -30,17 +31,19 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog locale
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateCatalogLocale($user, Constraint $constraint)
     {
         if (is_callable(array($user, 'getCatalogLocale'))) {
             $locale = $user->getCatalogLocale();
             if (!$locale) {
-                $this->context->addViolation($constraint->missingLocaleMsg);
+                $this->context->buildViolation($constraint->missingLocaleMsg)
+                    ->addViolation();
             } elseif (!$locale->isActivated()) {
-                $this->context->addViolation($constraint->inactiveLocaleMsg);
+                $this->context->buildViolation($constraint->inactiveLocaleMsg)
+                    ->addViolation();
             }
         }
     }
@@ -48,14 +51,15 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog Scope
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateCatalogScope($user, Constraint $constraint)
     {
         if (is_callable(array($user, 'getCatalogScope'))) {
             if (!$user->getCatalogScope()) {
-                $this->context->addViolation($constraint->missingScopeMsg);
+                $this->context->buildViolation($constraint->missingScopeMsg)
+                    ->addViolation();
             }
         }
     }
@@ -63,17 +67,19 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate default tree
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateDefaultTree($user, Constraint $constraint)
     {
         if (is_callable(array($user, 'getDefaultTree'))) {
             $tree = $user->getDefaultTree();
             if (!$tree) {
-                $this->context->addViolation($constraint->missingTreeMsg);
+                $this->context->buildViolation($constraint->missingTreeMsg)
+                    ->addViolation();
             } elseif (!$tree->isRoot()) {
-                $this->context->addViolation($constraint->invalidTreeMsg);
+                $this->context->buildViolation($constraint->invalidTreeMsg)
+                    ->addViolation();
             }
         }
     }

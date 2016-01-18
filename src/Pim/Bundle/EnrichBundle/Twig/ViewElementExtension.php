@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -20,13 +21,13 @@ class ViewElementExtension extends \Twig_Extension
     /** @var EngineInterface */
     protected $templating;
 
-    /** @var boolean */
+    /** @var bool */
     protected $debug;
 
     /**
      * @param ViewElementRegistry $registry
      * @param EngineInterface     $templating
-     * @param boolean             $debug
+     * @param bool                $debug
      */
     public function __construct(ViewElementRegistry $registry, EngineInterface $templating, $debug = false)
     {
@@ -56,6 +57,7 @@ class ViewElementExtension extends \Twig_Extension
 
     /**
      * Render view elements
+     *
      * @param array  $context
      * @param string $type
      *
@@ -100,6 +102,7 @@ class ViewElementExtension extends \Twig_Extension
 
     /**
      * Return a list of aliases of displayable view elements of the requested type
+     *
      * @param array  $context
      * @param string $type
      *

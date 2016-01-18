@@ -1,3 +1,4 @@
+@javascript
 Feature: Switch product locale
   In order to manage product information in different languages
   as Mary
@@ -13,19 +14,18 @@ Feature: Switch product locale
 
   Scenario: Successfully display and edit a product in the default locale
     Then the locale switcher should contain the following items:
-      | language                 | label     |
-      | English (United States)  | My jacket |
-      | English (United Kingdom) | jacket    |
-      | German (Germany)         | jacket    |
-      | French (France)          | Ma veste  |
+      | language | flag    | locale |
+      | German   | flag-de | de_DE  |
+      | English  | flag-gb | en_GB  |
+      | English  | flag-us | en_US  |
+      | French   | flag-fr | fr_FR  |
     And the product Name should be "My jacket"
     When I change the Name to "My cool jacket"
     And I save the product
     Then the product Name should be "My cool jacket"
 
-  @javascript
   Scenario: Successfully edit a product in another locale
-    Given I switch the locale to "German (Germany)"
+    Given I switch the locale to "de_DE"
     Then the product Name should be empty
     When I change the Name to "Meine Jacke"
     And I save the product

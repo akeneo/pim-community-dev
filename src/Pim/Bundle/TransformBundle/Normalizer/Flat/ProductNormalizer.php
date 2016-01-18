@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -31,31 +33,29 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     const ITEM_SEPARATOR = ',';
 
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /** @var array */
-    protected $results = array();
+    protected $results = [];
 
     /** @var array $fields */
-    protected $fields = array();
+    protected $fields = [];
 
-    /** @var NormalizerFilterInterface[] */
-    protected $valuesFilters = [];
+    /** @var CollectionFilterInterface */
+    protected $filter;
 
     /**
-     * {@inheritdoc}
+     * @param CollectionFilterInterface $filter The collection filter
      */
-    public function setFilters(array $filters)
+    public function __construct(CollectionFilterInterface $filter = null)
     {
-        $this->valuesFilters = $filters;
-
-        return $this;
+        $this->filter = $filter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $context = $this->resolveContext($context);
 
@@ -105,8 +105,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param ProductInterface $product
      * @param string|null      $format
      * @param array            $context
-     *
-     * @return null
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
@@ -116,24 +114,24 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
             $normalizedValues = [];
             foreach ($values as $value) {
-                $normalizedValues = array_merge(
+                $normalizedValues = array_replace(
                     $normalizedValues,
                     $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
-            $this->results = array_merge($this->results, $normalizedValues);
+            $this->results = array_replace($this->results, $normalizedValues);
         } else {
-            // TODO only used for quick export, find a way to homogeneize this part
+            // TODO only used for quick export, find a way to homogenize this part
             $values = $product->getValues();
             $context['metric_format'] = 'single_field';
 
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
-                if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection'
+                if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()
                     || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                    $this->results = array_merge($this->results, $normalizedValue);
+                    $this->results = array_replace($this->results, $normalizedValue);
                 }
             }
         }
@@ -149,16 +147,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
-        $values = $product->getValues();
-        $context = [
-            'identifier'  => $product->getIdentifier(),
-            'scopeCode'   => $context['scopeCode'],
-            'localeCodes' => $context['localeCodes'],
-        ];
-
-        foreach ($this->valuesFilters as $filter) {
-            $values = $filter->filter($values, $context);
+        if (null === $this->filter) {
+            return $product->getValues();
         }
+
+        $values = $this->filter->filterCollection(
+            $product->getValues(),
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.flat',
+            [
+                'channels' => [$context['scopeCode']],
+                'locales'  => $context['localeCodes']
+            ]
+        );
 
         return $values;
     }
@@ -199,19 +199,19 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      *
      * @param GroupInterface[] $groups
      */
-    protected function normalizeGroups($groups = null)
+    protected function normalizeGroups($groups = [])
     {
-        $this->results[self::FIELD_GROUPS] = $groups;
+        $this->results[self::FIELD_GROUPS] = implode(static::ITEM_SEPARATOR, $groups);
     }
 
     /**
      * Normalizes categories
      *
-     * @param string $categories
+     * @param array $categories
      */
-    protected function normalizeCategories($categories = '')
+    protected function normalizeCategories($categories = [])
     {
-        $this->results[self::FIELD_CATEGORY] = $categories;
+        $this->results[self::FIELD_CATEGORY] = implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**
@@ -219,17 +219,17 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      *
      * @param Association[] $associations
      */
-    protected function normalizeAssociations($associations = array())
+    protected function normalizeAssociations($associations = [])
     {
         foreach ($associations as $association) {
             $columnPrefix = $association->getAssociationType()->getCode();
 
-            $groups = array();
+            $groups = [];
             foreach ($association->getGroups() as $group) {
                 $groups[] = $group->getCode();
             }
 
-            $products = array();
+            $products = [];
             foreach ($association->getProducts() as $product) {
                 $products[] = $product->getIdentifier();
             }

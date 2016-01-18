@@ -16,7 +16,7 @@ interface ConfigurationRegistryInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function contains($name);
 
@@ -50,7 +50,7 @@ interface ConfigurationRegistryInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function isMultiple($name);
 
@@ -73,11 +73,4 @@ interface ConfigurationRegistryInterface
      * @return \Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface
      */
     public function getReader($name, $extension);
-
-    /**
-     * Return the ProductManager
-     *
-     * @return ProductManager
-     */
-    public function getProductManager();
 }

@@ -8,6 +8,8 @@ framework:
     session:
         storage_id: session.storage.mock_file
     csrf_protection: true
+    profiler:
+        collect: false
 
 web_profiler:
     toolbar: false
@@ -18,3 +20,11 @@ swiftmailer:
 
 assetic:
     use_controller: false
+
+pim_reference_data:
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
+        type: multi
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
+        type: simple

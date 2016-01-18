@@ -18,6 +18,7 @@ class ColumnInfoTransformer implements ColumnInfoTransformerInterface
 
     /**
      * Constructor
+     *
      * @param string $columnInfoClass
      */
     public function __construct($columnInfoClass)

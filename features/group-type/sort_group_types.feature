@@ -10,5 +10,5 @@ Feature: Sort group types
 
   Scenario: Successfully sort the group types in the grid
     Given I am on the group types page
-    Then the rows should be sorted ascending by code
-    And I should be able to sort the rows by code and label
+    Then the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code and Label

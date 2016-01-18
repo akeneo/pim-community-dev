@@ -94,9 +94,9 @@ pim_enrich:
             subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
             confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
             steps:
-                first: Choose products
+                first:  Choose products
                 second: Choose operation
-                third: Configure
+                third:  Configure
                 fourth: Confirm
 
         family:
@@ -106,52 +106,66 @@ pim_enrich:
             subtitle: Choose the operation you wish to perform on the selected family|Choose the operation you wish to perform on the selected %count% families
             confirm: You are about to update a family with the following information, please confirm.|You are about to update %count% families with the following information, please confirm.
             steps:
-                first: Choose families
+                first:  Choose families
                 second: Choose operation
-                third: Configure
+                third:  Configure
                 fourth: Confirm
 
         change-status:
-            label:         Change status (enable / disable)
-            description:   The selected products will be enabled or disabled.
-            success_flash: Product(s) status have been changed
+            label:          Change status (enable / disable)
+            description:    The selected products will be enabled or disabled.
+            success_flash:  Product(s) status have been changed
+            launched_flash: The bulk action "change status" has been launched. You will be notified when it is done.
 
         edit-common-attributes:
             label:         Edit attributes
             description:   The selected product's attributes will be edited with following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
-            success_flash: Product(s) attribute(s) have been updated
+            success_flash: The job updating product(s) status is currently running
+            launched_flash: The bulk action "edit common attributes" has been launched. You will be notified when it is done.
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
+                invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
+                no_valid_attribute: None of selected attribute can be applied on this product.
+
         classify:
-            label:         Classify products in categories
-            description:   The products will be positioned into following categories, the existing placement is kept.
-            success_flash: Product(s) have been classified into selected categories
+            label:          Classify products in categories
+            description:    The products will be positioned into following categories, the existing placement is kept.
+            success_flash:  Product(s) have been classified into selected categories
+            launched_flash: The bulk action "classify" has been launched. You will be notified when it is done.
 
         change-family:
-            label:         Change the family of products
-            description:   The family of the selected products will be changed to the chosen family
-            success_flash: The family of selected product(s) has been successfully changed
+            label:          Change the family of products
+            description:    The family of the selected products will be changed to the chosen family
+            success_flash:  The family of selected product(s) has been successfully changed
+            launched_flash: The bulk action "change family" has been launched. You will be notified when it is done.
 
         add-to-groups:
-            label:         Add to groups
-            description:   Select the groups in which to add the selected products
-            success_flash: Products were successfully added to the selected groups
-            no_group:      No group for now. Please start by creating a group.
+            label:          Add to groups
+            description:    Select the groups in which to add the selected products
+            success_flash:  Products were successfully added to the selected groups
+            launched_flash: The bulk action "add to groups" has been launched. You will be notified when it is done.
+            no_group:       No group for now. Please start by creating a group.
 
         add-to-variant-group:
             label:                                 Add to a variant group
             description:                           Select the variant group in which to add the selected products
             success_flash:                         Products were successfully added to the selected variant group
-            already_in_variant_group_or_not_valid: You cannot group the following products (%products%) because they are already in a variant group or doesn't have the group axis.
+            already_in_variant_group_or_not_valid: You cannot group the following product because it is already in a variant group or doesn't have the group axis.
             no_variant_group:                      No variant group for now. Please start by creating a variant group.
             no_valid_variant_group:                No variant group is sharing attributes with selected products.
             some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
+            launched_flash:                        The bulk action "add to variant group" has been launched. You will be notified when it is done.
 
         set-attribute-requirements:
             label:         Set attribute requirements
             description:   The following attribute requirements will be applied to the selected families
             success_flash: Attribute requirements were applied to the selected families
+            launched_flash: The bulk action "set attribute requirements" is launched. You will be notified when it will be done.
+
+        mass_action:
+            quick_export:
+                launched_flash: The job exporting products is currently running
 
     # Sequential edit operations
     sequential_edit_action:
@@ -247,6 +261,9 @@ pim_enrich:
             edit: Edit an association type
             remove: Remove an association type
             history: View association type history
+        job_tracker:
+            index: View process tracker
+
     acl_group:
         association_type: Association types
         attribute: Attributes
@@ -265,6 +282,11 @@ pim_enrich:
             from_variant:
                 title: Updated by a variant group
                 content: This field is updated by the following variant group
+
+    reference_data:
+        empty_value:
+            reference_data_type:
+                label: Choose the reference data type
 
 # Entity and page header titles
 attribute:
@@ -358,6 +380,7 @@ btn:
         variant group:    create variant group
         association type: create association type
         group type:       create group type
+        drag_or_upload:   Drag and drop to upload or click here
     edit:            edit
     save:            save
     save and back:   save and back to grid
@@ -373,6 +396,7 @@ btn:
     to grid:         back to grid
     to parent:       back to parent
     download_pdf:    PDF
+    download:        download
 
 # Confirmation messages
 confirmation:
@@ -429,13 +453,14 @@ flash:
         created: Tree successfully created
         updated: Tree successfully updated
         removed: Tree successfully removed
-        not removable: Trees connected to channels cannot be removed.
+        not removable: Trees associated to channels cannot be removed.
     channel:
         saved:   Channel successfully saved
         removed: Channel successfully removed
         not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
+        error.linked_to_channel: You cannot disable a currency linked to a channel.
     family:
         created:                       Family successfully created
         updated:                       Family successfully updated
@@ -569,7 +594,7 @@ Defaultvalue:                        Default value
 Variant:                             Variant
 Smart:                               Smart
 Useable as grid column:              Usable as grid column
-Useable as grid filter:              Usable as grid filter
+Useable as grid filter:              Usable in grid
 Family:                              Family
 Available locales:                   Available locales
 Locale specific:                     Locale specific
@@ -594,7 +619,7 @@ Cancel:               Cancel
 Choose a family:      Choose a family
 Choose a unit:        Choose a unit
 No matches found:     No matches found
-Create:                   Create
+Create:               Create
 
 Category tree: Category tree
 Completeness: Completeness
@@ -701,6 +726,10 @@ pim_title.mass_edit_action:
     choose: "Mass Edit | Choose"
     configure: "Mass Edit | Configure"
 
+pim_title.job_tracker:
+    index: Process tracker
+    show: "Process tracker | Show job"
+
 pim_title.dashboard: "Dashboard"
 
 pim_catalog_identifier:       Identifier
@@ -715,6 +744,9 @@ pim_catalog_image:            Image
 pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
+
+pim_reference_data_simpleselect: Reference data simple select
+pim_reference_data_multiselect:  Reference data multi select
 
 # Locales
 Activated: Activated
@@ -776,6 +808,7 @@ pim_enrich.mass_edit_action:
         label:         Change the family of products
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
+        no_family:     No family
 
     add-to-groups:
         label:         Add to groups
@@ -908,3 +941,37 @@ oro.locale:
 
 # Datagrid
 Selected products successfully deleted: Selected products successfully deleted
+
+pim_mass_edit:
+    notification:
+        mass_edit:
+            error:   Mass edit <strong>%label%</strong> failed
+            warning: Mass edit <strong>%label%</strong> finished with some warnings
+            success: Mass edit <strong>%label%</strong> finished
+        quick_export:
+            error:   Quick export <strong>%label%</strong> failed
+            warning: Quick export <strong>%label%</strong> finished with some warnings
+            success: Quick export <strong>%label%</strong> finished
+
+job_execution.summary:
+    mass_edited:        Mass edited
+    skip:               Skipped
+    skipped_products:   Skipped products
+    skipped_attributes: Skipped attributes
+
+pim_mass_edit_execution_show:  Mass edit executions | Details
+
+edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
+update_product_value.steps.update_product_value_processor.title: Update product value
+add_to_variant_group_clean.steps.excluded.title: Excluded product
+add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
+add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
+edit_common_attributes: Edit common attributes
+edit_common_attributes_clean: Clean files for common attributes
+
+mass_edit report:
+    overview: Mass edit reports
+
+job_tracker:
+    tab:
+        title: Process tracker

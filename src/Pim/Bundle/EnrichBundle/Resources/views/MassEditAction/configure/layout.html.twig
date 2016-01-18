@@ -1,19 +1,19 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_title')|trans %}
-    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_subtitle')|transchoice(productCount) %}
+    {% set title = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_title')|trans %}
+    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle')|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
 
     {{ JSFV(form) }}
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operator.operationAlias })) }) }}
+    {{ form_start(form, {'attr': {'class': operationAlias}, 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
         <div class="row">
             <div class="offset1 span12">
-                <h3>{{ ('pim_enrich.mass_edit_action.' ~ operator.operationAlias ~ '.label')|trans }}</h3>
-                <h4>{{ ('pim_enrich.mass_edit_action.' ~ operator.operationAlias ~ '.description')|trans }}</h4>
+                <h3>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.label')|trans }}</h3>
+                <h4>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}</h4>
                 <div class="pull-right">
                     {% block formTitle %}{% endblock %}
                 </div>
@@ -22,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.confirm')|transchoice(productCount) }}
+                {{ ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.confirm')|transchoice(productCount) }}
             </div>
         </div>
 
@@ -37,13 +37,13 @@
         </div>
 
         <div class="row offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
-            {{ elements.link('btn.next', null, {'class': ['next', 'btn-primary']}) }}
+            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
         </div>
 
         <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', null, {'class': 'cancel'}) }}
-            {{ elements.submitBtn('btn.confirm') }}
+            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.submitBtn('btn.confirm', 'ok') }}
         </div>
 
     {{ form_end(form) }}
@@ -53,7 +53,7 @@
     {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operator.operationAlias })) %}
+    {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operationAlias })) %}
     <script type="text/javascript">
         require(
             ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],

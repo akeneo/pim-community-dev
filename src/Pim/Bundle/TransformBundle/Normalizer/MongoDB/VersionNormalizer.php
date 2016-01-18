@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class VersionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @staticvar string */
-    const FORMAT = "mongodb_document";
+    const FORMAT = 'mongodb_document';
 
     /** @staticvar string */
     const MONGO_ID = '_id';

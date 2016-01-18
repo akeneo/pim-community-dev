@@ -23,6 +23,7 @@ Feature: Remove attribute from a family
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
     When I remove the "Manufacturer" attribute
+    And I confirm the deletion
     Then I should see flash message "Attribute successfully removed from the family"
     And I should see attribute "Long Description" in group "Other"
     When I am on the "bag-dolce-vita" product page
@@ -37,7 +38,7 @@ Feature: Remove attribute from a family
     And I save the family
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
       | channel    | locale                  | state    | message         | ratio |
@@ -50,7 +51,7 @@ Feature: Remove attribute from a family
     And I remove the "Manufacturer" attribute
     Then I should see flash message "Attribute successfully removed from the family"
     When I am on the "bag-noname" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
       | channel    | locale                  | state    | message            | ratio |
@@ -60,7 +61,7 @@ Feature: Remove attribute from a family
       | mobile     | French (France)         |          | Not yet calculated |       |
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
       | channel    | locale                  | state    | message  | ratio |

@@ -9,7 +9,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
@@ -28,6 +27,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated Will be removed in 1.6
  */
 class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
@@ -75,9 +76,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     const POST_UPDATE = 'pim_base_connector.direct_to_db_writer.post_update';
 
-    /** @var ProductManager */
-    protected $productManager;
-
     /** @var DocumentManager */
     protected $documentManager;
 
@@ -106,7 +104,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param ProductManager           $productManager
      * @param DocumentManager          $documentManager
      * @param PendingMassPersister     $pendingPersister
      * @param NormalizerInterface      $normalizer
@@ -116,7 +113,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param CacheClearer             $cacheClearer
      */
     public function __construct(
-        ProductManager $productManager,
         DocumentManager $documentManager,
         PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer,
@@ -125,7 +121,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $productClass,
         CacheClearer $cacheClearer
     ) {
-        $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
         $this->pendingPersister = $pendingPersister;
         $this->normalizer       = $normalizer;
@@ -142,8 +137,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         $this->collection = $this->documentManager->getDocumentCollection($this->productClass);
 
-        $productsToInsert = array();
-        $productsToUpdate = array();
+        $productsToInsert = [];
+        $productsToUpdate = [];
         foreach ($products as $product) {
             if (null === $product->getId()) {
                 $productsToInsert[] = $product;
@@ -152,8 +147,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 $productsToUpdate[] = $product;
             }
         }
-
-        $this->productManager->handleAllMedia($products);
 
         $this->eventDispatcher->dispatch(self::PRE_INSERT, new GenericEvent($productsToInsert));
         $this->eventDispatcher->dispatch(self::PRE_UPDATE, new GenericEvent($productsToUpdate));
@@ -222,7 +215,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 '_id' => $doc['_id']
             ];
             $this->collection->update($criteria, $doc);
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         }
     }
 
@@ -239,7 +232,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

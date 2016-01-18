@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -19,16 +19,17 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /** @var ProductManager $manager */
-    protected $manager;
+    /** @var ProductRepositoryInterface $repository */
+    protected $repository;
 
     /**
      * Constructor
-     * @param ProductManager $manager
+     *
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductManager $manager)
+    public function __construct(ProductRepositoryInterface $repository)
     {
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
     /**
@@ -65,13 +66,22 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $values = [];
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
-                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
+                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : null;
+
+                if (null === $option && !$attribute->isBackendTypeReferenceData()) {
+                    $this->addEmptyAxisViolation(
+                        $constraint,
+                        $variantGroup->getLabel(),
+                        $product->getIdentifier()->getVarchar(),
+                        $attribute->getCode()
+                    );
+                }
                 $values[] = sprintf('%s: %s', $code, $option);
             }
 
             $combination = implode(', ', $values);
             if (in_array($combination, $existingCombinations)) {
-                $this->addViolation($constraint, $variantGroup->getLabel(), $combination);
+                $this->addExistingCombinationViolation($constraint, $variantGroup->getLabel(), $combination);
             } else {
                 $existingCombinations[] = $combination;
             }
@@ -83,31 +93,22 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @param ProductInterface $product
      * @param Constraint       $constraint
-     *
-     * @return null
      */
     protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {
-        if (null === $product->getGroups()) {
+        $group = $product->getVariantGroup();
+        if (null === $group) {
             return;
         }
-
-        foreach ($product->getGroups() as $variantGroup) {
-            if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup, $product);
-                $matchingProducts = $this->getMatchingProductsForProduct($variantGroup, $product, $criteria);
-                if (0 !== count($matchingProducts)) {
-                    $values = [];
-                    foreach ($criteria as $item) {
-                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
-                    }
-                    $this->addViolation(
-                        $constraint,
-                        $variantGroup->getLabel(),
-                        implode(', ', $values)
-                    );
-                }
+        $criteria = $this->prepareQueryCriterias($group, $product, $constraint);
+        $matches = $this->getMatchingProductsForProduct($group, $product, $criteria);
+        if (count($matches) !== 0) {
+            $values = [];
+            foreach ($criteria as $item) {
+                $data = $item['attribute']->isBackendTypeReferenceData() ? $item['referenceData']['data'] : $item['option'];
+                $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $data);
             }
+            $this->addExistingCombinationViolation($constraint, $group->getLabel(), implode(', ', $values));
         }
     }
 
@@ -116,21 +117,42 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @param GroupInterface   $variantGroup
      * @param ProductInterface $product
+     * @param Constraint       $constraint
      *
      * @return array
      */
-    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $product)
-    {
+    protected function prepareQueryCriterias(
+        GroupInterface $variantGroup,
+        ProductInterface $product,
+        Constraint $constraint
+    ) {
         $criteria = [];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
-            if (null !== $value && null !== $value->getOption()) {
-                $criteria[] = [
-                    'attribute' => $attribute,
-                    'option'    => $value->getOption(),
+            if (null === $value || (null === $value->getOption() && !$attribute->isBackendTypeReferenceData())) {
+                $this->addEmptyAxisViolation(
+                    $constraint,
+                    $variantGroup->getLabel(),
+                    $product->getIdentifier()->getVarchar(),
+                    $attribute->getCode()
+                );
+
+                continue;
+            }
+
+            $current = ['attribute' => $attribute];
+
+            if (null !== $value->getOption()) {
+                $current['option'] = $value->getOption();
+            } elseif ($attribute->isBackendTypeReferenceData()) {
+                $current['referenceData'] = [
+                    'name' => $attribute->getReferenceDataName(),
+                    'data' => $value->getData(),
                 ];
             }
+
+            $criteria[] = $current;
         }
 
         return $criteria;
@@ -154,8 +176,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return [];
         }
 
-        $repository = $this->manager->getProductRepository();
-        $matchingProducts = $repository->findProductIdsForVariantGroup($variantGroup, $criteria);
+        $matchingProducts = $this->repository->findProductIdsForVariantGroup($variantGroup, $criteria);
 
         $matchingProducts = array_filter(
             $matchingProducts,
@@ -180,26 +201,42 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return [];
         }
 
-        $repository = $this->manager->getProductRepository();
-
-        return $repository->findAllForVariantGroup($variantGroup);
+        return $this->repository->findAllForVariantGroup($variantGroup);
     }
 
     /**
-     * Add violation to the executioncontext
+     * Add existing combination violation
      *
      * @param Constraint $constraint
      * @param string     $variantLabel
      * @param string     $values
      */
-    protected function addViolation(Constraint $constraint, $variantLabel, $values)
+    protected function addExistingCombinationViolation(Constraint $constraint, $variantLabel, $values)
     {
-        $this->context->addViolation(
+        $this->context->buildViolation(
             $constraint->message,
             [
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
             ]
-        );
+        )->addViolation();
+    }
+
+    /**
+     * @param Constraint $constraint
+     * @param string     $variantLabel
+     * @param string     $productIdentifier
+     * @param string     $axisCode
+     */
+    protected function addEmptyAxisViolation(Constraint $constraint, $variantLabel, $productIdentifier, $axisCode)
+    {
+        $this->context->buildViolation(
+            $constraint->missingAxisMessage,
+            [
+                '%group%'   => $variantLabel,
+                '%product%' => $productIdentifier,
+                '%axis%'    => $axisCode
+            ]
+        )->addViolation();
     }
 }

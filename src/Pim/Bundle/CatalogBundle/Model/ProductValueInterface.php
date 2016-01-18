@@ -1,6 +1,8 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -33,7 +35,7 @@ interface ProductValueInterface
     /**
      * Set integer data
      *
-     * @param integer $integer
+     * @param int $integer
      *
      * @return ProductValueInterface
      */
@@ -58,21 +60,21 @@ interface ProductValueInterface
     /**
      * Get media
      *
-     * @return ProductMediaInterface
+     * @return FileInfoInterface
      */
     public function getMedia();
 
     /**
      * Get decimal data
      *
-     * @return double
+     * @return float
      */
     public function getDecimal();
 
     /**
      * Set decimal data
      *
-     * @param double $decimal
+     * @param float $decimal
      *
      * @return ProductValueInterface
      */
@@ -101,7 +103,7 @@ interface ProductValueInterface
     /**
      * Get boolean data
      *
-     * @return boolean
+     * @return bool
      */
     public function getBoolean();
 
@@ -142,7 +144,7 @@ interface ProductValueInterface
     /**
      * Set boolean data
      *
-     * @param boolean $boolean
+     * @param bool $boolean
      *
      * @return ProductValueInterface
      */
@@ -179,18 +181,27 @@ interface ProductValueInterface
     /**
      * Get entity
      *
-     * @return ProductValueInterface $entity
+     * @return ProductInterface
+     *
+     * @deprecated please use getProduct()
      */
     public function getEntity();
 
     /**
+     * Get product
+     *
+     * @return ProductInterface
+     */
+    public function getProduct();
+
+    /**
      * Set media
      *
-     * @param ProductMediaInterface $media
+     * @param FileInfoInterface $media
      *
      * @return ProductValue
      */
-    public function setMedia(ProductMediaInterface $media);
+    public function setMedia(FileInfoInterface $media = null);
 
     /**
      * Get prices
@@ -330,7 +341,7 @@ interface ProductValueInterface
     public function setLocale($locale);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRemovable();
 
@@ -354,13 +365,24 @@ interface ProductValueInterface
      * @param ProductInterface $entity
      *
      * @return ProductValueInterface
+     *
+     * @deprecated please use setProduct()
      */
     public function setEntity(ProductInterface $entity = null);
 
     /**
+     * Set product
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductValueInterface
+     */
+    public function setProduct(ProductInterface $product = null);
+
+    /**
      * Get integer data
      *
-     * @return integer
+     * @return int
      */
     public function getInteger();
 

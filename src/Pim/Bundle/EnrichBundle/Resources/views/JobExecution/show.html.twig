@@ -1,0 +1,203 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% block content %}
+
+    {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label ~ ' [' ~ execution.jobInstance.code ~ ']' %}
+
+    {% set buttons %}
+        {{ elements.backLink(indexRoute) }}
+        <span id="archives"></span>
+        <span id="log"></span>
+    {% endset %}
+
+    {% set left %}
+        <ul class="inline" id="status">
+           <li>{{ 'Status'|trans }}: ...</li>
+       </ul>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, '', left) }}
+
+    <div class="container-fluid grid-container">
+        <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="{{ 'Loading ...'|trans }}" class="transparent loading" />
+        {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh', class: 'transparent loading btn-mini' }) }}
+        <table class="table table-bordered groups" id="job-execution">
+            <thead>
+                <th>{{ 'Step'|trans|upper }}</th>
+                <th>{{ 'Status'|trans|upper }}</th>
+                <th>{{ 'Summary'|trans|upper }}</th>
+                <th>{{ 'Start'|trans|upper }}</th>
+                <th>{{ 'End'|trans|upper }}</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5">{{ 'Collecting data about job execution...'|trans }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/template" id="job-execution-summary">
+        {% block job_execution_summary %}
+        <!-- Step execution information -->
+        <% _.each(jobExecution.stepExecutions, function (stepExecution) { %>
+            <tr>
+                <td><%= stepExecution.label %></td>
+                <td><%= stepExecution.status %></td>
+                <td>
+                    <table class="table-striped table-bordered table-hover">
+                        <% _.each(stepExecution.summary, function (value, key) { %>
+                            <tr>
+                                <td><%= key %></td>
+                                <td><%= value %></td>
+                            </tr>
+                        <% }); %>
+                    </table>
+                </td>
+                <td><%= stepExecution.startedAt %></td>
+                <td><%= stepExecution.endedAt %></td>
+            </tr>
+
+            <!-- Step execution warnings -->
+            <% _.each(stepExecution.warnings, function (warning) { %>
+                <tr class="warning">
+                    <td colspan="5">
+                        <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
+                        <ul>
+                            <% _.each(warning.reason.split("\n"), function(warningItem) { %>
+                                <% if (warningItem) { %>
+                                    <li><%= warningItem %></li>
+                                <% } %>
+                            <% }) %>
+                        </ul>
+                        <a class="data" href="#"
+                            data-display-label="<%= showLabel %>"
+                            data-hide-label="<%= hideLabel %>">
+                            <%= showLabel %>
+                        </a>
+                        <table class="hide table-striped table-bordered table-hover">
+                            <% _.each(warning.item, function (value, key) { %>
+                                <tr>
+                                    <td><%= key %></td>
+                                    <td>
+                                        <% if (typeof value === 'object') { %>
+                                            <%= JSON.stringify(value) %>
+                                        <% } else { %>
+                                            <%= value %>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </table>
+                    </td>
+                </tr>
+            <% }); %>
+
+            <!-- Step execution failures -->
+            <% _.each(stepExecution.failures, function (failure) { %>
+                <tr class="error">
+                    <td colspan="5">
+                        <span class="title"><%= stepExecution.label.toUpperCase() %></span>&nbsp;
+                        <%= failure %>
+                    </td>
+                </tr>
+            <% }); %>
+        <% }); %>
+
+        <!-- Job execution failures -->
+        <% _.each(jobExecution.failures, function (failure) { %>
+            <tr class="error">
+                <td colspan="5">
+                    <span class="title"><%= jobExecution.label.toUpperCase() %></span>&nbsp;
+                    <%= failure %>
+                </td>
+            </tr>
+        <% }); %>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-status">
+        {% block job_execution_status %}
+        <li><%= statusLabel %>: <%= jobExecution.status %></li>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-buttons">
+        {% block job_execution_buttons %}
+        <% _.each(archives, function (archive, archiver) { %>
+            <% if (_.size(archive.files) === 1) { %>
+
+                <% _.each(archive.files, function (file, key) { %>
+                     <a class="btn no-hash icons-holder-text" title="<%= archive.label %>"
+                     href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                         <i class="icon-download"></i> <%= archive.label %>
+                     </a>
+                <% }); %>
+
+            <% } else { %>
+
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-download"></i> <%= archive.label %>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <% _.each(archive.files, function (file, key) { %>
+                        <li>
+                            <a href="<%= Routing.generate(downloadFileRoute, {id: executionId, archiver: archiver, key: key }) %>">
+                            <%= key %>
+                            </a>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+            <% } %>
+        <% }); %>
+        {% endblock %}
+    </script>
+
+    <script type="text/template" id="job-execution-log-button">
+        {% block job_execution_log_button %}
+        <% if (hasLog) { %>
+            <a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+                <i class="icon-download"></i>
+                <%= downloadLabel %>
+            </a>
+        <% } %>
+        {% endblock %}
+    </script>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/job-execution-view'],
+            function($, jobExecutionView){
+                'use strict';
+
+                $(function () {
+                    jobExecutionView.init({
+                        loadingImageSelector:          'img.loading',
+                        refreshButtonSelector:         'a.loading',
+                        jobExecutionSelector:          '#job-execution tbody',
+                        jobExecutionStatusSelector:    '#status',
+                        jobExecutionButtonsSelector:   '.navbar-buttons #archives',
+                        jobExecutionLogButtonSelector: '.navbar-buttons #log',
+
+                        statusLabel:   '{{ 'Status'|trans }}',
+                        downloadLabel: '{{ 'Download log'|trans }}',
+
+                        path:              '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
+                        executionId:       {{ execution.id }},
+                        downloadFileRoute: '{{ download_file_route }}',
+                        downloadLogRoute:  '{{ download_log_route }}'
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}

@@ -52,7 +52,7 @@ class CatalogContext
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasLocaleCode()
     {
@@ -60,7 +60,7 @@ class CatalogContext
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasScopeCode()
     {

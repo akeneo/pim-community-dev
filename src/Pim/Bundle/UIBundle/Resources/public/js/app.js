@@ -1,6 +1,6 @@
-/* global define */
+/* jshint eqeqeq:false */
 define(['jquery', 'underscore'],
-    function($, _) {
+    function ($, _) {
         'use strict';
 
         /**
@@ -21,7 +21,7 @@ define(['jquery', 'underscore'],
              * @param {Object} object
              * @return {String}
              */
-            packToQueryString: function(object) {
+            packToQueryString: function (object) {
                 return $.param(object);
             },
 
@@ -31,12 +31,12 @@ define(['jquery', 'underscore'],
              * @param {String} query
              * @return {Object}
              */
-            unpackFromQueryString: function(query) {
+            unpackFromQueryString: function (query) {
                 var setValue = function (root, path, value) {
                     if (path.length > 1) {
                         var dir = path.shift();
-                        if (typeof root[dir] == 'undefined') {
-                            root[dir] = path[0] == '' ? [] : {};
+                        if (typeof root[dir] === 'undefined') {
+                            root[dir] = path[0] === '' ? [] : {};
                         }
                         setValue(root[dir], path, value);
                     } else {
@@ -58,7 +58,7 @@ define(['jquery', 'underscore'],
                     var first = path[1];
                     if (path[2]) {
                         //case of 'array[level1]' || 'array[level1][level2]'
-                        path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][')
+                        path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][');
                     } else {
                         //case of 'name'
                         path = [];
@@ -77,7 +77,7 @@ define(['jquery', 'underscore'],
              * @return {String}
              * @protected
              */
-            _decodeComponent: function(string) {
+            _decodeComponent: function (string) {
                 var result = string.replace(/\+/g, '%20');
                 result = decodeURIComponent(result);
                 return result;
@@ -95,15 +95,16 @@ define(['jquery', 'underscore'],
              * @param {Object} keys
              * @return {Object}
              */
-            invertKeys: function(object, keys) {
+            invertKeys: function (object, keys) {
                 var result = _.extend({}, object);
                 for (var key in keys) {
-                    var mirrorKey, baseKey;
+                    var mirrorKey;
+                    var baseKey;
                     baseKey = key;
                     mirrorKey = keys[key];
 
                     if (baseKey in result) {
-                        result[mirrorKey] = result[baseKey]
+                        result[mirrorKey] = result[baseKey];
                         delete result[baseKey];
                     }
                 }
@@ -121,7 +122,7 @@ define(['jquery', 'underscore'],
                 if (!_.isObject(value1)) {
                     if (_.isNumber(value1) || _.isNumber(value2)) {
                         var toNumber = function (v) {
-                            if (_.isString(v) && v == '') {
+                            if (_.isString(v) && v === '') {
                                 return NaN;
                             }
                             return Number(v);
@@ -155,7 +156,7 @@ define(['jquery', 'underscore'],
              * @param {*} value
              * @return {*}
              */
-            deepClone: function(value) {
+            deepClone: function (value) {
                 return $.extend(true, {}, value);
             }
         };

@@ -4,13 +4,13 @@ datagrid:
         options:
             entityHint: association type
         source:
-            acl_resource: pim_enrich_association_type_index
+            acl_resource: pim_enrich_associationtype_index
             entity: %pim_catalog.entity.association_type.class%
         properties:
             edit_link:
-                route: pim_enrich_association_type_edit
+                route: pim_enrich_associationtype_edit
             delete_link:
-                route: pim_enrich_association_type_remove
+                route: pim_enrich_associationtype_remove
         sorters:
             columns:
                 code:

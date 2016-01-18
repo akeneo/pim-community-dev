@@ -511,4 +511,3 @@
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
 - Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
-

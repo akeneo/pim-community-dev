@@ -66,6 +66,7 @@ class ProductMassActionManager
 
     /**
      * Filter attribute by removing attributes coming from variants
+     *
      * @param AttributeInterface[] $attributes
      * @param ProductInterface[]   $products
      *
@@ -73,11 +74,11 @@ class ProductMassActionManager
      */
     public function filterAttributesComingFromVariant(array $attributes, array $products)
     {
-        $variantAttributeCodes = $this->getAttributeCodesComingFromVariantGroups($products);
+        $variantAttrCodes = $this->getAttributeCodesComingFromVariantGroups($products);
 
         $filteredAttributes = [];
         foreach ($attributes as $attribute) {
-            if (!in_array($attribute->getCode(), $variantAttributeCodes)) {
+            if (!in_array($attribute->getCode(), $variantAttrCodes)) {
                 $filteredAttributes[] = $attribute;
             }
         }
@@ -91,7 +92,7 @@ class ProductMassActionManager
      * @param AttributeInterface[] $attributes
      * @param string               $currentLocaleCode
      *
-     * @return bool
+     * @return array
      */
     public function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
     {
@@ -109,13 +110,14 @@ class ProductMassActionManager
 
     /**
      * Get common attributes coming also from variant groups
+     *
      * @param ProductInterface[] $products
      *
      * @return array
      */
     public function getCommonAttributeCodesInVariant(array $products)
     {
-        $variantAttributeCodes = $this->getAttributeCodesComingFromVariantGroups($products);
+        $variantAttrCodes = $this->getAttributeCodesComingFromVariantGroups($products);
         $commonAttributes  = $this->findCommonAttributes($products);
 
         $commonAttributeCodes = [];
@@ -123,29 +125,30 @@ class ProductMassActionManager
             $commonAttributeCodes[] = $attribute->getCode();
         }
 
-        return array_intersect($variantAttributeCodes, $commonAttributeCodes);
+        return array_intersect($variantAttrCodes, $commonAttributeCodes);
     }
 
     /**
      * Get attributes coming from variant groups
+     *
      * @param ProductInterface[] $products
      *
      * @return array
      */
     protected function getAttributeCodesComingFromVariantGroups(array $products)
     {
-        $variantAttributeCodes = [];
+        $variantAttrCodes = [];
         foreach ($products as $product) {
             $variantGroup = $product->getVariantGroup();
 
             if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
-                $variantAttributeCodes = array_merge(
+                $variantAttrCodes = array_merge(
                     $variantGroup->getProductTemplate()->getAttributeCodes(),
-                    $variantAttributeCodes
+                    $variantAttrCodes
                 );
             }
         }
 
-        return array_unique($variantAttributeCodes);
+        return array_unique($variantAttrCodes);
     }
 }

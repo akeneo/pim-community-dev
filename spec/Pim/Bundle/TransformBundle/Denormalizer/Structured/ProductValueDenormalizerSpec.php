@@ -55,6 +55,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $serializer
             ->denormalize(null, 'pim_catalog_text', 'json', Argument::type('array'))
@@ -76,6 +77,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('decimal');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
 
@@ -85,7 +87,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
             ->willReturn(1);
 
         $value = $this->denormalize(
-            ['value' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+            ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
             'Pim\Bundle\CatalogBundle\Model\ProductValue',
             'json',
             ['attribute' => $attribute]

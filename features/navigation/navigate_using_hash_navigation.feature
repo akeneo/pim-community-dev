@@ -10,7 +10,7 @@ Feature: Navigate the application in hash navigation mode
     And I am on the home page
     Then I should be able visit the following pages without errors
       | page                                    |
-      | pim_enrich_association_type_index       |
+      | pim_enrich_associationtype_index        |
       | pim_enrich_attributegroup_create        |
       | pim_enrich_attributegroup_index         |
       | pim_enrich_categorytree_index           |
@@ -20,7 +20,7 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_currency_index               |
       | pim_enrich_family_index                 |
       | pim_enrich_group_index                  |
-      | pim_enrich_group_type_index             |
+      | pim_enrich_grouptype_index              |
       | pim_enrich_locale_index                 |
       | pim_enrich_product_index                |
       | pim_enrich_attribute_index              |
@@ -38,5 +38,20 @@ Feature: Navigate the application in hash navigation mode
       | oro_user_profile_view                   |
       | oro_user_role_create                    |
       | oro_user_role_index                     |
-      | oro_user_status_create                  |
-      | oro_user_status_list                    |
+
+  Scenario: Reload a page in hash navigation mode
+    Given a "footwear" catalog configuration
+    And the following family:
+      | code       | attributes                                                       |
+      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
+    And the following products:
+      | sku            | family     | color  | groups        |
+      | boots          | boots      |        |               |
+      | sneakers       | sneakers   |        |               |
+    And I am logged in as "Julia"
+    And I am on the products page
+    When I mass-edit products boots and sneakers
+    And I choose the "Edit common attributes" operation
+    And I display the Name attribute
+    And I reload the page
+    Then I should see the text "Edit common attributes"

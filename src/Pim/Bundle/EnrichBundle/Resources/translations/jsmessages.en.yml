@@ -72,6 +72,8 @@ alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server
         save_before_edit_other:          Please register your modifications on other rows before editing this one
+    session_storage:
+        not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 
 confirm:
     attribute_option:
@@ -110,3 +112,156 @@ pim_enrich:
         delete:
             confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
             confirm.title: Delete this {{ itemName }}
+
+    navigation:
+        link:
+            back_to_grid: Back to grid
+    entity:
+        product:
+            title: product
+            btn:
+                enable: Enable
+                enabled: Enabled
+                disable: Disable
+                disabled: Disabled
+                download_pdf: PDF
+                compare_translate: Compare / Translate
+                delete: Delete
+                save: Save
+                save_and_back: Save and back to grid
+            history:
+                version: Version
+                author: Author
+                logged_at: Logged at
+                more: More
+                less: Less
+                from: From
+                modified: Modified
+                property: Property
+                old_values: Old values
+                new_values: New values
+                actions: Actions
+            info:
+                deletion_successful: Product successfully deleted.
+                deletion_failed: The product could not be deleted.
+                update_successful: Product successfully updated.
+                update_failed: The product could not be updated.
+                field_not_ready: The product cannot be saved right now. The following fields are not ready: {{ fields }}
+                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+            error:
+                upload: An error occured during the file upload
+            meta:
+                created: Created
+                created_by: By
+                updated_by: By
+                updated: Last update
+                family:
+                    title: Family
+                    none: None
+                groups:
+                    title: Groups
+                    modal:
+                        title: Group {{ group }}
+                        view_group: View group
+                        group_label: Label
+                        more_products: '{{ count }} more products...'
+                        close: Close
+            copy:
+                select: Select
+                all: All
+                all_visible: All visible
+                none: None
+            variant_group:
+                updated_by: Updated by variant group
+                switch:
+                    yes: Yes
+                    no: No
+            optional_attribute:
+                remove: Remove this attribute
+            locale_specific_attribute:
+                unavailable: This locale specific field is not available in this locale
+            localizable:
+                channel_locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
+            media:
+                upload: Drag and drop to upload or click here
+        attribute_option:
+            code: Code
+            label: Label
+    confirmation:
+        leave:           Are you sure you want to leave this page?
+        discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+        delete_item:     Confirm deletion
+        delete:
+            product_attribute: Are you sure you want to delete this attribute from the product?
+    info:
+        not_applicable: N/A
+        entity:
+            updated: There are unsaved changes.
+    error:
+        upload: An error occured during the upload of the file
+    alert:
+        not_allowed: You are not allowed to access this page
+        error_occured: An error occured during the loading of the page
+    form:
+        product:
+            tab:
+                associations:
+                    title: Associations
+                    info:
+                        none_exist: No association types exist.
+                        show_products: Show products
+                        show_groups: Show groups
+                        number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                attributes:
+                    title: Attributes
+                    btn:
+                        add: Add
+                        add_attributes: Add attributes
+                    info:
+                        search_attributes: Search
+                        no_available_attributes: There are no more attributes to add
+                        attributes_selected: "{{ attributeCount }} attribute(s) selected"
+                categories:
+                    title: Categories
+            panel:
+                completeness:
+                    title: Completeness
+                    info:
+                        no_family: No family defined. Please define a family to calculate the completeness of this product.
+                        no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+                history:
+                    title: History
+            switch:
+                no: No
+                yes: Yes
+            sequential_edit:
+                info:
+                    products: products
+                    previous: Skip back to {{ product }} without saving.
+                    next: Skip to {{ product }} without saving.
+                btn:
+                    save_and_next: Save and next
+                    save_and_finish: Save and finish
+            change_family:
+                modal:
+                    title:            Change the product family
+                    merge_attributes: Current attributes will be merged with the ones in the new family.
+                    keep_attributes:  No attributes will be removed.
+                    change_family_to: Change the family to
+                    empty_selection:  Choose a family
+            flash:
+                attribute_deletion_error: An error occured during the attribute deletion
+            mass_edit:
+                select_attributes: Select attributes
+                select: Select
+        attribute_option:
+            flash:
+                option_created: Attribute option successfully created
+                error_creating_option: An error ocurred when trying to create the attribute option
+            add_option_modal:
+                title: Add attribute option
+                confirm: Add
+                cancel: Cancel
+
+pim_enrich.error:
+    exception.title: Oh snap! A {{ status_code }} error occured...

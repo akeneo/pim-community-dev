@@ -28,13 +28,13 @@ class UniqueVariantGroupValidator extends ConstraintValidator
                 }
             }
             if (count($variantGroups) > 1) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->message,
-                    array(
+                    [
                         '%groups%'  => $this->formatValues($variantGroups, ConstraintValidator::OBJECT_TO_STRING),
                         '%product%' => $product->getIdentifier()
-                    )
-                );
+                    ]
+                )->addViolation();
             }
         }
     }

@@ -4,18 +4,18 @@ namespace spec\Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Prophecy\Argument;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {

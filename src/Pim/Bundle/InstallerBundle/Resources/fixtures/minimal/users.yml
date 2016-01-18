@@ -5,7 +5,6 @@ users:
         email: 'admin@example.com'
         firstname: Peter
         lastname: Doe
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master

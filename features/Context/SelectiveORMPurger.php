@@ -2,8 +2,8 @@
 
 namespace Context;
 
-use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Internal\CommitOrderCalculator;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -28,7 +28,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     protected $excludedTables;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $purgeMode = self::PURGE_MODE_DELETE;
 
@@ -49,7 +49,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
      */
     public function purge()
     {
-        $classes = array();
+        $classes   = array();
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
 
         foreach ($metadatas as $metadata) {

@@ -6,9 +6,11 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Sequential edit action controller for products
@@ -31,6 +33,9 @@ class SequentialEditController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /** @var array */
     protected $objects;
 
@@ -41,33 +46,31 @@ class SequentialEditController
      * @param MassActionDispatcher  $massActionDispatcher
      * @param SequentialEditManager $seqEditManager
      * @param UserContext           $userContext
+     * @param NormalizerInterface   $normalizer
      */
     public function __construct(
         RouterInterface $router,
         MassActionDispatcher $massActionDispatcher,
         SequentialEditManager $seqEditManager,
-        UserContext $userContext
+        UserContext $userContext,
+        NormalizerInterface $normalizer
     ) {
         $this->router               = $router;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->seqEditManager       = $seqEditManager;
         $this->userContext          = $userContext;
+        $this->normalizer           = $normalizer;
     }
 
     /**
      * Action for product sequential edition
+     *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_product_edit_attributes")
      * @return RedirectResponse
      */
     public function sequentialEditAction(Request $request)
     {
-        $sequentialEdit = $this->seqEditManager->createEntity(
-            $this->getObjects($request),
-            $this->userContext->getUser()
-        );
-
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
             return new RedirectResponse(
                 $this->router->generate(
@@ -76,6 +79,12 @@ class SequentialEditController
                 )
             );
         }
+
+        $sequentialEdit = $this->seqEditManager->createEntity(
+            $this->getObjects($request),
+            $this->userContext->getUser()
+        );
+
         $this->seqEditManager->save($sequentialEdit);
 
         return new RedirectResponse(
@@ -90,7 +99,20 @@ class SequentialEditController
     }
 
     /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Request $request)
+    {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
+
+        return new JsonResponse($this->normalizer->normalize($sequentialEdit, 'internal_api'));
+    }
+
+    /**
      * Get products to mass edit
+     *
      * @param Request $request
      *
      * @return array

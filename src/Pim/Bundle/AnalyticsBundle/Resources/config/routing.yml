@@ -1,0 +1,3 @@
+pim_analytics_data_collect:
+    path: /analytics/collect_data
+    defaults: { _controller: pim_analytics.controller.data:collectAction, _format: json }

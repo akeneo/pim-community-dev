@@ -1,7 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\GroupType:
     type: entity
     table: pim_catalog_group_type
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     fields:
         id:
             type: integer
@@ -24,3 +25,4 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach

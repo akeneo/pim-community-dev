@@ -4,17 +4,19 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
+use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -26,12 +28,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class ProductTransformer extends EntityTransformer
 {
-    /** @staticvar the identifier attribute type */
-    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-
-    /** @var ProductManager */
-    protected $productManager;
-
     /** @var AttributeCache */
     protected $attributeCache;
 
@@ -59,6 +55,18 @@ class ProductTransformer extends EntityTransformer
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var string */
+    protected $productClass;
+
+    /** @var string */
+    protected $productValueClass;
+
     /**
      * Constructor
      *
@@ -66,26 +74,35 @@ class ProductTransformer extends EntityTransformer
      * @param PropertyAccessorInterface       $propertyAccessor
      * @param GuesserInterface                $guesser
      * @param ColumnInfoTransformerInterface  $colInfoTransformer
-     * @param ProductManager                  $productManager
      * @param AttributeCache                  $attributeCache
      * @param CachedReader                    $associationReader
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ProductBuilderInterface         $productBuilder
+     * @param ProductRepositoryInterface      $productRepository
+     * @param string                          $productClass
+     * @param string                          $productValueClass
      */
     public function __construct(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
-        ProductManager $productManager,
         AttributeCache $attributeCache,
         CachedReader $associationReader,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ProductBuilderInterface $productBuilder,
+        ProductRepositoryInterface $productRepository,
+        $productClass,
+        $productValueClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
-        $this->productManager = $productManager;
+        $this->productRepository = $productRepository;
         $this->attributeCache = $attributeCache;
         $this->associationReader = $associationReader;
         $this->templateUpdater = $templateUpdater;
+        $this->productBuilder = $productBuilder;
+        $this->productClass = $productClass;
+        $this->productValueClass = $productValueClass;
     }
 
     /**
@@ -107,9 +124,7 @@ class ProductTransformer extends EntityTransformer
             throw new MissingIdentifierException();
         }
 
-        return $this->productManager->getProductRepository()->findOneByIdentifier(
-            $data[$this->identifierAttribute->getCode()]
-        );
+        return $this->productRepository->findOneByIdentifier($data[$this->identifierAttribute->getCode()]);
     }
 
     /**
@@ -117,7 +132,7 @@ class ProductTransformer extends EntityTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return $this->productManager->createProduct();
+        return $this->productBuilder->createProduct();
     }
 
     /**
@@ -163,7 +178,7 @@ class ProductTransformer extends EntityTransformer
     protected function setProductValues($class, $entity, array $data)
     {
         $reqAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
-        $flexibleValueClass = $this->productManager->getProductValueName();
+        $flexibleValueClass = $this->productValueClass;
         $this->transformedColumns[$flexibleValueClass] = array();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
@@ -266,10 +281,10 @@ class ProductTransformer extends EntityTransformer
     {
         $productValue = $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
         if (null === $productValue) {
-            $productValue = $this->productManager->createProductValue();
-            $productValue->setAttribute($columnInfo->getAttribute());
-            $productValue->setLocale($columnInfo->getLocale());
-            $productValue->setScope($columnInfo->getScope());
+            $attribute = $columnInfo->getAttribute();
+            $locale = $columnInfo->getLocale();
+            $scope = $columnInfo->getScope();
+            $productValue = $this->productBuilder->createProductValue($attribute, $locale, $scope);
             $product->addValue($productValue);
         }
 
@@ -288,7 +303,7 @@ class ProductTransformer extends EntityTransformer
             return;
         }
 
-        $class = $this->productManager->getProductName();
+        $class = $this->productClass;
         $columnsInfo = $this->colInfoTransformer->transform($class, $labels);
 
         $this->attributes += $this->attributeCache->getAttributes($columnsInfo);
@@ -303,7 +318,7 @@ class ProductTransformer extends EntityTransformer
                 $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
                 $this->attributeColumnsInfo[] = $columnInfo;
-                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+                if (AttributeTypes::IDENTIFIER == $attribute->getAttributeType()) {
                     $this->identifierAttribute = $attribute;
                 }
             } else {
@@ -334,7 +349,7 @@ class ProductTransformer extends EntityTransformer
     {
         return array_merge(
             parent::getTransformedColumnsInfo($class),
-            $this->transformedColumns[$this->productManager->getProductValueName()]
+            $this->transformedColumns[$this->productValueClass]
         );
     }
 }

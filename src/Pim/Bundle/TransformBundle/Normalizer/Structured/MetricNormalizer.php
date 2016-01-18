@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class MetricNormalizer implements NormalizerInterface
 {
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['json', 'xml'];
 
@@ -26,7 +26,9 @@ class MetricNormalizer implements NormalizerInterface
     {
         return [
             'data' => $object->getData(),
-            'unit' => $object->getUnit()
+            'unit' => $object->getUnit() ?
+                $object->getUnit() :
+                $object->getValue()->getAttribute()->getDefaultMetricUnit()
         ];
     }
 

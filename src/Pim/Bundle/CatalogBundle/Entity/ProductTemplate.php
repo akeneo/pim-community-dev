@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  */
 class ProductTemplate implements ProductTemplateInterface
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
     /** @var array */
@@ -34,7 +34,7 @@ class ProductTemplate implements ProductTemplateInterface
         $tmp = new ArrayCollection();
 
         foreach ($values as $value) {
-            $tmp[ProductValueKeyGenerator::getKey($value)] = $value;
+            $tmp[ProductValueKeyGenerator::getKey($value, '_')] = $value;
         }
 
         $this->values = $tmp;
@@ -50,7 +50,7 @@ class ProductTemplate implements ProductTemplateInterface
         $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $values[ProductValueKeyGenerator::getKey($value)] = $value;
+            $values[ProductValueKeyGenerator::getKey($value, '_')] = $value;
         }
 
         return $values;
@@ -108,6 +108,14 @@ class ProductTemplate implements ProductTemplateInterface
     public function hasValueForAttribute(AttributeInterface $attribute)
     {
         return isset($this->valuesData[$attribute->getCode()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasValueForAttributeCode($attributeCode)
+    {
+        return isset($this->valuesData[$attributeCode]);
     }
 
     /**

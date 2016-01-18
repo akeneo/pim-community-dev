@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Type for option value attribute form
@@ -40,6 +40,7 @@ class AttributeOptionValueType extends AbstractType
 
     /**
      * Add field id to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldId(FormBuilderInterface $builder)
@@ -49,6 +50,7 @@ class AttributeOptionValueType extends AbstractType
 
     /**
      * Add field locale to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldLocale(FormBuilderInterface $builder)
@@ -58,6 +60,7 @@ class AttributeOptionValueType extends AbstractType
 
     /**
      * Add field value to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldValue(FormBuilderInterface $builder)
@@ -68,7 +71,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

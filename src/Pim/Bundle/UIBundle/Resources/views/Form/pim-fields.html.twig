@@ -76,16 +76,6 @@
 {% endspaceless %}
 {% endblock form_label %}
 
-{% block choice_widget_collapsed %}
-    {% set client_validation = false %}
-    {{ parent() }}
-{% endblock choice_widget_collapsed %}
-
-{% block form_widget_simple %}
-    {% set client_validation = false %}
-    {{ parent() }}
-{% endblock form_widget_simple %}
-
 {% block form_info %}
     {% spaceless %}
         {% if type is not defined or type != 'hidden' %}
@@ -163,15 +153,15 @@
 {% block pim_enrich_media_row %}
     {% spaceless %}
 
-    {% set empty = not form.vars.value or not form.vars.value.filename %}
+    {% set empty = not form.vars.value or not form.vars.value.key %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
-            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
             <div class="controls">
                 <label class="upload-zone file{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
                                 <i class="icon-file upload-preview"></i>
                             </a>
                             {% set filename = form.vars.value.originalFilename %}
@@ -189,22 +179,21 @@
                         </a>
                     {% endif %}
                     {% if empty %}
-                        {{ form_widget(form.file) }}
+                        {{ form_widget(form.uploadedFile) }}
                     {% else %}
-                        {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
                 {{ block('form_info') }}
                 {{ form_widget(form.id) }}
-                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
         <script type="text/javascript">
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput.init('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.uploadedFile.vars.id }}');
                 }
             );
         </script>
@@ -228,16 +217,16 @@
 {% block pim_enrich_image_row %}
     {% spaceless %}
 
-    {% set empty = not form.vars.value or not form.vars.value.filename %}
+    {% set empty = not form.vars.value or not form.vars.value.key %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
-            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
             <div class="controls">
                 <label class="upload-zone image{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'thumbnail_small' }) }}">
                             </a>
                             {% set filename = form.vars.value.originalFilename %}
                             {% if filename|length > 20 %}
@@ -254,22 +243,21 @@
                         </a>
                     {% endif %}
                     {% if empty %}
-                        {{ form_widget(form.file) }}
+                        {{ form_widget(form.uploadedFile) }}
                     {% else %}
-                        {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.uploadedFile, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
                 {{ block('form_info') }}
                 {{ form_widget(form.id) }}
-                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
         <script type="text/javascript">
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput.init('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.uploadedFile.vars.id }}');
                 }
             );
         </script>
@@ -401,6 +389,10 @@
     {{ block('form_row_field') }}
 {% endblock %}
 
+{% block pim_ajax_reference_data_row %}
+    {{ block('form_row_field') }}
+{% endblock %}
+
 {% block oro_date_widget %}
     {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker', 'placeholder': placeholder|trans }) %}
     {% if form.vars.disabled %}
@@ -421,13 +413,13 @@
                 {{ form_widget(form.identity.id) }}
                 {{ form_widget(form.permissions) }}
             {% else %}
-                <div class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field' : '' }}">
+                <div class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
                     {{ form_widget(form.identity) }}
                     {{ form_widget(form.permissions) }}
                 </div>
             {% endif %}
         {% else %}
-            <tr class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field' : '' }}">
+            <tr class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
                 <td>
                     {{ form_widget(form.identity) }}
                 </td>
@@ -446,7 +438,7 @@
     {% if 'entity' == form.parent.vars.value.extensionKey %}
         {% for field in privileges_config['permissions'] %}
             {% for permission in form if permission.vars.value.name == field %}
-                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field' : '' %}
+                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field hide' : '' %}
                 {% if 'entity:Oro\\Bundle\\UserBundle\\Entity\\Role' == form.parent.vars.value.identity.id %}
                     {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
                 {% endif %}
@@ -469,4 +461,8 @@
     <i class="icon-{{ form.vars.checked ? 'ok ' : 'remove non-' }}granted acl-permission-toggle"></i>
     {% set attr = attr|merge({ class: 'hide' }) %}
     {{ block('checkbox_widget') }}
+{% endblock %}
+
+{% block oro_acl_label_widget %}
+    <strong>{{ value|trans }}</strong>
 {% endblock %}

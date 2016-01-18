@@ -1,0 +1,3 @@
+<% _.each(state.panels, function(panel) { %>
+    <button class="btn <%- panel.code === state.currentPanel ? 'active' : '' %>" data-panel="<%- panel.code %>"><%- panel.label %></button>
+<% }) %>

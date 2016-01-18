@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\StorageUtils\Cursor;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 
 class PaginatorFactorySpec extends ObjectBehavior
 {

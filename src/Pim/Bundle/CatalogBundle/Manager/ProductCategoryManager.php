@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
@@ -17,12 +17,12 @@ use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 class ProductCategoryManager
 {
     /**
-     * @var ProductCategoryRepositoryInterface $productRepository
+     * @var ProductCategoryRepositoryInterface
      */
     protected $productRepository;
 
     /**
-     * @var CategoryRepositoryInterface $categoryRepository
+     * @var CategoryRepositoryInterface
      */
     protected $categoryRepository;
 
@@ -30,7 +30,7 @@ class ProductCategoryManager
      * Constructor
      *
      * @param ProductCategoryRepositoryInterface $productRepo  Product repository
-     * @param CategoryRepositoryInterface        $categoryRepo Category repository
+     * @param CategoryRepositoryInterface        $categoryRepo Product category repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
@@ -63,10 +63,10 @@ class ProductCategoryManager
      * The third parameter allow to include the actual node or not
      *
      * @param CategoryInterface $category   the requested category node
-     * @param boolean           $inChildren true to include children in count
-     * @param boolean           $inProvided true to include the provided none to count product
+     * @param bool              $inChildren true to include children in count
+     * @param bool              $inProvided true to include the provided none to count product
      *
-     * @return integer
+     * @return int
      */
     public function getProductsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
     {
@@ -84,7 +84,7 @@ class ProductCategoryManager
      * parameter
      *
      * @param CategoryInterface $category   the requested node
-     * @param boolean           $inChildren true to take children not into account
+     * @param bool              $inChildren true to take children not into account
      *
      * @return array
      */
@@ -104,6 +104,9 @@ class ProductCategoryManager
      * @param ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     *
+     * @deprecated Will be remove in 1.5, please use ProductCategoryRepositoryInterface::getProductCountByTree()
+     *             instead.
      */
     public function getProductCountByTree(ProductInterface $product)
     {

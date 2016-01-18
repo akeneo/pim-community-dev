@@ -2,14 +2,9 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributeOptionValueTypeSpec extends ObjectBehavior
 {
@@ -39,7 +34,7 @@ class AttributeOptionValueTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_option(OptionsResolverInterface $resolver)
+    function it_sets_default_option(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

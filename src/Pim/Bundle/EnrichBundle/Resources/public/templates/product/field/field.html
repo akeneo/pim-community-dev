@@ -1,0 +1,29 @@
+<div class="<%- type %> form-field original-field <%- editMode %>">
+    <header>
+        <label>
+            <%- label %>
+            <span class="label-elements-container"></span>
+        </label>
+        <span class="field-info pull-right">
+            <% if (attribute.localizable || attribute.scopable) { %>
+                <span class="field-context">
+                    <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>
+                    <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>
+                </span>
+            <% } %>
+        </span>
+        <% if (context.optional && context.removable && 'edit' === editMode) { %>
+            <i class="icon-remove remove-attribute" data-attribute="<%- attribute.code %>" data-toggle="tooltip" title="<%- _.__('pim_enrich.entity.product.optional_attribute.remove') %>"></i>
+        <% } %>
+    </header>
+    <div class="field-input">
+    </div>
+    <footer>
+        <div class="footer-elements-container">
+
+        </div>
+    </footer>
+</div>
+<div class="comparison-elements-container">
+
+</div>

@@ -216,6 +216,23 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
+     * @param string $name
+     * @param string $key
+     * @param string $because
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function validEntityCodeExpected($name, $key, $because, $action, $type, $data)
+    {
+        $err = 'Attribute or field "%s" expects a valid %s. %s, "%s" given (for %s %s).';
+
+        return new self(sprintf($err, $name, $key, $because, $data, $action, $type));
+    }
+
+    /**
      * @param string $attribute
      * @param string $key
      * @param string $action
@@ -263,6 +280,30 @@ class InvalidArgumentException extends \InvalidArgumentException
 
     /**
      * @param string $name
+     * @param string $key
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayStringValueExpected($name, $key, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with a string value for the key "%s", '.
+                '"%s" given (for %s %s).',
+                $name,
+                $key,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
      * @param string $action
      * @param string $type
      *
@@ -276,6 +317,24 @@ class InvalidArgumentException extends \InvalidArgumentException
                 $name,
                 $action,
                 $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param array  $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function associationFormatExpected($name, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects a valid association format as ["associationTypeCode1" => '.
+                '["products" => ["sku1, "sku2"], "groups" => ["group1"]]]", "%s" given.',
+                $name,
+                print_r($data, true)
             )
         );
     }

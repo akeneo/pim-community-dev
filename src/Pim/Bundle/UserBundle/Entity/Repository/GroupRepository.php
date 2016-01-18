@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
-use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * User group repository
@@ -17,8 +16,7 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @deprecated will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4
  */
 class GroupRepository extends BaseGroupRepository implements
-    IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -66,25 +64,5 @@ class GroupRepository extends BaseGroupRepository implements
     public function getIdentifierProperties()
     {
         return array('name');
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getReferenceProperties()
-    {
-        return $this->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
     }
 }

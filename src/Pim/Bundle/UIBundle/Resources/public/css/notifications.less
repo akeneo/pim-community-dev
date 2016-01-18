@@ -1,0 +1,198 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+#oroplatform-header .nav #header-notification-widget {
+  ul.dropdown-menu {
+    width: auto;
+    margin: -3px -1px 0 0;
+    padding-top: 1px;
+    padding-bottom: 0;
+
+    ol.scroll-menu {
+      list-style: none;
+      margin: 0;
+      width: 400px;
+      max-height: 80vh;
+      overflow-x: hidden;
+
+      li {
+        border-top: none;
+        border-bottom: 1px solid #ccc;
+
+        &>a {
+          position: relative;
+          padding: 15px;
+          min-height: 80px;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          opacity: 0.4;
+          
+          &:hover {
+            background-color: darken(@color-purple_hover, 2%);
+          }
+
+          &.new {
+            background-color: white;
+            opacity: 1;
+
+            &:hover {
+              background-color: darken(@color-purple_hover, 2%);
+            }
+          }
+
+          .btn {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+            background-color: white;
+            border: 1px solid @akeneo-grey;
+
+            &.icons-holder-text {
+              padding: 0 10px 0 32px;
+              background-color: @akeneo-light;
+
+              i{
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+              }
+            }
+
+            &:hover {
+              background-color: @akeneo-light;
+            }
+          }
+
+          .action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 2px;
+            border: @akeneo-grey solid 1px;
+            flex-grow: 0;
+            flex-shrink: 1;
+            position: relative;
+            background-position: center center;
+            background-size: 50% 50%;
+            background-repeat: no-repeat;
+
+            &.import {
+              background-image: url("/bundles/pimui/images/icon-import.svg");
+            }
+
+            &.export {
+              background-image: url("/bundles/pimui/images/icon-export.svg");
+            }
+
+            &.mass-edit {
+              background-image: url("/bundles/pimui/images/icon-edit.svg");
+            }
+
+            &.mass-upload {
+              background-image: url("/bundles/pimui/images/icon-import.svg");
+            }
+
+            &.quick-export {
+              background-image: url("/bundles/pimui/images/icon-export.svg");
+            }
+          }
+
+          .metas {
+            font-size: 12px;
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-left: 15px;
+
+            > span {
+              display: block;
+
+              &.title {
+                font-size: 14px;
+                font-weight: bold;
+              }
+
+              &.message {
+                color: @akeneo-dark;
+                line-height: 20px;
+                width: 220px;
+
+                > strong {
+                  color: @akeneo-purple;
+                  font-weight: normal;
+                }
+              }
+            }
+          }
+
+          time {
+            position: absolute;
+            top: 18px;
+            right: 55px;
+            text-align: right;
+            font-size: 11px;
+            color: @akeneo-grey;
+          }
+
+          i {
+            padding-right: 5px;
+          }
+
+          i.status {
+            width: 20px;
+            height: 20px;
+            color: white;
+            line-height: 20px;
+            text-align: center;
+            padding: 0;
+            border-radius: 2px;
+            color: white;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            margin: 0;
+
+            &.icon-ok {
+              background-color: @fern-green;
+            }
+
+            &.icon-warning-sign { 
+              background-color: @casablanca-yellow;
+            }
+  
+            &.icon-remove { 
+              background-color: @chesnut-red;
+            }
+          }
+
+          i.action {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 26px;
+            text-align: center;
+            background-color: @akeneo-light;
+            border: 1px solid @akeneo-grey;
+            color: @akeneo-grey;
+            .border-radius(2px);
+            font-size: 14px;
+            padding:4px;
+
+            &:hover {
+              background-color: @akeneo-grey;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    p {
+      span {
+        padding: 0 10px;
+      }
+    }
+  }
+}

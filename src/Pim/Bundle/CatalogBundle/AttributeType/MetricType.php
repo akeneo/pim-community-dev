@@ -141,6 +141,6 @@ class MetricType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_metric';
+        return AttributeTypes::METRIC;
     }
 }

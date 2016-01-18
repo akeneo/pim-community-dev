@@ -9,7 +9,7 @@ use Doctrine\Common\Cache\Cache;
 /**
  * Proxy for ApcCache in http mode and ArrayCache in command line mode
  *
- * @deprecated will be removed in 1.4
+ * This class replaces Doctrine\Common\Cache\ApcCache in the configuration
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

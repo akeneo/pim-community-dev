@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -103,7 +102,7 @@ class GroupHandlerSpec extends ObjectBehavior
 
         $form->isValid()->willReturn(false);
         $groupType->isVariant()->willReturn(false);
-        
+
         $group->getType()->willReturn($groupType);
         $saver->save($group)->shouldNotBeCalled();
         $this->process($group)->shouldReturn(false);

@@ -18,9 +18,9 @@ Feature: Sort products per attributes
   Scenario: Successfully sort products by sku
     Given I am on the products page
     And the grid should contain 5 elements
-    And I should be able to sort the rows by sku
+    And I should be able to sort the rows by SKU
 
-  Scenario: Successfully filter products by boolean value for boolean attributes
+  Scenario: Successfully sort products by boolean value for boolean attributes
     And I am on the "blue_shirt" product page
     And I visit the "Additional" group
     When I check the "Handmade" switch

@@ -52,6 +52,6 @@ class TextType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_text';
+        return AttributeTypes::TEXT;
     }
 }

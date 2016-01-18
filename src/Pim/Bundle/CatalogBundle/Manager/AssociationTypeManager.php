@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
 /**
@@ -43,18 +42,5 @@ class AssociationTypeManager
     public function getAssociationTypes()
     {
         return $this->repository->findAll();
-    }
-
-    /**
-     * Remove an association type
-     *
-     * @param AssociationTypeInterface $associationType
-     *
-     * @deprecated will be removed in 1.4, replaced by AssociationTypeRemover::remove
-     */
-    public function remove(AssociationTypeInterface $associationType)
-    {
-        $this->objectManager->remove($associationType);
-        $this->objectManager->flush();
     }
 }

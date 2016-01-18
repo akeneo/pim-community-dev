@@ -1,0 +1,3 @@
+configuration_rest:
+    resource: '@PimReferenceDataBundle/Resources/config/routing/configuration_rest.yml'
+    prefix: /rest/reference-data-configuration

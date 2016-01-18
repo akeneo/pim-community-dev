@@ -1,13 +1,8 @@
 assetic:
     bundles:
         - OroAsseticBundle
-        - OroUIBundle
-        - OroUserBundle
-        - OroFilterBundle
         - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
-        - OroSecurityBundle
+        - PimUserBundle
         - PimUIBundle
         - PimCatalogBundle
         - PimEnrichBundle

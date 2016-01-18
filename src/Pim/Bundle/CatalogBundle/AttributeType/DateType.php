@@ -59,6 +59,6 @@ class DateType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_date';
+        return AttributeTypes::DATE;
     }
 }

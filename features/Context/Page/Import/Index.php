@@ -14,7 +14,7 @@ use Context\Page\Job\Index as JobIndex;
 class Index extends JobIndex
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/collect/import/';
 

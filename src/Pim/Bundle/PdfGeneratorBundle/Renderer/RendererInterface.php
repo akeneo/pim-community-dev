@@ -13,6 +13,7 @@ interface RendererInterface
 {
     /**
      * Render the given entity in the specified format
+     *
      * @param mixed  $object
      * @param string $format
      * @param array  $context
@@ -23,10 +24,11 @@ interface RendererInterface
 
     /**
      * Test if the given generator support given object and format rendering
+     *
      * @param mixed  $object
      * @param string $format
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($object, $format);
 }
