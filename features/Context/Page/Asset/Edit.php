@@ -4,7 +4,6 @@ namespace Context\Page\Asset;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
-use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -19,9 +18,6 @@ class Edit extends Form
     /** @var string */
     protected $path = '/enrich/asset/{id}/edit';
 
-    /** @var JsTreeManipulator */
-    protected $jsTreeManipulator;
-
     /**
      * {@inheritdoc}
      */
@@ -29,14 +25,15 @@ class Edit extends Form
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->jsTreeManipulator = new JsTreeManipulator();
-
         $this->elements = array_merge(
             $this->elements,
             [
                 'Locales dropdown' => ['css' => '#locale-switcher'],
                 'Category pane'    => ['css' => '#pimee_product_asset-tabs-categories'],
-                'Category tree'    => ['css' => '#trees'],
+                'Category tree'    => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
             ]
         );
     }
@@ -238,29 +235,5 @@ class Edit extends Form
         $link->click();
 
         return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Edit
-     */
-    public function expandCategory($category)
-    {
-        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }

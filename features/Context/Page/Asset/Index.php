@@ -6,7 +6,6 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
-use Pim\Behat\Manipulator\TreeManipulator\JsTreeManipulator;
 
 /**
  * Product assets index page
@@ -20,9 +19,6 @@ class Index extends Grid
     /** @var string */
     protected $path = '/enrich/asset/';
 
-    /** @var JsTreeManipulator */
-    protected $jsTreeManipulator;
-
     /**
      * {@inheritdoc}
      */
@@ -30,7 +26,6 @@ class Index extends Grid
     {
         parent::__construct($session, $pageFactory, $parameters);
 
-        $this->jsTreeManipulator = new JsTreeManipulator();
         $this->elements = array_merge(
             $this->elements,
             [
@@ -141,29 +136,5 @@ class Index extends Grid
         }
 
         $node->click();
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Index
-     */
-    public function expandCategory($category)
-    {
-        $this->jsTreeManipulator->expandNode($this->getElement('Category tree'), $category);
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        return $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category);
     }
 }
