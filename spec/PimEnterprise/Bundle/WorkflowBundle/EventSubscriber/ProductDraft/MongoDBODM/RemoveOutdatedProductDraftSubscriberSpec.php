@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 

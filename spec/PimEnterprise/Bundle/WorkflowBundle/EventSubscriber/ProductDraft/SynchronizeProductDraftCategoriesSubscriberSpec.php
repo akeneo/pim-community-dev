@@ -109,8 +109,14 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $productDraftA->getCategoryIds()->willReturn([]);
         $productDraftB->getCategoryIds()->willReturn([15, 16]);
 
-        $uow->scheduleExtraUpdate($productDraftA, ['categoryIds' => [[      ], [4, 8]]])->shouldBeCalled();
-        $uow->scheduleExtraUpdate($productDraftB, ['categoryIds' => [[15, 16], [4, 8]]])->shouldBeCalled();
+        $productDraftA->setCategoryIds([4, 8])->shouldBeCalled();
+        $productDraftB->setCategoryIds([4, 8])->shouldBeCalled();
+
+        $uow->propertyChanged($productDraftA, 'categoryIds', [], [4, 8])->shouldBeCalled();
+        $uow->propertyChanged($productDraftB, 'categoryIds', [15, 16], [4, 8])->shouldBeCalled();
+
+        $uow->scheduleForUpdate($productDraftA)->shouldBeCalled();
+        $uow->scheduleForUpdate($productDraftB)->shouldBeCalled();
 
         $this->preUpdate($event);
     }
@@ -186,7 +192,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
         $repository->findByProduct($product)->willReturn([$productDraft]);
 
-        $uow->scheduleExtraUpdate(Argument::cetera())->shouldNotBeCalled();
+        $uow->scheduleForUpdate(Argument::cetera())->shouldNotBeCalled();
 
         $this->preUpdate($event);
     }
