@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -196,7 +196,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             ];
 
-        $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
+        $productRepository->findProductIdsForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
 
         $context->buildViolation()->shouldNotBeCalled(Argument::cetera());
 
@@ -212,7 +212,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $colorProductValue,
-        ProductInterface $redTShirtProduct2,
         UniqueVariantAxis $uniqueVariantAxisConstraint,
         ConstraintViolationBuilderInterface $violation
     ) {
@@ -256,7 +255,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             ];
 
-        $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->shouldBeCalled()->willReturn([$redTShirtProduct2]);
+        $productRepository->findProductIdsForVariantGroup($tShirtVariantGroup, $criteria)->shouldBeCalled()->willReturn(['id' => 1]);
 
         $context->buildViolation(
             'Group "%variant group%" already contains another product with values "%values%"',
@@ -269,4 +268,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }
+}
+
+interface ProductRepositoryInterface extends BaseProductRepositoryInterface
+{
+    public function findProductIdsForVariantGroup($tShirtVariantGroup, $criteria);
 }
