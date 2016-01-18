@@ -30,7 +30,7 @@ class AttributeExtension extends BaseAttributeExtension
     {
         $this->repository = $repository;
 
-        parent::__construct(array_merge($communityIcons, $eeIcons));
+        parent::__construct(array_merge($communityIcons, $eeIcons), $repository);
     }
 
     /**

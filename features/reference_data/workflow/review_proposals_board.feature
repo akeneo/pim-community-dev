@@ -52,7 +52,7 @@ Feature: Review proposals on board
     When I am on the proposals page
     Then I should see the following proposals:
       | product  | author | attribute     | original | new            |
-      | my-hoody | Mary   | sleeve_fabric |          | Nylon,Neoprene |
+      | my-hoody | Mary   | sleeve_fabric | Nylon    | Nylon,Neoprene |
 
   Scenario: Successfully review a proposal with several reference data value changed
     Given the product:

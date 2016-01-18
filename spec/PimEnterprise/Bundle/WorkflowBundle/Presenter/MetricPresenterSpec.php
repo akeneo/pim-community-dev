@@ -54,13 +54,13 @@ class MetricPresenterSpec extends ObjectBehavior
             ->present(['data' => '123.456', 'unit' => 'MILLIMETER'], ['locale' => 'en_US'])
             ->willReturn('123.456 trans_millimeter');
 
-        $renderer->renderOriginalDiff('50.123 trans_kilogram', '123.456 trans_millimeter')
+        $renderer->renderDiff('50.123 trans_kilogram', '123.456 trans_millimeter')
             ->willReturn('diff between two metrics');
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->presentOriginal($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123.456']])
+            ->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123.456']])
             ->shouldReturn('diff between two metrics');
     }
 
@@ -78,11 +78,11 @@ class MetricPresenterSpec extends ObjectBehavior
             ->present(['data' => 123.456, 'unit' => 'MILLIMETER'], ['locale' => 'en_US'])
             ->willReturn('123.456 trans_millimeter');
 
-        $renderer->renderOriginalDiff('', '123.456 trans_millimeter')->willReturn('a new metric');
+        $renderer->renderDiff('', '123.456 trans_millimeter')->willReturn('a new metric');
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->presentOriginal($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123.456']])
+        $this->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123.456']])
             ->shouldReturn('a new metric');
     }
 
@@ -94,7 +94,7 @@ class MetricPresenterSpec extends ObjectBehavior
         ProductValueInterface $value
     ) {
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
-        $renderer->renderNewDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
+        $renderer->renderDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
         $metricPresenter
             ->present(['data' => 150.123456, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
             ->willReturn("150,123456 trans_kilogram");
@@ -102,7 +102,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
 
-        $this->presentNew($value, ['data' => ['data' => 150.123456, 'unit' => 'KILOGRAM']])
+        $this->present($value, ['data' => ['data' => 150.123456, 'unit' => 'KILOGRAM']])
             ->shouldReturn("150,123456 trans_kilogram");
     }
 }

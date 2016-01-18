@@ -13,14 +13,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -30,8 +30,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+     /** @var IdentifiableObjectRepositoryInterface */
+     protected $attributeRepository;
 
     /** @var \Diff_Renderer_Html_Array */
     protected $renderer;
@@ -52,11 +52,11 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected $twig;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param RendererInterface                     $renderer
-     * @param TranslatorInterface                   $translator
-     * @param ProductBuilderInterface               $productBuilder
-     * @param AttributeFactory                      $attributeFactory
+     * @param IdentifiableObjectRepositoryInterface       $attributeRepository
+     * @param RendererInterface       $renderer
+     * @param TranslatorInterface     $translator
+     * @param ProductBuilderInterface $productBuilder
+     * @param AttributeFactory        $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -78,39 +78,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     public function initRuntime(\Twig_Environment $twig)
     {
         $this->twig = $twig;
-
-        foreach ($this->presenters as $presenters) {
-            foreach ($presenters as $presenter) {
-                if ($presenter instanceof TwigAwareInterface) {
-                    $presenter->setTwig($this->twig);
-                }
-            }
-        }
-    }
-
-    /**
-     * Add a presenter
-     *
-     * @param PresenterInterface $presenter
-     * @param int                $priority
-     */
-    public function addPresenter(PresenterInterface $presenter, $priority)
-    {
-        if ($presenter instanceof TranslatorAwareInterface) {
-            $presenter->setTranslator($this->translator);
-        }
-
-        if ($presenter instanceof RendererAwareInterface) {
-            $presenter->setRenderer($this->renderer);
-        }
-
-        if ($presenter instanceof TwigAwareInterface && null !== $this->twig) {
-            $presenter->setTwig($this->twig);
-        }
-
-        $this->presenters[$priority][] = $presenter;
-
-        ksort($this->presenters);
     }
 
     /**
@@ -124,92 +91,101 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
-    {
-        return [
-            new \Twig_SimpleFilter(
-                'present_new_change',
-                [$this, 'presentNewChange'],
-                ['is_safe' => ['html']]
-            ),
-            new \Twig_SimpleFilter(
-                'present_original_change',
-                [$this, 'presentOriginalChange'],
-                ['is_safe' => ['html']]
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
             new \Twig_SimpleFunction(
-                'get_attribute_label_from_code',
-                [$this, 'getAttributeLabelFromCode'],
+                'present_product_draft_change',
+                [$this, 'presentChange'],
                 ['is_safe' => ['html']]
             ),
         ];
     }
 
     /**
-     * @param string $code
+     * Present an attribute change
+     *
+     * @param ProductDraftInterface $productDraft
+     * @param array                 $change
+     * @param string                $code
+     *
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
      *
      * @return string
      */
-    public function getAttributeLabelFromCode($code)
+    public function presentChange(ProductDraftInterface $productDraft, array $change, $code)
     {
-        if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
-            return (string) $attribute;
+        if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
+            $value = $this->createFakeValue($code);
         }
 
-        return $code;
+        if (null !== $result = $this->present($value, $change)) {
+            return $result;
+        }
+
+        throw new \LogicException(
+            sprintf(
+                'No presenter supports the provided change with key(s) "%s"',
+                implode(', ', array_keys($change))
+            )
+        );
     }
 
     /**
-     * @param array  $change
-     * @param string $code
+     * Add a presenter
      *
-     * @return string
+     * @param PresenterInterface $presenter
+     * @param int                $priority
      */
-    public function presentNewChange(array $change, $code)
+    public function addPresenter(PresenterInterface $presenter, $priority)
     {
-        $value = $this->createFakeValue($code);
-
-        foreach ($this->presenters as $presenters) {
-            foreach ($presenters as $presenter) {
-                if ($presenter->supports($value)) {
-                    return $presenter->presentNew($value, $change);
-                }
-            }
-        }
-
-        return '';
+        $this->presenters[$priority][] = $presenter;
     }
 
     /**
-     * @param array  $change
-     * @param string $code
+     * Get the registered presenters
      *
-     * @return string
+     * @return PresenterInterface[]
      */
-    public function presentOriginalChange(ProductValueInterface $value = null, array $change = null)
+    public function getPresenters()
     {
-        if (null === $value) {
-            return '';
+        krsort($this->presenters);
+        $presenters = [];
+        foreach ($this->presenters as $groupedPresenters) {
+            $presenters = array_merge($presenters, $groupedPresenters);
         }
 
-        foreach ($this->presenters as $presenters) {
-            foreach ($presenters as $presenter) {
-                if ($presenter->supports($value)) {
-                    return $presenter->presentOriginal($value, $change);
+        return $presenters;
+    }
+
+    /**
+     * Present an object
+     *
+     * @param object $object
+     * @param array  $change
+     *
+     * @return null|string
+     */
+    protected function present($object, array $change = [])
+    {
+        foreach ($this->getPresenters() as $presenter) {
+            if ($presenter->supports($object)) {
+                if ($presenter instanceof TranslatorAwareInterface) {
+                    $presenter->setTranslator($this->translator);
                 }
+
+                if ($presenter instanceof RendererAwareInterface) {
+                    $presenter->setRenderer($this->renderer);
+                }
+
+                if ($presenter instanceof TwigAwareInterface) {
+                    $presenter->setTwig($this->twig);
+                }
+
+                return $presenter->present($object, $change);
             }
         }
-
-        return '';
     }
 
     /**
@@ -221,9 +197,9 @@ class ProductDraftChangesExtension extends \Twig_Extension
      */
     protected function createFakeValue($code)
     {
-        $attribute    = $this->attributeRepository->findOneByIdentifier($code);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $newAttribute = $this->attributeFactory->createAttribute($attribute->getAttributeType());
-        $value        = $this->productBuilder->createProductValue($newAttribute);
+        $value = $this->productBuilder->createProductValue($newAttribute);
 
         if (null !== $attribute->getReferenceDataName()) {
             $newAttribute->setReferenceDataName($attribute->getReferenceDataName());

@@ -45,10 +45,10 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
 
         $assetRepository->findBy(['code' => ['Leather', 'Kevlar']])->willReturn([$leather, $kevlar]);
 
-        $renderer->renderOriginalDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two assets collection');
+        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two assets collection');
         $this->setRenderer($renderer);
 
         $productValue->getData()->willReturn([$leather, $neoprene]);
-        $this->presentOriginal($productValue, ['data' => ['Leather', 'Kevlar']])->shouldReturn('diff between two assets collection');
+        $this->present($productValue, ['data' => ['Leather', 'Kevlar']])->shouldReturn('diff between two assets collection');
     }
 }

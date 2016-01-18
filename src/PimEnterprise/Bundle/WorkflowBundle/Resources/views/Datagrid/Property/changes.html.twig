@@ -3,9 +3,11 @@
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}
         {% set canView = is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) %}
         {% for change in changes %}
+            {% set product_draft_change = present_product_draft_change(record.rootEntity, change, code) %}
             {% if
                 canView and
-                (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ITEMS'), change.locale))
+                (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ITEMS'), change.locale)) and
+                product_draft_change|length > 0
             %}
             {%
                 set canReview = (
@@ -48,22 +50,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
-                        <td class="original-value" colspan="2">
-                            <span class="alert-error">
-                                {{ record.rootEntity.product.value(code, change.locale, change.scope)|present_original_change(change) }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
-                        <td class="new-value" colspan="2">
-                            <span class="alert-success">
-                                {{ change|present_new_change(code) }}
-                            </span>
-                        </td>
-                    </tr>
+                    {% if product_draft_change.before != product_draft_change.after %}
+                        <tr>
+                            <td>{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                            <td class="original-value" colspan="2">
+                                <span class="alert-error">
+                                    {{ product_draft_change.before|raw }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                            <td class="new-value" colspan="2">
+                                <span class="alert-success">
+                                    {{ product_draft_change.after|raw }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</td>
+                        </tr>
+                    {% endif %}
                 </tbody>
             </table>
             {% endif %}

@@ -26,9 +26,21 @@ Feature: Review a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display the original value in the copy panel
-    Given the following product drafts:
-      | product   | author | result                                                                 | status |
-      | my-jacket | Mary   | {"values":{"sku":[{"locale":null,"scope":null,"data":"your-jacket"}]}} | ready  |
+    Given Mary proposed the following change to "my-jacket":
+      | field | value       | tab                 |
+      | SKU   | your-jacket | Product information |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
     Then the SKU original value for scope "mobile" and locale "en_US" should be "my-jacket"
+
+  Scenario: Successfully display the original value in the copy panel where there is no modifications
+    Given Mary proposed the following change to "my-jacket":
+      | field | value       | tab                 |
+      | SKU   | your-jacket | Product information |
+    And I am logged in as "Julia"
+    And I edit the "my-jacket" product
+    And I fill in the following information:
+      | SKU | your-jacket |
+    Then I save the product
+    When I visit the "Proposals" tab
+    Then I should see the text "The value \"your-jacket\" is the same between the proposal and the working copy."

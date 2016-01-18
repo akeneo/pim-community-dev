@@ -52,11 +52,11 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $repository->findBy(['code' => ['Leather', 'Neoprene']])->willReturn([$leather, $kevlar]);
         $repositoryResolver->resolve(null)->willReturn($repository);
 
-        $renderer->renderOriginalDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two reference data');
+        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn([$leather, $neoprene]);
-        $this->presentOriginal($value, ['data' => ['Leather', 'Neoprene']])->shouldReturn('diff between two reference data');
+        $this->present($value, ['data' => ['Leather', 'Neoprene']])->shouldReturn('diff between two reference data');
     }
 }
 

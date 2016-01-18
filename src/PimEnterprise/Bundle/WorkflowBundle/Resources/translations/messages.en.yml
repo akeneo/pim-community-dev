@@ -44,6 +44,7 @@ pimee_workflow:
         generic_import: You have proposals to review from job import
         original_value: Original
         new_value: New
+        no_diff: The value "%value%" is the same between the proposal and the working copy.
     published_product:
         index: Published Products
         title:  Published product
