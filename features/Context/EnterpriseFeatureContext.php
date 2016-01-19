@@ -3,14 +3,13 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
-use PimEnterprise\Behat\Context\JobContext;
 use PimEnterprise\Behat\Context\HookContext;
+use PimEnterprise\Behat\Context\JobContext;
 
 /**
  * A context for creating entities
