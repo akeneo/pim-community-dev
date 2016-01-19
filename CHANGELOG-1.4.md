@@ -1,4 +1,4 @@
-# 1.4.17 (2016-01-18)
+# 1.4.17 (2016-01-19)
 
 ## Scalability improvements
 - PIM-5213: Paginate loading of attributes on Product Edit Form and Mass Edit Common Attributes action
