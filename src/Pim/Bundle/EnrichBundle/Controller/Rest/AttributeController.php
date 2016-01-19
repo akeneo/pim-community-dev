@@ -59,8 +59,8 @@ class AttributeController
     /**
      * Get the attribute collection.
      *
-     * TODO This action is only accessible via a POST query, because of too long query URI. To respect standards, a
-     * refactor must be done.
+     * TODO This action is only accessible via a GET or POST query, because of too long query URI. To respect standards,
+     * a refactor must be done.
      *
      * @param Request $request
      *
