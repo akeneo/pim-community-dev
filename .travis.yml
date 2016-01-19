@@ -22,11 +22,11 @@ before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-rm xdebug.ini; fi
     - composer self-update --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then composer remove --no-update doctrine/mongodb-odm-bundle; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console assets:install; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "hhvm" ] || [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then composer remove --dev --no-update doctrine/mongodb-odm-bundle; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then ./app/console oro:requirejs:generate-config; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then ./app/console assets:install; fi;'
     - npm install -g grunt-cli
     - npm install
     - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
