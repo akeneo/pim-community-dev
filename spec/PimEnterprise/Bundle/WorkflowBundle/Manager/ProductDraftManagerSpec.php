@@ -47,9 +47,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $workingCopySaver,
         $applier,
         $dispatcher,
+        $remover,
         ProductDraftInterface $productDraft,
-        ProductInterface $product,
-        $remover
+        ProductInterface $product
     ) {
         $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $productDraft->getProduct()->willReturn($product);
@@ -80,9 +80,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $workingCopySaver,
         $applier,
         $dispatcher,
+        $remover,
         ProductDraftInterface $productDraft,
-        ProductInterface $product,
-        $remover
+        ProductInterface $product
     ) {
         $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $productDraft->getProduct()->willReturn($product);
@@ -114,22 +114,22 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         $applier,
         $dispatcher,
+        $remover,
         ProductDraftInterface $productDraft,
         ProductDraftInterface $temporaryDraft,
         AttributeInterface $attribute,
-        ProductInterface $product,
-        $remover,
-        ChannelInterface $channel,
-        LocaleInterface $locale
+        ProductInterface $product
     ) {
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
-        $productDraft->getChangeForAttribute($attribute, $channel, $locale)->willReturn('new name');
-        $productDraft->removeChangeForAttribute($attribute, $channel, $locale)->shouldBeCalled();
+        $productDraft->getChange('name', null, null)->willReturn('new name');
+        $productDraft->removeChange('name', null, null)->shouldBeCalled();
         $productDraft->hasChanges()->willReturn(true);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
         $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
         $temporaryDraft->getProduct()->willReturn($product);
         $temporaryDraft->getId()->willReturn(null);
@@ -154,30 +154,32 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->partialApprove($productDraft, $attribute, $channel, $locale);
+        $this->partialApprove($productDraft, $attribute);
     }
 
-    function it_applies_changes_and_remove_the_draft_when_partially_approve_a_product_draft(
+    function it_applies_changes_and_removes_the_draft_when_partially_approve_a_product_draft(
         $workingCopySaver,
         $factory,
         $applier,
         $dispatcher,
+        $remover,
         ProductDraftInterface $productDraft,
         ProductDraftInterface $temporaryDraft,
         AttributeInterface $attribute,
         ProductInterface $product,
-        $remover,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
-        $productDraft->getChangeForAttribute($attribute, $channel, $locale)->willReturn('new name');
-        $productDraft->removeChangeForAttribute($attribute, $channel, $locale)->shouldBeCalled();
+        $productDraft->getChange('name', null, null)->willReturn('new name');
+        $productDraft->removeChange('name', null, null)->shouldBeCalled();
         $productDraft->hasChanges()->willReturn(false);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
         $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
         $temporaryDraft->getProduct()->willReturn($product);
         $temporaryDraft->getId()->willReturn(null);
@@ -205,10 +207,28 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->partialApprove($productDraft, $attribute, $channel, $locale);
     }
 
+    function it_marks_a_change_as_rejected_on_partial_reject(
+        ProductDraftInterface $productDraft,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('name');
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+
+        $productDraft
+            ->setReviewStatusForChange(ProductDraftInterface::CHANGE_REJECTED, 'name', null, null)
+            ->shouldBeCalled();
+
+        $productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(false);
+        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldBeCalled();
+
+        $this->partialReject($productDraft, $attribute);
+    }
+
     function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(
         $dispatcher,
-        ProductDraftInterface $productDraft,
-        $saver
+        $saver,
+        ProductDraftInterface $productDraft
     ) {
         $productDraft->isInProgress()->willReturn(false);
         $dispatcher
@@ -229,7 +249,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->refuse($productDraft);
     }
 
-    function it_removes_in_progress_product_draft_when_refusing_it(ProductDraftInterface $productDraft, $saver)
+    function it_removes_in_progress_product_draft_when_refusing_it($saver, ProductDraftInterface $productDraft)
     {
         $productDraft->isInProgress()->willReturn(true);
         $saver->save($productDraft);
@@ -278,7 +298,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->duringFindOrCreate($product, 'fr_FR');
     }
 
-    function it_marks_product_draft_as_ready($dispatcher, ProductDraftInterface $productDraft, $saver)
+    function it_marks_product_draft_as_ready($dispatcher, $saver, ProductDraftInterface $productDraft)
     {
         $dispatcher
             ->dispatch(
@@ -297,5 +317,28 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->markAsReady($productDraft);
+    }
+
+    function it_throws_an_exception_when_trying_to_partially_approve_a_scopable_attribute_without_channel(
+        ProductDraftInterface $productDraft,
+        AttributeInterface $attribute,
+        LocaleInterface $locale
+    ) {
+        $attribute->getCode()->willReturn('name');
+        $attribute->isScopable()->willReturn(true);
+
+        $this->shouldThrow('\LogicException')->during('partialApprove', [$productDraft, $attribute, null, $locale]);
+    }
+
+    function it_throws_an_exception_when_trying_to_partially_approve_a_localizable_attribute_without_locale(
+        ProductDraftInterface $productDraft,
+        AttributeInterface $attribute,
+        ChannelInterface $channel
+    ) {
+        $attribute->getCode()->willReturn('name');
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(true);
+
+        $this->shouldThrow('\LogicException')->during('partialApprove', [$productDraft, $attribute, $channel]);
     }
 }

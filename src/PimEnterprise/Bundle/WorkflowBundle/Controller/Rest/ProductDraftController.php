@@ -192,6 +192,10 @@ class ProductDraftController
             if (null === $locale) {
                 throw new NotFoundHttpException(sprintf('Locale "%s" not found', $request->query->get('locale')));
             }
+
+            if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ITEMS, $locale)) {
+                throw new AccessDeniedHttpException();
+            }
         }
 
         try {

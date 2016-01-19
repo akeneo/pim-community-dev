@@ -113,19 +113,19 @@ class ProductDraftManager
 
         if ($attribute->isScopable() && null === $channel) {
             throw new \LogicException(sprintf(
-                'Trying to partial approve for the scopable attribute "%s" without scope.',
+                'Trying to partially approve for the scopable attribute "%s" without scope.',
                 $attributeCode
             ));
         }
 
         if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException(sprintf(
-                'Trying to partial approve for the localizable attribute "%s" without locale.',
+                'Trying to partially approve for the localizable attribute "%s" without locale.',
                 $attributeCode
             ));
         }
 
-        $localeCode = (null !== $locale) ? $locale->getCode() : null;
+        $localeCode  = (null !== $locale) ? $locale->getCode() : null;
         $channelCode = (null !== $channel) ? $channel->getCode() : null;
 
         $change = $productDraft->getChange($attributeCode, $localeCode, $channelCode);
@@ -141,9 +141,9 @@ class ProductDraftManager
 
         $temporaryDraft = $this->factory->createProductDraft($productDraft->getProduct(), $productDraft->getAuthor());
 
-        $temporaryDraft->setChanges(['values' => [$attribute->getCode() => [[
-            'locale' => null !== $locale ? $locale->getCode() : null,
-            'scope'  => null !== $channel ? $channel->getCode() : null,
+        $temporaryDraft->setChanges(['values' => [$attributeCode => [[
+            'locale' => $localeCode,
+            'scope'  => $channelCode,
             'data'   => $change
         ]]]]);
 
@@ -153,7 +153,7 @@ class ProductDraftManager
 
         $this->approve($temporaryDraft, $context);
 
-        $productDraft->removeChange($attribute, $channel, $locale);
+        $productDraft->removeChange($attributeCode, $localeCode, $channelCode);
 
         if (!$productDraft->hasChanges()) {
             $this->productDraftRemover->remove($productDraft, ['flush' => false]);
@@ -163,11 +163,15 @@ class ProductDraftManager
     }
 
     /**
+     * Reject partially a draft
+     *
      * @param ProductDraftInterface $productDraft
      * @param AttributeInterface    $attribute
      * @param ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      * @param array                 $context
+     *
+     * @throws \LogicException
      */
     public function partialReject(
         ProductDraftInterface $productDraft,
@@ -175,47 +179,38 @@ class ProductDraftManager
         ChannelInterface $channel = null,
         LocaleInterface $locale = null,
         array $context = []
-    )
-    {
+    ) {
         $attributeCode = $attribute->getCode();
 
         if ($attribute->isScopable() && null === $channel) {
             throw new \LogicException(sprintf(
-                'Trying to partial approve for the scopable attribute "%s" without scope.',
+                'Trying to partially reject for the scopable attribute "%s" without scope.',
                 $attributeCode
             ));
         }
 
         if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException(sprintf(
-                'Trying to partial approve for the localizable attribute "%s" without locale.',
+                'Trying to partially reject for the localizable attribute "%s" without locale.',
                 $attributeCode
             ));
         }
 
-        $localeCode = (null !== $locale) ? $locale->getCode() : null;
+        $localeCode  = (null !== $locale) ? $locale->getCode() : null;
         $channelCode = (null !== $channel) ? $channel->getCode() : null;
-
-        $change = $productDraft->getChange($attributeCode, $localeCode, $channelCode);
-
-        if (null === $change) {
-            throw new \LogicException(sprintf(
-                'Change for attribute "%s" on scope "%s" and locale "%s" not found in the product.',
-                $attribute->getLabel(),
-                $channel->getLabel(),
-                $locale->getName()
-            ));
-        }
 
         $productDraft->setReviewStatusForChange(
             ProductDraftInterface::CHANGE_REJECTED,
             $attributeCode,
-            (null !== $locale) ? $locale->getCode() : null,
-            (null !== $channel) ? $channel->getCode() : null
+            $localeCode,
+            $channelCode
         );
 
+        if (!$productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)) {
+            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
+        }
+
         $this->productDraftSaver->save($productDraft);
-        //TODO: if all changes are rejected, the draft should be put IN_PROGRESS
     }
 
     /**

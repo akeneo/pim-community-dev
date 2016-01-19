@@ -205,12 +205,13 @@ class ProductDraft implements ProductDraftInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode)
     {
         if (!isset($this->changes['review_statuses'][$changeCode])) {
-            //TODO: throw exception
-            return;
+            throw new \LogicException(sprintf('There is no review status for code "%s"', $changeCode));
         }
 
         foreach ($this->changes['review_statuses'][$changeCode] as $index => $change) {
@@ -242,6 +243,22 @@ class ProductDraft implements ProductDraftInterface
         if (empty($this->changes['review_statuses'][$changeCode])) {
             unset($this->changes['review_statuses'][$changeCode]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasReviewStatus($status)
+    {
+        foreach ($this->changes['review_statuses'] as $items) {
+            foreach ($items as $item) {
+                if ($status === $item['status']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

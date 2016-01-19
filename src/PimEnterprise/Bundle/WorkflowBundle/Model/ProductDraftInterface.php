@@ -27,8 +27,7 @@ interface ProductDraftInterface
     const READY = 1;
 
     const CHANGE_TO_REVIEW = 'to_review';
-    const CHANGE_REJECTED = 'rejected';
-    const CHANGE_APPROVED = 'approved';
+    const CHANGE_REJECTED  = 'rejected';
     /**
      * @return int
      */
@@ -138,6 +137,15 @@ interface ProductDraftInterface
      * @param string $channelCode
      */
     public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode);
+
+    /**
+     * Check if at least one of the review statuses matches the specified one
+     *
+     * @param string $status
+     *
+     * @return bool
+     */
+    public function hasReviewStatus($status);
 
     /**
      * Set status of the draft. Either IN_PROGRESS or READY for review.

@@ -106,7 +106,6 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $productDraft->setChanges($diff);
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
 
-
             return $productDraft;
         }
 
@@ -180,10 +179,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         foreach ($statuses as $code => &$items) {
             foreach ($items as &$item) {
                 $status = $draft->getReviewStatusForChange($code, $item['locale'], $item['scope']);
-                if (null === $status) {
-                    $status = ProductDraftInterface::CHANGE_TO_REVIEW;
-                }
-                $item['status'] = $status;
+                $item['status'] = null === $status ? ProductDraftInterface::CHANGE_TO_REVIEW : $status;
                 unset($item['data']);
             }
         }
