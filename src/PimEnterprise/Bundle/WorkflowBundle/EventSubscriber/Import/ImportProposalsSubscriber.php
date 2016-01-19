@@ -120,12 +120,13 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
             $usersToNotify = $this->usersProvider->getUsersToNotify($this->ownerGroupIds);
 
             if (!empty($usersToNotify)) {
+                $jobCode = $event->getJobExecution()->getJobInstance()->getCode();
                 $index = array_search($author, $usersToNotify, true);
                 if (false !== $index) {
-                    $this->sendProposalsNotification([$author]);
+                    $this->sendProposalsNotification([$author], $jobCode);
                     unset($usersToNotify[$index]);
                 }
-                $this->sendProposalsNotification($usersToNotify, $author);
+                $this->sendProposalsNotification($usersToNotify, $jobCode, $author);
             }
             $this->ownerGroupIds = [];
         }
@@ -136,16 +137,27 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
      * message.
      *
      * @param UserInterface[]    $users
+     * @param string             $jobCode
      * @param UserInterface|null $author
      */
-    protected function sendProposalsNotification(array $users, UserInterface $author = null)
+    protected function sendProposalsNotification(array $users, $jobCode, UserInterface $author = null)
     {
-        $message = 'pimee_workflow.proposal.generic_import';
-        $params = [
+        $message        = 'pimee_workflow.proposal.generic_import';
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        $jobCode,
+                    ]
+                ]
+            ],
+        ];
+        $params         = [
             'route'   => 'pimee_workflow_proposal_index',
             'context' => [
                 'actionType'       => self::NOTIFICATION_TYPE,
-                'showReportButton' => false
+                'showReportButton' => false,
+                'gridParameters'   => http_build_query($gridParameters, 'flags_')
             ]
         ];
 

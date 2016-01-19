@@ -42,6 +42,15 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @Given /^I should be on the proposals index page$/
+     */
+    public function iShouldBeOnTheProposalsPage()
+    {
+        $expectedAddress = $this->getPage('Proposal index')->getUrl();
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param string $assetCode
      *
      * @Given /^I should be on the "([^"]+)" asset edit page$/

@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\DataGridContext as BaseDataGridContext;
@@ -113,6 +114,72 @@ class EnterpriseDataGridContext extends BaseDataGridContext
     {
         $image = $this->datagrid->getCellImage('thumbnail', $code);
         $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
+    }
+
+    /**
+     * Expects table as :
+     * | product  | author | attribute  | original | new         |
+     * | my-hoody | Mary   | Lace color |          | Black,White |
+     *
+     * Note: As values are not ordered you can add multiple values using semicolon separator.
+     * Warning: we split the results with space separator so values with spaces will fail.
+     *
+     * @Given /^I should see the following proposals?:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldSeeTheFollowingProposals(TableNode $table)
+    {
+        foreach ($table->getHash() as $hash) {
+            $datagrid = $this->datagrid->getGrid();
+
+            $change = $this->spin(function () use ($datagrid, $hash) {
+                return $datagrid->find('css', sprintf(
+                    'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+                    $hash['product'],
+                    $hash['attribute'],
+                    $hash['author']
+                ));
+            }, sprintf('Unable to find the change on the proposal for attribute "%s"', $hash['attribute']));
+
+            $original = $change->find('css', '.original-value');
+            $new      = $change->find('css', '.new-value');
+
+            $originalExpectedValues = explode(',', $hash['original']);
+            $newExpectedValues      = explode(',', $hash['new']);
+            $rawOriginalValues      = explode(' ', $original->getText());
+            $rawNewValues           = explode(' ', $new->getText());
+
+            sort($originalExpectedValues);
+            sort($newExpectedValues);
+            sort($rawOriginalValues);
+            sort($rawNewValues);
+
+            $originalExpected = implode(', ', $originalExpectedValues);
+            $newExpected      = implode(', ', $newExpectedValues);
+            $originalValues   = implode(', ', $rawOriginalValues);
+            $newValues        = implode(', ', $rawNewValues);
+
+            if ($originalValues != $originalExpected) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expected original values to contain "%s", but got "%s".',
+                        $originalExpected,
+                        $originalValues
+                    )
+                );
+            }
+
+            if ($newValues != $newExpected) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expected new values to contain "%s", but got "%s".',
+                        $newValues,
+                        $newExpected
+                    )
+                );
+            }
+        }
     }
 
     /**

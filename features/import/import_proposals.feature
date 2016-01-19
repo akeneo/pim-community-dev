@@ -34,6 +34,35 @@ Feature: Import proposals
     Then the grid should contain 1 element
     And I should see entity my-jacket
 
+  Scenario: Create a new proposals and be notified
+    Given Mary proposed the following change to "my-jacket3":
+      | field | value        |
+      | SKU   | third-jacket |
+    And the following CSV file to import:
+    """
+    sku;name-en_US;description-en_US-mobile;
+    my-jacket;Jacket;Description;
+    """
+    And the following job "clothing_product_proposal_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_proposal_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_proposal_import" job to finish
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the dashboard page
+    Then I should have 2 new notifications
+    And I should see notification:
+      | type | message                                                 |
+      | add  | Mary Smith has sent proposals to review from job import |
+    When I click on the notification "Mary Smith has sent proposals to review from job import"
+    Then I should be on the proposals index page
+    And the grid should contain 1 element
+    And I should see the following proposal:
+      | product   | author                           | attribute   | original | new         |
+      | my-jacket | clothing_product_proposal_import | name        |          | Jacket      |
+      | my-jacket | clothing_product_proposal_import | description |          | Description |
+
   Scenario: Import proposal with media
     Given I am logged in as "Mary"
     And I am on the "clothing_product_proposal_import" import job page

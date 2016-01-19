@@ -6,5 +6,5 @@
 
     {{ elements.page_header(title) }}
 
-    {{ dataGrid.renderGrid('proposal-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
+    {{ dataGrid.renderStatefulGrid('proposal-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
 {% endblock %}

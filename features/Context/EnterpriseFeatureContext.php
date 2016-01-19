@@ -69,67 +69,6 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * Expects table as :
-     * | product  | author | attribute  | original | new         |
-     * | my-hoody | Mary   | Lace color |          | Black;White |
-     *
-     * Note: As values are not ordered you can add multiple values using semicolon separator.
-     * Warning: we split the results with space separator so values with spaces will fail.
-     *
-     * @Given /^I should see the following proposals:$/
-     *
-     * @param TableNode $table
-     */
-    public function iShouldSeeTheFollowingProposals(TableNode $table)
-    {
-        foreach ($table->getHash() as $hash) {
-            $page = $this->getSubcontext('navigation')->getCurrentPage();
-
-            // Assert the change is good
-            $change = $this->spin(function () use ($page, $hash) {
-                return $page->find('css', sprintf(
-                    'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]',
-                    $hash['product'],
-                    $hash['attribute'],
-                    $hash['author']
-                ));
-            }, 20, sprintf('Unable to find the change on the proposal for attribute "%s"', $hash['attribute']));
-
-            $original = $this->spin(function () use ($change) {
-                return $change->find('css', '.original-value');
-            }, 20, 'Unable to find the original value of the change');
-
-            $new = $this->spin(function () use ($change) {
-                return $change->find('css', '.new-value');
-            }, 20, 'Unable to find the new value of the change');
-
-            $originalExpectedValues = explode(';', $hash['original']);
-            $newExpectedValues = explode(';', $hash['new']);
-            $originalValues = explode(' ', $original->getText());
-            $newValues = explode(' ', $new->getText());
-
-            foreach ($originalExpectedValues as $originalExpectedValue) {
-                assertContains($originalExpectedValue, $originalValues, sprintf(
-                    '"%s" original value not found in "%s".',
-                    $originalExpectedValue,
-                    json_encode($originalValues)
-                ));
-            }
-
-            foreach ($newExpectedValues as $newExpectedValue) {
-                assertContains($newExpectedValue, $newValues, sprintf(
-                    '"%s" original value not found in "%s".',
-                    $newExpectedValue,
-                    json_encode($newValues)
-                ));
-            }
-
-            assertEquals(count($originalExpectedValues), count($originalValues));
-            assertEquals(count($newExpectedValues), count($newValues));
-        }
-    }
-
-    /**
      * @param string $attribute
      *
      * @throws ExpectationException

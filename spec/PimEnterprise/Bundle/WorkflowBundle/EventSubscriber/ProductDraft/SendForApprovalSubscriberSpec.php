@@ -56,6 +56,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
 
         $author->getFirstName()->willReturn('Mary');
         $author->getLastName()->willReturn('Chobu');
+        $author->getUsername()->willReturn('mary');
 
         $owner1->hasProposalsToReviewNotification()->willReturn(true);
         $owner2->hasProposalsToReviewNotification()->willReturn(false);
@@ -67,16 +68,27 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
 
         $this->sendNotificationToOwners($event);
+
+        $gridParams = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        'mary'
+                    ]
+                ],
+                'product' => [
+                    'value' => [
+                        '666'
+                    ]
+                ]
+            ]
+        ];
         $notificationManager->notify(
             [$owner1, $owner3],
             'pimee_workflow.proposal.to_review',
             'add',
             [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => [
-                    'id'  => 666,
-                    'redirectTab' => 'pim-product-edit-form-proposals'
-                ],
+                'route'         => 'pimee_workflow_proposal_index',
                 'comment'       => 'comment',
                 'messageParams' => [
                     '%product.label%'    => 'Light Saber',
@@ -85,7 +97,8 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
                 ],
                 'context'       => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_new_proposal',
-                    'showReportButton' => false
+                    'showReportButton' => false,
+                    'gridParameters'   => http_build_query($gridParams, 'flags_')
                 ]
             ]
         )->shouldBeCalled();
