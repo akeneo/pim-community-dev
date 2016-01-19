@@ -1,4 +1,4 @@
-Akeneo PIM Application
+Akeneo PIM Application toef
 ======================
 Welcome to Akeneo PIM Product.
 
