@@ -1,7 +1,8 @@
 parameters:
-    pim_enrich.repository.sequential_edit.class:  Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
-    pim_enrich.repository.family.search.class:    Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
-    pim_enrich.repository.attribute.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
+    pim_enrich.repository.sequential_edit.class:   Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
+    pim_enrich.repository.searchable.search.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
+    pim_enrich.repository.attribute.search.class:  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
+
 
 services:
     pim_enrich.repository.sequential_edit:
@@ -13,7 +14,7 @@ services:
             - { name: 'pim_repository' }
 
     pim_enrich.repository.family.search:
-        class: %pim_enrich.repository.family.search.class%
+        class: %pim_enrich.repository.searchable.search.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.family.class%

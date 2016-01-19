@@ -47,7 +47,7 @@ class AttributeController
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $attributeFilter,
-        SearchableRepositoryInterface $attributeSearchRepository = null
+        SearchableRepositoryInterface $attributeSearchRepository
     ) {
         $this->attributeRepository       = $attributeRepository;
         $this->normalizer                = $normalizer;
@@ -83,17 +83,10 @@ class AttributeController
         $token = $this->tokenStorage->getToken();
         $options['user_groups_ids'] = implode(', ', $token->getUser()->getGroupsIds());
 
-        if (null !== $this->attributeSearchRepository) {
-            $attributes = $this->attributeSearchRepository->findBySearch(
-                $request->query->get('search'),
-                $options
-            );
-        } else {
-            if (isset($options['identifiers'])) {
-                $options['code'] = $options['identifiers'];
-            }
-            $attributes = $this->attributeRepository->findBy($options);
-        }
+        $attributes = $this->attributeSearchRepository->findBySearch(
+            $request->query->get('search'),
+            $options
+        );
 
         $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api');
 
