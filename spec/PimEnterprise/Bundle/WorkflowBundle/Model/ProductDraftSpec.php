@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 class ProductDraftSpec extends ObjectBehavior
 {
@@ -26,10 +27,20 @@ class ProductDraftSpec extends ObjectBehavior
     }
 
     function it_gives_changes_for_attribute() {
-        $this->setChanges(['values' => ['name' => [
-            ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
-            ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name'],
-        ]]]);
+        $this->setChanges([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
 
         $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn('an english name');
     }
@@ -38,25 +49,55 @@ class ProductDraftSpec extends ObjectBehavior
         $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn(null);
     }
 
-    function it_remove_changes_for_attribute() {
-        $this->setChanges(['values' => ['name' => [
-            ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
-            ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name'],
-        ]]]);
+    function it_remove_changes_for_an_attribute() {
+        $this->setChanges([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
 
         $this->removeChange('name', 'en_US', 'ecommerce');
-        $this->getChanges()->shouldReturn(['values' => ['name' => [
-            ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
-        ]]]);
+
+        $this->getChanges()->shouldReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
     }
 
-    function it_remove_changes_for_attribute_and_clean() {
-        $this->setChanges(['values' => ['name' => [
-            ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
-        ]]]);
+    function it_remove_changes_for_an_attribute_and_clean() {
+        $this->setChanges([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
 
         $this->removeChange('name', 'en_US', 'ecommerce');
-        $this->getChanges()->shouldReturn(['values' => []]);
+
+        $this->getChanges()->shouldReturn(['values' => [], 'review_statuses' => []]);
     }
 
     function it_has_no_changes_if_changes_empty()
@@ -72,10 +113,51 @@ class ProductDraftSpec extends ObjectBehavior
 
     function it_has_no_changes_if_changes_values_are_not_empty()
     {
-        $this->setChanges(['values' => ['name' => [
-            ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
-        ]]]);
+        $this->setChanges([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
 
         $this->hasChanges()->shouldReturn(true);
+    }
+
+    function it_gives_changes_to_review()
+    {
+        $this->setChanges([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                ]
+            ]
+        ]);
+
+        $this->getChangesToReview()->shouldReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                ]
+            ]
+        ]);
     }
 }

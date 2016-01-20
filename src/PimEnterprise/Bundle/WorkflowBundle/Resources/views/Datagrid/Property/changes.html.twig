@@ -1,3 +1,4 @@
+{% set value = record.rootEntity.changesToReview %}
 {% if value['values'] is defined %}
     {% for code, changes in value['values'] %}
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}

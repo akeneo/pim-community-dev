@@ -87,6 +87,13 @@ interface ProductDraftInterface
     public function hasChanges();
 
     /**
+     * Return only changes with the status CHANGE_TO_REVIEW
+     *
+     * @return array
+     */
+    public function getChangesToReview();
+
+    /**
      * Get the change associated to the the given attribute code if it exists.
      *
      * @param string $changeCode

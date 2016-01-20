@@ -138,6 +138,29 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
+    public function getChangesToReview()
+    {
+        $changes = $this->changes;
+
+        if (!isset($changes['values'])) {
+            return [];
+        }
+
+        foreach ($changes['values'] as $code => $changeset) {
+            foreach ($changeset as $index => $change) {
+                $status = $this->getReviewStatusForChange($code, $change['locale'], $change['scope']);
+                if (self::CHANGE_TO_REVIEW !== $status) {
+                    unset($changes['values'][$code][$index]);
+                }
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getChange($changeCode, $localeCode, $channelCode)
     {
         if (!isset($this->changes['values'])) {
@@ -173,7 +196,7 @@ class ProductDraft implements ProductDraftInterface
         foreach ($this->changes['values'][$changeCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 unset($this->changes['values'][$changeCode][$index]);
-                $this->removeReviewStatusForChange($channelCode, $localeCode, $channelCode);
+                $this->removeReviewStatusForChange($changeCode, $localeCode, $channelCode);
             }
         }
 
