@@ -29,27 +29,27 @@ class MetricLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->validate(['data' => '10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '-10.05', 'unit' => 'KILOGRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '-10.05', 'unit' => 'KILOGRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '-10', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '-10', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 10, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => 10, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 10.05, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => 10.05, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => ' 10.05 ', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => ' 10.05 ', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => null, 'unit' => null], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => null, 'unit' => null], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '', 'unit' => ''], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '', 'unit' => ''], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => 0, 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => 0, 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
-        $this->validate(['data' => '0', 'unit' => 'GRAM'], ['decimal_separator' => '.'], 'metric')
+        $this->validate(['data' => '0', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => '.'])
             ->shouldReturn(null);
     }
 
@@ -59,7 +59,7 @@ class MetricLocalizerSpec extends ObjectBehavior
     ) {
         $validator->validate(Argument::any(), Argument::any())->willReturn($constraints);
 
-        $this->validate(['data' => '10.00', 'unit' => 'GRAM'], ['decimal_separator' => ','], 'metric')
+        $this->validate(['data' => '10.00', 'unit' => 'GRAM'], 'metric', ['decimal_separator' => ','])
             ->shouldReturn($constraints);
     }
 

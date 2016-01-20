@@ -14,13 +14,13 @@ class MetricLocalizer extends NumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function validate($metric, array $options = [], $attributeCode)
+    public function validate($metric, $attributeCode, array $options = [])
     {
         if (!isset($metric['data'])) {
             return null;
         }
 
-        return parent::validate($metric['data'], $options, $attributeCode);
+        return parent::validate($metric['data'], $attributeCode, $options);
     }
 
     /**

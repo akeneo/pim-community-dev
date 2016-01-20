@@ -16,11 +16,11 @@ class PriceLocalizer extends NumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function validate($prices, array $options = [], $attributeCode)
+    public function validate($prices, $attributeCode, array $options = [])
     {
         $violations = new ConstraintViolationList();
         foreach ($prices as $price) {
-            if (isset($price['data']) && $valid = parent::validate($price['data'], $options, $attributeCode)) {
+            if (isset($price['data']) && $valid = parent::validate($price['data'], $attributeCode, $options)) {
                 $violations->addAll($valid);
             }
         }
