@@ -133,15 +133,21 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getOriginalValues(ProductInterface $product)
     {
-        $originalValues = new ArrayCollection();
-        foreach ($product->getValues() as $value) {
-            if (null !== $value->getId()) {
-                $id = $value->getId();
-                $class = ClassUtils::getClass($value);
-                $this->objectManager->detach($value);
+        if ($this->objectManager instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
+            $originalProduct = $this->objectManager->find(ClassUtils::getClass($product), $product->getId());
+            $this->objectManager->refresh($originalProduct);
+            $originalValues = $originalProduct->getValues();
+        } else {
+            $originalValues = new ArrayCollection();
+            foreach ($product->getValues() as $value) {
+                if (null !== $value->getId()) {
+                    $id    = $value->getId();
+                    $class = ClassUtils::getClass($value);
+                    $this->objectManager->detach($value);
 
-                $value = $this->objectManager->find($class, $id);
-                $originalValues->add($value);
+                    $value = $this->objectManager->find($class, $id);
+                    $originalValues->add($value);
+                }
             }
         }
 
