@@ -5,6 +5,11 @@ namespace Pim\Behat\Context;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
+use Behat\Behat\Hook\Annotation\AfterFeature;
+use Behat\Behat\Hook\Annotation\AfterScenario;
+use Behat\Behat\Hook\Annotation\AfterStep;
+use Behat\Behat\Hook\Annotation\BeforeScenario;
+use Behat\Behat\Hook\Annotation\BeforeStep;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
@@ -150,10 +155,11 @@ class HookContext extends PimContext
      */
     public static function printErrorMessages()
     {
-        if (!empty(FeatureContext::$errorMessages)) {
+        $messages = FeatureContext::getErrorMessages();
+        if (!empty($messages)) {
             echo "\n\033[1;31mAttention!\033[0m\n\n";
 
-            foreach (FeatureContext::$errorMessages as $message) {
+            foreach ($messages as $message) {
                 echo $message . "\n";
             }
 

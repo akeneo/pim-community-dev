@@ -3,16 +3,17 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 class AttributeExtensionSpec extends ObjectBehavior
 {
-    function let()
+    function let(AttributeRepositoryInterface $attributeRepository)
     {
         $icons = [
             'file'  => 'archive',
             'image' => 'picture'
         ];
-        $this->beConstructedWith($icons);
+        $this->beConstructedWith($icons, $attributeRepository);
     }
 
     function it_is_a_twig_extension()
@@ -24,7 +25,7 @@ class AttributeExtensionSpec extends ObjectBehavior
     {
         $functions = $this->getFunctions();
 
-        $functions->shouldHaveCount(1);
+        $functions->shouldHaveCount(2);
         $functions->shouldHaveKey('attribute_icon');
         $functions['attribute_icon']->shouldBeAnInstanceOf('\Twig_Function_Method');
     }

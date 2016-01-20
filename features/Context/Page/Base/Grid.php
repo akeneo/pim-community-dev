@@ -517,17 +517,15 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
-        if (strtolower($filterName) === 'channel') {
-            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
-        } else {
-            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
-        }
+        $filter = $this->spin(function () use ($filterName) {
+            if (strtolower($filterName) === 'channel') {
+                $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
+            } else {
+                $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+            }
 
-        if (null === $filter) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
-            );
-        }
+            return $filter;
+        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
 
         return $filter;
     }
@@ -683,7 +681,7 @@ class Grid extends Index
             if (!$this->getFilter($filterName)->isVisible()) {
                 $this->clickOnFilterToManage($filterName);
             }
-        } catch (\InvalidArgumentException $e) {
+        } catch (TimeoutException $e) {
             $this->clickOnFilterToManage($filterName);
         }
     }
