@@ -150,6 +150,7 @@ define([
                     type: this.attribute.field_type,
                     label: this.getLabel(),
                     value: this.getCurrentValue(),
+                    fieldId: 'field-' + Math.random().toString(10).substring(2),
                     context: this.context,
                     attribute: this.attribute,
                     info: this.elements,

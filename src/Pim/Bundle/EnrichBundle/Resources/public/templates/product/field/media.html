@@ -2,7 +2,7 @@
     <div>
         <% if (!value.data || value.data.filePath === null) { %>
             <label class="file-uploader">
-                <input type="file" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+                <input id="<%- fieldId %>" type="file" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
             </label>
             <div class="uploader">
                 <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>

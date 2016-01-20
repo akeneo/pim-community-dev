@@ -55,3 +55,14 @@ Feature: Edit a product with localized attributes
     Then the field Date should contain "01/12/2015"
     And the product "foo" should have the following values:
       | date | 2015-12-01 |
+
+  Scenario: Switching locale should change the displayed format
+    When I edit my profile
+    And I visit the "Interfaces" tab
+    And I fill in the following information:
+      | Ui locale | anglais (Royaume-Uni) |
+    And I save the user
+    And I follow "Enrich"
+    And I follow "Products"
+    And I click on the "foo" row
+    Then the field Date should contain "28/05/2015"

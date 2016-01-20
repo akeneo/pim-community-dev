@@ -44,6 +44,16 @@ class Base extends Page
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findField($locator)
+    {
+        return $this->spin(function () use ($locator) {
+            return parent::findField($locator);
+        }, sprintf("Can't find the field with given locator (%s)", $locator));
+    }
+
+    /**
      * Verify that page is loaded after login
      */
     public function verifyAfterLogin()
