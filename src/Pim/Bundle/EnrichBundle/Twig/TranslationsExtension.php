@@ -60,10 +60,10 @@ class TranslationsExtension extends \Twig_Extension
     public function getTranslationsFile()
     {
         $localeCode = $this->getLocale();
-        $translationFilePath = sprintf('%s/js/translation/%s.js', $this->asseticRoot, $localeCode);
-        $translationFilePath = realpath($translationFilePath);
+        $relativeFilePath = sprintf('%s/js/translation/%s.js', $this->asseticRoot, $localeCode);
+        $absoluteFilePath = realpath($relativeFilePath);
 
-        if (!file_exists($translationFilePath)) {
+        if (!file_exists($absoluteFilePath)) {
             $result = $this->commandLauncher->executeForeground(sprintf('oro:translation:dump %s', $localeCode));
 
             if ($result->getCommandStatus() > 0) {
@@ -71,9 +71,11 @@ class TranslationsExtension extends \Twig_Extension
                     sprintf('Error during translations file generation for locale "%s"', $localeCode)
                 );
             }
+
+            $absoluteFilePath = realpath($relativeFilePath);
         }
 
-        return $translationFilePath;
+        return $absoluteFilePath;
     }
 
     /**
