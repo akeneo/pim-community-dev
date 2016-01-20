@@ -27,26 +27,30 @@ define(
              * @return {Object}
              */
             init: function (gridElement, gridName) {
-                var modal = new FormModal(
-                    'pimee-workflow-partial-approve-proposal-comment',
-                    function () {
-                        return $.Deferred().resolve();
-                    },
-                    {
-                        title: _.__('pimee_workflow.proposal.partial_accept.modal.title'),
-                        cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
-                        okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
-                    }
-                );
 
-                gridElement.on('click', '.partial-approve-link', function (event) {
-                    event.preventDefault();
+                gridElement.on('click', '.partial-approve-link, .partial-reject-link', function () {
+                    var $this  = $(this);
+                    var action = $this.data('action');
+                    var route  = 'pimee_workflow_product_draft_rest_partial_' + action;
+                    var title  = _.__('pimee_workflow.proposal.partial_' + action + '.modal.title');
+
+                    var modal = new FormModal(
+                        'pimee-workflow-partial-approve-proposal-comment',
+                        function () {
+                            return $.Deferred().resolve();
+                        },
+                        {
+                            title: title,
+                            cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
+                            okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
+                        }
+                    );
 
                     modal
                         .open()
                         .then(function (myFormData) {
-                            var $this = $(this);
-                            $.post(Routing.generate('pimee_workflow_product_draft_rest_partial_approve', {
+
+                            $.post(Routing.generate(route, {
                                 id: $this.data('product-draft'),
                                 code: $this.data('attribute'),
                                 scope: _.isEmpty($this.data('scope')) ? null : $this.data('scope'),
@@ -56,12 +60,12 @@ define(
                                 mediator.trigger('datagrid:doRefresh:' + gridName);
                                 messenger.notificationFlashMessage(
                                     'success',
-                                    _.__('pimee_workflow.proposal.partial_accept.modal.success')
+                                    _.__('pimee_workflow.proposal.partial_' + action + '.modal.success')
                                 );
                             }).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
-                                    _.__('pimee_workflow.proposal.partial_accept.modal.error')
+                                    _.__('pimee_workflow.proposal.partial_' + action + '.modal.error')
                                 );
                             });
                         }.bind(this));

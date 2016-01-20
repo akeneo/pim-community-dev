@@ -37,30 +37,30 @@
   }
 
   .action-cell {
-    vertical-align: middle;
-  }
-
-  .partial-approve {
-    .partial-approve-link {
+    .btn {
       width: 22px;
       height: 22px;
-      background-color: @fern-green;
-      text-decoration: none;
-      display: block;
-      text-align: center;
+      padding: 0;
       line-height: 22px;
-      border-radius: 2px;
-      i {
-        &::before {
-          color: white;
-        }
-        color: white;
-        font-size: 0.8em;
-        top: 3px;
-        position: relative;
+
+      [class^='icon-']:before {
+        color: @akeneo-light;
       }
-      &:hover {
-        background-color: darken(#67b373, 20%);
+
+      &.partial-reject-link {
+        background-color: @chesnut-red;
+
+        &:hover {
+          background-color: darken(@chesnut-red, 20%);
+        }
+      }
+
+      &.partial-approve-link {
+        background-color: @fern-green;
+
+        &:hover {
+          background-color: darken(@fern-green, 20%);
+        }
       }
     }
   }

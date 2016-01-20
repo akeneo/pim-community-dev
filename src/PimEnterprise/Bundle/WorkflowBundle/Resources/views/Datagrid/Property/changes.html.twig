@@ -38,13 +38,16 @@
                         </th>
                         <th class="action-cell">
                             {% if canReview %}
-                                <span class="partial-approve pull-right">
-                                    <a href="#" class="partial-approve-link hide-text" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
-                                        <i class="icon-ok hide-text">
-                                            {{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}
-                                        </i>
-                                    </a>
-                                </span>
+                                <button class="partial-reject-link btn" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}" data-action="reject">
+                                    <i class="icon-remove hide-text">
+                                        {{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}
+                                    </i>
+                                </button>
+                                <button class="partial-approve-link btn" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}" data-action="approve">
+                                    <i class="icon-ok hide-text">
+                                        {{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}
+                                    </i>
+                                </button>
                             {% endif %}
                         </th>
                     </tr>
