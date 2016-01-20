@@ -3,7 +3,6 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
@@ -69,6 +68,10 @@ datagrid:
                 icon:  cloud-download
                 link:  unpublish_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.published_product.grid_helper->getActionConfigurationClosure'
+        mass_actions_groups:
+            quick_export:
+                label: pim_datagrid.mass_action_group.quick_export.label
+                icon: download-alt
         mass_actions:
             mass_edit:
                 type: edit
@@ -91,6 +94,8 @@ datagrid:
                     withHeader: true
                 messages:
                     empty_selection: No products selected
+                launcherOptions:
+                    group: quick_export
         sorters:
             columns:
                 family:
