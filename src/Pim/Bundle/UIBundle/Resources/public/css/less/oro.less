@@ -434,11 +434,27 @@ select {
   .mass-actions-panel {
     .btn {
       [class^='icon-'] {
-        margin:0 -4px 0 -2px;
+        margin: 0 -4px 0 -2px;
+      }
+      &.dropdown-toggle {
+        [class^='icon-'] {
+          margin: 0 3px;
+        }
+      }
+    }
+    .btn-group:not(:first-child) {
+      padding-left: 20px;
+    }
+    .dropdown-menu {
+      .btn {
+        border: none;
+        text-align: left;
       }
     }
   }
-  .caret { margin-top:11px; }
+  .caret {
+    margin-top: 11px;
+  }
 }
 .grid-container {
   width: 100%;
@@ -447,9 +463,9 @@ select {
   overflow: visible;
   .table-bordered {
     border-left:1px solid #dfdfdf;
-    -webkit-border-radius: 0px;
-       -moz-border-radius: 0px;
-            border-radius: 0px;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
     td,
     th { border-left:0; }
     .boolean-cell {

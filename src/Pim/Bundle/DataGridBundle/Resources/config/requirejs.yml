@@ -15,7 +15,6 @@ config:
 
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
-        pim/datagrid/export-action:             pimdatagrid/js/datagrid/action/export-action
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
@@ -95,5 +94,8 @@ config:
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
 
+        pim/template/datagrid/action-launcher-button:           pimdatagrid/templates/datagrid/action-launcher-button.html
+        pim/template/datagrid/action-launcher-list-item:        pimdatagrid/templates/datagrid/action-launcher-list-item.html
+        pim/template/datagrid/actions-group:                    pimdatagrid/templates/datagrid/actions-group.html
         pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html

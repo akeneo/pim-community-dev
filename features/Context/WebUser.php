@@ -1561,6 +1561,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @When /^I save and back to the grid$/
+     */
+    public function iSaveAndBackToTheGrid()
+    {
+        $this
+            ->getCurrentPage()
+            ->getSaveAndBackButton()
+            ->click();
+        $this->wait();
+    }
+
+    /**
      * @param string $action
      *
      * @Given /^I (enable|disable) the product$/

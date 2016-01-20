@@ -1,0 +1,8 @@
+<div class="<%- classname %> btn-group">
+    <button class="action btn dropdown-toggle" title="<%- group.title %>" data-toggle="dropdown">
+        <% if (group.icon) { %><i class="icon-<%- group.icon %>"></i><% } %>
+        <%- _.__(group.label) %>
+        <i class="caret"></i>
+    </button>
+    <ul class="dropdown-menu"></ul>
+</div>
