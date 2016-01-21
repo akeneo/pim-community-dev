@@ -133,7 +133,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getOriginalValues(ProductInterface $product)
     {
-        if (class_exists(PimEnterpriseWorkflowBundle::DOCTRINE_MONGODB)) {
+        if ($this->objectManager instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
             $originalProduct = $this->objectManager->find(ClassUtils::getClass($product), $product->getId());
             $this->objectManager->refresh($originalProduct);
             $originalValues = $originalProduct->getValues();
@@ -141,7 +141,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $originalValues = new ArrayCollection();
             foreach ($product->getValues() as $value) {
                 if (null !== $value->getId()) {
-                    $id = $value->getId();
+                    $id    = $value->getId();
                     $class = ClassUtils::getClass($value);
                     $this->objectManager->detach($value);
 

@@ -1,5 +1,8 @@
 # 1.5.x
 
+## Technical improvements
+- PIM-5450: MongoDb ODM bundle in dev requirements 
+
 ## Bug fixes
 
 ## BC breaks
