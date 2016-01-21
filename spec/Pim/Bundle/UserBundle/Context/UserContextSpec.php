@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -137,6 +138,45 @@ class UserContextSpec extends ObjectBehavior
     function its_get_user_tree_method_returns_the_first_available_tree_if_user_tree_is_not_available($firstTree)
     {
         $this->getUserProductCategoryTree()->shouldReturn($firstTree);
+    }
+
+    function it_builds_user_product_context_for_normalization(
+        $tokenStorage,
+        $localeRepository,
+        $channelRepository,
+        $choicesBuilder,
+        ChannelInterface $userChannel,
+        ChannelInterface $ecommerce,
+        LocaleInterface $fr,
+        LocaleInterface $en,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
+        $userChannel->getCode()->willReturn('mobile');
+        $channelRepository->findOneBy([])->willReturn($userChannel);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $token->getUser()->willReturn($user);
+
+        $channelRepository->findAll()->willReturn([$ecommerce]);
+        $choicesBuilder->buildChoices([$ecommerce])->willReturn([
+            'mobile' => $userChannel,
+            'ecommerce' => $ecommerce
+        ]);
+
+        $fr->getCode()->willReturn('fr_FR');
+        $en->getCode()->willReturn('en_US');
+
+        $localeRepository->getActivatedLocales()->willReturn([$en, $fr]);
+
+        $user->getUiLocale()->willReturn($fr);
+        $user->getCatalogScope()->willReturn($userChannel);
+
+        $this->toArray()->shouldReturn([
+            'locales'  => ['en_US', 'fr_FR'],
+            'channels' => ['mobile', 'ecommerce'],
+            'locale'   => 'fr_FR'
+        ]);
     }
 }
 

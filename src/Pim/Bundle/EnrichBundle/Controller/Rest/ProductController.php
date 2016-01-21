@@ -141,7 +141,16 @@ class ProductController
         $product  = $this->findProductOr404($id);
         $this->productBuilder->addMissingAssociations($product);
 
-        return new JsonResponse($this->normalizer->normalize($product, 'internal_api', $this->buildContext()));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $product,
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -181,7 +190,16 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'internal_api', $this->buildContext()));
+            $normalizationContext = $this->userContext->toArray() + [
+                'filter_type'                => 'pim.internal_api.product_value.view',
+                'disable_grouping_separator' => true
+            ];
+
+            return new JsonResponse($this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $normalizationContext
+            ));
         } else {
             $errors = [
                 'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
@@ -333,24 +351,5 @@ class ProductController
                 );
             }
         }
-    }
-
-    /**
-     * Build context for normalizer
-     *
-     * @return array
-     */
-    protected function buildContext()
-    {
-        $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
-        $locales  = $this->userContext->getUserLocaleCodes();
-
-        return [
-            'locales'                    => $locales,
-            'channels'                   => $channels,
-            'filter_type'                => 'pim.internal_api.product_value.view',
-            'locale'                     => $this->userContext->getUiLocale()->getCode(),
-            'disable_grouping_separator' => true
-        ];
     }
 }
