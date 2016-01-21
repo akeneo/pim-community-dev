@@ -96,4 +96,16 @@ class CommandLauncher
 
         return $result;
     }
+
+    /**
+     * Builds logfile path from root directory
+     *
+     * @param string $logfile
+     *
+     * @return string
+     */
+    public function buildLogfilePath($logfile)
+    {
+        return $this->rootDir .'/logs/'. $logfile;
+    }
 }

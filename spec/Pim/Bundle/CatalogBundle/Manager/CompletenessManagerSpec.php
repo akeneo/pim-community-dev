@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
@@ -19,7 +20,6 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CompletenessManagerSpec extends ObjectBehavior
 {
@@ -28,7 +28,8 @@ class CompletenessManagerSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteCheckerInterface $productValueCompleteChecker
+        ProductValueCompleteCheckerInterface $productValueCompleteChecker,
+        CommandLauncher $commandLauncher
     ) {
         $this->beConstructedWith(
             $familyRepository,
@@ -36,6 +37,7 @@ class CompletenessManagerSpec extends ObjectBehavior
             $localeRepository,
             $generator,
             $productValueCompleteChecker,
+            $commandLauncher,
             'Pim\Bundle\CatalogBundle\Entity\Channel'
         );
     }
