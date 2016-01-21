@@ -25,5 +25,11 @@ interface ProductDraftApplierInterface
      * @param ProductInterface      $product
      * @param ProductDraftInterface $productDraft
      */
-    public function apply(ProductInterface $product, ProductDraftInterface $productDraft);
+    public function applyAllChanges(ProductInterface $product, ProductDraftInterface $productDraft);
+
+    /**
+     * @param ProductInterface      $product
+     * @param ProductDraftInterface $productDraft
+     */
+    public function applyToReviewChanges(ProductInterface $product, ProductDraftInterface $productDraft);
 }

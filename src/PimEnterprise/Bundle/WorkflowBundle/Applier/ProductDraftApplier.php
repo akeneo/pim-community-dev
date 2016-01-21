@@ -44,17 +44,44 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(ProductInterface $product, ProductDraftInterface $productDraft)
+    public function applyAllChanges(ProductInterface $product, ProductDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 
         $changes = $productDraft->getChanges();
-
         if (!isset($changes['values'])) {
             return;
         }
 
-        foreach ($changes['values'] as $code => $values) {
+        $this->applyValues($product, $changes['values']);
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyToReviewChanges(ProductInterface $product, ProductDraftInterface $productDraft)
+    {
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
+
+        $changes = $productDraft->getChangesToReview();
+        if (!isset($changes['values'])) {
+            return;
+        }
+
+        $this->applyValues($product, $changes['values']);
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $changesValues
+     */
+    protected function applyValues(ProductInterface $product, array $changesValues)
+    {
+        foreach ($changesValues as $code => $values) {
             foreach ($values as $value) {
                 $this->propertySetter->setData(
                     $product,
@@ -64,7 +91,5 @@ class ProductDraftApplier implements ProductDraftApplierInterface
                 );
             }
         }
-
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
     }
 }

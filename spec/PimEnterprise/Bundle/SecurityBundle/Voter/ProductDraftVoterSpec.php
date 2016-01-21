@@ -65,7 +65,8 @@ class ProductDraftVoterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn([
+        $draft->isInProgress()->willReturn(false);
+        $draft->getChangesToReview()->willReturn([
             'values' => [
                 'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
             ]
@@ -103,7 +104,8 @@ class ProductDraftVoterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn([
+        $draft->isInProgress()->willReturn(false);
+        $draft->getChangesToReview()->willReturn([
             'values' => [
                 'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
                 'price'       => [['locale' => null, 'scope' => null, 'data' => '']],
@@ -151,7 +153,8 @@ class ProductDraftVoterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn([
+        $draft->isInProgress()->willReturn(false);
+        $draft->getChangesToReview()->willReturn([
             'values' => [
                 'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
                 'price'       => [['locale' => null, 'scope' => null, 'data' => '']],
@@ -185,7 +188,6 @@ class ProductDraftVoterSpec extends ObjectBehavior
         $attrGroupRepository,
         $localeRepository,
         $attrGroupAccessManager,
-        $localeVoter,
         UserInterface $user,
         TokenInterface $token,
         ProductDraftInterface $draft,
@@ -194,7 +196,8 @@ class ProductDraftVoterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $token->getUser()->willReturn($user);
-        $draft->getChanges()->willReturn([
+        $draft->isInProgress()->willReturn(false);
+        $draft->getChangesToReview()->willReturn([
             'values' => [
                 'description' => [['locale' => 'en_US', 'scope' => null, 'data' => '']],
                 'price'       => [['locale' => null, 'scope' => null, 'data' => '']],

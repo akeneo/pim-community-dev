@@ -23,9 +23,10 @@ class ProductDraftApplierSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_a_draft_without_values(
+        $propertySetter,
+        $dispatcher,
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
-        $dispatcher
+        ProductDraftInterface $productDraft
     ) {
         $dispatcher
             ->dispatch(
@@ -34,6 +35,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
@@ -41,25 +43,98 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldNotBeCalled();
 
-        $this->apply($product, $productDraft);
+        $this->applyAllChanges($product, $productDraft);
     }
 
-    function it_applies_a_draft(
-        ProductInterface $product,
-        ProductDraftInterface $productDraft,
+    function it_applies_changes_to_review_of_a_draft(
+        $propertySetter,
         $dispatcher,
-        $propertySetter
+        ProductInterface $product,
+        ProductDraftInterface $productDraft
     ) {
-        $productDraft->getChanges()->willReturn(['values' =>
-            [
+        $productDraft->getChangesToReview()->willReturn([
+            'values' => [
                 'name' => [
-                    ['data' => 'Test', 'locale' => null, 'scope' => null]
+                    ['scope' => null, 'locale' => null, 'data' => 'Test'],
                 ],
                 'description' => [
-                    ['data' => 'Description EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'Description EN print', 'locale' => 'en_US', 'scope' => 'print'],
-                    ['data' => 'Description FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'Description FR print', 'locale' => 'fr_FR', 'scope' => 'print'],
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'Description EN ecommerce'],
+                    ['scope' => 'print',     'locale' => 'en_US', 'data' => 'Description EN print'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'Description FR ecommerce']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                ],
+                'description' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                ]
+            ]
+        ]);
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_APPLY,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $propertySetter->setData($product, 'name', 'Test', [
+            'locale' => null, 'scope' => null
+        ])->shouldBeCalled();
+        $propertySetter->setData($product, 'description', 'Description EN ecommerce', [
+            'locale' => 'en_US', 'scope' => 'ecommerce'
+        ])->shouldBeCalled();
+        $propertySetter->setData($product, 'description', 'Description EN print', [
+            'locale' => 'en_US', 'scope' => 'print'
+        ])->shouldBeCalled();
+        $propertySetter->setData($product, 'description', 'Description FR ecommerce', [
+            'locale' => 'fr_FR', 'scope' => 'ecommerce'
+        ])->shouldBeCalled();
+        $propertySetter->setData($product, 'description', 'Description FR print', [
+            'locale' => 'fr_FR', 'scope' => 'print'
+        ])->shouldNotBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_APPLY,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $this->applyToReviewChanges($product, $productDraft);
+    }
+
+    function it_applies_all_changes_of_a_draft(
+        $propertySetter,
+        $dispatcher,
+        ProductInterface $product,
+        ProductDraftInterface $productDraft
+    ) {
+        $productDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'data' => 'Test'],
+                ],
+                'description' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'Description EN ecommerce'],
+                    ['scope' => 'print',     'locale' => 'en_US', 'data' => 'Description EN print'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'Description FR ecommerce'],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'data' => 'Description FR print']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                ],
+                'description' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
                 ]
             ]
         ]);
@@ -93,6 +168,6 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->apply($product, $productDraft);
+        $this->applyAllChanges($product, $productDraft);
     }
 }

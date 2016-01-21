@@ -51,7 +51,18 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftInterface $productDraft,
         ProductInterface $product
     ) {
-        $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
+        $productDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getId()->willReturn(42);
 
@@ -62,7 +73,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $applier->apply($product, $productDraft)->shouldBeCalled();
+        $applier->applyToReviewChanges($product, $productDraft)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(false);
+        $productDraft->removeChange('name', 'en_US', 'ecommerce')->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
         $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
 
@@ -84,7 +97,18 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftInterface $productDraft,
         ProductInterface $product
     ) {
-        $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
+        $productDraft->getChanges()->willReturn([
+            'values' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ]);
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getId()->willReturn(null);
 
@@ -95,9 +119,11 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $applier->apply($product, $productDraft)->shouldBeCalled();
+        $applier->applyToReviewChanges($product, $productDraft)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(false);
+        $productDraft->removeChange('name', 'en_US', 'ecommerce')->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $remover->remove(Argument::cetera())->shouldNotBeCalled();
 
         $dispatcher
             ->dispatch(
@@ -130,7 +156,21 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('name');
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
-        $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
+
+        $changes = [
+            'values' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'data' => 'new name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ];
+        $temporaryDraft->setChanges($changes)->shouldBeCalled();
+        $temporaryDraft->getChanges()->willReturn($changes);
         $temporaryDraft->getProduct()->willReturn($product);
         $temporaryDraft->getId()->willReturn(null);
 
@@ -143,9 +183,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $applier->apply($product, $temporaryDraft)->shouldBeCalled();
+        $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
+        $temporaryDraft->hasChanges()->willReturn(false);
         $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $remover->remove(Argument::cetera())->shouldNotBeCalled();
 
         $dispatcher
             ->dispatch(
@@ -174,13 +215,26 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getAuthor()->willReturn('Mary');
         $productDraft->getChange('name', null, null)->willReturn('new name');
         $productDraft->removeChange('name', null, null)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(false);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
-        $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
+
+        $changes = [
+            'values' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'data' => 'new name']
+                ]
+            ],
+            'review_statuses' => [
+                'name' => [
+                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                ]
+            ]
+        ];
+        $temporaryDraft->setChanges($changes)->shouldBeCalled();
+        $temporaryDraft->getChanges()->willReturn($changes);
         $temporaryDraft->getProduct()->willReturn($product);
         $temporaryDraft->getId()->willReturn(null);
 
@@ -193,7 +247,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $applier->apply($product, $temporaryDraft)->shouldBeCalled();
+        $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
+        $temporaryDraft->hasChanges()->willReturn(false);
+        $productDraft->hasChanges()->willReturn(false);
         $workingCopySaver->save($product)->shouldBeCalled();
         $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
 
@@ -218,9 +274,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft
             ->setReviewStatusForChange(ProductDraftInterface::CHANGE_REJECTED, 'name', null, null)
             ->shouldBeCalled();
-
-        $productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(false);
-        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldBeCalled();
 
         $this->partialReject($productDraft, $attribute);
     }

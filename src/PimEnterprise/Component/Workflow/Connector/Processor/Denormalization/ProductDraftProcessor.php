@@ -222,7 +222,7 @@ class ProductDraftProcessor extends AbstractProcessor
         $productDraft = $this->getProductDraft($product);
 
         if (null !== $productDraft) {
-            $this->productDraftApplier->apply($product, $productDraft);
+            $this->productDraftApplier->applyAllChanges($product, $productDraft);
         }
 
         return $product;

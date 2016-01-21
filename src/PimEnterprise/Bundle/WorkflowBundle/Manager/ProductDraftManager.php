@@ -141,11 +141,26 @@ class ProductDraftManager
 
         $temporaryDraft = $this->factory->createProductDraft($productDraft->getProduct(), $productDraft->getAuthor());
 
-        $temporaryDraft->setChanges(['values' => [$attributeCode => [[
-            'locale' => $localeCode,
-            'scope'  => $channelCode,
-            'data'   => $change
-        ]]]]);
+        $temporaryDraft->setChanges([
+            'values' => [
+                $attributeCode => [
+                    [
+                        'locale' => $localeCode,
+                        'scope'  => $channelCode,
+                        'data'   => $change
+                    ]
+                ]
+            ],
+            'review_statuses' => [
+                $attributeCode => [
+                    [
+                        'locale' => $localeCode,
+                        'scope'  => $channelCode,
+                        'status' => ProductDraftInterface::CHANGE_TO_REVIEW
+                    ]
+                ]
+            ]
+        ]);
 
         $context['message'] = 'pimee_workflow.product_draft.notification.partial_approve';
         $context['messageParams'] = ['%attribute%' => $attribute->getLabel()];
@@ -206,10 +221,6 @@ class ProductDraftManager
             $channelCode
         );
 
-        if (!$productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)) {
-            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
-        }
-
         $this->productDraftSaver->save($productDraft);
     }
 
@@ -224,9 +235,12 @@ class ProductDraftManager
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft, $context));
 
         $product = $productDraft->getProduct();
-        $this->applier->apply($product, $productDraft);
+        $this->applier->applyToReviewChanges($product, $productDraft);
+        $this->removeApprovedChanges($productDraft);
 
-        if (null !== $productDraft->getId()) {
+        if ($productDraft->hasChanges()) {
+            $this->productDraftSaver->save($productDraft);
+        } elseif (null !== $productDraft->getId()) {
             $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         }
 
@@ -311,5 +325,22 @@ class ProductDraftManager
             ProductDraftEvents::POST_READY,
             new GenericEvent($productDraft, ['comment' => $comment])
         );
+    }
+
+    /**
+     * Remove approved changes (status CHANGE_TO_REVIEW) from the product draft
+     *
+     * @param ProductDraftInterface $productDraft
+     */
+    public function removeApprovedChanges(ProductDraftInterface $productDraft)
+    {
+        $changes = $productDraft->getChanges();
+        foreach ($changes['review_statuses'] as $code => $reviewStatuses) {
+            foreach ($reviewStatuses as $reviewStatus) {
+                if (ProductDraftInterface::CHANGE_TO_REVIEW === $reviewStatus['status']){
+                    $productDraft->removeChange($code, $reviewStatus['locale'], $reviewStatus['scope']);
+                }
+            }
+        }
     }
 }
