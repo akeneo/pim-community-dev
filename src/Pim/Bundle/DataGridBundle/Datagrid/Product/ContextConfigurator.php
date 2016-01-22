@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ContextConfigurator implements ConfiguratorInterface
 {
     /** @staticvar string */
+    const SOURCE_KEY = 'source';
+
+    /** @staticvar string */
     const SOURCE_PATH = '[source][%s]';
 
     /** @staticvar string */
