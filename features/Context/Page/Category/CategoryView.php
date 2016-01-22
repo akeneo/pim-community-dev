@@ -74,9 +74,8 @@ abstract class CategoryView extends Form
      */
     public function dragCategoryTo($category1, $category2)
     {
-        //TODO need to be reworked
-        $category1 = $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category1);
-        $category2 = $this->jsTreeManipulator->findNodeInTree($this->getElement('Category tree'), $category2);
+        $category1 = $this->getElement('Category tree')->findNodeInTree($category1);
+        $category2 = $this->getElement('Category tree')->findNodeInTree($category2);
 
         $this->dragElementTo($category1, $category2);
 
