@@ -15,7 +15,7 @@ abstract class ElementDecorator
     /**
      * @param NodeElement $element
      */
-    public function construct(NodeElement $element)
+    public function __construct(NodeElement $element)
     {
         $this->element = $element;
     }
