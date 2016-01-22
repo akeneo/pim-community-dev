@@ -94,4 +94,124 @@ class ProductUpdaterSpec extends ObjectBehavior
 
         $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
     }
+
+    function it_applies_updates_for_non_empty_values($propertySetter, ProductInterface $product)
+    {
+        $toUpdate = [
+            'not_empty_string' => [['data' => 'notemptydata', 'locale' => null, 'scope' => null]],
+            'not_null' => [['data' => 42, 'locale' => null, 'scope' => null]],
+            'not_empty_array' => [['data' => ['red'], 'locale' => null, 'scope' => null]],
+            'not_empty_price' => [
+                [
+                    'data' => [['currency' => 'EUR', 'data' => null], ['currency' => 'USD', 'data' => 12]],
+                    'locale' => null,
+                    'scope' => null
+                ]
+            ],
+            'not_empty_metric' => [
+                [
+                    'data' => ['unit' => 'KILOGRAM', 'data' => 12],
+                    'locale' => null,
+                    'scope' => null
+                ]
+            ],
+            'not_empty_file' => [
+                [
+                    'data' => ['filePath' => 'toto.png', 'originalFilename' => 'tata.png'],
+                    'locale' => null,
+                    'scope' => null
+                ]
+            ],
+        ];
+
+        $propertySetter
+            ->setData($product, 'not_empty_string', 'notemptydata', ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'not_null', 42, ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'not_empty_array', ['red'], ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData(
+                $product,
+                'not_empty_price',
+                [['currency' => 'EUR', 'data' => null], ['currency' => 'USD', 'data' => 12]],
+                ['locale' => null, 'scope' => null]
+            )
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData(
+                $product,
+                'not_empty_metric',
+                ['unit' => 'KILOGRAM', 'data' => 12],
+                ['locale' => null, 'scope' => null]
+            )
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData(
+                $product,
+                'not_empty_file',
+                ['filePath' => 'toto.png', 'originalFilename' => 'tata.png'],
+                ['locale' => null, 'scope' => null]
+            )
+            ->shouldBeCalled();
+
+        $this->update($product, $toUpdate, []);
+    }
+
+    function it_does_not_apply_updates_for_empty_values($propertySetter, ProductInterface $product)
+    {
+        $toNotUpdate = [
+            'null' => [['data' => null, 'locale' => 'en_US', 'scope' => null]],
+            'empty_string' => [['data' => '', 'locale' => 'en_US', 'scope' => null]],
+            'empty_array' => [['data' => null, 'locale' => 'en_US', 'scope' => null]],
+            'empty_price' => [
+                [
+                    'data' => [['currency' => 'EUR', 'data' => null], ['currency' => 'USD', 'data' => null]],
+                    'locale' => null,
+                    'scope' => null
+                ]
+            ],
+            'empty_metric' => [['data' => ['unit' => 'KILOGRAM', 'data' => null], 'locale' => 'en_US', 'scope' => null]],
+            'empty_file' => [
+                [
+                    'data' => ['filePath' => null, 'originalFilename' => null],
+                    'locale' => null,
+                    'scope' => null
+                ]
+            ],
+        ];
+        $propertySetter
+            ->setData($product, 'null', null, ['locale' => 'en_US', 'scope' => null])
+            ->shouldNotBeCalled();
+        $propertySetter
+            ->setData($product, 'empty_string', '', ['locale' => 'en_US', 'scope' => null])
+            ->shouldNotBeCalled();
+        $propertySetter
+            ->setData($product, 'empty_array', [], ['locale' => 'en_US', 'scope' => null])
+            ->shouldNotBeCalled();
+        $propertySetter
+            ->setData(
+                $product,
+                'empty_price',
+                [['currency' => 'EUR', 'data' => null], ['currency' => 'USD', 'data' => null]],
+                ['locale' => null, 'scope' => null]
+            )
+            ->shouldNotBeCalled();
+        $propertySetter
+            ->setData($product, ['unit' => 'KILOGRAM', 'data' => null], [], ['locale' => 'en_US', 'scope' => null])
+            ->shouldNotBeCalled();
+        $propertySetter
+            ->setData(
+                $product,
+                'not_empty_file',
+                ['filePath' => null, 'originalFilename' => null],
+                ['locale' => null, 'scope' => null]
+            )
+            ->shouldNotBeCalled();
+
+        $this->update($product, $toNotUpdate, []);
+    }
 }

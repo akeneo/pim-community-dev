@@ -197,13 +197,55 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 
         foreach ($values as $value) {
             $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
-            $providedData = ('' === $value['data'] || [] === $value['data'] || null === $value['data']) ? false : true;
+            $providedData = $this->hasProvidedValueData($value['data']);
 
             if ($isFamilyAttribute || $providedData || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                 $this->propertySetter->setData($product, $attributeCode, $value['data'], $options);
             }
         }
+    }
+
+    /**
+     * Indicates whether a provided value data is considered empty or not, could be extracted in a new dedicated
+     * service if we need it elsewhere
+     *
+     * @param $valueData
+     *
+     * @return bool
+     */
+    protected function hasProvidedValueData($valueData)
+    {
+        if ('' === $valueData || [] === $valueData || null === $valueData) {
+            return false;
+        }
+
+        if (
+            is_array($valueData) && array_key_exists('unit', $valueData) && array_key_exists('data', $valueData)
+            && null === $valueData['data']
+        ) {
+            return false;
+        }
+
+        if (
+            is_array($valueData) && array_key_exists('filePath', $valueData)
+            && array_key_exists('originalFilename', $valueData) && null === $valueData['filePath']
+        ) {
+            return false;
+        }
+
+        if (is_array($valueData) && count($valueData) > 0 && isset($valueData[0]) && is_array($valueData[0])
+            && array_key_exists('currency', $valueData[0])
+        ) {
+            foreach ($valueData as $price) {
+                if (null !== $price['data']) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true;
     }
 
     /**
