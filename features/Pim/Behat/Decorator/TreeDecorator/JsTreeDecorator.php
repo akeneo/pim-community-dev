@@ -14,14 +14,13 @@ class JsTreeDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     /**
-     * @param NodeElement $rootElement
-     * @param string      $nodeName
+     * @param string $nodeName
      *
      * @return NodeElement
      */
     public function findNodeInTree($nodeName)
     {
-        $node = $this->spin(function () use ($rootElement, $nodeName) {
+        $node = $this->spin(function () use ($nodeName) {
             return $this->element->find('css', sprintf('li a:contains("%s")', $nodeName));
         }, sprintf('Unable to find node "%s" in the tree', $nodeName));
 
@@ -30,8 +29,6 @@ class JsTreeDecorator extends ElementDecorator
 
     /**
      * @param string $nodeName
-     *
-     * @return Edit
      */
     public function expandNode($nodeName)
     {
