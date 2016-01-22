@@ -8,13 +8,17 @@ Feature: Update product history when rules are executed
     Given a "footwear" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
-    And the following product:
-      | sku               | family   |
-      | converse-sneakers | sneakers |
-    And the following product values:
-      | product           | attribute   | value                  | locale | scope  |
-      | converse-sneakers | name        | Black sneakers         | en_US  |        |
-      | converse-sneakers | description | Classic black sneakers | en_US  | mobile |
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU             | converse-sneakers |
+      | Choose a family | Sneakers          |
+    And I press the "Save" button in the popin
+    And I am on the "converse-sneakers" product page
+    And I fill in the following information:
+      | Name        | Black sneakers         |
+      | Description | Classic black sneakers |
+    And I press the "Save" button
 
   Scenario: Successfully display history after executing a rule
     And the following product rule definitions:
@@ -36,10 +40,10 @@ Feature: Update product history when rules are executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
     And I open the history
-    Then there should be 2 updates
+    Then there should be 3 updates
     And I should see history:
       | version | property              | value                        |
-      | 2       | Description mobile fr | Chaussures noires classiques |
+      | 3       | Description mobile fr | Chaussures noires classiques |
     And I should see:
     """
     Applied rule "set_description"
@@ -72,16 +76,20 @@ Feature: Update product history when rules are executed
             value:  Chaussures noires
             locale: fr_FR
       """
+    When I am on the "converse-sneakers" product page
+    And I open the history
+    Then there should be 2 updates
     When the product rule "set_description" is executed
+    And the history of the product "converse-sneakers" has been built
     And the product rule "set_name" is executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
     And I open the history
-    Then there should be 3 updates
+    Then there should be 4 updates
     And I should see history:
       | version | property                 | value                        |
-      | 2       | Description mobile fr    | Chaussures noires classiques |
-      | 3       | Name fr                  | Chaussures noires            |
+      | 3       | Description mobile fr    | Chaussures noires classiques |
+      | 4       | Name fr                  | Chaussures noires            |
     And I should see:
     """
     Applied rule "set_description"
