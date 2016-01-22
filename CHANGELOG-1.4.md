@@ -5,8 +5,10 @@
 - PIM-5476: Fix issue with product import, new products are created with extra optional values for media, metric, price
 
 ## Extra notes:
-About PIM-5476, a new command 'pim:product:delete-empty-values' has been added to clean your database.
-Please backup your database before to process this command.
+About PIM-5476, a new command 'pim:product:purge-empty-product-values' has been added to help to clean your database.
+
+## Improvements
+A new Akeneo/Memory component has been introduced to help to follow the amount of used memory in different processes.
 
 # 1.4.17 (2016-01-19)
 
