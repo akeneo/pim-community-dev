@@ -23,28 +23,36 @@ Feature: Display the product history
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product prices
     Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | price          |
-      | boots | 10 EUR, 20 USD |
     And I am logged in as "Julia"
-    When I edit the "boots" product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I edit the "boots" product
+    And I add available attributes Price
+    When I visit the "Marketing" group
+    And I change the "Price" to "10 EUR"
+    And I change the "Price" to "20 USD"
+    And I press the "Save" button
     And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
+    And I edit the "boots" product
+    And I open the history
+    Then there should be 2 update
     And I should see history:
       | version | property  | value  |
-      | 1       | Price EUR | €10.00 |
-      | 1       | Price USD | $20.00 |
+      | 2       | Price EUR | €10.00 |
+      | 2       | Price USD | $20.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 2 updates
+    Then there should be 3 updates
     And I should see history:
       | version | property  | value  |
-      | 2       | Price USD | $19.00 |
+      | 3       | Price USD | $19.00 |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -53,11 +61,11 @@ Feature: Display the product history
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 3 updates
+    Then there should be 4 updates
     And I should see history:
       | version | property  | value |
-      | 3       | Price EUR |       |
-      | 3       | Price USD |       |
+      | 4       | Price EUR |       |
+      | 4       | Price USD |       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
