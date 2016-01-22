@@ -118,7 +118,7 @@ class ProductDraftController
     {
         $product      = $this->findProductOr404($productId);
         $productDraft = $this->findDraftForProductOr404($product);
-        $comment      = ("" === $request->get('comment')) ? null : $request->get('comment');
+        $comment      = $request->get('comment') ?: null;
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();

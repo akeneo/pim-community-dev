@@ -359,8 +359,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $productDraft->setStatus(ProductDraftInterface::READY)->shouldBeCalled();
-        $saver->save($productDraft);
+        $saver->save($productDraft)->shouldBeCalled();
 
         $dispatcher
             ->dispatch(

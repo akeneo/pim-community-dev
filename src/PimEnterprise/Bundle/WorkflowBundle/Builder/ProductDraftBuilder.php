@@ -102,8 +102,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
-            $diff = $this->buildReviewStatusesInChanges($productDraft, $diff);
             $productDraft->setChanges($diff);
+            $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
 
             return $productDraft;
@@ -165,27 +165,5 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected function getOriginalValue(array $originalValues, $code, $index)
     {
         return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
-    }
-
-    /**
-     * @param ProductDraftInterface $draft
-     * @param array                 $changes
-     *
-     * @return array
-     */
-    protected function buildReviewStatusesInChanges(ProductDraftInterface $draft, array $changes)
-    {
-        $statuses = $changes['values'];
-        foreach ($statuses as $code => &$items) {
-            foreach ($items as &$item) {
-                $status = $draft->getReviewStatusForChange($code, $item['locale'], $item['scope']);
-                $item['status'] = null === $status ? ProductDraftInterface::CHANGE_TO_REVIEW : $status;
-                unset($item['data']);
-            }
-        }
-
-        $changes['review_statuses'] = $statuses;
-
-        return $changes;
     }
 }

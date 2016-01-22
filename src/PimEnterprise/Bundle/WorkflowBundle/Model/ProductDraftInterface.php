@@ -137,6 +137,13 @@ interface ProductDraftInterface
     public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode);
 
     /**
+     * Set all review statuses to the specified one.
+     *
+     * @param string $status
+     */
+    public function setAllReviewStatuses($status);
+
+    /**
      * Remove the review status associated to the attribute code if it exists
      *
      * @param string $changeCode

@@ -317,7 +317,9 @@ class ProductDraftManager
     public function markAsReady(ProductDraftInterface $productDraft, $comment = null)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
+
         $productDraft->setStatus(ProductDraftInterface::READY);
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
 
         $this->productDraftSaver->save($productDraft);
 

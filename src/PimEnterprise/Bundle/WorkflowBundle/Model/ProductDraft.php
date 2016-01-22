@@ -249,6 +249,22 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
+    public function setAllReviewStatuses($status)
+    {
+        $statuses = $this->changes['values'];
+        foreach ($statuses as &$items) {
+            foreach ($items as &$item) {
+                $item['status'] = $status;
+                unset($item['data']);
+            }
+        }
+
+        $this->changes['review_statuses'] = $statuses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode)
     {
         if (!isset($this->changes['review_statuses'][$changeCode])) {
