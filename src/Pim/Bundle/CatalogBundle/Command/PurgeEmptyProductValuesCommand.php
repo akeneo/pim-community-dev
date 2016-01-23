@@ -2,16 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Component\Memory\HumanReadableBytesFormatter;
+use Akeneo\Component\Memory\MemoryUsageProvider;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Purge empty product values, depending on the attribute type, the value is considered empty on different criteria
+ * Purge all empty product values, depending on the attribute type, the value is considered empty on different criteria
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -26,7 +29,8 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:product:purge-empty-product-values')
-            ->setDescription('Purge all empty product values, please dump your database first!');
+            ->setDescription('Purge all empty product values, please dump your database first!')
+            ->addOption('memory-usage', null, InputOption::VALUE_NONE, 'Display the memory usage');
     }
 
     /**
@@ -34,6 +38,18 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $dialog = $this->getHelper('dialog');
+        $question = 'This command will remove empty product values, you must do a database backup before to perform it'
+            . '. To avoid memory leak related to Symfony profiler keeping references on objects, you should use the '
+            . ' --env=prod argument, it does not mean directly on your production database! Please notice that this '
+            . 'command only supports native attribute types and can remove unexpected data in case of custom projects.';
+        if (!$dialog->askConfirmation($output, sprintf('<question>%s</question>', $question), false)) {
+            return;
+        }
+
+        $memoryProvider = new MemoryUsageProvider();
+        $memoryFormatter = new HumanReadableBytesFormatter();
+
         $products = $this->getAllProducts();
         foreach ($products as $product) {
             $purgedProduct = $this->removeProductValues($product);
@@ -52,10 +68,16 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
             }
             $this->detach($product);
 
-            $mem  = memory_get_usage(true); // 123 kb
-            $unit =array('b','kb','mb','gb','tb','pb');
-            $mem  = @round($mem/pow(1024,($i=floor(log($mem,1024)))),2).' '.$unit[$i];
-            $output->writeln($mem);
+            $displayMemoryUsage = $input->getOption('memory-usage');
+            if ($displayMemoryUsage) {
+                $output->writeln(
+                    sprintf(
+                        '%s / %s',
+                        $memoryFormatter->format($memoryProvider->getUsage()),
+                        $memoryFormatter->format($memoryProvider->getLimit())
+                    )
+                );
+            }
         }
         $output->writeln(sprintf('<info>Empty product values has been purged from your database</info>'));
 
@@ -63,6 +85,8 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     }
 
     /**
+     * TODO: could be extracted in a new dedicated service
+     *
      * @param ProductInterface $product
      *
      * @return bool has removed values
@@ -71,11 +95,9 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     {
         $purgedProduct = false;
         foreach ($product->getValues() as $value) {
-
             if ($value->getData() === null) {
                 $product->removeValue($value);
                 $purgedProduct = true;
-
             } elseif (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()) {
                 $fulfilledPrice = false;
                 foreach ($value->getData() as $price) {
@@ -87,7 +109,6 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
                     $product->removeValue($value);
                     $purgedProduct = true;
                 }
-
             } elseif (AttributeTypes::METRIC === $value->getAttribute()->getAttributeType()) {
                 if (null === $value->getData()->getData()) {
                     $product->removeValue($value);

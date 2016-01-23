@@ -207,8 +207,9 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     }
 
     /**
-     * Indicates whether a provided value data is considered empty or not, could be extracted in a new dedicated
-     * service if we need it elsewhere
+     * Indicates whether a provided value data is considered empty or not
+     *
+     * TODO: could be extracted in a new dedicated service
      *
      * @param $valueData
      *
