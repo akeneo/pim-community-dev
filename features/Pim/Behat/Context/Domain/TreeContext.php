@@ -58,7 +58,7 @@ class TreeContext extends PimContext
     {
         $parentNode = $this->getCurrentPage()
             ->getElement('Category tree')
-            ->findCategory($parent);
+            ->findNodeInTree($parent);
 
         $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
@@ -93,7 +93,7 @@ class TreeContext extends PimContext
     {
         $node = $this->getCurrentPage()
             ->getElement('Category tree')
-            ->findCategory($node);
+            ->findNodeInTree($node);
 
         if ($right) {
             $node->rightClick();

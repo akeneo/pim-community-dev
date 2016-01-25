@@ -27,7 +27,7 @@ abstract class CategoryView extends Form
             $this->elements,
             [
                 'Category tree'    => [
-                    'css'        => '#trees',
+                    'css'        => '#tree',
                     'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
                 ],
                 'Tree select'      => ['css' => '#tree_select'],
