@@ -56,7 +56,7 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      */
     public function reverseTransform($number)
     {
-        $violations = $this->localizer->validate($number, $this->options, 'code');
+        $violations = $this->localizer->validate($number, 'code', $this->options);
 
         if (null === $violations || 0 === $violations->count()) {
             return $this->localizer->delocalize($number, $this->options);

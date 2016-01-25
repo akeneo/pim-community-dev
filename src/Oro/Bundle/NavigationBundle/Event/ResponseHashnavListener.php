@@ -37,7 +37,7 @@ class ResponseHashnavListener
         $response = $event->getResponse();
         if ($request->get(self::HASH_NAVIGATION_HEADER) || $request->headers->get(self::HASH_NAVIGATION_HEADER)) {
             $location = '';
-            $isFullRedirect = false;
+            $isFullRedirect = $response->headers->get('oroFullRedirect', false);
             if ($response->isRedirect()) {
                 $location = $response->headers->get('location');
                 if (!is_object($this->tokenStorage->getToken())) {

@@ -93,7 +93,7 @@ class NumberLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($number, array $options = [], $attributeCode)
+    public function validate($number, $attributeCode, array $options = [])
     {
         if (null === $number || ''  === $number) {
             return null;

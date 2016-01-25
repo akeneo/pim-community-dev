@@ -26,12 +26,12 @@ interface LocalizerInterface
      * Data provided respects the expected format ?
      *
      * @param mixed  $data
-     * @param array  $options
      * @param string $attributeCode
+     * @param array  $options
      *
      * @return ConstraintViolationListInterface|null
      */
-    public function validate($data, array $options = [], $attributeCode);
+    public function validate($data, $attributeCode, array $options = []);
 
     /**
      * Convert a localized value to the default format depending on options

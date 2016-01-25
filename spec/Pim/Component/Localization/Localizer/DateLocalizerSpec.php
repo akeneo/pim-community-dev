@@ -30,14 +30,14 @@ class DateLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->validate('28/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(null);
-        $this->validate('01/10/2015', ['date_format' => 'd/m/Y'], 'date')->shouldReturn(null);
-        $this->validate('2015/10/25', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(null);
-        $this->validate('2015/10/01', ['date_format' => 'Y/m/d'], 'date')->shouldReturn(null);
-        $this->validate('2015-10-25', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
-        $this->validate('2015-10-01', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
-        $this->validate('', ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
-        $this->validate(null, ['date_format' => 'Y-m-d'], 'date')->shouldReturn(null);
+        $this->validate('28/10/2015', 'date', ['date_format' => 'd/m/Y'])->shouldReturn(null);
+        $this->validate('01/10/2015', 'date', ['date_format' => 'd/m/Y'])->shouldReturn(null);
+        $this->validate('2015/10/25', 'date', ['date_format' => 'Y/m/d'])->shouldReturn(null);
+        $this->validate('2015/10/01', 'date', ['date_format' => 'Y/m/d'])->shouldReturn(null);
+        $this->validate('2015-10-25', 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
+        $this->validate('2015-10-01', 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
+        $this->validate('', 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
+        $this->validate(null, 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
     }
 
     function it_returns_a_constraint_if_the_format_is_not_valid(
@@ -46,7 +46,7 @@ class DateLocalizerSpec extends ObjectBehavior
     ) {
         $validator->validate('28/10/2015', Argument::any())->willReturn($constraints);
 
-        $this->validate('28/10/2015', ['date_format' => 'd-m-Y'], 'date')->shouldReturn($constraints);
+        $this->validate('28/10/2015', 'date', ['date_format' => 'd-m-Y'])->shouldReturn($constraints);
     }
 
     function it_returns_a_constraint_if_date_format_does_not_respect_format_locale(
@@ -62,7 +62,7 @@ class DateLocalizerSpec extends ObjectBehavior
 
         $dateFactory->create(['locale' => 'fr_FR'])->willReturn($dateFormatter);
         $dateFormatter->getPattern()->willReturn('dd/MM/yyyy');
-        $this->validate('28-10-2015', ['locale' => 'fr_FR'], 'date')->shouldReturn($constraints);
+        $this->validate('28-10-2015', 'date', ['locale' => 'fr_FR'])->shouldReturn($constraints);
     }
 
     function it_delocalize_with_date_format_option($dateFactory, \IntlDateFormatter $dateFormatter)

@@ -227,6 +227,41 @@ class UserContext
     }
 
     /**
+     * Get authenticated user
+     *
+     * @return UserInterface|null
+     */
+    public function getUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * Get the user context as an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $channels = array_keys($this->getChannelChoicesWithUserChannel());
+        $locales  = $this->getUserLocaleCodes();
+
+        return [
+            'locales'  => $locales,
+            'channels' => $channels,
+            'locale'   => $this->getUiLocale()->getCode()
+        ];
+    }
+
+    /**
      * Returns the request locale
      *
      * @return LocaleInterface|null
@@ -315,23 +350,5 @@ class UserContext
     protected function getCurrentRequest()
     {
         return $this->requestStack->getCurrentRequest();
-    }
-
-    /**
-     * Get authenticated user
-     *
-     * @return UserInterface|null
-     */
-    public function getUser()
-    {
-        if (null === $token = $this->tokenStorage->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
     }
 }

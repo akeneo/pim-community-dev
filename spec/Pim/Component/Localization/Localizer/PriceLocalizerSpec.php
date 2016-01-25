@@ -42,7 +42,7 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => 0, 'currency' => 'PES'],
             ['data' => '0', 'currency' => 'PES'],
         ];
-        $this->validate($prices, ['decimal_separator' => '.'], 'prices')->shouldReturn(null);
+        $this->validate($prices, 'prices', ['decimal_separator' => '.'])->shouldReturn(null);
     }
 
 
@@ -58,7 +58,7 @@ class PriceLocalizerSpec extends ObjectBehavior
 
         $allConstraints = new ConstraintViolationList();
         $allConstraints->addAll($constraints);
-        $this->validate($prices, ['decimal_separator' => ','], 'prices')
+        $this->validate($prices, 'prices', ['decimal_separator' => ','])
             ->shouldHaveCount(2);
     }
 

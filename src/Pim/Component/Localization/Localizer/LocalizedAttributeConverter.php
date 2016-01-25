@@ -84,7 +84,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      */
     protected function convertLocalizedToDefaultValue(LocalizerInterface $localizer, array $item, array $options, $path)
     {
-        $violations = $localizer->validate($item['data'], $options, $path);
+        $violations = $localizer->validate($item['data'], $path, $options);
         if (null !== $violations) {
             $this->violations->addAll($violations);
         }

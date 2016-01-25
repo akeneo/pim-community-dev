@@ -29,17 +29,17 @@ class NumberLocalizerSpec extends ObjectBehavior
 
     function it_valids_the_format()
     {
-        $this->validate('10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate('-10.05', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate('10', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate('-10', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate(10, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate(10.0585, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate(' 10.05 ', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate(null, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate('', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate('0', ['decimal_separator' => '.'], 'number')->shouldReturn(null);
-        $this->validate(0, ['decimal_separator' => '.'], 'number')->shouldReturn(null);
+        $this->validate('10.05', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate('-10.05', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate('10', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate('-10', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate(10, 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate(10.0585, 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate(' 10.05 ', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate(null, 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate('', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate('0', 'number', ['decimal_separator' => '.'])->shouldReturn(null);
+        $this->validate(0, 'number', ['decimal_separator' => '.'])->shouldReturn(null);
     }
 
     function it_returns_a_constraint_if_the_decimal_separator_is_not_valid(
@@ -48,7 +48,7 @@ class NumberLocalizerSpec extends ObjectBehavior
     ) {
         $validator->validate('10.00', Argument::any())->willReturn($constraints);
 
-        $this->validate('10.00', ['decimal_separator' => ','], 'number')->shouldReturn($constraints);
+        $this->validate('10.00', 'number', ['decimal_separator' => ','])->shouldReturn($constraints);
     }
 
     function it_convert_comma_to_dot_separator()
