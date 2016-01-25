@@ -184,6 +184,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
+        $temporaryDraft->removeChange('name', null, null)->shouldBeCalled();
         $temporaryDraft->hasChanges()->willReturn(false);
         $workingCopySaver->save($product)->shouldBeCalled();
         $remover->remove(Argument::cetera())->shouldNotBeCalled();
@@ -248,6 +249,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
+        $temporaryDraft->removeChange('name', null, null)->shouldBeCalled();
         $temporaryDraft->hasChanges()->willReturn(false);
         $productDraft->hasChanges()->willReturn(false);
         $workingCopySaver->save($product)->shouldBeCalled();
@@ -268,6 +270,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('name');
+        $attribute->getLabel()->willReturn('Name');
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
 

@@ -26,7 +26,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber');
     }
 
-    function it_subscribes_to_approve_event()
+    function it_subscribes_to_refuse_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
             ProductDraftEvents::POST_REFUSE => ['send', 10],
@@ -36,7 +36,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
     function it_does_not_send_on_non_object($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
     }
@@ -44,7 +44,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
     function it_does_not_send_on_non_product_draft($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(new \stdClass());
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
     }
@@ -58,7 +58,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
     }
@@ -91,8 +91,8 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $identifier
     ) {
-        $event->hasArgument('comment')->willReturn(false);
         $event->getSubject()->willReturn($draft);
+        $event->hasArgument(Argument::any())->willReturn(false);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(true);
@@ -128,7 +128,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $this->send($event);
     }
 
-    function it_sends_on_product_draft_with_a_comment(
+    function it_sends_a_notification_based_on_context(
         $notifier,
         $context,
         $userRepository,
@@ -140,14 +140,21 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         ProductValueInterface $identifier
     ) {
         $event->getSubject()->willReturn($draft);
-        $event->hasArgument('comment')->willReturn(true);
-        $event->getArgument('comment')->willReturn('Nope Mary.');
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(true);
 
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
+
+        $event->hasArgument('comment')->willReturn(true);
+        $event->hasArgument('message')->willReturn(true);
+        $event->hasArgument('messageParams')->willReturn(true);
+        $event->hasArgument('actionType')->willReturn(true);
+        $event->getArgument('comment')->willReturn('a comment');
+        $event->getArgument('message')->willReturn('a message');
+        $event->getArgument('messageParams')->willReturn(['%owner%' => 'Joe Doe', '%attribute%' => 'name']);
+        $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_partial_reject');
 
         $context->getUser()->willReturn($owner);
 
@@ -161,17 +168,21 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
 
         $notifier->notify(
             ['author'],
-            'pimee_workflow.product_draft.notification.refuse',
+            'a message',
             'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
-                'context'       => [
-                    'actionType' => 'pimee_workflow_product_draft_notification_refuse',
-                    'showReportButton' => false,
+                'messageParams' => [
+                    '%product%'   => 'tshirt',
+                    '%owner%'     => 'Joe Doe',
+                    '%attribute%' => 'name'
                 ],
-                'comment'    => 'Nope Mary.',
+                'context' => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_partial_reject',
+                    'showReportButton' => false
+                ],
+                'comment' => 'a comment'
             ]
         )->shouldBeCalled();
 

@@ -28,6 +28,7 @@ pimee_workflow:
             partial_reject: Reject changes on attribute %attribute% of the product %product%
         notification:
             partial_approve: %owner% has accepted the value for %attribute% for the product: %product%
+            partial_reject: %owner% has rejected the value for %attribute% for the product: %product%
             approve: %owner% has accepted your proposal for the product %product%
             refuse: %owner% has rejected your proposal for the product %product%
             remove: %owner% has deleted your proposal for the product %product%
@@ -76,6 +77,7 @@ btn.publish: Publish
 btn.unpublish: Unpublish
 
 pimee_workflow_product_draft_notification_partial_approve: Proposal partially approved
+pimee_workflow_product_draft_notification_partial_reject: Proposal partially rejected
 pimee_workflow_product_draft_notification_approve: Proposal approved
 pimee_workflow_product_draft_notification_refuse: Proposal rejected
 pimee_workflow_product_draft_notification_remove: Proposal deleted

@@ -222,6 +222,12 @@ class ProductDraftManager
         );
 
         $this->productDraftSaver->save($productDraft);
+
+        $context['message'] = 'pimee_workflow.product_draft.notification.partial_reject';
+        $context['messageParams'] = ['%attribute%' => $attribute->getLabel()];
+        $context['actionType'] = 'pimee_workflow_product_draft_notification_partial_reject';
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft, $context));
     }
 
     /**
