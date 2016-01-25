@@ -69,7 +69,7 @@ Feature: Review a product draft
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Release date for scope "mobile" should be "2014-05-20"
+    Then the product Release date for scope "mobile" should be "05/20/2014"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a metric attribute from a product draft

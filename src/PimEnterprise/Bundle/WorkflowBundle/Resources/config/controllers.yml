@@ -53,6 +53,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - '@pim_user.context.user'
 
     pimee_workflow.controller.rest.product:
         class: %pimee_workflow.controller.rest.product.class%

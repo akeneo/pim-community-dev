@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -64,6 +65,9 @@ class ProductDraftController
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
@@ -74,6 +78,7 @@ class ProductDraftController
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ChannelRepositoryInterface      $channelRepository
      * @param LocaleRepositoryInterface       $localeRepository
+     * @param UserContext                     $userContext
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -84,7 +89,8 @@ class ProductDraftController
         TokenStorageInterface $tokenStorage,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        UserContext $userContext
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository           = $repository;
@@ -95,6 +101,7 @@ class ProductDraftController
         $this->attributeRepository  = $attributeRepository;
         $this->channelRepository    = $channelRepository;
         $this->localeRepository     = $localeRepository;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -119,7 +126,16 @@ class ProductDraftController
 
         $this->manager->markAsReady($productDraft, $comment);
 
-        return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $product,
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -181,7 +197,16 @@ class ProductDraftController
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
 
-        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productDraft->getProduct(),
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -219,7 +244,16 @@ class ProductDraftController
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
 
-        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productDraft->getProduct(),
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -249,7 +283,16 @@ class ProductDraftController
             'comment' => $request->request->get('comment')
         ]);
 
-        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productDraft->getProduct(),
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -279,7 +322,16 @@ class ProductDraftController
             'comment' => $request->request->get('comment')
         ]);
 
-        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productDraft->getProduct(),
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
