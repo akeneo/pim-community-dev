@@ -42,7 +42,8 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
         $question = 'This command will remove empty product values, you must do a database backup before to perform it'
             . '. To avoid memory leak related to Symfony profiler keeping references on objects, you should use the '
             . ' --env=prod argument, it does not mean directly on your production database! Please notice that this '
-            . 'command only supports native attribute types and can remove unexpected data in case of custom projects.';
+            . 'command only supports native attribute types and can remove unexpected data in case of custom projects. '
+            . 'Are you sure to run the command?';
         if (!$dialog->askConfirmation($output, sprintf('<question>%s</question>', $question), false)) {
             return;
         }
@@ -72,8 +73,9 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
             if ($displayMemoryUsage) {
                 $output->writeln(
                     sprintf(
-                        '%s / %s',
+                        'usage: %s peak: %s / limit: %s',
                         $memoryFormatter->format($memoryProvider->getUsage()),
+                        $memoryFormatter->format($memoryProvider->getPeakUsage()),
                         $memoryFormatter->format($memoryProvider->getLimit())
                     )
                 );
@@ -85,39 +87,15 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     }
 
     /**
-     * TODO: could be extracted in a new dedicated service
-     *
      * @param ProductInterface $product
      *
      * @return bool has removed values
      */
     protected function removeProductValues(ProductInterface $product)
     {
-        $purgedProduct = false;
-        foreach ($product->getValues() as $value) {
-            if ($value->getData() === null) {
-                $product->removeValue($value);
-                $purgedProduct = true;
-            } elseif (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()) {
-                $fulfilledPrice = false;
-                foreach ($value->getData() as $price) {
-                    if (null !== $price->getData()) {
-                        $fulfilledPrice = true;
-                    }
-                }
-                if (false === $fulfilledPrice) {
-                    $product->removeValue($value);
-                    $purgedProduct = true;
-                }
-            } elseif (AttributeTypes::METRIC === $value->getAttribute()->getAttributeType()) {
-                if (null === $value->getData()->getData()) {
-                    $product->removeValue($value);
-                    $purgedProduct = true;
-                }
-            }
-        }
+        $emptyValuesRemover = $this->getContainer()->get('pim_catalog.updater.product_purger');
 
-        return $purgedProduct;
+        return $emptyValuesRemover->removeEmptyProductValues($product);
     }
 
     /**
