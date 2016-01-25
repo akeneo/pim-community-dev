@@ -84,7 +84,7 @@ class AttributeController
         }
 
         $token = $this->tokenStorage->getToken();
-        $options['user_groups_ids'] = implode(', ', $token->getUser()->getGroupsIds());
+        $options['user_group_ids'] = $token->getUser()->getGroupsIds();
 
         if (null !== $this->attributeSearchRepository) {
             $attributes = $this->attributeSearchRepository->findBySearch(
