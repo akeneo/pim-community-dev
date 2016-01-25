@@ -12,6 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -67,6 +70,8 @@ class ProductDraftController
 
     /** @var UserContext */
     protected $userContext;
+    /** @var array */
+    protected $supportedReviewActions = ['approve', 'reject'];
 
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
@@ -156,43 +161,27 @@ class ProductDraftController
     {
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (!in_array($action, ['approve', 'reject'])) {
-            throw new \LogicException('Only "approve" or "reject" are valid review actions.');
-        }
-
-        if (null === $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
-            throw new NotFoundHttpException(sprintf('Attribute "%s" not found', $code));
-        }
-
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft that is not ready can not be approved');
+        if (!in_array($action, $this->supportedReviewActions)) {
+            throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
+        $attribute = $this->findAttributeOr404($code);
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ATTRIBUTES, $attribute->getGroup())) {
             throw new AccessDeniedHttpException();
         }
 
-        $channel = $locale = null;
-
+        $channel = null;
         if ($request->query->has('scope')) {
-            $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
-
-            if (null === $channel) {
-                throw new NotFoundHttpException(sprintf('Channel "%s" not found', $request->query->get('scope')));
-            }
+            $channel = $this->findChannelOr404($request->query->get('scope'));
         }
 
+        $locale = null;
         if ($request->query->has('locale')) {
-            $locale = $this->localeRepository->findOneByIdentifier($request->query->get('locale'));
-
-            if (null === $locale) {
-                throw new NotFoundHttpException(sprintf('Locale "%s" not found', $request->query->get('locale')));
-            }
-
+            $locale = $this->findLocaleOr404($request->query->get('locale'));
             if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ITEMS, $locale)) {
                 throw new AccessDeniedHttpException();
             }
@@ -400,5 +389,56 @@ class ProductDraftController
         }
 
         return $productDraft;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return AttributeInterface
+     */
+    protected function findAttributeOr404($code)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('Attribute "%s" not found', $code));
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ChannelInterface
+     */
+    protected function findChannelOr404($code)
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($code);
+        if (null === $channel) {
+            throw new NotFoundHttpException(sprintf('Channel "%s" not found', $code));
+        }
+
+        return $channel;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return LocaleInterface
+     */
+    protected function findLocaleOr404($code)
+    {
+        $locale = $this->localeRepository->findOneByIdentifier($code);
+        if (null === $locale) {
+            throw new NotFoundHttpException(sprintf('Locale "%s" not found', $code));
+        }
+
+        return $locale;
     }
 }

@@ -65,6 +65,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ]);
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getId()->willReturn(42);
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
 
         $dispatcher
             ->dispatch(
@@ -78,52 +79,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->removeChange('name', 'en_US', 'ecommerce')->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
         $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $this->approve($productDraft);
-    }
-
-    function it_does_not_remove_new_draft_on_approve(
-        $workingCopySaver,
-        $applier,
-        $dispatcher,
-        $remover,
-        ProductDraftInterface $productDraft,
-        ProductInterface $product
-    ) {
-        $productDraft->getChanges()->willReturn([
-            'values' => [
-                'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
-                ]
-            ],
-            'review_statuses' => [
-                'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
-                ]
-            ]
-        ]);
-        $productDraft->getProduct()->willReturn($product);
-        $productDraft->getId()->willReturn(null);
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $applier->applyToReviewChanges($product, $productDraft)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(false);
-        $productDraft->removeChange('name', 'en_US', 'ecommerce')->shouldBeCalled();
-        $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove(Argument::cetera())->shouldNotBeCalled();
 
         $dispatcher
             ->dispatch(
@@ -140,17 +95,16 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         $applier,
         $dispatcher,
+        $saver,
         $remover,
         ProductDraftInterface $productDraft,
-        ProductDraftInterface $temporaryDraft,
+        ProductDraftInterface $partialDraft,
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
         $productDraft->getChange('name', null, null)->willReturn('new name');
-        $productDraft->removeChange('name', null, null)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(true);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
@@ -162,36 +116,29 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 'name' => [
                     ['scope' => null, 'locale' => null, 'data' => 'new name']
                 ]
-            ],
-            'review_statuses' => [
-                'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
-                ]
             ]
         ];
-        $temporaryDraft->setChanges($changes)->shouldBeCalled();
-        $temporaryDraft->getChanges()->willReturn($changes);
-        $temporaryDraft->getProduct()->willReturn($product);
-        $temporaryDraft->getId()->willReturn(null);
-
-        $factory->createProductDraft($product, 'Mary')->willReturn($temporaryDraft);
+        $partialDraft->setChanges($changes)->shouldBeCalled();
+        $partialDraft->getChanges()->willReturn($changes);
+        $factory->createProductDraft($product, 'Mary')->willReturn($partialDraft);
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_APPROVE,
+                ProductDraftEvents::PRE_PARTIAL_APPROVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
 
-        $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
-        $temporaryDraft->removeChange('name', null, null)->shouldBeCalled();
-        $temporaryDraft->hasChanges()->willReturn(false);
+        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
+        $productDraft->removeChange('name', null, null)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(true);
         $remover->remove(Argument::cetera())->shouldNotBeCalled();
+        $saver->save($productDraft)->shouldBeCalled();
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_APPROVE,
+                ProductDraftEvents::POST_PARTIAL_APPROVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -204,9 +151,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         $applier,
         $dispatcher,
+        $saver,
         $remover,
         ProductDraftInterface $productDraft,
-        ProductDraftInterface $temporaryDraft,
+        ProductDraftInterface $partialDraft,
         AttributeInterface $attribute,
         ProductInterface $product,
         ChannelInterface $channel,
@@ -215,7 +163,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
         $productDraft->getChange('name', null, null)->willReturn('new name');
-        $productDraft->removeChange('name', null, null)->shouldBeCalled();
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
@@ -227,37 +174,29 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 'name' => [
                     ['scope' => null, 'locale' => null, 'data' => 'new name']
                 ]
-            ],
-            'review_statuses' => [
-                'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
-                ]
             ]
         ];
-        $temporaryDraft->setChanges($changes)->shouldBeCalled();
-        $temporaryDraft->getChanges()->willReturn($changes);
-        $temporaryDraft->getProduct()->willReturn($product);
-        $temporaryDraft->getId()->willReturn(null);
-
-        $factory->createProductDraft($product, 'Mary')->willReturn($temporaryDraft);
+        $partialDraft->setChanges($changes)->shouldBeCalled();
+        $partialDraft->getChanges()->willReturn($changes);
+        $factory->createProductDraft($product, 'Mary')->willReturn($partialDraft);
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_APPROVE,
+                ProductDraftEvents::PRE_PARTIAL_APPROVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
 
-        $applier->applyToReviewChanges($product, $temporaryDraft)->shouldBeCalled();
-        $temporaryDraft->removeChange('name', null, null)->shouldBeCalled();
-        $temporaryDraft->hasChanges()->willReturn(false);
-        $productDraft->hasChanges()->willReturn(false);
+        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
+        $productDraft->removeChange('name', null, null)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(false);
         $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
+        $saver->save($productDraft)->shouldNotBeCalled();
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_APPROVE,
+                ProductDraftEvents::POST_PARTIAL_APPROVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -265,7 +204,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->partialApprove($productDraft, $attribute, $channel, $locale);
     }
 
-    function it_marks_a_change_as_rejected_on_partial_reject(
+    function it_marks_a_change_as_draft_on_partial_reject(
+        $dispatcher,
+        $saver,
         ProductDraftInterface $productDraft,
         AttributeInterface $attribute
     ) {
@@ -274,26 +215,39 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
 
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_PARTIAL_REFUSE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
         $productDraft
-            ->setReviewStatusForChange(ProductDraftInterface::CHANGE_REJECTED, 'name', null, null)
+            ->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'name', null, null)
+            ->shouldBeCalled();
+        $saver->save($productDraft)->shouldBeCalled();
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_PARTIAL_REFUSE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
             ->shouldBeCalled();
 
         $this->partialReject($productDraft, $attribute);
     }
 
-    function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(
+    function it_marks_a_product_draft_as_in_progress_when_refusing_it(
         $dispatcher,
         $saver,
         ProductDraftInterface $productDraft
     ) {
-        $productDraft->isInProgress()->willReturn(false);
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_REFUSE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
-        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
         $saver->save($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
@@ -301,14 +255,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
-
-        $this->refuse($productDraft);
-    }
-
-    function it_removes_in_progress_product_draft_when_refusing_it($saver, ProductDraftInterface $productDraft)
-    {
-        $productDraft->isInProgress()->willReturn(true);
-        $saver->save($productDraft);
 
         $this->refuse($productDraft);
     }
@@ -363,9 +309,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
-        $productDraft->setStatus(ProductDraftInterface::READY)->shouldBeCalled();
         $saver->save($productDraft)->shouldBeCalled();
-
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_READY,
@@ -397,5 +341,36 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
 
         $this->shouldThrow('\LogicException')->during('partialApprove', [$productDraft, $attribute, $channel]);
+    }
+
+    function it_removes_a_product_draft($dispatcher, $remover, ProductDraftInterface $productDraft)
+    {
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_REMOVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+        $remover->remove($productDraft)->shouldBeCalled();
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_REMOVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $this->remove($productDraft);
+    }
+
+    function it_throws_an_exception_when_trying_to_remove_a_product_draft_in_ready_state(
+        $remover,
+        ProductDraftInterface $productDraft
+    ) {
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
+
+        $remover->remove($productDraft)->shouldNotBeCalled();
+        $this->shouldThrow('\LogicException')->during('remove', [$productDraft]);
     }
 }

@@ -32,8 +32,9 @@ class EnsureProductDraftGlobalStatusSubscriber implements EventSubscriberInterfa
     }
 
     /**
-     * Ensure that the global status of a product draft is set
-     * to "in progress" if it does not contain changes to review anymore
+     * Ensure that the global status of a product draft is set to :
+     * - "ready" if it contains changes to review only
+     * - "in progress" if it contains draft changes only
      *
      * @param GenericEvent $event
      */
@@ -41,12 +42,16 @@ class EnsureProductDraftGlobalStatusSubscriber implements EventSubscriberInterfa
     {
         $productDraft = $event->getSubject();
 
-        if (!$productDraft instanceof ProductDraftInterface) {
+        if (!$productDraft instanceof ProductDraftInterface || !$productDraft->hasChanges()) {
             return;
         }
 
-        if (!$productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)) {
-            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
+        if ($productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_DRAFT)) {
+            $productDraft->markAsInProgress();
+        }
+
+        if ($productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_TO_REVIEW)) {
+            $productDraft->markAsReady();
         }
     }
 }

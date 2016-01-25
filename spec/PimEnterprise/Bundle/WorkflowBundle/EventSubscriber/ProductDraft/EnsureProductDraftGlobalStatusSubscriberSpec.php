@@ -24,19 +24,25 @@ class EnsureProductDraftGlobalStatusSubscriberSpec extends ObjectBehavior
         ProductDraftInterface $productDraft
     ) {
         $event->getSubject()->willReturn($productDraft);
-        $productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(false);
-        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(true);
+        $productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(false);
+        $productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_DRAFT)->willReturn(true);
+        $productDraft->markAsInProgress()->shouldBeCalled();
+        $productDraft->markAsReady()->shouldNotBeCalled();
 
         $this->ensureGlobalStatus($event);
     }
 
-    function it_does_not_change_global_status_of_a_product_draft_if_some_changes_to_review_left(
+    function it_sets_global_status_of_a_product_draft_to_ready_if_only_changes_to_review_left(
         GenericEvent $event,
         ProductDraftInterface $productDraft
     ) {
         $event->getSubject()->willReturn($productDraft);
-        $productDraft->hasReviewStatus(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(true);
-        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldNotBeCalled();
+        $productDraft->hasChanges()->willReturn(true);
+        $productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_TO_REVIEW)->willReturn(true);
+        $productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_DRAFT)->willReturn(false);
+        $productDraft->markAsInProgress()->shouldNotBeCalled();
+        $productDraft->markAsReady()->shouldBeCalled();
 
         $this->ensureGlobalStatus($event);
     }

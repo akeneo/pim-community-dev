@@ -103,8 +103,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
             $productDraft->setChanges($diff);
-            $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
-            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
+            $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
 
             return $productDraft;
         }

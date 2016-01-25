@@ -119,7 +119,11 @@ class CreateDraftCommand extends UpdateProductCommand
         }
 
         if (null !== $productDraft = $this->getProductDraftBuilder()->build($product, $username)) {
-            $productDraft->setStatus($input->getArgument('draft_status'));
+            $status = ProductDraftInterface::READY === $input->getArgument('draft_status') ?
+                ProductDraftInterface::CHANGE_TO_REVIEW :
+                ProductDraftInterface::CHANGE_DRAFT;
+            $productDraft->setAllReviewStatuses($status);
+
             $this->saveDraft($productDraft);
             $output->writeln(sprintf('<info>Draft "%s" has been created</info>', $identifier));
         } else {

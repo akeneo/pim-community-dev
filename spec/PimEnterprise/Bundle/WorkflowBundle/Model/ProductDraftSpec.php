@@ -100,12 +100,12 @@ class ProductDraftSpec extends ObjectBehavior
         $this->getChanges()->shouldReturn(['values' => [], 'review_statuses' => []]);
     }
 
-    function it_has_no_changes_if_changes_empty()
+    function it_has_no_changes_by_default()
     {
         $this->hasChanges()->shouldReturn(false);
     }
 
-    function it_has_no_changes_if_changes_values_empty()
+    function it_has_no_changes_if_changes_values_are_empty()
     {
         $this->setChanges(['values' => []]);
         $this->hasChanges()->shouldReturn(false);
@@ -141,7 +141,7 @@ class ProductDraftSpec extends ObjectBehavior
             'review_statuses' => [
                 'name' => [
                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
@@ -155,7 +155,7 @@ class ProductDraftSpec extends ObjectBehavior
             'review_statuses' => [
                 'name' => [
                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);

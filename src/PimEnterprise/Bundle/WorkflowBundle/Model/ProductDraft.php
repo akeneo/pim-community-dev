@@ -161,17 +161,17 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChange($changeCode, $localeCode, $channelCode)
+    public function getChange($fieldCode, $localeCode, $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return null;
         }
 
-        if (!isset($this->changes['values'][$changeCode])) {
+        if (!isset($this->changes['values'][$fieldCode])) {
             return null;
         }
 
-        foreach ($this->changes['values'][$changeCode] as $change) {
+        foreach ($this->changes['values'][$fieldCode] as $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 return $change['data'];
             }
@@ -183,40 +183,40 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChange($changeCode, $localeCode, $channelCode)
+    public function removeChange($fieldCode, $localeCode, $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return;
         }
 
-        if (!isset($this->changes['values'][$changeCode])) {
+        if (!isset($this->changes['values'][$fieldCode])) {
             return;
         }
 
-        foreach ($this->changes['values'][$changeCode] as $index => $change) {
+        foreach ($this->changes['values'][$fieldCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                unset($this->changes['values'][$changeCode][$index]);
-                $this->removeReviewStatusForChange($changeCode, $localeCode, $channelCode);
+                unset($this->changes['values'][$fieldCode][$index]);
+                $this->removeReviewStatusForChange($fieldCode, $localeCode, $channelCode);
             }
         }
 
-        $this->changes['values'][$changeCode] = array_values($this->changes['values'][$changeCode]);
+        $this->changes['values'][$fieldCode] = array_values($this->changes['values'][$fieldCode]);
 
-        if (empty($this->changes['values'][$changeCode])) {
-            unset($this->changes['values'][$changeCode]);
+        if (empty($this->changes['values'][$fieldCode])) {
+            unset($this->changes['values'][$fieldCode]);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReviewStatusForChange($changeCode, $localeCode, $channelCode)
+    public function getReviewStatusForChange($fieldCode, $localeCode, $channelCode)
     {
-        if (!isset($this->changes['review_statuses'][$changeCode])) {
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return null;
         }
 
-        foreach ($this->changes['review_statuses'][$changeCode] as $change) {
+        foreach ($this->changes['review_statuses'][$fieldCode] as $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 return $change['status'];
             }
@@ -231,15 +231,19 @@ class ProductDraft implements ProductDraftInterface
      *
      * @throws \LogicException
      */
-    public function setReviewStatusForChange($status, $changeCode, $localeCode, $channelCode)
+    public function setReviewStatusForChange($status, $fieldCode, $localeCode, $channelCode)
     {
-        if (!isset($this->changes['review_statuses'][$changeCode])) {
-            throw new \LogicException(sprintf('There is no review status for code "%s"', $changeCode));
+        if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
+            throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
         }
 
-        foreach ($this->changes['review_statuses'][$changeCode] as $index => $change) {
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
+            throw new \LogicException(sprintf('There is no review status for code "%s"', $fieldCode));
+        }
+
+        foreach ($this->changes['review_statuses'][$fieldCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                $this->changes['review_statuses'][$changeCode][$index]['status'] = $status;
+                $this->changes['review_statuses'][$fieldCode][$index]['status'] = $status;
             }
         }
 
@@ -248,9 +252,15 @@ class ProductDraft implements ProductDraftInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function setAllReviewStatuses($status)
     {
+        if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
+            throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
+        }
+
         $statuses = $this->changes['values'];
         foreach ($statuses as &$items) {
             foreach ($items as &$item) {
@@ -260,44 +270,46 @@ class ProductDraft implements ProductDraftInterface
         }
 
         $this->changes['review_statuses'] = $statuses;
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeReviewStatusForChange($changeCode, $localeCode, $channelCode)
+    public function removeReviewStatusForChange($fieldCode, $localeCode, $channelCode)
     {
-        if (!isset($this->changes['review_statuses'][$changeCode])) {
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return;
         }
 
-        foreach ($this->changes['review_statuses'][$changeCode] as $index => $change) {
+        foreach ($this->changes['review_statuses'][$fieldCode] as $index => $change) {
             if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
-                unset($this->changes['review_statuses'][$changeCode][$index]);
+                unset($this->changes['review_statuses'][$fieldCode][$index]);
             }
         }
 
-        $this->changes['review_statuses'][$changeCode] = array_values($this->changes['review_statuses'][$changeCode]);
+        $this->changes['review_statuses'][$fieldCode] = array_values($this->changes['review_statuses'][$fieldCode]);
 
-        if (empty($this->changes['review_statuses'][$changeCode])) {
-            unset($this->changes['review_statuses'][$changeCode]);
+        if (empty($this->changes['review_statuses'][$fieldCode])) {
+            unset($this->changes['review_statuses'][$fieldCode]);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasReviewStatus($status)
+    public function areAllReviewStatusesTo($status)
     {
         foreach ($this->changes['review_statuses'] as $items) {
             foreach ($items as $item) {
-                if ($status === $item['status']) {
-                    return true;
+                if ($status !== $item['status']) {
+                    return false;
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -311,11 +323,17 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatus($status)
+    public function markAsInProgress()
     {
-        $this->status = $status;
+        $this->status = self::IN_PROGRESS;
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function markAsReady()
+    {
+        $this->status = self::READY;
     }
 
     /**

@@ -71,7 +71,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
                     ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
                     ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
@@ -134,7 +134,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
                     ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
                     ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_REJECTED]
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
