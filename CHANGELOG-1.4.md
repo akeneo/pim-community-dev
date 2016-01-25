@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5478: Fix attribute permissions issue in attribute searchable repository
+
 # 1.4.17 (2016-01-19)
 
 ## Scalability improvements
