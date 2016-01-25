@@ -809,6 +809,16 @@ h3.tab-header {
         display: block;
         overflow: auto;
       }
+
+      & > .tab-pane.association-type {
+        padding-top: 0;
+        margin: 0;
+        display: none;
+
+        &.active {
+          display: block;
+        }
+      }
     }
   }
 
