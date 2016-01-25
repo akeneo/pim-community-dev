@@ -755,7 +755,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
             }
 
-            $checkbox->check();
+            $this->spin(function () use ($checkbox) {
+                if ($checkbox->isChecked()) {
+                    return true;
+                }
+                $checkbox->check();
+
+                return false;
+            }, 'Unable to check the row.');
         }
     }
 
@@ -778,7 +785,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
             }
 
-            $checkbox->uncheck();
+            $this->spin(function () use ($checkbox) {
+                if (!$checkbox->isChecked()) {
+                    return true;
+                }
+                $checkbox->uncheck();
+
+                return false;
+            }, 'Unable to uncheck the row.');
         }
     }
 
@@ -828,7 +842,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             }
 
             if ($checkbox->isChecked()) {
-                throw $this->createExpectationException(sprintf('Expecting row %s to be checked', $row));
+                throw $this->createExpectationException(sprintf('Expecting row %s to be unchecked', $row));
             }
         }
     }
