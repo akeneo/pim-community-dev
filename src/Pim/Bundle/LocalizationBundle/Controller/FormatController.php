@@ -46,7 +46,7 @@ class FormatController
     {
         $locale    = $this->localeResolver->getCurrentLocale();
         $dateFormatter = $this->dateFactory->create(['locale' => $locale]);
-        $timeFormatter = $this->datetimeFactory->create(['locale' => $locale, 'timetype' => \IntlDateFormatter::SHORT]);
+        $timeFormatter = $this->datetimeFactory->create(['locale' => $locale]);
 
         return new JsonResponse(
             [
@@ -59,6 +59,7 @@ class FormatController
                     'defaultFormat' => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
                 ],
                 'language' => $locale,
+                '12Hours'  => 0 !== strpos($timeFormatter->getPattern(), 'a')
             ]
         );
     }
