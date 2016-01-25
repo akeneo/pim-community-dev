@@ -269,11 +269,11 @@ class Grid extends Index
      */
     public function isGridEmpty()
     {
-        $noDataDiv = $this->getElement('Grid')
+        $noDataDiv = $this->getGrid()
             ->getParent()
             ->find('css', '.no-data');
 
-        return $noDataDiv && $noDataDiv->isVisible();
+        return null !== $noDataDiv && $noDataDiv->isVisible();
     }
 
     /**
