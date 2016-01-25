@@ -1,0 +1,28 @@
+Pim\Bundle\UserBundle\Entity\Group:
+    type: entity
+    table: pim_access_group
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: smallint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: string
+            length: 30
+            unique: true
+            nullable: false
+    manyToMany:
+        roles:
+            targetEntity: Pim\Bundle\UserBundle\Entity\Role
+            joinTable:
+                name: pim_user_access_group_role
+                joinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    role_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

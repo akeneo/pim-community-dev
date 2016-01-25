@@ -1,0 +1,26 @@
+{% extends 'PimUserBundle:User:form.html.twig' %}
+
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% set fullname = form.vars.value.fullName %}
+{% set title = 'Edit user'|trans ~ ' - ' ~ fullname %}
+{% set formAction = path('pim_user_profile_update') %}
+
+{% set buttons %}
+    {{ elements.backLink(path('pim_user_index')) }}
+    {{ elements.submitBtn('', 'ok') }}
+{% endset %}
+
+{% set left %}
+    <div class="customer-info">
+        <div class="visual">
+            <img src="{{ form.vars.value.imagePath ? form.vars.value.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ fullname }}"/>
+        </div>
+    </div>
+    <ul class="inline">
+        <li>{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</li>
+        <li>{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</li>
+        <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</li>
+        <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
+    </ul>
+{% endset %}

@@ -31,7 +31,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $settings = [
-        'oro_user' => [
+        'pim_user' => [
             'greeting' => [
                 'value' => true,
                 'type'  => 'boolean',
@@ -53,7 +53,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $loadedSettings = [
-        'oro_user' => [
+        'pim_user' => [
             'level'    => [
                 'value' => 2000,
                 'type'  => 'scalar',
@@ -93,8 +93,8 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
         $object = $this->object;
 
-        $this->assertEquals($this->loadedSettings['oro_user']['level']['value'], $object->get('oro_user.level'));
-        $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting'));
+        $this->assertEquals($this->loadedSettings['pim_user']['level']['value'], $object->get('pim_user.level'));
+        $this->assertEquals($this->settings['pim_user']['greeting']['value'], $object->get('pim_user.greeting'));
 
         $this->assertNull($object->get('oro_test.nosetting'));
         $this->assertNull($object->get('noservice.nosetting'));
@@ -111,8 +111,8 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             [$this->om, $this->settings]
         );
 
-        $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting', true));
-        $this->assertEquals($this->settings['oro_user']['level']['value'], $object->get('oro_user.level', true));
+        $this->assertEquals($this->settings['pim_user']['greeting']['value'], $object->get('pim_user.greeting', true));
+        $this->assertEquals($this->settings['pim_user']['level']['value'], $object->get('pim_user.level', true));
         $this->assertEquals(
             $this->settings['oro_test']['anysetting']['value'],
             $object->get('oro_test.anysetting', true)
@@ -154,13 +154,13 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $settings = [
-            'oro_user___level' => [
+            'pim_user___level' => [
                 'value' => 50,
             ],
         ];
 
         $removed = [
-            'oro_user___greeting' => [
+            'pim_user___greeting' => [
                 'value' => 'new value',
             ],
         ];
@@ -227,7 +227,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetChanged()
     {
         $settings = [
-            'oro_user___level' => [
+            'pim_user___level' => [
                 'value' => 50,
             ],
         ];
@@ -244,7 +244,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ];
         $object->expects($this->once())
             ->method('get')
-            ->with('oro_user.level')
+            ->with('pim_user.level')
             ->will($this->returnValue($currentValue));
 
         $object->getChanged($settings);

@@ -57,9 +57,9 @@ class RoutePatternVoter implements VoterInterface
      * Returns TRUE if route matches pattern.
      *
      * Pattern could be:
-     *   - full route name - "oro_user_create"
-     *   - a regular expression string - "/^oro_user_\w+$/"
-     *   - a string with asterisks - "oro_user_*"
+     *   - full route name - "pim_user_create"
+     *   - a regular expression string - "/^pim_user_\w+$/"
+     *   - a string with asterisks - "pim_user_*"
      *
      * @param string $pattern
      * @param string $actualRoute

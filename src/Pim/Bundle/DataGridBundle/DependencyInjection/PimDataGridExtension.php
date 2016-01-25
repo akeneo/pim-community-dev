@@ -42,7 +42,6 @@ class PimDataGridExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('selectors.yml');
         $loader->load('sorters.yml');
-        $loader->load('subscribers.yml');
         $loader->load('twig.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');

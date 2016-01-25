@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -16,21 +16,21 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AuthorProperty extends FieldProperty
 {
-    /** @var UserManager */
-    protected $userManager;
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $userRepository;
 
     /** @var string[] */
     protected $userCachedResults;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param UserManager         $userManager
+     * @param TranslatorInterface                   $translator
+     * @param IdentifiableObjectRepositoryInterface $userRepository
      */
-    public function __construct(TranslatorInterface $translator, UserManager $userManager)
+    public function __construct(TranslatorInterface $translator, IdentifiableObjectRepositoryInterface $userRepository)
     {
         parent::__construct($translator);
 
-        $this->userManager = $userManager;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -58,7 +58,7 @@ class AuthorProperty extends FieldProperty
     protected function convertValue($value)
     {
         if (!isset($this->userCachedResults[$value['author']])) {
-            $user = $this->userManager->findUserByUsername($value['author']);
+            $user = $this->userRepository->findOneByIdentifier($value['author']);
 
             if (null === $user) {
                 $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));

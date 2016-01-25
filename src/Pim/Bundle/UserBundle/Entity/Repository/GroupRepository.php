@@ -3,7 +3,8 @@
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\User;
 
 /**
@@ -12,11 +13,8 @@ use Pim\Bundle\UserBundle\Entity\User;
  * @author    Julien Janvier <julien.janvier@gmail.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4
  */
-class GroupRepository extends BaseGroupRepository implements
-    IdentifiableObjectRepositoryInterface
+class GroupRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -51,7 +49,7 @@ class GroupRepository extends BaseGroupRepository implements
     /**
      * Get the default user group
      *
-     * @return null|object
+     * @return null|Group
      */
     public function getDefaultUserGroup()
     {
@@ -64,5 +62,22 @@ class GroupRepository extends BaseGroupRepository implements
     public function getIdentifierProperties()
     {
         return ['name'];
+    }
+
+    /**
+     * Get user query builder
+     *
+     * @param Group $group
+     *
+     * @return QueryBuilder
+     */
+    public function getUserQueryBuilder(Group $group)
+    {
+        return $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from('PimUserBundle:User', 'u')
+            ->join('u.groups', 'groups')
+            ->where('groups = :group')
+            ->setParameter('group', $group);
     }
 }

@@ -15,21 +15,17 @@ use Symfony\Component\Yaml\Yaml;
  */
 class LoadUserData extends AbstractInstallerFixture
 {
-    /** @var ObjectManager */
-    protected $om;
-
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $this->om = $manager;
-
         $dataUsers = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         foreach ($dataUsers['users'] as $dataUser) {
             $user = $this->buildUser($dataUser);
-            $this->getUserManager()->updateUser($user);
+
+            $this->container->get('pim_user.saver.user')->save($user);
         }
     }
 
@@ -50,16 +46,6 @@ class LoadUserData extends AbstractInstallerFixture
     }
 
     /**
-     * Get user manager
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\UserManager
-     */
-    protected function getUserManager()
-    {
-        return $this->container->get('oro_user.manager');
-    }
-
-    /**
      * Build the user entity from data
      *
      * @param array $data
@@ -70,7 +56,8 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function buildUser(array $data)
     {
-        $user = $this->getUserManager()->createUser();
+        $className = $this->container->getParameter('pim_user.entity.user.class');
+        $user = new $className();
         $user
             ->setUsername($data['username'])
             ->setPlainPassword($data['password'])
@@ -117,13 +104,11 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param string $role
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return \Pim\Bundle\UserBundle\Entity\Role
      */
     protected function getRole($role)
     {
-        return $this->om
-            ->getRepository('OroUserBundle:Role')
-            ->findOneBy(['role' => $role]);
+        return $this->container->get('pim_user.repository.role')->findOneBy(['role' => $role]);
     }
 
     /**
@@ -131,13 +116,11 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param string $group
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
+     * @return \Pim\Bundle\UserBundle\Entity\Group
      */
     protected function getGroup($group)
     {
-        return $this->om
-            ->getRepository('OroUserBundle:Group')
-            ->findOneBy(['name' => $group]);
+        return $this->container->get('pim_user.repository.group')->findOneByIdentifier($group);
     }
 
     /**

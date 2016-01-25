@@ -1,0 +1,42 @@
+pim_user_view:
+    path: /user/view/{id}
+    defaults: { _controller: PimUserBundle:User:view }
+    requirements:
+        id: \d+
+
+pim_user_profile_view:
+    path: /user/profile/view
+    defaults: { _controller: PimUserBundle:User:viewProfile }
+
+pim_user_profile_update:
+    path: /user/profile/edit
+    defaults: { _controller: PimUserBundle:User:updateProfile }
+
+pim_user_apigen:
+    path: /user/apigen/{id}
+    defaults: { _controller: PimUserBundle:User:apigen }
+    requirements:
+        id: \d+
+
+pim_user_create:
+    path: /user/create
+    defaults: { _controller: PimUserBundle:User:create }
+
+pim_user_update:
+    path: /user/update/{id}
+    defaults: { _controller: PimUserBundle:User:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_index:
+    path: /user/{_format}
+    defaults: { _controller: PimUserBundle:User:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_user_user_delete:
+    path: /user/delete/{id}
+    defaults: { _controller: PimUserBundle:User:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]

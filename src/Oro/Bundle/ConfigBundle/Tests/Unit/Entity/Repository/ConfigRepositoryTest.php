@@ -46,7 +46,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [null, true],
-            ['oro_user', false],
+            ['pim_user', false],
         ];
     }
 
@@ -66,7 +66,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
             $value = $this->getMock('Oro\Bundle\ConfigBundle\Entity\ConfigValue');
             $value->expects($this->once())
                 ->method('getSection')
-                ->will($this->returnValue('oro_user'));
+                ->will($this->returnValue('pim_user'));
             $value->expects($this->once())
                 ->method('getName')
                 ->will($this->returnValue('level'));
@@ -88,7 +88,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->with($criteria)
                 ->will($this->returnValue($scope));
         } else {
-            $criteria['section'] = 'oro_user';
+            $criteria['section'] = 'pim_user';
 
             $this->repository
                 ->expects($this->once())
@@ -104,8 +104,8 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
         );
 
         if ($isScope) {
-            $this->assertArrayHasKey('oro_user', $settings);
-            $this->assertEquals('test', $settings['oro_user']['level']['value']);
+            $this->assertArrayHasKey('pim_user', $settings);
+            $this->assertEquals('test', $settings['pim_user']['level']['value']);
         } else {
             $this->assertEmpty($settings);
         }

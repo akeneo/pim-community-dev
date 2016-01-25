@@ -1,7 +1,22 @@
-user_rest:
+_pim_user_user_rest:
     resource: '@PimUserBundle/Resources/config/routing/user_rest.yml'
     prefix: /rest/user
 
-security_rest:
+_pim_user_security_rest:
     resource: '@PimUserBundle/Resources/config/routing/security_rest.yml'
     prefix: /rest/security
+
+_pim_user_group:
+    resource: '@PimUserBundle/Resources/config/routing/group.yml'
+
+_pim_user_reset:
+    resource: '@PimUserBundle/Resources/config/routing/reset.yml'
+
+_pim_user_role:
+    resource: '@PimUserBundle/Resources/config/routing/role.yml'
+
+_pim_user_security:
+    resource: '@PimUserBundle/Resources/config/routing/security.yml'
+
+_pim_user_user:
+    resource: '@PimUserBundle/Resources/config/routing/user.yml'

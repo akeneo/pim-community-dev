@@ -7,7 +7,6 @@ use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory;
 use Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder;
 use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 use Oro\Bundle\NavigationBundle\Twig\MenuExtension;
-use Oro\Bundle\UserBundle\Acl\Manager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\RouterInterface;

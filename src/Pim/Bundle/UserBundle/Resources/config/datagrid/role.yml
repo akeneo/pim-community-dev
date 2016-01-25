@@ -11,10 +11,10 @@ datagrid:
                     - r.role
                     - r.label
                 from:
-                    - { table: OroUserBundle:Role, alias: r }
+                    - { table: PimUserBundle:Role, alias: r }
                 where:
                     and:
-                        - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
+                        - r.role <> '%pim_user.entity.user.class%::ROLE_ANONYMOUS'
         columns:
             label:
                 label: oro.user.grid.roles.columns.label
@@ -23,13 +23,13 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: oro_user_role_update
+                route: pim_user_role_update
                 params:
                     - id
 
             delete_link:
                 type: url
-                route: oro_user_role_delete
+                route: pim_user_role_delete
                 params:
                     - id
 

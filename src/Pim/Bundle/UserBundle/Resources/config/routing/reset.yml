@@ -1,0 +1,21 @@
+pim_user_reset_request:
+    path: /user/reset-request
+    defaults: { _controller: PimUserBundle:Reset:request }
+    methods: [GET]
+
+pim_user_reset_send_email:
+    path: /user/send-email
+    defaults: { _controller: PimUserBundle:Reset:sendEmail }
+    methods: [POST]
+
+pim_user_reset_check_email:
+    path: /user/check-email
+    defaults: { _controller: PimUserBundle:Reset:checkEmail }
+    methods: [GET]
+
+pim_user_reset_reset:
+    path: /user/reset/{token}
+    defaults: { _controller: PimUserBundle:Reset:reset }
+    methods: [GET, POST]
+    requirements:
+        token: \w+

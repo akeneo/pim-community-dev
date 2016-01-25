@@ -23,6 +23,9 @@ class PimUserExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('context.yml');
         $loader->load('controllers.yml');
@@ -30,12 +33,18 @@ class PimUserExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('form.yml');
-        $loader->load('form_types.yml');
         $loader->load('normalizers.yml');
-        $loader->load('providers.yml');
         $loader->load('repositories.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/user.yml');
+        $loader->load('savers.yml');
+        $loader->load('removers.yml');
+        $loader->load('menu.yml');
+        $loader->load('security.yml');
+
+        $container->setParameter('pim_user.reset.ttl', $config['reset']['ttl']);
+        $container->setParameter('pim_user.email', [$config['email']['address'] => $config['email']['name']]);
+        $container->setParameter('pim_user.privileges', $config['privileges']);
     }
 }

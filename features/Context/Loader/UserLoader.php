@@ -3,10 +3,10 @@
 namespace Context\Loader;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData;
+use Pim\Bundle\UserBundle\Entity\Group;
+use Pim\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\UserBundle\Entity\UserApi;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -38,7 +38,7 @@ class UserLoader extends LoadUserData
             }
         }
 
-        $this->getUserManager()->getStorageManager()->flush();
+        $manager->flush();
     }
 
     /**
@@ -75,7 +75,8 @@ class UserLoader extends LoadUserData
         $roles     = isset($data['roles']) ? $data['roles'] : array('ROLE_ADMINISTRATOR');
         $groups    = isset($data['groups']) ? $data['groups'] : array('all');
 
-        $user = $this->getUserManager()->createUser();
+        $className = $this->container->getParameter('pim_user.entity.user.class');
+        $user = new $className();
 
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
@@ -101,10 +102,7 @@ class UserLoader extends LoadUserData
         $user->setCatalogScope($this->getChannel($data['catalogScope']));
         $user->setDefaultTree($this->getTree($data['defaultTree']));
 
-        $this->getUserManager()->updateUser($user);
-        // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
-        $this->getUserManager()->getStorageManager()->clear('Pim\Bundle\UserBundle\Entity\User');
-        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
+        $this->container->get('pim_user.saver.user')->save($user);
     }
 
     /**

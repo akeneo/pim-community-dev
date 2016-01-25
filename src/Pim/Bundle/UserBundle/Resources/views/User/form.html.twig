@@ -1,0 +1,66 @@
+{% extends bap.layout %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% oro_title_set({params : {"%username%": fullname }}) %}
+
+{% block head_script %}
+    <script type="text/javascript">
+        require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function ($, initSelect2, datepicker) {
+            $(function() {
+                $('.navbar-content.pull-left').css('width', '80%')
+
+                $('#{{ form.vars.id }}').find('select').addClass('select2');
+                initSelect2.init($('#{{ form.vars.id }}'));
+
+                _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+                {% if form.rolesCollection is defined %}
+                    var $roles = $('#{{ form.rolesCollection.vars.id }}');
+
+                    var checkRoles = function() {
+                        if ($roles.find('input:checked').length) {
+                            $('a[href="#pim_user-user-tab-group_and_role"]').removeClass('error');
+                            $roles.parent().removeClass('validation-error');
+                        } else {
+                            $('a[href="#pim_user-user-tab-group_and_role"]').addClass('error');
+                            $roles.addClass('error').parent().addClass('validation-error');
+                        }
+                    };
+
+                    $roles.on('change', 'input', checkRoles);
+
+                    checkRoles();
+                {% endif %}
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block page_container %}
+{% block content %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': formAction,
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'user.title'|trans })
+        }
+    }) }}
+
+        {{ elements.page_header(title, buttons|default, null, left|default, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(view_element_aliases('pim_user_user_form.form_tab')) }}
+
+        <div class="row-fluid tab-content buffer-top">
+            {{ elements.form_errors(form) }}
+
+            {{ view_elements('pim_user_user_form.form_tab') }}
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+{% endblock %}

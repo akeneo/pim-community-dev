@@ -34,6 +34,7 @@
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Remove OroEntityBundle
 - Remove OroEntityConfigBundle
+- Remove OroUserBundle
 - Remove PimEntityBundle
 - Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle
 - Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
@@ -93,3 +94,4 @@
 - Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\NumericValidator` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumericValidator` to fix PHP7 compatibility
 - Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\String` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsString` to fix PHP7 compatibility
 - Rename `Pim\Bundle\CatalogBundle\Validator\Constraints\StringValidator` to `Pim\Bundle\CatalogBundle\Validator\Constraints\IsStringValidator` to fix PHP7 compatibility
+- Every forms / controllers / event subscribers / menu / templates from OroUserBundle are now located inside PimUserBundle
