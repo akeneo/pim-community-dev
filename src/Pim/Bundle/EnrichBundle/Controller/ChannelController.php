@@ -119,14 +119,15 @@ class ChannelController
      *
      * @return array
      */
-    public function editAction(Channel $channel)
+    public function editAction(Request $request, Channel $channel)
     {
         if ($this->channelHandler->process($channel)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
 
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_channel_edit', ['id' => $channel->getId()])
-            );
+            return new JsonResponse([
+                'route'  => 'pim_enrich_channel_edit',
+                'params' => ['id' => $channel->getId()]
+            ]);
         }
 
         return ['form' => $this->channelForm->createView()];
@@ -152,10 +153,6 @@ class ChannelController
 
         $this->channelRemover->remove($channel);
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_channel_index'));
-        }
+        return new JsonResponse(['route' => 'pim_enrich_channel_index']);
     }
 }

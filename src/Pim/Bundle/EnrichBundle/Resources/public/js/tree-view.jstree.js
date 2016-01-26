@@ -37,7 +37,6 @@ define(
             return Routing.generate(
                 getRoute('listtree'),
                 {
-                    _format:        'json',
                     dataLocale:     dataLocale,
                     select_node_id: getActiveNode(true),
                     include_sub:    +includeSub,
@@ -50,7 +49,6 @@ define(
             return Routing.generate(
                 getRoute('children'),
                 {
-                    _format:    'json',
                     dataLocale: dataLocale,
                     context:    'view'
                 }

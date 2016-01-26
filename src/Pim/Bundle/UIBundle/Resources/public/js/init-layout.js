@@ -1,32 +1,22 @@
-require(['oro/mediator'], function (mediator) {
-    'use strict';
-    mediator.once('tab:changed', function () {
-        setTimeout(function () {
-            // emulates 'document ready state' for selenium tests
-            document['page-rendered'] = true;
-            mediator.trigger('page-rendered');
-        }, 50);
-    });
-});
+'use strict';
 
-require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
-    'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui'
-    ], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
-    'use strict';
+define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
+    'oro/delete-confirmation', 'oro/messenger', 'bootstrap'
+    ], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
+
 
     /* ============================================================
      * from layout.js
      * ============================================================ */
-    $(function () {
+    return function () {
+        mediator.once('tab:changed', function () {
+            setTimeout(function () {
+                // emulates 'document ready state' for selenium tests
+                document['page-rendered'] = true;
+                mediator.trigger('page-rendered');
+            }, 50);
+        });
         layout.init();
-
-        /* hide progress bar on page ready in case we don't need hash navigation request*/
-        if (!Navigation.isEnabled() || !Navigation.prototype.checkHashForUrl()) {
-            if ($('#page-title').size()) {
-                document.title = _.unescape($('#page-title').text());
-            }
-            layout.hideProgressBar();
-        }
 
         /* ============================================================
          * Oro Dropdown close prevent
@@ -55,12 +45,12 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         $('#main-menu').mouseover(function () {
             $('.open').removeClass('open');
         });
-    });
 
-    /* ============================================================
-     * from height_fix.js
-     * ============================================================ */
-    (function () {
+
+        /* ============================================================
+         * from height_fix.js
+         * ============================================================ */
+
         /* dynamic height for central column */
         var debugBar = $('.sf-toolbar');
         var anchor = $('#bottom-anchor');
@@ -124,22 +114,21 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
 
         $(window).on('resize', adjustHeight);
 
-        mediator.bind('hash_navigation_request:complete', adjustReloaded);
-    }());
+        mediator.bind('route_complete', adjustReloaded);
 
-    /* ============================================================
-     * from form_buttons.js
-     * ============================================================ */
-    $(document).on('click', '.action-button', function () {
-        var actionInput = $('input[name = "input_action"]');
-        actionInput.val($(this).attr('data-action'));
-        $('#' + actionInput.attr('data-form-id')).submit();
-    });
+        /* ============================================================
+         * from form_buttons.js
+         * ============================================================ */
+        $(document).on('click', '.action-button', function () {
+            var actionInput = $('input[name = "input_action"]');
+            actionInput.val($(this).attr('data-action'));
+            $('#' + actionInput.attr('data-form-id')).submit();
+        });
 
-    /* ============================================================
-     * from remove.confirm.js
-     * ============================================================ */
-    $(function () {
+        /* ============================================================
+         * from remove.confirm.js
+         * ============================================================ */
+
         $(document).on('click', '.remove-button', function () {
             var confirm;
             var el = $(this);
@@ -150,10 +139,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             });
 
             confirm.on('ok', function () {
-                var navigation = Navigation.getInstance();
-                if (navigation) {
-                    navigation.loadingMask.show();
-                }
+                router.showLoadingMask();
 
                 $.ajax({
                     url: el.data('url'),
@@ -163,23 +149,17 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                         messenger.addMessage(
                             'success',
                             el.data('success-message'),
-                            {'hashNavEnabled': Navigation.isEnabled()}
+                            { 'hashNavEnabled': true }
                         );
                         if (el.data('redirect')) {
                             $.isActive(true);
-                            if (navigation) {
-                                navigation.setLocation(el.data('redirect'));
-                            } else {
-                                window.location.href = el.data('redirect');
-                            }
-                        } else if (navigation) {
-                            navigation.loadingMask.hide();
+                            Backbone.history.navigate(el.data('redirect'));
+                        } else {
+                            router.hideLoadingMask();
                         }
                     },
                     error: function () {
-                        if (navigation) {
-                            navigation.loadingMask.hide();
-                        }
+                        router.hideLoadingMask();
 
                         messenger.notificationMessage(
                             'error',
@@ -193,5 +173,5 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
 
             return false;
         });
-    });
+    }
 });

@@ -30,7 +30,7 @@ define(
 
                 this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
 
-                mediator.once('hash_navigation_request:start', this.unsubscribe, this);
+                mediator.once('route_start', this.unsubscribe, this);
             },
 
             unsubscribe: function () {

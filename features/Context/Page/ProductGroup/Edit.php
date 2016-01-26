@@ -16,5 +16,5 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/enrich/group/{id}/edit';
+    protected $path = '#/enrich/group/{id}/edit';
 }
