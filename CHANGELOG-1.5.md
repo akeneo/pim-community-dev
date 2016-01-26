@@ -1,5 +1,7 @@
 # 1.5.x
 
+# 1.5.0-ALPHA1 (2016-01-26)
+
 ## Technical improvements
 
 - PIM-4964: Use enable / disable import parameter only to create the product
