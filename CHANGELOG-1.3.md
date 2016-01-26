@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5483: Improve loading of products datagrid
+
 # 1.3.36 (2016-01-15)
 
 ## Bug fixes
