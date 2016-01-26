@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Catalog\EmptyChecker\ProductValueStructuredData\EmptyCheckerInterface;
 
 /**
  * Updates a product
@@ -27,19 +28,25 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var EmptyCheckerInterface */
+    protected $emptyValueDataChecker;
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param EmptyCheckerInterface           $emptyValueDataChecker
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        EmptyCheckerInterface $emptyValueDataChecker = null // TODO: default value will be dropped in 1.5
     ) {
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->emptyValueDataChecker = $emptyValueDataChecker;
     }
 
     /**
@@ -197,7 +204,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 
         foreach ($values as $value) {
             $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
-            $providedData = $this->hasProvidedValueData($value['data']);
+            $providedData = $this->hasProvidedValueData($attributeCode, $value['data']);
 
             if ($isFamilyAttribute || $providedData || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
@@ -209,44 +216,19 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /**
      * Indicates whether a provided value data is considered empty or not
      *
-     * TODO: could be extracted in a new dedicated service
-     *
-     * @param $valueData
+     * @param string $attributeCode
+     * @param mixed  $valueData
      *
      * @return bool
      */
-    protected function hasProvidedValueData($valueData)
+    protected function hasProvidedValueData($attributeCode, $valueData)
     {
-        if ('' === $valueData || [] === $valueData || null === $valueData) {
-            return false;
+        if (null !== $this->emptyValueDataChecker) {
+            return !$this->emptyValueDataChecker->isEmpty($attributeCode, $valueData);
+        } else {
+            // TODO deprecated implementation to drop in 1.5
+            return  ('' === $valueData || [] === $valueData || null === $valueData) ? false : true;
         }
-
-        if (
-            is_array($valueData) && array_key_exists('unit', $valueData) && array_key_exists('data', $valueData)
-            && null === $valueData['data']
-        ) {
-            return false;
-        }
-
-        if (
-            is_array($valueData) && array_key_exists('filePath', $valueData)
-            && array_key_exists('originalFilename', $valueData) && null === $valueData['filePath']
-        ) {
-            return false;
-        }
-
-        if (is_array($valueData) && count($valueData) > 0 && isset($valueData[0]) && is_array($valueData[0])
-            && array_key_exists('currency', $valueData[0])
-        ) {
-            foreach ($valueData as $price) {
-                if (null !== $price['data']) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return true;
     }
 
     /**

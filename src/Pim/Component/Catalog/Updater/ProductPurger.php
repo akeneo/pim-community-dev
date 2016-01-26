@@ -15,8 +15,16 @@ use Pim\Component\Catalog\EmptyChecker\ProductValue\EmptyCheckerInterface;
  */
 class ProductPurger implements ProductPurgerInterface
 {
-    /** @var EmptyCheckerInterface[] */
-    protected $productValueCheckers = [];
+    /** @var EmptyCheckerInterface */
+    protected $checker;
+
+    /**
+     * @param EmptyCheckerInterface $checker
+     */
+    public function __construct(EmptyCheckerInterface $checker)
+    {
+        $this->checker = $checker;
+    }
 
     /**
      * @param ProductInterface $product
@@ -37,41 +45,18 @@ class ProductPurger implements ProductPurgerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function addEmptyProductValueChecker(EmptyCheckerInterface $checker)
-    {
-        $this->productValueCheckers[] = $checker;
-
-        return $this;
-    }
-
-    /**
      * @param ProductInterface      $product
      * @param ProductValueInterface $productValue
      *
      * @return bool product value has been removed
-     *
-     * @throws \RuntimeException
      */
     protected function removeEmptyProductValue(ProductInterface $product, ProductValueInterface $productValue)
     {
-        foreach ($this->productValueCheckers as $checker) {
-            if ($checker->supports($productValue)) {
-                if ($checker->isEmpty($productValue)) {
-                    $product->removeValue($productValue);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        if ($this->checker->isEmpty($productValue)) {
+            $product->removeValue($productValue);
+            return true;
+        } else {
+            return false;
         }
-
-        throw new \LogicException(
-            sprintf(
-                'No compatible EmptyCheckerInterface found for attribute type "%s".',
-                $productValue->getAttribute()->getAttributeType()
-            )
-        );
     }
 }

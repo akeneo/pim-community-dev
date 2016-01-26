@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\EmptyChecker\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
-
 /**
  * Empty product value checker, determines whether a product value is empty depending on its attribute type
  *

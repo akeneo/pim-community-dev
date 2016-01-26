@@ -1,0 +1,23 @@
+parameters:
+    pim_catalog.empty_checker.product_value.chained.class: Pim\Component\Catalog\EmptyChecker\ProductValue\ChainedEmptyChecker
+    pim_catalog.empty_checker.product_value.base.class:    Pim\Component\Catalog\EmptyChecker\ProductValue\BaseEmptyChecker
+    pim_catalog.empty_checker.product_value_structured_data.chained.class: Pim\Component\Catalog\EmptyChecker\ProductValueStructuredData\ChainedEmptyChecker
+    pim_catalog.empty_checker.product_value_structured_data.base.class:    Pim\Component\Catalog\EmptyChecker\ProductValueStructuredData\BaseEmptyChecker
+
+services:
+
+    pim_catalog.empty_checker.product_value.chained:
+        class: %pim_catalog.empty_checker.product_value.chained.class%
+
+    pim_catalog.empty_checker.product_value.base:
+        class: %pim_catalog.empty_checker.product_value.base.class%
+        tags:
+            - { name: 'pim_catalog.empty_checker.product_value' }
+
+    pim_catalog.empty_checker.product_value_structured_data.chained:
+        class: %pim_catalog.empty_checker.product_value_structured_data.chained.class%
+
+    pim_catalog.empty_checker.product_value_structured_data.base:
+        class: %pim_catalog.empty_checker.product_value_structured_data.base.class%
+        tags:
+            - { name: 'pim_catalog.empty_checker.product_value_structured_data' }

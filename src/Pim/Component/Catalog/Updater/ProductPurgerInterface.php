@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Component\Catalog\EmptyChecker\ProductValue\EmptyCheckerInterface;
 
 /**
  * Remove empty product values from a product
@@ -20,11 +19,4 @@ interface ProductPurgerInterface
      * @return bool has removed values
      */
     public function removeEmptyProductValues(ProductInterface $product);
-
-    /**
-     * @param EmptyCheckerInterface $checker
-     *
-     * @return ProductPurgerInterface
-     */
-    public function addEmptyProductValueChecker(EmptyCheckerInterface $checker);
 }

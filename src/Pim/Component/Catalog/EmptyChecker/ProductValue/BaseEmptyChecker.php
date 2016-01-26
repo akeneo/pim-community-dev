@@ -26,7 +26,7 @@ class BaseEmptyChecker implements EmptyCheckerInterface
             AttributeTypes::OPTION_MULTI_SELECT,
             AttributeTypes::REFERENCE_DATA_MULTI_SELECT
         ];
-        if ($valueData === null || $valueData === '') {
+        if (null === $valueData || '' === $valueData) {
             return true;
         } elseif ($isMultiCollection && $valueData instanceof Collection && $valueData->isEmpty()) {
             return true;

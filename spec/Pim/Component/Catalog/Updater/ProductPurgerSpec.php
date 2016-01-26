@@ -10,25 +10,21 @@ use Pim\Component\Catalog\EmptyChecker\ProductValue\EmptyCheckerInterface;
 
 class ProductPurgerSpec extends ObjectBehavior
 {
+    function let(EmptyCheckerInterface $baseChecker)
+    {
+        $this->beConstructedWith($baseChecker);
+    }
+
     function it_is_a_product_purger()
     {
         $this->shouldImplement('Pim\Component\Catalog\Updater\ProductPurgerInterface');
     }
 
-    function it_contains_empty_product_value_checker(
-        EmptyCheckerInterface $emptyCheckerOne,
-        EmptyCheckerInterface $emptyCheckerTwo
-    ) {
-        $this->addEmptyProductValueChecker($emptyCheckerOne)->shouldReturn($this);
-        $this->addEmptyProductValueChecker($emptyCheckerTwo)->shouldReturn($this);
-    }
-
     function it_removes_nothing_when_no_empty_product_values(
+        $baseChecker,
         ProductInterface $product,
-        ProductValueInterface $value,
-        EmptyCheckerInterface $baseChecker
+        ProductValueInterface $value
     ) {
-        $this->addEmptyProductValueChecker($baseChecker)->shouldReturn($this);
         $product->getValues()->willReturn([$value]);
         $baseChecker->supports($value)->willReturn(true);
         $baseChecker->isEmpty($value)->willReturn(false);
@@ -36,12 +32,11 @@ class ProductPurgerSpec extends ObjectBehavior
     }
 
     function it_removes_empty_product_values(
+        $baseChecker,
         ProductInterface $product,
         ProductValueInterface $value,
-        ProductValueInterface $emptyValue,
-        EmptyCheckerInterface $baseChecker
+        ProductValueInterface $emptyValue
     ) {
-        $this->addEmptyProductValueChecker($baseChecker)->shouldReturn($this);
         $product->getValues()->willReturn([$value, $emptyValue]);
         $baseChecker->supports($value)->willReturn(true);
         $baseChecker->isEmpty($value)->willReturn(false);
@@ -49,24 +44,5 @@ class ProductPurgerSpec extends ObjectBehavior
         $baseChecker->isEmpty($emptyValue)->willReturn(true);
         $product->removeValue($emptyValue)->shouldBeCalled();
         $this->removeEmptyProductValues($product)->shouldReturn(true);
-    }
-
-    function it_throws_exception_when_no_checker(
-        ProductInterface $product,
-        ProductValueInterface $value,
-        AttributeInterface $attribute
-    ) {
-        $product->getValues()->willReturn([$value]);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('not_supported_attribute_type');
-
-        $this->shouldThrow(
-            new \LogicException(
-                'No compatible EmptyCheckerInterface found for attribute type "not_supported_attribute_type".'
-            )
-        )->during(
-            'removeEmptyProductValues',
-            [$product, []]
-        );
     }
 }

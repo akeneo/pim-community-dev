@@ -28,7 +28,7 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product:purge-empty-product-values')
+            ->setName('pim:product:purge-empty-values')
             ->setDescription('Purge all empty product values, please dump your database first!')
             ->addOption('memory-usage', null, InputOption::VALUE_NONE, 'Display the memory usage');
     }
