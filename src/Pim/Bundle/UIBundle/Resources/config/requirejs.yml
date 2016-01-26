@@ -42,9 +42,11 @@ config:
         jquery.sidebarize:
             deps:
                 - jquery
+
     map:
         '*':
             jquery: oro/jquery-setup
+            jquery-ui-timepicker: bootstrap.bootstrapsdatepicker
         oro/jquery-setup:
             jquery: jquery
 
