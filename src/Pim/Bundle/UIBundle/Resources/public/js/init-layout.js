@@ -9,9 +9,9 @@ require(['oro/mediator'], function (mediator) {
     });
 });
 
-require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
+require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
     'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui'
-    ], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
+    ], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
     'use strict';
 
     /* ============================================================
@@ -19,14 +19,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * ============================================================ */
     $(function () {
         layout.init();
-
-        /* hide progress bar on page ready in case we don't need hash navigation request*/
-        if (!Navigation.isEnabled() || !Navigation.prototype.checkHashForUrl()) {
-            if ($('#page-title').size()) {
-                document.title = _.unescape($('#page-title').text());
-            }
-            layout.hideProgressBar();
-        }
 
         /* ============================================================
          * Oro Dropdown close prevent
@@ -124,7 +116,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
 
         $(window).on('resize', adjustHeight);
 
-        mediator.bind('hash_navigation_request:complete', adjustReloaded);
+        mediator.bind('route_complete', adjustReloaded);
     }());
 
     /* ============================================================
@@ -150,10 +142,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             });
 
             confirm.on('ok', function () {
-                var navigation = Navigation.getInstance();
-                if (navigation) {
-                    navigation.loadingMask.show();
-                }
+                router.showLoadingMask();
 
                 $.ajax({
                     url: el.data('url'),
@@ -163,23 +152,17 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                         messenger.addMessage(
                             'success',
                             el.data('success-message'),
-                            {'hashNavEnabled': Navigation.isEnabled()}
+                            { 'hashNavEnabled': true }
                         );
                         if (el.data('redirect')) {
                             $.isActive(true);
-                            if (navigation) {
-                                navigation.setLocation(el.data('redirect'));
-                            } else {
-                                window.location.href = el.data('redirect');
-                            }
-                        } else if (navigation) {
-                            navigation.loadingMask.hide();
+                            Backbone.history.navigate(el.data('redirect'));
+                        } else {
+                            router.hideLoadingMask();
                         }
                     },
                     error: function () {
-                        if (navigation) {
-                            navigation.loadingMask.hide();
-                        }
+                        router.hideLoadingMask();
 
                         messenger.notificationMessage(
                             'error',

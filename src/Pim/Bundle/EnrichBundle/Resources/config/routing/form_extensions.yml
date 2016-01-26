@@ -1,6 +1,5 @@
 pim_enrich_form_extension_rest_index:
-    path: /extensions.{_format}
-    defaults: { _controller: pim_enrich.controller.rest.form_extension:getAction, _format: json }
+    path: /extensions
+    defaults: { _controller: pim_enrich.controller.rest.form_extension:getAction }
     requirements:
         method: GET
-        _format: json

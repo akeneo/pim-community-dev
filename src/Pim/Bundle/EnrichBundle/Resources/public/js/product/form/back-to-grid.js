@@ -13,10 +13,9 @@ define(
         'pim/form',
         'text!pim/template/product/back-to-grid',
         'routing',
-        'pim/user-context',
-        'oro/navigation'
+        'pim/user-context'
     ],
-    function (_, BaseForm, template, Routing, UserContext, Navigation) {
+    function (_, BaseForm, template, Routing, UserContext) {
         return BaseForm.extend({
             className: 'btn-group',
             template: _.template(template),
@@ -36,7 +35,8 @@ define(
                     )
                 }));
 
-                Navigation.getInstance().processClicks(this.$('a'));
+                //TOTO PIM-3232 ensure that it does not break anything
+                // Navigation.getInstance().processClicks(this.$('a'));
 
                 return this;
             }
