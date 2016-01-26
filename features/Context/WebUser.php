@@ -92,15 +92,13 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['oro/navigation'], function (Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+                sprintf("require(['backbone'], function (Backbone) { Backbone.history.navigate('#%s'); } );", $url)
             );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
-            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = explode('#', $currentUrl);
             $currentUrl = end($currentUrl);
-            $currentUrl = explode('|g/', $currentUrl);
-            $currentUrl = reset($currentUrl);
 
             assertTrue(
                 $url === $currentUrl || $url . '/' === $currentUrl || $url === $currentUrl . '/',
@@ -1308,12 +1306,12 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
+            $steps[] = new Step\Then(sprintf('I should see the text "%s"', $data['section']));
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
+            $steps[] = new Step\Then(sprintf('I should not see the text "%s"', $data['section']));
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
@@ -1760,7 +1758,7 @@ class WebUser extends RawMinkContext
             // Get and print the normalized jobexecution to ease debugging
             $this->getSession()->executeScript(
                 sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    '$.get("/%s/%s_execution/%d?_format=json", function (resp) { window.executionLog = resp; });',
                     $jobInstance->getType() === 'import' ? 'collect' : 'spread',
                     $jobInstance->getType(),
                     $jobExecution->getId()
@@ -2161,13 +2159,14 @@ class WebUser extends RawMinkContext
     public function iShouldSeeLocaleOption($not, $locale)
     {
         $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
-        $field = null;
-        foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
-        }
-        if (null === $field) {
-            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
-        }
+        $field = $this->spin(function () use ($selectNames) {
+            $field = null;
+            foreach ($selectNames as $selectName) {
+                $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            }
+
+            return $field;
+        }, sprintf('Could not find field with name %s', json_encode($selectNames)));
 
         $options = $field->findAll('css', 'option');
 

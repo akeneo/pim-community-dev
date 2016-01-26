@@ -18,7 +18,7 @@
         {% set favorites = [] %}
         {% for favoritesItem in item.children %}
             {% if favoritesItem.extras.isAllowed %}
-                {% set favorites = favorites|merge([{'id': favoritesItem.extras.id, 'title': favoritesItem.label|raw, 'title_rendered': oro_title_render(favoritesItem.label|raw),  'url': favoritesItem.uri, 'type': favoritesItem.extras.type}]) %}
+                {% set favorites = favorites|merge([{'id': favoritesItem.extras.id, 'title': favoritesItem.label|raw, 'url': favoritesItem.uri, 'type': favoritesItem.extras.type}]) %}
             {% endif %}
         {% endfor %}
     {% endif %}

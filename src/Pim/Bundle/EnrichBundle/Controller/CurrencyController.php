@@ -8,7 +8,10 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -62,20 +65,20 @@ class CurrencyController
      *
      * @AclAncestor("pim_enrich_currency_toggle")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function toggleAction(Currency $currency)
+    public function toggleAction(Request $request, Currency $currency)
     {
+        $flashbag = $request->getSession()->getFlashBag();
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
 
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.currency.updated'));
+            $flashbag->add('success', new Message('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
-            $this->request->getSession()->getFlashBag()
-                ->add('error', new Message('flash.currency.error.linked_to_channel'));
+            $flashbag->add('error', new Message('flash.currency.error.linked_to_channel'));
         } catch (\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message('flash.error ocurred'));
+            $flashbag->add('error', new Message('flash.error ocurred'));
         }
 
         return new RedirectResponse($this->router->generate('pim_enrich_currency_index'));

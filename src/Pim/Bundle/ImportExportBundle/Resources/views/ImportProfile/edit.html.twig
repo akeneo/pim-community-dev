@@ -1,4 +1,6 @@
-{% oro_title_set({ params: {"%job.label%": form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'job.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% set actionRoute = path('pim_importexport_import_profile_edit', { 'id': form.vars.value.id }) %}
 

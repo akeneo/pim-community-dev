@@ -61,6 +61,3 @@ oro_menu_config:
                 history: ~
                 favorite: ~
                 mostviewed: ~
-
-oro_titles:
-    oro_pinbar_help: How To Use Pinbar

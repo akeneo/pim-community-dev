@@ -14,7 +14,3 @@ oro_menu_config:
 
         dots_menu:
             type: dots_menu
-
-oro_titles:
-    oro_default:                  Dashboard
-
