@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\Field;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 
 /**
  * Field provider for asset collections
@@ -35,6 +36,6 @@ class AssetCollectionFieldProvider implements FieldProviderInterface
     public function supports($element)
     {
         return $element instanceof AttributeInterface &&
-            'pim_assets_collection' === $element->getAttributeType();
+            AttributeTypes::ASSETS_COLLECTION === $element->getAttributeType();
     }
 }

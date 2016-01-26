@@ -17,6 +17,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -91,7 +92,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         $attributes = parent::getImageAttributes($product, $locale, $scope);
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
-            if ('pim_assets_collection' === $attribute->getAttributeType()) {
+            if (AttributeTypes::ASSETS_COLLECTION === $attribute->getAttributeType()) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }
