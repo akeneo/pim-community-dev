@@ -50,8 +50,8 @@ define(function (require) {
          * @property
          */
         selectors: {
-            links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
-            scrollLinks:         'a[href^=#]',
+            links:               'a:not([href^="#"],[href^="javascript"],[href^="mailto"],[href^="skype"],[href^="ftp"],[href^="callto"],[href^="tel"]),span[data-url]',
+            scrollLinks:         'a[href^="#"]',
             userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
@@ -388,7 +388,7 @@ define(function (require) {
                     } else {
                         this.clearContainer();
                         var content = data.content;
-                        this.selectorCached.container.html(content);
+                        $('#container').html(content);
                         this.selectorCached.menu.html(data.mainMenu);
                         this.selectorCached.userMenu.html(data.userMenu);
                         this.selectorCached.breadcrumb.html(data.breadcrumb);

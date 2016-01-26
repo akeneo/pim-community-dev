@@ -38,7 +38,8 @@ define(
                 },
                 themes: {
                     dots: true,
-                    icons: true
+                    icons: true,
+                    url: '/bundles/pimui/lib/jstree/themes/default/style.css'
                 },
                 json_data: {
                     ajax: {
