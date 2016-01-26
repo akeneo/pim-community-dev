@@ -73,7 +73,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('locale', ['string', 'null']);
         $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
         $resolver->setAllowedTypes('editable', ['string', 'bool']);
-        $resolver->setAllowedTypes('user_groups_ids', ['string', 'null']);
+        $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
         $resolver->setAllowedTypes('types', ['array', 'null']);
 
         $options = $resolver->resolve($options);
@@ -89,6 +89,9 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
         if (null !== $options['editable']) {
             $options['editable'] = (int) $options['editable'];
+        }
+        if (null === $options['user_groups_ids']) {
+            $options['user_groups_ids'] = [];
         }
 
         return $options;
