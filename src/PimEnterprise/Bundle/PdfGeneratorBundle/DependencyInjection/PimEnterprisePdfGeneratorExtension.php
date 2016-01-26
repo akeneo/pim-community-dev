@@ -31,5 +31,6 @@ class PimEnterprisePdfGeneratorExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('renderers.yml');
+        $loader->load('twig.yml');
     }
 }

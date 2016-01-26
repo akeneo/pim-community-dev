@@ -31,21 +31,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected $filterHelper;
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getAttributes(ProductInterface $product, $locale)
-    {
-        $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
-        $attributes = [];
-
-        foreach ($values as $value) {
-            $attributes[$value->getAttribute()->getCode()] = $value->getAttribute();
-        }
-
-        return $attributes;
-    }
-
-    /**
      * @param EngineInterface           $templating
      * @param PdfBuilderInterface       $pdfBuilder
      * @param FilterProductValuesHelper $filterHelper
@@ -79,5 +64,38 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         );
 
         $this->filterHelper = $filterHelper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributes(ProductInterface $product, $locale)
+    {
+        $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
+        $attributes = [];
+
+        foreach ($values as $value) {
+            $attributes[$value->getAttribute()->getCode()] = $value->getAttribute();
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Adds attributes with 'pim_assets_collection' type to display images in header.
+     *
+     * {@inheritdoc}
+     */
+    protected function getImageAttributes(ProductInterface $product, $locale, $scope)
+    {
+        $attributes = parent::getImageAttributes($product, $locale, $scope);
+
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
+            if ('pim_assets_collection' === $attribute->getAttributeType()) {
+                $attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $attributes;
     }
 }
