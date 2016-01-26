@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a family
   In order to provide accurate information about a family
   As an administrator
@@ -14,15 +15,22 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | My family |
     And I save the family
-    Then I should see "Family successfully updated"
-    And I should see "My family"
+    And I should see the text "My family"
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Boots" family page
     When I fill in the following information:
       | English (United States) | NewBoots |
     And I save the family
-    Then I should see "NewBoots"
+    Then I should see the text "NewBoots"
+
+  Scenario: Successfully display the history tab after save
+    Given I am on the "Boots" family page
+    When I fill in the following information:
+      | English (United States) | NewBoots |
+    And I save the family
+    Then I visit the "History" tab
+    Then I should see the text "label-en_US: Boots"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "Boots" family page
@@ -38,9 +46,8 @@ Feature: Edit a family
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
-  @javascript
   Scenario: Disable property fields when the user can't edit a family
     Given I am on the "Administrator" role page
     And I remove rights to Edit properties of a family
@@ -51,7 +58,6 @@ Feature: Edit a family
     And the field English (United States) should be disabled
     And I reset the "Administrator" rights
 
-  @javascript
   Scenario: Disable attribute fields when the user can't edit a family
     Given I am on the "Administrator" role page
     And I remove rights to Edit attributes of a family

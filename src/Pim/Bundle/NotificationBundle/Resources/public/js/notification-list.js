@@ -4,10 +4,10 @@ define(
         'jquery',
         'underscore',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'text!pim/template/notification/notification-list'
     ],
-    function (Backbone, $, _, Routing, Navigation, template) {
+    function (Backbone, $, _, Routing, router, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -45,7 +45,7 @@ define(
 
             remove: function () {
                 this.model.destroy({
-                    url: Routing.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
+                    url: router.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
                     wait: false,
                     _method: 'DELETE'
                 });
@@ -58,7 +58,7 @@ define(
             open: function (e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
-                    Navigation.getInstance().setLocation(this.model.get('url'));
+                    router.redirect(this.model.get('url'));
                 }
             },
 
@@ -72,7 +72,7 @@ define(
                 this.model.set('viewed', true);
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('pim_notification_notification_mark_viewed', {id: this.model.id}),
+                    url: router.generate('pim_notification_notification_mark_viewed', {id: this.model.id}),
                     async: true
                 });
             },
@@ -149,7 +149,7 @@ define(
 
                 this.collection.trigger('loading:start');
 
-                $.getJSON(Routing.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
+                $.getJSON(router.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
                     .then(_.bind(function (data) {
                         this.collection.add(data.notifications);
                         this.collection.hasMore = data.notifications.length >= 10;

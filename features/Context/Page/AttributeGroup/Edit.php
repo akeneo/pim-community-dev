@@ -11,7 +11,7 @@ namespace Context\Page\AttributeGroup;
  */
 class Edit extends Creation
 {
-    protected $path = '/configuration/attribute-group/{id}/edit';
+    protected $path = '#/configuration/attribute-group/{id}/edit';
 
     /**
      * {@inheritdoc}

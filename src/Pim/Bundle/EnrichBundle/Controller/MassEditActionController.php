@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -139,10 +140,10 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                return $this->redirectToRoute(
-                    'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
-                );
+                return new JsonResponse([
+                    'route'  => 'pim_enrich_mass_edit_action_configure',
+                    'params' => $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
+                ]);
             }
         }
 
@@ -236,9 +237,10 @@ class MassEditActionController extends AbstractDoctrineController
                 sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
-            $route = $this->getRouteFromMapping($gridName);
-
-            return $this->redirectToRoute($route, ['dataLocale' => $this->getQueryParams()['dataLocale']]);
+            return new JsonResponse([
+                'route'  => $this->getRouteFromMapping($gridName),
+                'params' =>['dataLocale' => $this->getQueryParams()['dataLocale']]
+            ]);
         }
 
         return $this->render(

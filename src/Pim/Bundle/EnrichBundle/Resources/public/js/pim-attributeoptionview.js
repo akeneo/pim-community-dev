@@ -8,7 +8,8 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'jquery-ui'
+        'jquery-ui/tooltip',
+        'jquery-ui/sortable'
     ],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';

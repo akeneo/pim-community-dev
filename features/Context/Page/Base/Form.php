@@ -54,7 +54,12 @@ class Form extends Base
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $this->spin(function() {
+            $this->getElement('Save')->click();
+
+            return true;
+        });
+
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $this->getSession()->wait($this->getTimeout(), '!$.active');
         }

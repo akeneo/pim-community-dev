@@ -16,5 +16,5 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/group-type/';
+    protected $path = '#/configuration/group-type/';
 }

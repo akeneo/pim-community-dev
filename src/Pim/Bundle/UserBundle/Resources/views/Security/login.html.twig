@@ -1,13 +1,6 @@
 {% extends 'PimUserBundle::layout.html.twig' %}
 
-{% block head %}
-    {{ parent() }}
-    <script type="text/javascript">
-        if (sessionStorage) {
-            sessionStorage.clear()
-        }
-    </script>
-{% endblock %}
+{% block title %}{{ 'Login'|trans }}{% endblock %}
 
 {% block bodyClass %}login-page{% endblock %}
 

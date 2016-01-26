@@ -1,7 +1,9 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({ params: { '%association type.label%': form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'association type.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% block content %}
     {{ JSFV(form) }}
@@ -42,3 +44,7 @@
         </div>
     {{ form_end(form) }}
 {% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
