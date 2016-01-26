@@ -145,10 +145,10 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             $original = $change->find('css', '.original-value');
             $new      = $change->find('css', '.new-value');
 
-            $originalExpectedValues = explode(',', $hash['original']);
-            $newExpectedValues      = explode(',', $hash['new']);
-            $rawOriginalValues      = explode(' ', $original->getText());
-            $rawNewValues           = explode(' ', $new->getText());
+            $originalExpectedValues = explode(',', trim($hash['original']));
+            $newExpectedValues      = explode(',', trim($hash['new']));
+            $rawOriginalValues      = explode(', ', $original->getText());
+            $rawNewValues           = explode(', ', $new->getText());
 
             sort($originalExpectedValues);
             sort($newExpectedValues);
@@ -174,8 +174,8 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                 throw $this->createExpectationException(
                     sprintf(
                         'Expected new values to contain "%s", but got "%s".',
-                        $newValues,
-                        $newExpected
+                        $newExpected,
+                        $newValues
                     )
                 );
             }

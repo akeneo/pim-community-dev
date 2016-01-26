@@ -19,42 +19,23 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 class PhpDiffRenderer implements RendererInterface
 {
     /** @var \Diff_Renderer_Html_Array */
-    protected $baseRenderer;
-
-    /** @var \Diff_Renderer_Html_Array */
-    protected $changedRenderer;
-
-    /** @var DiffFactory */
-    protected $factory;
+    protected $renderer;
 
     /**
-     * @param \Diff_Renderer_Html_Array $renderer
      * @param \Diff_Renderer_Html_Array $renderer
      * @param DiffFactory               $factory
      */
-    public function __construct(
-        \Diff_Renderer_Html_Array $baseRenderer,
-        \Diff_Renderer_Html_Array $changedRenderer,
-        DiffFactory $factory
-    ) {
-        $this->baseRenderer = $baseRenderer;
-        $this->changedRenderer = $changedRenderer;
-        $this->factory = $factory;
+    public function __construct(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
+    {
+        $this->renderer = $renderer;
+        $this->factory  = $factory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderOriginalDiff($before, $after)
+    public function renderDiff($before, $after)
     {
-        return $this->factory->create($before, $after)->render($this->baseRenderer);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function renderNewDiff($before, $after)
-    {
-        return $this->factory->create($before, $after)->render($this->changedRenderer);
+        return $this->factory->create($before, $after)->render($this->renderer);
     }
 }

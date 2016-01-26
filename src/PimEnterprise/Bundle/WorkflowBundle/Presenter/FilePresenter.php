@@ -46,27 +46,27 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function presentOriginal($data, array $change)
+    public function present($data, array $change)
     {
+        $result = ['before' => '', 'after' => ''];
+
         $media = $data->getMedia();
-
-        if (null === $media || null === $media->getKey() || null === $media->getOriginalFilename()) {
-            return '';
+        if (!$this->hasChanged($change, $media)) {
+            return $result;
         }
 
-        return $this->createFileElement($media->getKey(), $media->getOriginalFilename());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function presentNew($data, array $change)
-    {
-        if (!isset($change['data']['originalFilename']) || !isset($change['data']['filePath'])) {
-            return '';
+        if (null !== $media && null !== $media->getKey() && null !== $media->getOriginalFilename()) {
+            $result['before'] = $this->createFileElement($media->getKey(), $media->getOriginalFilename());
         }
 
-        return $this->createFileElement($change['data']['filePath'], $change['data']['originalFilename']);
+        if (isset($change['data']['filePath']) && isset($change['data']['originalFilename'])) {
+            $result['after'] = $this->createFileElement(
+                $change['data']['filePath'],
+                $change['data']['originalFilename']
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -84,5 +84,21 @@ class FilePresenter implements PresenterInterface
             $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($filename)]),
             $originalFilename
         );
+    }
+
+    /**
+     * Check diff between old and new file
+     *
+     * @param array             $change
+     * @param FileInfoInterface $fileInfo
+     *
+     * @return bool
+     */
+    protected function hasChanged(array $change, FileInfoInterface $fileInfo = null)
+    {
+        $dataHash   = null !== $fileInfo ? $fileInfo->getHash() : null;
+        $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
+
+        return $dataHash !== $changeHash;
     }
 }

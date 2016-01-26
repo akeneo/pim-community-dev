@@ -26,29 +26,21 @@ class SimpleList extends \Diff_Renderer_Html_Array
     public function render()
     {
         $changes = parent::render();
-        $html = '';
-        if (empty($changes)) {
-            return $html;
-        }
+        $result = ['before' => [], 'after' => []];
 
-        $html .= '<ul class="diff">';
         foreach ($changes as $i => $blocks) {
-            if ($i > 0) {
-                $html .= '<li>...</li>';
-            }
-
             foreach ($blocks as $change) {
-                foreach ($change['base']['lines'] as $line) {
-                    $html .= sprintf('<li class="base %s">%s</li>', $change['tag'], $line);
-                }
+                $before = $change['base']['lines'];
+                $after = $change['changed']['lines'];
 
-                foreach ($change['changed']['lines'] as $line) {
-                    $html .= sprintf('<li class="changed %s">%s</li>', $change['tag'], $line);
-                }
+                $result['before'][] = is_array($before) ? implode(', ', $before) : $before;
+                $result['after'][]  = is_array($after) ? implode(', ', $after) : $after;
             }
         }
-        $html .= '</ul>';
 
-        return $html;
+        $result['before'] = implode(', ', array_filter($result['before']));
+        $result['after'] = implode(', ', array_filter($result['after']));
+
+        return $result;
     }
 }

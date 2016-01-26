@@ -38,10 +38,10 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn($date);
 
-        $renderer->renderOriginalDiff('01/20/2012', '04/25/2012')->willReturn('diff between two dates');
+        $renderer->renderDiff('01/20/2012', '04/25/2012')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->presentOriginal($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
+        $this->present($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
     }
 
     function it_presents_only_new_date_when_no_previous_date_is_set(
@@ -55,10 +55,10 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn(null);
 
-        $renderer->renderOriginalDiff('', '04/25/2012')->willReturn('diff between two dates');
+        $renderer->renderDiff('', '04/25/2012')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->presentOriginal($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
+        $this->present($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
     }
 
     function it_presents_only_old_date_when_no_new_date_is_set(
@@ -73,9 +73,9 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $value->getData()->willReturn($date);
 
-        $renderer->renderOriginalDiff('2012/20/01', '')->willReturn('diff between two dates');
+        $renderer->renderDiff('2012/20/01', '')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->presentOriginal($value, ['data' => ''])->shouldReturn('diff between two dates');
+        $this->present($value, ['data' => ''])->shouldReturn('diff between two dates');
     }
 }

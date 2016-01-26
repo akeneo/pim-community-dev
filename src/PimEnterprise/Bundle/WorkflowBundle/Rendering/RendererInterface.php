@@ -19,22 +19,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 interface RendererInterface
 {
     /**
-     * Render differences between two variables (original representation)
+     * Render differences between two variables
      *
      * @param mixed $before
      * @param mixed $after
      *
      * @return string
      */
-    public function renderOriginalDiff($before, $after);
-
-    /**
-     * Render differences between two variables (new representation)
-     *
-     * @param mixed $before
-     * @param mixed $after
-     *
-     * @return string
-     */
-    public function renderNewDiff($before, $after);
+    public function renderDiff($before, $after);
 }

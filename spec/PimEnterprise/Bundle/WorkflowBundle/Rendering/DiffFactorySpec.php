@@ -15,7 +15,7 @@ class DiffFactorySpec extends ObjectBehavior
 
         $diff = $this->create(['foo', 'bar', 'moo'], ['bar', 'moo']);
 
-        $diff->getA()->shouldBe(['foo']);
-        $diff->getB()->shouldBe([]);
+        $diff->getA()->shouldBe(['foo', 'bar', 'moo']);
+        $diff->getB()->shouldBe(['bar', 'moo']);
     }
 }

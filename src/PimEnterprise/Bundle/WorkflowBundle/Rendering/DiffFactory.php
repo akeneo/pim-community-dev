@@ -32,9 +32,6 @@ class DiffFactory
         $before = is_array($before) ? $before : [$before];
         $after = is_array($after) ? $after : [$after];
 
-        $uniqueBefore = array_values(array_diff($before, $after));
-        $uniqueAfter = array_values(array_diff($after, $before));
-
-        return new \Diff($uniqueBefore, $uniqueAfter, $options);
+        return new \Diff($before, $after, $options);
     }
 }

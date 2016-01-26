@@ -13,26 +13,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Present images
+ * Present images side by side
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ImagePresenter implements PresenterInterface
+class ImagePresenter extends FilePresenter
 {
-    /** @var UrlGeneratorInterface */
-    protected $generator;
-
-    /**
-     * @param UrlGeneratorInterface $generator
-     */
-    public function __construct(UrlGeneratorInterface $generator)
-    {
-        $this->generator = $generator;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -43,51 +31,25 @@ class ImagePresenter implements PresenterInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function presentOriginal($data, array $change)
-    {
-        $media = $data->getMedia();
-
-        if (null === $media || null === $media->getKey() || null === $media->getOriginalFilename()) {
-            return '';
-        }
-
-        return $this->createImageElement($media->getKey(), $media->getOriginalFilename());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function presentNew($data, array $change)
-    {
-        if (!isset($change['data']['originalFilename']) || !isset($change['data']['filePath'])) {
-            return '';
-        }
-
-        return $this->createImageElement($change['data']['filePath'], $change['data']['originalFilename']);
-    }
-
-    /**
-     * Create an HTML Image element
+     * Create a file element
      *
-     * @param string $filePath
-     * @param string $title
+     * @param string $filename
+     * @param string $originalFilename
      *
      * @return string
      */
-    protected function createImageElement($filePath, $title)
+    protected function createFileElement($filename, $originalFilename)
     {
         return sprintf(
             '<img src="%s" title="%s" />',
             $this->generator->generate(
                 'pim_enrich_media_show',
                 [
-                    'filename' => urlencode($filePath),
+                    'filename' => urlencode($filename),
                     'filter'   => 'thumbnail',
                 ]
             ),
-            $title
+            $originalFilename
         );
     }
 }

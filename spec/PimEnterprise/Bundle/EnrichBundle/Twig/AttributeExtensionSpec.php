@@ -22,7 +22,7 @@ class AttributeExtensionSpec extends ObjectBehavior
     {
         $functions = $this->getFunctions();
 
-        $functions->shouldHaveCount(2);
+        $functions->shouldHaveCount(3);
         $functions->shouldHaveKey('attribute_icon');
         $functions->shouldHaveKey('is_attribute_localizable');
 

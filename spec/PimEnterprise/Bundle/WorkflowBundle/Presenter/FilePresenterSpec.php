@@ -36,13 +36,13 @@ class FilePresenterSpec extends ObjectBehavior
         $value->getMedia()->willReturn(null);
 
         $this
-            ->presentOriginal($value, [
+            ->present($value, [
                 'data' => [
                     'filePath' => 'key/of/the/change.jpg',
                     'originalFilename' => 'change_bar.jpg',
                 ]
             ])
-            ->shouldReturn('');
+            ->shouldReturn(['before' => '', 'after' => '']);
     }
 
     function it_does_not_presents_new_if_new_is_empty(
@@ -52,17 +52,18 @@ class FilePresenterSpec extends ObjectBehavior
         $value->getMedia()->willReturn($media);
 
         $this
-            ->presentNew($value, ['data' => null])
-            ->shouldReturn('');
+            ->present($value, ['data' => null])
+            ->shouldReturn(['before' => '', 'after' => '']);
     }
 
-    function it_presents_original_file(
+    function it_presents_file(
         $generator,
         ProductValueInterface $value,
         FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getHash()->willReturn('key/of/the/media.jpg');
         $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
         $generator
@@ -72,45 +73,31 @@ class FilePresenterSpec extends ObjectBehavior
             )
             ->willReturn('url/of/the/media.jpg');
 
-        $this
-            ->presentOriginal($value, [
-                'data' => [
-                    'filePath' => 'key/of/the/change.jpg',
-                    'originalFilename' => 'change_bar.jpg',
-                ]
-            ])
-            ->shouldReturn(sprintf(
-                '<i class="icon-file"></i><a target="_blank" class="no-hash" href="url/of/the/media.jpg">original_foo.jpg</a>',
-                'url/of/the/media.jpg'
-            ));
-    }
-
-    function it_presents_new_file(
-        $generator,
-        ProductValueInterface $value,
-        FileInfoInterface $media
-    ) {
-        $value->getMedia()->willReturn($media);
-        $media->getKey()->willReturn('key/of/the/media.jpg');
-        $media->getOriginalFilename()->willReturn('original_foo.jpg');
-
         $generator
             ->generate(
                 'pim_enrich_media_show',
                 ['filename' => urlencode('key/of/the/change.jpg')]
             )
-            ->willReturn('url/of/the/media.jpg');
+            ->willReturn('url/of/the/change.jpg');
 
         $this
-            ->presentNew($value, [
+            ->present($value, [
                 'data' => [
                     'filePath' => 'key/of/the/change.jpg',
                     'originalFilename' => 'change_bar.jpg',
                 ]
             ])
-            ->shouldReturn(sprintf(
-                '<i class="icon-file"></i><a target="_blank" class="no-hash" href="url/of/the/media.jpg">change_bar.jpg</a>',
-                'url/of/the/media.jpg'
-            ));
+            ->shouldReturn([
+                'before' => sprintf(
+                    '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
+                    'url/of/the/media.jpg',
+                    'original_foo.jpg'
+                ),
+                'after' => sprintf(
+                    '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
+                    'url/of/the/change.jpg',
+                    'change_bar.jpg'
+                )
+            ]);
     }
 }
