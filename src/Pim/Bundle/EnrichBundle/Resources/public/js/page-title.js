@@ -1,8 +1,6 @@
 'use strict';
 
-define(function (require) {
-    var router = require('pim/router');
-    var _ = require('underscore');
+define(['pim/router', 'underscore'], function (router, _) {
     var routeParams = {};
 
     router.on('route_complete', function (name) {

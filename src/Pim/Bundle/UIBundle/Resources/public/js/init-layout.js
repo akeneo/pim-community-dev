@@ -1,23 +1,22 @@
-require(['oro/mediator'], function (mediator) {
-    'use strict';
-    mediator.once('tab:changed', function () {
-        setTimeout(function () {
-            // emulates 'document ready state' for selenium tests
-            document['page-rendered'] = true;
-            mediator.trigger('page-rendered');
-        }, 50);
-    });
-});
+'use strict';
 
-require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
+define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
     'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui'
     ], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
-    'use strict';
 
-    /* ============================================================
-     * from layout.js
-     * ============================================================ */
-    $(function () {
+    return function() {
+        mediator.once('tab:changed', function () {
+            setTimeout(function () {
+                // emulates 'document ready state' for selenium tests
+                document['page-rendered'] = true;
+                mediator.trigger('page-rendered');
+            }, 50);
+        });
+
+        /* ============================================================
+         * from layout.js
+         * ============================================================ */
+
         layout.init();
 
         /* ============================================================
@@ -47,12 +46,12 @@ require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/m
         $('#main-menu').mouseover(function () {
             $('.open').removeClass('open');
         });
-    });
 
-    /* ============================================================
-     * from height_fix.js
-     * ============================================================ */
-    (function () {
+
+        /* ============================================================
+         * from height_fix.js
+         * ============================================================ */
+
         /* dynamic height for central column */
         var debugBar = $('.sf-toolbar');
         var anchor = $('#bottom-anchor');
@@ -117,21 +116,20 @@ require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/m
         $(window).on('resize', adjustHeight);
 
         mediator.bind('route_complete', adjustReloaded);
-    }());
 
-    /* ============================================================
-     * from form_buttons.js
-     * ============================================================ */
-    $(document).on('click', '.action-button', function () {
-        var actionInput = $('input[name = "input_action"]');
-        actionInput.val($(this).attr('data-action'));
-        $('#' + actionInput.attr('data-form-id')).submit();
-    });
+        /* ============================================================
+         * from form_buttons.js
+         * ============================================================ */
+        $(document).on('click', '.action-button', function () {
+            var actionInput = $('input[name = "input_action"]');
+            actionInput.val($(this).attr('data-action'));
+            $('#' + actionInput.attr('data-form-id')).submit();
+        });
 
-    /* ============================================================
-     * from remove.confirm.js
-     * ============================================================ */
-    $(function () {
+        /* ============================================================
+         * from remove.confirm.js
+         * ============================================================ */
+
         $(document).on('click', '.remove-button', function () {
             var confirm;
             var el = $(this);
@@ -176,5 +174,5 @@ require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/m
 
             return false;
         });
-    });
+    }
 });

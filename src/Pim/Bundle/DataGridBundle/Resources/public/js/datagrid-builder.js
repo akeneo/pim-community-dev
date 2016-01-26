@@ -1,16 +1,18 @@
 /*jslint vars: true, nomen: true, browser: true*/
 /*jshint browser: true*/
 /*global define*/
-define(function (require) {
-    'use strict';
+'use strict';
 
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var tools = require('oro/tools');
-    var mediator = require('oro/mediator');
-    var PageableCollection = require('oro/pageable-collection');
-    var Grid = require('oro/datagrid/grid');
-    var GridViewsView = require('oro/datagrid/grid-views/view');
+define([
+        'jquery',
+        'underscore',
+        'oro/tools',
+        'oro/mediator',
+        'oro/pageable-collection',
+        'oro/datagrid/grid',
+        'oro/datagrid/grid-views/view'
+    ],
+    function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView) {
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .navbar-extra .span10:last',

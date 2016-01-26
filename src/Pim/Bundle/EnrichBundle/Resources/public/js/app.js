@@ -1,22 +1,36 @@
 'use strict';
 
-define(function (require) {
-    var $ = require('jquery');
-    var Backbone = require('backbone');
-    var messenger = require('oro/messenger');
-    var _ = require('underscore');
-    var FetcherRegistry = require('pim/fetcher-registry');
-    require('oro/init-layout');
-    require('oro/init-user');
-    require('pimuser/js/init-signin');
-
+define([
+        'jquery',
+        'backbone',
+        'oro/messenger',
+        'underscore',
+        'pim/fetcher-registry',
+        'pim/init',
+        'oro/init-user',
+        'oro/init-layout',
+        'pimuser/js/init-signin',
+        'pim/router',
+        'pim/page-title'
+    ], function (
+        $,
+        Backbone,
+        messenger,
+        _,
+        FetcherRegistry,
+        init,
+        initUser,
+        initLayout,
+        initSignin
+    ) {
     return (function () {
         return {
             debug: false,
             bootstrap: function (options) {
+                initUser();
+                initLayout();
+                initSignin();
                 this.debug = !!options.debug;
-                require('pim/router');
-                require('pim/page-title');
 
                 FetcherRegistry.initialize();
 
@@ -25,10 +39,7 @@ define(function (require) {
                     template: _.template($.trim($('#message-item-template').html()))
                 });
 
-                // temp
-                require(['pim/init'], function (init) {
-                    init();
-                });
+                init();
 
                 if (!Backbone.History.started) {
                     Backbone.history.start();
