@@ -1,5 +1,7 @@
 # 1.5.x
 
+# 1.5.0-ALPHA1 (2016-01-26)
+
 ## Technical improvements
 - PIM-5450: MongoDb ODM bundle in dev requirements 
 
