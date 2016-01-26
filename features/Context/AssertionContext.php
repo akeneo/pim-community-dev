@@ -388,12 +388,12 @@ class AssertionContext extends RawMinkContext
     {
         $block = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.history-block');
-        });
+        }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
             $row = $this->spin(function () use ($block, $data) {
                 return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
-            });
+            }, sprintf('Cannot find the row %s', $data['version']));
 
             if (!$row) {
                 throw $this->createExpectationException(

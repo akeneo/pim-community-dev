@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+
 /**
  * Twig extension to get attribute icons
  *
@@ -16,14 +18,18 @@ class AttributeExtension extends \Twig_Extension
      */
     protected $icons;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * Constructor
      *
      * @param array $icons
      */
-    public function __construct(array $icons)
+    public function __construct(array $icons, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
-        $this->icons = $icons;
+        $this->icons               = $icons;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -33,7 +39,26 @@ class AttributeExtension extends \Twig_Extension
     {
         return [
             'attribute_icon' => new \Twig_Function_Method($this, 'attributeIcon'),
+            new \Twig_SimpleFunction(
+                'get_attribute_label_from_code',
+                [$this, 'getAttributeLabelFromCode'],
+                ['is_safe' => ['html']]
+            ),
         ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getAttributeLabelFromCode($code)
+    {
+        if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
+            return (string) $attribute;
+        }
+
+        return $code;
     }
 
     /**

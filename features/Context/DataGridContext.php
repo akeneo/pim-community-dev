@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
@@ -357,7 +358,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                         sprintf('Filter "%s" should not be visible', $filter)
                     );
                 }
-            } catch (\InvalidArgumentException $e) {
+            } catch (TimeoutException $e) {
                 // Filter not rendered, all is good
             }
         }
@@ -677,9 +678,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
-        if ($filterName === 'Channel') {
-            $this->wait();
-        }
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
 
         $datePattern = '#^(more than|less than|between|not between) (\d{2}/\d{2}/\d{4})( and )?(\d{2}/\d{2}/\d{4})?$#';
@@ -1126,9 +1124,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $filter = $this->datagrid->getFilter($filterName);
-        if (!$filter) {
-            throw new \InvalidArgumentException("Could not find filter for $filterName.");
-        }
 
         $this->datagrid->openFilter($filter);
 

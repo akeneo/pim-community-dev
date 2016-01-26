@@ -164,6 +164,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         self::$errorMessages[] = $message;
     }
 
+   /**
+    * Get error messages
+    *
+    * @return array $messages
+    */
+    public static function getErrorMessages()
+    {
+        return self::$errorMessages;
+    }
+
     /**
      * Wait
      *
