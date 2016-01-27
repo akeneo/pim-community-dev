@@ -28,7 +28,7 @@ class SimpleList extends \Diff_Renderer_Html_Array
         $changes = parent::render();
         $result = ['before' => [], 'after' => []];
 
-        foreach ($changes as $i => $blocks) {
+        foreach ($changes as $blocks) {
             foreach ($blocks as $change) {
                 $before = $change['base']['lines'];
                 $after = $change['changed']['lines'];
