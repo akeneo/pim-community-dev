@@ -21,18 +21,19 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposal:
-      | username                         | product   | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | my-jacket | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}],"comment":[{"locale":null,"scope":null,"data":"First comment"}]}} |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | scope  | original | new            |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | tablet |          | My description |
+      | my-jacket | clothing_product_proposal_import | comment     |        |        |          | First comment  |
 
   Scenario: Create a new proposals and be notified
     Given Mary proposed the following change to "my-jacket3":
