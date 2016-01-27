@@ -1,0 +1,2 @@
+parameters:
+    pim_datagrid.twig.image_extension.class: PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension

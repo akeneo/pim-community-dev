@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -30,7 +31,7 @@ class AssetsCollectionValidator extends ConstraintValidator
     public function validate($attribute, Constraint $constraint)
     {
         if ($attribute instanceof AttributeInterface &&
-            ('pim_assets_collection' === $attribute->getAttributeType()) &&
+            (AttributeTypes::ASSETS_COLLECTION === $attribute->getAttributeType()) &&
             ($attribute->isLocalizable() || $attribute->isScopable())) {
             $this->context->buildViolation($constraint->message, [
                 '%attribute%' => $attribute->getCode()

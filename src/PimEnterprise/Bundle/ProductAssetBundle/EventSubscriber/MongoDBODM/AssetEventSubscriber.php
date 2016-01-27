@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Repository\ProductCascadeRemovalRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -63,7 +64,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     public function cascadeAssetRemove(GenericEvent $event)
     {
         $asset = $event->getSubject();
-        $attributeCodes = $this->attributeRepository->getAttributeCodesByType('pim_assets_collection');
+        $attributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
         $this->cascadeRemovalRepo->cascadeAssetRemoval($asset, $attributeCodes);
 
         return $event;
