@@ -2,6 +2,11 @@
 
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
+- PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
+
+## Improvements
+
+In context of PIM-5476, a new command 'pim:product:purge-empty-values' has been added to help you to clean your project database.
 
 # 1.4.17 (2016-01-19)
 

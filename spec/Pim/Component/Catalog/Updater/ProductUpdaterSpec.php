@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\EmptyChecker\ProductValueStructuredData\EmptyCheckerInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -15,9 +16,9 @@ class ProductUpdaterSpec extends ObjectBehavior
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
         ProductTemplateUpdaterInterface $templateUpdater,
-        ValidatorInterface $validator
+        EmptyCheckerInterface $checker
     ) {
-        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater, $validator);
+        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater, $checker);
     }
 
     function it_is_initializable()
@@ -93,5 +94,33 @@ class ProductUpdaterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
+    }
+
+    function it_applies_updates_for_non_empty_values($propertySetter, $checker, ProductInterface $product)
+    {
+        $toUpdate = [
+            'not_empty_string' => [['data' => 'notemptydata', 'locale' => null, 'scope' => null]]
+        ];
+
+        $checker->isEmpty('not_empty_string', 'notemptydata')->willReturn(false);
+        $propertySetter
+            ->setData($product, 'not_empty_string', 'notemptydata', ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+
+        $this->update($product, $toUpdate, []);
+    }
+
+    function it_does_not_apply_updates_for_empty_values($propertySetter, $checker, ProductInterface $product)
+    {
+        $toNotUpdate = [
+            'empty_string' => [['data' => '', 'locale' => 'en_US', 'scope' => null]],
+        ];
+
+        $checker->isEmpty('empty_string', '')->willReturn(true);
+        $propertySetter
+            ->setData($product, 'empty_string', '', ['locale' => 'en_US', 'scope' => null])
+            ->shouldNotBeCalled();
+
+        $this->update($product, $toNotUpdate, []);
     }
 }

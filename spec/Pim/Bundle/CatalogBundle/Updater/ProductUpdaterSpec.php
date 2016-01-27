@@ -14,10 +14,9 @@ class ProductUpdaterSpec extends ObjectBehavior
     function let(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater,
-        ValidatorInterface $validator
+        ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater, $validator);
+        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater);
     }
 
     function it_is_initializable()

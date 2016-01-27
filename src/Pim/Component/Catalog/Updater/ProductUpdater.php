@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Catalog\EmptyChecker\ProductValueStructuredData\EmptyCheckerInterface;
 
 /**
  * Updates a product
@@ -27,19 +28,25 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var EmptyCheckerInterface */
+    protected $emptyValueDataChecker;
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param EmptyCheckerInterface           $emptyValueDataChecker
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        EmptyCheckerInterface $emptyValueDataChecker = null
     ) {
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->emptyValueDataChecker = $emptyValueDataChecker;
     }
 
     /**
@@ -197,12 +204,30 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 
         foreach ($values as $value) {
             $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
-            $providedData = ('' === $value['data'] || [] === $value['data'] || null === $value['data']) ? false : true;
+            $providedData = $this->hasProvidedValueData($attributeCode, $value['data']);
 
             if ($isFamilyAttribute || $providedData || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                 $this->propertySetter->setData($product, $attributeCode, $value['data'], $options);
             }
+        }
+    }
+
+    /**
+     * Indicates whether a provided value data is considered empty or not
+     *
+     * @param string $attributeCode
+     * @param mixed  $valueData
+     *
+     * @return bool
+     */
+    protected function hasProvidedValueData($attributeCode, $valueData)
+    {
+        if (null !== $this->emptyValueDataChecker) {
+            return !$this->emptyValueDataChecker->isEmpty($attributeCode, $valueData);
+        } else {
+            // TODO deprecated implementation to drop in 1.5, drop also the default value in constructor
+            return  ('' === $valueData || [] === $valueData || null === $valueData) ? false : true;
         }
     }
 

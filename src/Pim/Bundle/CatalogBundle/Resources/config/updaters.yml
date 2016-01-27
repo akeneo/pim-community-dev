@@ -56,6 +56,9 @@ parameters:
     pim_catalog.updater.remover.price_collection_value.class: Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover
     pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
 
+    pim_catalog.updater.product_purger.class:                   Pim\Component\Catalog\Updater\ProductPurger
+    pim_catalog.updater.empty_product_value_checker.base.class: Pim\Component\Catalog\EmptyChecker\ProductValue\BaseEmptyChecker
+
 services:
     # Updaters
     pim_catalog.updater.product:
@@ -64,6 +67,7 @@ services:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.updater.product_property_copier'
             - '@pim_catalog.updater.product_template'
+            - '@pim_catalog.empty_checker.product_value_structured_data.chained'
 
     pim_catalog.updater.product_property_setter:
         class: %pim_catalog.updater.product_property_setter.class%
@@ -473,3 +477,8 @@ services:
             - ['groups']
         tags:
             - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.product_purger:
+        class: %pim_catalog.updater.product_purger.class%
+        arguments:
+            - '@pim_catalog.empty_checker.product_value.chained'

@@ -18,7 +18,7 @@ Feature: Execute a job
       sku;price
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
-      SKU-003;invalid
+      SKU-003;"50 EUR, invalid data"
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -329,8 +329,8 @@ Feature: Execute a job
       """
       sku;publicPrice
       renault-kangoo;20000 EUR
-      honda-civic;15EUR
-      seat-ibiza;111
+      honda-civic;"15EUR,not defined"
+      seat-ibiza;"32 EUR,111"
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |

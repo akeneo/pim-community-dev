@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConst
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterEmptyCheckerPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
@@ -43,7 +44,9 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterProductUpdaterPass())
             ->addCompilerPass(new RegisterFilterPass())
             ->addCompilerPass(new RegisterComparatorsPass())
-            ->addCompilerPass(new RegisterCompleteCheckerPass());
+            ->addCompilerPass(new RegisterCompleteCheckerPass())
+            ->addCompilerPass(new RegisterEmptyCheckerPass('product_value'))
+            ->addCompilerPass(new RegisterEmptyCheckerPass('product_value_structured_data'));
 
         $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
