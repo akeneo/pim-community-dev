@@ -40,6 +40,9 @@ class VariantGroupController extends GroupController
     /** @var VariantGroupAttributesResolver */
     protected $groupAttrResolver;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param Request                        $request
      * @param EngineInterface                $templating
@@ -56,6 +59,7 @@ class VariantGroupController extends GroupController
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
      * @param RemoverInterface               $groupRemover
+     * @param UserContext                    $userContext
      */
     public function __construct(
         Request $request,
@@ -72,7 +76,8 @@ class VariantGroupController extends GroupController
         GroupFactory $groupFactory,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver,
-        RemoverInterface $groupRemover
+        RemoverInterface $groupRemover,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -92,6 +97,7 @@ class VariantGroupController extends GroupController
 
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
+        $this->userContext         = $userContext;
     }
 
     /**
@@ -156,6 +162,11 @@ class VariantGroupController extends GroupController
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.updated');
+
+            return new JsonResponse([
+                'route'  => 'pim_enrich_variant_group_edit',
+                'params' => ['id' => $group->getId(), 'dataLocale' => $this->userContext->getCurrentLocale()->getCode()]
+            ]);
         }
 
         return [

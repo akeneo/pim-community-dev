@@ -37,7 +37,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     '<div class="grid-container">' +
                     '<table class="grid table-hover table table-bordered table-condensed"></table>' +
                     '<div class="no-data"></div>' +
-                    '<div class="loading-mask"></div>' +
+                    '<div class="loading-mask-container"></div>' +
                     '</div>' +
                     '</div>'
             ),
@@ -50,7 +50,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                 grid:        '.grid',
                 toolbar:     '.toolbar',
                 noDataBlock: '.no-data',
-                loadingMask: '.loading-mask',
+                loadingMask: '.loading-mask-container',
                 filterBox:   '.filter-box'
             },
 

@@ -1,0 +1,13 @@
+# Page titles
+page_title:
+    pim_importexport_export_profile_index:   Export profiles management
+    pim_importexport_export_profile_edit:    Export profiles {{ job.label }} | Edit
+    pim_importexport_export_profile_show:    Export profiles {{ job.label }} | Show
+    pim_importexport_export_execution_index: Export executions history
+    pim_importexport_export_execution_show:  Export executions | Details
+
+    pim_importexport_import_profile_index:   Import profiles management
+    pim_importexport_import_profile_edit:    Import profiles {{ job.label }} | Edit
+    pim_importexport_import_profile_show:    Import profiles {{ job.label }} | Show
+    pim_importexport_import_execution_index: Import executions history
+    pim_importexport_import_execution_show:  Import executions | Details

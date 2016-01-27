@@ -14,7 +14,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_attributegroup_create        |
       | pim_enrich_attributegroup_index         |
       | pim_enrich_categorytree_index           |
-      | pim_enrich_categorytree_create          |
       | pim_enrich_channel_create               |
       | pim_enrich_channel_index                |
       | pim_enrich_currency_index               |

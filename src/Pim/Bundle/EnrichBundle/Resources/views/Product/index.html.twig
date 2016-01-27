@@ -1,10 +1,9 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set title = 'products'|trans %}
 
 {% block head_script %}
-    {{ parent() }}
     <script type="text/javascript">
         require(['jquery', 'pim/user-context'], function ($, UserContext) {
             'use strict';

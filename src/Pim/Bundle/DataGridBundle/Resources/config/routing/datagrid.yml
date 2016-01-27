@@ -3,4 +3,3 @@ pim_datagrid_load:
     defaults: { _controller: pim_datagrid.controller.datagrid:loadAction }
     requirements:
         _method: GET
-        _format: json

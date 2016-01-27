@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -560,5 +561,13 @@ class JobProfileController extends AbstractDoctrineController
     protected function createUploadForm()
     {
         return $this->createForm(new UploadType(), null, ['validation_groups' => ['upload']]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
     }
 }

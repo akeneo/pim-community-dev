@@ -1,20 +1,15 @@
-{% extends bap.layout %}
+<div class="dashboard header">
+    <h3>{{ 'pim_dashboard.title'|trans }}</h3>
+</div>
 
-{% block content %}
-    <div class="dashboard header">
-        <h3>{{ 'pim_dashboard.title'|trans }}</h3>
-    </div>
-
-    <div class="scrollable-container quick-launchpad dashboard">
-        <div class="container">
-            <div class="row">
-                {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
-            </div>
-        </div>
-
-        <div class="version-container muted">
-            {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
-            {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
+<div class="scrollable-container quick-launchpad dashboard">
+    <div class="container">
+        <div class="row">
+            {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
         </div>
     </div>
-{% endblock %}
+    <div class="version-container muted">
+        {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
+        {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
+    </div>
+</div>

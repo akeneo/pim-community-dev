@@ -44,7 +44,7 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     And I change the "Catalog locale" to "fr_FR"
     And I save the user
-    When I visit the "Additional Information" tab
+    When I visit the "Additional" tab
     Then I should see "Catalog locale"
     And I should see "fr_FR"
     When I edit the "ecommerce" channel

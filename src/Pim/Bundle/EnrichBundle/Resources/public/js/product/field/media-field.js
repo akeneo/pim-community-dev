@@ -16,11 +16,11 @@ define([
         'text!pim/template/product/field/media',
         'pim/dialog',
         'oro/mediator',
-        'oro/navigation',
         'pim/media-url-generator',
+        'oro/messenger',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation, MediaUrlGenerator) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, MediaUrlGenerator, messenger) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -77,8 +77,6 @@ define([
                     'scope':  this.context.scope
                 };
 
-                var navigation = Navigation.getInstance();
-
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -103,8 +101,8 @@ define([
                     var message = xhr.responseJSON && xhr.responseJSON.message ?
                         xhr.responseJSON.message :
                         _.__('pim_enrich.entity.product.error.upload');
-                    navigation.addFlashMessage('error', message);
-                    navigation.afterRequest();
+
+                    messenger.notificationFlashMessage('error', message);
                 })
                 .always(function () {
                     this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});

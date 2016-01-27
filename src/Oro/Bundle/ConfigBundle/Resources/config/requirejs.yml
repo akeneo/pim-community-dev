@@ -10,7 +10,13 @@ config:
         oro/form/system/config/save:
             route: oro_config_configuration_system_post
 
+        pim/controller-registry:
+            controllers:
+                oro_config_configuration_system: oro/controller/config
     paths:
+        # Controller
+        oro/controller/config: oroconfig/js/controller/config
+
         # Forms
         oro/form/system/config:                    oroconfig/js/form/system/config
         oro/form/system/config/system:             oroconfig/js/form/system/tab/system

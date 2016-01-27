@@ -24,6 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -160,7 +161,10 @@ class AttributeGroupController extends AbstractDoctrineController
                 $this->eventDispatcher->dispatch(AttributeGroupEvents::POST_CREATE, new GenericEvent($group));
                 $this->addFlash('success', 'flash.attribute group.created');
 
-                return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+                return new JsonResponse([
+                    'route'  => 'pim_enrich_attributegroup_edit',
+                    'params' => ['id' => $group->getId()]
+                ]);
             }
 
             $form = $this->form->createView();
@@ -198,7 +202,10 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attributegroup_edit',
+                'params' => ['id' => $group->getId()]
+            ]);
         }
 
         return [
@@ -220,10 +227,6 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function sortAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_attributegroup_create');
-        }
-
         $data = $request->request->all();
 
         if (!empty($data)) {
@@ -275,11 +278,7 @@ class AttributeGroupController extends AbstractDoctrineController
             }
         }
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_attributegroup_create');
-        }
+        return new Response('', 204);
     }
 
     /**
@@ -325,7 +324,10 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+        return new JsonResponse([
+            'route'  => 'pim_enrich_attributegroup_edit',
+            'params' => ['id' => $group->getId()]
+        ]);
     }
 
     /**
@@ -355,11 +357,7 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->manager->removeAttribute($group, $attribute);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
-        }
+        return new Response('', 204);
     }
 
     /**

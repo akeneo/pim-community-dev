@@ -1,69 +1,16 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery'],
-            function ($) {
-                'use strict';
-
-                $(function() {
-                    var decorateTabs = function() {
-                        $('.tab-groups').find('li.tab>a').each(function() {
-                            var $target = $($(this).attr('href'));
-                            var hasGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.granted').length;
-                            var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
-                            var iconClass = hasMissing ? (hasGranted ? 'circle' : 'remove') : 'ok';
-                            var $icon = $(this).find('i').first();
-                            $icon.removeClass('icon-ok icon-remove icon-circle').addClass('icon-' + iconClass);
-                        });
-                    };
-
-                    var togglePermission = function($icon, callback) {
-                        if ($icon.parent().hasClass('default-field-toggle')) {
-                            var permission = $icon.parent().data('permission');
-                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('i.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
-                            $defaultIcon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
-                            var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
-                            $defaultInput.prop('checked', !$defaultInput.is(':checked'));
-                        }
-                        $icon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
-                        var $input = $icon.siblings('input[type="checkbox"]').eq(0);
-                        $input.prop('checked', !$input.is(':checked')).trigger('change');
-                        (callback || $.noop)();
-                    };
-
-                    $('.acl-permission i').on('click', function() {
-                        togglePermission($(this), decorateTabs)
-                    });
-
-                    $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
-                        var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
-                        var $target = $($(this).parent().attr('href'));
-                        $target.find('.acl-permission:not(.default-field) i.' + classToToggle).each(function() {
-                            togglePermission($(this));
-                        });
-                        decorateTabs();
-                    });
-
-                    decorateTabs();
-                });
-            }
-        );
-    </script>
-{% endblock %}
+<script type="text/javascript">
+    require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
+</script>
 
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create'),
+        'action': entityId ? path('oro_user_role_update', { 'id': entityId }) : path('oro_user_role_create'),
         'attr': {
             'class': 'form-tabbed',
             'data-updated-title': 'confirmation.leave'|trans,
@@ -183,4 +130,55 @@
         </div>
 
     {{ form_end(form) }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery'],
+            function ($) {
+                'use strict';
+
+                $(function() {
+                    var decorateTabs = function() {
+                        $('.tab-groups').find('li.tab>a').each(function() {
+                            var $target = $($(this).attr('href'));
+                            var hasGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.granted').length;
+                            var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
+                            var iconClass = hasMissing ? (hasGranted ? 'circle' : 'remove') : 'ok';
+                            var $icon = $(this).find('i').first();
+                            $icon.removeClass('icon-ok icon-remove icon-circle').addClass('icon-' + iconClass);
+                        });
+                    };
+
+                    var togglePermission = function($icon, callback) {
+                        if ($icon.parent().hasClass('default-field-toggle')) {
+                            var permission = $icon.parent().data('permission');
+                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('i.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
+                            $defaultIcon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                            var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
+                            $defaultInput.prop('checked', !$defaultInput.is(':checked'));
+                        }
+                        $icon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                        var $input = $icon.siblings('input[type="checkbox"]').eq(0);
+                        $input.prop('checked', !$input.is(':checked')).trigger('change');
+                        (callback || $.noop)();
+                    };
+
+                    $('.acl-permission i').on('click', function() {
+                        togglePermission($(this), decorateTabs)
+                    });
+
+                    $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
+                        var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
+                        var $target = $($(this).parent().attr('href'));
+                        $target.find('.acl-permission:not(.default-field) i.' + classToToggle).each(function() {
+                            togglePermission($(this));
+                        });
+                        decorateTabs();
+                    });
+
+                    decorateTabs();
+                });
+            }
+        );
+    </script>
 {% endblock %}

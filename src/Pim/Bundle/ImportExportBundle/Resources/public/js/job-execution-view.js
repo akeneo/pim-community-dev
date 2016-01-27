@@ -1,7 +1,23 @@
 /* jshint nonew:false, boss:true */
 define(
-    ['jquery', 'backbone', 'underscore'],
-    function ($, Backbone, _) {
+    [
+        'jquery',
+        'backbone',
+        'underscore',
+        'text!pim/template/job-execution-summary',
+        'text!pim/template/job-execution-status',
+        'text!pim/template/job-execution-buttons',
+        'text!pim/template/job-execution-log-button'
+    ],
+    function (
+        $,
+        Backbone,
+        _,
+        summaryTemplate,
+        statusTemplate,
+        buttonTemplate,
+        logButtonTemplate
+    ) {
         'use strict';
         var interval;
         var loading = false;
@@ -76,7 +92,7 @@ define(
                 $link.text($link.text().trim() === displayLabel ? hideLabel : displayLabel);
             },
 
-            template: _.template($('#job-execution-summary').html()),
+            template: _.template(summaryTemplate),
 
             render: function () {
                 this.$el.html(
@@ -102,7 +118,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-status').html()),
+            template: _.template(statusTemplate),
 
             render: function () {
                 this.$el.html(
@@ -137,7 +153,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-buttons').html()),
+            template: _.template(buttonTemplate),
 
             render: function () {
                 this.$el.html(
@@ -175,7 +191,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-log-button').html()),
+            template: _.template(logButtonTemplate),
 
             render: function () {
                 this.$el.html(
@@ -205,7 +221,7 @@ define(
 
                 var jobExecution = new JobExecution(params);
                 loading = true;
-                jobExecution.fetch();
+                jobExecution.fetch({data: {_format: 'json'}});
 
                 params.model = jobExecution;
 
@@ -221,7 +237,7 @@ define(
 
                 interval = setInterval(function () {
                     if (!loading) {
-                        jobExecution.fetch();
+                        jobExecution.fetch({data: {_format: 'json'}});
                     }
                 }, 1000);
 

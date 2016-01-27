@@ -16,5 +16,5 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/association-type/{id}/edit';
+    protected $path = '#/configuration/association-type/{id}/edit';
 }
