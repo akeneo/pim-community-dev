@@ -11,8 +11,6 @@ config:
                 - jquery.jstree
         translator:
             exports: Translator
-        translator:
-            exports: Translator
 
     config:
         # Forwarded events from mediator
