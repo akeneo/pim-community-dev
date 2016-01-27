@@ -1,20 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Connector\CsvAnalyzer;
+namespace spec\Pim\Component\Connector\Analyzer;
 
-use Pim\Component\Connector\Reader\File\CsvReader;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use PhpSpec\ObjectBehavior;
 
-class ProductCsvAnalyzerSpec extends ObjectBehavior
+class ProductAnalyzerSpec extends ObjectBehavior
 {
-    function let(CsvReader $reader)
-    {
-        $this->beConstructedWith(
-            $reader
-        );
-    }
-
-    function it_analyzes_product_csv($reader)
+    function it_analyzes_product_data(ItemReaderInterface $reader)
     {
         $data = [
             [ "s01","my_family1","Tot", "Nice prod"],
@@ -32,10 +25,7 @@ class ProductCsvAnalyzerSpec extends ObjectBehavior
             }
         );
 
-        $reader->setFilePath('my_product_csv_file')->shouldBeCalled();
-        $reader->setDelimiter(';')->shouldBeCalled();
-
-        $this->analyzeCsv("my_product_csv_file",";")->shouldBeLike([
+        $this->analyze($reader)->shouldBeLike([
             "columns_count" => 4,
             "products" => [
                 "count" => 4,
@@ -55,14 +45,11 @@ class ProductCsvAnalyzerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_analyzes_an_empty_product_csv($reader)
+    function it_analyzes_empty_product_data(ItemReaderInterface $reader)
     {
         $reader->read()->willReturn(null);
 
-        $reader->setFilePath('my_product_csv_file')->shouldBeCalled();
-        $reader->setDelimiter(';')->shouldBeCalled();
-
-        $this->analyzeCsv("my_product_csv_file",";")->shouldBeLike([
+        $this->analyze($reader)->shouldBeLike([
             "columns_count" => 0,
             "products" => [
                 "count" => 0,

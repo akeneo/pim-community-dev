@@ -1,8 +1,0 @@
-parameters:
-    pim_connector.csv_analyzers.product.class: Pim\Component\Connector\CsvAnalyzer\ProductCsvAnalyzer
-
-services:
-    pim_connector.csv_analyzers.product:
-        class: %pim_connector.csv_analyzers.product.class%
-        arguments:
-            - "@pim_connector.reader.file.csv_product"

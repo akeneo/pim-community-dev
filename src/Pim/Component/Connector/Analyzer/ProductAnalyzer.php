@@ -1,44 +1,24 @@
 <?php
 
-namespace Pim\Component\Connector\CsvAnalyzer;
+namespace Pim\Component\Connector\Analyzer;
 
-use Pim\Component\Connector\Reader\File\CsvReader;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Pim\Component\Connector\Analyzer\AnalyzerInterface;
 
 /**
- * Provides some statistics on a product CSV file
+ * Provides some statistics on a products data provided by a reader
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvAnalyzer
+class ProductAnalyzer implements AnalyzerInterface
 {
-    /** @staticvar string */
-    const DEFAULT_DELIMITER = ";";
-
-    /** CsvReader $reader */
-    protected $reader;
-
     /**
-     * @param CsvReader $reader
+     * {@inheritdoc}
      */
-    public function __construct(CsvReader $reader)
+    public function analyze(ItemReaderInterface $reader)
     {
-        $this->reader = $reader;
-    }
-
-    /**
-     * Display statistics about a product CSV file
-     *
-     * @param string $productCsvFile
-     * @param string $delimiter
-     *
-     * @return array
-     */
-    public function analyzeCsv($productCsvFile, $delimiter = null)
-    {
-        $delimiter = (null === $delimiter) ? static::DEFAULT_DELIMITER: $delimiter;
-
         $stats = [
             "columns_count" => 0,
             "products"      => [
@@ -48,12 +28,9 @@ class ProductCsvAnalyzer
             ],
         ];
 
-        $this->reader->setFilePath($productCsvFile);
-        $this->reader->setDelimiter($delimiter);
-
         $lineNumber = 1;
 
-        while ($valuesData = $this->reader->read()) {
+        while ($valuesData = $reader->read()) {
             if (0 === $stats['columns_count']) {
                 $stats['columns_count'] = count($valuesData);
             }

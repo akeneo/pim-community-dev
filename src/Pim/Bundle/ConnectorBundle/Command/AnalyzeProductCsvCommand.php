@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Command;
+namespace Pim\Bundle\ConnectorBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,13 +18,16 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class AnalyzeProductCsvCommand extends ContainerAwareCommand
 {
+    /** @staticvar string */
+    const DEFAULT_DELIMITER = ";";
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:csv-analyzers:products')
+            ->setName('pim:connector:analyzer:csv-products')
             ->setDescription('Analyze the products CSV')
             ->addOption(
                 'csv-delimiter',
@@ -54,9 +57,9 @@ class AnalyzeProductCsvCommand extends ContainerAwareCommand
             );
         }
 
-        $delimiter = null;
+        $delimiter = static::DEFAULT_DELIMITER;
 
-        if ($input->hasOption('csv-delimiter')) {
+        if (null !== $input->getOption('csv-delimiter')) {
             $delimiter = $input->getOption('csv-delimiter');
         }
 
@@ -67,12 +70,16 @@ class AnalyzeProductCsvCommand extends ContainerAwareCommand
             )
         );
 
-        $stats = $this->getProductCsvAnalyzer()->analyzeCsv($productCsvFile, $delimiter);
+        $reader = $this->getProductCsvReader();
+        $reader->setDelimiter($delimiter);
+        $reader->setFilePath($productCsvFile);
+
+        $stats = $this->getProductAnalyzer()->analyze($reader);
 
         $output->writeln([
             sprintf('<info>Columns Count:  %10s</info>', number_format($stats['columns_count'])),
             sprintf('<info>Products Count: %10s</info>', number_format($stats['products']['count'])),
-            sprintf('<info>Values Count:   %10s</info>', number_format($stats['products']['values_count'])),
+            sprintf('<info>Values (or fields) Count:   %10s</info>', number_format($stats['products']['values_count'])),
             '<info>Values per product:</info>',
             sprintf('<info>  Average: %5s</info>', number_format($stats['products']['values_per_product']['average'])),
             sprintf(
@@ -87,11 +94,23 @@ class AnalyzeProductCsvCommand extends ContainerAwareCommand
             )
         ]);
 
+        $output->writeln([
+            "",
+            "<info>DISCLAIMER: the values and fields related statistics do not take into account<info>",
+            "<info>multi-columns values (like metrics or prices) into account.</info>",
+            "<info>The provided figures is shown to give a global view of the data volume present in the file.</info>"
+        ]);
+
         return 0;
     }
 
-    protected function getProductCsvAnalyzer()
+    protected function getProductAnalyzer()
     {
-        return $this->getContainer()->get('pim_connector.csv_analyzers.product');
+        return $this->getContainer()->get('pim_connector.analyzer.product');
+    }
+
+    protected function getProductCsvReader()
+    {
+        return $this->getContainer()->get('pim_connector.reader.file.csv_product');
     }
 }
