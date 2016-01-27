@@ -2,14 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Component\Memory\HumanReadableBytesFormatter;
-use Akeneo\Component\Memory\MemoryUsageProvider;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -29,8 +25,7 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:product:purge-empty-values')
-            ->setDescription('Purge all empty product values, please dump your database first!')
-            ->addOption('memory-usage', null, InputOption::VALUE_NONE, 'Display the memory usage');
+            ->setDescription('Purge all empty product values, please dump your database first!');
     }
 
     /**
@@ -39,19 +34,21 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dialog = $this->getHelper('dialog');
-        $question = 'This command will remove empty product values, you must do a database backup before to perform it'
-            . '. To avoid memory leak related to Symfony profiler keeping references on objects, you should use the '
-            . ' --env=prod argument, it does not mean directly on your production database! Please notice that this '
-            . 'command only supports native attribute types and can remove unexpected data in case of custom projects. '
-            . 'Are you sure to run the command?';
+        $question = 'This command removes all empty product values, you must do a database backup before to perform it.'
+            . ' To any avoid memory leak related to Symfony profiler keeping references on objects, you should use the '
+            . '--env=prod argument, it does not mean directly on your production database! '
+            . 'To display the memory usage and the expected execution time please use the verbosity option -vvv. '
+            . 'Please notice that this command only supports native attribute types and can remove unexpected data '
+            . 'in case of custom projects.'
+            . ' Are you sure to execute?';
         if (!$dialog->askConfirmation($output, sprintf('<question>%s</question>', $question), false)) {
             return;
         }
 
-        $memoryProvider = new MemoryUsageProvider();
-        $memoryFormatter = new HumanReadableBytesFormatter();
-
         $products = $this->getAllProducts();
+        $progress = new ProgressBar($output, $products->count());
+        $progress->start();
+        $purgedCounter = 0;
         foreach ($products as $product) {
             $purgedProduct = $this->removeProductValues($product);
             if (true === $purgedProduct) {
@@ -62,26 +59,16 @@ class PurgeEmptyProductValuesCommand extends ContainerAwareCommand
                 $identifier = $product->getIdentifier()->getData();
                 if (0 === $violations->count()) {
                     $this->save($product);
-                    $output->writeln(sprintf('<info>Product "%s" has been cleaned up</info>', $identifier));
+                    $purgedCounter++;
                 } else {
                     $output->writeln(sprintf('<error>Once purged the product "%s" is not valid</error>', $identifier));
                 }
             }
             $this->detach($product);
-
-            $displayMemoryUsage = $input->getOption('memory-usage');
-            if ($displayMemoryUsage) {
-                $output->writeln(
-                    sprintf(
-                        'usage: %s peak: %s / limit: %s',
-                        $memoryFormatter->format($memoryProvider->getUsage()),
-                        $memoryFormatter->format($memoryProvider->getPeakUsage()),
-                        $memoryFormatter->format($memoryProvider->getLimit())
-                    )
-                );
-            }
+            $progress->advance();
         }
-        $output->writeln(sprintf('<info>Empty product values has been purged from your database</info>'));
+        $progress->finish();
+        $output->writeln(sprintf('<info>%d products have been purged from your database</info>', $purgedCounter));
 
         return 0;
     }

@@ -41,7 +41,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
         ProductTemplateUpdaterInterface $templateUpdater,
-        EmptyCheckerInterface $emptyValueDataChecker = null // TODO: default value will be dropped in 1.5
+        EmptyCheckerInterface $emptyValueDataChecker = null
     ) {
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
@@ -226,7 +226,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         if (null !== $this->emptyValueDataChecker) {
             return !$this->emptyValueDataChecker->isEmpty($attributeCode, $valueData);
         } else {
-            // TODO deprecated implementation to drop in 1.5
+            // TODO deprecated implementation to drop in 1.5, drop also the default value in constructor
             return  ('' === $valueData || [] === $valueData || null === $valueData) ? false : true;
         }
     }

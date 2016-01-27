@@ -2,13 +2,11 @@
 
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
-- PIM-5476: Fix issue with product import, new products are created with extra optional values for media, metric, price
-
-## Extra notes:
-About PIM-5476, a new command 'pim:product:purge-empty-product-values' has been added to help to clean your database.
+- PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
 
 ## Improvements
-A new Akeneo/Memory component has been introduced to help to follow the amount of used memory in different processes.
+
+In context of PIM-5476, a new command 'pim:product:purge-empty-values' has been added to help you to clean your project database.
 
 # 1.4.17 (2016-01-19)
 
