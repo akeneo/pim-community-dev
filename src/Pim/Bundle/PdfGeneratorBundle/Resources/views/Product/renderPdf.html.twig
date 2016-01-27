@@ -86,9 +86,11 @@
         </div>
         <div class="images">
             {% block images %}
-                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is not null
-                    and product.getValue(attribute.code, locale, scope).media.key is not null %}
-                    <img src="media/cache/thumbnail/{{ product.getValue(attribute.code, locale, scope).media.key }}" />
+                {% for attribute in imageAttributes %}
+                    {% set imagePath = image_path(product, attribute, locale, scope) %}
+                    {% if imagePath %}
+                        <img src="{{ imagePath }}"/>
+                    {% endif %}
                 {% endfor %}
             {% endblock %}
         </div>
