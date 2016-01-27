@@ -29,7 +29,8 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_refuse_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_REFUSE => ['send', 10],
+            ProductDraftEvents::POST_REFUSE         => ['send', 10],
+            ProductDraftEvents::POST_PARTIAL_REFUSE => ['send', 10]
         ]);
     }
 

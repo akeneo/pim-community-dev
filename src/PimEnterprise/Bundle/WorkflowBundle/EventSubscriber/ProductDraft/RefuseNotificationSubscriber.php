@@ -30,7 +30,8 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_REFUSE => ['send', 10],
+            ProductDraftEvents::POST_REFUSE         => ['send', 10],
+            ProductDraftEvents::POST_PARTIAL_REFUSE => ['send', 10]
         ];
     }
 

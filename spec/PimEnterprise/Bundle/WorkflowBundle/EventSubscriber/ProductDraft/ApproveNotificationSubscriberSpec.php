@@ -29,7 +29,8 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_APPROVE => ['send', 10],
+            ProductDraftEvents::POST_APPROVE         => ['send', 10],
+            ProductDraftEvents::POST_PARTIAL_APPROVE => ['send', 10]
         ]);
     }
 
