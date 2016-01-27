@@ -8,7 +8,6 @@ parameters:
     pim_catalog.event_subscriber.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventSubscriber\OutdateIndexedValuesSubscriber
     pim_catalog.event_subscriber.category.check_channels.class:      Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.currency_disabling.class:           Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
-    akeneo_doctrine.event_subscriber.clean_unit_of_work.class:       Akeneo\Bundle\DoctrineBundle\EventSubscriber\CleanUnitOfWorkSubscriber
 
 services:
     # Subscribers
@@ -85,8 +84,3 @@ services:
             - @pim_catalog.repository.product_template
         tags:
             - { name: kernel.event_subscriber }
-
-    akeneo_doctrine.event_subscriber.clean_unit_of_work:
-        class: %akeneo_doctrine.event_subscriber.clean_unit_of_work.class%
-        tags:
-            - { name: doctrine.event_subscriber, event: postFlush }

@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
+use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -23,12 +24,16 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
+    /** @var ScheduledValue */
+    private $scheduledForDirtyCheck;
+
     /**
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         $this->managerRegistry = $registry;
+        $this->scheduledForDirtyCheck = null;
     }
 
     /**
@@ -37,13 +42,106 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     public function detach($object)
     {
         $objectManager = $this->getObjectManager($object);
+        $visited = [];
 
         if ($objectManager instanceof DocumentManager) {
-            $visited = [];
             $this->doDetach($object, $visited);
         } else {
             $objectManager->detach($object);
+            $this->doDetachScheduled($object, $visited);
         }
+    }
+
+    /**
+     * Detach entity living in the scheduledForDirtyCheck's
+     * unit of work property.
+     *
+     * @param object $entity the entity to be detached
+     * @param array  $visited array of detached entity
+     *
+     * @return void
+     */
+    public function doDetachScheduled($entity, array &$visited)
+    {
+        $objectManager = $this->getObjectManager($entity);
+        $uow = $objectManager->getUnitOfWork();
+        $class = $objectManager->getClassMetadata(get_class($entity));
+        $rootClassName = $class->rootEntityName;
+        $oid = spl_object_hash($entity);
+
+        if (isset($visited[$oid])) {
+            return;
+        }
+
+        $visited[$oid] = $entity;
+
+        if (null === $this->scheduledForDirtyCheck){
+            $this->scheduledForDirtyCheck = & $this->getScheduledForDirtyCheck($uow);
+        }
+        unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
+
+        $this->cascadeDetachScheduled($entity, $visited);
+    }
+
+    /**
+     * Cascades a detach entities associated to entities living in the
+     * scheduledForDirtyCheck unit of work property.
+     *
+     * @param object $entity the entity to be detached
+     * @param array  $visited array of already detached entity
+     *
+     * @return void
+     */
+    private function cascadeDetachScheduled($entity, array &$visited)
+    {
+        $objectManager = $this->getObjectManager($entity);
+
+        $class = $objectManager->getClassMetadata(get_class($entity));
+        $rootClassName = $class->rootEntityName;
+
+        $associationMappings = array_filter(
+            $class->associationMappings,
+            function ($assoc) { return $assoc['isCascadeDetach']; }
+        );
+
+        foreach ($associationMappings as $assoc) {
+            $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+            switch (true) {
+                case ($relatedEntities instanceof ORMPersistentCollection):
+                    // Unwrap so that foreach() does not initialize
+                    $relatedEntities = $relatedEntities->unwrap();
+                // break; is commented intentionally!
+
+                case ($relatedEntities instanceof Collection):
+                case (is_array($relatedEntities)):
+                    foreach ($relatedEntities as $relatedEntity) {
+                        $this->doDetachScheduled($relatedEntity, $visited);
+                    }
+                    break;
+
+                case ($relatedEntities !== null):
+                    $this->doDetachScheduled($relatedEntities, $visited);
+                    break;
+
+                default:
+                    // Do nothing
+            }
+        }
+    }
+
+    /**
+     * ScheduledForDirtyCheck getter
+     *
+     * @param $uow object
+     * @return mixed
+     */
+    private function &getScheduledForDirtyCheck($uow) {
+        $closure = \Closure::bind(function & ($uow) {
+            return $uow->scheduledForDirtyCheck;
+        }, null, $uow);
+
+        return $closure($uow);
     }
 
     /**
