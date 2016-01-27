@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
 - PIM-5492: Fix complete group loading on useless cases
+- PIM-5478: Error message displayed when I publish a product having an image or file attribute
 
 # 1.4.17 (2016-01-19)
 
