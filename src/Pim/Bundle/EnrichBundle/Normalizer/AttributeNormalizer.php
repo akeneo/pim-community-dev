@@ -50,6 +50,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         $dateMin = (null === $attribute->getDateMin()) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
+        $groupCode = (null === $attribute->getGroup()) ? null : $attribute->getGroup()->getCode();
 
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
             'id'                    => $attribute->getId(),
@@ -71,9 +72,12 @@ class AttributeNormalizer implements NormalizerInterface
             'default_metric_unit'   => $attribute->getDefaultMetricUnit(),
             'max_file_size'         => $attribute->getMaxFileSize(),
             'sort_order'            => $attribute->getSortOrder(),
+            'group_code'            => $groupCode,
         ];
 
-        if (null !== $attribute->getGroup()) {
+        // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
+        // loading does not need complete group normalization. This has to be cleaned.
+        if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
             $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
         } else {
             $normalizedAttribute['group'] = null;
