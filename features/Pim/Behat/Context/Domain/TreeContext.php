@@ -63,13 +63,13 @@ class TreeContext extends PimContext
         $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
-            throw $this->createExpectationException(
+            throw $this->getMainContext()->createExpectationException(
                 sprintf('Expecting not to see category "%s" under the category "%s"', $child, $parent)
             );
         }
 
         if (!$not && !$childNode) {
-            throw $this->createExpectationException(
+            throw $this->getMainContext()->createExpectationException(
                 sprintf('Expecting to see category "%s" under the category "%s", not found', $child, $parent)
             );
         }
