@@ -47,6 +47,7 @@ pimee_workflow:
         original_value: Original
         new_value: New
         no_diff: The value "%value%" is the same between the proposal and the working copy.
+        draft_in_progress: A draft is in progress by %author% for this product.
     published_product:
         index: Published Products
         title:  Published product
