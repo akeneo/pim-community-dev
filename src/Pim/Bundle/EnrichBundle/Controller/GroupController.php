@@ -7,19 +7,11 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -28,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupController extends AbstractController
+class GroupController
 {
     /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
@@ -49,16 +41,6 @@ class GroupController extends AbstractController
     protected $groupRemover;
 
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
      * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
@@ -66,31 +48,12 @@ class GroupController extends AbstractController
      * @param RemoverInterface         $groupRemover
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
         $this->groupManager = $groupManager;
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;

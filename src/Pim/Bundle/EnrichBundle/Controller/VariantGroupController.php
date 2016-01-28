@@ -13,17 +13,10 @@ use Pim\Component\Catalog\Model\AvailableAttributes;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Variant group controller
@@ -41,14 +34,6 @@ class VariantGroupController extends GroupController
     protected $groupAttrResolver;
 
     /**
-     * @param Request                        $request
-     * @param EngineInterface                $templating
-     * @param RouterInterface                $router
-     * @param TokenStorageInterface          $tokenStorage
-     * @param FormFactoryInterface           $formFactory
-     * @param ValidatorInterface             $validator
-     * @param TranslatorInterface            $translator
-     * @param EventDispatcherInterface       $eventDispatcher
      * @param GroupManager                   $groupManager
      * @param HandlerInterface               $groupHandler
      * @param Form                           $groupForm
@@ -58,14 +43,6 @@ class VariantGroupController extends GroupController
      * @param RemoverInterface               $groupRemover
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         Form $groupForm,
@@ -75,14 +52,6 @@ class VariantGroupController extends GroupController
         RemoverInterface $groupRemover
     ) {
         parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
             $groupManager,
             $groupHandler,
             $groupForm,

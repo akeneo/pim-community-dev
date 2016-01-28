@@ -38,21 +38,8 @@ parameters:
     pim_enrich.controller.rest.versioning.class:         Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
 
 services:
-    pim_enrich.controller.abstract:
-        abstract: true
-        arguments:
-            - '@request'
-            - '@templating'
-            - '@router'
-            - '@security.token_storage'
-            - '@form.factory'
-            - '@validator'
-            - '@translator'
-            - '@event_dispatcher'
-
     pim_enrich.controller.abstract_doctrine:
         abstract: true
-        parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
 
@@ -119,7 +106,6 @@ services:
 
     pim_enrich.controller.locale:
         scope: request
-        parent: pim_enrich.controller.abstract
         class: %pim_enrich.controller.locale.class%
 
     pim_enrich.controller.attribute:
@@ -194,7 +180,6 @@ services:
     pim_enrich.controller.group:
         scope: request
         class: %pim_enrich.controller.group.class%
-        parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.group'
@@ -225,7 +210,7 @@ services:
     pim_enrich.controller.variant_group:
         scope: request
         class: %pim_enrich.controller.variant_group.class%
-        parent: pim_enrich.controller.abstract
+        parent: pim_enrich.controller.group
         arguments:
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.variant_group'

@@ -5,14 +5,7 @@ namespace Pim\Bundle\EnrichBundle\AbstractController;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Base abstract controller for managing entities
@@ -23,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @deprecated will be removed in 1.5, please avoid to use parent controller
  */
-abstract class AbstractDoctrineController extends AbstractController
+abstract class AbstractDoctrineController
 {
     /** @var ManagerRegistry */
     protected $doctrine;
@@ -31,38 +24,10 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
+     * @param ManagerRegistry $doctrine
      */
-    public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine
-    ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
+    public function __construct(ManagerRegistry $doctrine)
+    {
         $this->doctrine = $doctrine;
     }
 
