@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
 interface CategoryInterface
 {
     /**
-     * @return int|string
+     * @return int
      */
     public function getId();
 
