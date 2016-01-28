@@ -255,7 +255,7 @@ class ProductDraftManager
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REMOVE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (ProductDraftInterface::READY === $productDraft->getStatus()) {
             throw new \LogicException('A product draft in ready state can not be removed');
         }
 

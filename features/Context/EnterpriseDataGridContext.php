@@ -122,7 +122,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      * | my-hoody | Mary   | Lace color | en_US  | print |          | Black,White |
      *
      * "locale" and "scope" columns are optional.
-     * Note: As values are not ordered you can add multiple values using coma separator.
+     * Note: As values are not ordered you can add multiple values using comma separator.
      *
      * @Given /^I should see the following proposals?:$/
      *
@@ -160,8 +160,8 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
             $originalExpectedValues = explode(',', trim($hash['original']));
             $newExpectedValues      = explode(',', trim($hash['new']));
-            $rawOriginalValues      = explode(', ', $original->getText());
-            $rawNewValues           = explode(', ', $new->getText());
+            $rawOriginalValues      = explode(', ', $this->getChangeContent($original));
+            $rawNewValues           = explode(', ', $this->getChangeContent($new));
 
             sort($originalExpectedValues);
             sort($newExpectedValues);
@@ -193,6 +193,23 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                 );
             }
         }
+    }
+
+    /**
+     * Return the image title if an image is found in the cell, the text content otherwise
+     *
+     * @param NodeElement $cell
+     *
+     * @return string
+     */
+    protected function getChangeContent(NodeElement $cell)
+    {
+        $img = $cell->find('css', 'img');
+        if (null !== $img) {
+            return $img->getAttribute('title');
+        }
+
+        return $cell->getText();
     }
 
     /**

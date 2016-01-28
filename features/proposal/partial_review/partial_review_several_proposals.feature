@@ -26,31 +26,31 @@ Feature: Partial review several proposals
       | field              | value |
       | Name               | Coat  |
       | Weather conditions | Cold  |
-    When I am logged in as "Julia"
-    And I am on the proposals page
-    And the grid should contain 2 elements
+    And I am logged in as "Julia"
+    When I am on the proposals page
+    Then the grid should contain 2 elements
     And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | coat    | Mary   | name               | Caut     | Coat   |
-      | coat    | Mary   | weather_conditions | Hot      | Cold   |
-      | jacket  | Mary   | name               | Jacket   | Jaquet |
-      | jacket  | Mary   | weather_conditions | Wet      | Dry    |
+      | product | author | attribute          | locale | original | new    |
+      | coat    | Mary   | name               | en_US  | Caut     | Coat   |
+      | coat    | Mary   | weather_conditions |        | Hot      | Cold   |
+      | jacket  | Mary   | name               | en_US  | Jacket   | Jaquet |
+      | jacket  | Mary   | weather_conditions |        | Wet      | Dry    |
     When I partially reject:
       | product | author | attribute | locale | scope |
       | jacket  | Mary   | name      | en_US  |       |
     Then the grid should contain 2 elements
     And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | coat    | Mary   | name               | Caut     | Coat   |
-      | coat    | Mary   | weather_conditions | Hot      | Cold   |
-      | jacket  | Mary   | weather_conditions | Wet      | Dry    |
+      | product | author | attribute          | locale | original | new    |
+      | coat    | Mary   | name               | en_US  | Caut     | Coat   |
+      | coat    | Mary   | weather_conditions |        | Hot      | Cold   |
+      | jacket  | Mary   | weather_conditions |        | Wet      | Dry    |
     When I press the "All" button
     And I press "Approve all selected" on the "Bulk Action" dropdown button
     And I press the "Send" button in the popin
+    And I wait for the "approve_product_draft" job to finish
+    Then I should see "approved 2"
+    When I am on the proposals page
     Then the grid should contain 0 element
-    And I should not get the following proposals:
-      | jacket | Mary |
-      | coat   | Mary |
     When I edit the "jacket" product
     Then the field Name should contain "Jacket"
     And the field Weather conditions should contain "Dry"

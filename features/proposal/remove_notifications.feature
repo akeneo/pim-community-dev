@@ -23,20 +23,20 @@ Feature: Remove notifications
       | legacy_attribute          | legacy            |
       | datasheet                 |                   |
       | side_view                 |                   |
-    Given Mary started to propose the following change to "my-jacket":
+    And Mary started to propose the following change to "my-jacket":
       | field | value |
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
-    And I click on the "remove" action of the row which contains "Name"
+    And I visit the "Proposals" tab
+    And I click on the "remove" action of the row which contains "Mary"
 
   Scenario: A notification is sent when I remove a proposal with comment from the product draft page
-    And I fill in this comment in the popin: "You're fired."
+    Given I fill in this comment in the popin: "You're fired."
     And I press the "Send" button in the popin
     And I logout
     And I am logged in as "Mary"
-    And I am on the dashboard page
+    When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
       | type  | message                                                         | comment       |
@@ -45,10 +45,10 @@ Feature: Remove notifications
     Then I should be on the product "my-jacket" edit page
 
   Scenario: A notification is sent when I remove a proposal from the product draft page
-    And I press the "Send" button in the popin
+    Given I press the "Send" button in the popin
     And I logout
     And I am logged in as "Mary"
-    And I am on the dashboard page
+    When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
       | type  | message                                                         |

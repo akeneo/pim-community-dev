@@ -26,9 +26,10 @@ Feature: Review a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a number attribute from a product draft
-    Given the following product drafts:
-      | product   | author | result                                                                                                                      | status |
-      | my-jacket | Mary   | {"values":{"number_in_stock":[{"locale":null,"scope":"mobile","data":"40"},{"locale":null,"scope":"tablet","data":"200"}]}} | ready  |
+    Given Mary proposed the following change to "my-jacket":
+      | tab       | scope  | field           | value |
+      | Marketing | mobile | Number in stock | 40    |
+      | Marketing | tablet | Number in stock | 200   |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -59,9 +60,9 @@ Feature: Review a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a date attribute from a product draft
-    Given the following product drafts:
-      | product   | author | result                                                                             | status |
-      | my-jacket | Mary   | {"values":{"release_date":[{"locale":null,"scope":"mobile","data":"2014-05-20"}]}} | ready  |
+    Given Mary proposed the following change to "my-jacket":
+      | tab                 | field        | value      |
+      | Product information | Release date | 05/20/2014 |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -73,13 +74,13 @@ Feature: Review a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a metric attribute from a product draft
-    Given the following product drafts:
-      | product   | author | result                                                                                        | status |
-      | my-jacket | Mary   | {"values":{"length":[{"locale":null,"scope":null,"data":{"data":"40","unit":"CENTIMETER"}}]}} | ready  |
+    Given Mary proposed the following change to "my-jacket":
+      | tab   | field   | value         |
+      | Sizes | Length  | 40 Centimeter |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Length"
+    And I click on the "approve" action of the row which contains "Mary"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
