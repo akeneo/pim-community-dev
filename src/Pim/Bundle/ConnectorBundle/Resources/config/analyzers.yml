@@ -1,0 +1,6 @@
+parameters:
+    pim_connector.analyzer.product.class: Pim\Component\Connector\Analyzer\ProductAnalyzer
+
+services:
+    pim_connector.analyzer.product:
+        class: %pim_connector.analyzer.product.class%

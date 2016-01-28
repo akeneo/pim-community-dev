@@ -15,6 +15,7 @@
 - A new twig extension (StyleExtension) in UIBundle now provides a "highlight" string filter
 - PIM-5450: MongoDb ODM bundle in dev requirements 
 - PIM-5380: It is now possible to group grid actions in dropdown by specifying it in the grid configuration (see quick export in the product grid for an example)
+- PIM-5481: New command to analyze products CSV files to get stats
 
 ## Bug fixes
 
