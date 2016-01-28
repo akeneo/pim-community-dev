@@ -15,37 +15,28 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * ProductDraft controller
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftController extends AbstractController
+class ProductDraftController
 {
     /** @staticvar string */
     const MASS_APPROVE_JOB_CODE = 'approve_product_draft';
@@ -78,14 +69,6 @@ class ProductDraftController extends AbstractController
     protected $gridFilterAdapter;
 
     /**
-     * @param Request                       $request
-     * @param EngineInterface               $templating
-     * @param RouterInterface               $router
-     * @param TokenStorageInterface         $tokenStorage
-     * @param FormFactoryInterface          $formFactory
-     * @param ValidatorInterface            $validator
-     * @param TranslatorInterface           $translator
-     * @param EventDispatcherInterface      $eventDispatcher
      * @param ObjectRepository              $repository
      * @param ProductDraftManager           $manager
      * @param UserContext                   $userContext
@@ -96,14 +79,6 @@ class ProductDraftController extends AbstractController
      * @param OroToPimGridFilterAdapter     $gridFilterAdapter
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ObjectRepository $repository,
         ProductDraftManager $manager,
         UserContext $userContext,
@@ -113,17 +88,6 @@ class ProductDraftController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         OroToPimGridFilterAdapter $gridFilterAdapter
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
         $this->repository            = $repository;
         $this->manager               = $manager;
         $this->userContext           = $userContext;

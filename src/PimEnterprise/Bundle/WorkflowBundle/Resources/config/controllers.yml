@@ -9,7 +9,6 @@ parameters:
 services:
     pimee_workflow.controller.product_draft:
         class: %pimee_workflow.controller.product_draft.class%
-        parent: pim_enrich.controller.abstract
         scope: request
         arguments:
             - '@pimee_workflow.repository.product_draft'
@@ -23,7 +22,6 @@ services:
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
-        parent: pim_enrich.controller.abstract
         scope: request
         arguments:
             - '@pim_user.context.user'

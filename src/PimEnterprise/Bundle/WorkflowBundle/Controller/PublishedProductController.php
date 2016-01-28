@@ -11,32 +11,22 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Published product controller
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductController extends AbstractController
+class PublishedProductController
 {
     /** @var UserContext */
     protected $userContext;
@@ -54,14 +44,6 @@ class PublishedProductController extends AbstractController
     protected $authorizationChecker;
 
     /**
-     * @param Request                       $request
-     * @param EngineInterface               $templating
-     * @param RouterInterface               $router
-     * @param TokenStorageInterface         $tokenStorage
-     * @param FormFactoryInterface          $formFactory
-     * @param ValidatorInterface            $validator
-     * @param TranslatorInterface           $translator
-     * @param EventDispatcherInterface      $eventDispatcher
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
      * @param CompletenessManager           $completenessManager
@@ -69,31 +51,12 @@ class PublishedProductController extends AbstractController
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager,
         CompletenessManager $completenessManager,
         ChannelManager $channelManager,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
         $this->userContext          = $userContext;
         $this->manager              = $manager;
         $this->completenessManager  = $completenessManager;
