@@ -225,7 +225,6 @@ class ProductDraft implements ProductDraftInterface
         return null;
     }
 
-
     /**
      * {@inheritdoc}
      *

@@ -113,6 +113,10 @@ class ProductDraftManager
 
         $this->checkPartialActionRequirements($attribute, $channel, $locale);
 
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be partially approved');
+        }
+
         $attributeCode = $attribute->getCode();
         $localeCode    = (null !== $locale) ? $locale->getCode() : null;
         $channelCode   = (null !== $channel) ? $channel->getCode() : null;
@@ -159,7 +163,7 @@ class ProductDraftManager
      *
      * @throws \LogicException
      */
-    public function partialReject(
+    public function partialRefuse(
         ProductDraftInterface $productDraft,
         AttributeInterface $attribute,
         ChannelInterface $channel = null,
@@ -167,6 +171,10 @@ class ProductDraftManager
         array $context = []
     ) {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, new GenericEvent($productDraft, $context));
+
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be partially rejected');
+        }
 
         $this->checkPartialActionRequirements($attribute, $channel, $locale);
 
@@ -349,11 +357,13 @@ class ProductDraftManager
     }
 
     /**
+     * Create a fake partial draft with the specified change only to pass it to the applier
+     *
      * @param ProductDraftInterface $productDraft
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $channelCode
-     * @param string $data
+     * @param string                $attributeCode
+     * @param string                $localeCode
+     * @param string                $channelCode
+     * @param string                $data
      *
      * @return ProductDraftInterface
      */

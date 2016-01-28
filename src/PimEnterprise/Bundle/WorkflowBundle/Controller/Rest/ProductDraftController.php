@@ -70,8 +70,9 @@ class ProductDraftController
 
     /** @var UserContext */
     protected $userContext;
+
     /** @var array */
-    protected $supportedReviewActions = ['approve', 'reject'];
+    protected $supportedReviewActions = ['approve', 'refuse'];
 
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
@@ -149,7 +150,7 @@ class ProductDraftController
      * @param Request $request
      * @param mixed   $id
      * @param string  $code
-     * @param string  $action either "approve" or "reject"
+     * @param string  $action either "approve" or "refuse"
      *
      * @throws NotFoundHttpException
      * @throws \LogicException

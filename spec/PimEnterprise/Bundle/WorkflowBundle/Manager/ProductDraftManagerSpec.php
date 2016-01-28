@@ -105,6 +105,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
         $productDraft->getChange('name', null, null)->willReturn('new name');
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
@@ -163,6 +164,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('Mary');
         $productDraft->getChange('name', null, null)->willReturn('new name');
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
 
         $attribute->getLabel()->willReturn('Name');
         $attribute->getCode()->willReturn('name');
@@ -214,6 +216,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $attribute->getLabel()->willReturn('Name');
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
+        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
 
         $dispatcher
             ->dispatch(
@@ -232,7 +235,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->partialReject($productDraft, $attribute);
+        $this->partialRefuse($productDraft, $attribute);
     }
 
     function it_marks_a_product_draft_as_in_progress_when_refusing_it(
