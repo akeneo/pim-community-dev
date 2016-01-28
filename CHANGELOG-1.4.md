@@ -1,9 +1,10 @@
-# 1.4.x
+# 1.4.18 (2016-01-28)
 
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
 - PIM-5492: Fix complete group loading on useless cases
 - PIM-5478: Error message displayed when I publish a product having an image or file attribute
+- Fix `Akeneo\Component\Console\CommandLauncher` to launch as a backend task
 
 # 1.4.17 (2016-01-19)
 
