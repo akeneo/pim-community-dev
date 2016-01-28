@@ -18,6 +18,9 @@
 - PIM-5470: Fix Doctrine memory leak
 - PIM-5354: Fix select/boolean filter value display after navigation
 
+## Technical improvements
+- PIM-5460 Several datepickers: remove jQuery UI datepickers, keep Bootstrap's
+
 # 1.4.18 (2016-01-28)
 
 ## Bug fixes
