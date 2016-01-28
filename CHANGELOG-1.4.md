@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
 - PIM-5492: Fix complete group loading on useless cases
+- Fix `Akeneo\Component\Console\CommandLauncher` to launch as a backend task
 
 # 1.4.17 (2016-01-19)
 
