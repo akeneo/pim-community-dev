@@ -30,7 +30,8 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_APPROVE => ['send', 10],
+            ProductDraftEvents::POST_APPROVE         => ['send', 10],
+            ProductDraftEvents::POST_PARTIAL_APPROVE => ['send', 10]
         ];
     }
 

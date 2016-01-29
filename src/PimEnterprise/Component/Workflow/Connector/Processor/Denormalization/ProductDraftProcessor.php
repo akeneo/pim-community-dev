@@ -22,6 +22,7 @@ use Pim\Component\Localization\Localizer\LocalizerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -222,7 +223,7 @@ class ProductDraftProcessor extends AbstractProcessor
         $productDraft = $this->getProductDraft($product);
 
         if (null !== $productDraft) {
-            $this->productDraftApplier->apply($product, $productDraft);
+            $this->productDraftApplier->applyAllChanges($product, $productDraft);
         }
 
         return $product;
@@ -322,7 +323,7 @@ class ProductDraftProcessor extends AbstractProcessor
             return null;
         }
 
-        $productDraft->setStatus(ProductDraft::READY);
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
 
         return $productDraft;
     }

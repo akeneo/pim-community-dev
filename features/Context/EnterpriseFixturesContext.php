@@ -127,11 +127,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus(
-                $data['status'] === 'ready' ?
-                ProductDraftInterface::READY :
-                ProductDraftInterface::IN_PROGRESS
-            );
+            if ('ready' === $data['status']) {
+                $productDraft->markAsReady();
+            }
             if (isset($data['createdAt'])) {
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }
@@ -183,7 +181,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             $data = array_merge(
-                ['locale' => '', 'tab' => ''],
+                ['tab' => '', 'locale' => '', 'scope' => ''],
                 $data
             );
             if ('' !== $data['tab']) {
@@ -191,6 +189,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             if ('' !== $data['locale']) {
                 $steps[] = new Step\Given(sprintf('I switch the locale to "%s"', $data['locale']));
+            }
+            if ('' !== $data['scope']) {
+                $steps[] = new Step\Given(sprintf('I switch the scope to "%s"', $data['scope']));
             }
             if ($scopable) {
                 $steps[] = new Step\Given(

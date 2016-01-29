@@ -22,3 +22,15 @@ pimee_workflow:
             modal.label: Leave a comment (optional)
             modal.error: An error occured, the proposal has not been partially approved
             modal.success: The proposal has been successfully partially validated
+        partial_approve:
+            modal:
+                title: Partially approve changes
+                label: Leave a comment (optional)
+                error: An error occured, the proposal has not been partially approved
+                success: The changes have been successfully approved
+        partial_reject:
+            modal:
+                title: Partially reject changes
+                label: Leave a comment (optional)
+                error: An error occured, the proposal has not been partially rejected
+                success: The changes have been successfully rejected

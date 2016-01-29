@@ -95,7 +95,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         if (!$isOwner && $canEdit && null !== $draft = $this->findDraftForProduct($product)) {
             $draftStatus = $draft->getStatus();
-            $this->draftApplier->apply($product, $draft);
+            $this->draftApplier->applyAllChanges($product, $draft);
         }
 
         $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);

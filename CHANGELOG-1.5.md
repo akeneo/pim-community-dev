@@ -1,5 +1,10 @@
 # 1.5.x
 
+## BC breaks
+
+- Change interface `PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface` to change apply method to applyAllChanges and add applyToReviewChanges
+- Change interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` : change getChangeForAttribute method to getChange, change removeChangeForAttribute to removeChange, remove setStatus, add getChangesToReview, getReviewStatusForChange, setReviewStatusForChange, removeReviewStatusForChange, setAllReviewStatuses, areAllReviewStatusesTo, markAsInProgress and markAsReady
+
 # 1.5.0-ALPHA1 (2016-01-26)
 
 ## Technical improvements

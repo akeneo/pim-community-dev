@@ -137,44 +137,88 @@ class ProductDraft implements ProductDraftInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \LogicException
      */
-    public function getChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    ) {
-        $code = $attribute->getCode();
+    public function getChangesToReview()
+    {
+        $changes = $this->changes;
 
-        if ($attribute->isScopable() && null === $channel) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the scopable attribute "%s" without scope.',
-                $code
-            ));
+        if (!isset($changes['values'])) {
+            return [];
         }
 
-        if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the localizable attribute "%s" without locale.',
-                $code
-            ));
+        foreach ($changes['values'] as $code => $changeset) {
+            foreach ($changeset as $index => $change) {
+                $status = $this->getReviewStatusForChange($code, $change['locale'], $change['scope']);
+                if (self::CHANGE_TO_REVIEW !== $status) {
+                    unset($changes['values'][$code][$index]);
+                }
+            }
         }
 
+        return $changes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChange($fieldCode, $localeCode, $channelCode)
+    {
         if (!isset($this->changes['values'])) {
             return null;
         }
 
-        if (!isset($this->changes['values'][$code])) {
+        if (!isset($this->changes['values'][$fieldCode])) {
             return null;
         }
 
-        foreach ($this->changes['values'][$code] as $change) {
-            if (
-                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
-                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
-            ) {
+        foreach ($this->changes['values'][$fieldCode] as $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
                 return $change['data'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChange($fieldCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->changes['values'])) {
+            return;
+        }
+
+        if (!isset($this->changes['values'][$fieldCode])) {
+            return;
+        }
+
+        foreach ($this->changes['values'][$fieldCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                unset($this->changes['values'][$fieldCode][$index]);
+                $this->removeReviewStatusForChange($fieldCode, $localeCode, $channelCode);
+            }
+        }
+
+        $this->changes['values'][$fieldCode] = array_values($this->changes['values'][$fieldCode]);
+
+        if (empty($this->changes['values'][$fieldCode])) {
+            unset($this->changes['values'][$fieldCode]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReviewStatusForChange($fieldCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
+            return null;
+        }
+
+        foreach ($this->changes['review_statuses'][$fieldCode] as $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                return $change['status'];
             }
         }
 
@@ -186,49 +230,85 @@ class ProductDraft implements ProductDraftInterface
      *
      * @throws \LogicException
      */
-    public function removeChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    ) {
-        $code = $attribute->getCode();
-
-        if ($attribute->isScopable() && null === $channel) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the scopable attribute "%s" without scope.',
-                $code
-            ));
+    public function setReviewStatusForChange($status, $fieldCode, $localeCode, $channelCode)
+    {
+        if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
+            throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
         }
 
-        if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException(sprintf(
-                'Trying to get changes for the localizable attribute "%s" without locale.',
-                $code
-            ));
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
+            throw new \LogicException(sprintf('There is no review status for code "%s"', $fieldCode));
         }
 
-        if (!isset($this->changes['values'])) {
-            return;
-        }
-
-        if (!isset($this->changes['values'][$code])) {
-            return;
-        }
-
-        foreach ($this->changes['values'][$code] as $index => $change) {
-            if (
-                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
-                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
-            ) {
-                unset($this->changes['values'][$code][$index]);
+        foreach ($this->changes['review_statuses'][$fieldCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                $this->changes['review_statuses'][$fieldCode][$index]['status'] = $status;
             }
         }
 
-        $this->changes['values'][$code] = array_values($this->changes['values'][$code]);
+        return $this;
+    }
 
-        if (empty($this->changes['values'][$code])) {
-            unset($this->changes['values'][$code]);
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     */
+    public function setAllReviewStatuses($status)
+    {
+        if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
+            throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
         }
+
+        $statuses = $this->changes['values'];
+        foreach ($statuses as &$items) {
+            foreach ($items as &$item) {
+                $item['status'] = $status;
+                unset($item['data']);
+            }
+        }
+
+        $this->changes['review_statuses'] = $statuses;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeReviewStatusForChange($fieldCode, $localeCode, $channelCode)
+    {
+        if (!isset($this->changes['review_statuses'][$fieldCode])) {
+            return;
+        }
+
+        foreach ($this->changes['review_statuses'][$fieldCode] as $index => $change) {
+            if ($localeCode === $change['locale'] && $channelCode === $change['scope']) {
+                unset($this->changes['review_statuses'][$fieldCode][$index]);
+            }
+        }
+
+        $this->changes['review_statuses'][$fieldCode] = array_values($this->changes['review_statuses'][$fieldCode]);
+
+        if (empty($this->changes['review_statuses'][$fieldCode])) {
+            unset($this->changes['review_statuses'][$fieldCode]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function areAllReviewStatusesTo($status)
+    {
+        foreach ($this->changes['review_statuses'] as $items) {
+            foreach ($items as $item) {
+                if ($status !== $item['status']) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -242,9 +322,17 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatus($status)
+    public function markAsInProgress()
     {
-        $this->status = $status;
+        $this->status = self::IN_PROGRESS;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function markAsReady()
+    {
+        $this->status = self::READY;
     }
 
     /**

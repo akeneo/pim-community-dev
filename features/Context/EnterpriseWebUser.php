@@ -294,19 +294,22 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
+     * @param string    $partialAction
      * @param TableNode $table
-     * @Given /^I partially approve:$/
+     *
+     * @Given /^I partially (approve|reject):$/
      *
      * @throws Spin\TimeoutException
      * @throws \Exception
      */
-    public function iPartiallyApprove(TableNode $table)
+    public function iPartiallyApproveReject($partialAction, TableNode $table)
     {
-        $hash = $table->getHash();
+        $hash          = $table->getHash();
+        $partialButton = sprintf('.partial-%s-link', $partialAction);
 
         foreach ($hash as $row) {
-            $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
-            $approveButton->click();
+            $button = $this->getElementByDataAttribute($row, $partialButton);
+            $button->click();
 
             $comment = isset($row['comment']) ? $row['comment'] : '';
 
@@ -438,6 +441,6 @@ class EnterpriseWebUser extends BaseWebUser
 
         return $this->spin(function () use ($locator) {
             return $this->getCurrentPage()->find('css', $locator);
-        });
+        }, sprintf('Element "%s" has not been found in the page.', $locator));
     }
 }

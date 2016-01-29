@@ -14,8 +14,8 @@ Feature: Create a draft with a text fields
       | product       | actions                                                                                                       | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Tshirt Akeneo", "locale": "en_US", "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                         |
-      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "data": "Tshirt Akeneo"}]}} |
+      | product        | username | result                                                                                                                                                                                          |
+      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "data": "Tshirt Akeneo"}]}, "review_statuses": {"description": [{"locale": "en_US", "scope": "mobile", "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | description-en_US-mobile | |
 
@@ -27,8 +27,8 @@ Feature: Create a draft with a text fields
       | product       | actions                                                                                                                 | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Wonderful Akeneo Tshirt", "locale": "en_US", "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                   |
-      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "data": "Wonderful Akeneo Tshirt"}]}} |
+      | product        | username | result                                                                                                                                                                                                    |
+      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "data": "Wonderful Akeneo Tshirt"}]}, "review_statuses": {"description": [{"locale": "en_US", "scope": "mobile", "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | description-en_US-mobile | Tshirt Akeneo |
 

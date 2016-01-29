@@ -109,9 +109,20 @@ class ProductDraftManager
         LocaleInterface $locale = null,
         array $context = []
     ) {
-        $change = $productDraft->getChangeForAttribute($attribute, $channel, $locale);
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, new GenericEvent($productDraft, $context));
 
-        if (null === $change) {
+        $this->checkPartialActionRequirements($attribute, $channel, $locale);
+
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be partially approved');
+        }
+
+        $attributeCode = $attribute->getCode();
+        $localeCode    = (null !== $locale) ? $locale->getCode() : null;
+        $channelCode   = (null !== $channel) ? $channel->getCode() : null;
+
+        $data = $productDraft->getChange($attributeCode, $localeCode, $channelCode);
+        if (null === $data) {
             throw new \LogicException(sprintf(
                 'Change for attribute "%s" on scope "%s" and locale "%s" not found in the product.',
                 $attribute->getLabel(),
@@ -120,27 +131,71 @@ class ProductDraftManager
             ));
         }
 
-        $temporaryDraft = $this->factory->createProductDraft($productDraft->getProduct(), $productDraft->getAuthor());
+        $partialDraft = $this->createPartialDraft($productDraft, $attributeCode, $localeCode, $channelCode, $data);
 
-        $temporaryDraft->setChanges(['values' => [$attribute->getCode() => [[
-            'locale' => null !== $locale ? $locale->getCode() : null,
-            'scope'  => null !== $channel ? $channel->getCode() : null,
-            'data'   => $change
-        ]]]]);
+        $product = $productDraft->getProduct();
+        $this->applier->applyAllChanges($product, $partialDraft);
+        $this->workingCopySaver->save($product);
 
-        $context['message'] = 'pimee_workflow.product_draft.notification.partial_approve';
-        $context['messageParams'] = ['%attribute%' => $attribute->getLabel()];
-        $context['actionType'] = 'pimee_workflow_product_draft_notification_partial_approve';
-
-        $this->approve($temporaryDraft, $context);
-
-        $productDraft->removeChangeForAttribute($attribute, $channel, $locale);
+        $productDraft->removeChange($attributeCode, $localeCode, $channelCode);
 
         if (!$productDraft->hasChanges()) {
             $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         } else {
             $this->productDraftSaver->save($productDraft);
         }
+
+        $context['message'] = 'pimee_workflow.product_draft.notification.partial_approve';
+        $context['messageParams'] = ['%attribute%' => $attribute->getLabel()];
+        $context['actionType'] = 'pimee_workflow_product_draft_notification_partial_approve';
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_APPROVE, new GenericEvent($productDraft, $context));
+    }
+
+    /**
+     * Reject partially a draft
+     *
+     * @param ProductDraftInterface $productDraft
+     * @param AttributeInterface    $attribute
+     * @param ChannelInterface|null $channel
+     * @param LocaleInterface|null  $locale
+     * @param array                 $context
+     *
+     * @throws \LogicException
+     */
+    public function partialRefuse(
+        ProductDraftInterface $productDraft,
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null,
+        array $context = []
+    ) {
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, new GenericEvent($productDraft, $context));
+
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be partially rejected');
+        }
+
+        $this->checkPartialActionRequirements($attribute, $channel, $locale);
+
+        $attributeCode = $attribute->getCode();
+        $localeCode    = (null !== $locale) ? $locale->getCode() : null;
+        $channelCode   = (null !== $channel) ? $channel->getCode() : null;
+
+        $productDraft->setReviewStatusForChange(
+            ProductDraftInterface::CHANGE_DRAFT,
+            $attributeCode,
+            $localeCode,
+            $channelCode
+        );
+
+        $this->productDraftSaver->save($productDraft);
+
+        $context['message'] = 'pimee_workflow.product_draft.notification.partial_reject';
+        $context['messageParams'] = ['%attribute%' => $attribute->getLabel()];
+        $context['actionType'] = 'pimee_workflow_product_draft_notification_partial_reject';
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_REFUSE, new GenericEvent($productDraft, $context));
     }
 
     /**
@@ -148,15 +203,24 @@ class ProductDraftManager
      *
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
+     *
+     * @throws \LogicException
      */
     public function approve(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft, $context));
 
-        $product = $productDraft->getProduct();
-        $this->applier->apply($product, $productDraft);
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be approved');
+        }
 
-        if (null !== $productDraft->getId()) {
+        $product = $productDraft->getProduct();
+        $this->applier->applyToReviewChanges($product, $productDraft);
+        $this->removeApprovedChanges($productDraft);
+
+        if ($productDraft->hasChanges()) {
+            $this->productDraftSaver->save($productDraft);
+        } else {
             $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         }
 
@@ -170,15 +234,19 @@ class ProductDraftManager
      *
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
+     *
+     * @throws \LogicException
      */
     public function refuse(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft, $context));
 
-        if (!$productDraft->isInProgress()) {
-            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
-            $this->productDraftSaver->save($productDraft);
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft not in ready state can not be rejected');
         }
+
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+        $this->productDraftSaver->save($productDraft);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft, $context));
     }
@@ -188,14 +256,18 @@ class ProductDraftManager
      *
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
+     *
+     * @throws \LogicException
      */
     public function remove(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REMOVE, new GenericEvent($productDraft, $context));
 
-        if ($productDraft->isInProgress()) {
-            $this->productDraftRemover->remove($productDraft);
+        if (ProductDraftInterface::READY === $productDraft->getStatus()) {
+            throw new \LogicException('A product draft in ready state can not be removed');
         }
+
+        $this->productDraftRemover->remove($productDraft);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REMOVE, new GenericEvent($productDraft, $context));
     }
@@ -233,13 +305,89 @@ class ProductDraftManager
     public function markAsReady(ProductDraftInterface $productDraft, $comment = null)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
-        $productDraft->setStatus(ProductDraftInterface::READY);
 
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
         $this->productDraftSaver->save($productDraft);
 
         $this->dispatcher->dispatch(
             ProductDraftEvents::POST_READY,
             new GenericEvent($productDraft, ['comment' => $comment])
         );
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $channel
+     * @param mixed              $locale
+     *
+     * @throws \LogicException
+     */
+    protected function checkPartialActionRequirements(AttributeInterface $attribute, $channel, $locale)
+    {
+        if ($attribute->isScopable() && null === $channel) {
+            throw new \LogicException(sprintf(
+                'Trying to partially approve for the scopable attribute "%s" without scope.',
+                $attribute->getCode()
+            ));
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException(sprintf(
+                'Trying to partially approve for the localizable attribute "%s" without locale.',
+                $attribute->getCode()
+            ));
+        }
+    }
+
+    /**
+     * Remove approved changes (status CHANGE_TO_REVIEW) from the product draft
+     *
+     * @param ProductDraftInterface $productDraft
+     */
+    protected function removeApprovedChanges(ProductDraftInterface $productDraft)
+    {
+        $changes = $productDraft->getChanges();
+        foreach ($changes['review_statuses'] as $code => $reviewStatuses) {
+            foreach ($reviewStatuses as $reviewStatus) {
+                if (ProductDraftInterface::CHANGE_TO_REVIEW === $reviewStatus['status']){
+                    $productDraft->removeChange($code, $reviewStatus['locale'], $reviewStatus['scope']);
+                }
+            }
+        }
+    }
+
+    /**
+     * Create a fake partial draft with the specified change only to pass it to the applier
+     *
+     * @param ProductDraftInterface $productDraft
+     * @param string                $attributeCode
+     * @param string                $localeCode
+     * @param string                $channelCode
+     * @param string                $data
+     *
+     * @return ProductDraftInterface
+     */
+    protected function createPartialDraft(
+        ProductDraftInterface $productDraft,
+        $attributeCode,
+        $localeCode,
+        $channelCode,
+        $data
+    ) {
+        $partialDraft = $this->factory->createProductDraft($productDraft->getProduct(), $productDraft->getAuthor());
+
+        $partialDraft->setChanges([
+            'values' => [
+                $attributeCode => [
+                    [
+                        'locale' => $localeCode,
+                        'scope'  => $channelCode,
+                        'data'   => $data
+                    ]
+                ]
+            ]
+        ]);
+
+        return $partialDraft;
     }
 }

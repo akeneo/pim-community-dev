@@ -21,18 +21,19 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposal:
-      | username                         | product   | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | my-jacket | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}],"comment":[{"locale":null,"scope":null,"data":"First comment"}]}} |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | scope  | original | new            |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | tablet |          | My description |
+      | my-jacket | clothing_product_proposal_import | comment     |        |        |          | First comment  |
 
   Scenario: Create a new proposals and be notified
     Given Mary proposed the following change to "my-jacket3":
@@ -68,25 +69,29 @@ Feature: Import proposals
     And I am on the "clothing_product_proposal_import" import job page
     When I upload and import the file "proposal_import.zip"
     And I wait for the "clothing_product_proposal_import" job to finish
-    And I should see "read lines 3"
+    Then I should see "read lines 3"
     And I should see "created proposal 3"
-    Then there should be 3 proposal
-    And I should get the following proposal:
-      | username                         | product   | result                                                                                                                                |
-      | clothing_product_proposal_import | my-jacket | {"values":{"side_view":[{"locale":null,"scope":null,"data":{"filePath": "jack_003.png", "originalFilename": "jack_003.png"}}]}} |
     When I logout
     And I am logged in as "Julia"
     And I am on the proposals page
-    Then the grid should contain 3 element
-    And I should see entity my-jacket
+    Then I should see the following proposals:
+      | product   | author                           | attribute   | original | new          |
+      | my-jacket | clothing_product_proposal_import | side_view   |          | jack_003.png |
     And I should see entity my-jacket2
     And I should see entity my-jacket3
 
   Scenario: Update a proposal
     Given I am logged in as "Mary"
-    And the following product drafts:
-      | product   | status | author                           | result                                                                   |
-      | my-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}]}} |
+    And the following CSV file to import:
+    """
+    sku;name-en_US
+    my-jacket;My jacket
+    """
+    And the following job "clothing_product_proposal_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "clothing_product_proposal_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_proposal_import" job to finish
     And the following CSV file to import:
     """
     sku;description-en_US-mobile;description-en_US-tablet;comment
@@ -94,18 +99,19 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposal:
-      | username                         | product   | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | my-jacket | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}],"comment":[{"locale":null,"scope":null,"data":"First comment"}]}} |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
+    Then I should see the following proposals:
+      | product   | author                           | attribute   | locale | scope  | original | new            |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | tablet |          | My description |
+      | my-jacket | clothing_product_proposal_import | comment     |        |        |          | First comment  |
 
   Scenario: Update a proposal to add a new attribute
     Given I am logged in as "Mary"
@@ -122,26 +128,33 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 3 proposals
-    And I should get the following proposal:
-      | username                         | product    | result                                                                                                                                                                                                       |
-      | clothing_product_proposal_import | my-jacket  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket v2"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}]}} |
-      | clothing_product_proposal_import | my-jacket2 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My new jacket"}]}}                                                                                                                                 |
-      | clothing_product_proposal_import | my-jacket3 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My summer jacket"}]}}                                                                                                                              |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 3 elements
-    And I should see entity my-jacket, my-jacket2 and my-jacket3
+    And I should see the following proposals:
+      | product    | author                           | attribute   | locale | scope  | original | new              |
+      | my-jacket  | clothing_product_proposal_import | name        | en_US  |        |          | My jacket v2     |
+      | my-jacket  | clothing_product_proposal_import | description | en_US  | mobile |          | My desc          |
+      | my-jacket  | clothing_product_proposal_import | description | en_US  | tablet |          | My description   |
+      | my-jacket2 | clothing_product_proposal_import | name        | en_US  |        |          | My new jacket    |
+      | my-jacket3 | clothing_product_proposal_import | name        | en_US  |        |          | My summer jacket |
 
   Scenario: Update a proposal to update old attributes and add new
     Given I am logged in as "Mary"
-    And the following product drafts:
-      | product    | status | author                           | result                                                                                                                                        |
-      | my-jacket  | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"}]}} |
+    And the following CSV file to import:
+    """
+    sku;name-en_US;description-en_US-mobile
+    my-jacket;My jacket;My desc
+    """
+    And the following job "clothing_product_proposal_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "clothing_product_proposal_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_proposal_import" job to finish
     And the following CSV file to import:
     """
     sku;description-en_US-tablet;description-fr_FR-mobile;description-fr_FR-tablet;description-en_US-mobile;name-en_US
@@ -149,20 +162,22 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposal:
-      | username                         | product    | result                                                                                                                                                                                                                                                                                                                     |
-      | clothing_product_proposal_import | my-jacket  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket v2"}],"description":[{"locale":"en_US","scope":"mobile","data":"Desc"},{"locale":"en_US","scope":"tablet","data":"My description"},{"locale":"fr_FR","scope":"mobile","data":"Ma desc"},{"locale":"fr_FR","scope":"tablet","data":"Ma description"}]}} |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | scope  | original | new              |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |        |          | My jacket v2     |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | mobile |          | Desc             |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | tablet |          | My description   |
+      | my-jacket | clothing_product_proposal_import | description | fr_FR  | mobile |          | Ma desc          |
+      | my-jacket | clothing_product_proposal_import | description | fr_FR  | tablet |          | Ma description   |
 
-  Scenario: Redactor create a two different proposals via import and CLI
+  Scenario: Redactor create two different proposals via import and CLI
     Given I am logged in as "Mary"
     And the following CSV file to import:
     """
@@ -171,23 +186,19 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    When I should get the following product drafts after apply the following updater to it:
+    And I should get the following product drafts after apply the following updater to it:
       | product   | actions                                                                                               | result | username |
       | my-jacket | [{"type": "set_data", "field": "name", "data": "Wonderful jacket", "locale": "en_US", "scope": null}] | {}     | Mary     |
-    Then there should be 2 proposals
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
-    And I should get the following proposals:
-      | product   | username                      | result                                                                                 |
-      | my-jacket | Mary                          | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Wonderful jacket"}]}} |
-      | my-jacket | clothing_product_proposal_import | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "My jacket"}]}}        |
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | original | new       |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |          | My jacket |
 
   Scenario: Remove an optional attribute to a proposal
     Given I am logged in as "Mary"
@@ -201,13 +212,16 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposals:
-      | product   | username                         | result                                                                          |
-      | my-jacket | clothing_product_proposal_import | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "My jacket"}]}} |
+    And I logout
+    And I am logged in as "Julia"
+    When I am on the proposals page
+    Then the grid should contain 1 element
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | original | new       |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |          | My jacket |
 
   Scenario: Remove a proposal if there is no diff
     Given I am logged in as "Mary"
@@ -229,9 +243,16 @@ Feature: Import proposals
 
   Scenario: Update a proposal with same file format than product import
     Given I am logged in as "Mary"
-    And the following product drafts:
-      | product   | status | author                           | result                                                                   |
-      | my-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}]}} |
+    And the following CSV file to import:
+    """
+    sku;name-en_US
+    my-jacket;My jacket
+    """
+    And the following job "clothing_product_proposal_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "clothing_product_proposal_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_proposal_import" job to finish
     And the following CSV file to import:
     """
     sku;description-en_US-mobile;description-en_US-tablet;comment;family;groups;categories;enabled;PACK-groups;PACK-products
@@ -239,15 +260,16 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 1 proposal
-    And I should get the following proposal:
-      | username                         | product   | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | my-jacket | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}],"comment":[{"locale":null,"scope":null,"data":"First comment"}]}} |
-    When I logout
+    And I logout
     And I am logged in as "Julia"
-    And I am on the proposals page
+    When I am on the proposals page
     Then the grid should contain 1 element
-    And I should see entity my-jacket
+    And I should see the following proposals:
+      | product   | author                           | attribute   | locale | scope  | original | new            |
+      | my-jacket | clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
+      | my-jacket | clothing_product_proposal_import | description | en_US  | tablet |          | My description |
+      | my-jacket | clothing_product_proposal_import | comment     |        |        |          | First comment  |

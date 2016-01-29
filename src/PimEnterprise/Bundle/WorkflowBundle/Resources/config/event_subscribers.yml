@@ -10,6 +10,7 @@ parameters:
     pimee_workflow.event_subscriber.product_draft.approve_notification.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
     pimee_workflow.event_subscriber.product_draft.refuse_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
     pimee_workflow.event_subscriber.product_draft.remove_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
 
 services:
     ##
@@ -96,6 +97,11 @@ services:
             - '@pim_user.repository.user'
             - '@pimee_workflow.provider.owner_groups'
             - '@pimee_workflow.provider.users_to_notify'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.ensure_global_status:
+        class: %pimee_workflow.event_subscriber.product_draft.ensure_global_status.class%
         tags:
             - { name: kernel.event_subscriber }
 

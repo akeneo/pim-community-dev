@@ -140,7 +140,7 @@ class ProductDraftVoter implements VoterInterface
      */
     protected function canFullyReview(TokenInterface $token, ProductDraftInterface $draft)
     {
-        $changes = $draft->getChanges();
+        $changes = $draft->getChangesToReview();
         if (!isset($changes['values'])) {
             return false;
         }
@@ -174,7 +174,7 @@ class ProductDraftVoter implements VoterInterface
      */
     protected function canPartiallyReview(TokenInterface $token, ProductDraftInterface $draft)
     {
-        $changes = $draft->getChanges();
+        $changes = $draft->getChangesToReview();
         if (!isset($changes['values'])) {
             return false;
         }

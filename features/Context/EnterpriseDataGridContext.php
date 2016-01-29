@@ -118,15 +118,17 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
     /**
      * Expects table as :
-     * | product  | author | attribute  | original | new         |
-     * | my-hoody | Mary   | Lace color |          | Black,White |
+     * | product  | author | attribute  | locale | scope | original | new         |
+     * | my-hoody | Mary   | Lace color | en_US  | print |          | Black,White |
      *
-     * Note: As values are not ordered you can add multiple values using semicolon separator.
-     * Warning: we split the results with space separator so values with spaces will fail.
+     * "locale" and "scope" columns are optional.
+     * Note: As values are not ordered you can add multiple values using comma separator.
      *
      * @Given /^I should see the following proposals?:$/
      *
      * @param TableNode $table
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
@@ -134,12 +136,23 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             $datagrid = $this->datagrid->getGrid();
 
             $change = $this->spin(function () use ($datagrid, $hash) {
-                return $datagrid->find('css', sprintf(
-                    'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+                $selector = 'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]';
+                $params   = [
                     $hash['product'],
                     $hash['attribute'],
                     $hash['author']
-                ));
+                ];
+
+                if (isset($hash['locale']) && '' !== $hash['locale']) {
+                    $selector .= '[data-locale="%s"]';
+                    $params[] = $hash['locale'];
+                }
+                if (isset($hash['scope']) && '' !== $hash['scope']) {
+                    $selector .= '[data-scope="%s"]';
+                    $params[] = $hash['scope'];
+                }
+
+                return $datagrid->find('css', vsprintf($selector, $params));
             }, sprintf('Unable to find the change on the proposal for attribute "%s"', $hash['attribute']));
 
             $original = $change->find('css', '.original-value');
@@ -147,8 +160,8 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
             $originalExpectedValues = explode(',', trim($hash['original']));
             $newExpectedValues      = explode(',', trim($hash['new']));
-            $rawOriginalValues      = explode(', ', $original->getText());
-            $rawNewValues           = explode(', ', $new->getText());
+            $rawOriginalValues      = explode(', ', $this->getChangeContent($original));
+            $rawNewValues           = explode(', ', $this->getChangeContent($new));
 
             sort($originalExpectedValues);
             sort($newExpectedValues);
@@ -180,6 +193,23 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                 );
             }
         }
+    }
+
+    /**
+     * Return the image title if an image is found in the cell, the text content otherwise
+     *
+     * @param NodeElement $cell
+     *
+     * @return string
+     */
+    protected function getChangeContent(NodeElement $cell)
+    {
+        $img = $cell->find('css', 'img');
+        if (null !== $img) {
+            return $img->getAttribute('title');
+        }
+
+        return $cell->getText();
     }
 
     /**

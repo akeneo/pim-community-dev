@@ -23,11 +23,11 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 interface ProductDraftInterface
 {
-    /** @staticvar integer */
     const IN_PROGRESS = 0;
+    const READY       = 1;
 
-    /** @staticvar integer */
-    const READY = 1;
+    const CHANGE_DRAFT     = 'draft';
+    const CHANGE_TO_REVIEW = 'to_review';
 
     /**
      * @return int
@@ -88,40 +88,94 @@ interface ProductDraftInterface
     public function hasChanges();
 
     /**
-     * @param AttributeInterface    $attribute
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * Return only changes with the status CHANGE_TO_REVIEW
+     *
+     * @return array
+     */
+    public function getChangesToReview();
+
+    /**
+     * Get the change associated to the the given attribute code if it exists.
+     *
+     * @param string $fieldCode
+     * @param string $localeCode
+     * @param string $channelCode
      *
      * @return array|null
      */
-    public function getChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    );
+    public function getChange($fieldCode, $localeCode, $channelCode);
 
     /**
-     * Remove the change associated to the attribute if it exists
+     * Remove the change associated to the attribute code if it exists
      *
-     * @param AttributeInterface    $attribute
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * @param string $fieldCode
+     * @param string $localeCode
+     * @param string $channelCode
      */
-    public function removeChangeForAttribute(
-        AttributeInterface $attribute,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
-    );
+    public function removeChange($fieldCode, $localeCode, $channelCode);
 
     /**
-     * Set status
+     * Get the review status associated to the the given attribute code if it exists.
      *
-     * @param int $status
+     * @param string $fieldCode
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return array|null
      */
-    public function setStatus($status);
+    public function getReviewStatusForChange($fieldCode, $localeCode, $channelCode);
 
     /**
-     * Get status
+     * Set the review status associated to the the given attribute code if it exists.
+     *
+     * @param string $status
+     * @param string $fieldCode
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return ProductDraftInterface
+     */
+    public function setReviewStatusForChange($status, $fieldCode, $localeCode, $channelCode);
+
+    /**
+     * Set all review statuses to the specified one.
+     *
+     * @param string $status
+     *
+     * @return ProductDraftInterface
+     */
+    public function setAllReviewStatuses($status);
+
+    /**
+     * Remove the review status associated to the attribute code if it exists
+     *
+     * @param string $fieldCode
+     * @param string $localeCode
+     * @param string $channelCode
+     */
+    public function removeReviewStatusForChange($fieldCode, $localeCode, $channelCode);
+
+    /**
+     * Check if all review statuses matches the specified one
+     *
+     * @param string $status
+     *
+     * @return bool
+     */
+    public function areAllReviewStatusesTo($status);
+
+    /**
+     * Mark the draft as in progress
+     */
+    public function markAsInProgress();
+
+    /**
+     * Mark the draft as ready
+     */
+    public function markAsReady();
+
+    /**
+     * Get status of the draft. Either IN_PROGRESS or READY for review.
      *
      * @return int
      */
