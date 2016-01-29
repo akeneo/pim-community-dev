@@ -18,7 +18,7 @@ Feature: Execute a job
       sku;price
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
-      SKU-003;invalid
+      SKU-003;12 invalid
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -44,7 +44,7 @@ Feature: Execute a job
       sku;price
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
-      SKU-003;invalid
+      SKU-003;12 invalid
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -66,7 +66,7 @@ Feature: Execute a job
       """
       sku;length
       SKU-001;4000 CENTIMETER
-      SKU-002;invalid
+      SKU-002;12 invalid
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -88,7 +88,7 @@ Feature: Execute a job
       """
       sku;length
       SKU-001;4000 CENTIMETER
-      SKU-002;invalid
+      SKU-002;12 invalid
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -103,7 +103,7 @@ Feature: Execute a job
       | length | 2.0000 KILOMETER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-  Scenario: Skip new products with invalid number during an import
+  Scenario: Skip new products with invalid number during an import, as a not allowed negative number
     Given the following products:
       | sku     | number_in_stock |
       | SKU-001 | 4000            |
@@ -111,7 +111,7 @@ Feature: Execute a job
       """
       sku;number_in_stock
       SKU-001;2000
-      SKU-002;invalid_stock
+      SKU-002;-12
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -323,14 +323,14 @@ Feature: Execute a job
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:
-      | label        | type   |
-      | Public Price | prices |
+      | label        | type   | negative_allowed |
+      | Public Price | prices | no               |
     And the following CSV file to import:
       """
       sku;publicPrice
       renault-kangoo;20000 EUR
-      honda-civic;15EUR
-      seat-ibiza;111
+      honda-civic;15 notExisting
+      seat-ibiza;-111 USD
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
