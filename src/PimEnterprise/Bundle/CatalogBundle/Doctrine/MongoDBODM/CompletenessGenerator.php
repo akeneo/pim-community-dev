@@ -23,6 +23,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
@@ -75,7 +76,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
-        $attributesCodes = $this->attributeRepository->getAttributeCodesByType('pim_assets_collection');
+        $attributesCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
 
         $productQb
             ->update()
@@ -152,7 +153,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
                     foreach ($channel->getCurrencies() as $currency) {
                         $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
                     }
-                } elseif ('pim_assets_collection' === $requirement->getAttribute()->getAttributeType()) {
+                } elseif (AttributeTypes::ASSETS_COLLECTION === $requirement->getAttribute()->getAttributeType()) {
                     $fields[$expectedCompleteness]['reqs']['assets'][] = $fieldName;
                 } else {
                     $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;

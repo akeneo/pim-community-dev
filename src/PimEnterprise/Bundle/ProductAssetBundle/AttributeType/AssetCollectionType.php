@@ -102,6 +102,6 @@ class AssetCollectionType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_assets_collection';
+        return AttributeTypes::ASSETS_COLLECTION;
     }
 }

@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface as EnterpriseProductValueInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
@@ -92,6 +93,6 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      */
     public function supportsValue(ProductValueInterface $productValue)
     {
-        return 'pim_assets_collection' === $productValue->getAttribute()->getAttributeType();
+        return AttributeTypes::ASSETS_COLLECTION === $productValue->getAttribute()->getAttributeType();
     }
 }
