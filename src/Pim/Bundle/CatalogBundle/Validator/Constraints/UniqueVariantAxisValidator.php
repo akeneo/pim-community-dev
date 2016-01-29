@@ -59,8 +59,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         $products = $variantGroup->getProducts();
         if (null === $products) {
-            $products = $this->getMatchingProducts($variantGroup);
+            $products = $this->getMatchingProductsForVariantGroup($variantGroup);
         }
+
         foreach ($products as $product) {
             $values = [];
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
@@ -77,8 +78,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 }
                 $values[] = sprintf('%s: %s', $code, $option);
             }
-            $combination = implode(', ', $values);
 
+            $combination = implode(', ', $values);
             if (in_array($combination, $existingCombinations)) {
                 $this->addExistingCombinationViolation($constraint, $variantGroup->getLabel(), $combination);
             } else {
@@ -96,27 +97,23 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {
         $group = $product->getVariantGroup();
-
         if (null === $group) {
             return;
         }
-
         $criteria = $this->prepareQueryCriterias($group, $product, $constraint);
-        $matches = $this->getMatchingProducts($group, $product, $criteria);
-
+        $matches = $this->getMatchingProductsForProduct($group, $product, $criteria);
         if (count($matches) !== 0) {
             $values = [];
             foreach ($criteria as $item) {
                 $data = $item['attribute']->isBackendTypeReferenceData() ? $item['referenceData']['data'] : $item['option'];
                 $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $data);
             }
-
             $this->addExistingCombinationViolation($constraint, $group->getLabel(), implode(', ', $values));
         }
     }
 
     /**
-     * Prepare query criteria for variant group
+     * Prepare query criteria to validate variant group
      *
      * @param GroupInterface   $variantGroup
      * @param ProductInterface $product
@@ -162,7 +159,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     }
 
     /**
-     * Get matching products
+     * Get matching products to validate product
      *
      * @param GroupInterface   $variantGroup the variant group
      * @param ProductInterface $entity       the product
@@ -170,27 +167,41 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @return ProductInterface[]
      */
-    protected function getMatchingProducts(
+    protected function getMatchingProductsForProduct(
         GroupInterface $variantGroup,
-        ProductInterface $entity = null,
+        ProductInterface $entity,
         array $criteria = []
     ) {
         if (!$variantGroup->getId()) {
             return [];
         }
 
-        $matchingProducts = $this->repository->findAllForVariantGroup($variantGroup, $criteria);
+        $matchingProducts = $this->repository->findProductIdsForVariantGroup($variantGroup, $criteria);
 
-        if ($entity) {
-            $matchingProducts = array_filter(
-                $matchingProducts,
-                function ($product) use ($entity) {
-                    return $product->getId() !== $entity->getId();
-                }
-            );
-        }
+        $matchingProducts = array_filter(
+            $matchingProducts,
+            function ($product) use ($entity) {
+                return $product['id'] !== $entity->getId();
+            }
+        );
 
         return $matchingProducts;
+    }
+
+    /**
+     * Get matching products for variant group
+     *
+     * @param GroupInterface $variantGroup the variant group
+     *
+     * @return ProductInterface[]
+     */
+    protected function getMatchingProductsForVariantGroup(GroupInterface $variantGroup)
+    {
+        if (!$variantGroup->getId()) {
+            return [];
+        }
+
+        return $this->repository->findAllForVariantGroup($variantGroup);
     }
 
     /**

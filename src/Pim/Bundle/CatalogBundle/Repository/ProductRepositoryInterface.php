@@ -159,4 +159,12 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return int
      */
     public function countAll();
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
 }
