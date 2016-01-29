@@ -28,21 +28,6 @@ class JsTreeDecorator extends ElementDecorator
     }
 
     /**
-     * @param string $parentNode
-     * @param string $child
-     *
-     * @return NodeElement
-     */
-    public function findNodeInNode($parentNode, $child)
-    {
-        $childNode  = $this->spin(function () use ($parentNode, $child) {
-            return $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
-        });
-
-        return $childNode;
-    }
-
-    /**
      * @param string $nodeName
      */
     public function expandNode($nodeName)
@@ -54,6 +39,9 @@ class JsTreeDecorator extends ElementDecorator
             });
 
             $nodeElement->click();
+
+            //Needed to be sure that the smooth js tree animation is finished to be expanded
+            sleep(1);
         }
     }
 }
