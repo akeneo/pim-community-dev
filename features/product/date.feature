@@ -8,8 +8,8 @@ Feature: Check that imported date is properly displayed
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And the following attributes:
-      | label   | type | localizable | scopable |
-      | release | date | no          | no       |
+      | label   | type | localizable | scopable | useable_as_grid_filter |
+      | release | date | no          | no       | yes                    |
     And the following products:
       | sku    | release    |
       | postit | 2014-05-01 |

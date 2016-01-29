@@ -10,8 +10,8 @@
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
-            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state'],
-            function ($, Routing, datagridBuilder, PageableCollection, DatagridState) {
+            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state', 'oro/datafilter/product_category-filter'],
+            function ($, Routing, datagridBuilder, PageableCollection, DatagridState, CategoryFilter) {
                 'use strict';
                 $(function() {
                     var urlParams = {{ params|json_encode|raw }};
@@ -41,6 +41,10 @@
                     if (state.columns) {
                         urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
+
+                    {% if name == 'product-grid' %}
+                        var categoryFilter = new CategoryFilter(urlParams, '{{ name }}');
+                    {% endif %}
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
                         if (state.columns) {

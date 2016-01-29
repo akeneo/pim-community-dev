@@ -41,46 +41,35 @@ define(
             /**
              * @inheritDoc
              */
-            events: {},
-
-            /**
-             * @inheritDoc
-             */
-            initialize: function() {
-                mediator.once('datagrid_filters:rendered', this._init, this);
-
-                NumberFilter.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * @inheritDoc
-             */
-            render: function() {
-            },
-
-            /**
-             * Initialize the tree
-             *
-             * @param {Object} options
-             */
-            _init: function(collection) {
+            initialize: function(urlParams, gridName) {
                 this.$el.remove();
                 this.$el = $(this.container);
 
-                var $filterChoices = $('#' + collection.inputName).find('#add-filter-select');
-                $filterChoices.find('option[value="category"]').remove();
-                $filterChoices.multiselect('refresh');
+                this.value = this.emptyValue;
 
-                this.value.value.categoryId = +this.value.value.categoryId;
-                this.value.value.treeId     = +this.value.value.treeId;
-                this.value.type             = +this.value.type;
+                if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
+                    this.value.value.treeId = urlParams[gridName + '[_filter][category][value][treeId]'];
+                }
+                if (urlParams && urlParams[gridName + '[_filter][category][value][categoryId]']) {
+                    this.value.value.categoryId = urlParams[gridName + '[_filter][category][value][categoryId]'];
+                }
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
+
                 TreeView.init(this.$el, this._getInitialState());
 
-                mediator.on('grid_action_execute:' + collection.inputName + ':delete', function() {
+                this.listenTo(mediator, 'datagrid_filters:build.post', function(filtersManager) {
+                    this.listenTo(filtersManager, 'collection-filters:createState.post', function(filtersState) {
+                        _.extend(filtersState, {category: this._getTreeState()});
+                    });
+                    filtersManager.listenTo(this, "update", filtersManager._onFilterUpdated);
+                });
+
+                mediator.on('grid_action_execute:product-grid:delete', function() {
                     TreeView.refresh();
                 });
+
+                NumberFilter.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -138,34 +127,6 @@ define(
              */
             isEmpty: function() {
                 return _.isEqual(this.emptyValue, this._getTreeState());
-            },
-
-            /**
-             * @inheritDoc
-             */
-            enable: function() {
-                return this;
-            },
-
-            /**
-             * @inheritDoc
-             */
-            disable: function() {
-                return this;
-            },
-
-            /**
-             * @inheritDoc
-             */
-            show: function() {
-                return this;
-            },
-
-            /**
-             * @inheritDoc
-             */
-            hide: function() {
-                return this;
             },
 
             /**

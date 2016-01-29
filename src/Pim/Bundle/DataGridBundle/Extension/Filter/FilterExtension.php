@@ -53,9 +53,10 @@ class FilterExtension extends AbstractExtension
         TranslatorInterface $translator,
         DatasourceAdapterResolver $adapterResolver
     ) {
-        $this->translator = $translator;
-        $this->adapterResolver = $adapterResolver;
         parent::__construct($requestParams);
+
+        $this->translator      = $translator;
+        $this->adapterResolver = $adapterResolver;
     }
 
     /**
@@ -90,10 +91,10 @@ class FilterExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        $adapterClass = $this->adapterResolver->getAdapterClass($datasourceType);
+        $filters           = $this->getFiltersToApply($config);
+        $values            = $this->getValuesToApply($config);
+        $datasourceType    = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $adapterClass      = $this->adapterResolver->getAdapterClass($datasourceType);
         $datasourceAdapter = new $adapterClass($datasource);
 
         foreach ($filters as $filter) {
@@ -118,6 +119,7 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
@@ -137,11 +139,14 @@ class FilterExtension extends AbstractExtension
                 }
             }
 
-            $metadata          = $filter->getMetadata();
-            $filtersMetaData[] = array_merge(
-                $metadata,
-                ['label' => $this->translator->trans($metadata['label'])]
-            );
+            if (isset($filtersConfig[$filter->getName()])) {
+                $metadata = $filter->getMetadata();
+
+                $filtersMetaData[] = array_merge(
+                    $metadata,
+                    ['label' => $this->translator->trans($metadata['label'])]
+                );
+            }
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])
@@ -193,6 +198,14 @@ class FilterExtension extends AbstractExtension
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
+        if (!isset($filtersConfig['category'])) {
+            $categoryConfig = [
+                'type'      => 'product_category',
+                'data_name' => 'category',
+            ];
+            $filters[] = $this->getFilterObject('category', $categoryConfig);
+        }
+
         return $filters;
     }
 
@@ -213,7 +226,7 @@ class FilterExtension extends AbstractExtension
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if (isset($filters[$column])) {
+            if (isset($filters[$column]) || 'category' === $column) {
                 $result[$column] = $value;
             }
         }

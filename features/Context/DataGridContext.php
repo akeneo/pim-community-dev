@@ -135,6 +135,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^the row "([^"]*)" should contain the images:$/
+     */
+    public function theRowShouldContainImages($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsImage($code, $data['column'], $data['title']);
+        }
+    }
+
+    /**
      * @param string $row
      * @param string $column
      * @param string $expectation
@@ -159,6 +172,38 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $row
+     * @param string $column
+     * @param string $titleExpectation
+     *
+     * @throws ExpectationException
+     */
+    public function assertColumnContainsImage($row, $column, $titleExpectation)
+    {
+        $node = $this->datagrid->getColumnNode($column, $row);
+
+        if ('**empty**' === $titleExpectation) {
+            if (null !== $node->find('css', 'img')) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting column "%s" to be empty, but one image found.', $column)
+                );
+            }
+        } else {
+            $locator = sprintf('img[title="%s"]', $titleExpectation);
+
+            if (null === $node->find('css', $locator)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting column "%s" to contain "%s".',
+                        $column,
+                        $titleExpectation
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $filters
      *
      * @Then /^I should see the filters? (.*)$/
@@ -171,6 +216,27 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             if (!$filterNode->isVisible()) {
                 throw $this->createExpectationException(
                     sprintf('Filter "%s" should be visible', $filter)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^I should( not)? see the available filters (.*)$/
+     */
+    public function iShouldSeeTheAvailableFilters($not, $filters)
+    {
+        $available = !(bool)$not;
+
+        $filters = $this->getMainContext()->listToArray($filters);
+        foreach ($filters as $filter) {
+            if ($available && !$this->datagrid->isFilterAvailable($filter)) {
+                throw $this->createExpectationException(
+                    sprintf('Filter "%s" should be available.', $filter)
+                );
+            } elseif (!$available && $this->datagrid->isFilterAvailable($filter)) {
+                throw $this->createExpectationException(
+                    sprintf('Filter "%s" should not be available.', $filter)
                 );
             }
         }

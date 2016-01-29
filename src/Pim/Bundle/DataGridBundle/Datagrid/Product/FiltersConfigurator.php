@@ -39,8 +39,8 @@ class FiltersConfigurator implements ConfiguratorInterface
     public function configure(DatagridConfiguration $configuration)
     {
         $this->configuration = $configuration;
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $attributes = $this->configuration->offsetGetByPath($path);
+        $attributes = $this->configuration
+            ->offsetGet(ContextConfigurator::SOURCE_KEY)[ContextConfigurator::USEABLE_ATTRIBUTES_KEY];
         $attributes = ($attributes === null) ? [] : $attributes;
 
         $displayedFilters = [];
@@ -78,13 +78,13 @@ class FiltersConfigurator implements ConfiguratorInterface
             }
         }
         $this->sortFilters($displayedFilters);
+        $filters = $this->configuration->offsetGet('filters');
 
         foreach ($displayedFilters as $attributeCode => $filterConfig) {
-            $this->configuration->offsetSetByPath(
-                sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                $filterConfig
-            );
+            $filters['columns'][$attributeCode] = $filterConfig;
         }
+
+        $this->configuration->offsetSet('filters', $filters);
     }
 
     /**
