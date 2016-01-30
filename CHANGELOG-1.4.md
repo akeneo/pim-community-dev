@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
+
 # 1.4.18 (2016-01-28)
 
 ## Bug fixes

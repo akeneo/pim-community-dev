@@ -802,6 +802,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 ],
             ],
             'family' => 'Tshirt',
+            'enabled' => true
         ];
         $converterOptions = [
             "mapping"           => ["family" => "family", "categories" => "categories", "groups" => "groups"],
@@ -814,9 +815,10 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Tshirt',
+            'enabled' => true
         ];
 
-        $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
