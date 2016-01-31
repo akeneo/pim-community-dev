@@ -40,6 +40,7 @@ class FixtureJobLoader
     /**
      * @param ContainerInterface $container
      * @param array              $jobsFilePaths
+     * @throws \Exception
      */
     public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
@@ -122,18 +123,22 @@ class FixtureJobLoader
     protected function getInstallerDataPath()
     {
         $installerDataDir = null;
-        if ($this->container->hasParameter('installer_data_dir')) {
-            $installerDataDir = $this->container->getParameter('installer_data_dir');
-        } elseif ($this->container->hasParameter('installer_data')) {
-            $installerData = $this->container->getParameter('installer_data');
-            preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches);
+        $installerData = $this->container->getParameter('installer_data');
+
+        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches)) {
             $bundles = $this->container->getParameter('kernel.bundles');
             $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+        } else {
+            $installerDataDir = $this->container->getParameter('installer_data');
         }
 
         if (null === $installerDataDir || !is_dir($installerDataDir)) {
             throw new \RuntimeException('Installer data directory cannot be found.');
+        }
+
+        if ('/' !== substr($installerDataDir, -1, 1)) {
+            $installerDataDir .= '/';
         }
 
         return $installerDataDir;
