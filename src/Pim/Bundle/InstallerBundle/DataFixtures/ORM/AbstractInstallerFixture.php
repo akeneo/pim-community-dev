@@ -17,6 +17,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInt, ContainerAwareInt
 {
+    protected $entities = [
+        'channels',
+        'locales',
+        'currencies',
+        'families',
+        'attribute_groups',
+        'attributes',
+        'categories',
+        'group_types',
+        'groups',
+        'associations',
+        'jobs',
+        'products',
+        'user_groups',
+        'user_roles',
+        'users'
+    ];
+
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
@@ -33,7 +51,42 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->files = $container->getParameter('pim_installer.files');
+        $this->files = $this->addInstallerDataFiles($container);
+    }
+
+    protected function addInstallerDataFiles(ContainerInterface $container)
+    {
+        $installerDataDir = null;
+        $installerData = $container->getParameter('installer_data');
+
+        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches)) {
+            $bundles = $container->getParameter('kernel.bundles');
+            $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
+            $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+        } else {
+            $installerDataDir = $container->getParameter('installer_data');
+        }
+
+        if ('/' !== substr($installerDataDir, -1, 1)) {
+            $installerDataDir .= '/';
+        }
+
+        $installerFiles = [];
+
+        foreach ($this->entities as $entity) {
+            $file = $installerDataDir . $entity;
+            var_dump($file);
+            foreach (['.yml', '.csv'] as $extension) {
+                if (is_file($file . $extension)) {
+                    $installerFiles[$entity] = $file . $extension;
+                    break;
+                }
+            }
+        }
+
+        $container->setParameter('pim_installer.files', $installerFiles);
+
+        return $installerFiles;
     }
 
     /**
