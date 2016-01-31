@@ -148,19 +148,17 @@ class DatabaseCommand extends ContainerAwareCommand
             $input->setOption('fixtures', self::LOAD_BASE);
         }
 
+        $fixturesCatalog = $this->getContainer()->hasParameter('installer_data_dir') ?
+            $this->getContainer()->getParameter('installer_data_dir') :
+            $this->getContainer()->getParameter('installer_data');
+
         $output->writeln(
-            sprintf(
-                '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $this->getContainer()->getParameter('installer_data')
-            )
+            sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $fixturesCatalog)
         );
         $this->getFixtureJobLoader()->load();
 
         $output->writeln(
-            sprintf(
-                '<info>Load fixtures. (data set: %s)</info>',
-                $this->getContainer()->getParameter('installer_data')
-            )
+            sprintf('<info>Load fixtures. (data set: %s)</info>', $fixturesCatalog)
         );
 
         $params = [

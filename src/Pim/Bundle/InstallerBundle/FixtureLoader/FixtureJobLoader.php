@@ -34,7 +34,7 @@ class FixtureJobLoader
     /** @var EntityManagerInterface */
     protected $em;
 
-    /** @var ContainerInterface  */
+    /** @var ContainerInterface */
     protected $container;
 
     /**
@@ -64,7 +64,7 @@ class FixtureJobLoader
         $fileLocator = $this->container->get('file_locator');
 
         foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $realPath = $fileLocator->locate('@'.$jobsFilePath);
+            $realPath = $fileLocator->locate('@' . $jobsFilePath);
             $this->reader->setFilePath($realPath);
 
             // read the jobs list
@@ -105,7 +105,7 @@ class FixtureJobLoader
     public function deleteJobs()
     {
         $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-                ->findBy(array('type' => static::JOB_TYPE));
+                ->findBy(['type' => static::JOB_TYPE]);
 
         foreach ($jobs as $job) {
             $this->em->remove($job);
@@ -121,11 +121,21 @@ class FixtureJobLoader
      */
     protected function getInstallerDataPath()
     {
-        $installerData = $this->container->getParameter('installer_data');
-        preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches);
-        $bundles    = $this->container->getParameter('kernel.bundles');
-        $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
+        $installerDataDir = null;
+        if ($this->container->hasParameter('installer_data_dir')) {
+            $installerDataDir = $this->container->getParameter('installer_data_dir');
+        } elseif ($this->container->hasParameter('installer_data')) {
+            $installerData = $this->container->getParameter('installer_data');
+            preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches);
+            $bundles = $this->container->getParameter('kernel.bundles');
+            $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
+            $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+        }
 
-        return dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+        if (null === $installerDataDir || !is_dir($installerDataDir)) {
+            throw new \RuntimeException('Installer data directory cannot be found.');
+        }
+
+        return $installerDataDir;
     }
 }
