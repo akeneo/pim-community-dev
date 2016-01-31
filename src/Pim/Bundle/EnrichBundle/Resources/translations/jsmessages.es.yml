@@ -261,5 +261,8 @@ pim_enrich:
       switch:
         "no": false
         "yes": true
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'
 pim_enrich.error:
   exception.title: 'Oups! Un error {{ status_code }} ha ocurrido...'
