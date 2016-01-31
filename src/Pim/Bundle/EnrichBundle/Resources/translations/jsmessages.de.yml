@@ -261,5 +261,8 @@ pim_enrich:
       switch:
         "no": false
         "yes": true
+  mass_edit_action:
+    edit_common_attributes:
+      description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'
 pim_enrich.error:
   exception.title: 'Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...'
