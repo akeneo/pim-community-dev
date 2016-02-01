@@ -11,6 +11,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
+use Doctrine\ORM\UnitOfWork;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -24,8 +25,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
-    /** @var ScheduledValue */
-    private $scheduledForDirtyCheck;
+    /** @var array */
+    protected $scheduledForDirtyCheck;
 
     /**
      * @param ManagerRegistry $registry
@@ -65,7 +66,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     {
         $objectManager = $this->getObjectManager($entity);
         $uow = $objectManager->getUnitOfWork();
-        $class = $objectManager->getClassMetadata(get_class($entity));
+        $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
         $rootClassName = $class->rootEntityName;
         $oid = spl_object_hash($entity);
 
@@ -75,8 +76,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
         $visited[$oid] = $entity;
 
-        if (null === $this->scheduledForDirtyCheck){
-            $this->scheduledForDirtyCheck = & $this->getScheduledForDirtyCheck($uow);
+        if (null === $this->scheduledForDirtyCheck) {
+            $this->scheduledForDirtyCheck = &$this->getScheduledForDirtyCheck($uow);
         }
         unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
 
@@ -92,12 +93,11 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @return void
      */
-    private function cascadeDetachScheduled($entity, array &$visited)
+    protected function cascadeDetachScheduled($entity, array &$visited)
     {
         $objectManager = $this->getObjectManager($entity);
 
         $class = $objectManager->getClassMetadata(get_class($entity));
-        $rootClassName = $class->rootEntityName;
 
         $associationMappings = array_filter(
             $class->associationMappings,
@@ -133,11 +133,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /**
      * ScheduledForDirtyCheck getter
      *
-     * @param $uow object
-     * @return mixed
+     * @param UnitOfWork $uow
+     *
+     * @return \Closure
      */
-    private function &getScheduledForDirtyCheck($uow) {
-        $closure = \Closure::bind(function & ($uow) {
+    protected function &getScheduledForDirtyCheck(UnitOfWork $uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
             return $uow->scheduledForDirtyCheck;
         }, null, $uow);
 
