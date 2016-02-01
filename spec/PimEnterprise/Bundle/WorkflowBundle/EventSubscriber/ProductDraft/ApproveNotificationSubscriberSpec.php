@@ -29,14 +29,15 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_APPROVE => ['send', 10],
+            ProductDraftEvents::POST_APPROVE         => ['send', 10],
+            ProductDraftEvents::POST_PARTIAL_APPROVE => ['send', 10]
         ]);
     }
 
     function it_does_not_send_on_non_object($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
     }
@@ -44,7 +45,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     function it_does_not_send_on_non_product_draft($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(new \stdClass());
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
     }
@@ -58,9 +59,26 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->send($event);
+    }
+
+    function it_does_not_send_if_author_does_not_want_to_receive_notification(
+        $userRepository,
+        $notifier,
+        ProductDraftInterface $draft,
+        UserInterface $author,
+        GenericEvent $event
+    ) {
+        $event->getSubject()->willReturn($draft);
+        $draft->getAuthor()->willReturn('author');
+        $userRepository->findOneByIdentifier('author')->willReturn($author);
+        $author->hasProposalsStateNotification()->willReturn(false);
+
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
+
+        $this->send($event)->shouldReturn(null);
     }
 
     function it_sends_a_notification(
@@ -144,8 +162,6 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getAuthor()->willReturn('author');
         $draft->getProduct()->willReturn($product);
 
-        $draft->getChanges()->willReturn(['values' => ['name' => 'new name']]);
-        $draft->getId()->willReturn(null);
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn($identifier);
 
@@ -163,7 +179,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
                     '%owner%'     => 'Joe Doe',
                     '%attribute%' => 'name'
                 ],
-                'context'       => [
+                'context' => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_partial_approve',
                     'showReportButton' => false
                 ],
@@ -172,22 +188,5 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->send($event);
-    }
-
-    function it_does_not_send_notification_if_author_does_not_want(
-        $userRepository,
-        $notifier,
-        GenericEvent $event,
-        UserInterface $author,
-        ProductDraftInterface $draft
-    ) {
-        $event->getSubject()->willReturn($draft);
-        $draft->getAuthor()->willReturn('author');
-        $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(false);
-
-        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
-
-        $this->send($event)->shouldReturn(null);
     }
 }

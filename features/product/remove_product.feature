@@ -16,10 +16,10 @@ Feature: Remove a product
       | jean    | [{"type": "set_data", "field": "name", "data": "Jean bootcut", "locale": "en_US", "scope": null}] | {}     | Sandra   |
       | short   | [{"type": "set_data", "field": "name", "data": "Short", "locale": "en_US", "scope": null}]        | {}     | Mary     |
     And I should get the following proposals:
-      | product | username | result                                                                             |
-      | jean    | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean"}]}}         |
-      | jean    | Sandra   | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean bootcut"}]}} |
-      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}}        |
+      | product | username | result                                                                                                                                                                   |
+      | jean    | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}}         |
+      | jean    | Sandra   | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean bootcut"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
+      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}}        |
     And I am logged in as "Julia"
 
   Scenario: Successfully mass delete a product and associated drafts
@@ -29,8 +29,8 @@ Feature: Remove a product
     And I confirm the removal
     Then I should not see product jean
     Then I should get the following proposals:
-      | product | username | result                                                                      |
-      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}} |
+      | product | username | result                                                                                                                                                            |
+      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
 
   Scenario: Successfully delete a product and associated drafts
     Given I am on the "jean" product page
@@ -39,5 +39,5 @@ Feature: Remove a product
     And I confirm the removal
     Then I should not see product jean
     Then I should get the following proposals:
-      | product | username | result                                                                      |
-      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}} |
+      | product | username | result                                                                                                                                                            |
+      | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |

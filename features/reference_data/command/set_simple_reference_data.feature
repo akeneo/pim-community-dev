@@ -18,8 +18,8 @@ Feature: Create a draft with a simple reference data fields
       | product       | actions                                                                                     | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Red", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                       |
-      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Red"}]}} |
+      | product        | username | result                                                                                                                                                                |
+      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Red"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | lace_color | |
 
@@ -31,8 +31,8 @@ Feature: Create a draft with a simple reference data fields
       | product       | actions                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Blue", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                        |
-      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Blue"}]}} |
+      | product        | username | result                                                                                                                                                                 |
+      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Blue"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | lace_color | Green |
 

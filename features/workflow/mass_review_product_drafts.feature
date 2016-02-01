@@ -14,9 +14,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully approve several proposals
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author                           | result                                                                                                                                                                   |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press "Approve all selected" on the "Bulk Action" dropdown button
@@ -31,9 +31,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Unsuccessfully approve proposals that contain values I can't edit
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}} |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author                           | result                                                                                                                                                                               |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press "Approve all selected" on the "Bulk Action" dropdown button
@@ -46,9 +46,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully reject several proposals
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author                           | result                                                                                                                                                                   |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press "Reject all selected" on the "Bulk Action" dropdown button
@@ -63,9 +63,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Unsuccessfully reject proposals that contain values I can't edit
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}} |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author                           | result                                                                                                                                                                               |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press "Reject all selected" on the "Bulk Action" dropdown button
@@ -78,9 +78,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully approve all proposals
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author                           | result                                                                                                                                                                   |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select all products
     And I press "Approve all selected" on the "Bulk Action" dropdown button
@@ -96,9 +96,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully approve user proposals
     Given the following product drafts:
-      | product        | status | author   | result                                                                                |
-      | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author   | result                                                                                                                                                                   |
+      | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     Then I filter by "Author" with value "user_one"
     When I select all products
@@ -113,9 +113,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully approve proposals between dates
     Given the following product drafts:
-      | product        | status | author                           | result                                                                                | createdAt           |
-      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} | 2014-01-01 00:00:00 |
-      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       | 2015-01-01 00:00:00 |
+      | product        | status | author                           | result                                                                                                                                                                   | createdAt           |
+      | leather-jacket | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} | 2014-01-01 00:00:00 |
+      | wool-jacket    | ready  | clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       | 2015-01-01 00:00:00 |
     And I am on the proposals page
     And I show the filter "Proposed at"
     And I filter by "Proposed at" with value "between 06/01/2013 and 06/01/2014"
@@ -132,9 +132,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully approve all proposal but one
     Given the following product drafts:
-      | product        | status | author   | result                                                                                |
-      | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
+      | product        | status | author   | result                                                                                                                                                                   |
+      | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select all products
     When I unselect rows Wool jacket

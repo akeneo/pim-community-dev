@@ -72,7 +72,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $productDraft->setStatus(ProductDraftInterface::READY);
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
         $this->saveDraft($productDraft);
 
         return 0;

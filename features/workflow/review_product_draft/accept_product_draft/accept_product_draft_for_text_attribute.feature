@@ -40,9 +40,9 @@ Feature: Review a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept a textarea attribute from a product draft
-    Given the following product drafts:
-      | product   | author | result                                                                                    | status |
-      | my-jacket | Mary   | {"values":{"description":[{"locale":"en_US","scope":"mobile","data":"An awesome coat"}]}} | ready  |
+    Given Mary proposed the following change to "my-jacket":
+      | field       | locale | scope  | value           |
+      | Description | en_US  | mobile | An awesome coat |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab

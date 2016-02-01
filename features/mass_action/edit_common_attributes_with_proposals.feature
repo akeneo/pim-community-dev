@@ -32,24 +32,24 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   Scenario: Successfully creates proposal on editable products
     Given I am logged in as "Mary"
     And I am on the products page
-    And I mass-edit products viewable, editable and owned
+    When I mass-edit products viewable, editable and owned
     And I choose the "Edit common attributes" operation
-    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
+    And I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I display the Name attribute
     And I change the "Name" to "My awesome name"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    And I should see "Proposal created 1"
+    Then I should see "Proposal created 1"
     And I should see "skipped products 1"
     And I should see "processed 1"
-    Then I logout
+    When I logout
     And I am logged in as "Julia"
     And I edit the "viewable" product
     And I visit the "Proposals" tab
-    Then I should not see "My awesome name"
-    And I edit the "editable" product
+    Then the grid should contain 0 elements
+    When I edit the "editable" product
     And I visit the "Proposals" tab
-    Then I should see "My awesome name"
-    And I edit the "owned" product
+    Then the grid should contain 1 elements
+    When I edit the "owned" product
     And I visit the "Proposals" tab
-    Then I should not see "My awesome name"
+    Then the grid should contain 0 elements

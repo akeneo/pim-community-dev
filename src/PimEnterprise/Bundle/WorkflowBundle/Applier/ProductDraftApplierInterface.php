@@ -22,8 +22,18 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 interface ProductDraftApplierInterface
 {
     /**
+     * Apply all changes on the product no matter the review statuses
+     *
      * @param ProductInterface      $product
      * @param ProductDraftInterface $productDraft
      */
-    public function apply(ProductInterface $product, ProductDraftInterface $productDraft);
+    public function applyAllChanges(ProductInterface $product, ProductDraftInterface $productDraft);
+
+    /**
+     * Apply only changes with the status ProductDraftInterface::TO_REVIEW on the product
+     *
+     * @param ProductInterface      $product
+     * @param ProductDraftInterface $productDraft
+     */
+    public function applyToReviewChanges(ProductInterface $product, ProductDraftInterface $productDraft);
 }

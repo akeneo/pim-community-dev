@@ -31,15 +31,16 @@ Feature: Import proposals with decimals
     And the following job "clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
       | decimalSeparator | ,                |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 3 proposals
-    And I should get the following proposals:
-      | username                         | product | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | SKU-001 | {"values":{"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"10.25"}]}]}} |
-      | clothing_product_proposal_import | SKU-002 | {"values":{"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"10"}]}]}}    |
-      | clothing_product_proposal_import | SKU-003 | {"values":{"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"10.00"}]}]}} |
+    When I am on the proposals page
+    Then the grid should contain 3 element
+    And I should see the following proposals:
+      | product | author                           | attribute | original | new    |
+      | SKU-001 | clothing_product_proposal_import | price     |          | €10.25 |
+      | SKU-002 | clothing_product_proposal_import | price     |          | €10.00 |
+      | SKU-003 | clothing_product_proposal_import | price     |          | €10.00 |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a metric attribute splitting the data and unit
     Given the following CSV file to import:
@@ -52,15 +53,16 @@ Feature: Import proposals with decimals
     And the following job "clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
       | decimalSeparator | ,                |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 3 proposals
-    And I should get the following proposals:
-      | username                         | product | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | SKU-001 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"0.2500"}}]}} |
-      | clothing_product_proposal_import | SKU-002 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"2.0000"}}]}} |
-      | clothing_product_proposal_import | SKU-003 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"5.0000"}}]}} |
+    When I am on the proposals page
+    Then the grid should contain 3 element
+    And I should see the following proposals:
+      | product | author                           | attribute      | original | new        |
+      | SKU-001 | clothing_product_proposal_import | decimal_length |          | 0.25 Meter |
+      | SKU-002 | clothing_product_proposal_import | decimal_length |          | 2 Meter    |
+      | SKU-003 | clothing_product_proposal_import | decimal_length |          | 5 Meter    |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a metric attribute
     Given the following CSV file to import:
@@ -73,15 +75,16 @@ Feature: Import proposals with decimals
     And the following job "clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
       | decimalSeparator | ,                |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 3 proposals
-    And I should get the following proposals:
-      | username                         | product | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | SKU-001 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"0.2500"}}]}} |
-      | clothing_product_proposal_import | SKU-002 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"2.0000"}}]}} |
-      | clothing_product_proposal_import | SKU-003 | {"values":{"decimal_length":[{"locale":null,"scope":null,"data":{"unit":"METER","data":"5.0000"}}]}} |
+    When I am on the proposals page
+    Then the grid should contain 3 element
+    And I should see the following proposals:
+      | product | author                           | attribute      | original | new        |
+      | SKU-001 | clothing_product_proposal_import | decimal_length |          | 0.25 Meter |
+      | SKU-002 | clothing_product_proposal_import | decimal_length |          | 2 Meter    |
+      | SKU-003 | clothing_product_proposal_import | decimal_length |          | 5 Meter    |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
@@ -98,19 +101,24 @@ Feature: Import proposals with decimals
     And the following job "clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
       | decimalSeparator | ,                |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 7 proposals
-    And I should get the following proposals:
-      | username                         | product | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | SKU-001 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 001"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.25"},{"currency":"USD","data":"199.00"}]}]}} |
-      | clothing_product_proposal_import | SKU-002 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 002"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.00"},{"currency":"USD","data":"199.25"}]}]}} |
-      | clothing_product_proposal_import | SKU-003 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 003"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.00"},{"currency":"USD","data":"199.00"}]}]}} |
-      | clothing_product_proposal_import | SKU-004 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 004"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.00"},{"currency":"USD","data":"199.00"}]}]}} |
-      | clothing_product_proposal_import | SKU-005 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 005"}]}}                                                                                                                       |
-      | clothing_product_proposal_import | SKU-006 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 006"}]}}                                                                                                                       |
-      | clothing_product_proposal_import | SKU-007 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 007"}]}}                                                                                                                       |
+    When I am on the proposals page
+    Then the grid should contain 7 element
+    And I should see the following proposals:
+      | product | author                           | attribute | locale | original | new             |
+      | SKU-001 | clothing_product_proposal_import | name      | en_US  |          | sku 001         |
+      | SKU-001 | clothing_product_proposal_import | price     |        |          | €125.25,$199.00 |
+      | SKU-002 | clothing_product_proposal_import | name      | en_US  |          | sku 002         |
+      | SKU-002 | clothing_product_proposal_import | price     |        |          | €125.00,$199.25 |
+      | SKU-003 | clothing_product_proposal_import | name      | en_US  |          | sku 003         |
+      | SKU-003 | clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
+      | SKU-004 | clothing_product_proposal_import | name      | en_US  |          | sku 004         |
+      | SKU-004 | clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
+      | SKU-005 | clothing_product_proposal_import | name      | en_US  |          | sku 005         |
+      | SKU-006 | clothing_product_proposal_import | name      | en_US  |          | sku 006         |
+      | SKU-007 | clothing_product_proposal_import | name      | en_US  |          | sku 007         |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
@@ -124,16 +132,20 @@ Feature: Import proposals with decimals
     And the following job "clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
       | decimalSeparator | ,                |
-    When I am on the "clothing_product_proposal_import" import job page
+    And I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
-    Then there should be 4 proposals
-    And I should get the following proposals:
-      | username                         | product | result                                                                                                                                                                                                                                                                    |
-      | clothing_product_proposal_import | SKU-001 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 001"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.25"},{"currency":"USD","data":"199.00"}]}]}} |
-      | clothing_product_proposal_import | SKU-002 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 002"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.00"},{"currency":"USD","data":"199.25"}]}]}} |
-      | clothing_product_proposal_import | SKU-003 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 003"}],"price":[{"locale":null,"scope":null,"data":[{"currency":"EUR","data":"125.00"},{"currency":"USD","data":"199.00"}]}]}} |
-      | clothing_product_proposal_import | SKU-004 | {"values":{"name":[{"locale":"en_US","scope":null,"data":"sku 004"}]}}                                                                                                                       |
+    When I am on the proposals page
+    Then the grid should contain 4 element
+    And I should see the following proposals:
+      | product | author                           | attribute | locale | original | new             |
+      | SKU-001 | clothing_product_proposal_import | name      | en_US  |          | sku 001         |
+      | SKU-001 | clothing_product_proposal_import | price     |        |          | €125.25,$199.00 |
+      | SKU-002 | clothing_product_proposal_import | name      | en_US  |          | sku 002         |
+      | SKU-002 | clothing_product_proposal_import | price     |        |          | €125.00,$199.25 |
+      | SKU-003 | clothing_product_proposal_import | name      | en_US  |          | sku 003         |
+      | SKU-003 | clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
+      | SKU-004 | clothing_product_proposal_import | name      | en_US  |          | sku 004         |
 
   Scenario: Skip product with a decimal separator different from configuration
     Given the following CSV file to import:

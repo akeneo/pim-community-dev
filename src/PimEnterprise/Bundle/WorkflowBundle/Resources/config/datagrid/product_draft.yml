@@ -16,6 +16,7 @@ datagrid:
             changes:
                 label: pimee_workflow.product_draft.changes
                 type: twig
+                data_name: changesToReview
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
                 frontend_type: html
             createdAt:
