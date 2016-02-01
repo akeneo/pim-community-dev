@@ -7,10 +7,11 @@ define(
         'routing',
         'oro/datafilter/text-filter',
         'pim/formatter/choices/base',
+        'pim/user-context',
         'text!pim/template/datagrid/filter/select2-choice-filter',
         'jquery.select2'
     ],
-    function($, _, Routing, TextFilter, ChoicesFormatter, template) {
+    function($, _, Routing, TextFilter, ChoicesFormatter, UserContext, template) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
@@ -81,7 +82,8 @@ define(
                                     search: term,
                                     options: {
                                         limit: this.resultsPerPage,
-                                        page: page
+                                        page: page,
+                                        locale: UserContext.get('catalogLocale')
                                     }
                                 };
                             }.bind(this),

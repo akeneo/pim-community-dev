@@ -71,10 +71,8 @@ define(
                     return this;
                 }
 
-                var tabs = _.clone(this.tabs);
-                tabs = _.filter(tabs, function (tab) {
-                    return !_.isFunction(tab.isVisible) || tab.isVisible();
-                });
+                var tabs = this.getTabs();
+                this.ensureDefault();
 
                 this.$el.html(
                     this.template({
@@ -86,19 +84,35 @@ define(
                 this.delegateEvents();
                 this.initializeDropZones();
 
-                this.ensureDefault();
                 var currentTab = this.getExtension(this.getCurrentTab());
                 if (currentTab) {
+                    var zone = this.getZone('container');
+                    zone.appendChild(currentTab.el);
                     this.renderExtension(currentTab);
                     this.resize();
                 }
 
                 var panelsExtension = this.getExtension('panels');
                 if (panelsExtension) {
+                    this.getZone('panels').appendChild(panelsExtension.el);
                     this.renderExtension(panelsExtension);
                 }
 
                 return this;
+            },
+
+            /**
+             * Get visible tabs
+             *
+             * @return {Array}
+             */
+            getTabs: function () {
+                var tabs = _.clone(this.tabs);
+                tabs = _.filter(tabs, function (tab) {
+                    return !_.isFunction(tab.isVisible) || tab.isVisible();
+                });
+
+                return tabs;
             },
 
             /**
@@ -190,20 +204,13 @@ define(
             },
 
             /**
-             * Ensure default value for the current tab.
-             * We'll check tab redirection from URL & from SessionsStorage.
+             * Ensure default value for the current tab
              */
             ensureDefault: function () {
-                var regex = /redirectTab(=[A-Za-z-]+)/gi;
-                var fromUrl = regex.exec(location.href);
-
-                if (!this.urlParsed && fromUrl && fromUrl[1]) {
-                    sessionStorage.setItem('redirectTab', fromUrl[1]);
-                    this.urlParsed = true;
-                }
+                var tabs = this.getTabs();
 
                 if (!_.isNull(sessionStorage.getItem('redirectTab')) &&
-                    _.findWhere(this.tabs, {code: sessionStorage.getItem('redirectTab').substring(1)})
+                    _.findWhere(tabs, {code: sessionStorage.getItem('redirectTab').substring(1)})
                 ) {
                     this.setCurrentTab(sessionStorage.redirectTab.substring(1));
 
@@ -211,9 +218,9 @@ define(
                 }
 
                 var currentTabIsNotDefined = _.isNull(this.getCurrentTab());
-                var currentTabDoesNotExist = !_.findWhere(this.tabs, {code: this.getCurrentTab()});
-                if ((currentTabIsNotDefined || currentTabDoesNotExist) && _.first(this.tabs)) {
-                    this.setCurrentTab(_.first(this.tabs).code);
+                var currentTabDoesNotExist = !_.findWhere(tabs, {code: this.getCurrentTab()});
+                if ((currentTabIsNotDefined || currentTabDoesNotExist) && _.first(tabs)) {
+                    this.setCurrentTab(_.first(tabs).code);
                 }
             }
         });

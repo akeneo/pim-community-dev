@@ -22,9 +22,10 @@ class PimPdfGeneratorExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('builders.yml');
         $loader->load('controllers.yml');
         $loader->load('renderers.yml');
-        $loader->load('builders.yml');
+        $loader->load('twig.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);

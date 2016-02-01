@@ -4,8 +4,6 @@ imports:
 
 framework:
     test: ~
-    session:
-        storage_id: session.storage.mock_file
     csrf_protection: true
 
 doctrine:

@@ -50,7 +50,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $emptyValueProvider->getEmptyValue($price)->willReturn([]);
 
-
         $this->normalize($price, 'internal_api', [])->shouldReturn(
             [
                 'code'                  => 'price',
@@ -73,6 +72,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => '',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
@@ -132,6 +132,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => '',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
@@ -163,6 +164,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => '',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
@@ -194,6 +196,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => '',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
@@ -225,6 +228,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => '',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
@@ -257,18 +261,24 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => 'kg',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => null,
                 'group'                 => null,
             ]
         );
 
-        $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'default']);
+        $normalizer
+            ->normalize($attribute, 'json', ['include_group' => true])
+            ->willReturn(['code' => 'default']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
         $attribute->getAttributeType()->willReturn('unknown');
         $attribute->getGroup()->willReturn($group);
-        $normalizer->normalize($group, 'json', [])->willReturn(['code' => 'the_group_is_normalized']);
+        $normalizer
+            ->normalize($group, 'json', ['include_group' => true])
+            ->willReturn(['code' => 'the_group_is_normalized']);
+        $group->getCode()->willReturn('the_group_code');
 
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
+        $this->normalize($attribute, 'internal_api', ['include_group' => true])->shouldReturn(
             [
                 'code'                  => 'default',
                 'id'                    => 12,
@@ -290,6 +300,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'   => 'kg',
                 'max_file_size'         => '',
                 'sort_order'            => 2,
+                'group_code'            => 'the_group_code',
                 'group'                 => ['code' => 'the_group_is_normalized'],
             ]
         );

@@ -196,7 +196,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group.code
+                        _.first(attributes).group_code
                     );
 
                     this.setData(product);
