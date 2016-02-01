@@ -15,9 +15,6 @@ pimee_workflow:
       ready: Odottaa hyväksyntää
       can_not_be_approved: Ei voi tarkastella
       can_not_be_deleted: Ei voi poistaa
-    status_message:
-      can_not_be_approved: Ei voi hyväksyä tai hylätä tätä hyväksyntää, koska se koskee muutoksia arvoihin joita ei voi muokata. Pyydä järjestelmänvalvojaa muuttamaan oikeutesi.
-      can_not_be_deleted: Et voi poistaa tätä hyväksyntää, koska se koskee muutoksia arvoihin joita et voi muokata. Pyydä järjestelmänvalvojaa muuttamaan oikeutesi.
     action:
       approve: Hyväksy
       refuse: Hylkää
@@ -30,8 +27,6 @@ pimee_workflow:
       refuse: '%owner% on hylännyt ehdotuksen koskien tuotetta %product%'
       remove: '%owner% on poistanut ehdotuksen koskien tuotetta %product%'
     mass_review_action:
-      approve: Hyväksy valitut
-      refuse: Hylkää valitut
       error:
         draft_not_ready: Tämä ehdotus ei ole valmis hyväksyttäväksi
         not_product_owner: Et omista tuotetta, joka liittyy tähän ehdotukseen
