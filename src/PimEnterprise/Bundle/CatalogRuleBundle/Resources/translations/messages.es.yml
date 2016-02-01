@@ -1,4 +1,45 @@
 pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Eliminar
+      title: Reglas
+      column:
+        code: Código
+        conditions: Condición
+        actions: Acción
+  actions:
+    type:
+      copy: 'Entonces %from_field% es copiado en %to_field%'
+      copy_value: 'Entonces %from_field% es copiado en %to_field%'
+      set: 'Entonces %value% es establecido en %field%'
+      set_value: 'Entonces %value% es establecido en %field%'
+      add: 'Entonces %value% es agregado en %field%'
+  condition:
+    label: 'Si %field% %operator% %value%'
+    operators:
+      STARTS WITH: comienza con
+      ENDS WITH: termina por
+      CONTAINS: contiene
+      DOES NOT CONTAIN: no contiene
+      EMPTY: vacío
+      IN: en
+      NOT IN: no en
+      UNCLASSIFIED: sin clasificar
+      IN OR UNCLASSIFIED: sin clasificar o dentro
+      BETWEEN: entre
+      NOT BETWEEN: no entre
+      =: igual
+      >: mayor que
+      >=: igual o mayor que
+      <: menor que
+      <=: igual o menor que
+  acl_group:
+    rule: Reglas
+  acl:
+    rule:
+      view_permissions: Ver reglas
+      delete_permissions: Eliminar reglas
   attribute:
     tab:
       rule.title: Reglas
