@@ -52,8 +52,8 @@ Feature: Show localized rules
     And I am on the "another_decimal_number" attribute page
     When I visit the "Règles" tab
     Then the row "my_rule" should contain the texts:
-      | column    | value                                              |
-      | Condition | Si decimal_number est égal à 10.5                  |
-      | Action    | Alors 5,5679 est mis dans another_decimal_number   |
-      | Action    | Alors 12,50 € est mis dans decimal_price           |
-      | Action    | Alors 10,50 Centimètre est mis dans decimal_metric |
+      | column    | value                                                 |
+      | Condition | Si decimal_number égale 10.5                          |
+      | Action    | Alors 5,5679 est défini dans another_decimal_number   |
+      | Action    | Alors 12,50 € est défini dans decimal_price           |
+      | Action    | Alors 10,50 Centimètre est défini dans decimal_metric |
