@@ -13,11 +13,9 @@ pimee_workflow:
       working_copy: Copia de trabajo
       in_progress: En progreso
       ready: Esperando aprobacion
+      can_be_partially_reviewed: Puede ser revisado parcialmente
       can_not_be_approved: No puede ser revisado
       can_not_be_deleted: No puede ser borrado
-    status_message:
-      can_not_be_approved: Usted no puede aprobar o rechazar esta propuesta debido a que implica cambios en valores que usted no tiene el permiso para editar. Por favor contacte a su administrador para modificar sus permisos.
-      can_not_be_deleted: No puede eliminar esta aprobación debido a que aplica cambios en valores que usted no puede editar. Por favor, contacte a su administrador para cambiar sus permisos.
     action:
       approve: Aprobar
       refuse: Rechazar
@@ -30,8 +28,6 @@ pimee_workflow:
       refuse: '%owner% ha rechazado su propuesta por el producto %product%'
       remove: '%owner% ha eliminado su propuesta por el producto %product%'
     mass_review_action:
-      approve: Aprobar elementos seleccionados
-      refuse: Rechazar elemento seleccionado
       error:
         draft_not_ready: Esta propuesta no está lista para ser aprobada
         not_product_owner: Usted no es propietario del producto asociado a esta proposición
