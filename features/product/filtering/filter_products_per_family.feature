@@ -32,3 +32,32 @@ Feature: Filter products per family
       | Family | hi_fi,computers  | Amplifier, CD changer, PC and Laptop |
       | Family | washing_machines | Whirlpool and Electrolux             |
       | Family | is empty         | Mug                                  |
+
+  Scenario: Successfully filter 20 first families on search input
+    Given the following families:
+      | code   | label-fr_FR | label-en_US | label-de_DE |
+      | code1  | code1fr     | code1en     | code1de     |
+      | code2  | code2fr     | code2en     | code2de     |
+      | code3  | code3fr     | code3en     | code3de     |
+      | code4  | code4fr     | code4en     | code4de     |
+      | code5  | code5fr     | code5en     | code5de     |
+      | code6  | code6fr     | code6en     | code6de     |
+      | code7  | code7fr     | code7en     | code7de     |
+      | code8  | code8fr     | code8en     | code8de     |
+      | code9  | code9fr     | code9en     | code9de     |
+      | code10 | code10fr    | code10e     | code10de    |
+      | code11 | code11fr    | code11en    | code11de    |
+      | code12 | code12fr    | code12en    | code12de    |
+      | code13 | code13fr    | code13en    | code13de    |
+      | code14 | code14fr    | code14en    | code14de    |
+      | code15 | code15fr    | code15en    | code15de    |
+      | code16 | code16fr    | code16en    | code16de    |
+      | code17 | code17fr    | code17en    | code17de    |
+      | code18 | code18fr    | code18en    | code18de    |
+      | code19 | code19fr    | code19en    | code19de    |
+      | code20 | code20fr    | code20en    | code20de    |
+      | code21 | code21fr    | code21en    | code21de    |
+    And I am on the products page
+    And I should see the filter "Family"
+    When I press the "Family:" button
+    Then I should see 20 items in the autocomplete

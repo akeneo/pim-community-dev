@@ -162,35 +162,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder('Product');
-
-        $qb
-            ->where(':variantGroup MEMBER OF Product.groups')
-            ->setParameter('variantGroup', $variantGroup);
-
-        $index = 0;
-        foreach ($criteria as $item) {
-            $code = $item['attribute']->getCode();
-            ++$index;
-            $qb
-                ->innerJoin(
-                    'Product.values',
-                    sprintf('Value_%s', $code),
-                    'WITH',
-                    sprintf('Value_%s.attribute = ?%d', $code, $index)
-                )
-                ->setParameter($index, $item['attribute']);
-
-            if (isset($item['option'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
-                    ->setParameter($index, $item['option']);
-            } elseif (isset($item['referenceData'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
-                    ->setParameter($index, $item['referenceData']['data']);
-            }
-        }
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
 
         return $qb->getQuery()->getResult();
     }
@@ -597,5 +569,57 @@ class ProductRepository extends EntityRepository implements
             ->getSingleScalarResult();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb->select('Product.id');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return QueryBuilder
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder('Product');
+
+        $qb
+            ->where(':variantGroup MEMBER OF Product.groups')
+            ->setParameter('variantGroup', $variantGroup);
+
+        $index = 0;
+        foreach ($criteria as $item) {
+            $code = $item['attribute']->getCode();
+            ++$index;
+            $qb
+                ->innerJoin(
+                    'Product.values',
+                    sprintf('Value_%s', $code),
+                    'WITH',
+                    sprintf('Value_%s.attribute = ?%d', $code, $index)
+                )
+                ->setParameter($index, $item['attribute']);
+
+            if (isset($item['option'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
+                    ->setParameter($index, $item['option']);
+            } elseif (isset($item['referenceData'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
+                    ->setParameter($index, $item['referenceData']['data']);
+            }
+        }
+
+        return $qb;
     }
 }

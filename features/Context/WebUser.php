@@ -199,6 +199,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
+     * @Then /^I should be on the "([^"]*)" tab$/
+     */
+    public function iShouldBeOnTheTab($tab)
+    {
+        $tabElement = $this->getCurrentPage()->getFormTab($tab);
+
+        if (!$tabElement->getParent()->hasClass('active')) {
+            throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
+        }
+    }
+
+    /**
      * @Then /^I should (not )?see the "([^"]*)" tab$/
      */
     public function iShouldSeeTheTab($not, $tab)
@@ -2746,6 +2760,29 @@ class WebUser extends RawMinkContext
             if ($apiKey !== $value) {
                 throw $this->createExpectationException('API key should be ' . $apiKey);
             }
+        }
+    }
+
+    /**
+     * Check the number of items in a select2 autocomplete. This function spins when autocomplete is searching; it
+     * returns 0 only if special dom item is found.
+     *
+     * @param string $expectedCount
+     *
+     * @Then /^I should see (\d+) items? in the autocomplete$/
+     */
+    public function iShouldSeeAutocompleteItems($expectedCount)
+    {
+        $items = $this->spin(function () {
+            return $this
+                ->getCurrentPage()
+                ->findAll('css', '.select2-results .select2-result-selectable, .select2-results .select2-no-results');
+        }, 'Cannot find any select2 items');
+
+        if ($items[0]->hasClass('select2-no-results')) {
+            assertEquals((int) $expectedCount, 0);
+        } else {
+            assertEquals((int) $expectedCount, count($items));
         }
     }
 }

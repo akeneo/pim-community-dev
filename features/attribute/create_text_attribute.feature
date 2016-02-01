@@ -27,8 +27,9 @@ Feature: Create an attribute
       | code             |
       | id               |
       | associationTypes |
-      | categories       |
+      | category         |
       | categoryId       |
+      | categories       |
       | completeness     |
       | enabled          |
       | family           |

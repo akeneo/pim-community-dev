@@ -319,23 +319,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder()->eagerCursor(true);
-
-        $qb->field('groupIds')->in([$variantGroup->getId()]);
-
-        foreach ($criteria as $item) {
-            $match = ['attribute' => (int) $item['attribute']->getId()];
-
-            if (isset($item['option'])) {
-                $match['option'] = $item['option']->getId();
-            } elseif (isset($item['referenceData'])) {
-                $match[$item['referenceData']['name']] = $item['referenceData']['data']->getId();
-            }
-
-            $qb->addAnd($qb->expr()->field('values')->elemMatch($match));
-        }
-
+        $qb     = $this->findAllForVariantGroupQB($variantGroup, $criteria);
         $cursor = $qb->getQuery()->execute();
+
         $products = [];
         foreach ($cursor as $product) {
             $products[] = $product;
@@ -409,11 +395,9 @@ class ProductRepository extends DocumentRepository implements
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->execute();
+        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
-        if (0 === $result->count() ||
-            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
-        ) {
+        if (null === $result || (null !== $result && $value->getEntity()->getId() === (string) $result['_id'])) {
             return false;
         }
 
@@ -588,6 +572,19 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = [])
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('_id')->in($productIds);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
+
+    /**
      * Set family repository
      *
      * @param FamilyRepositoryInterface $familyRepository
@@ -728,5 +725,53 @@ class ProductRepository extends DocumentRepository implements
         $count = $qb->getQuery()->execute()->count();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb
+            ->select('_id')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        $products = [];
+        foreach ($cursor as $product) {
+            $product['id'] = (string) $product['_id'];
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder()->eagerCursor(true);
+
+        $qb->field('groupIds')->in([$variantGroup->getId()]);
+
+        foreach ($criteria as $item) {
+            $match = ['attribute' => (int) $item['attribute']->getId()];
+
+            if (isset($item['option'])) {
+                $match['option'] = $item['option']->getId();
+            } elseif (isset($item['referenceData'])) {
+                $match[$item['referenceData']['name']] = $item['referenceData']['data']->getId();
+            }
+
+            $qb->addAnd($qb->expr()->field('values')->elemMatch($match));
+        }
+
+        return $qb;
     }
 }

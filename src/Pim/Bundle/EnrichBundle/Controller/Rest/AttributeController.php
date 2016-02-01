@@ -57,7 +57,10 @@ class AttributeController
     }
 
     /**
-     * Get the attribute collection
+     * Get the attribute collection.
+     *
+     * TODO This action is only accessible via a GET or POST query, because of too long query URI. To respect standards,
+     * a refactor must be done.
      *
      * @param Request $request
      *
@@ -66,26 +69,29 @@ class AttributeController
     public function indexAction(Request $request)
     {
         $options = [];
-        if ($request->query->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        $context = ['include_group' => true];
+
+        if ($request->request->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+            $context['include_group'] = false;
         }
 
-        if ($request->query->has('types')) {
-            $options['types'] = explode(',', $request->query->get('types'));
+        if ($request->request->has('types')) {
+            $options['types'] = explode(',', $request->request->get('types'));
         }
         if (empty($options)) {
-            $options = $request->query->get(
+            $options = $request->request->get(
                 'options',
                 ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
             );
         }
 
         $token = $this->tokenStorage->getToken();
-        $options['user_groups_ids'] = implode(', ', $token->getUser()->getGroupsIds());
+        $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
         if (null !== $this->attributeSearchRepository) {
             $attributes = $this->attributeSearchRepository->findBySearch(
-                $request->query->get('search'),
+                $request->request->get('search'),
                 $options
             );
         } else {
@@ -95,7 +101,7 @@ class AttributeController
             $attributes = $this->attributeRepository->findBy($options);
         }
 
-        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api');
+        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api', $context);
 
         return new JsonResponse($normalizedAttributes);
     }
