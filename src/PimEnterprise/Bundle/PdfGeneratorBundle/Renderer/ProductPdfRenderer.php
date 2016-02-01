@@ -17,6 +17,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -29,21 +30,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
 {
     /** @var FilterProductValuesHelper */
     protected $filterHelper;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAttributes(ProductInterface $product, $locale)
-    {
-        $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
-        $attributes = [];
-
-        foreach ($values as $value) {
-            $attributes[$value->getAttribute()->getCode()] = $value->getAttribute();
-        }
-
-        return $attributes;
-    }
 
     /**
      * @param EngineInterface           $templating
@@ -79,5 +65,38 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         );
 
         $this->filterHelper = $filterHelper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributes(ProductInterface $product, $locale)
+    {
+        $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
+        $attributes = [];
+
+        foreach ($values as $value) {
+            $attributes[$value->getAttribute()->getCode()] = $value->getAttribute();
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Adds attributes with 'pim_assets_collection' type to display images in header.
+     *
+     * {@inheritdoc}
+     */
+    protected function getImageAttributes(ProductInterface $product, $locale, $scope)
+    {
+        $attributes = parent::getImageAttributes($product, $locale, $scope);
+
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
+            if (AttributeTypes::ASSETS_COLLECTION === $attribute->getAttributeType()) {
+                $attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $attributes;
     }
 }

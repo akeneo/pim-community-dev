@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\EmptyValue;
 
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 
 /**
  * EmptyValue provider for asset collections
@@ -35,6 +36,6 @@ class AssetCollectionEmptyValueProvider implements EmptyValueProviderInterface
     public function supports($element)
     {
         return $element instanceof AttributeInterface &&
-            'pim_assets_collection' === $element->getAttributeType();
+            AttributeTypes::ASSETS_COLLECTION === $element->getAttributeType();
     }
 }

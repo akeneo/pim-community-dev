@@ -35,6 +35,7 @@ services:
         class: %pimee_workflow.event_subscriber.published_product.detach_product.class%
         arguments:
             - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -89,7 +90,7 @@ services:
             - '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }
-            
+
     pimee_workflow.event_subscriber.product_draft.send_for_approval:
         class: %pimee_workflow.event_subscriber.product_draft.send_for_approval.class%
         arguments:
