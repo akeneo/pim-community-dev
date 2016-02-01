@@ -10,14 +10,16 @@ define(
         'oro/translator',
         'backbone',
         'pim/product-edit-form/attributes/copy',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/user-context'
     ],
     function (
         _,
         __,
         Backbone,
         Copy,
-        FetcherRegistry
+        FetcherRegistry,
+        UserContext
     ) {
         /**
          * Internal function that returns an union of current sources without drafts and the given drafts
@@ -28,6 +30,10 @@ define(
          * @return {Array}
          */
         var mergeSourcesAndDrafts = function (sources, drafts) {
+            var drafts = _.reject(drafts, function (draft) {
+                return draft.author === UserContext.get('username');
+            });
+
             return _.union(
                 _.reject(sources, function (source) {
                     return 'draft' === source.type;
@@ -50,6 +56,7 @@ define(
             sources: [],
             currentSource: null,
             otherDrafts: [],
+            otherDraftsPromise: null,
 
             /**
              * {@inheritdoc}
@@ -79,7 +86,7 @@ define(
              * @inheritdoc
              */
             configure: function () {
-                FetcherRegistry.getFetcher('product_draft').clear();
+                this.otherDraftsPromise = null;
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.startCopyingWorkingCopy);
 
@@ -93,14 +100,17 @@ define(
              * @inheritdoc
              */
             render: function () {
-                if (this.copying) {
-                    FetcherRegistry.getFetcher('product_draft')
+                if (this.copying && !this.otherDraftsPromise) {
+                    this.otherDraftsPromise = FetcherRegistry.getFetcher('product_draft')
                         .fetchAllByProduct(this.getFormData().meta.id)
                         .then(function (drafts) {
                             this.otherDrafts = drafts;
-                            this.sources = mergeSourcesAndDrafts(this.sources, drafts);
-                        }.bind(this))
-                        .then(function () {
+                            this.sources     = mergeSourcesAndDrafts(this.sources, drafts);
+                        }.bind(this));
+                }
+
+                if (this.copying) {
+                        this.otherDraftsPromise.then(function () {
                             return Copy.prototype.render.apply(this, arguments);
                         }.bind(this));
 
@@ -119,11 +129,7 @@ define(
                         return _.result(this.getFormData().meta.working_copy, 'values', {});
 
                     case 'draft':
-                        return _.defaults(
-                            _.findWhere(this.otherDrafts, {author: this.currentSource.author}).changes.values,
-                            _.result(this.getFormData().meta.working_copy, 'values', {})
-                        );
-
+                        return _.findWhere(this.otherDrafts, {author: this.currentSource.author}).changes.values
                     default:
                         return Copy.prototype.getSourceData.apply(this, arguments);
                 }
@@ -140,7 +146,15 @@ define(
                     scope: this.scope
                 };
 
-                this.getRoot().trigger('pim_enrich:form:field:can_be_copied', params);
+                switch (this.currentSource.type) {
+                    case 'working_copy':
+                        this.getRoot().trigger('pim_enrich:form:field:can_be_copied', params);
+                        break;
+                    case 'draft':
+                        params.canBeCopied = field.attribute.code in this.getSourceData();
+                        break;
+                }
+
 
                 return params.canBeCopied;
             },

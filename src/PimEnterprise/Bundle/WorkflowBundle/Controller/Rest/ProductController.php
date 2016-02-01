@@ -83,10 +83,8 @@ class ProductController
             throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
-
         return new JsonResponse($this->normalizer->normalize(
-            $this->repository->findByProductExcludingAuthor($product, $user),
+            $this->repository->findByProduct($product),
             'internal_api'
         ));
     }

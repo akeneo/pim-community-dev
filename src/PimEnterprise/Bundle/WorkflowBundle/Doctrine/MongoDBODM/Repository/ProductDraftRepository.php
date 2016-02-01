@@ -113,19 +113,6 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
 
     /**
      * {@inheritdoc}
-     */
-    public function findByProductExcludingAuthor(ProductInterface $product, UserInterface $user)
-    {
-        return $this
-            ->createQueryBuilder('ProductDraft')
-            ->field('author')->notEqual($user->getUsername())
-            ->field('product')->references($product)
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * {@inheritdoc}
      *
      * @return Builder
      */
