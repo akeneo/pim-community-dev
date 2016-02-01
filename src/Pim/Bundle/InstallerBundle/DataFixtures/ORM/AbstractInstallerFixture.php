@@ -51,17 +51,17 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->files = $this->addInstallerDataFiles($container);
+        $this->files     = $this->addInstallerDataFiles($container);
     }
 
     protected function addInstallerDataFiles(ContainerInterface $container)
     {
         $installerDataDir = null;
-        $installerData = $container->getParameter('installer_data');
+        $installerData    = $container->getParameter('installer_data');
 
         if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches)) {
-            $bundles = $container->getParameter('kernel.bundles');
-            $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
+            $bundles          = $container->getParameter('kernel.bundles');
+            $reflection       = new \ReflectionClass($bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
         } else {
             $installerDataDir = $container->getParameter('installer_data');
@@ -75,7 +75,6 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
 
         foreach ($this->entities as $entity) {
             $file = $installerDataDir . $entity;
-            var_dump($file);
             foreach (['.yml', '.csv'] as $extension) {
                 if (is_file($file . $extension)) {
                     $installerFiles[$entity] = $file . $extension;
@@ -83,8 +82,6 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
                 }
             }
         }
-
-        $container->setParameter('pim_installer.files', $installerFiles);
 
         return $installerFiles;
     }
@@ -107,7 +104,7 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
      */
     public function validate($entity, $item)
     {
-        $validator = $this->container->get('validator');
+        $validator  = $this->container->get('validator');
         $violations = $validator->validate($entity);
         if ($violations->count() > 0) {
             $messages = [];
