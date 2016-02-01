@@ -13,11 +13,13 @@ pimee_workflow:
       working_copy: Arbeitskopie
       in_progress: In Arbeit
       ready: Auf Genehmigung warten
+      can_be_partially_reviewed: Kann teilweise überprüft werden
       can_not_be_approved: Kann nicht überprüft werden
       can_not_be_deleted: Kann nicht gelöscht werden
     status_message:
-      can_not_be_approved: Sie können diesen Vorschlag nicht genehmigen oder ablehnen da er Werte enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
-      can_not_be_deleted: Sie können diesen Vorschlag nicht löschen da er Werte enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
+      can_be_partially_reviewed: Sie können diesen Vorschlag nur teilweise überprüfen, da einige Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte wenden Sie sich an Ihren Administrator um Ihre Rechte anzupassen.
+      can_not_be_approved: Sie können nicht diesen Vorschlag überprüfen, weil alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
+      can_not_be_deleted: Dieser Vorschlag kann nicht gelöscht werden, da alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
     action:
       approve: Genehmigen
       refuse: Ablehnen
@@ -30,8 +32,8 @@ pimee_workflow:
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
     mass_review_action:
-      approve: Ausgewählte genehmigen
-      refuse: Ausgewählte ablehnen
+      approve: Alle ausgewählten genehmigen
+      refuse: Alle ausgewählten ablehnen
       error:
         draft_not_ready: Dieser Vorschlag ist noch nicht bereit um genehmigt zu werden
         not_product_owner: Sie besitzen das Produkt welches zu diesem Vorschlag gehört nicht
@@ -43,6 +45,7 @@ pimee_workflow:
     generic_import: Sie haben Vorschläge aus Job-Import zum Prüfen
     original_value: Original
     new_value: Neu
+    no_diff: 'Der Wert "%value%" ist im Vorschlag und der Arbeitskopie identisch.'
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt

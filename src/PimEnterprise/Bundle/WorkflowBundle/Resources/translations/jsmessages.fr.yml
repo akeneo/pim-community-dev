@@ -12,6 +12,9 @@ pimee_workflow:
     proposal:
       modal.title: 'Laisser un commentaire (facultatif - 255 caractères max.)'
   proposal:
+    mass_action_group:
+      review:
+        label: Action en masse
     partial_accept:
       modal.title: Approuver des informations partielles
       modal.label: Laisser un commentaire (facultatif)

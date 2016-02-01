@@ -15,3 +15,9 @@ pimee_catalog_rule:
       set.label: wird gesetzt in
       copy.label: wird kopiert nach
       add.label: wird hinzugefügt zu
+confirmation:
+  remove:
+    rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
+flash:
+  rule:
+    removed: Regel erfolgreich entfernt

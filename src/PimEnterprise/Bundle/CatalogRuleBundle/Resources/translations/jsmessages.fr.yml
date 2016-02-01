@@ -16,8 +16,8 @@ pimee_catalog_rule:
       copy.label: est copié dans
       add.label: est ajouté dans
 confirmation:
-    remove:
-        rule: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
+  remove:
+    rule: "Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action"
 flash:
-    rule:
-        removed: Règle supprimée avec succès
+  rule:
+    removed: Règle supprimée avec succès

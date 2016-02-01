@@ -13,11 +13,13 @@ pimee_workflow:
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation
+      can_be_partially_reviewed: Peut être partiellement examinée
       can_not_be_approved: Ne peut pas être validé
       can_not_be_deleted: Ne peut pas être supprimé
     status_message:
-      can_not_be_approved: Vous ne pouvez pas approuver ou refuser cette proposition qui intègre des modifications sur des valeurs que vous ne pouvez pas modifier. Contactez votre administrateur pour modifier vos droits.
-      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
+      can_be_partially_reviewed: "Vous ne pouvez examiner cette proposition que partiellement car certains changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
+      can_not_be_approved: "Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
+      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
     action:
       approve: Accepter
       refuse: Refuser
@@ -30,8 +32,8 @@ pimee_workflow:
       refuse: '%owner% a rejeté votre proposition pour le produit %product%'
       remove: '%owner% a supprimé votre proposition pour le produit %product%'
     mass_review_action:
-      approve: Approuver les éléments sélectionnés
-      refuse: Rejeter les éléments sélectionnés
+      approve: Tout approuver
+      refuse: Tout refuser
       error:
         draft_not_ready: "Cette propostion n'est pas prêt à être approuvée"
         not_product_owner: "Vous n'êtes pas propriétaire du produit associé à cette proposition"

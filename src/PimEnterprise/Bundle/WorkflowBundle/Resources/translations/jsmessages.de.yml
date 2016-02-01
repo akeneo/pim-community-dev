@@ -12,6 +12,9 @@ pimee_workflow:
     proposal:
       modal.title: 'Kommentar hinterlassen (optional - max. 255 Zeichen)'
   proposal:
+    mass_action_group:
+      review:
+        label: Stapelverarbeitung
     partial_accept:
       modal.title: Teilinformationen genehmigen
       modal.label: Kommentar hinterlassen (optional)
