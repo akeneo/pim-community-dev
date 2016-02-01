@@ -1,10 +1,10 @@
 /*jslint nomen: true, vars: true*/
 /*global define*/
-define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
+define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
     'oro/datagrid/header', 'oro/datagrid/body', 'oro/datagrid/toolbar', 'oro/datagrid/action-column',
     'oro/datagrid/select-row-cell', 'oro/datagrid/select-all-header-cell',
     'oro/datagrid/refresh-collection-action', 'oro/datagrid/reset-collection-action'],
-    function ($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolbar, ActionColumn, SelectRowCell, SelectAllHeaderCell, RefreshCollectionAction, ResetCollectionAction) {
+    function ($, _, Backgrid, Translator, __, mediator, LoadingMask, GridHeader, GridBody, Toolbar, ActionColumn, SelectRowCell, SelectAllHeaderCell, RefreshCollectionAction, ResetCollectionAction) {
         'use strict';
 
         /**
@@ -473,12 +473,17 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              * Render no data block.
              */
             renderNoDataBlock: function () {
-                var placeholders = {entityHint: (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase()},
-                    template = _.isEmpty(this.collection.state.filters) ? 'oro.datagrid.noentities' :
-                        'oro.datagrid.noresults';
+                var entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
+                var template = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
+
+                if (Translator.has('jsmessages:' + template + '.' + entityHint)) {
+                    template += '.' + entityHint;
+                }
+
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
-                    hint: __(template, placeholders).replace('\n', '<br />')
+                    hint: __(template, {entityHint: entityHint}).replace('\n', '<br />')
                 }))).hide();
+
                 this._updateNoDataBlock();
             },
 
