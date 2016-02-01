@@ -15,3 +15,9 @@ pimee_catalog_rule:
       set.label: es modificado en
       copy.label: es copiado en
       add.label: es agregado en
+confirmation:
+  remove:
+    rule: ¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción
+flash:
+  rule:
+    removed: Regla eliminada con éxito
