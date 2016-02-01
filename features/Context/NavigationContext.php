@@ -337,7 +337,12 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category node creation')->getUrl(['id' => $category->getId()]);
-        $this->assertAddress($expectedAddress);
+
+        $this->spin(function () use ($expectedAddress) {
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        }, sprintf('Expected to be on the %s category node creation page. But was not', $category->getCode()));
     }
 
     /**

@@ -42,7 +42,10 @@ class Edit extends ProductEditForm
                 'Image preview'           => ['css' => '#lbImage'],
                 'Completeness'            => ['css' => '.completeness-block'],
                 'Category pane'           => ['css' => '#product-categories'],
-                'Category tree'           => ['css' => '#trees'],
+                'Category tree'           => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
                 'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
                 'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
@@ -759,38 +762,6 @@ class Edit extends ProductEditForm
         }
 
         $node->click();
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function expandCategory($category)
-    {
-        $category = $this->findCategoryInTree($category)->getParent();
-        if ($category->hasClass('jstree-closed')) {
-            $category->getParent()->find('css', 'ins')->click();
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        $leaf = $this->getCategoryTree()->find('css', sprintf('li a:contains("%s")', $category));
-        if (null === $leaf) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $leaf;
     }
 
     /**

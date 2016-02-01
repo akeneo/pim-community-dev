@@ -24,7 +24,10 @@ class Classify extends Wizard
             $this->elements,
             [
                 'Trees list'    => ['css' => '#trees-list'],
-                'Category tree' => ['css' => '#trees'],
+                'Category tree' => [
+                    'css'        => '#trees',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                ],
             ]
         );
     }
@@ -44,35 +47,5 @@ class Classify extends Wizard
         $link->click();
 
         return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function expandCategory($category)
-    {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $elt;
     }
 }

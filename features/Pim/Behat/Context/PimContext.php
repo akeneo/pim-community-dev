@@ -102,4 +102,12 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     {
         return $this->getNavigationContext()->getPage($page);
     }
+
+    /**
+     * @param string $condition
+     */
+    protected function wait($condition = null)
+    {
+        $this->getMainContext()->wait($condition);
+    }
 }
