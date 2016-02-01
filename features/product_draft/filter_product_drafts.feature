@@ -34,7 +34,5 @@ Feature: Filter product drafts
     Then the grid should contain 3 elements
     And I should be able to use the following filters:
       | filter    | value                | result      |
-      | Status    | In progress          | Sandra      |
-      | Status    | Waiting for approval | Mary, Julia |
       | Attribute | Name                 | Mary, Julia |
       | Attribute | Price                | Julia       |
