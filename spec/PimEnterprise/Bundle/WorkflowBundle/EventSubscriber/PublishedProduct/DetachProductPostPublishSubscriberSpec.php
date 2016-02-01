@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProd
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
@@ -14,9 +15,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager)
+    function let(ObjectManager $objectManager, EntityManager $entityManager)
     {
-        $this->beConstructedWith($objectManager);
+        $this->beConstructedWith($objectManager, $entityManager);
     }
 
     function it_subscribes_to_post_publish_event()
@@ -29,7 +30,6 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     function it_detachs_products_with_metric_value(
         $objectManager,
         PublishedProductEvent $event,
-        $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
@@ -63,7 +63,6 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     function it_detachs_products_with_media_value(
         $objectManager,
         PublishedProductEvent $event,
-        $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {

@@ -18,10 +18,18 @@ Feature: Revert a product to a previous version
       | fabric | cashmerewool | Cashmerewool |
       | fabric | neoprene     |              |
       | fabric | silk         | Silk         |
-    And the following products:
-      | sku       | main_color | main_fabric                |
-      | red-heels | red        | cashmerewool,neoprene,silk |
     And I am logged in as "Julia"
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | red-heels |
+    And I press the "Save" button in the popin
+    And I am on the "red-heels" product page
+    And I add available attributes Main color and Main fabric
+    And I fill in the following information:
+      | Main color  | [red]                          |
+      | Main fabric | Cashmerewool, [neoprene], Silk |
+    And I press the "Save" button
 
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
@@ -33,7 +41,7 @@ Feature: Revert a product to a previous version
     And I open the history
     And I should see history:
       | version | property   | value |
-      | 2       | Main color | green |
+      | 3       | Main color | green |
     When I visit the "Attributes" tab
     And I visit the "Other" group
     And I fill in the following information:
@@ -42,8 +50,8 @@ Feature: Revert a product to a previous version
     And I open the history
     And I should see history:
       | version | property   | value |
-      | 3       | Main color | blue  |
-    When I revert the product version number 1
+      | 4       | Main color | blue  |
+    When I revert the product version number 2
     Then the product "red-heels" should have the following values:
       | main_color | [red] |
 
@@ -57,7 +65,7 @@ Feature: Revert a product to a previous version
     And I open the history
     And I should see history:
       | version | property    | value                 |
-      | 2       | Main fabric | cashmerewool,neoprene |
-    When I revert the product version number 1
+      | 3       | Main fabric | cashmerewool,neoprene |
+    When I revert the product version number 2
     Then the product "red-heels" should have the following values:
       | main_fabric | Cashmerewool, [neoprene], Silk |

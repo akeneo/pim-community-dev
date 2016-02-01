@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
@@ -22,12 +23,17 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var EntityManager */
+    protected $entityManager;
+
     /**
      * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, EntityManager $entityManager)
     {
         $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -82,7 +88,7 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         switch ($publishedValue->getAttribute()->getBackendType()) {
             case AbstractAttributeType::BACKEND_TYPE_MEDIA:
                 if (null !== $publishedValue->getMedia()) {
-                    $this->getObjectManager()->detach($publishedValue->getMedia());
+                    $this->entityManager->detach($publishedValue->getMedia());
                 }
                 break;
             case AbstractAttributeType::BACKEND_TYPE_METRIC:

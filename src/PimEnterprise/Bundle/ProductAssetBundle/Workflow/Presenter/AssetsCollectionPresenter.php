@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter;
 
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
@@ -41,7 +42,7 @@ class AssetsCollectionPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_assets_collection' === $attributeType;
+        return AttributeTypes::ASSETS_COLLECTION === $attributeType;
     }
 
     /**
