@@ -29,9 +29,12 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             [
-                'Category tree'    => ['css' => '#tree'],
+                'Category tree' => [
+                    'css'        => '#tree',
+                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'],
+                ],
                 'Tree select'      => ['css' => '#tree_select'],
-                'Locales dropdown' => ['css' => '#locale-switcher']
+                'Locales dropdown' => ['css' => '#locale-switcher'],
             ]
         );
     }
@@ -136,37 +139,5 @@ class Index extends Grid
         }
 
         $node->click();
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function expandCategory($category)
-    {
-        $category = $this->findCategoryInTree($category)->getParent();
-        if ($category->hasClass('jstree-closed')) {
-            $category->getParent()->find('css', 'ins')->click();
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $elt;
     }
 }
