@@ -27,6 +27,12 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AssociationTypeController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /** @var HandlerInterface */
     protected $assocTypeHandler;
 
@@ -38,12 +44,6 @@ class AssociationTypeController
 
     /** @var RemoverInterface */
     protected $assocTypeRemover;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var Request */
-    protected $request;
 
     /**
      * @param Request                        $request

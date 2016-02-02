@@ -27,6 +27,15 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChannelController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var Form */
     protected $channelForm;
 
@@ -41,15 +50,6 @@ class ChannelController
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var TranslatorInterface */
-    protected $translator;
 
     /**
      * @param Request                    $request
@@ -71,14 +71,14 @@ class ChannelController
         BulkSaverInterface $localeSaver,
         ChannelRepositoryInterface $channelRepository
     ) {
+        $this->request           = $request;
+        $this->router            = $router;
+        $this->translator        = $translator;
         $this->channelForm       = $channelForm;
         $this->channelHandler    = $channelHandler;
         $this->channelRemover    = $channelRemover;
         $this->localeSaver       = $localeSaver;
         $this->channelRepository = $channelRepository;
-        $this->request           = $request;
-        $this->router            = $router;
-        $this->translator        = $translator;
     }
 
     /**

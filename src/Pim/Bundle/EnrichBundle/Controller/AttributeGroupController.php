@@ -38,6 +38,21 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AttributeGroupController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -61,21 +76,6 @@ class AttributeGroupController
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepo;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
 
     /**
      * @param Request                           $request
@@ -107,6 +107,11 @@ class AttributeGroupController
         AttributeGroupRepositoryInterface $attributeGroupRepo,
         AttributeRepositoryInterface $attributeRepo
     ) {
+        $this->request            = $request;
+        $this->router             = $router;
+        $this->formFactory        = $formFactory;
+        $this->translator         = $translator;
+        $this->eventDispatcher    = $eventDispatcher;
         $this->securityFacade     = $securityFacade;
         $this->formHandler        = $formHandler;
         $this->form               = $form;
@@ -115,11 +120,6 @@ class AttributeGroupController
         $this->attrGroupRemover   = $attrGroupRemover;
         $this->attributeGroupRepo = $attributeGroupRepo;
         $this->attributeRepo      = $attributeRepo;
-        $this->request            = $request;
-        $this->router             = $router;
-        $this->eventDispatcher    = $eventDispatcher;
-        $this->translator         = $translator;
-        $this->formFactory        = $formFactory;
     }
 
     /**

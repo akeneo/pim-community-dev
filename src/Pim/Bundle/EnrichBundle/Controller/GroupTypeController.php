@@ -25,15 +25,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class GroupTypeController
 {
-    /** @var HandlerInterface */
-    protected $groupTypeHandler;
-
-    /** @var Form */
-    protected $groupTypeForm;
-
-    /** @var RemoverInterface */
-    protected $groupTypeRemover;
-
     /** @var RouterInterface */
     protected $router;
 
@@ -42,6 +33,15 @@ class GroupTypeController
 
     /** @var TranslatorInterface */
     protected $translator;
+
+    /** @var HandlerInterface */
+    protected $groupTypeHandler;
+
+    /** @var Form */
+    protected $groupTypeForm;
+
+    /** @var RemoverInterface */
+    protected $groupTypeRemover;
 
     /**
      * @param Request             $request

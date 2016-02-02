@@ -36,6 +36,24 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class FamilyController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var ManagerRegistry */
+    protected $doctrine;
+
     /** @var ChannelManager */
     protected $channelManager;
 
@@ -59,24 +77,6 @@ class FamilyController
 
     /** @var string */
     protected $familyClass;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepo;
@@ -123,6 +123,9 @@ class FamilyController
         $this->request        = $request;
         $this->templating     = $templating;
         $this->router         = $router;
+        $this->formFactory    = $formFactory;
+        $this->translator     = $translator;
+        $this->doctrine       = $doctrine;
         $this->channelManager = $channelManager;
         $this->familyFactory  = $familyFactory;
         $this->familyHandler  = $familyHandler;
@@ -131,9 +134,6 @@ class FamilyController
         $this->familySaver    = $familySaver;
         $this->familyRemover  = $familyRemover;
         $this->familyClass    = $familyClass;
-        $this->formFactory    = $formFactory;
-        $this->translator     = $translator;
-        $this->doctrine       = $doctrine;
         $this->attributeRepo  = $attributeRepo;
         $this->familyRepo     = $familyRepo;
     }

@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -30,6 +29,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobExecutionController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var BatchLogHandler */
     protected $batchLogHandler;
 
@@ -44,18 +55,6 @@ class JobExecutionController
 
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var TranslatorInterface */
-    protected $translator;
 
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;

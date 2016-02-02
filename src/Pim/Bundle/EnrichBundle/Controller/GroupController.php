@@ -28,6 +28,15 @@ class GroupController
 {
     const MAX_PRODUCTS = 5;
 
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /** @var GroupManager */
     protected $groupManager;
 
@@ -42,15 +51,6 @@ class GroupController
 
     /** @var RemoverInterface */
     protected $groupRemover;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var RouterInterface */
-    protected $router;
 
     /**
      * @param Request          $request

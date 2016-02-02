@@ -116,6 +116,9 @@ services:
     pim_enrich.controller.locale:
         scope: request
         class: %pim_enrich.controller.locale.class%
+        arguments:
+            - '@request'
+            - '@form.factory'
 
     pim_enrich.controller.attribute:
         scope: request

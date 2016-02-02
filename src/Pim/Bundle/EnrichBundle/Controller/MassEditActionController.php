@@ -35,6 +35,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class MassEditActionController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var ManagerRegistry */
+    protected $doctrine;
+
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
@@ -61,21 +76,6 @@ class MassEditActionController
 
     /** @var OperationRegistryInterface */
     protected $operationRegistry;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
 
     /**
      * @param Request                    $request
@@ -110,6 +110,11 @@ class MassEditActionController
             'default'     => 'pim_enrich_product_index'
         ]
     ) {
+        $this->request              = $request;
+        $this->templating           = $templating;
+        $this->router               = $router;
+        $this->tokenStorage         = $tokenStorage;
+        $this->doctrine             = $doctrine;
         $this->parametersParser     = $parametersParser;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->simpleJobLauncher    = $simpleJobLauncher;
@@ -118,11 +123,6 @@ class MassEditActionController
         $this->operationRegistry    = $operationRegistry;
         $this->massEditFormResolver = $massEditFormResolver;
         $this->gridNameRouteMapping = $gridNameRouteMapping;
-        $this->request              = $request;
-        $this->router               = $router;
-        $this->templating           = $templating;
-        $this->doctrine             = $doctrine;
-        $this->tokenStorage         = $tokenStorage;
     }
 
     /**

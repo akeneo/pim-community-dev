@@ -36,6 +36,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AttributeController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var HandlerInterface */
     protected $attributeHandler;
 
@@ -77,18 +89,6 @@ class AttributeController
 
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var TranslatorInterface */
-    protected $translator;
 
     /**
      * @param Request                      $request

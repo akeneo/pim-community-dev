@@ -47,6 +47,38 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductController
 {
+    const BACK_TO_GRID = 'BackGrid';
+
+    const CREATE = 'Create';
+
+    const SAVE_AND_NEXT = 'SaveAndNext';
+
+    const SAVE_AND_FINISH = 'SaveAndFinish';
+
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** var ValidatorInterface */
+    protected $validator;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
@@ -76,38 +108,6 @@ class ProductController
 
     /** @var CategoryFactory */
     protected $categoryFactory;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** var ValidatorInterface */
-    protected $validator;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    const BACK_TO_GRID = 'BackGrid';
-
-    const CREATE = 'Create';
-
-    const SAVE_AND_NEXT = 'SaveAndNext';
-
-    const SAVE_AND_FINISH = 'SaveAndFinish';
 
     /**
      * @param Request                    $request

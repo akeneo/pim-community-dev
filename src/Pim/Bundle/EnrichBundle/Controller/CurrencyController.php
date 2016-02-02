@@ -21,14 +21,14 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CurrencyController
 {
-    /** @var SaverInterface */
-    protected $currencySaver;
-
     /** @var Request */
     protected $request;
 
     /** @var RouterInterface */
     protected $router;
+
+    /** @var SaverInterface */
+    protected $currencySaver;
 
     /**
      * @param Request         $request
