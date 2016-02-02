@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Pim\Component\Enrich\Model;
 
 /**
  * Available attributes model

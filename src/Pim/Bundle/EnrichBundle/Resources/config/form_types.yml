@@ -260,7 +260,7 @@ services:
             - '@pim_user.context.user'
             - '@translator'
             - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.available_attributes.class%
+            - %pim_enrich.entity.available_attributes.class%
         tags:
             - { name: form.type, alias: pim_available_attributes }
 

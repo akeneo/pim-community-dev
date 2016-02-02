@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Pim\Component\Localization\Model;
 
 /**
  * Localizable interface, implemented by class which can be localized
