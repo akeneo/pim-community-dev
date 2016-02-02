@@ -39,43 +39,43 @@ Feature: Edit attributes of a variant group
     Then the field Manufacturer should contain "Lacoste"
 
   Scenario: Successfully edit a localizable attribute of a variant group
-    Given I switch the locale to "French (France)"
+    Given I switch the locale to "fr_FR"
     And I fill in the following information:
       | Nom | French name |
     And I press the "Save" button
-    And I switch the locale to "anglais (États-Unis)"
+    And I switch the locale to "en_US"
     And I fill in the following information:
       | Name | English name |
     And I press the "Save" button
-    When I switch the locale to "French (France)"
+    When I switch the locale to "fr_FR"
     Then the field Nom should contain "French name"
-    When I switch the locale to "anglais (États-Unis)"
+    When I switch the locale to "en_US"
     Then the field Name should contain "English name"
 
   Scenario: Successfully edit a localizable and scopable attribute of a variant group
-    Given I switch the locale to "German (Germany)"
+    Given I switch the locale to "de_DE"
     And I expand the "Beschreibung" attribute
     And I fill in the following information:
       | ecommerce Beschreibung | German ecommerce description |
       | print Beschreibung     | German print description     |
     And I press the "Save" button
-    And I switch the locale to "Englisch (Vereinigtes Königreich)"
+    And I switch the locale to "en_US"
     And I expand the "Description" attribute
     And I fill in the following information:
       | ecommerce Description | British ecommerce description |
       | tablet Description    | British tablet description    |
     And I press the "Save" button
-    When I switch the locale to "German (Germany)"
+    When I switch the locale to "de_DE"
     Then the field ecommerce Beschreibung should contain "German ecommerce description"
     Then the field print Beschreibung should contain "German print description"
-    When I switch the locale to "Englisch (Vereinigtes Königreich)"
+    When I switch the locale to "en_US"
     Then the field ecommerce Description should contain "British ecommerce description"
     And the field tablet Description should contain "British tablet description"
 
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then I should see "This variant group has no attributes in this locale"
     When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab

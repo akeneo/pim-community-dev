@@ -33,17 +33,23 @@ class Grid extends Index
 
         $this->elements = array_merge(
             [
-                'Grid container'    => ['css' => '.grid-container'],
-                'Grid'              => ['css' => 'table.grid'],
-                'Grid content'      => ['css' => 'table.grid tbody'],
-                'Filters'           => ['css' => 'div.filter-box'],
-                'Grid toolbar'      => ['css' => 'div.grid-toolbar'],
-                'Manage filters'    => ['css' => 'div.filter-list'],
-                'Configure columns' => ['css' => 'a:contains("Columns")'],
-                'View selector'     => ['css' => '#view-selector'],
-                'Views list'        => ['css' => '.ui-multiselect-menu.highlight-hover'],
-                'Select2 results'   => ['css' => '#select2-drop .select2-results'],
-                'Mass Edit'         => ['css' => '.mass-actions-panel .action i.icon-edit'],
+                'Grid container'        => ['css' => '.grid-container'],
+                'Grid'                  => ['css' => 'table.grid'],
+                'Grid content'          => ['css' => 'table.grid tbody'],
+                'Filters'               => ['css' => 'div.filter-box'],
+                'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
+                'Manage filters'        => ['css' => 'div.filter-list'],
+                'Configure columns'     => ['css' => 'a:contains("Columns")'],
+                'View selector'         => ['css' => '#view-selector'],
+                'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
+                'Select2 results'       => ['css' => '#select2-drop .select2-results'],
+                'Mass Edit'             => ['css' => '.mass-actions-panel .action i.icon-edit'],
+                'Main context selector' => [
+                    'css'        => '#container',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ]
             ],
             $this->elements
         );
@@ -649,28 +655,6 @@ class Grid extends Index
     }
 
     /**
-     * Change the grid locale using the locale switcher
-     *
-     * @param string $locale
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($locale)
-    {
-        $toggle = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
-        if (!$toggle) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $toggle->click();
-
-        $link = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
-        if (!$link) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
-        }
-        $link->click();
-    }
-
-    /**
      * Activate a filter
      *
      * @param string $filterName
@@ -795,13 +779,11 @@ class Grid extends Index
      */
     public function openFilter(NodeElement $filter)
     {
-        if (null !== $element = $filter->find('css', 'button')) {
-            $element->click();
-        } else {
-            throw new \InvalidArgumentException(
-                'Impossible to open filter or maybe its type is not yet implemented'
-            );
-        }
+        $element = $this->spin(function () use ($filter) {
+            return $filter->find('css', 'button');
+        }, 'Impossible to open filter or maybe its type is not yet implemented');
+
+        $element->click();
     }
 
     /**

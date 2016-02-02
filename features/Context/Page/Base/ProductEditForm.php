@@ -548,54 +548,6 @@ class ProductEditForm extends Form
     }
 
     /**
-     * @param string $localeCode
-     * @param bool   $copy
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($localeCode, $copy = false)
-    {
-        $dropdown = $this->getElement(
-            $copy ? 'Copy locales dropdown' : 'Locales dropdown',
-            'Could not find locale switcher'
-        );
-
-        $toggle = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.dropdown-toggle');
-        });
-        $toggle->click();
-
-        $option = $this->spin(function () use ($dropdown, $localeCode) {
-            return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
-        }, sprintf('Could not find locale "%s" in switcher', $localeCode));
-        $option->click();
-    }
-
-    /**
-     * @param string $scopeCode
-     * @param bool   $copy
-     *
-     * @throws \Exception
-     */
-    public function switchScope($scopeCode, $copy = false)
-    {
-        $dropdown = $this->getElement(
-            $copy ? 'Copy channel dropdown' : 'Channel dropdown',
-            'Could not find scope switcher'
-        );
-
-        $toggle = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.dropdown-toggle');
-        });
-        $toggle->click();
-
-        $option = $this->spin(function () use ($dropdown, $scopeCode) {
-            return $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
-        }, sprintf('Could not find scope "%s" in switcher', $scopeCode));
-        $option->click();
-    }
-
-    /**
      * Find a validation tooltip containing a text
      *
      * @param string $text
@@ -617,6 +569,8 @@ class ProductEditForm extends Form
 
     /**
      * Checks if the specified field is set to the expected value, raises an exception if not
+     *
+     * Should be moved to a decorator
      *
      * @param string $label
      * @param string $expected
