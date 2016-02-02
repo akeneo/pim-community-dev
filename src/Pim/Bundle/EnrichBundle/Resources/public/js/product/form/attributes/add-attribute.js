@@ -18,7 +18,8 @@ define(
         'pim/attribute/add-attribute-footer',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/formatter/choices/base'
+        'pim/formatter/choices/base',
+        'pim/initselect2',
     ],
     function (
         $,
@@ -30,7 +31,8 @@ define(
         AttributeFooter,
         UserContext,
         FetcherRegistry,
-        ChoicesFormatter
+        ChoicesFormatter,
+        initSelect2
     ) {
         return BaseForm.extend({
             tagName: 'div',
@@ -147,7 +149,7 @@ define(
                     }.bind(this)
                 };
 
-                opts = $.extend(true, this.defaultOptions, opts);
+                opts = initSelect2.options($.extend(true, this.defaultOptions, opts));
 
                 var select2 = $select.select2(opts);
 

@@ -227,9 +227,11 @@ pim_enrich:
                         add: Add
                         add_attributes: Add attributes
                     info:
-                        search_attributes: Search
+                        search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
                         attributes_selected: "{{ attributeCount }} attribute(s) selected"
+                        no_match: No matches found
+                        load_more: Loading more results...
                 categories:
                     title: Categories
             panel:

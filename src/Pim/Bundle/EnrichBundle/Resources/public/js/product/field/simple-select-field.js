@@ -16,9 +16,10 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
+        'pim/initselect2',
         'jquery.select2'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
@@ -69,7 +70,7 @@ define(
             postRender: function () {
                 this.$('[data-toggle="tooltip"]').tooltip();
                 this.getChoiceUrl().then(function (choiceUrl) {
-                    this.$('input.select-field').select2('destroy').select2({
+                    var options = {
                         ajax: {
                             url: choiceUrl,
                             cache: true,
@@ -95,7 +96,11 @@ define(
                         }.bind(this),
                         placeholder: ' ',
                         allowClear: true
-                    });
+                    };
+
+                    options = initSelect2.options(options);
+
+                    this.$('input.select-field').select2('destroy').select2(options);
                 }.bind(this));
             },
 

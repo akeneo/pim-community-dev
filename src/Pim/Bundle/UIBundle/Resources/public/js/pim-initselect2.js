@@ -33,10 +33,7 @@ define(
                 });
             },
             initSelect: function ($select) {
-                var options = {
-                    multiple: false,
-                    allowClear: false
-                };
+                var options = this.options();
                 var self = this;
                 var queryTimer;
 
@@ -91,6 +88,7 @@ define(
 
                     callback(choices);
                 };
+
                 $select.select2(options);
             },
             getSelectOptions: function (data, options) {
@@ -108,6 +106,23 @@ define(
                 });
 
                 return _.extend({}, data, {results: matchingResults});
+            },
+            options: function (options) {
+                var baseOptions = {
+                    multiple: false,
+                    allowClear: false,
+                    formatSearching: function () {
+                        return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes');
+                    },
+                    formatNoMatches: function () {
+                        return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
+                    },
+                    formatLoadMore: function (pageNumber) {
+                      return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
+                    }
+                };
+
+                return $.extend(true, baseOptions, options);
             }
         };
     }
