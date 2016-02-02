@@ -5,6 +5,13 @@ Refuse: Reject
 Approve selected: Approve selected
 Refuse selected: Reject selected
 
+oro:
+    datagrid:
+        noentities:
+            proposal: There is no proposal to review.
+        noresults:
+            proposal: There is no proposal to review. Try to change your search criteria.
+
 pimee_workflow:
     entity:
         published_product:
