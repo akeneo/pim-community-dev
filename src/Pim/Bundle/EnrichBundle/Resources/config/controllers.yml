@@ -38,16 +38,15 @@ parameters:
     pim_enrich.controller.rest.versioning.class:         Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
 
 services:
-    pim_enrich.controller.abstract_doctrine:
-        abstract: true
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-
     pim_enrich.controller.attribute_group:
         scope: request
         class: %pim_enrich.controller.attribute_group.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
+            - '@form.factory'
+            - '@translator'
+            - '@event_dispatcher'
             - '@oro_security.security_facade'
             - '@pim_enrich.form.handler.attribute_group'
             - '@pim_enrich.form.attribute_group'
@@ -75,8 +74,10 @@ services:
     pim_enrich.controller.channel:
         scope: request
         class: %pim_enrich.controller.channel.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
+            - '@translator'
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
             - '@pim_catalog.remover.channel'
@@ -86,21 +87,29 @@ services:
     pim_enrich.controller.currency:
         scope: request
         class: %pim_enrich.controller.currency.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
             - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.family:
         scope: request
         class: %pim_enrich.controller.family.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@form.factory'
+            - '@translator'
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
             - '@pim_catalog.saver.family'
             - '@pim_catalog.remover.family'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.family.class%
 
@@ -111,8 +120,11 @@ services:
     pim_enrich.controller.attribute:
         scope: request
         class: %pim_enrich.controller.attribute.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
+            - '@form.factory'
+            - '@translator'
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
@@ -142,8 +154,15 @@ services:
     pim_enrich.controller.product:
         scope: request
         class: %pim_enrich.controller.product.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@validator'
+            - '@translator'
+            - '@event_dispatcher'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
@@ -166,7 +185,6 @@ services:
     pim_enrich.controller.mass_edit_action:
         scope: request
         class: %pim_enrich.controller.mass_edit_action.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
@@ -181,6 +199,9 @@ services:
         scope: request
         class: %pim_enrich.controller.group.class%
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
@@ -190,8 +211,10 @@ services:
     pim_enrich.controller.association_type:
         scope: request
         class: %pim_enrich.controller.association_type.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
+            - '@translator'
             - '@pim_catalog.repository.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
@@ -212,19 +235,17 @@ services:
         class: %pim_enrich.controller.variant_group.class%
         parent: pim_enrich.controller.group
         arguments:
-            - '@pim_catalog.manager.group'
-            - '@pim_enrich.form.handler.variant_group'
-            - '@pim_enrich.form.variant_group'
-            - '@pim_catalog.factory.group'
+            - '@form.factory'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.resolver.variant_group_attributes'
-            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.group_type:
         scope: request
         class: %pim_enrich.controller.group_type.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@router'
+            - '@translator'
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
             - '@pim_catalog.remover.group_type'
@@ -267,6 +288,7 @@ services:
             - '@templating'
             - '@translator'
             - '@event_dispatcher'
+            - '@pim_import_export.repository.job_execution'
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_base_connector.event_listener.archivist'
             - '@pim_serializer'

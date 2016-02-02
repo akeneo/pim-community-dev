@@ -6,45 +6,67 @@ parameters:
 
 services:
     pim_import_export.controller.export_profile:
-        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.export_profile.class%
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@form.factory'
+            - '@validator'
+            - '@event_dispatcher'
             - '@akeneo_batch.connectors'
-            - export
             - '@pim_import_export.form.type.job_instance'
             - '@akeneo_batch.job_instance_factory'
             - '@pim_connector.launcher.simple_job_launcher'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_import_export.repository.job_instance'
+            - '@security.token_storage'
+            - export
 
     pim_import_export.controller.import_profile:
-        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.import_profile.class%
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@form.factory'
+            - '@validator'
+            - '@event_dispatcher'
             - '@akeneo_batch.connectors'
-            - import
             - '@pim_import_export.form.type.job_instance'
             - '@akeneo_batch.job_instance_factory'
             - '@pim_connector.launcher.simple_job_launcher'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_import_export.repository.job_instance'
+            - '@security.token_storage'
+            - import
 
     pim_import_export.controller.export_execution:
-        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.export_execution.class%
         arguments:
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
-            - export
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
+            - '@pim_import_export.repository.job_execution'
+            - export
 
     pim_import_export.controller.import_execution:
-        parent: pim_enrich.controller.abstract_doctrine
         scope: request
         class: %pim_import_export.controller.import_execution.class%
         arguments:
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
-            - import
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
+            - '@pim_import_export.repository.job_execution'
+            - import
