@@ -21,6 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -212,7 +213,7 @@ class ProductDraftController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message'    => $this->getTranslator()->trans('flash.product_draft.refuse.success')
+                    'message'    => $this->translator->trans('flash.product_draft.refuse.success')
                 ]
             );
         }

@@ -11,15 +11,23 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Published product controller
@@ -43,34 +51,56 @@ class PublishedProductController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var Request */
+    protected $request;
+
     /**
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
      * @param CompletenessManager           $completenessManager
      * @param ChannelManager                $channelManager
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TranslatorInterface           $translator
+     * @param EngineInterface               $templating
+     * @param RouterInterface               $router
+     * @param Request                       $request
      */
     public function __construct(
         UserContext $userContext,
         PublishedProductManager $manager,
         CompletenessManager $completenessManager,
         ChannelManager $channelManager,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        TranslatorInterface $translator,
+        EngineInterface $templating,
+        RouterInterface $router,
+        Request $request
     ) {
         $this->userContext          = $userContext;
         $this->manager              = $manager;
         $this->completenessManager  = $completenessManager;
         $this->channelManager       = $channelManager;
         $this->authorizationChecker = $authorizationChecker;
+        $this->translator           = $translator;
+        $this->templating           = $templating;
+        $this->router               = $router;
+        $this->request              = $request;
     }
 
     /**
      * List of published products
      *
-     * @param Request $request the request
-     *
      * @AclAncestor("pimee_workflow_published_product_index")
-     * @Template
+     * @Template()
      *
      * @return array
      */
@@ -115,18 +145,17 @@ class PublishedProductController
             );
         }
 
-        $this->addFlash('success', 'flash.product.unpublished');
+        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.product.unpublished'));
 
-        return parent::redirectToRoute(
+        return new RedirectResponse($this->router->generate(
             'pimee_workflow_published_product_index',
             ['dataLocale' => $this->getDataLocale()]
-        );
+        ));
     }
 
     /**
      * View a published product
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @Template
@@ -186,7 +215,7 @@ class PublishedProductController
         $published = $this->manager->findPublishedProductById($id);
 
         if (!$published) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Published product with id %s could not be found.', (string) $id)
             );
         }

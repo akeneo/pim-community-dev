@@ -13,16 +13,16 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Product Controller
@@ -42,23 +42,25 @@ class ProductController extends BaseProductController
      *
      * @return Response|RedirectResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         try {
             $this->userContext->getAccessibleUserTree();
         } catch (\LogicException $e) {
-            $this->addFlash('error', 'category.permissions.no_access_to_products');
+            $this->request->getSession()->getFlashBag()
+                ->add('error', new Message('category.permissions.no_access_to_products'));
 
             return $this->redirectToRoute('oro_default');
         }
 
         if (null === $dataLocale = $this->getDataLocale()) {
-            $this->addFlash('error', 'locale.permissions.no_access_to_products');
+            $this->request->getSession()->getFlashBag()
+                ->add('error', new Message('locale.permissions.no_access_to_products'));
 
             return $this->redirectToRoute('oro_default');
         }
 
-        $this->seqEditManager->removeByUser($this->getUser());
+        $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
 
         return [
             'locales'    => $this->getUserLocales(),

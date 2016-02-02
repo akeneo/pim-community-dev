@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Overriden category controller
+ * Overridden category controller
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
