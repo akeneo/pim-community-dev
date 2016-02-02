@@ -18,34 +18,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CompletenessController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var EngineInterface
-     */
+    /**  @var EngineInterface */
     protected $templating;
 
     /**
-     * Constructor
-     *
      * @param CompletenessManager        $completenessManager
      * @param ProductRepositoryInterface $productRepository
      * @param ChannelManager             $channelManager
