@@ -19,11 +19,16 @@ Feature: Copy value from a draft to an other
       | Description | JA !                      | en_US  | mobile |
     And I am logged in as "Julia"
     And I edit the "tshirt" product
-    Then the Name copy value for scope "mobile", locale "en_US" and source "draft_of_Mary" should be "That's not my tee anymore"
-    And the Description copy value for scope "mobile", locale "en_US" and source "draft_of_Mary" should be "JA !"
+    And I open the comparison panel
+    And I switch the comparison locale to "en_US"
+    And I switch the comparison scope to "mobile"
+    And I switch the comparison source to "draft_of_Mary"
+    Then the Name comparison value should be "That's not my tee anymore"
+    And the Description comparison value should be "JA !"
     And I switch the scope to "tablet"
     When I select all translations
     And I copy selected translations
     And the product Description for scope "tablet" should be "JA !"
-    But the Name copy value for scope "mobile", locale "en_US" and source "working_copy" should be ""
-    And the Description copy value for scope "mobile", locale "en_US" and source "working_copy" should be "City tee"
+    And I switch the comparison source to "working_copy"
+    But the Name comparison value should be ""
+    And the Description comparison value should be "City tee"

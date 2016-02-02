@@ -31,7 +31,17 @@ class Index extends Grid
             [
                 'Category tree' => [
                     'css'        => '#tree',
-                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'],
+                    'decorators' => [
+                        'Pim\Behat\Decorator\SpinableDecorator',
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
+                ],
+                'Main context selector' => [
+                    'css'        => '#container',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\SpinableDecorator',
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator\BaseDecorator'
+                    ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],
                 'Locales dropdown' => ['css' => '#locale-switcher'],
@@ -86,13 +96,9 @@ class Index extends Grid
      */
     public function findReferenceUploadZone()
     {
-        $uploadZone = $this->getDialog()->find('css', '.reference-field .asset-uploader');
-
-        if (!$uploadZone) {
-            throw new ElementNotFoundException($this->getSession(), 'reference upload zone');
-        }
-
-        return $uploadZone;
+        return $this->spin(function () {
+            return $this->getDialog()->find('css', '.reference-field .asset-uploader');
+        }, 'Cannot find the reference upload zone');
     }
 
     /**
@@ -116,11 +122,11 @@ class Index extends Grid
     {
         $node = $this
             ->getElement('Category tree')
-            ->find('css', sprintf('#node_%s a', $category->getId()));
-
-        if (null === $node) {
-            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
-        }
+            ->find(
+                'css',
+                sprintf('#node_%s a', $category->getId()),
+                sprintf('Could not find category filter "%s".', $category->getId())
+            );
 
         $node->click();
     }
@@ -132,11 +138,7 @@ class Index extends Grid
     {
         $node = $this
             ->getElement('Category tree')
-            ->find('css', '#node_-1 a');
-
-        if (null === $node) {
-            throw new \Exception(sprintf('Could not find unclassified category filter.'));
-        }
+            ->find('css', '#node_-1 a', 'Could not find unclassified category filter.');
 
         $node->click();
     }

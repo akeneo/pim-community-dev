@@ -32,8 +32,18 @@ class Edit extends Form
                 'Category pane'    => ['css' => '#pimee_product_asset-tabs-categories'],
                 'Category tree'    => [
                     'css'        => '#trees',
-                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                    'decorators' => [
+                        'Pim\Behat\Decorator\SpinableDecorator',
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
                 ],
+                'Main context selector' => [
+                    'css'        => '.asset-variations-pane h3',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\SpinableDecorator',
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator\BaseDecorator'
+                    ]
+                ]
             ]
         );
     }
@@ -47,26 +57,6 @@ class Edit extends Form
     {
         $field = $this->find('css', 'label:contains("End of use at")');
         $this->fillDateField($field, $date);
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($locale)
-    {
-        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $elt->click();
-
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
-        }
-        $elt->click();
     }
 
     /**
@@ -148,13 +138,9 @@ class Edit extends Form
      */
     public function findReferenceUploadZone()
     {
-        $uploadZone = $this->find('css', 'div.reference .asset-uploader');
-
-        if (!$uploadZone) {
-            throw new ElementNotFoundException($this->getSession(), 'reference upload zone');
-        }
-
-        return $uploadZone;
+        return $this->spin(function () {
+            return $this->find('css', 'div.reference .asset-uploader');
+        }, 'Cannot find the reference upload zone');
     }
 
     /**
@@ -167,13 +153,10 @@ class Edit extends Form
     public function findVariationUploadZone($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
-        $uploadZone = $variationContainer->find('css', 'div.variation .asset-uploader');
 
-        if (!$uploadZone) {
-            throw new ElementNotFoundException($this->getSession(), 'variation upload zone');
-        }
-
-        return $uploadZone;
+        return $this->spin(function () use ($variationContainer) {
+            return $variationContainer->find('css', 'div.variation .asset-uploader');
+        }, 'Cannot find the variation upload zone');
     }
 
     /**
@@ -205,11 +188,9 @@ class Edit extends Form
      */
     public function findVariationContainer($channel)
     {
-        $allVariationsContainer = $this->findAll('css', 'div.variation');
-
-        if (null === $allVariationsContainer) {
-            throw new ElementNotFoundException($this->getSession(), 'variation containers');
-        }
+        $allVariationsContainer = $this->spin(function () {
+            return $this->findAll('css', 'div.variation');
+        }, 'Cannot find the variation containers');
 
         foreach ($allVariationsContainer as $container) {
             $title = $this->find('css', sprintf('h4:contains("%s")', $channel));

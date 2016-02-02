@@ -10,14 +10,25 @@ Feature: Compare and copy from working copy
       | sku    | family | categories | name-fr_FR | description-en_US-mobile | description-fr_FR-mobile |
       | tshirt | tees   | tees       | Floup      | City tee                 | T-shirt de ville         |
     And I am logged in as "Mary"
-    And I edit the "tshirt" product
 
   Scenario: Successfully copy value from working copy
-    Given I change the Name to "That's my tee"
+    Given I edit the "tshirt" product
+    And I change the Name to "That's my tee"
     And I change the Description to "Hiking tee"
-    Then the Name copy value for scope "mobile", locale "en_US" and source "working_copy" should be ""
-    And the Description copy value for scope "mobile", locale "en_US" and source "working_copy" should be "City tee"
+    And I open the comparison panel
+    And I switch the comparison locale to "en_US"
+    And I switch the comparison scope to "mobile"
+    And I switch the comparison source to "working_copy"
+    Then the Name comparison value should be ""
+    And the Description comparison value should be "City tee"
     When I select all translations
     And I copy selected translations
     Then the product Name should be ""
     And the product Description for scope "mobile" should be "City tee"
+
+  Scenario: Only see localizable fields
+    Given the following product drafts:
+      | product | status | author | result                                                          |
+      | tshirt  | draft  | sandra   | {"values":{"SKU":[{"locale":null,"scope":null,"data":"My tshirt"}]}} |
+    And I edit the "tshirt" product
+    Then I should see "ta mère"

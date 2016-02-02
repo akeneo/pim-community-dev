@@ -10,27 +10,27 @@ Feature: Keep context on product assets
 
   Scenario: Keep locale when editing a localizable asset
     Given I am on the assets page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I click on the "chicagoskyline" row
     Then I should be on the "chicagoskyline" asset edit page
-    And the locale "français (France)" should be selected
+    And the locale "fr_FR" should be selected
 
   Scenario: Keep local when go back to the grid
     Given I am on the assets page
-    And the locale "English (United States)" should be selected
+    And the locale "en_US" should be selected
     And I click on the "chicagoskyline" row
     Then I should be on the "chicagoskyline" asset edit page
-    And the locale "English (United States)" should be selected
-    When I switch the locale to "French (France)"
+    And the locale "en_US" should be selected
+    When I switch the locale to "fr_FR"
     And I click back to grid
     Then I should be on the assets page
-    Then the locale "français (France)" should be selected
+    Then the locale "fr_FR" should be selected
 
   Scenario: Keep locale when editing a non localizable asset
     Given I am on the assets page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I click on the "paint" row
     Then I should be on the "paint" asset edit page
     And I click back to grid
     Then I should be on the assets page
-    Then the locale "français (France)" should be selected
+    Then the locale "fr_FR" should be selected
