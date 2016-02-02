@@ -11,18 +11,32 @@ class DateFactorySpec extends ObjectBehavior
         $this->beConstructedWith(['en_US' => 'm/d/Y', 'fr_FR' => 'dd/MM/yyyy']);
     }
 
-    function it_creates_a_date_formatter()
+    function it_returns_intl_formatter()
     {
         $date = new \IntlDateFormatter(
             'fr_FR',
             \IntlDateFormatter::SHORT,
-            \IntlDateFormatter::NONE,
-            null,
-            null,
-            'dd/MM/yyyy'
+            \IntlDateFormatter::NONE
         );
 
-        $this->create(['locale' => 'fr_FR'])->shouldReturnAnInstanceOf(get_class($date));
-        $this->create(['locale' => 'fr_FR'])->getPattern()->shouldReturn('dd/MM/yyyy');
+        $this->create([])->shouldReturnAnInstanceOf(get_class($date));
+    }
+
+    function it_creates_a_date_with_intl_format()
+    {
+        $options = ['locale' => 'fr_FR'];
+        $this->create($options)->getPattern()->shouldReturn('dd/MM/yyyy');
+    }
+
+    function it_creates_a_date_with_defined_format()
+    {
+        $options = ['locale' => 'fr_FR', 'date_format' => 'd/M/yy'];
+        $this->create($options)->getPattern()->shouldReturn('d/M/yy');
+    }
+
+    function it_creates_an_english_date_without_locale()
+    {
+        $options = [];
+        $this->create($options)->getPattern()->shouldReturn('M/d/yy');
     }
 }

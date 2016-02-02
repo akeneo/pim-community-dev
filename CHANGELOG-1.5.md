@@ -1,5 +1,8 @@
 # 1.5.x
 
+## BC breaks
+- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+
 # 1.5.0-ALPHA1 (2016-01-26)
 
 ## Technical improvements

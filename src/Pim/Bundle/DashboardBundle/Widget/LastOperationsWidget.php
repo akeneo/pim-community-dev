@@ -3,6 +3,8 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -20,14 +22,28 @@ class LastOperationsWidget implements WidgetInterface
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var PresenterInterface */
+    protected $presenter;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
-     * @param JobExecutionManager $manager
-     * @param TranslatorInterface $translator
+     * @param JobExecutionManager   $manager
+     * @param TranslatorInterface   $translator
+     * @param PresenterInterface    $presenter
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(JobExecutionManager $manager, TranslatorInterface $translator)
-    {
-        $this->manager    = $manager;
-        $this->translator = $translator;
+    public function __construct(
+        JobExecutionManager $manager,
+        TranslatorInterface $translator,
+        PresenterInterface $presenter,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->manager      = $manager;
+        $this->translator   = $translator;
+        $this->presenter    = $presenter;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -66,7 +82,8 @@ class LastOperationsWidget implements WidgetInterface
                 ->translator
                 ->trans('pim_import_export.batch_status.' . $operation['status']);
             if ($operation['date'] instanceof \DateTime) {
-                $operation['date'] = $operation['date']->format('U');
+                $locale = $this->tokenStorage->getToken()->getUser()->getUiLocale()->getCode();
+                $operation['date'] = $this->presenter->present($operation['date'], ['locale' => $locale]);
             }
         }
 
