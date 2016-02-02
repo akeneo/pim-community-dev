@@ -6,10 +6,13 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Doctrine\ORM\EntityManagerInterface;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -18,12 +21,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobProfileController extends AbstractDoctrineController
+class JobProfileController
 {
     /** @var ConnectorRegistry */
     protected $connectorRegistry;
@@ -57,60 +60,82 @@ class JobProfileController extends AbstractDoctrineController
     /** @var File */
     protected $file;
 
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var EntityManagerInterface */
+    protected $entityManager;
+
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepository;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
-     * Constructor
-     *
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
-     * @param string                   $jobType
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
      * @param JobLauncherInterface     $simpleJobLauncher
+     * @param EntityManagerInterface   $entityManager
+     * @param JobInstanceRepository    $jobInstanceRepository
+     * @param TokenStorageInterface    $tokenStorage
+     * @param string                   $jobType
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
-        $jobType,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        JobLauncherInterface $simpleJobLauncher
+        JobLauncherInterface $simpleJobLauncher,
+        EntityManagerInterface $entityManager,
+        JobInstanceRepository $jobInstanceRepository,
+        TokenStorageInterface $tokenStorage,
+        $jobType
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
+        $this->connectorRegistry     = $connectorRegistry;
+        $this->jobType               = $jobType;
 
-        $this->connectorRegistry  = $connectorRegistry;
-        $this->jobType            = $jobType;
-
-        $this->jobInstanceType    = $jobInstanceType;
+        $this->jobInstanceType       = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
-        $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->simpleJobLauncher  = $simpleJobLauncher;
+        $this->jobInstanceFactory    = $jobInstanceFactory;
+        $this->simpleJobLauncher     = $simpleJobLauncher;
+        $this->formFactory           = $formFactory;
+        $this->request               = $request;
+        $this->router                = $router;
+        $this->templating            = $templating;
+        $this->eventDispatcher       = $eventDispatcher;
+        $this->validator             = $validator;
+        $this->entityManager         = $entityManager;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->tokenStorage          = $tokenStorage;
     }
 
     /**
@@ -123,17 +148,18 @@ class JobProfileController extends AbstractDoctrineController
     public function createAction(Request $request)
     {
         $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->createForm($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->entityManager->persist($jobInstance);
 
-                $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
+                $this->request->getSession()->getFlashBag()
+                    ->add('success', new Message(sprintf('flash.%s.created', $this->getJobType())));
 
-                $url = $this->generateUrl(
+                $url = $this->router->generate(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
                     ['id' => $jobInstance->getId()]
                 );
@@ -143,7 +169,7 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
             [
                 'form' => $form->createView()
@@ -163,14 +189,14 @@ class JobProfileController extends AbstractDoctrineController
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', $e->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
             return $this->redirectToIndexView();
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_SHOW, new GenericEvent($jobInstance));
 
-        $form = $this->createForm($this->jobInstanceType, $jobInstance, ['disabled' => true]);
+        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
         $uploadForm = null;
         $job = $jobInstance->getJob();
@@ -184,19 +210,17 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
-        $validator = $this->getValidator();
-
         if (null === $template = $job->getShowTemplate()) {
             $template = sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType()));
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             $template,
             [
                 'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
-                'violations'       => $validator->validate($jobInstance, ['Default', 'Execution']),
-                'uploadViolations' => $validator->validate($jobInstance, ['Default', 'UploadExecution']),
+                'violations'       => $this->validator->validate($jobInstance, ['Default', 'Execution']),
+                'uploadViolations' => $this->validator->validate($jobInstance, ['Default', 'UploadExecution']),
                 'uploadAllowed'    => $uploadAllowed,
                 'uploadForm'       => $uploadForm,
             ]
@@ -216,24 +240,22 @@ class JobProfileController extends AbstractDoctrineController
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', $e->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
             return $this->redirectToIndexView();
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EDIT, new GenericEvent($jobInstance));
 
-        $form = $this->createForm($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->entityManager->persist($jobInstance);
 
-                $this->addFlash(
-                    'success',
-                    sprintf('flash.%s.updated', $this->getJobType())
-                );
+                $this->request->getSession()->getFlashBag()
+                    ->add('success', new Message(sprintf('flash.%s.updated', $this->getJobType())));
 
                 return $this->redirectToShowView($jobInstance->getId());
             }
@@ -245,7 +267,7 @@ class JobProfileController extends AbstractDoctrineController
             $template = sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType()));
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             $template,
             [
                 'jobInstance' => $jobInstance,
@@ -276,7 +298,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->remove($jobInstance);
+        $this->entityManager->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -294,7 +316,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function validate(JobInstance $jobInstance)
     {
-        $violations = $this->getValidator()->validate($jobInstance, ['Default', 'Execution']);
+        $violations = $this->validator->validate($jobInstance, ['Default', 'Execution']);
 
         return $violations->count() === 0;
     }
@@ -308,7 +330,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function validateUpload(JobInstance $jobInstance)
     {
-        $uploadViolations = $this->getValidator()->validate($jobInstance, ['Default', 'UploadExecution']);
+        $uploadViolations = $this->validator->validate($jobInstance, ['Default', 'UploadExecution']);
 
         $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
 
@@ -327,7 +349,7 @@ class JobProfileController extends AbstractDoctrineController
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', $e->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
             return $this->redirectToIndexView();
         }
@@ -353,7 +375,7 @@ class JobProfileController extends AbstractDoctrineController
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', $e->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', new Message($e->getMessage()));
 
             return $this->redirectToIndexView();
         }
@@ -376,10 +398,9 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function processUploadForm(JobInstance $jobInstance)
     {
-        $request = $this->getRequest();
-        if ($request->isMethod('POST')) {
+        if ($this->request->isMethod('POST')) {
             $form = $this->createUploadForm();
-            $form->handleRequest($request);
+            $form->handleRequest($this->request);
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
                 if (null !== $file = $data->getUploadedFile()) {
@@ -388,7 +409,8 @@ class JobProfileController extends AbstractDoctrineController
                     return true;
                 }
 
-                $this->addFlash('error', 'You must select a file to upload');
+                $this->request->getSession()->getFlashBag()
+                    ->add('error', new Message('You must select a file to upload'));
             }
         }
 
@@ -413,11 +435,12 @@ class JobProfileController extends AbstractDoctrineController
 
         $jobExecution = $this->simpleJobLauncher
             ->setConfig(['email' => true])
-            ->launch($jobInstance, $this->getUser(), $rawConfig);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfig);
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
-        $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
+        $this->request->getSession()->getFlashBag()
+            ->add('success', new Message(sprintf('The %s is running.', $this->getJobType())));
 
         return $jobExecution;
     }
@@ -441,11 +464,12 @@ class JobProfileController extends AbstractDoctrineController
 
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $constraints = $reader->getUploadedFileConstraints();
-                    $this->fileError = $this->getValidator()->validate($file, $constraints);
+                    $this->fileError = $this->validator->validate($file, $constraints);
 
                     if ($this->fileError->count() !== 0) {
                         foreach ($this->fileError as $error) {
-                            $this->addFlash('error', $error->getMessage());
+                            $this->request->getSession()->getFlashBag()
+                                ->add('error', new Message($error->getMessage()));
                         }
 
                         return false;
@@ -472,11 +496,17 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
-        $jobInstance = $this->findOr404('Akeneo\Component\Batch\Model\JobInstance', $id);
+        $jobInstance = $this->jobInstanceRepository->find($id);
+
+        if (!$jobInstance) {
+            throw new NotFoundHttpException(
+                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobInstance')
+            );
+        }
 
         // Fixme: should look at the job execution to see the status of a job instance execution
         if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
             );
         }
@@ -484,7 +514,7 @@ class JobProfileController extends AbstractDoctrineController
         $job = $this->connectorRegistry->getJob($jobInstance);
 
         if (!$job) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
                     'Connector: %s<br />' .
@@ -519,7 +549,9 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function redirectToIndexView()
     {
-        return $this->redirectToRoute(sprintf('pim_importexport_%s_profile_index', $this->getJobType()));
+        return new RedirectResponse(
+            $this->router->generate((sprintf('pim_importexport_%s_profile_index', $this->getJobType())))
+        );
     }
 
     /**
@@ -531,10 +563,10 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function redirectToShowView($jobId)
     {
-        return $this->redirectToRoute(
+        return new RedirectResponse($this->router->generate(
             sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
             ['id' => $jobId]
-        );
+        ));
     }
 
     /**
@@ -546,10 +578,10 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function redirectToReportView($jobId)
     {
-        return $this->redirectToRoute(
+        return new RedirectResponse($this->router->generate(
             sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
             ['id' => $jobId]
-        );
+        ));
     }
 
     /**
@@ -559,6 +591,6 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function createUploadForm()
     {
-        return $this->createForm(new UploadType(), null, ['validation_groups' => ['upload']]);
+        return $this->formFactory->create(new UploadType(), null, ['validation_groups' => ['upload']]);
     }
 }

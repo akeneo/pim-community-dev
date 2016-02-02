@@ -8,15 +8,20 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Model\AvailableAttributes;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Variant group controller
@@ -33,7 +38,14 @@ class VariantGroupController extends GroupController
     /** @var VariantGroupAttributesResolver */
     protected $groupAttrResolver;
 
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
     /**
+     * @param Request                        $request
+     * @param EngineInterface                $templating
+     * @param RouterInterface                $router
+     * @param FormFactoryInterface           $formFactory
      * @param GroupManager                   $groupManager
      * @param HandlerInterface               $groupHandler
      * @param Form                           $groupForm
@@ -43,15 +55,22 @@ class VariantGroupController extends GroupController
      * @param RemoverInterface               $groupRemover
      */
     public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
+        RemoverInterface $groupRemover,
+        FormFactoryInterface $formFactory,
         AttributeRepositoryInterface $attributeRepository,
-        VariantGroupAttributesResolver $groupAttrResolver,
-        RemoverInterface $groupRemover
+        VariantGroupAttributesResolver $groupAttrResolver
     ) {
         parent::__construct(
+            $request,
+            $templating,
+            $router,
             $groupManager,
             $groupHandler,
             $groupForm,
@@ -59,6 +78,10 @@ class VariantGroupController extends GroupController
             $groupRemover
         );
 
+        $this->request             = $request;
+        $this->templating          = $templating;
+        $this->router              = $router;
+        $this->formFactory         = $formFactory;
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
     }
@@ -87,15 +110,15 @@ class VariantGroupController extends GroupController
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_variant_group_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_variant_group_index'));
         }
 
         $group = $this->groupFactory->createGroup('VARIANT');
 
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.variant group.created');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
 
-            $url = $this->generateUrl(
+            $url = $this->router->generate(
                 'pim_enrich_variant_group_edit',
                 ['id' => $group->getId()]
             );
@@ -124,7 +147,7 @@ class VariantGroupController extends GroupController
         }
 
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.variant group.updated');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.updated'));
         }
 
         return [
@@ -135,7 +158,7 @@ class VariantGroupController extends GroupController
     }
 
     /**
-     * Get the AvailbleAttributes form
+     * Get the AvailableAttributes form
      *
      * @param GroupInterface $group
      *
@@ -143,7 +166,7 @@ class VariantGroupController extends GroupController
      */
     protected function getAvailableAttributesForm(GroupInterface $group)
     {
-        return $this->createForm(
+        return $this->formFactory->create(
             'pim_available_attributes',
             new AvailableAttributes(),
             ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]

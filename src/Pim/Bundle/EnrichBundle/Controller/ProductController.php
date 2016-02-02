@@ -5,14 +5,13 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -46,7 +45,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductController extends AbstractDoctrineController
+class ProductController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
@@ -72,43 +71,45 @@ class ProductController extends AbstractDoctrineController
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var CategoryFactory */
     protected $categoryFactory;
 
-    /**
-     * Constant used to redirect to the datagrid when save edit form
-     *
-     * @staticvar string
-     */
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** var ValidatorInterface */
+    protected $validator;
+
+    /** @var EngineInterface */
+    protected $templating;
+
     const BACK_TO_GRID = 'BackGrid';
 
-    /**
-     * Constant used to redirect to create popin when save edit form
-     *
-     * @staticvar string
-     */
     const CREATE = 'Create';
 
-    /**
-     * Constant used to redirect to next product in a sequential edition
-     *
-     * @staticvar string
-     */
     const SAVE_AND_NEXT = 'SaveAndNext';
 
-    /**
-     * Constant used to redirect to the grid once all products are edited in a sequential edition
-     *
-     * @staticvar string
-     */
     const SAVE_AND_FINISH = 'SaveAndFinish';
 
     /**
-     * Constructor
-     *
      * @param Request                    $request
      * @param EngineInterface            $templating
      * @param RouterInterface            $router
@@ -117,7 +118,6 @@ class ProductController extends AbstractDoctrineController
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
      * @param EventDispatcherInterface   $eventDispatcher
-     * @param ManagerRegistry            $doctrine
      * @param ProductRepositoryInterface $productRepository
      * @param CategoryManager            $categoryManager
      * @param UserContext                $userContext
@@ -126,7 +126,7 @@ class ProductController extends AbstractDoctrineController
      * @param ProductCategoryManager     $prodCatManager
      * @param SaverInterface             $productSaver
      * @param SequentialEditManager      $seqEditManager
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface    $productBuilder
+     * @param ProductBuilderInterface    $productBuilder
      * @param CategoryFactory            $categoryFactory
      */
     public function __construct(
@@ -138,7 +138,6 @@ class ProductController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         ProductRepositoryInterface $productRepository,
         CategoryManager $categoryManager,
         UserContext $userContext,
@@ -150,18 +149,13 @@ class ProductController extends AbstractDoctrineController
         ProductBuilderInterface $productBuilder,
         CategoryFactory $categoryFactory
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
+        $this->request           = $request;
+        $this->templating        = $templating;
+        $this->router            = $router;
+        $this->tokenStorage      = $tokenStorage;
+        $this->formFactory       = $formFactory;
+        $this->validator         = $validator;
+        $this->translator        = $translator;
         $this->productRepository = $productRepository;
         $this->categoryManager   = $categoryManager;
         $this->userContext       = $userContext;
@@ -172,21 +166,20 @@ class ProductController extends AbstractDoctrineController
         $this->seqEditManager    = $seqEditManager;
         $this->productBuilder    = $productBuilder;
         $this->categoryFactory   = $categoryFactory;
+        $this->eventDispatcher   = $eventDispatcher;
     }
 
     /**
      * List products
-     *
-     * @param Request $request the request
      *
      * @AclAncestor("pim_enrich_product_index")
      * @Template
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $this->seqEditManager->removeByUser($this->getUser());
+        $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
 
         return [
             'locales'    => $this->getUserLocales(),
@@ -212,18 +205,18 @@ class ProductController extends AbstractDoctrineController
         }
 
         $product = $this->productBuilder->createProduct();
-        $form    = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
+        $form    = $this->formFactory->create('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
                 $this->productSaver->save($product);
-                $this->addFlash('success', 'flash.product.created');
+                $this->request->getSession()->getFlashBag()->add('success', new Message('flash.product.created'));
 
                 if ($dataLocale === null) {
                     $dataLocale = $this->getDataLocaleCode();
                 }
 
-                $url = $this->generateUrl(
+                $url = $this->router->generate(
                     'pim_enrich_product_edit',
                     ['id' => $product->getId(), 'dataLocale' => $dataLocale]
                 );
@@ -242,15 +235,12 @@ class ProductController extends AbstractDoctrineController
     /**
      * Edit product
      *
-     * @param Request $request
-     * @param int     $id
-     *
      * @Template
      * @AclAncestor("pim_enrich_product_index")
      *
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction()
     {
         return [];
     }
@@ -293,7 +283,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function redirectAfterEdit($params)
     {
-        switch ($this->getRequest()->get('action')) {
+        switch ($this->request->get('action')) {
             case self::CREATE:
                 $route                  = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
@@ -306,16 +296,15 @@ class ProductController extends AbstractDoctrineController
     /**
      * History of a product
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_product_history")
      *
      * @return Response
      */
-    public function historyAction(Request $request, $id)
+    public function historyAction($id)
     {
-        return $this->render(
+        return $this->templating->renderResponse(
             'PimEnrichBundle:Product:_history.html.twig',
             [
                 'product' => $this->findProductOr404($id),
@@ -341,7 +330,12 @@ class ProductController extends AbstractDoctrineController
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
-        $parent = $this->findOr404($this->categoryFactory->getCategoryClass(), $categoryId);
+        $parent = $this->categoryManager->getCategoriesByIds($categoryId);
+
+        if (!$parent) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->categoryFactory->getCategoryClass()));
+        }
+
         $categories = null;
 
         $includeParent = $request->get('include_parent', false);
@@ -387,13 +381,13 @@ class ProductController extends AbstractDoctrineController
     /**
      * {@inheritdoc}
      */
-    protected function redirectToRoute($route, $parameters = [], $status = 302)
+    protected function redirectToRoute($route, $parameters = [])
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocaleCode();
         }
 
-        return parent::redirectToRoute($route, $parameters, $status);
+        return new RedirectResponse($this->router->generate($route, $parameters));
     }
 
     /**
@@ -433,7 +427,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getComparisonLocale()
     {
-        $locale = $this->getRequest()->query->get('compareWith');
+        $locale = $this->request->query->get('compareWith');
 
         if ($this->getDataLocaleCode() !== $locale) {
             return $locale;
@@ -453,7 +447,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->productRepository->findOneByWithValues($id);
         if (!$product) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
@@ -476,7 +470,7 @@ class ProductController extends AbstractDoctrineController
         array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
-        return $this->createForm(
+        return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             ['excluded_attributes' => $attributes]
@@ -484,31 +478,11 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Returns the options for the edit form
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function getEditFormOptions(ProductInterface $product)
-    {
-        return [
-            'enable_values'    => $this->securityFacade->isGranted('pim_enrich_product_edit_attributes'),
-            'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
-            'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
-            'currentLocale'    => $this->getDataLocaleCode(),
-            'comparisonLocale' => $this->getComparisonLocale(),
-        ];
-    }
-
-    /**
      * Returns the options for the create form
      *
-     * @param ProductInterface $product
-     *
      * @return array
      */
-    protected function getCreateFormOptions(ProductInterface $product)
+    protected function getCreateFormOptions()
     {
         return [];
     }
@@ -529,7 +503,7 @@ class ProductController extends AbstractDoctrineController
         array $channels,
         array $trees
     ) {
-        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+        $sequentialEdit = $this->seqEditManager->findByUser($this->tokenStorage->getToken()->getUser());
         if ($sequentialEdit) {
             $this->seqEditManager->findWrap($sequentialEdit, $product);
         }
@@ -545,7 +519,7 @@ class ProductController extends AbstractDoctrineController
             'created'          => $this->versionManager->getOldestLogEntry($product),
             'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->getUserLocales(),
-            'createPopin'      => $this->getRequest()->get('create_popin'),
+            'createPopin'      => $this->request->get('create_popin'),
             'sequentialEdit'   => $sequentialEdit
         ];
 

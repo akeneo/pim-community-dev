@@ -27,8 +27,6 @@ class ProductController
     protected $rendererRegistry;
 
     /**
-     * Constructor
-     *
      * @param ProductRepositoryInterface $productRepository
      * @param RendererRegistry           $rendererRegistry
      */

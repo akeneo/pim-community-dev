@@ -7,11 +7,15 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Group controller
@@ -22,7 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GroupController
 {
-    /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
 
     /** @var GroupManager */
@@ -40,20 +43,38 @@ class GroupController
     /** @var RemoverInterface */
     protected $groupRemover;
 
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /**
-     * @param GroupManager             $groupManager
-     * @param HandlerInterface         $groupHandler
-     * @param Form                     $groupForm
-     * @param GroupFactory             $groupFactory
-     * @param RemoverInterface         $groupRemover
+     * @param Request          $request
+     * @param EngineInterface  $templating
+     * @param RouterInterface  $router
+     * @param GroupManager     $groupManager
+     * @param HandlerInterface $groupHandler
+     * @param Form             $groupForm
+     * @param GroupFactory     $groupFactory
+     * @param RemoverInterface $groupRemover
      */
     public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover
     ) {
+        $this->request      = $request;
+        $this->templating   = $templating;
+        $this->router       = $router;
         $this->groupManager = $groupManager;
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;
@@ -91,15 +112,15 @@ class GroupController
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_group_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_group_index'));
         }
 
         $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group.created');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.created'));
 
-            $url = $this->generateUrl(
+            $url = $this->router->generate(
                 'pim_enrich_group_edit',
                 ['id' => $group->getId()]
             );
@@ -128,7 +149,7 @@ class GroupController
     public function editAction(Group $group)
     {
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group.updated');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.updated'));
         }
 
         return [
@@ -152,10 +173,10 @@ class GroupController
     {
         $this->groupRemover->remove($group);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_group_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_group_index'));
         }
     }
 
@@ -172,7 +193,7 @@ class GroupController
      */
     public function historyAction(Group $group)
     {
-        return $this->render(
+        return $this->templating->render(
             'PimEnrichBundle:Group:_history.html.twig',
             [
                 'group' => $group
