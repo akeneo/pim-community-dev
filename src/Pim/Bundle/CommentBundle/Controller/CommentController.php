@@ -37,6 +37,7 @@ class CommentController
      * @param TokenStorageInterface $tokenStorage
      * @param ManagerRegistry       $doctrine
      * @param RemoverInterface      $commentRemover
+     * @param string                $commentClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
