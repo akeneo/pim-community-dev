@@ -21,8 +21,6 @@ class DatagridController
     protected $templating;
 
     /**
-     * Constructor
-     *
      * @param EngineInterface $templating
      */
     public function __construct(EngineInterface $templating)
