@@ -11,6 +11,10 @@ services:
         class: %pimee_workflow.controller.product_draft.class%
         scope: request
         arguments:
+            - '@request'
+            - '@router'
+            - '@security.token_storage'
+            - '@translator'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'

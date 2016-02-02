@@ -36,6 +36,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PublishedProductController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var UserContext */
     protected $userContext;
 
@@ -51,49 +63,37 @@ class PublishedProductController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var Request */
-    protected $request;
-
     /**
+     * @param Request                       $request
+     * @param RouterInterface               $router
+     * @param EngineInterface               $templating
+     * @param TranslatorInterface           $translator
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
      * @param CompletenessManager           $completenessManager
      * @param ChannelManager                $channelManager
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TranslatorInterface           $translator
-     * @param EngineInterface               $templating
-     * @param RouterInterface               $router
-     * @param Request                       $request
      */
     public function __construct(
+        Request $request,
+        RouterInterface $router,
+        EngineInterface $templating,
+        TranslatorInterface $translator,
         UserContext $userContext,
         PublishedProductManager $manager,
         CompletenessManager $completenessManager,
         ChannelManager $channelManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TranslatorInterface $translator,
-        EngineInterface $templating,
-        RouterInterface $router,
-        Request $request
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
+        $this->request              = $request;
+        $this->router               = $router;
+        $this->templating           = $templating;
+        $this->translator           = $translator;
         $this->userContext          = $userContext;
         $this->manager              = $manager;
         $this->completenessManager  = $completenessManager;
         $this->channelManager       = $channelManager;
         $this->authorizationChecker = $authorizationChecker;
-        $this->translator           = $translator;
-        $this->templating           = $templating;
-        $this->router               = $router;
-        $this->request              = $request;
     }
 
     /**

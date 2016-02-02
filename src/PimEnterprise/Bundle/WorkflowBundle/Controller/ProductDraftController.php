@@ -15,6 +15,7 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
@@ -28,8 +29,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -44,6 +48,18 @@ class ProductDraftController
 
     /** @staticvar string */
     const MASS_REFUSE_JOB_CODE  = 'refuse_product_draft';
+
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /** @var ObjectRepository */
     protected $repository;
@@ -70,6 +86,10 @@ class ProductDraftController
     protected $gridFilterAdapter;
 
     /**
+     * @param Request                       $request
+     * @param RouterInterface               $router
+     * @param TokenStorageInterface         $tokenStorage
+     * @param TranslatorInterface           $translator
      * @param ObjectRepository              $repository
      * @param ProductDraftManager           $manager
      * @param UserContext                   $userContext
@@ -80,6 +100,10 @@ class ProductDraftController
      * @param OroToPimGridFilterAdapter     $gridFilterAdapter
      */
     public function __construct(
+        Request $request,
+        RouterInterface $router,
+        TokenStorageInterface $tokenStorage,
+        TranslatorInterface $translator,
         ObjectRepository $repository,
         ProductDraftManager $manager,
         UserContext $userContext,
@@ -89,6 +113,10 @@ class ProductDraftController
         AuthorizationCheckerInterface $authorizationChecker,
         OroToPimGridFilterAdapter $gridFilterAdapter
     ) {
+        $this->request               = $request;
+        $this->router                = $router;
+        $this->tokenStorage          = $tokenStorage;
+        $this->translator            = $translator;
         $this->repository            = $repository;
         $this->manager               = $manager;
         $this->userContext           = $userContext;
@@ -161,7 +189,7 @@ class ProductDraftController
             return new JsonResponse(
                 [
                     'successful' => $status === 'success',
-                    'message'    => $this->getTranslator()->trans(
+                    'message'    => $this->translator->trans(
                         sprintf('flash.product_draft.approve.%s', $status),
                         $messageParams
                     )
@@ -169,10 +197,11 @@ class ProductDraftController
             );
         }
 
-        $this->addFlash($status, sprintf('flash.product_draft.approve.%s', $status), $messageParams);
+        $this->request->getSession()->getFlashBag()
+            ->add('success', new Message(sprintf('flash.product_draft.approve.%s', $status)));
 
-        return $this->redirect(
-            $this->generateUrl(
+        return new RedirectResponse(
+            $this->router->generate(
                 'pim_enrich_product_edit',
                 [
                     'id'         => $productDraft->getProduct()->getId(),
@@ -218,8 +247,8 @@ class ProductDraftController
             );
         }
 
-        return $this->redirect(
-            $this->generateUrl(
+        return new RedirectResponse(
+            $this->router->generate(
                 'pim_enrich_product_edit',
                 [
                     'id'         => $productDraft->getProduct()->getId(),
@@ -246,10 +275,11 @@ class ProductDraftController
             'comment'  => $request->get('comment'),
         ]));
 
-        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        $jobExecution = $this->simpleJobLauncher
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
 
-        return $this->redirect(
-            $this->generateUrl(
+        return new RedirectResponse(
+            $this->router->generate(
                 'pim_enrich_job_tracker_show',
                 ['id' => $jobExecution->getId()]
             )
@@ -273,10 +303,11 @@ class ProductDraftController
             'comment'  => $request->get('comment'),
         ]));
 
-        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        $jobExecution = $this->simpleJobLauncher
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
 
-        return $this->redirect(
-            $this->generateUrl(
+        return new RedirectResponse(
+            $this->router->generate(
                 'pim_enrich_job_tracker_show',
                 ['id' => $jobExecution->getId()]
             )
