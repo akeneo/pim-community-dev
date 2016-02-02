@@ -29,6 +29,10 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.channel'
             - '@security.authorization_checker'
+            - '@translator'
+            - '@templating'
+            - '@router'
+            - '@request'
 
     pimee_workflow.controller.published_product_rest:
         class: %pimee_workflow.controller.published_product_rest.class%

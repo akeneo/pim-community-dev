@@ -13,8 +13,15 @@ services:
     pim_enrich.controller.product:
         scope: request
         class: %pim_enrich.controller.product.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@validator'
+            - '@translator'
+            - '@event_dispatcher'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
@@ -102,7 +109,6 @@ services:
     pim_enrich.controller.mass_edit_action:
         scope: request
         class: %pim_enrich.controller.mass_edit_action.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
