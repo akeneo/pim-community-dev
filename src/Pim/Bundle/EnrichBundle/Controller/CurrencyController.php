@@ -37,22 +37,20 @@ class CurrencyController
      */
     public function __construct(Request $request, RouterInterface $router, SaverInterface $currencySaver)
     {
-        $this->currencySaver = $currencySaver;
         $this->request       = $request;
         $this->router        = $router;
+        $this->currencySaver = $currencySaver;
     }
 
     /**
      * List currencies
-     *
-     * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_currency_index")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [];
     }
