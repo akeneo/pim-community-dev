@@ -34,15 +34,15 @@ datagrid:
                 frontend_type: string
                 label:         pimee_product_asset.description.label
             endOfUseAt:
-                type:          field
-                frontend_type: datetime
+                type:          product_value_date
+                frontend_type: date
                 label:         pimee_product_asset.endOfUse.label
             createdAt:
-                type:          field
+                type:          product_value_date
                 frontend_type: date
                 label:         pimee_product_asset.createdAt.label
             updatedAt:
-                type:          field
+                type:          product_value_date
                 frontend_type: date
                 label:         pimee_product_asset.updatedAt.label
         properties:
