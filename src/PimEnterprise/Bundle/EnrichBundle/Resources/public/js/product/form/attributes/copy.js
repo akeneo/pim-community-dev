@@ -70,7 +70,7 @@ define(
                         author: null
                     },
                     {
-                        code: 'draft',
+                        code: 'my_draft',
                         label: __('pimee_enrich.entity.product.copy.source.draft'),
                         type: 'my_draft',
                         author: null
@@ -127,9 +127,8 @@ define(
                 switch (this.currentSource.type) {
                     case 'working_copy':
                         return _.result(this.getFormData().meta.working_copy, 'values', {});
-
                     case 'draft':
-                        return _.findWhere(this.otherDrafts, {author: this.currentSource.author}).changes.values
+                        return _.findWhere(this.otherDrafts, {author: this.currentSource.author}).changes.values;
                     default:
                         return Copy.prototype.getSourceData.apply(this, arguments);
                 }
@@ -168,7 +167,7 @@ define(
                 // If the user owns the product, my_draft is not a valid source
                 if (null === this.getFormData().meta.draft_status) {
                     context.sources = _.reject(this.sources, function (source) {
-                        return 'my_draft' === source.type;
+                        return 'my_draft' === source.code;
                     });
                 } else {
                     context.sources = this.sources;

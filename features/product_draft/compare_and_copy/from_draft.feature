@@ -21,7 +21,7 @@ Feature: Copy value from my draft
     And I open the comparison panel
     And I switch the comparison locale to "en_US"
     And I switch the comparison scope to "mobile"
-    And I switch the comparison source to "draft"
+    And I switch the comparison source to "my_draft"
     Then the Name comparison value should be "That's not my tee anymore"
     And the Description comparison value should be "JA !"
     And I switch the scope to "tablet"

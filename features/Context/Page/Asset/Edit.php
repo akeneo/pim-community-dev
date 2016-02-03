@@ -33,15 +33,13 @@ class Edit extends Form
                 'Category tree'    => [
                     'css'        => '#trees',
                     'decorators' => [
-                        'Pim\Behat\Decorator\SpinableDecorator',
                         'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
                     ]
                 ],
                 'Main context selector' => [
                     'css'        => '.asset-variations-pane h3',
                     'decorators' => [
-                        'Pim\Behat\Decorator\SpinableDecorator',
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator\BaseDecorator'
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
                 ]
             ]

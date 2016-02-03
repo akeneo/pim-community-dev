@@ -25,10 +25,3 @@ Feature: Compare and copy from working copy
     And I copy selected translations
     Then the product Name should be ""
     And the product Description for scope "mobile" should be "City tee"
-
-  Scenario: Only see localizable fields
-    Given the following product drafts:
-      | product | status | author | result                                                          |
-      | tshirt  | draft  | sandra   | {"values":{"SKU":[{"locale":null,"scope":null,"data":"My tshirt"}]}} |
-    And I edit the "tshirt" product
-    Then I should see "ta mère"

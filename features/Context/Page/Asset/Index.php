@@ -32,15 +32,13 @@ class Index extends Grid
                 'Category tree' => [
                     'css'        => '#tree',
                     'decorators' => [
-                        'Pim\Behat\Decorator\SpinableDecorator',
                         'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
                     ]
                 ],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
-                        'Pim\Behat\Decorator\SpinableDecorator',
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator\BaseDecorator'
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],
@@ -120,13 +118,14 @@ class Index extends Grid
      */
     public function clickCategoryFilterLink($category)
     {
-        $node = $this
-            ->getElement('Category tree')
-            ->find(
-                'css',
-                sprintf('#node_%s a', $category->getId()),
-                sprintf('Could not find category filter "%s".', $category->getId())
-            );
+        $node = $this->spin(function () use ($category) {
+            return $this
+                ->getElement('Category tree')
+                ->find(
+                    'css',
+                    sprintf('#node_%s a', $category->getId())
+                );
+        }, sprintf('Could not find category filter "%s".', $category->getId()));
 
         $node->click();
     }
@@ -136,9 +135,9 @@ class Index extends Grid
      */
     public function clickUnclassifiedCategoryFilterLink()
     {
-        $node = $this
-            ->getElement('Category tree')
-            ->find('css', '#node_-1 a', 'Could not find unclassified category filter.');
+        $node = $this->spin(function () {
+            return $this->getElement('Category tree')->find('css', '#node_-1 a');
+        }, 'Could not find unclassified category filter.');
 
         $node->click();
     }

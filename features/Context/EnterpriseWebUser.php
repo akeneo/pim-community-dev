@@ -95,19 +95,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param string $fieldName
-     * @param string $scope
-     * @param string $locale
-     * @param string $expected
-     *
-     * @Then /^the ([^"]*) original value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
-     */
-    public function theOriginalValueOfShouldBe($fieldName, $scope, $locale, $expected)
-    {
-        $this->theCopyValueForSourceShouldBe($fieldName, $scope, $locale, 'working_copy', $expected);
-    }
-
-    /**
      * @param string $date
      *
      * @When /^I change the end of use at to "([^"]+)"$/
