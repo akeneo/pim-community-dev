@@ -54,32 +54,42 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function detachAll(array $objects)
+    {
+        foreach ($objects as $object) {
+            $this->detach($object);
+        }
+    }
+
+    /**
      * Detach entity living in the scheduledForDirtyCheck's
      * unit of work property.
      *
-     * @param object $entity the entity to be detached
-     * @param array  $visited array of detached entity
-     *
-     * @return void
+     * @param mixed $entity  The entity to be detached
+     * @param array $visited Array of already detached entities
      */
-    public function doDetachScheduled($entity, array &$visited)
+    protected function doDetachScheduled($entity, array &$visited)
     {
+        $oid = spl_object_hash($entity);
+        if (isset($visited[$oid])) {
+            return;
+        }
+
         $objectManager = $this->getObjectManager($entity);
         $uow = $objectManager->getUnitOfWork();
         $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
         $rootClassName = $class->rootEntityName;
-        $oid = spl_object_hash($entity);
-
-        if (isset($visited[$oid])) {
-            return;
-        }
 
         $visited[$oid] = $entity;
 
         if (null === $this->scheduledForDirtyCheck) {
             $this->scheduledForDirtyCheck = &$this->getScheduledForDirtyCheck($uow);
         }
-        unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
+        if (isset($this->scheduledForDirtyCheck[$rootClassName])) {
+            unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
+        }
 
         $this->cascadeDetachScheduled($entity, $visited);
     }
@@ -88,16 +98,14 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * Cascades a detach entities associated to entities living in the
      * scheduledForDirtyCheck unit of work property.
      *
-     * @param object $entity the entity to be detached
-     * @param array  $visited array of already detached entity
-     *
-     * @return void
+     * @param mixed $entity  The entity to be detached
+     * @param array $visited Array of already detached entities
      */
     protected function cascadeDetachScheduled($entity, array &$visited)
     {
         $objectManager = $this->getObjectManager($entity);
 
-        $class = $objectManager->getClassMetadata(get_class($entity));
+        $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
 
         $associationMappings = array_filter(
             $class->associationMappings,
@@ -109,9 +117,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
             switch (true) {
                 case ($relatedEntities instanceof ORMPersistentCollection):
-                    // Unwrap so that foreach() does not initialize
+                    // Unwrap for the foreach below
                     $relatedEntities = $relatedEntities->unwrap();
-                // break; is commented intentionally!
 
                 case ($relatedEntities instanceof Collection):
                 case (is_array($relatedEntities)):
@@ -120,12 +127,9 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                     }
                     break;
 
-                case ($relatedEntities !== null):
+                case (null !== $relatedEntities):
                     $this->doDetachScheduled($relatedEntities, $visited);
                     break;
-
-                default:
-                    // Do nothing
             }
         }
     }
@@ -135,7 +139,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @param UnitOfWork $uow
      *
-     * @return \Closure
+     * @return array
      */
     protected function &getScheduledForDirtyCheck(UnitOfWork $uow)
     {
@@ -144,16 +148,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         }, null, $uow);
 
         return $closure($uow);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detachAll(array $objects)
-    {
-        foreach ($objects as $object) {
-            $this->detach($object);
-        }
     }
 
     /**
@@ -193,8 +187,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * cascade bug on MongoDB ODM BETA12.
      * See https://github.com/doctrine/mongodb-odm/pull/979.
      *
-     * @param object $object
-     * @param array  $visited Prevent infinite recursion
+     * @param mixed $object
+     * @param array $visited Prevents infinite recursion
      */
     protected function cascadeDetach($document, array &$visited)
     {
