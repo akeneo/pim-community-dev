@@ -211,4 +211,44 @@ class EnterpriseAssertionContext extends BaseAssertionContext
             ));
         }
     }
+
+    /**
+     * @param string $user
+     * @param string $productLabel
+     *
+     * @When /^I click on the proposal to review created by "([^"]+)" on the product "([^"]+)"$/
+     *
+     * @throws Spin\TimeoutException
+     */
+    public function iClickOnTheProposalToReview($user, $productLabel)
+    {
+        $page = $this->getCurrentPage();
+        $selector = sprintf('#proposal-widget td:contains("%s")', $user);
+
+        $childNode = $this->spin(function () use ($page, $selector) {
+            return $page->findAll('css', $selector);
+        });
+
+        if (empty($childNode)) {
+            $this->createExpectationException(sprintf('No proposal(s) found for %s user', $user));
+        }
+
+        $selector = sprintf('tr:contains("%s") a.product-review', $productLabel);
+        $nodeElement = null;
+        foreach ($childNode as $item) {
+            $element = $item->getParent()->find('css', $selector);
+
+            if (null !== $element) {
+                $nodeElement = $element;
+            }
+        }
+
+        if (null === $nodeElement) {
+            $this->createExpectationException(
+                sprintf('No proposal(s) found for %s user and product %s', $user, $productLabel)
+            );
+        }
+
+        $nodeElement->click();
+    }
 }

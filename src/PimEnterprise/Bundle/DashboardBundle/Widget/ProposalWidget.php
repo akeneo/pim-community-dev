@@ -113,7 +113,8 @@ class ProposalWidget implements WidgetInterface
                 'productLabel'     => $proposal->getProduct()->getLabel(),
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $this->getProposalGridUrl(
-                    $proposal->getAuthor(), $proposal->getProduct()->getId()
+                    $proposal->getAuthor(),
+                    $proposal->getProduct()->getId()
                 ),
                 'createdAt'        => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
             ];
@@ -175,6 +176,6 @@ class ProposalWidget implements WidgetInterface
         ];
 
         return $this->router->generate('pimee_workflow_proposal_index')
-        .'|g/'.http_build_query($gridParameters, 'flags_');
+        . '|g/' . http_build_query($gridParameters, 'flags_');
     }
 }
