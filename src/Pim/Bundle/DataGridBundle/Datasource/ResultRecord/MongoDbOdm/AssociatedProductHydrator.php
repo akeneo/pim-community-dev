@@ -131,7 +131,7 @@ class AssociatedProductHydrator implements HydratorInterface
         $skip,
         $nbTotalAssociated
     ) {
-        $associatedProducts = $this->getAssociatedProducts(
+        $associatedPdts = $this->getAssociatedProducts(
             $queryBuilder,
             $associatedIds,
             $rawQuery,
@@ -139,14 +139,14 @@ class AssociatedProductHydrator implements HydratorInterface
             $skip
         );
 
-        $nonAssociatedProducts = [];
-        $nbAssociated = count($associatedProducts);
+        $nonAssociatedPdts = [];
+        $nbAssociated = count($associatedPdts);
         if ($limit > $nbAssociated) {
             $limit -= $nbAssociated;
             $skip -= $nbTotalAssociated;
             $skip = max($skip, 0);
 
-            $nonAssociatedProducts = $this->getNonAssociatedProducts(
+            $nonAssociatedPdts = $this->getNonAssociatedProducts(
                 $queryBuilder,
                 $associatedIds,
                 $rawQuery,
@@ -155,7 +155,7 @@ class AssociatedProductHydrator implements HydratorInterface
             );
         }
 
-        return $associatedProducts + $nonAssociatedProducts;
+        return $associatedPdts + $nonAssociatedPdts;
     }
 
     /**
@@ -178,7 +178,7 @@ class AssociatedProductHydrator implements HydratorInterface
         $skip,
         $nbTotalNonAssociated
     ) {
-        $nonAssociatedProducts = $this->getNonAssociatedProducts(
+        $nonAssociatedPdts = $this->getNonAssociatedProducts(
             $queryBuilder,
             $associatedIds,
             $rawQuery,
@@ -186,14 +186,14 @@ class AssociatedProductHydrator implements HydratorInterface
             $skip
         );
 
-        $associatedProducts = [];
-        $nbNonAssociated = count($nonAssociatedProducts);
+        $associatedPdts = [];
+        $nbNonAssociated = count($nonAssociatedPdts);
         if ($limit > $nbNonAssociated) {
             $limit -= $nbNonAssociated;
             $skip -= $nbTotalNonAssociated;
             $skip = max($skip, 0);
 
-            $associatedProducts = $this->getAssociatedProducts(
+            $associatedPdts = $this->getAssociatedProducts(
                 $queryBuilder,
                 $associatedIds,
                 $rawQuery,
@@ -202,7 +202,7 @@ class AssociatedProductHydrator implements HydratorInterface
             );
         }
 
-        return $nonAssociatedProducts + $associatedProducts;
+        return $nonAssociatedPdts + $associatedPdts;
     }
 
     /**
@@ -246,8 +246,7 @@ class AssociatedProductHydrator implements HydratorInterface
         $limit,
         $skip
     ) {
-        $in = ['_id' => ['$in' => $associatedIds]];
-        $rawQuery['$and'][] = $in;
+        $rawQuery['$and'][] = ['_id' => ['$in' => $associatedIds]];
 
         return $this->getProductsAsArray($queryBuilder, $rawQuery, $limit, $skip, true);
     }
