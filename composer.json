@@ -60,7 +60,6 @@
         "twig/extensions": "1.2.0"
     },
     "require-dev": {
-        "akeneo/catalogs": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "2.*",
         "pdepend/pdepend": "2.1.*",
@@ -82,7 +81,8 @@
         "akeneo/php-coupling-detector": "dev-master"
     },
     "suggest": {
-        "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
+        "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
+        "akeneo/catalogs": "In order one of the Akeneo catalogs for installation"
     },
     "scripts": {
         "post-install-cmd": [
