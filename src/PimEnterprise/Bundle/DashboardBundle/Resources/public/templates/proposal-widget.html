@@ -1,0 +1,34 @@
+<% if (!_.isEmpty(data)) { %>
+<thead>
+    <tr>
+        <th class="center"><%- _.__("pimee_dashboard.widget.product_drafts.date") %></th>
+        <th class="center"><%- _.__("pimee_dashboard.widget.product_drafts.author") %></th>
+        <th class="center"><%- _.__("pimee_dashboard.widget.product_drafts.product") %></th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+<% _.each(data, function (proposal) { %>
+    <tr>
+        <td>
+            <%- proposal.createdAt %>
+        </td>
+        <td><%- proposal.authorFullName %></td>
+        <td>
+            <a class="product-label" href='#' data-id="<%- proposal.productId %>">
+                <%- proposal.productLabel %>
+            </a>
+        </td>
+        <td>
+            <a class="product-review btn btn-mini" data-productreviewurl="<%- proposal.productReviewUrl %>">
+                <%- _.__("pimee_dashboard.widget.product_drafts.review") %>
+            </a>
+        </td>
+    </tr>
+<% }); %>
+</tbody>
+<% } else if (options.contentLoaded) {%>
+<span class="label text-center buffer-small-top buffer-small-bottom fullwidth">
+    <%- _.__("pimee_dashboard.widget.product_drafts.empty") %>
+</span>
+<% } %>
