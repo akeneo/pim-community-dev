@@ -16,6 +16,7 @@ use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -41,27 +42,31 @@ class ProposalWidget implements WidgetInterface
     /** @var PresenterInterface */
     protected $presenter;
 
+    /** @var RouterInterface */
+    protected $router;
+
     /**
-     * Constructor
-     *
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $ownershipRepository
      * @param UserManager                     $userManager
      * @param TokenStorageInterface           $tokenStorage
      * @param PresenterInterface              $presenter
+     * @param RouterInterface                 $router
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $ownershipRepository,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        RouterInterface $router
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository           = $ownershipRepository;
         $this->userManager          = $userManager;
         $this->tokenStorage         = $tokenStorage;
         $this->presenter            = $presenter;
+        $this->router               = $router;
     }
 
     /**
@@ -104,10 +109,13 @@ class ProposalWidget implements WidgetInterface
 
         foreach ($proposals as $proposal) {
             $result[] = [
-                'productId'    => $proposal->getProduct()->getId(),
-                'productLabel' => $proposal->getProduct()->getLabel(),
-                'author'       => $this->getAuthorFullName($proposal->getAuthor()),
-                'createdAt'    => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
+                'productId'        => $proposal->getProduct()->getId(),
+                'productLabel'     => $proposal->getProduct()->getLabel(),
+                'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
+                'productReviewUrl' => $this->getProposalGridUrl(
+                    $proposal->getAuthor(), $proposal->getProduct()->getId()
+                ),
+                'createdAt'        => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
             ];
         }
 
@@ -141,5 +149,32 @@ class ProposalWidget implements WidgetInterface
         }
 
         return $authorName;
+    }
+
+    /**
+     * @param string     $authorUsername
+     * @param string|int $productId
+     *
+     * @return string
+     */
+    protected function getProposalGridUrl($authorUsername, $productId)
+    {
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        $authorUsername
+                    ]
+                ],
+                'product' => [
+                    'value' => [
+                        $productId
+                    ]
+                ]
+            ],
+        ];
+
+        return $this->router->generate('pimee_workflow_proposal_index')
+        .'|g/'.http_build_query($gridParameters, 'flags_');
     }
 }
