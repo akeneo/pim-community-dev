@@ -12,11 +12,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Abstract installer fixture
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInt, ContainerAwareInt
 {
+    /** @var string[] */
     protected $entities = [
         'channels',
         'locales',
@@ -36,13 +38,11 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     ];
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
-    /**
-     * array
-     */
+    /** @var string[] */
     protected $files;
 
     /**
@@ -54,6 +54,13 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
         $this->files     = $this->addInstallerDataFiles($container);
     }
 
+    /**
+     * Retrieve fixtures files
+     *
+     * @param ContainerInterface $container
+     *
+     * @return string[]
+     */
     protected function addInstallerDataFiles(ContainerInterface $container)
     {
         $installerDataDir = null;
