@@ -28,26 +28,28 @@ define(
             ),
 
             events: {
-                'click a': 'followLink'
+                'click .product-label': 'followLink',
+                'click .product-review': 'productReview'
             },
 
             followLink: function (e) {
                 e.preventDefault();
 
-                //if ($(e.currentTarget).data('redirecttab')) {
-                //    sessionStorage.setItem('redirectTab', $(e.currentTarget).data('redirecttab'));
-                //}
-
-                console.log($(e.currentTarget).data('proposalid'));
-
-                var gridParameters = {'|g/f' : {'author' : {'value' : {'0': 'mary'}}}, 'f' : {'product' : {'value' : {'0': $(e.currentTarget).data('proposalid')}}}};
+                if ($(e.currentTarget).data('redirecttab')) {
+                    sessionStorage.setItem('redirectTab', $(e.currentTarget).data('redirecttab'));
+                }
 
                 Navigation.getInstance().setLocation(
                     Routing.generate(
-                        'pimee_workflow_proposal_index',
-                        gridParameters
+                        'pim_enrich_product_edit',
+                        { id: $(e.currentTarget).data('id') }
                     )
                 );
+            },
+
+            productReview: function (e) {
+                e.preventDefault();
+                Navigation.getInstance().setLocation($(e.currentTarget).data('productreviewurl'));
             },
 
             setElement: function () {
