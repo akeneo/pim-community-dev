@@ -20,7 +20,7 @@ Feature: Refuse notifications
   Scenario: A notification is sent when I approve a proposal from the proposal grid
     Given I am logged in as "Julia"
     And I am on the proposals page
-    And I click on the "Reject" action of the row which contains "Summer t-shirt"
+    And I click on the "Reject all" action of the row which contains "Summer t-shirt"
     And I press the "Send" button in the popin
     When I logout
     And I am logged in as "Mary"
@@ -35,7 +35,7 @@ Feature: Refuse notifications
   Scenario: A notification is sent when I approve a proposal from the proposal grid
     Given I am logged in as "Julia"
     And I am on the proposals page
-    And I click on the "Reject" action of the row which contains "Summer t-shirt"
+    And I click on the "Reject all" action of the row which contains "Summer t-shirt"
     And I fill in this comment in the popin: "To be reviewed, this value looks wrong."
     And I press the "Send" button in the popin
     When I logout
@@ -52,7 +52,7 @@ Feature: Refuse notifications
     Given I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
-    And I click on the "Reject" action of the row which contains "Summer t-shirt"
+    And I click on the "Reject all" action of the row which contains "Summer t-shirt"
     And I press the "Send" button in the popin
     When I logout
     And I am logged in as "Mary"
@@ -68,7 +68,7 @@ Feature: Refuse notifications
     Given I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
-    And I click on the "Reject" action of the row which contains "Summer t-shirt"
+    And I click on the "Reject all" action of the row which contains "Summer t-shirt"
     And I fill in this comment in the popin: "To be reviewed, this value looks wrong."
     And I press the "Send" button in the popin
     When I logout

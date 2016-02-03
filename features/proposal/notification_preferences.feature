@@ -69,7 +69,7 @@ Feature: Manage notifications preferences
     When I logout
     And I am logged in as "Julia"
     And I am on the proposals page
-    And I click on the "Approve" action of the row which contains "tshirt"
+    And I click on the "Approve all" action of the row which contains "tshirt"
     And I press the "Send" button in the popin
     And I logout
     And I am logged in as "Mary"

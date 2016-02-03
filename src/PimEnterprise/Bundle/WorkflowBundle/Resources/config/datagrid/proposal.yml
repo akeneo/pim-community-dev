@@ -53,12 +53,16 @@ datagrid:
             approve:
                 type: approve-proposal
                 label: pimee_workflow.product_draft.action.approve
-                icon: ok
+                launcherOptions:
+                    iconClassName: icon-ok
+                    className: btn btn-tiny btn-primary icons-holder-text push-bottom
                 link: approve_link
             refuse:
                 type: reject-proposal
                 label: pimee_workflow.product_draft.action.refuse
-                icon: remove
+                launcherOptions:
+                    iconClassName: icon-remove
+                    className: btn btn-tiny btn-delete icons-holder-text push-bottom
                 link: refuse_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions_groups:

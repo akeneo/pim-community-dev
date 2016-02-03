@@ -33,7 +33,7 @@ Feature: Review a product draft
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Number in stock"
+    And I click on the "Approve all" action of the row which contains "Number in stock"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -50,7 +50,7 @@ Feature: Review a product draft
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Price"
+    And I click on the "Approve all" action of the row which contains "Price"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -66,7 +66,7 @@ Feature: Review a product draft
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Release date"
+    And I click on the "Approve all" action of the row which contains "Release date"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -80,7 +80,7 @@ Feature: Review a product draft
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Mary"
+    And I click on the "Approve all" action of the row which contains "Mary"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
