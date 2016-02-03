@@ -41,7 +41,7 @@ define(
                                     '</td>',
                                     '<td>',
                                         '<a class="btn btn-mini" href="javascript:void(0);" ',
-                                            'data-id="<%= proposal.productId %>" data-redirecttab="#proposals">',
+                                            'data-author="<%= proposal.author %>" data-proposalid="<%= proposal.id %>">',
                                             '<%= _.__("pimee_dashboard.widget.product_drafts.review") %>',
                                         '</a>',
                                     '</td>',
@@ -72,14 +72,18 @@ define(
             followLink: function (e) {
                 e.preventDefault();
 
-                if ($(e.currentTarget).data('redirecttab')) {
-                    sessionStorage.setItem('redirectTab', $(e.currentTarget).data('redirecttab'));
-                }
+                //if ($(e.currentTarget).data('redirecttab')) {
+                //    sessionStorage.setItem('redirectTab', $(e.currentTarget).data('redirecttab'));
+                //}
+
+                console.log($(e.currentTarget).data('proposalid'));
+
+                var gridParameters = {'|g/f' : {'author' : {'value' : {'0': 'mary'}}}, 'f' : {'product' : {'value' : {'0': $(e.currentTarget).data('proposalid')}}}};
 
                 Navigation.getInstance().setLocation(
                     Routing.generate(
-                        'pim_enrich_product_edit',
-                        { id: $(e.currentTarget).data('id') }
+                        'pimee_workflow_proposal_index',
+                        gridParameters
                     )
                 );
             },
