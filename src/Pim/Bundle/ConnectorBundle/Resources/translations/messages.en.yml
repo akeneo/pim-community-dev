@@ -106,6 +106,8 @@ pim_connector:
         channel:
             label: Channel
             help: The channel you want to export
+        header:
+            label: Header
     import:
         enabled:
             label: Enable the product

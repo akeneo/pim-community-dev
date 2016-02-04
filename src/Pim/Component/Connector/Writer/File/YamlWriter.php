@@ -50,7 +50,14 @@ class YamlWriter extends AbstractFileWriter
     public function getConfigurationFields()
     {
         $configuration = parent::getConfigurationFields();
-        $configuration = $configuration + ['header' => ['header' => null]];
+        $configuration = $configuration + [
+            'header' => [
+                'header'  => null,
+                'options' => [
+                    'label' => 'pim_connector.export.header.label'
+                ]
+            ]
+        ];
 
         return $configuration;
     }
