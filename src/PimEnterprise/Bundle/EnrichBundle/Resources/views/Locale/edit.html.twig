@@ -53,9 +53,9 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {% set tabs = ['Properties'] %}
+        {% set tabs = ['pim_enrich.locale.tab.property'] %}
         {% if form.permissions is defined %}
-            {% set tabs = tabs|merge(['Permissions']) %}
+            {% set tabs = tabs|merge(['pimee_enrich.locale.tab.permission']) %}
         {% endif %}
 
         {{ elements.form_navbar(tabs) }}
@@ -63,7 +63,7 @@
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="properties">
+            <div class="tab-pane active" id="pim_enrich-locale-tab-property">
                 {% set generalProperties %}
                     {{ form_row(form.code) }}
                 {% endset %}
@@ -72,7 +72,7 @@
                 }) }}
             </div>
             {% if form.permissions is defined %}
-            <div class="tab-pane" id="permissions">
+            <div class="tab-pane" id="pimee_enrich-locale-tab-permission">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
             {% endif %}
