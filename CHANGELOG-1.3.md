@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5532: Fix localized media thumbnail not displayable in grid
+
 # 1.3.37 (2016-01-29)
 
 ## Bug fixes
