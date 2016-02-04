@@ -28,15 +28,15 @@ services:
         class: %pimee_workflow.controller.published_product.class%
         scope: request
         arguments:
+            - '@request'
+            - '@router'
+            - '@templating'
+            - '@translator'
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.channel'
             - '@security.authorization_checker'
-            - '@translator'
-            - '@templating'
-            - '@router'
-            - '@request'
 
     pimee_workflow.controller.published_product_rest:
         class: %pimee_workflow.controller.published_product_rest.class%

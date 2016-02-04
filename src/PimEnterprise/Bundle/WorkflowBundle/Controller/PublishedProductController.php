@@ -104,7 +104,7 @@ class PublishedProductController
      *
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'locales'    => $this->getUserLocales(),
