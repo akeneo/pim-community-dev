@@ -613,6 +613,9 @@ Drop a file or click here:           Drop a file or click here
 Drop an image or click here:         Drop an image or click here
 Automatic option sorting:            Automatic option sorting
 save_attribute_before_manage_option: To manage options, please save the attribute first
+Please select:                       Please select
+Active:                              Active
+Inactive:                            Inactive
 
 Create:               Create
 Cancel:               Cancel
