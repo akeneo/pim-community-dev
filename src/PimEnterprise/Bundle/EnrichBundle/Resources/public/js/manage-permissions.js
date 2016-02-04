@@ -32,8 +32,9 @@ define(
 
                 if (!_.isUndefined(e.added)) {
                     permissionId += e.added.id;
-                    if ($('#'+permissionId).length) {
-                        $('#'+permissionId).remove();
+                    var $permission = $('#' + permissionId);
+                    if ($permission.length) {
+                        $permission.remove();
                     } else {
                         $changeList.append($('<li>', {id:permissionId}).html(
                             _.__(opts.grantMessage, {'permission': permissionLabel, 'group':e.added.text})
@@ -43,9 +44,11 @@ define(
                     _.each(opts.update.add[e.target.id], function(selectId) {
                         var $toUpdate = $('#'+selectId);
                         if ($.inArray(e.added.id, $toUpdate.val()) === -1) {
+                            var values = $.makeArray($toUpdate.val());
+                            values.push(e.added.id);
+
                             var propagateEvent = $.Event('change');
                             propagateEvent.added = e.added;
-                            var values = ($toUpdate.val() === null) ? [e.added.id] : $.merge($toUpdate.val(), e.added.id);
                             $toUpdate.val(values).trigger(propagateEvent);
                         }
                     });
@@ -53,8 +56,9 @@ define(
 
                 if (!_.isUndefined(e.removed)) {
                     permissionId += e.removed.id;
-                    if ($('#'+permissionId).length) {
-                        $('#'+permissionId).remove();
+                    var $permission = $('#' + permissionId);
+                    if ($permission.length) {
+                        $permission.remove();
                     } else {
                         $changeList.append($('<li>', {id: permissionId}).html(
                             _.__(opts.revokeMessage, {'permission': permissionLabel, 'group':e.removed.text})
