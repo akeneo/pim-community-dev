@@ -30,7 +30,7 @@ use Symfony\Component\Templating\EngineInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupController extends GroupController
+class VariantGroupController
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -40,6 +40,18 @@ class VariantGroupController extends GroupController
 
     /** @var FormFactoryInterface */
     protected $formFactory;
+
+    /** @var GroupManager */
+    protected $groupManager;
+
+    /** @var GroupFactory */
+    protected $groupFactory;
+
+    /** @var Form */
+    protected $groupForm;
+
+    /** @var HandlerInterface */
+    protected $groupHandler;
 
     /**
      * @param Request                        $request
@@ -52,7 +64,6 @@ class VariantGroupController extends GroupController
      * @param GroupFactory                   $groupFactory
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
-     * @param RemoverInterface               $groupRemover
      */
     public function __construct(
         Request $request,
@@ -62,28 +73,20 @@ class VariantGroupController extends GroupController
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
-        RemoverInterface $groupRemover,
         FormFactoryInterface $formFactory,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $groupManager,
-            $groupHandler,
-            $groupForm,
-            $groupFactory,
-            $groupRemover
-        );
-
         $this->request             = $request;
         $this->templating          = $templating;
         $this->router              = $router;
         $this->formFactory         = $formFactory;
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
+        $this->groupManager        = $groupManager;
+        $this->groupFactory        = $groupFactory;
+        $this->groupForm           = $groupForm;
+        $this->groupHandler        = $groupHandler;
     }
 
     /**

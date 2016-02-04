@@ -236,8 +236,14 @@ services:
     pim_enrich.controller.variant_group:
         scope: request
         class: %pim_enrich.controller.variant_group.class%
-        parent: pim_enrich.controller.group
         arguments:
+            - '@request'
+            - '@templating'
+            - '@router'
+            - '@pim_catalog.manager.group'
+            - '@pim_enrich.form.handler.variant_group'
+            - '@pim_enrich.form.variant_group'
+            - '@pim_catalog.factory.group'
             - '@form.factory'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.resolver.variant_group_attributes'
