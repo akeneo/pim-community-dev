@@ -64,9 +64,9 @@ class SmartViewUpdater implements ViewUpdaterInterface
         }
 
         $url = $this->urlGenerator->generate(
-            'pimee_catalog_rule_index',
+            'pimee_catalog_rule_rule_index',
             [
-                'resourceId'   => $attributeId,
+                'resourceId' => $attributeId,
                 'resourceName' => 'attribute',
             ]
         );
@@ -79,9 +79,9 @@ class SmartViewUpdater implements ViewUpdaterInterface
     /**
      * Check if an attribute is smart or not
      *
-     * @param FormView $attributeView
+     * @param array $attributeView
      */
-    protected function checkIfSmartAttribute($attributeView)
+    protected function checkIfSmartAttribute(array $attributeView)
     {
         if ((isset($attributeView['value'])
             && $this->ruleRelationManager->isAttributeImpacted($attributeView['id']))
