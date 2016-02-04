@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\Classification\Factory\CategoryFactory;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -109,25 +110,29 @@ class ProductController
     /** @var CategoryFactory */
     protected $categoryFactory;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /**
-     * @param Request                    $request
-     * @param EngineInterface            $templating
-     * @param RouterInterface            $router
-     * @param TokenStorageInterface      $tokenStorage
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param ProductRepositoryInterface $productRepository
-     * @param CategoryManager            $categoryManager
-     * @param UserContext                $userContext
-     * @param VersionManager             $versionManager
-     * @param SecurityFacade             $securityFacade
-     * @param ProductCategoryManager     $prodCatManager
-     * @param SaverInterface             $productSaver
-     * @param SequentialEditManager      $seqEditManager
-     * @param ProductBuilderInterface    $productBuilder
-     * @param CategoryFactory            $categoryFactory
+     * @param Request                     $request
+     * @param EngineInterface             $templating
+     * @param RouterInterface             $router
+     * @param TokenStorageInterface       $tokenStorage
+     * @param FormFactoryInterface        $formFactory
+     * @param ValidatorInterface          $validator
+     * @param TranslatorInterface         $translator
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ProductRepositoryInterface  $productRepository
+     * @param CategoryManager             $categoryManager
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param UserContext                 $userContext
+     * @param VersionManager              $versionManager
+     * @param SecurityFacade              $securityFacade
+     * @param ProductCategoryManager      $prodCatManager
+     * @param SaverInterface              $productSaver
+     * @param SequentialEditManager       $seqEditManager
+     * @param ProductBuilderInterface     $productBuilder
+     * @param CategoryFactory             $categoryFactory
      */
     public function __construct(
         Request $request,
@@ -140,6 +145,7 @@ class ProductController
         EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
         CategoryManager $categoryManager,
+        CategoryRepositoryInterface $categoryRepository,
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
@@ -149,24 +155,25 @@ class ProductController
         ProductBuilderInterface $productBuilder,
         CategoryFactory $categoryFactory
     ) {
-        $this->request           = $request;
-        $this->templating        = $templating;
-        $this->router            = $router;
-        $this->tokenStorage      = $tokenStorage;
-        $this->formFactory       = $formFactory;
-        $this->validator         = $validator;
-        $this->translator        = $translator;
-        $this->productRepository = $productRepository;
-        $this->categoryManager   = $categoryManager;
-        $this->userContext       = $userContext;
-        $this->versionManager    = $versionManager;
-        $this->securityFacade    = $securityFacade;
-        $this->productCatManager = $prodCatManager;
-        $this->productSaver      = $productSaver;
-        $this->seqEditManager    = $seqEditManager;
-        $this->productBuilder    = $productBuilder;
-        $this->categoryFactory   = $categoryFactory;
-        $this->eventDispatcher   = $eventDispatcher;
+        $this->request            = $request;
+        $this->templating         = $templating;
+        $this->router             = $router;
+        $this->tokenStorage       = $tokenStorage;
+        $this->formFactory        = $formFactory;
+        $this->validator          = $validator;
+        $this->translator         = $translator;
+        $this->productRepository  = $productRepository;
+        $this->categoryManager    = $categoryManager;
+        $this->userContext        = $userContext;
+        $this->versionManager     = $versionManager;
+        $this->securityFacade     = $securityFacade;
+        $this->productCatManager  = $prodCatManager;
+        $this->productSaver       = $productSaver;
+        $this->seqEditManager     = $seqEditManager;
+        $this->productBuilder     = $productBuilder;
+        $this->categoryFactory    = $categoryFactory;
+        $this->eventDispatcher    = $eventDispatcher;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -330,9 +337,9 @@ class ProductController
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
-        $parent = $this->categoryManager->getCategoriesByIds($categoryId);
+        $parent = $this->categoryRepository->find($categoryId);
 
-        if (!$parent) {
+        if (null === $parent) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->categoryFactory->getCategoryClass()));
         }
 

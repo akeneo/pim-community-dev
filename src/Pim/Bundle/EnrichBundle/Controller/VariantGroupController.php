@@ -14,8 +14,8 @@ use Pim\Component\Catalog\Model\AvailableAttributes;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ use Symfony\Component\Templating\EngineInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupController
+class VariantGroupController extends GroupController
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -47,7 +47,7 @@ class VariantGroupController
     /** @var GroupFactory */
     protected $groupFactory;
 
-    /** @var Form */
+    /** @var FormInterface */
     protected $groupForm;
 
     /** @var HandlerInterface */
@@ -57,11 +57,12 @@ class VariantGroupController
      * @param Request                        $request
      * @param EngineInterface                $templating
      * @param RouterInterface                $router
-     * @param FormFactoryInterface           $formFactory
      * @param GroupManager                   $groupManager
      * @param HandlerInterface               $groupHandler
-     * @param Form                           $groupForm
+     * @param FormInterface                  $groupForm
      * @param GroupFactory                   $groupFactory
+     * @param FormFactoryInterface           $formFactory
+     * @param RemoverInterface               $groupRemover
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
      */
@@ -71,12 +72,24 @@ class VariantGroupController
         RouterInterface $router,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
-        Form $groupForm,
+        FormInterface $groupForm,
         GroupFactory $groupFactory,
         FormFactoryInterface $formFactory,
+        RemoverInterface $groupRemover,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver
     ) {
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $groupManager,
+            $groupHandler,
+            $groupForm,
+            $groupFactory,
+            $groupRemover
+        );
+
         $this->request             = $request;
         $this->templating          = $templating;
         $this->router              = $router;
@@ -97,7 +110,7 @@ class VariantGroupController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(true))
@@ -165,7 +178,7 @@ class VariantGroupController
      *
      * @param GroupInterface $group
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function getAvailableAttributesForm(GroupInterface $group)
     {

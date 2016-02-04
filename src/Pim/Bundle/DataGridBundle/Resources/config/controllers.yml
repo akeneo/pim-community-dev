@@ -50,9 +50,4 @@ services:
         class: %pim_datagrid.controller.mass_action.class%
         arguments:
             - '@request'
-            - '@templating'
-            - '@security.token_storage'
-            - '@form.factory'
-            - '@validator'
-            - '@translator'
             - '@pim_datagrid.extension.mass_action.dispatcher'

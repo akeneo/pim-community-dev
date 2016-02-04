@@ -354,7 +354,7 @@ class AttributeController
     {
         $attribute = $this->attributeRepository->find($id);
 
-        if (!$attribute) {
+        if (null === $attribute) {
             throw new NotFoundHttpException(
                 sprintf('%s entity not found', $this->attributeManager->getAttributeClass())
             );

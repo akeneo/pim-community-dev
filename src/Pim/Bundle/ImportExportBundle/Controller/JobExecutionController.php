@@ -97,7 +97,7 @@ class JobExecutionController
      */
     public function indexAction()
     {
-        return $this->templating->render(
+        return $this->templating->renderResponse(
             sprintf('PimImportExportBundle:%sExecution:index.html.twig', ucfirst($this->getJobType()))
         );
     }
@@ -115,9 +115,7 @@ class JobExecutionController
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
@@ -170,10 +168,8 @@ class JobExecutionController
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
-        if (!$jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
@@ -197,10 +193,8 @@ class JobExecutionController
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
-        if (!$jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));

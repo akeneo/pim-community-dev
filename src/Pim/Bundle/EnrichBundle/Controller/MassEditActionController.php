@@ -9,21 +9,17 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -185,7 +181,7 @@ class MassEditActionController
             $operation = $form->getNormData();
         }
 
-        return $this->templating->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
                 'form'           => $form->createView(),
@@ -251,10 +247,12 @@ class MassEditActionController
 
             $route = $this->getRouteFromMapping($gridName);
 
-            return $this->redirectToRoute($route, ['dataLocale' => $this->getQueryParams()['dataLocale']]);
+            return new RedirectResponse(
+                $this->router->generate($route, ['dataLocale' => $this->getQueryParams()['dataLocale']])
+            );
         }
 
-        return $this->templating->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
                 'form'           => $form->createView(),

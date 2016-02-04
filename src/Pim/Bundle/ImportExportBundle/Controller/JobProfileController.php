@@ -8,7 +8,6 @@ use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -155,6 +154,7 @@ class JobProfileController
 
             if ($form->isValid()) {
                 $this->entityManager->persist($jobInstance);
+                $this->entityManager->flush();
 
                 $this->request->getSession()->getFlashBag()
                     ->add('success', new Message(sprintf('flash.%s.created', $this->getJobType())));
@@ -253,6 +253,7 @@ class JobProfileController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->entityManager->persist($jobInstance);
+                $this->entityManager->flush();
 
                 $this->request->getSession()->getFlashBag()
                     ->add('success', new Message(sprintf('flash.%s.updated', $this->getJobType())));
@@ -299,6 +300,7 @@ class JobProfileController
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
         $this->entityManager->remove($jobInstance);
+        $this->entityManager->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -498,10 +500,8 @@ class JobProfileController
     {
         $jobInstance = $this->jobInstanceRepository->find($id);
 
-        if (!$jobInstance) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobInstance')
-            );
+        if (null === $jobInstance) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobInstance entity not found');
         }
 
         // Fixme: should look at the job execution to see the status of a job instance execution

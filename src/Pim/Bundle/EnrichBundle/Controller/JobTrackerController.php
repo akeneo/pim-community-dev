@@ -33,6 +33,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobTrackerController extends Controller
 {
+    const BLOCK_SIZE = 8192;
+
     /** @var EngineInterface */
     protected $templating;
 
@@ -53,9 +55,6 @@ class JobTrackerController extends Controller
 
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
-
-    /** @staticvar string */
-    const BLOCK_SIZE = 8192;
 
     /**
      * @param EngineInterface          $templating
@@ -106,10 +105,8 @@ class JobTrackerController extends Controller
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
-        if (!$jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
@@ -160,10 +157,8 @@ class JobTrackerController extends Controller
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
-        if (!$jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
@@ -187,10 +182,8 @@ class JobTrackerController extends Controller
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
-        if (!$jobExecution) {
-            throw new NotFoundHttpException(
-                sprintf('%s entity not found', 'Akeneo\Component\Batch\Model\JobExecution')
-            );
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));

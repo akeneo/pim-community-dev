@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +43,7 @@ class GroupController
     /** @var HandlerInterface */
     protected $groupHandler;
 
-    /** @var Form */
+    /** @var FormInterface */
     protected $groupForm;
 
     /** @var GroupFactory */
@@ -53,14 +53,14 @@ class GroupController
     protected $groupRemover;
 
     /**
-     * @param Request          $request
-     * @param EngineInterface  $templating
-     * @param RouterInterface  $router
-     * @param GroupManager     $groupManager
-     * @param HandlerInterface $groupHandler
-     * @param Form             $groupForm
-     * @param GroupFactory     $groupFactory
-     * @param RemoverInterface $groupRemover
+     * @param Request              $request
+     * @param EngineInterface      $templating
+     * @param RouterInterface      $router
+     * @param GroupManager         $groupManager
+     * @param HandlerInterface     $groupHandler
+     * @param FormInterface        $groupForm
+     * @param GroupFactory         $groupFactory
+     * @param RemoverInterface     $groupRemover
      */
     public function __construct(
         Request $request,
@@ -68,7 +68,7 @@ class GroupController
         RouterInterface $router,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
-        Form $groupForm,
+        FormInterface $groupForm,
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover
     ) {
@@ -85,14 +85,12 @@ class GroupController
     /**
      * List groups
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_enrich_group_index")
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(false))
@@ -193,7 +191,7 @@ class GroupController
      */
     public function historyAction(Group $group)
     {
-        return $this->templating->render(
+        return $this->templating->renderResponse(
             'PimEnrichBundle:Group:_history.html.twig',
             [
                 'group' => $group

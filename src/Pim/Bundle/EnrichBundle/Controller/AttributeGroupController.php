@@ -221,10 +221,7 @@ class AttributeGroupController
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_attributegroup_create')
-            );
+            return new RedirectResponse($this->router->generate('pim_enrich_attributegroup_create'));
         }
 
         $data = $request->request->all();
@@ -288,7 +285,7 @@ class AttributeGroupController
     }
 
     /**
-     * Get the AvailbleAttributes form
+     * Get the AvailableAttributes form
      *
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
@@ -399,8 +396,8 @@ class AttributeGroupController
     {
         $result = $this->attributeGroupRepo->find($id);
 
-        if (!$result) {
-            throw new NotFoundHttpException(sprintf('Attribute group not found'));
+        if (null === $result) {
+            throw new NotFoundHttpException('Attribute group not found');
         }
 
         return $result;
@@ -416,7 +413,7 @@ class AttributeGroupController
         $result = $this->attributeRepo->find($id);
 
         if (!$result) {
-            throw new NotFoundHttpException(sprintf('Attribute not found'));
+            throw new NotFoundHttpException('Attribute not found');
         }
 
         return $result;

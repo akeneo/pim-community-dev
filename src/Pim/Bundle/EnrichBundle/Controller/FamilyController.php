@@ -82,7 +82,7 @@ class FamilyController
     protected $attributeRepo;
 
     /** @var FamilyRepositoryInterface */
-    protected $familyRepo;
+    protected $familyRepository;
 
     /**
      * @param Request                      $request
@@ -98,7 +98,7 @@ class FamilyController
      * @param SaverInterface               $familySaver
      * @param RemoverInterface             $familyRemover
      * @param AttributeRepositoryInterface $attributeRepo
-     * @param FamilyRepositoryInterface    $familyRepo
+     * @param FamilyRepositoryInterface    $familyRepository
      * @param string                       $attributeClass
      * @param string                       $familyClass
      */
@@ -116,26 +116,26 @@ class FamilyController
         SaverInterface $familySaver,
         RemoverInterface $familyRemover,
         AttributeRepositoryInterface $attributeRepo,
-        FamilyRepositoryInterface $familyRepo,
+        FamilyRepositoryInterface $familyRepository,
         $attributeClass,
         $familyClass
     ) {
-        $this->request        = $request;
-        $this->templating     = $templating;
-        $this->router         = $router;
-        $this->formFactory    = $formFactory;
-        $this->translator     = $translator;
-        $this->doctrine       = $doctrine;
-        $this->channelManager = $channelManager;
-        $this->familyFactory  = $familyFactory;
-        $this->familyHandler  = $familyHandler;
-        $this->familyForm     = $familyForm;
-        $this->attributeClass = $attributeClass;
-        $this->familySaver    = $familySaver;
-        $this->familyRemover  = $familyRemover;
-        $this->familyClass    = $familyClass;
-        $this->attributeRepo  = $attributeRepo;
-        $this->familyRepo     = $familyRepo;
+        $this->request          = $request;
+        $this->templating       = $templating;
+        $this->router           = $router;
+        $this->formFactory      = $formFactory;
+        $this->translator       = $translator;
+        $this->doctrine         = $doctrine;
+        $this->channelManager   = $channelManager;
+        $this->familyFactory    = $familyFactory;
+        $this->familyHandler    = $familyHandler;
+        $this->familyForm       = $familyForm;
+        $this->attributeClass   = $attributeClass;
+        $this->familySaver      = $familySaver;
+        $this->familyRemover    = $familyRemover;
+        $this->familyClass      = $familyClass;
+        $this->attributeRepo    = $attributeRepo;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -195,9 +195,9 @@ class FamilyController
      */
     public function editAction($id)
     {
-        $family = $this->familyRepo->find($id);
+        $family = $this->familyRepository->find($id);
 
-        if (!$family) {
+        if (null === $family) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
         }
 
@@ -225,9 +225,9 @@ class FamilyController
      */
     public function historyAction($id)
     {
-        $family = $this->familyRepo->find($id);
+        $family = $this->familyRepository->find($id);
 
-        if (!$family) {
+        if (null === $family) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
         }
 
@@ -250,9 +250,9 @@ class FamilyController
      */
     public function removeAction($id)
     {
-        $family = $this->familyRepo->find($id);
+        $family = $this->familyRepository->find($id);
 
-        if (!$family) {
+        if (null === $family) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
         }
 
@@ -276,9 +276,9 @@ class FamilyController
      */
     public function addAttributesAction($id)
     {
-        $family = $this->familyRepo->find($id);
+        $family = $this->familyRepository->find($id);
 
-        if (!$family) {
+        if (null === $family) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
         }
 
@@ -314,16 +314,15 @@ class FamilyController
      */
     public function removeAttributeAction($familyId, $attributeId)
     {
+        $family = $this->familyRepository->find($familyId);
 
-        $family = $this->familyRepo->find($familyId);
-
-        if (!$family) {
+        if (null === $family) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
         }
 
         $attribute = $this->attributeRepo->find($attributeId);
 
-        if (!$attribute) {
+        if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('%s entity not found', $this->attributeClass));
         }
 

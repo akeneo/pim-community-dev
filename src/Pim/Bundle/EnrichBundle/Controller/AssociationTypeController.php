@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -45,14 +46,18 @@ class AssociationTypeController
     /** @var RemoverInterface */
     protected $assocTypeRemover;
 
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepo;
+
     /**
-     * @param Request                        $request
-     * @param RouterInterface                $router
-     * @param TranslatorInterface            $translator
-     * @param AssociationRepositoryInterface $assocRepository
-     * @param HandlerInterface               $assocTypeHandler
-     * @param Form                           $assocTypeForm
-     * @param RemoverInterface               $assocTypeRemover
+     * @param Request                            $request
+     * @param RouterInterface                    $router
+     * @param TranslatorInterface                $translator
+     * @param AssociationRepositoryInterface     $assocRepository
+     * @param HandlerInterface                   $assocTypeHandler
+     * @param Form                               $assocTypeForm
+     * @param RemoverInterface                   $assocTypeRemover
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
      */
     public function __construct(
         Request $request,
@@ -61,15 +66,17 @@ class AssociationTypeController
         AssociationRepositoryInterface $assocRepository,
         HandlerInterface $assocTypeHandler,
         Form $assocTypeForm,
-        RemoverInterface $assocTypeRemover
+        RemoverInterface $assocTypeRemover,
+        AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
+        $this->request          = $request;
+        $this->router           = $router;
+        $this->translator       = $translator;
         $this->assocRepository  = $assocRepository;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
-        $this->router           = $router;
-        $this->translator       = $translator;
-        $this->request          = $request;
+        $this->assocTypeRepo    = $assocTypeRepo;
     }
 
     /**
@@ -134,7 +141,7 @@ class AssociationTypeController
      */
     public function editAction($id)
     {
-        $associationType = $this->assocRepository->find($id);
+        $associationType = $this->assocTypeRepo->find($id);
 
         if (!$associationType) {
             throw new NotFoundHttpException(sprintf('%s entity not found', 'PimCatalogBundle:AssociationType'));
@@ -143,7 +150,7 @@ class AssociationTypeController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.updated'));
 
-            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_edit'), ['id' => $id]);
+            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_edit', ['id' => $id]));
         }
         $usageCount = $this->assocRepository->countForAssociationType($associationType);
 
