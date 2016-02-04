@@ -4,7 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\SchemaHelper;
+use Pim\Upgrade\SchemaHelperEE;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,7 +32,7 @@ class Version_1_3_20150203164204_product_template extends AbstractMigration impl
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $tableHelper = new SchemaHelper($this->container);
+        $tableHelper = new SchemaHelperEE($this->container);
         $groupTable = $tableHelper->getTableOrCollection('group');
 
         $this->addSql('CREATE TABLE pim_catalog_product_template (id INT AUTO_INCREMENT NOT NULL, valuesData LONGTEXT NOT NULL COMMENT \'(DC2Type:json_array)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');

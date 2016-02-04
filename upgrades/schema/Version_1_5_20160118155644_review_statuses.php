@@ -14,7 +14,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Migrations\AbortMigrationException;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\SchemaHelper;
+use Pim\Upgrade\SchemaHelperEE;
 use Pim\Upgrade\UpgradeHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -44,14 +44,9 @@ class Version_1_5_20160118155644_review_statuses extends AbstractMigration imple
      */
     public function up(Schema $schema)
     {
-        $schemaHelper  = new SchemaHelper($this->container);
         $upgradeHelper = new UpgradeHelper($this->container);
-
         if ($upgradeHelper->areProductsStoredInMongo()) {
-            $draftCollection = $schemaHelper->getTableOrCollection('product_draft');
-            $drafts          = new \MongoCollection($upgradeHelper->getMongoInstance(), $draftCollection);
-
-            $this->migrateMongoDBDatabase($drafts);
+            $this->migrateMongoDBDatabase();
         } else {
             $this->migrateMySQLDatabase();
         }
@@ -114,8 +109,13 @@ class Version_1_5_20160118155644_review_statuses extends AbstractMigration imple
     /**
      * Migrates a MongoDB database
      */
-    private function migrateMongoDBDatabase(\MongoCollection $draftCollection)
+    private function migrateMongoDBDatabase()
     {
+        $schemaHelper    = new SchemaHelperEE($this->container);
+        $upgradeHelper   = new UpgradeHelper($this->container);
+        $collection      = $schemaHelper->getTableOrCollection('product_draft');
+        $draftCollection = new \MongoCollection($upgradeHelper->getMongoInstance(), $collection);
+
         $drafts = $draftCollection->find();
         foreach ($drafts as $draft) {
             $changeStatus = $this->getChangeStatusFromDraftStatus($draft['status']);

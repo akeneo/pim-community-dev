@@ -4,7 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\SchemaHelper;
+use Pim\Upgrade\SchemaHelperEE;
 use Pim\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,7 +33,7 @@ class Version_1_3_20150205103241_workflow_file_path extends AbstractMigration im
     {
         $upgradeHelper = new UpgradeHelper($this->container);
         if (!$upgradeHelper->areProductsStoredInMongo()) {
-            $tableHelper = new SchemaHelper($this->container);
+            $tableHelper = new SchemaHelperEE($this->container);
             $this->addSql(sprintf('ALTER TABLE %s DROP file_path', $tableHelper->getTableOrCollection('published_product_media')));
         }
     }
@@ -54,7 +54,7 @@ class Version_1_3_20150205103241_workflow_file_path extends AbstractMigration im
 
     protected function removeFilePathFromProductMedias(\MongoDB $database)
     {
-        $tableHelper = new SchemaHelper($this->container);
+        $tableHelper = new SchemaHelperEE($this->container);
         $productCollection = new \MongoCollection($database, $tableHelper->getTableOrCollection('published_product'));
         $products = $productCollection->find();
 

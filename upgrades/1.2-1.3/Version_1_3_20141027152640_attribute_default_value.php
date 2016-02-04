@@ -4,7 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\SchemaHelper;
+use Pim\Upgrade\SchemaHelperEE;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -28,7 +28,7 @@ class Version_1_3_20141027152640_attribute_default_value extends AbstractMigrati
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $tableHelper = new SchemaHelper($this->container);
+        $tableHelper = new SchemaHelperEE($this->container);
         $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $tableHelper->getTableOrCollection('attribute')));
     }
 
