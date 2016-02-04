@@ -64,15 +64,6 @@ datagrid:
         action_configuration: '@pimee_datagrid.datagrid.configuration.product_draft.grid_helper->getActionConfigurationClosure'
         filters:
             columns:
-                status:
-                    type:        product_draft_choice
-                    ftype:       choice
-                    data_name:   status
-                    label:       pimee_workflow.product_draft.status.label
-                    options:
-                        field_options:
-                            multiple: false
-                            choices: '@pimee_datagrid.datagrid.configuration.product_draft.grid_helper->getStatusChoices'
                 attribute:
                     type:        product_draft_attribute_choice
                     ftype:       choice
