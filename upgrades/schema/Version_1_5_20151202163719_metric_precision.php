@@ -9,10 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Pimee\Upgrade\Schema;
+namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Pim\Upgrade\UpgradeHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Add precision to the PublishedProductMetric entity to be able to save data and baseData for numbers under 1E-4.
@@ -21,14 +24,28 @@ use Doctrine\DBAL\Schema\Schema;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class Version20151202163719 extends AbstractMigration
+class Version_1_5_20151202163719_metric_precision extends AbstractMigration implements ContainerAwareInterface
 {
+    /** @var ContainerInterface */
+    protected $container;
+
+    /**
+     * @param ContainerInterface|null $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $upgradeHelper = new UpgradeHelper($this->container);
+        if ($upgradeHelper->areProductsStoredInMongo()) {
+            return;
+        }
 
         $this->addSql('ALTER TABLE pimee_workflow_published_product_metric CHANGE data data NUMERIC(24, 12) DEFAULT NULL, CHANGE base_data base_data NUMERIC(24, 12) DEFAULT NULL');
     }

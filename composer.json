@@ -15,6 +15,9 @@
             "Context": "features/",
             "PimEnterprise\\Behat": "features/",
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
+        },
+        "psr-4": {
+            "Pim\\Upgrade\\": "upgrades/"
         }
     },
     "require": {
