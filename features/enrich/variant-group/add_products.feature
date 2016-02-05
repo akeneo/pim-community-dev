@@ -6,11 +6,6 @@ Feature: Add products to a variant group
 
   Background:
     Given the "footwear" catalog configuration
-    And the following products:
-      | sku             | family  | categories        | size | color | name-en_US |
-      | sandal-white-37 | sandals | winter_collection | 37   | white | old name   |
-      | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
-      | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | size, color | VARIANT |
@@ -19,7 +14,19 @@ Feature: Add products to a variant group
       | SANDAL | manufacturer | Converse    |        |       |
       | SANDAL | name         | EN name     | en_US  |       |
       | SANDAL | comment      | New comment |        |       |
+    And the following CSV file to import:
+      """
+      sku;family;categories;name-en_US;size;color
+      sandal-white-37;sandals;winter_collection;old name;37;white
+      sandal-white-38;sandals;winter_collection;old name;38;white
+      sandal-white-39;sandals;winter_collection;old name;39;white
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
     And I am logged in as "Julia"
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
 
   Scenario: Successfully add products in variant groups, products are updated with variant group values
     Given I am on the "SANDAL" variant group page
@@ -52,7 +59,7 @@ Feature: Add products to a variant group
     Then I should see history:
       | version | author                                                            | property | value           |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
+      | 1       | Admin Doe - admin@example.com (import "footwear_product_import")  | SKU      | sandal-white-37 |
 
   Scenario: Successfully delete a variant group, product history should be updated without context
     Given I am on the "SANDAL" variant group page
@@ -70,7 +77,7 @@ Feature: Add products to a variant group
       | version | author                                                            | property | value           |
       | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
+      | 1       | Admin Doe - admin@example.com (import "footwear_product_import")  | SKU      | sandal-white-37 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3736
   Scenario: Reject product addition in a variant group, products count should be correct
