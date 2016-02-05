@@ -26,7 +26,9 @@ class Classify extends Wizard
                 'Trees list'    => ['css' => '#trees-list'],
                 'Category tree' => [
                     'css'        => '#trees',
-                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
                 ],
             ]
         );

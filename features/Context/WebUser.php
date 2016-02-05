@@ -335,7 +335,7 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleShouldBeSelected($locale)
     {
-        $this->getCurrentPage()->hasSelectedLocale($locale);
+        $this->getCurrentPage()->getElement('Main context selector')->hasSelectedLocale($locale);
     }
 
     /**
@@ -345,8 +345,7 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->wait();
-        $this->getCurrentPage()->switchLocale($locale);
+        $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
         $this->wait();
     }
 
@@ -357,7 +356,7 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheScopeTo($scope)
     {
-        $this->getCurrentPage()->switchScope($scope);
+        $this->getCurrentPage()->getElement('Main context selector')->switchScope($scope);
         $this->wait();
     }
 
@@ -785,20 +784,6 @@ class WebUser extends RawMinkContext
                 )
             );
         }
-    }
-
-    /**
-     * @param string $fieldName
-     * @param string $locale
-     * @param string $scope
-     * @param string $expected
-     *
-     * @Then /^the ([^"]*) copy value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
-     */
-    public function theCopyValueShouldBe($fieldName, $scope, $locale, $expected)
-    {
-        $this->getCurrentPage()->compareWith($locale, $scope);
-        $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
     }
 
     /**
@@ -2129,52 +2114,6 @@ class WebUser extends RawMinkContext
     public function iClickOnTheAkeneoLogo()
     {
         $this->getCurrentPage()->clickOnAkeneoLogo();
-    }
-
-    /**
-     * @When /^I start the copy$/
-     */
-    public function iStartTheCopy()
-    {
-        $this->getCurrentPage()->startCopy();
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @When /^I compare values with the "([^"]*)" translation$/
-     */
-    public function iCompareValuesWithTheTranslation($locale)
-    {
-        $this->getCurrentPage()->compareWith($locale);
-    }
-
-    /**
-     * @param string $field
-     *
-     * @Given /^I select translations for "([^"]*)"$/
-     */
-    public function iSelectTranslationsFor($field)
-    {
-        $this->getCurrentPage()->manualSelectTranslation($field);
-    }
-
-    /**
-     * @param string $mode
-     *
-     * @Given /^I select (.*) translations$/
-     */
-    public function iSelectTranslations($mode)
-    {
-        $this->getCurrentPage()->autoSelectTranslations(ucfirst($mode));
-    }
-
-    /**
-     * @Given /^I copy selected translations$/
-     */
-    public function iCopySelectedTranslations()
-    {
-        $this->getCurrentPage()->copySelectedTranslations();
     }
 
     /**

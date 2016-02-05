@@ -20,7 +20,7 @@ Feature: Edit common attributes of many products at once
       | size      | french | Taille |
     And I am on the products page
     And I filter by "channel" with value "Mobile"
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     When I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
     And I display the Nom and Taille attributes

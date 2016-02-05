@@ -67,7 +67,7 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |
@@ -94,7 +94,7 @@ Feature: Display the completeness of a product
     Then the row "high-heels" should contain:
       | column   | value |
       | complete | 25%   |
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |

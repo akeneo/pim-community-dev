@@ -28,7 +28,9 @@ abstract class CategoryView extends Form
             [
                 'Category tree'    => [
                     'css'        => '#tree',
-                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],
                 'Right click menu' => ['css' => '#vakata-contextmenu'],

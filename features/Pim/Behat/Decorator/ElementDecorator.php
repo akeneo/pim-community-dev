@@ -2,8 +2,6 @@
 
 namespace Pim\Behat\Decorator;
 
-use Behat\Mink\Element\NodeElement;
-
 /**
  * Simple abstract class to ease the decorator pattern on Mink elements
  */
@@ -13,9 +11,9 @@ abstract class ElementDecorator
     protected $element;
 
     /**
-     * @param NodeElement $element
+     * @param $element
      */
-    public function __construct(NodeElement $element)
+    public function __construct($element)
     {
         $this->element = $element;
     }

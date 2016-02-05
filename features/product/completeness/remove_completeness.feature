@@ -28,7 +28,7 @@ Feature: Display the completeness of a product
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I am on the products page
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -43,7 +43,7 @@ Feature: Display the completeness of a product
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 25%   |
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -85,7 +85,7 @@ Feature: Display the completeness of a product
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     And I am on the products page
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -100,7 +100,7 @@ Feature: Display the completeness of a product
     Then the row "sandals" should contain:
      | column   | value |
      | complete | -     |
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |

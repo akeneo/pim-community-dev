@@ -23,7 +23,7 @@ Feature: Browse products by locale and scope
 
   @skip
   Scenario: Successfully display english data on products page
-    Given I switch the locale to "English (United States)"
+    Given I switch the locale to "en_US"
     Then I should see product postit
     When I filter by "Channel" with value "E-Commerce"
     Then the row "postit" should contain:
@@ -44,7 +44,7 @@ Feature: Browse products by locale and scope
 
   @skip
   Scenario: Successfully display french data on products page
-    Given I switch the locale to "French (France)"
+    Given I switch the locale to "fr_FR"
     Then I should see product postit
     When I filter by "Channel" with value "E-Commerce"
     Then the row "postit" should contain:

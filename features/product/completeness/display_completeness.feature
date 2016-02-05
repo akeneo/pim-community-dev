@@ -67,7 +67,7 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -82,7 +82,7 @@ Feature: Display the completeness of a product
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 25%   |
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -105,7 +105,7 @@ Feature: Display the completeness of a product
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
     And I am on the products page
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
@@ -114,7 +114,7 @@ Feature: Display the completeness of a product
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |

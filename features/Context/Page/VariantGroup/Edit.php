@@ -25,10 +25,16 @@ class Edit extends Form
     public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
+
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown' => ['css' => '#locale-switcher'],
+                'Main context selector' => [
+                    'css'        => '#attribute-buttons',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ]
             ]
         );
     }
@@ -94,25 +100,6 @@ class Edit extends Form
     public function getRemoveLinkFor($field)
     {
         return $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($locale)
-    {
-        $elt = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $elt->click();
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
-        }
-        $elt->click();
     }
 
     /**
