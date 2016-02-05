@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -50,6 +51,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var CollectionFilterInterface */
+    protected $productValuesFilter;
+
     /** @var string */
     protected $tmpStorageDir;
 
@@ -71,6 +75,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param NormalizerInterface                  $internalNormalizer
      * @param LocalizedAttributeConverterInterface $localizedConverter
      * @param LocalizerRegistryInterface           $localizerRegistry
+     * @param CollectionFilterInterface            $productValuesFilter
      * @param string                               $tmpStorageDir
      */
     public function __construct(
@@ -82,6 +87,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         NormalizerInterface $internalNormalizer,
         LocalizedAttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
+        CollectionFilterInterface $productValuesFilter,
         $tmpStorageDir
     ) {
         $this->productBuilder      = $productBuilder;
@@ -93,6 +99,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->internalNormalizer  = $internalNormalizer;
         $this->localizedConverter  = $localizedConverter;
         $this->localizerRegistry   = $localizerRegistry;
+        $this->productValuesFilter = $productValuesFilter;
 
         $this->values = '';
     }
@@ -153,6 +160,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
             $this->getAttributeLocale(),
             $this->getAttributeChannel()
         );
+        $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
         $data = $this->delocalizeData($data, $this->userContext->getUiLocale()->getCode());
         $data = $this->storeUploadedFile($data);
 

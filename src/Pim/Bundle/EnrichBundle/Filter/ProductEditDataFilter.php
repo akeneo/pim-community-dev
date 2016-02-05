@@ -3,15 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Filter;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Product edit data filter
@@ -25,23 +18,8 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var AttributeInterface[] */
-    protected $attributes = [];
-
-    /** @var LocaleInterface[] */
-    protected $locales = [];
+    /** @var CollectionFilterInterface */
+    protected $productValuesFilter;
 
     /** @var array */
     protected $acls = [
@@ -53,24 +31,15 @@ class ProductEditDataFilter implements CollectionFilterInterface
     ];
 
     /**
-     * @param SecurityFacade               $securityFacade
-     * @param ObjectFilterInterface        $objectFilter
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
+     * @param SecurityFacade            $securityFacade
+     * @param CollectionFilterInterface $productValuesFilter
      */
     public function __construct(
         SecurityFacade $securityFacade,
-        ObjectFilterInterface $objectFilter,
-        AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository,
-        ChannelRepositoryInterface $channelRepository
+        CollectionFilterInterface $productValuesFilter
     ) {
         $this->securityFacade      = $securityFacade;
-        $this->objectFilter        = $objectFilter;
-        $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->channelRepository   = $channelRepository;
+        $this->productValuesFilter = $productValuesFilter;
     }
 
     /**
@@ -111,73 +80,10 @@ class ProductEditDataFilter implements CollectionFilterInterface
     protected function filterData($type, $data)
     {
         if ('values' === $type) {
-            $data = $this->filterValuesData($data);
+            $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
         }
 
         return $data;
-    }
-
-    /**
-     * @param array $valuesData
-     *
-     * @return array
-     */
-    protected function filterValuesData(array $valuesData)
-    {
-        $newValuesData = [];
-
-        foreach ($valuesData as $attributeCode => $values) {
-            $attribute = $this->getAttribute($attributeCode);
-            if (!$this->objectFilter->filterObject($attribute, 'pim.internal_api.attribute.edit')) {
-                $newValuesData[$attributeCode] = $this->getNewValuesData($attribute, $values);
-            }
-        }
-
-        return array_filter($newValuesData);
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array              $values
-     *
-     * @throws ObjectNotFoundException
-     *
-     * @return array
-     */
-    protected function getNewValuesData(AttributeInterface $attribute, array $values)
-    {
-        $newValues = [];
-
-        foreach ($values as $value) {
-            $acceptValue = true;
-
-            if (null !== $value['locale']) {
-                $isAuthorizedOnLocale = !$this->objectFilter->filterObject(
-                    $this->getLocale($value['locale']),
-                    'pim.internal_api.locale.edit'
-                );
-
-                $isEditableOnLocale = $attribute->isLocaleSpecific() ?
-                    in_array($value['locale'], $attribute->getLocaleSpecificCodes()) :
-                    true
-                ;
-
-                $acceptValue = $isAuthorizedOnLocale && $isEditableOnLocale;
-            }
-
-            if ($attribute->isScopable() && $acceptValue) {
-                $channel = $this->channelRepository->findOneByIdentifier($value['scope']);
-                if (null === $channel) {
-                    $acceptValue = false;
-                }
-            }
-
-            if ($acceptValue) {
-                $newValues[] = $value;
-            }
-        }
-
-        return $newValues;
     }
 
     /**
@@ -313,51 +219,5 @@ class ProductEditDataFilter implements CollectionFilterInterface
     protected function getAclForType($type)
     {
         return isset($this->acls[$type]) ? $this->acls[$type] : null;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @throws ObjectNotFoundException
-     *
-     * @return AttributeInterface
-     */
-    protected function getAttribute($code)
-    {
-        if (!array_key_exists($code, $this->attributes)) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (!$attribute) {
-                throw new ObjectNotFoundException(sprintf('Attribute with code "%s" was not found.', $code));
-            }
-
-            $this->attributes[$code] = $attribute;
-        }
-
-        return $this->attributes[$code];
-    }
-
-    /**
-     * @param string $code
-     * @param bool   $activeOnly
-     *
-     * @throws ObjectNotFoundException
-     *
-     * @return LocaleInterface
-     */
-    protected function getLocale($code, $activeOnly = true)
-    {
-        if (!array_key_exists($code, $this->locales)) {
-            $locale = $this->localeRepository->findOneByIdentifier($code);
-            if (!$locale) {
-                throw new ObjectNotFoundException(sprintf('Locale with code "%s" was not found.', $code));
-            }
-            if ($activeOnly && !$locale->isActivated()) {
-                throw new ObjectNotFoundException(sprintf('Active locale with code "%s" was not found.', $code));
-            }
-
-            $this->locales[$code] = $locale;
-        }
-
-        return $this->locales[$code];
     }
 }

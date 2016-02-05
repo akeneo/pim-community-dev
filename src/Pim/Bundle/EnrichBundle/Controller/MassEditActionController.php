@@ -238,7 +238,7 @@ class MassEditActionController extends AbstractDoctrineController
 
             $route = $this->getRouteFromMapping($gridName);
 
-            return $this->redirectToRoute($route);
+            return $this->redirectToRoute($route, ['dataLocale' => $this->getQueryParams()['dataLocale']]);
         }
 
         return $this->render(
