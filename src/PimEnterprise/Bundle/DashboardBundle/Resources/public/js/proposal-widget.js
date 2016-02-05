@@ -49,7 +49,7 @@ define(
 
             productReview: function (e) {
                 e.preventDefault();
-                Navigation.getInstance().setLocation($(e.currentTarget).data('productreviewurl'));
+                Navigation.getInstance().setLocation($(e.currentTarget).data('product-review-url'));
             },
 
             setElement: function () {

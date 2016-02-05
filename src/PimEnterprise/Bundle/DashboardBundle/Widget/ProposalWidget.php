@@ -107,12 +107,14 @@ class ProposalWidget implements WidgetInterface
         $proposals = $this->repository->findApprovableByUser($user, 10);
         $locale = $user->getUiLocale()->getCode();
 
+        $route = $this->router->generate('pimee_workflow_proposal_index');
+
         foreach ($proposals as $proposal) {
             $result[] = [
                 'productId'        => $proposal->getProduct()->getId(),
                 'productLabel'     => $proposal->getProduct()->getLabel(),
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
-                'productReviewUrl' => $this->getProposalGridUrl(
+                'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                     $proposal->getAuthor(),
                     $proposal->getProduct()->getId()
                 ),
@@ -158,7 +160,7 @@ class ProposalWidget implements WidgetInterface
      *
      * @return string
      */
-    protected function getProposalGridUrl($authorUsername, $productId)
+    protected function getProposalGridParametersAsUrl($authorUsername, $productId)
     {
         $gridParameters = [
             'f' => [
@@ -175,7 +177,6 @@ class ProposalWidget implements WidgetInterface
             ],
         ];
 
-        return $this->router->generate('pimee_workflow_proposal_index')
-        . '|g/' . http_build_query($gridParameters, 'flags_');
+        return '|g/' . http_build_query($gridParameters, 'flags_');
     }
 }

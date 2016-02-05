@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
@@ -46,6 +47,8 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('job', new JobContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
+
+        $this->useContext('dashboard', new DashboardContext());
 
         $this->setTimeout($parameters);
     }
