@@ -63,11 +63,16 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data = new ArrayCollection($data);
         }
 
+        $backendType = $entity->getAttribute()->getBackendType();
+
         if (is_null($data)) {
             $result = [$fieldName => ''];
+            if ('metric' === $backendType) {
+                $result[$fieldName . '-unit'] = '';
+            }
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
-        } elseif (is_float($data) || 'decimal' === $entity->getAttribute()->getBackendType()) {
+        } elseif (is_float($data) || 'decimal' === $backendType) {
             $pattern = $entity->getAttribute()->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
             $result = [$fieldName => sprintf($pattern, $data)];
         } elseif (is_string($data)) {
@@ -77,7 +82,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         } elseif (is_object($data)) {
             // TODO: Find a way to have proper currency-suffixed keys for normalized price data
             // even when an empty collection is passed
-            $backendType = $entity->getAttribute()->getBackendType();
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
             } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
@@ -86,9 +90,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $result = $this->serializer->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
-                if ('metric' === $entity->getAttribute()->getBackendType()) {
+                if ('metric' === $backendType) {
                     $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
-                } elseif ('media' === $entity->getAttribute()->getBackendType()) {
+                } elseif ('media' === $backendType) {
                     $context['value'] = $entity;
                 }
 
