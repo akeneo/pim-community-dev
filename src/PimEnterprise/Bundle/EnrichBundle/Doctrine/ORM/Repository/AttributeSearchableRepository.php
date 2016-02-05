@@ -56,10 +56,6 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
             ->setParameter('userGroupsIds', $options['user_groups_ids']);
         $qb->andWhere('aga.viewAttributes = 1');
 
-        if ($options['editable']) {
-            $qb->andWhere('aga.editAttributes = 1');
-        }
-
         return $qb;
     }
 }

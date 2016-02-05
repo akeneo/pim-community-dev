@@ -1,8 +1,12 @@
 extensions:
-    pim-mass-product-edit-form-add-attribute:
-        module: pimee/mass-product-edit-form/add-attribute
+    pim-mass-product-edit-form-read-only-locale:
+        module: pimee/product-edit-form/attributes/read-only-locale
         parent: pim-mass-product-edit-form-attributes
-        targetZone: other-actions
-        aclResourceId: pim_enrich_product_add_attribute
-        position: 90
+        targetZone: self
+        position: 100
 
+    pim-mass-product-edit-form-read-only-attribute-group:
+        module: pimee/product-edit-form/attributes/read-only-attribute-group
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 100
