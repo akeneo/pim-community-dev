@@ -3,20 +3,20 @@ define(
     function ($, DateContext) {
         'use strict';
 
-        var datetimepickerOptions = {
-            format: DateContext.get('date').format,
-            language: DateContext.get('language'),
-            pickTime: false
-        };
-
-        var init = function (id) {
-            var $field = $('#' + id).closest('div');
-
-            $field.datetimepicker(datetimepickerOptions);
-        };
-
         return {
-            init: init
+            options: {
+                format: DateContext.get('date').format,
+                defaultFormat: DateContext.get('date').defaultFormat,
+                locale: DateContext.get('language'),
+                pickTime: false
+            },
+            init: function ($target, options) {
+                options = $.extend(true, this.options, options);
+
+                $target.datetimepicker(options);
+
+                return $target;
+            }
         };
     }
 );

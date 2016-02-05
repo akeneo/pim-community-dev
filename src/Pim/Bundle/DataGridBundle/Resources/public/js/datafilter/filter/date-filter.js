@@ -1,7 +1,7 @@
 /* global define */
 define(
-    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'pim/date-context', 'bootstrap.datetimepicker'],
-function($, _, __, ChoiceFilter, DateContext) {
+    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'datepicker'],
+function($, _, __, ChoiceFilter, Datepicker) {
     'use strict';
 
     /**
@@ -86,20 +86,7 @@ function($, _, __, ChoiceFilter, DateContext) {
          *
          * @property
          */
-        datetimepickerOptions: {
-            format: DateContext.get('date').format,
-            defaultFormat: DateContext.get('date').defaultFormat,
-            locale: DateContext.get('language'),
-            pickTime: false
-        },
-
-        /**
-         * Additional date widget options that might be passed to filter
-         * http://api.jqueryui.com/datepicker/
-         *
-         * @property
-         */
-        externalWidgetOptions: {},
+        datetimepickerOptions: {},
 
         /**
          * References to date widgets
@@ -134,7 +121,6 @@ function($, _, __, ChoiceFilter, DateContext) {
          * @inheritDoc
          */
         initialize: function () {
-            _.extend(this.datetimepickerOptions, this.externalWidgetOptions);
             // init empty value object if it was not initialized so far
             if (_.isUndefined(this.emptyValue)) {
                 this.emptyValue = {
@@ -201,20 +187,18 @@ function($, _, __, ChoiceFilter, DateContext) {
          * @inheritDoc
          */
         _initializeDateWidget: function(widgetSelector) {
-            var widget = this.$(widgetSelector);
-            widget.datetimepicker(this.datetimepickerOptions);
-            widget.addClass(this.datetimepickerOptions.className);
+            var $widget = Datepicker.init(this.$(widgetSelector), this.datetimepickerOptions);
 
-            var picker = widget.data('datetimepicker');
-            widget.on('changeDate', function(e) {
-                picker.format = this.datetimepickerOptions.defaultFormat;
+            var picker = $widget.data('datetimepicker');
+            $widget.on('changeDate', function(e) {
+                picker.format = Datepicker.options.defaultFormat;
                 this.values.value[e.target.className].defaultFormat = picker.formatDate(e.date);
 
-                picker.format = this.datetimepickerOptions.format;
+                picker.format = Datepicker.options.format;
                 this.values.value[e.target.className].format = picker.formatDate(e.date);
             }.bind(this));
 
-            return widget;
+            return $widget;
         },
 
         /**
