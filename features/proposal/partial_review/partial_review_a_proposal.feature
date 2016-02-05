@@ -93,7 +93,7 @@ Feature: Partial review a proposal
     And I should see the following proposals:
       | product | author | attribute          | original | new    |
       | jacket  | Mary   | name               | Coat     | Jacket |
-    When I click on the "Approve" action of the row which contains "jacket"
+    When I click on the "Approve all" action of the row which contains "jacket"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     And I should not get the following proposal:
