@@ -4,12 +4,13 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use PimEnterprise\Behat\Context\HookContext;
+use PimEnterprise\Behat\Context\JobContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
+use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
-use PimEnterprise\Behat\Context\HookContext;
-use PimEnterprise\Behat\Context\JobContext;
 
 /**
  * A context for creating entities
@@ -38,6 +39,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
 
         $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-tree', new TreeContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
 

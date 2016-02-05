@@ -17,29 +17,25 @@ define(
     ) {
         return BaseFetcher.extend({
             fetchAllByProduct: function (productId) {
-                if (!this.entityListPromise) {
-                    this.entityListPromise = $.getJSON(
-                        Routing.generate(this.options.urls.product_index, {productId: productId})
-                    )
-                    .then(function (drafts) {
-                        var draftsPromises = [];
+                return $.getJSON(
+                    Routing.generate(this.options.urls.product_index, {productId: productId})
+                )
+                .then(function (drafts) {
+                    var draftsPromises = [];
 
-                        _.each(drafts, function (draft) {
-                            draftsPromises.push(
-                                ProductManager
-                                    .doGenerateMissing(draft.changes)
-                                    .then(function () {
-                                        return draft;
-                                    })
-                            );
-                        });
+                    _.each(drafts, function (draft) {
+                        draftsPromises.push(
+                            ProductManager
+                                .doGenerateMissing(draft.changes)
+                                .then(function () {
+                                    return draft;
+                                })
+                        );
+                    });
 
-                        return this.getObjects(draftsPromises);
-                    }.bind(this))
-                    .promise();
-                }
-
-                return this.entityListPromise;
+                    return this.getObjects(draftsPromises);
+                }.bind(this))
+                .promise();
             }
         });
     }

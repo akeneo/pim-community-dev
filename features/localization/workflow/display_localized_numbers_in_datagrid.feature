@@ -38,7 +38,7 @@ Feature: Localize numbers in the published product grid
     And I add the "french" locale to the "mobile" channel
     And I am on the published index page
     And I display in the published products grid the columns sku, big_price, rate_sale, weight
-    When I switch the locale to "French (France)"
+    When I switch the locale to "fr_FR"
     Then the row "sandals" should contain:
       | column        | value                |
       | big_price     | $1,000.12, €1,000.01 |

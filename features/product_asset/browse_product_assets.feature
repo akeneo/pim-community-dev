@@ -15,11 +15,11 @@ Feature: Browse product assets
     And I save the asset
     And I am on the "chicagoskyline" asset page
     And I visit the "Variations" tab
-    And I switch the locale to "German (Germany)"
+    And I switch the locale to "de_DE"
     And I upload the reference file akene.jpg
     And I save the asset
     And I visit the "Variations" tab
-    And I switch the locale to "Englisch (Vereinigte Staaten)"
+    And I switch the locale to "en_US"
     And I upload the reference file akene.jpg
     And I save the asset
     And I am on the assets page
@@ -27,7 +27,7 @@ Feature: Browse product assets
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And the row "paint" should contain the thumbnail for channel "mobile"
     And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "en_US"
-    When I switch the locale to "German (Germany)"
+    When I switch the locale to "de_DE"
     And I filter by "channel" with value "Tablet"
     Then the row "paint" should contain the thumbnail for channel "tablet"
     And the row "chicagoskyline" should contain the thumbnail for channel "tablet" and locale "de_DE"

@@ -32,7 +32,7 @@ Feature: Edit product assets variations
   Scenario: Successfully upload a localized variation file
     When I am on the "chicagoskyline" asset page
     And I visit the "Variations" tab
-    And I switch the locale to "German (Germany)"
+    And I switch the locale to "de_DE"
     And I upload the Mobile variation file chicagoskyline-de.jpg
     And I save the asset
     # TODO: Check the file
