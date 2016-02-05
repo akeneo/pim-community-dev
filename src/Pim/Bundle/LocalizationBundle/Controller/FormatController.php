@@ -20,7 +20,7 @@ class FormatController
     protected $dateFactory;
 
     /** @var DateFactory */
-    protected $datetimeFactoty;
+    protected $datetimeFactory;
 
     /** @var LocaleResolver */
     protected $localeResolver;
