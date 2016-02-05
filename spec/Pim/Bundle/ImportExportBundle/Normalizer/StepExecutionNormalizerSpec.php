@@ -7,13 +7,15 @@ use Akeneo\Component\Batch\Model\Warning;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator)
+    function let(TranslatorInterface $translator, PresenterInterface $presenter)
     {
-        $this->beConstructedWith($translator);
+        $this->beConstructedWith($translator, $presenter);
     }
 
     function it_is_a_normalizer()
@@ -27,10 +29,10 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_step_execution(
+        $translator,
+        $presenter,
         StepExecution $stepExecution,
-        BatchStatus $status,
-        \DateTime $startTime,
-        $translator
+        BatchStatus $status
     ) {
         $stepExecution->getStepName()->willReturn('export');
         $translator->trans('export')->willReturn('Export step');
@@ -43,14 +45,9 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $status->getValue()->willReturn(9);
         $translator->trans('pim_import_export.batch_status.9')->willReturn('PENDING');
 
-        $stepExecution->getStartTime()->willReturn($startTime);
+        $date = new \DateTime();
+        $stepExecution->getStartTime()->willReturn($date);
         $stepExecution->getEndTime()->willReturn(null);
-
-        $startTime->getTimestamp()->willReturn(1411400461);
-
-        $utcStartTime = new \DateTime();
-        $utcStartTime->setTimestamp(1411400461);
-        $finalDate = $utcStartTime->format('Y-m-d g:i:s A');
 
         $stepExecution->getWarnings()->willReturn(
             new ArrayCollection(
@@ -80,12 +77,15 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         );
         $translator->trans('a_failure', ['foo' => 'bar'])->willReturn('FAIL!');
 
+        $presenter->present($date, Argument::any())->willReturn('22-09-2014');
+        $presenter->present(null, Argument::any())->willReturn(null);
+
         $this->normalize($stepExecution, 'any')->shouldReturn(
             [
                'label'     => 'Export step',
                'status'    => 'PENDING',
                'summary'   => ['Read' => 12, 'Write' => 50],
-               'startedAt' => $finalDate,
+               'startedAt' => '22-09-2014',
                'endedAt'   => null,
                'warnings'  => [
                    [
