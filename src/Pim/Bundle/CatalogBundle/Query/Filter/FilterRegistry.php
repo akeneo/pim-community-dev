@@ -52,10 +52,24 @@ class FilterRegistry implements FilterRegistryInterface
         $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($code));
 
         if (null !== $attribute) {
-            return $this->getAttributeFilter($attribute);
+            $filter = $this->getAttributeFilter($attribute);
+        } else {
+            $filter = $this->getFieldFilter($code);
+        }
+        
+        if (null === $filter) {
+            throw new \LogicException(
+                sprintf('Filter on field "%s" is not supported', $field)
+            );
         }
 
-        return $this->getFieldFilter($code);
+        if (false === $filter->supportsOperator($operator)) {
+            throw new \LogicException(
+                sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
+            );
+        }
+        
+        return $filter;
     }
 
     /**
