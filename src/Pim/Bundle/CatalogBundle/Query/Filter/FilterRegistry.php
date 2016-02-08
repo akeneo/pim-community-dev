@@ -49,7 +49,7 @@ class FilterRegistry implements FilterRegistryInterface
      */
     public function getFilter($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($code)]);
+        $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($code));
 
         if (null !== $attribute) {
             return $this->getAttributeFilter($attribute);
