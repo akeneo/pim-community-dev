@@ -22,7 +22,7 @@ parameters:
     installed:            ~
 
     # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
-    #installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/scalability/small/fixtures
+    #installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/community/small/fixtures
 
     # or you can use one of the provided catalogs
     # use PimInstallerBundle:minimal for minimal data set
