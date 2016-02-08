@@ -1,5 +1,9 @@
 # 1.5.x
 
+## Bug fixes
+
+- PIM-5508: Variant group edition fix
+
 ## BC breaks
 
 - Change interface `PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface` to change apply method to applyAllChanges and add applyToReviewChanges
