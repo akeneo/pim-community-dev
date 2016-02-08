@@ -107,18 +107,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $filter = $this->filterRegistry->getFilter($field);
 
-        if ($filter === null) {
-            throw new \LogicException(
-                sprintf('Filter on field "%s" is not supported', $field)
-            );
-        }
-
-        if ($filter->supportsOperator($operator) === false) {
-            throw new \LogicException(
-                sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
-            );
-        }
-
         $context = $this->getFinalContext($context);
         if ($attribute !== null) {
             $context['field'] = $field;
