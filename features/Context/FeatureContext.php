@@ -10,6 +10,7 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
+use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
@@ -61,7 +62,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
-        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('domain-attribute-tab', new AttributeTabContext());
 
         $this->setTimeout($parameters);
     }

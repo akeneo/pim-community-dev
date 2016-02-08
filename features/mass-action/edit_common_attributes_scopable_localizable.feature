@@ -30,7 +30,7 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
-    Given I switch the locale to "German (Germany)"
+    Given I switch the locale to "de_DE"
     And I filter by "channel" with value "Ecommerce"
     And I mass-edit products black_jacket and white_jacket
     And I choose the "Edit common attributes" operation

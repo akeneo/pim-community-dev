@@ -31,7 +31,13 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             [
-                'Categories tree'  => ['css' => '#tree'],
+                'Categories tree'       => ['css' => '#tree'],
+                'Main context selector' => [
+                    'css'        => '#container',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ],
                 'Tree select'      => ['css' => '#tree_select'],
                 'Locales dropdown' => ['css' => '#locale-switcher'],
             ]

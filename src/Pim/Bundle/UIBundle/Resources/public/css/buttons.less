@@ -5,6 +5,22 @@
   margin-left: 4px;
 }
 
+.grid .action-cell a.action.btn-tiny,
+.btn-tiny {
+  line-height: 28px;
+  height: 28px;
+
+  &.icons-holder-text {
+    padding: 0 10px 0 38px;
+
+    i {
+      line-height: 28px;
+      height: 28px;
+      width: 28px;
+    }
+  }
+}
+
 .btn {
   background-image: none;
   background-color: @color-new-grey;
@@ -20,8 +36,13 @@
 
   .transition();
 
+  &.push-bottom {
+    margin-bottom: 10px;
+  }
+
   &.icons-holder-text {
     padding: 0 10px 0 44px;
+    white-space: nowrap;
 
     i {
       .icon-button();
@@ -72,6 +93,7 @@
 
     i {
       .icon-button();
+      color: white;
       background-color: darken(@color-new-green, 10%);
     }
   }
@@ -430,10 +452,40 @@
 .badge-info-large {
   display: inline-block;
   padding: 5px 10px;
-  margin: 5px;
   border-radius: 2px;
   background-color: @akeneo-light;
   border: solid 1px @akeneo-grey;
   color: @slate-grey;
   white-space: nowrap;
+}
+
+.grid .action-cell a.action.btn {
+  border: none;
+  display: inline-block;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  opacity: 0;
+
+  i {
+    text-align: center;
+    border: none;
+    border-radius: 2px 0 0 2px;
+  }
+}
+
+tr:hover>.action-cell a.action.btn {
+  opacity: 1;
+
+  &.btn-primary i {
+    background-color: darken(@color-new-green, 10%);
+  }
+
+  &.btn-delete i {
+    background-color: darken(@color-new-red, 10%);
+  }
+
+  i {
+    background-color: darken(@color-new-grey, 10%);
+  }
 }

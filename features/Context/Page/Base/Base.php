@@ -381,27 +381,6 @@ class Base extends Page
     }
 
     /**
-     * @param string $locale
-     *
-     * @throws \Exception
-     *
-     * @return bool
-     */
-    public function hasSelectedLocale($locale)
-    {
-        $selectedLocale = $this->spin(function () {
-            return $this->getElement('Locales dropdown')->find('css', 'li.active a');
-        }, 'Could not find locales in switcher.');
-
-        $title = $selectedLocale->getAttribute('title');
-        if ($locale !== $title) {
-            throw new \Exception(sprintf('Locale is expected to be "%s", actually is "%s".', $locale, $title));
-        }
-
-        return true;
-    }
-
-    /**
      * @return int timeout in millisecond
      */
     protected function getTimeout()

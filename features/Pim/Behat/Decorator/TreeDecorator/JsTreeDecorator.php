@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Decorator\TreeDecorator;
 
-use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
@@ -20,11 +19,9 @@ class JsTreeDecorator extends ElementDecorator
      */
     public function findNodeInTree($nodeName)
     {
-        $node = $this->spin(function () use ($nodeName) {
-            return $this->element->find('css', sprintf('li a:contains("%s")', $nodeName));
-        }, sprintf('Unable to find node "%s" in the tree', $nodeName));
-
-        return $node;
+        return $this->spin(function () use ($nodeName) {
+            return $this->find('css', sprintf('li a:contains("%s")', $nodeName));
+        }, sprintf('Cannot find the node "%s"', $nodeName));
     }
 
     /**
@@ -39,9 +36,6 @@ class JsTreeDecorator extends ElementDecorator
             });
 
             $nodeElement->click();
-
-            //Needed to be sure that the smooth js tree animation is finished to be expanded
-            sleep(1);
         }
     }
 }

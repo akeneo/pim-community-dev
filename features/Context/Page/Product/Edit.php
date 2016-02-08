@@ -44,17 +44,35 @@ class Edit extends ProductEditForm
                 'Category pane'           => ['css' => '#product-categories'],
                 'Category tree'           => [
                     'css'        => '#trees',
-                    'decorators' => ['Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator']
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
                 ],
-                'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
-                'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
-                'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
                 'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
                 'Progress bar'            => ['css' => '.progress-bar'],
-                'Save'                    => ['css' => 'button.save-product']
+                'Save'                    => ['css' => 'button.save-product'],
+                'Attribute tab'           => [
+                    'css'        => '.tab-container .product-attributes',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TabDecorator\ComparableTabDecorator'
+                    ]
+                ],
+                'Comparison panel' => [
+                    'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator',
+                        'Pim\Behat\Decorator\TabElementDecorator\ComparisonPanelDecorator'
+                    ]
+                ],
+                'Main context selector' => [
+                    'css'        => '.tab-container .product-attributes .attribute-edit-actions .context-selectors',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ]
             ]
         );
     }
@@ -141,25 +159,6 @@ class Edit extends ProductEditForm
     public function selectLanguage($language)
     {
         $this->getElement('Locales selector')->selectOption(ucfirst($language), true);
-    }
-
-    /**
-     * @param string $source
-     *
-     * @throws \Exception
-     */
-    public function switchCopySource($source)
-    {
-        $dropdown = $this->getElement('Copy source dropdown');
-        $toggle   = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.dropdown-toggle');
-        }, 'Could not find copy source switcher.');
-        $toggle->click();
-
-        $option = $this->spin(function () use ($dropdown, $source) {
-            return $dropdown->find('css', sprintf('a[data-source="%s"]', $source));
-        }, sprintf('Could not find source "%s" in switcher', $source));
-        $option->click();
     }
 
     /**
@@ -762,92 +761,6 @@ class Edit extends ProductEditForm
         }
 
         $node->click();
-    }
-
-    /**
-     * Enter in copy mode
-     */
-    public function startCopy()
-    {
-        $startCopyBtn = $this->spin(function () {
-            return $this->getElement('Comparison dropdown')->find('css', 'div.start-copying');
-        });
-
-        $startCopyBtn->click();
-        $this->getSession()->wait($this->getTimeout());
-    }
-
-    /**
-     * @param string $localeCode
-     * @param string $scope
-     * @param string $source
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function compareWith($localeCode, $scope = null, $source = null)
-    {
-        try {
-            $this->startCopy();
-        } catch (\Exception $e) {
-            // Is panel already open?
-            $this->spin(function () {
-                return $this->getElement('Copy actions')->find('css', '.stop-copying');
-            }, "Copy panel seems neither open nor closed.");
-        }
-
-        $this->switchLocale($localeCode, true);
-        if (null !== $scope) {
-            $this->switchScope($scope, true);
-        }
-        if (null !== $source) {
-            $this->switchCopySource($source);
-        }
-    }
-
-    /**
-     * Automatically select translations given the specified mode
-     *
-     * @param string $mode
-     */
-    public function autoSelectTranslations($mode)
-    {
-        $dropdown = $this->getElement('Copy selection dropdown');
-        $dropdown->find('css', '.dropdown-toggle')->click();
-
-        $selector = $dropdown->find('css', sprintf('a:contains("%s")', $mode));
-
-        if (!$selector) {
-            throw new \InvalidArgumentException(sprintf('Copy selection mode "%s" not found', $mode));
-        }
-
-        $selector->click();
-    }
-
-    /**
-     * Manually select translation given the specified field label
-     *
-     * @param string $fieldLabel
-     *
-     * @throws ElementNotFoundException
-     */
-    public function manualSelectTranslation($fieldLabel)
-    {
-        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $fieldLabel));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $fieldLabel);
-        }
-
-        $label->getParent()->getParent()->getParent()
-            ->find('css', '.copy-field-selector')
-            ->check();
-    }
-
-    /**
-     * Click the link to copy selected translations
-     */
-    public function copySelectedTranslations()
-    {
-        $this->getElement('Copy translations link')->click();
     }
 
     /**
