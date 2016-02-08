@@ -41,6 +41,7 @@ class ValuesTransformer
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $refDataTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
+                    $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
                 }
             }
 
