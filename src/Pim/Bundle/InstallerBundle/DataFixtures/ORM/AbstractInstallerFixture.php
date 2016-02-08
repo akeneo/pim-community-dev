@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Abstract installer fixture
@@ -18,28 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class AbstractInstallerFixture extends AbstractFixture implements OrderedFixtureInt, ContainerAwareInt
 {
-    /** @var string[] */
-    protected $entities = [
-        'channels',
-        'locales',
-        'currencies',
-        'families',
-        'attribute_groups',
-        'attributes',
-        'categories',
-        'group_types',
-        'groups',
-        'associations',
-        'jobs',
-        'products',
-        'user_groups',
-        'user_roles',
-        'users'
-    ];
-
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
     /** @var string[] */
@@ -80,14 +60,13 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
 
         $installerFiles = [];
 
-        foreach ($this->entities as $entity) {
-            $file = $installerDataDir . $entity;
-            foreach (['.yml', '.csv'] as $extension) {
-                if (is_file($file . $extension)) {
-                    $installerFiles[$entity] = $file . $extension;
-                    break;
-                }
-            }
+        $finder = new Finder();
+        $finder->in($installerDataDir)->name('/\.(yml|csv)$/');
+
+        foreach ($finder as $file) {
+            $info = pathinfo($file->getFileName());
+            $entity = basename($file->getFileName(), '.'.$info['extension']);
+            $installerFiles[$entity] = $file->getPathName();
         }
 
         return $installerFiles;
