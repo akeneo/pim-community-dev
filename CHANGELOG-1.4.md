@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
 - PIM-5470: Fix Doctrine memory leak
+- PIM-5354: Fix select/boolean filter value display after navigation
 
 # 1.4.18 (2016-01-28)
 
