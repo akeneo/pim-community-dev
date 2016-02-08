@@ -1,3 +1,30 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-5529: Fix glitch in permissions edition
+
+# 1.3.37 (2016-01-29)
+
+## Bug fixes
+
+- PIM-5483: Improve loading of products datagrid
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
+- PIM-5150: Improve the product grid loading performance when a lot of attribute filters are available
+
+# 1.3.36 (2016-01-15)
+
+## Bug fixes
+
+- PIM-5422: Fix memory leak on import product
+
+# 1.3.35 (2015-12-29)
+
+## Scalability improvements
+- PIM-5349: Fix the issue with Publication on Mass Edit
+
+## BC Breaks
+- `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish` constructor changed, it now requires the kernel root dir and environment to launch process as backend process.
+
 # 1.3.34 (2015-12-17)
 
 # 1.3.33 (2015-11-25)
