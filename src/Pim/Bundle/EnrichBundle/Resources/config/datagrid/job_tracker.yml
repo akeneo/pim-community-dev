@@ -15,8 +15,9 @@ datagrid:
                 label: User
             status:
                 label: Status
+                type: translateable
             started_at:
-                label: Started at
+                label: job_tracker.filter.started_at
                 data_name: startTime
                 type: product_value_date
                 frontend_type: datetime

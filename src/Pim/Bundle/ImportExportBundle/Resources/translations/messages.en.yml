@@ -171,3 +171,14 @@ Status:  Status
 Summary: Summary
 Start:   Start
 End:     End
+
+# Process tracker
+set_attribute_requirements: Set attribute requirements
+COMPLETED: COMPLETED
+STARTING: STARTING
+STARTED: STARTED
+STOPPING: STOPPING
+STOPPED: STOPPED
+FAILED:  FAILED
+ABANDONED: ABANDONED
+UNKNOWN: UNKNOWN
