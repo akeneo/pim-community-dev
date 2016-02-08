@@ -6,7 +6,7 @@
 
             $(function () {
                 _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init(field.getAttribute('id'));
+                    datepicker.init($(field).closest('div'));
                 });
 
                 $('div.submit-form a').click(function() {
