@@ -11,6 +11,7 @@ use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -25,15 +26,17 @@ class ProposalWidgetSpec extends ObjectBehavior
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         PresenterInterface $presenter,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        RouterInterface $router
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $user->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('en');
+        $router->generate('pimee_workflow_proposal_index')->willReturn('/my/route/');
 
-        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage, $presenter);
+        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage, $presenter, $router);
     }
 
     function it_is_a_widget()
@@ -99,16 +102,20 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->getData()->shouldReturn(
             [
                 [
-                    'productId'    => 1,
-                    'productLabel' => 'First product',
-                    'author'       => 'Julia Stark',
-                    'createdAt'    => $firstCreatedAt->format('m/d/Y')
+                    'productId'        => 1,
+                    'productLabel'     => 'First product',
+                    'authorFullName'   => 'Julia Stark',
+                    'productReviewUrl' =>
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=1',
+                    'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
-                    'productId'    => 2,
-                    'productLabel' => 'Second product',
-                    'author'       => 'Julia Stark',
-                    'createdAt'    => $secondCreatedAt->format('m/d/Y')
+                    'productId'        => 2,
+                    'productLabel'     => 'Second product',
+                    'authorFullName'   => 'Julia Stark',
+                    'productReviewUrl' =>
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=2',
+                    'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
         );
@@ -151,16 +158,20 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->getData()->shouldReturn(
             [
                 [
-                    'productId'    => 1,
-                    'productLabel' => 'First product',
-                    'author'       => 'jack',
-                    'createdAt'    => $firstCreatedAt->format('m/d/Y')
+                    'productId'        => 1,
+                    'productLabel'     => 'First product',
+                    'authorFullName'   => 'jack',
+                    'productReviewUrl' =>
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=1',
+                    'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
-                    'productId'    => 2,
-                    'productLabel' => 'Second product',
-                    'author'       => 'jack',
-                    'createdAt'    => $secondCreatedAt->format('m/d/Y')
+                    'productId'        => 2,
+                    'productLabel'     => 'Second product',
+                    'authorFullName'   => 'jack',
+                    'productReviewUrl' =>
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=2',
+                    'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
         );
