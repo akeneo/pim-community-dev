@@ -116,7 +116,8 @@ class CategoryAccessRepository extends EntityRepository
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('ca.category', 'c', 'c.id')
-            ->select('c.id');
+            ->select('c.id')
+            ->groupBy('c.id');
 
         return $qb;
     }
