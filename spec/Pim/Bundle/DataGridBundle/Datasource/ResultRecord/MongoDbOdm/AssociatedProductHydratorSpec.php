@@ -86,6 +86,17 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
 
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
+        $associatedProduct1->getId()->willReturn('220ae6b98ead0ed7778b46bb');
+        $associatedProduct2->getId()->willReturn('330ae6b98abd0ec8778b46bb');
+        $association->getProducts()->willReturn($productsCollection);
+        $productsCollection->getIterator()->willReturn($productsIterator);
+        $productsIterator->rewind()->shouldBeCalled();
+        $productsCount = 2;
+        $productsIterator->valid()->will(
+            function () use (&$productsCount) {
+                return $productsCount-- > 0;
+            }
+        );
 
         $associatedProduct1->getId()->willReturn('220ae6b98ead0ed7778b46bb');
         $associatedProduct2->getId()->willReturn('330ae6b98abd0ec8778b46bb');
@@ -148,10 +159,8 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
 
         $query->execute()->willReturn($arrayIterator);
         $arrayIterator->toArray()->willReturn([$fixture]);
-
         $rows = $this->hydrate($builder, $options);
         $rows->shouldHaveCount(1);
-
         $firstResult = $rows[0];
         $firstResult->shouldBeAnInstanceOf('\Oro\Bundle\DataGridBundle\Datasource\ResultRecord');
     }
