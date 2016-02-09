@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,8 +25,8 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var PropertySetterInterface */
     protected $propertySetter;
@@ -36,27 +37,32 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
+    /** @var ObjectDetacherInterface */
+    protected $productDetacher;
+
     /**
-     * @param PropertySetterInterface              $propertySetter
-     * @param ValidatorInterface                   $validator
-     * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param PropertySetterInterface             $propertySetter
+     * @param ValidatorInterface                  $validator
+     * @param ProductRepositoryInterface          $productRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param ObjectUpdaterInterface              $productUpdater
+     * @param ObjectDetacherInterface             $productDetacher
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->propertySetter      = $propertySetter;
-        $this->validator           = $validator;
-        $this->attributeRepository = $attributeRepository;
-        $this->productUpdater      = $productUpdater;
+        $this->propertySetter    = $propertySetter;
+        $this->validator         = $validator;
+        $this->productRepository = $productRepository;
+        $this->productUpdater    = $productUpdater;
+        $this->productDetacher   = $productDetacher;
     }
 
     /**
@@ -72,17 +78,20 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
         if (!$this->isProductEditable($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
+            $this->detachProduct($product);
 
             return null;
         }
 
         $actions = $configuration['actions'];
-
         $product = $this->updateProduct($product, $actions);
-        if (null !== $product && !$this->isProductValid($product)) {
-            $this->stepExecution->incrementSummaryInfo('skipped_products');
+        if (null !== $product) {
+            if (!$this->isProductValid($product)) {
+                $this->stepExecution->incrementSummaryInfo('skipped_products');
+                $this->detachProduct($product);
 
-            return null;
+                return null;
+            }
         }
 
         return $product;
@@ -132,9 +141,11 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
-            if ($product->isAttributeEditable($attribute)) {
+            /**
+             * We don't call that method directly on the product model because it hydrates
+             * lot of models and it causes memory leak...
+             */
+            if ($this->isAttributeEditable($product, $attributeCode)) {
                 $values = array_filter($values, function ($value) use ($currentLocale) {
                     return $currentLocale === $value['locale'] || null === $value['locale'];
                 });
@@ -143,21 +154,36 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             }
         }
 
-        if (!empty($filteredValues)) {
-            $this->productUpdater->update($product, $filteredValues);
-        } else {
+        if (empty($filteredValues)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
-                [],
-                $product
-            );
+            $this->addWarning($product);
+            $this->detachProduct($product);
 
             return null;
         }
 
+        $this->productUpdater->update($product, $filteredValues);
+
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param $attributeCode
+     *
+     * @return bool
+     */
+    protected function isAttributeEditable(ProductInterface $product, $attributeCode)
+    {
+        if ($this->productRepository->hasAttributeInFamily($product, $attributeCode)) {
+            return true;
+        }
+
+        if ($this->productRepository->hasAttributeInVariantGroup($product, $attributeCode)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -183,5 +209,34 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function isProductEditable(ProductInterface $product)
     {
         return true;
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function detachProduct(ProductInterface $product)
+    {
+        $this->productDetacher->detach($product);
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function addWarning(ProductInterface $product)
+    {
+        /*
+         * We don't give the product to addWarning because we don't want that step executor
+         * calls the toString method which hydrate lot of model
+         */
+        $this->stepExecution->addWarning(
+            $this->getName(),
+            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
+            [],
+            [
+                'class'  => ClassUtils::getClass($product),
+                'id'     => $product->getId(),
+                'string' => $product->getIdentifier()->getData(),
+            ]
+        );
     }
 }

@@ -44,5 +44,29 @@ class FamilyRepositorySpec extends ObjectBehavior
 
         $this->countAll();
     }
+
+    function it_checks_if_family_has_attribute($em, QueryBuilder $queryBuilder, AbstractQuery $query)
+    {
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('f')->willReturn($queryBuilder);
+        $queryBuilder->select('COUNT(f.id)')->willReturn($queryBuilder);
+        $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('f.attributes', 'a')->willReturn($queryBuilder);
+        $queryBuilder->where('f.id = :id')->willReturn($queryBuilder);
+        $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);
+        $queryBuilder->setMaxResults(1)->willReturn($queryBuilder);
+        $queryBuilder->setParameters([
+            'id' => 10,
+            'code' => 'attribute_code',
+        ])->willReturn($queryBuilder);
+
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $query->getSingleScalarResult()->willReturn(['id' => 12]);
+        $this->hasAttribute(10, 'attribute_code')->shouldReturn(true);
+
+        $query->getSingleScalarResult()->willReturn(null);
+        $this->hasAttribute(10, 'attribute_code')->shouldReturn(false);
+    }
 }
 

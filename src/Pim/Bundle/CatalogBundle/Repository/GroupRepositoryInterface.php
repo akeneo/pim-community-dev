@@ -113,4 +113,13 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return GroupInterface|null
      */
     public function getVariantGroupByProductTemplate(ProductTemplateInterface $productTemplate);
+
+    /**
+     * Check if a group has the attribute with specified code
+     *
+     * @param array|int $id
+     * @param string $attributeCode
+     * @return bool
+     */
+    public function hasAttribute(array $id, $attributeCode);
 }
