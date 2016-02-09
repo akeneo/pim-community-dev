@@ -9,6 +9,7 @@
 - Change interface `PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface` to change apply method to applyAllChanges and add applyToReviewChanges
 - Change interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` : change getChangeForAttribute method to getChange, change removeChangeForAttribute to removeChange, remove setStatus, add getChangesToReview, getReviewStatusForChange, setReviewStatusForChange, removeReviewStatusForChange, setAllReviewStatuses, areAllReviewStatusesTo, markAsInProgress and markAsReady
 - Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Symfony\Component\Routing\RouterInterface`.
+- Remove the extend of the `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 
 # 1.5.0-ALPHA1 (2016-01-26)
 
