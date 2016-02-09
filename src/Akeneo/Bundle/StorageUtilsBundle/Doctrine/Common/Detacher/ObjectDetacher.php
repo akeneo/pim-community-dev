@@ -10,6 +10,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
+use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
+use Doctrine\ORM\UnitOfWork;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -23,12 +25,16 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
+    /** @var array */
+    protected $scheduledForDirtyCheck;
+
     /**
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         $this->managerRegistry = $registry;
+        $this->scheduledForDirtyCheck = null;
     }
 
     /**
@@ -37,12 +43,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     public function detach($object)
     {
         $objectManager = $this->getObjectManager($object);
+        $visited = [];
 
         if ($objectManager instanceof DocumentManager) {
-            $visited = [];
             $this->doDetach($object, $visited);
         } else {
             $objectManager->detach($object);
+            $this->doDetachScheduled($object, $visited);
         }
     }
 
@@ -54,6 +61,93 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         foreach ($objects as $object) {
             $this->detach($object);
         }
+    }
+
+    /**
+     * Detach entity living in the scheduledForDirtyCheck's
+     * unit of work property.
+     *
+     * @param mixed $entity  The entity to be detached
+     * @param array $visited Array of already detached entities
+     */
+    protected function doDetachScheduled($entity, array &$visited)
+    {
+        $oid = spl_object_hash($entity);
+        if (isset($visited[$oid])) {
+            return;
+        }
+
+        $objectManager = $this->getObjectManager($entity);
+        $uow = $objectManager->getUnitOfWork();
+        $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
+        $rootClassName = $class->rootEntityName;
+
+        $visited[$oid] = $entity;
+
+        if (null === $this->scheduledForDirtyCheck) {
+            $this->scheduledForDirtyCheck = &$this->getScheduledForDirtyCheck($uow);
+        }
+        if (isset($this->scheduledForDirtyCheck[$rootClassName])) {
+            unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
+        }
+
+        $this->cascadeDetachScheduled($entity, $visited);
+    }
+
+    /**
+     * Cascades a detach entities associated to entities living in the
+     * scheduledForDirtyCheck unit of work property.
+     *
+     * @param mixed $entity  The entity to be detached
+     * @param array $visited Array of already detached entities
+     */
+    protected function cascadeDetachScheduled($entity, array &$visited)
+    {
+        $objectManager = $this->getObjectManager($entity);
+
+        $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
+
+        $associationMappings = array_filter(
+            $class->associationMappings,
+            function ($assoc) { return $assoc['isCascadeDetach']; }
+        );
+
+        foreach ($associationMappings as $assoc) {
+            $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+            switch (true) {
+                case ($relatedEntities instanceof ORMPersistentCollection):
+                    // Unwrap for the foreach below
+                    $relatedEntities = $relatedEntities->unwrap();
+
+                case ($relatedEntities instanceof Collection):
+                case (is_array($relatedEntities)):
+                    foreach ($relatedEntities as $relatedEntity) {
+                        $this->doDetachScheduled($relatedEntity, $visited);
+                    }
+                    break;
+
+                case (null !== $relatedEntities):
+                    $this->doDetachScheduled($relatedEntities, $visited);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * ScheduledForDirtyCheck getter
+     *
+     * @param UnitOfWork $uow
+     *
+     * @return array
+     */
+    protected function &getScheduledForDirtyCheck(UnitOfWork $uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->scheduledForDirtyCheck;
+        }, null, $uow);
+
+        return $closure($uow);
     }
 
     /**
@@ -93,8 +187,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * cascade bug on MongoDB ODM BETA12.
      * See https://github.com/doctrine/mongodb-odm/pull/979.
      *
-     * @param object $object
-     * @param array  $visited Prevent infinite recursion
+     * @param mixed $object
+     * @param array $visited Prevents infinite recursion
      */
     protected function cascadeDetach($document, array &$visited)
     {
