@@ -3,20 +3,14 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Currency controller for configuration
@@ -25,63 +19,38 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyController extends AbstractDoctrineController
+class CurrencyController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /** @var SaverInterface */
     protected $currencySaver;
 
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param SaverInterface           $currencySaver
+     * @param Request         $request
+     * @param RouterInterface $router
+     * @param SaverInterface  $currencySaver
      */
-    public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
-        SaverInterface $currencySaver
-    ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
+    public function __construct(Request $request, RouterInterface $router, SaverInterface $currencySaver)
+    {
+        $this->request       = $request;
+        $this->router        = $router;
         $this->currencySaver = $currencySaver;
     }
 
     /**
      * List currencies
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_enrich_currency_index")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [];
     }
@@ -101,13 +70,14 @@ class CurrencyController extends AbstractDoctrineController
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
 
-            $this->addFlash('success', 'flash.currency.updated');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
-            $this->addFlash('error', 'flash.currency.error.linked_to_channel');
+            $this->request->getSession()->getFlashBag()
+                ->add('error', new Message('flash.currency.error.linked_to_channel'));
         } catch (\Exception $e) {
-            $this->addFlash('error', 'flash.error ocurred');
+            $this->request->getSession()->getFlashBag()->add('error', new Message('flash.error ocurred'));
         }
 
-        return $this->redirect($this->generateUrl('pim_enrich_currency_index'));
+        return new RedirectResponse($this->router->generate('pim_enrich_currency_index'));
     }
 }

@@ -6,9 +6,11 @@ use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -18,8 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -31,6 +33,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobTrackerController extends Controller
 {
+    const BLOCK_SIZE = 8192;
+
     /** @var EngineInterface */
     protected $templating;
 
@@ -39,9 +43,6 @@ class JobTrackerController extends Controller
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
 
     /** @var JobExecutionArchivist */
     protected $archivist;
@@ -52,14 +53,14 @@ class JobTrackerController extends Controller
     /** @var EventSubscriberInterface */
     protected $jobExecutionManager;
 
-    /** @staticvar string */
-    const BLOCK_SIZE = 8192;
+    /** @var JobExecutionRepository */
+    protected $jobExecutionRepo;
 
     /**
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
+     * @param JobExecutionRepository   $jobExecutionRepo
      * @param JobExecutionArchivist    $archivist
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
@@ -68,7 +69,7 @@ class JobTrackerController extends Controller
         EngineInterface $templating,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
+        JobExecutionRepository $jobExecutionRepo,
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager
@@ -76,7 +77,7 @@ class JobTrackerController extends Controller
         $this->templating          = $templating;
         $this->translator          = $translator;
         $this->eventDispatcher     = $eventDispatcher;
-        $this->doctrine            = $doctrine;
+        $this->jobExecutionRepo    = $jobExecutionRepo;
         $this->archivist           = $archivist;
         $this->serializer          = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
@@ -102,7 +103,12 @@ class JobTrackerController extends Controller
      */
     public function showAction(Request $request, $id)
     {
-        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
+
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
@@ -149,7 +155,11 @@ class JobTrackerController extends Controller
      */
     public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
@@ -170,7 +180,11 @@ class JobTrackerController extends Controller
      */
     public function downloadFilesAction($id, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('Akeneo\Component\Batch\Model\JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
@@ -191,26 +205,5 @@ class JobTrackerController extends Controller
     public function render($view, array $parameters = [], Response $response = null)
     {
         return $this->templating->renderResponse($view, $parameters, $response);
-    }
-
-    /**
-     * Find an entity or throw a 404
-     *
-     * @param string $className Example: 'PimCatalogBundle:Category'
-     * @param int    $id        The id of the entity
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return object
-     */
-    protected function findOr404($className, $id)
-    {
-        $result = $this->doctrine->getRepository($className)->find($id);
-
-        if (!$result) {
-            throw $this->createNotFoundException(sprintf('%s entity not found', $className));
-        }
-
-        return $result;
     }
 }

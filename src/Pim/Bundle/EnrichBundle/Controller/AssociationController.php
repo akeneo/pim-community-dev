@@ -34,8 +34,6 @@ class AssociationController
     protected $templating;
 
     /**
-     * Constructor
-     *
      * @param AssociationTypeRepositoryInterface $assocTypeRepository
      * @param ProductRepositoryInterface         $productRepository
      * @param ProductBuilderInterface            $productBuilder

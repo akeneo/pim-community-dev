@@ -31,8 +31,6 @@ class ExportController
     protected $exportMassAction;
 
     /**
-     * Constructor
-     *
      * @param Request              $request
      * @param MassActionDispatcher $massActionDispatcher
      * @param SerializerInterface  $serializer

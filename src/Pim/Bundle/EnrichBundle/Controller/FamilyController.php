@@ -8,24 +8,24 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Model\AvailableAttributes;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family controller
@@ -34,8 +34,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyController extends AbstractDoctrineController
+class FamilyController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var ManagerRegistry */
+    protected $doctrine;
+
     /** @var ChannelManager */
     protected $channelManager;
 
@@ -60,36 +78,36 @@ class FamilyController extends AbstractDoctrineController
     /** @var string */
     protected $familyClass;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepo;
+
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param ChannelManager           $channelManager
-     * @param FamilyFactory            $familyFactory
-     * @param HandlerInterface         $familyHandler
-     * @param Form                     $familyForm
-     * @param SaverInterface           $familySaver
-     * @param RemoverInterface         $familyRemover
-     * @param string                   $attributeClass
-     * @param string                   $familyClass
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param FormFactoryInterface         $formFactory
+     * @param TranslatorInterface          $translator
+     * @param ManagerRegistry              $doctrine
+     * @param ChannelManager               $channelManager
+     * @param FamilyFactory                $familyFactory
+     * @param HandlerInterface             $familyHandler
+     * @param Form                         $familyForm
+     * @param SaverInterface               $familySaver
+     * @param RemoverInterface             $familyRemover
+     * @param AttributeRepositoryInterface $attributeRepo
+     * @param FamilyRepositoryInterface    $familyRepository
+     * @param string                       $attributeClass
+     * @param string                       $familyClass
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         ChannelManager $channelManager,
         FamilyFactory $familyFactory,
@@ -97,29 +115,27 @@ class FamilyController extends AbstractDoctrineController
         Form $familyForm,
         SaverInterface $familySaver,
         RemoverInterface $familyRemover,
+        AttributeRepositoryInterface $attributeRepo,
+        FamilyRepositoryInterface $familyRepository,
         $attributeClass,
         $familyClass
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->channelManager = $channelManager;
-        $this->familyFactory  = $familyFactory;
-        $this->familyHandler  = $familyHandler;
-        $this->familyForm     = $familyForm;
-        $this->attributeClass = $attributeClass;
-        $this->familySaver    = $familySaver;
-        $this->familyRemover  = $familyRemover;
-        $this->familyClass    = $familyClass;
+        $this->request          = $request;
+        $this->templating       = $templating;
+        $this->router           = $router;
+        $this->formFactory      = $formFactory;
+        $this->translator       = $translator;
+        $this->doctrine         = $doctrine;
+        $this->channelManager   = $channelManager;
+        $this->familyFactory    = $familyFactory;
+        $this->familyHandler    = $familyHandler;
+        $this->familyForm       = $familyForm;
+        $this->attributeClass   = $attributeClass;
+        $this->familySaver      = $familySaver;
+        $this->familyRemover    = $familyRemover;
+        $this->familyClass      = $familyClass;
+        $this->attributeRepo    = $attributeRepo;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -145,18 +161,18 @@ class FamilyController extends AbstractDoctrineController
      */
     public function createAction()
     {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_family_index');
+        if (!$this->request->isXmlHttpRequest()) {
+            return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
         }
 
         $family = $this->familyFactory->createFamily();
 
         if ($this->familyHandler->process($family)) {
-            $this->addFlash('success', 'flash.family.created');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
 
             $response = [
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_enrich_family_edit', ['id' => $family->getId()])
+                'url'    => $this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()])
             ];
 
             return new Response(json_encode($response));
@@ -179,10 +195,14 @@ class FamilyController extends AbstractDoctrineController
      */
     public function editAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $id);
+        $family = $this->familyRepository->find($id);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
+        }
 
         if ($this->familyHandler->process($family)) {
-            $this->addFlash('success', 'flash.family.updated');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.updated'));
         }
 
         return [
@@ -205,9 +225,13 @@ class FamilyController extends AbstractDoctrineController
      */
     public function historyAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $id);
+        $family = $this->familyRepository->find($id);
 
-        return $this->render(
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
+        }
+
+        return $this->templating->renderResponse(
             'PimEnrichBundle:Family:_history.html.twig',
             [
                 'family' => $family
@@ -226,13 +250,18 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $id);
+        $family = $this->familyRepository->find($id);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
+        }
+
         $this->familyRemover->remove($family);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_family_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
         }
     }
 
@@ -247,7 +276,11 @@ class FamilyController extends AbstractDoctrineController
      */
     public function addAttributesAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $id);
+        $family = $this->familyRepository->find($id);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
+        }
 
         $availableAttributes = new AvailableAttributes();
         $attributesForm      = $this->getAvailableAttributesForm(
@@ -255,16 +288,16 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes
         );
 
-        $attributesForm->submit($this->getRequest());
+        $attributesForm->submit($this->request);
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);
         }
 
         $this->familySaver->save($family);
 
-        $this->addFlash('success', 'flash.family.attributes added');
+        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
 
-        return $this->redirectToRoute('pim_enrich_family_edit', ['id' => $family->getId()]);
+        return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
     }
 
     /**
@@ -281,30 +314,39 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAttributeAction($familyId, $attributeId)
     {
-        $family    = $this->findOr404($this->familyClass, $familyId);
-        $attribute = $this->findOr404($this->attributeClass, $attributeId);
+        $family = $this->familyRepository->find($familyId);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
+        }
+
+        $attribute = $this->attributeRepo->find($attributeId);
+
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->attributeClass));
+        }
 
         if (false === $family->hasAttribute($attribute)) {
-            throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
+            throw new DeleteException($this->translator->trans('flash.family.attribute not found'));
         } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
-            throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
+            throw new DeleteException($this->translator->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
-            throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
+            throw new DeleteException($this->translator->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
                     $family->removeAttributeRequirement($requirement);
-                    $this->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
+                    $this->doctrine->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
             }
 
             $this->familySaver->save($family);
         }
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_family_edit', ['id' => $family->getId()]);
+            return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
         }
     }
 
@@ -320,7 +362,7 @@ class FamilyController extends AbstractDoctrineController
         array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
-        return $this->createForm(
+        return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             ['excluded_attributes' => $attributes]

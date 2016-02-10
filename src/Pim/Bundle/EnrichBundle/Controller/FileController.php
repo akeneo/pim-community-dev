@@ -9,7 +9,6 @@ use Liip\ImagineBundle\Controller\ImagineController;
 use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypes;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileController extends Controller
+class FileController
 {
     const DEFAULT_IMAGE_KEY = '__default_image__';
 
@@ -124,7 +123,7 @@ class FileController extends Controller
             }
         }
 
-        throw $this->createNotFoundException(
+        throw new NotFoundHttpException(
             sprintf('File with key "%s" could not be found.', $filename)
         );
     }

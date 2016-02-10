@@ -36,8 +36,13 @@ services:
     pim_datagrid.controller.datagrid_view:
         scope: request
         class: %pim_datagrid.controller.datagrid_view.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@templating'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@validator'
+            - '@translator'
             - '@pim_datagrid.manager.datagrid_view'
 
     pim_datagrid.controller.mass_action:
