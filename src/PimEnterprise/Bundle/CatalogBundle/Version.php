@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.3.37';
+    const VERSION = '1.3.38';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Strawberry';
