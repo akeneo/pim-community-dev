@@ -98,7 +98,7 @@ datagrid:
                     data_name: ~
                     options:
                         field_options:
-                            choices: '@pim_catalog.manager.channel->getChannelChoices'
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode'
             default:
                 category:
                     value:
