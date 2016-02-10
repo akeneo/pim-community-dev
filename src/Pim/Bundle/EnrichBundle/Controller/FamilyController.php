@@ -9,11 +9,12 @@ use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Model\AvailableAttributes;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -54,8 +55,8 @@ class FamilyController
     /** @var ManagerRegistry */
     protected $doctrine;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var FamilyFactory */
     protected $familyFactory;
@@ -91,7 +92,7 @@ class FamilyController
      * @param FormFactoryInterface         $formFactory
      * @param TranslatorInterface          $translator
      * @param ManagerRegistry              $doctrine
-     * @param ChannelManager               $channelManager
+     * @param ChannelRepositoryInterface   $channelRepository
      * @param FamilyFactory                $familyFactory
      * @param HandlerInterface             $familyHandler
      * @param Form                         $familyForm
@@ -109,7 +110,7 @@ class FamilyController
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
         ManagerRegistry $doctrine,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm,
@@ -120,22 +121,22 @@ class FamilyController
         $attributeClass,
         $familyClass
     ) {
-        $this->request          = $request;
-        $this->templating       = $templating;
-        $this->router           = $router;
-        $this->formFactory      = $formFactory;
-        $this->translator       = $translator;
-        $this->doctrine         = $doctrine;
-        $this->channelManager   = $channelManager;
-        $this->familyFactory    = $familyFactory;
-        $this->familyHandler    = $familyHandler;
-        $this->familyForm       = $familyForm;
-        $this->attributeClass   = $attributeClass;
-        $this->familySaver      = $familySaver;
-        $this->familyRemover    = $familyRemover;
-        $this->familyClass      = $familyClass;
-        $this->attributeRepo    = $attributeRepo;
-        $this->familyRepository = $familyRepository;
+        $this->request           = $request;
+        $this->templating        = $templating;
+        $this->router            = $router;
+        $this->formFactory       = $formFactory;
+        $this->translator        = $translator;
+        $this->doctrine          = $doctrine;
+        $this->channelRepository = $channelRepository;
+        $this->familyFactory     = $familyFactory;
+        $this->familyHandler     = $familyHandler;
+        $this->familyForm        = $familyForm;
+        $this->attributeClass    = $attributeClass;
+        $this->familySaver       = $familySaver;
+        $this->familyRemover     = $familyRemover;
+        $this->familyClass       = $familyClass;
+        $this->attributeRepo     = $attributeRepo;
+        $this->familyRepository  = $familyRepository;
     }
 
     /**
@@ -210,7 +211,7 @@ class FamilyController
             'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
-            'channels' => $this->channelManager->getChannels()
+            'channels' => $this->channelRepository->findAll()
         ];
     }
 

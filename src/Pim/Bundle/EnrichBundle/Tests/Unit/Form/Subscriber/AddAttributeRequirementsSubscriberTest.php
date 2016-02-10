@@ -249,12 +249,12 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      *
      * @param array $channels
      *
-     * @return ChannelManager
+     * @return ChannelRepositoryInterface
      */
     protected function getChannelManagerMock(array $channels = [])
     {
         $channelManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelRepositoryInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

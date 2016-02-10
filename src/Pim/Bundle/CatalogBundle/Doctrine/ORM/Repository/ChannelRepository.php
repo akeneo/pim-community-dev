@@ -175,4 +175,22 @@ SQL;
     {
         return ['code'];
     }
+
+    /**
+     * Get channel choices
+     * Allow to list channels in an array like array[<code>] = <label>
+     *
+     * @return string[]
+     */
+    public function getChannelChoices()
+    {
+        $channels = $this->findAll();
+
+        $choices = [];
+        foreach ($channels as $channel) {
+            $choices[$channel->getCode()] = $channel->getLabel();
+        }
+
+        return $choices;
+    }
 }

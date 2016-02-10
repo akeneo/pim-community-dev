@@ -34,13 +34,13 @@ services:
         class: %pim_base_connector.processor.csv_serializer.product.class%
         parent: pim_base_connector.processor.csv_serializer
         arguments:
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
 
     pim_base_connector.processor.product_to_flat_array:
         class: %pim_base_connector.processor.product_to_flat_array.class%
         arguments:
             - '@pim_serializer'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
             - %pim_localization.decimal_separators%

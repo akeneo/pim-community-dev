@@ -7,11 +7,11 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -30,8 +30,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var string */
     protected $uploadDirectory;
@@ -54,7 +54,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
-     * @param ChannelManager                      $channelManager
+     * @param ChannelRepositoryInterface          $channelRepository
      * @param ProductBuilderInterface             $productBuilder
      * @param ObjectDetacherInterface             $objectDetacher
      * @param string                              $uploadDirectory
@@ -62,18 +62,18 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer      = $serializer;
-        $this->channelManager  = $channelManager;
-        $this->uploadDirectory = $uploadDirectory;
-        $this->productBuilder  = $productBuilder;
-        $this->objectDetacher  = $objectDetacher;
+        $this->serializer        = $serializer;
+        $this->channelRepository = $channelRepository;
+        $this->uploadDirectory   = $uploadDirectory;
+        $this->productBuilder    = $productBuilder;
+        $this->objectDetacher    = $objectDetacher;
     }
 
     /**
@@ -175,7 +175,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelManager->getChannelByCode($channelCode);
+        $channel = $this->channelRepository->findOneBy(['code' => $channelCode]);
 
         return $channel->getLocaleCodes();
     }
