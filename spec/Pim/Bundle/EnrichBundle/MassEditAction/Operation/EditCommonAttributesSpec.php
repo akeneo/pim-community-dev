@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -26,6 +27,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         NormalizerInterface $internalNormalizer,
         LocalizedAttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
+        CollectionFilterInterface $productValuesFilter,
         $tmpStorageDir = '/tmp/pim/file_storage'
     ) {
         $this->beConstructedWith(
@@ -37,6 +39,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $internalNormalizer,
             $localizedConverter,
             $localizerRegistry,
+            $productValuesFilter,
             $tmpStorageDir
         );
     }
@@ -89,6 +92,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $userContext,
         $attributeRepository,
         $localizerRegistry,
+        $productValuesFilter,
         LocaleInterface $fr,
         AttributeInterface $normalAttr,
         AttributeInterface $scopableAttr,
@@ -154,6 +158,25 @@ class EditCommonAttributesSpec extends ObjectBehavior
                 ], 'scope' => null, 'locale' => null]
             ],
         ];
+
+        $localizedData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45,59', 'currency' => 'EUR'],
+                    ['data' => '18,22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+
+        $productValuesFilter->filterCollection($localizedData, 'pim.internal_api.product_values_data.edit')
+            ->willReturn($localizedData);
 
         $this->finalize();
         $this->getValues()->shouldReturn(json_encode($sanitizedData));

@@ -2,6 +2,8 @@
 
 ## BC breaks
 - Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
 # 1.5.0-ALPHA1 (2016-01-26)
 
@@ -16,7 +18,7 @@
 - PIM-4646: TinyMCE wysiwyg editor is replaced by Summernote in the mass-edit and variant group
 - PIM-4999: jQuery UI datepicker is replaced by bootstrap datepicker in the mass-edit and variant group
 - A new twig extension (StyleExtension) in UIBundle now provides a "highlight" string filter
-- PIM-5450: MongoDb ODM bundle in dev requirements 
+- PIM-5450: MongoDb ODM bundle in dev requirements
 - PIM-5380: It is now possible to group grid actions in dropdown by specifying it in the grid configuration (see quick export in the product grid for an example)
 - PIM-5481: New command to analyze products CSV files to get stats
 
