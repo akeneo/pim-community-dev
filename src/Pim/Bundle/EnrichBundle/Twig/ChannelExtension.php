@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Twig extension to get channel colors
@@ -14,26 +14,22 @@ use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
  */
 class ChannelExtension extends \Twig_Extension
 {
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var ColorsProvider
-     */
+    /**  @var ColorsProvider */
     protected $colorsProvider;
 
     /**
      * Constructor
      *
-     * @param ChannelManager $channelManager
-     * @param ColorsProvider $colorsProvider
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param ColorsProvider             $colorsProvider
      */
-    public function __construct(ChannelManager $channelManager, ColorsProvider $colorsProvider)
+    public function __construct(ChannelRepositoryInterface $channelRepository, ColorsProvider $colorsProvider)
     {
-        $this->channelManager = $channelManager;
-        $this->colorsProvider = $colorsProvider;
+        $this->channelRepository = $channelRepository;
+        $this->colorsProvider    = $colorsProvider;
     }
 
     /**
@@ -56,7 +52,7 @@ class ChannelExtension extends \Twig_Extension
      */
     public function channelColor($code)
     {
-        $channel = $this->channelManager->getChannelByCode($code);
+        $channel = $this->channelRepository->findOneByIdentifier($code);
 
         return $channel ? $this->colorsProvider->getColorCode($channel->getColor()) : '';
     }
@@ -70,7 +66,7 @@ class ChannelExtension extends \Twig_Extension
      */
     public function channelFontColor($code)
     {
-        $channel = $this->channelManager->getChannelByCode($code);
+        $channel = $this->channelRepository->findOneByIdentifier($code);
 
         return $channel ? $this->colorsProvider->getFontColor($channel->getColor()) : '';
     }

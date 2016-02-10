@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +24,8 @@ class CompletenessController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var UserContext */
     protected $userContext;
@@ -36,20 +36,20 @@ class CompletenessController
     /**
      * @param CompletenessManager        $completenessManager
      * @param ProductRepositoryInterface $productRepository
-     * @param ChannelManager             $channelManager
+     * @param ChannelRepositoryInterface $channelRepository
      * @param UserContext                $userContext
      * @param EngineInterface            $templating
      */
     public function __construct(
         CompletenessManager $completenessManager,
         ProductRepositoryInterface $productRepository,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         UserContext $userContext,
         EngineInterface $templating
     ) {
         $this->completenessManager = $completenessManager;
         $this->productRepository   = $productRepository;
-        $this->channelManager      = $channelManager;
+        $this->channelRepository   = $channelRepository;
         $this->userContext         = $userContext;
         $this->templating          = $templating;
     }
@@ -64,7 +64,7 @@ class CompletenessController
     public function completenessAction($id)
     {
         $product = $this->productRepository->getFullProduct($id);
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
         $completenesses = $this->completenessManager->getProductCompleteness(

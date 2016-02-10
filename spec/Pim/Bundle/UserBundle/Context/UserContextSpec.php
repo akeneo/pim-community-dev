@@ -51,7 +51,7 @@ class UserContextSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('de_DE')->willReturn($de);
 
         $localeRepository->getActivatedLocales()->willReturn([$en, $fr, $de]);
-        $channelRepository->findOneBy([])->willReturn($mobile);
+        $channelRepository->findOneByIdentifier([])->willReturn($mobile);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
         $this->beConstructedWith(
@@ -112,23 +112,6 @@ class UserContextSpec extends ObjectBehavior
         $this->getUserLocaleCodes()->shouldReturn(['en_US', 'fr_FR', 'de_DE']);
     }
 
-    function its_get_user_channel_method_returns_user_channel_if_available(User $user, $ecommerce)
-    {
-        $user->getCatalogScope()->willReturn($ecommerce);
-        $this->getUserChannel()->shouldReturn($ecommerce);
-    }
-
-    function its_get_user_channel_method_returns_the_first_available_channel_if_user_channel_is_not_available($mobile)
-    {
-        $this->getUserChannel()->shouldReturn($mobile);
-    }
-
-    function its_get_user_channel_code_method_returns_a_channel_code($mobile)
-    {
-        $mobile->getCode()->willReturn('mobile');
-        $this->getUserChannelCode()->shouldReturn('mobile');
-    }
-
     function its_get_user_tree_method_returns_user_tree_if_available(User $user, $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
@@ -153,7 +136,7 @@ class UserContextSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $userChannel->getCode()->willReturn('mobile');
-        $channelRepository->findOneBy([])->willReturn($userChannel);
+        $channelRepository->findOneByIdentifier([])->willReturn($userChannel);
         $tokenStorage->getToken()->willReturn($token);
 
         $token->getUser()->willReturn($user);

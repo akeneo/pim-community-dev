@@ -50,7 +50,7 @@ services:
         arguments:
             - '@pim_connector.repository.job_configuration'
             - '@pim_serializer'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - %upload_dir%
