@@ -609,3 +609,10 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.normalized_data./g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer.normalizer.mongodb./pim_catalog.mongodb.normalizer.document./g'
 ```
+
+## EnrichBundle
+
+In v1.5, we've removed following deprecated classes and services:
+
+ - `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController`
+ - `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`
