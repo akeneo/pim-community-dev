@@ -4,10 +4,10 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -35,27 +35,27 @@ class ProductTemplateType extends AbstractType
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /**
      * @param ProductFormViewInterface                 $productFormView
      * @param TransformProductTemplateValuesSubscriber $valuesSubscriber
      * @param UserContext                              $userContext
-     * @param ChannelManager                           $channelManager
+     * @param ChannelRepositoryInterface               $channelRepository
      * @param string                                   $productTemplateClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
         TransformProductTemplateValuesSubscriber $valuesSubscriber,
         UserContext $userContext,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         $productTemplateClass
     ) {
         $this->productFormView      = $productFormView;
         $this->valuesSubscriber     = $valuesSubscriber;
         $this->userContext          = $userContext;
-        $this->channelManager       = $channelManager;
+        $this->channelRepository    = $channelRepository;
         $this->productTemplateClass = $productTemplateClass;
     }
 
@@ -90,7 +90,7 @@ class ProductTemplateType extends AbstractType
         $view->vars['groups']        = $this->productFormView->getView();
         $view->vars['orderedGroups'] = $this->getOrderedGroups($values);
         $view->vars['locales']       = $this->userContext->getUserLocales();
-        $view->vars['channels']      = $this->channelManager->getChannels();
+        $view->vars['channels']      = $this->channelRepository->findAll();
         $view->vars['currentLocale'] = $options['currentLocale'];
     }
 
