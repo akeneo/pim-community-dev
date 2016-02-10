@@ -26,12 +26,14 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
     
+    /** @var array */
     protected $supportedFields = [];
     
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param array $supportedFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
