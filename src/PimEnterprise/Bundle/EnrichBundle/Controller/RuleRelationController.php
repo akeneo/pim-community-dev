@@ -35,6 +35,7 @@ class RuleRelationController
     /**
      * @param EntityRepository    $ruleRelationRepo
      * @param NormalizerInterface $normalizer
+     * @param FQCNResolver        $FQCNResolver
      */
     public function __construct(
         EntityRepository $ruleRelationRepo,

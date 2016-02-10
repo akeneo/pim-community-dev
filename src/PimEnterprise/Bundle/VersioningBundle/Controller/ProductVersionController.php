@@ -15,6 +15,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -80,7 +81,7 @@ class ProductVersionController
         $result = $this->doctrine->getRepository($className)->find($id);
 
         if (!$result) {
-            throw NotFoundHttpException(sprintf('%s entity not found', $className));
+            throw new NotFoundHttpException(sprintf('%s entity not found', $className));
         }
 
         return $result;

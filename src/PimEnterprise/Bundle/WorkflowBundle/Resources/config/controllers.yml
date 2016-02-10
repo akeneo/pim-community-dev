@@ -9,9 +9,12 @@ parameters:
 services:
     pimee_workflow.controller.product_draft:
         class: %pimee_workflow.controller.product_draft.class%
-        parent: pim_enrich.controller.abstract
         scope: request
         arguments:
+            - '@request'
+            - '@router'
+            - '@security.token_storage'
+            - '@translator'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
@@ -23,9 +26,12 @@ services:
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
-        parent: pim_enrich.controller.abstract
         scope: request
         arguments:
+            - '@request'
+            - '@router'
+            - '@templating'
+            - '@translator'
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
             - '@pim_catalog.manager.completeness'

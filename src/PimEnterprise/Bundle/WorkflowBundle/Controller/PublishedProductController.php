@@ -14,30 +14,40 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Published product controller
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductController extends AbstractController
+class PublishedProductController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var UserContext */
     protected $userContext;
 
@@ -55,13 +65,9 @@ class PublishedProductController extends AbstractController
 
     /**
      * @param Request                       $request
-     * @param EngineInterface               $templating
      * @param RouterInterface               $router
-     * @param TokenStorageInterface         $tokenStorage
-     * @param FormFactoryInterface          $formFactory
-     * @param ValidatorInterface            $validator
+     * @param EngineInterface               $templating
      * @param TranslatorInterface           $translator
-     * @param EventDispatcherInterface      $eventDispatcher
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
      * @param CompletenessManager           $completenessManager
@@ -70,30 +76,19 @@ class PublishedProductController extends AbstractController
      */
     public function __construct(
         Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
+        EngineInterface $templating,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager,
         CompletenessManager $completenessManager,
         ChannelManager $channelManager,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
+        $this->request              = $request;
+        $this->router               = $router;
+        $this->templating           = $templating;
+        $this->translator           = $translator;
         $this->userContext          = $userContext;
         $this->manager              = $manager;
         $this->completenessManager  = $completenessManager;
@@ -104,14 +99,12 @@ class PublishedProductController extends AbstractController
     /**
      * List of published products
      *
-     * @param Request $request the request
-     *
      * @AclAncestor("pimee_workflow_published_product_index")
-     * @Template
+     * @Template()
      *
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'locales'    => $this->getUserLocales(),
@@ -152,18 +145,17 @@ class PublishedProductController extends AbstractController
             );
         }
 
-        $this->addFlash('success', 'flash.product.unpublished');
+        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.product.unpublished'));
 
-        return parent::redirectToRoute(
+        return new RedirectResponse($this->router->generate(
             'pimee_workflow_published_product_index',
             ['dataLocale' => $this->getDataLocale()]
-        );
+        ));
     }
 
     /**
      * View a published product
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @Template
@@ -223,7 +215,7 @@ class PublishedProductController extends AbstractController
         $published = $this->manager->findPublishedProductById($id);
 
         if (!$published) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Published product with id %s could not be found.', (string) $id)
             );
         }
