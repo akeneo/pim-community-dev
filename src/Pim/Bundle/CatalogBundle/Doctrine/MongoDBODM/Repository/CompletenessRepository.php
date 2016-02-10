@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Completeness Repository for ODM
@@ -16,40 +16,32 @@ use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
  */
 class CompletenessRepository implements CompletenessRepositoryInterface
 {
-    /**
-     * @var DocumentManager
-     */
+    /** @var DocumentManager */
     protected $documentManager;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var CategoryRepositoryInterface
-     */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
     /**
      * @param DocumentManager             $documentManager
-     * @param ChannelManager              $channelManager
+     * @param ChannelRepositoryInterface  $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param string                      $productClass
      */
     public function __construct(
         DocumentManager $documentManager,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         $productClass
     ) {
         $this->documentManager    = $documentManager;
-        $this->channelManager     = $channelManager;
+        $this->channelRepository  = $channelRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productClass       = $productClass;
     }
@@ -59,7 +51,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
      */
     public function getProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
         $productsCount = [];
@@ -88,7 +80,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
      */
     public function getCompleteProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->findAll();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
         $productsCount = [];
