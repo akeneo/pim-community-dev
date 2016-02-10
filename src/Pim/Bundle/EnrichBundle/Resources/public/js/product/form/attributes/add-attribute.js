@@ -18,7 +18,8 @@ define(
         'pim/attribute/add-attribute-footer',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/formatter/choices/base'
+        'pim/formatter/choices/base',
+        'oro/mediator'
     ],
     function (
         $,
@@ -30,7 +31,8 @@ define(
         AttributeFooter,
         UserContext,
         FetcherRegistry,
-        ChoicesFormatter
+        ChoicesFormatter,
+        mediator
     ) {
         return BaseForm.extend({
             tagName: 'div',
@@ -149,6 +151,12 @@ define(
                 opts = $.extend(true, this.defaultOptions, opts);
 
                 var select2 = $select.select2(opts);
+
+                // Close & destroy select2 DOM on change page via hash-navigation
+                mediator.once('hash_navigation_request:start', function () {
+                    select2.select2('close');
+                    select2.select2('destroy');
+                });
 
                 // On select2 "selecting" event, we bypass the selection to handle it ourself.
                 select2.on('select2-selecting', function (event) {

@@ -11,6 +11,7 @@
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
 - PIM-5492: Fix complete group loading on useless cases
 - Fix `Akeneo\Component\Console\CommandLauncher` to launch as a backend task
+- PIM-5471: Close & destroy select2 on page change with hash-navigation
 
 # 1.4.17 (2016-01-19)
 
