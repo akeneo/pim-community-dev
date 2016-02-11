@@ -16,8 +16,7 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
-        'pim/initselect2',
-        'jquery.select2'
+        'pim/initselect2'
     ],
     function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2) {
         return Field.extend({
@@ -98,9 +97,7 @@ define(
                         multiple: true
                     };
 
-                    options = initSelect2.options(options);
-
-                    this.$('input.select-field').select2('destroy').select2(options);
+                    initSelect2.init(this.$('input.select-field'), options);
                 }.bind(this));
             },
 

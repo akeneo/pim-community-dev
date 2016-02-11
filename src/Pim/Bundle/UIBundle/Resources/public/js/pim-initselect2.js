@@ -5,19 +5,37 @@ define(
         'use strict';
         return {
             resultsPerPage: 20,
-            init: function ($target) {
+            defaultOptions: {
+                allowClear: false,
+                formatSearching: function () {
+                    return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes');
+                },
+                formatNoMatches: function () {
+                    return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
+                },
+                formatLoadMore: function (pageNumber) {
+                    return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
+                }
+            },
+            init: function ($target, options) {
                 var self = this;
 
                 $target.find('input.select2:not(.select2-offscreen)').each(function () {
+                    var options = self.initOptions(options);
+
                     var $el = $(this);
                     var value = _.map(_.compact($el.val().split(',')), $.trim);
                     var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
 
-                    tags = _.union(tags, value).sort();
-                    $el.select2({tags: tags, tokenSeparators: [',', ' ']});
+                    $el.select2($.extend(true, options, {
+                        tags: _.union(tags, value).sort(),
+                        tokenSeparators: [',', ' ']
+                    }));
                 });
 
                 $target.find('select.select2:not(.select2-offscreen)').each(function () {
+                    var options = self.initOptions(options);
+
                     var $el = $(this);
                     var $empty = $el.children('[value=""]');
 
@@ -25,15 +43,25 @@ define(
                         $el.attr('data-placeholder', $empty.html());
                         $empty.html('');
                     }
-                    $el.select2({allowClear: true});
+
+                    $el.select2($.extend(true, options, {
+                        allowClear: true
+                    }));
                 });
 
                 $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
                     self.initSelect.call(self, $(this));
                 });
+
+                if ($target.hasClass('select-field')) {
+                    options = self.initOptions(options);
+                    $target.select2('destroy').select2(options);
+                }
+
+                return $target;
             },
-            initSelect: function ($select) {
-                var options = this.options();
+            initSelect: function ($select, options) {
+                options = this.initOptions(options);
                 var self = this;
                 var queryTimer;
 
@@ -107,22 +135,10 @@ define(
 
                 return _.extend({}, data, {results: matchingResults});
             },
-            options: function (options) {
-                var baseOptions = {
-                    multiple: false,
-                    allowClear: false,
-                    formatSearching: function () {
-                        return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes');
-                    },
-                    formatNoMatches: function () {
-                        return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
-                    },
-                    formatLoadMore: function (pageNumber) {
-                      return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
-                    }
-                };
+            initOptions: function (options) {
+                var defaultOptions = $.extend(true, {}, this.defaultOptions);
 
-                return $.extend(true, baseOptions, options);
+                return $.extend(true, defaultOptions, options);
             }
         };
     }

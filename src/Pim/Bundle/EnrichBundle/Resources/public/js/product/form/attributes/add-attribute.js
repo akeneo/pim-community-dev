@@ -19,7 +19,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base',
-        'pim/initselect2',
+        'pim/initselect2'
     ],
     function (
         $,
@@ -149,12 +149,11 @@ define(
                     }.bind(this)
                 };
 
-                opts = initSelect2.options($.extend(true, this.defaultOptions, opts));
-
-                var select2 = $select.select2(opts);
+                opts = $.extend(true, this.defaultOptions, opts);
+                $select = initSelect2.init($select, opts);
 
                 // On select2 "selecting" event, we bypass the selection to handle it ourself.
-                select2.on('select2-selecting', function (event) {
+                $select.on('select2-selecting', function (event) {
                     var attributeCode = event.val;
                     var alreadySelected = _.contains(this.selection, attributeCode);
 
@@ -171,7 +170,7 @@ define(
                     event.preventDefault();
                 }.bind(this));
 
-                select2.on('select2-open', function () {
+                $select.on('select2-open', function () {
                     this.selection = [];
                     this.attributeViews = [];
                     this.updateSelectedCounter();

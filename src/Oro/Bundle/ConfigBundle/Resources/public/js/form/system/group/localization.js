@@ -4,13 +4,15 @@ define([
         'pim/form',
         'pim/fetcher-registry',
         'oro/loading-mask',
-        'text!oro/template/system/group/localization'
+        'text!oro/template/system/group/localization',
+        'pim/initselect2'
     ],
     function(
         BaseForm,
         FetcherRegistry,
         LoadingMask,
-        template
+        template,
+        initSelect2
     ) {
         return BaseForm.extend({
             className: 'tab-pane',
@@ -34,7 +36,7 @@ define([
                         selected: this.getFormData()['oro_locale___language'].value
                     }));
 
-                    this.$('select').select2();
+                    initSelect2.init(this.$('select'));
                     loadingMask.hide().$el.remove();
                 }.bind(this));
 

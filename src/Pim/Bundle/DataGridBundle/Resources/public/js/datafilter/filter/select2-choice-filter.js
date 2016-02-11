@@ -5,9 +5,10 @@ define(
         'oro/datafilter/text-filter',
         'routing',
         'text!pim/template/datagrid/filter/select2-choice-filter',
+        'pim/initselect2',
         'jquery.select2'
     ],
-    function($, _, TextFilter, Routing, template) {
+    function($, _, TextFilter, Routing, template, initSelect2) {
         'use strict';
 
         return TextFilter.extend({
@@ -65,7 +66,7 @@ define(
             },
 
             _enableInput: function() {
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
                 this.$(this.criteriaValueSelectors.value).show();
             },
 
@@ -77,7 +78,6 @@ define(
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
-                    allowClear: false,
                     width: '290px',
                     minimumInputLength: 0
                 };
@@ -150,7 +150,7 @@ define(
                     })
                 );
 
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
             },
 
             _onClickCriteriaSelector: function(e) {
@@ -158,7 +158,7 @@ define(
                 $('body').trigger('click');
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
-                    this.$(this.criteriaValueSelectors.value).select2('open');
+                    initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config()).select2('open');
                 } else {
                     this._hideCriteria();
                 }
