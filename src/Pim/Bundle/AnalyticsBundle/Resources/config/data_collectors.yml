@@ -5,6 +5,7 @@ parameters:
     pim_analytics.data_collector.operating_system.class: Pim\Bundle\AnalyticsBundle\DataCollector\OSDataCollector
     pim_analytics.data_collector.version.class:          Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector
     pim_analytics.data_collector.database.class:         Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector
+    pim_analytics.data_collector.bundles.class:          Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector
 
 services:
     pim_analytics.data_collector.chained:
@@ -51,3 +52,10 @@ services:
             - '@pim_user.repository.user'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
+
+    pim_analytics.data_collector.bundles:
+        class: %pim_analytics.data_collector.bundles.class%
+        arguments:
+            - '%kernel.bundles%'
+        tags:
+            - { name: pim_analytics.data_collector, type: system_info_report }
