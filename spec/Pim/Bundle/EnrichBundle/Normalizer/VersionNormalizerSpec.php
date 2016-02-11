@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Prophecy\Argument;
@@ -11,9 +12,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class VersionNormalizerSpec extends ObjectBehavior
 {
-    function let(UserManager $userManager, TranslatorInterface $translator)
-    {
-        $this->beConstructedWith($userManager, $translator);
+    function let(
+        UserManager $userManager,
+        TranslatorInterface $translator,
+        PresenterInterface $datetimePresenter
+    ) {
+        $this->beConstructedWith($userManager, $translator, $datetimePresenter);
     }
 
     function it_supports_versions(Version $version)
@@ -21,8 +25,15 @@ class VersionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($version, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_versions($userManager, Version $version, \DateTime $versionTime, User $steve)
-    {
+    function it_normalize_versions(
+        $userManager,
+        $translator,
+        $datetimePresenter,
+        Version $version,
+        User $steve
+    ) {
+        $versionTime = new \DateTime();
+
         $version->getId()->willReturn(12);
         $version->getResourceId()->willReturn(112);
         $version->getSnapshot()->willReturn('a nice snapshot');
@@ -30,7 +41,8 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
-        $versionTime->format('Y-m-d H:i:s')->willReturn('1985-10-1 09:41:00');
+        $translator->getLocale()->willReturn('en_US');
+        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
@@ -47,13 +59,19 @@ class VersionNormalizerSpec extends ObjectBehavior
             'changeset'   => 'the changeset',
             'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
             'version'     => 12,
-            'logged_at'   => '1985-10-1 09:41:00',
+            'logged_at'   => '01/01/1985 09:41 AM',
             'pending'     => false
         ]);
     }
 
-    function it_normalize_versions_with_deleted_user($userManager, $translator, Version $version, \DateTime $versionTime)
-    {
+    function it_normalize_versions_with_deleted_user(
+        $userManager,
+        $translator,
+        $datetimePresenter,
+        Version $version
+    ) {
+        $versionTime = new \DateTime();
+
         $version->getId()->willReturn(12);
         $version->getResourceId()->willReturn(112);
         $version->getSnapshot()->willReturn('a nice snapshot');
@@ -61,7 +79,8 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
-        $versionTime->format('Y-m-d H:i:s')->willReturn('1985-10-1 09:41:00');
+        $translator->getLocale()->willReturn('en_US');
+        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
@@ -77,7 +96,7 @@ class VersionNormalizerSpec extends ObjectBehavior
             'changeset'   => 'the changeset',
             'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
             'version'     => 12,
-            'logged_at'   => '1985-10-1 09:41:00',
+            'logged_at'   => '01/01/1985 09:41 AM',
             'pending'     => false
         ]);
     }
