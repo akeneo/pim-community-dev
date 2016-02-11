@@ -7,3 +7,23 @@ pim_analytics:
         form:
             version_update.label: New versions notifications
             version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs
+
+    system_info:
+        title: System information
+        download: TXT
+
+    info_type:
+        pim_edition: Edition
+        pim_version: Version
+        pim_storage_driver: Storage
+        pim_environment: Environment
+        pim_install_time: Install time
+        registered_bundles: Registered bundles
+
+    acl:
+        system_info:
+            index: System information
+
+pim_menu:
+    item:
+        system_info: System information

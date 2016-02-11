@@ -1,0 +1,11 @@
+{% for infoType,info in data %}
+[{{ ('pim_analytics.info_type.' ~ infoType)|trans }}]
+{% if info is iterable %}
+{% for infoRow in info %}
+{{ infoRow }}
+{% endfor %}
+{% else %}
+{{ info }}
+{% endif %}
+
+{% endfor %}

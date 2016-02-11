@@ -1,0 +1,29 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% block content %}
+    {% set buttons %}
+        <a href="{{ path('pim_analytics_system_info_download') }}" class="btn no-hash btn-download">
+            <i class="icon-download-alt"></i>
+            {{ 'pim_analytics.system_info.download'|trans }}
+        </a>
+    {% endset %}
+
+    {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
+
+    <div class="row-fluid tab-content">
+        <table class="table">
+            {% for infoType,info in data %}
+                <tr>
+                    <th>{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
+                    <td>
+                        {% if info is iterable %}
+                            {{ infoRow|join('<br>') }}
+                        {% else %}
+                            {{ info }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
