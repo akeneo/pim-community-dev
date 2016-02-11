@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
@@ -28,7 +29,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function let(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         StepExecution $stepExecution,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher
@@ -36,7 +37,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $jobConfigurationRepo,
             $serializer,
-            $channelManager,
+            $channelRepository,
             $productBuilder,
             $objectDetacher,
             'upload/path/'
@@ -110,7 +111,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        $channelManager,
+        $channelRepository,
         $serializer,
         $productBuilder,
         $objectDetacher,
@@ -147,7 +148,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
@@ -163,7 +164,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         $objectDetacher,
         ChannelInterface $channel,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         ProductInterface $product,
         Serializer $serializer
     ) {
@@ -182,7 +183,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
@@ -219,7 +220,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_english_attributes(
-        $channelManager,
+        $channelRepository,
         $serializer,
         ChannelInterface $channel,
         ProductInterface $product,
@@ -265,7 +266,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
@@ -277,7 +278,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_french_attribute(
-        $channelManager,
+        $channelRepository,
         $serializer,
         ChannelInterface $channel,
         ProductInterface $product,
@@ -318,7 +319,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(

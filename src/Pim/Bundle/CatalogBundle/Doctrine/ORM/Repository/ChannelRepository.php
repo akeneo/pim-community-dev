@@ -177,10 +177,7 @@ SQL;
     }
 
     /**
-     * Get channel choices
-     * Allow to list channels in an array like array[<code>] = <label>
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function getChannelChoices()
     {
