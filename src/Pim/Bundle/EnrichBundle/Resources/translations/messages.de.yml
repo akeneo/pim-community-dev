@@ -856,3 +856,5 @@ mass_edit report:
 job_tracker:
   tab:
     title: Prozess-Tracker
+  filter:
+    started_at: Gestartet am
