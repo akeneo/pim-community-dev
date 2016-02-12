@@ -40,8 +40,8 @@
 
     {% set left %}
         <ul class="inline">
-            <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
-            <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
+            <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</li>
+            <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</li>
         </ul>
     {% endset %}
 
