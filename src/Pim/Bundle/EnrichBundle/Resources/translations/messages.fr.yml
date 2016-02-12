@@ -864,3 +864,5 @@ mass_edit report:
 job_tracker:
   tab:
     title: Traqueur de processus
+  filter:
+    started_at: Démarré à
