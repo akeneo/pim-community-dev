@@ -1,6 +1,8 @@
 # 1.5.x
 
 ## BC breaks
+- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface`
 - Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
