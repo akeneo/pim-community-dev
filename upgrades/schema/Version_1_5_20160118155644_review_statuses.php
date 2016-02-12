@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Pimee\Upgrade\Schema;
+namespace Pim\Upgrade\Schema;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\DBAL\Migrations\AbortMigrationException;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Upgrade\SchemaHelperEE;
+use Pim\Upgrade\UpgradeHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class Version20160118155644 extends AbstractMigration implements ContainerAwareInterface
+class Version_1_5_20160118155644_review_statuses extends AbstractMigration implements ContainerAwareInterface
 {
     const BATCH_SIZE = 1000;
 
@@ -44,7 +44,8 @@ class Version20160118155644 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema)
     {
-        if ($this->areProductsStoredInMongo()) {
+        $upgradeHelper = new UpgradeHelper($this->container);
+        if ($upgradeHelper->areProductsStoredInMongo()) {
             $this->migrateMongoDBDatabase();
         } else {
             $this->migrateMySQLDatabase();
@@ -110,12 +111,12 @@ class Version20160118155644 extends AbstractMigration implements ContainerAwareI
      */
     private function migrateMongoDBDatabase()
     {
-        $draftCollection = new \MongoCollection(
-            $this->getMongoInstance(),
-            $this->getTableOrCollectionForMongoProductDrafts()
-        );
-        $drafts = $draftCollection->find();
+        $schemaHelper    = new SchemaHelperEE($this->container);
+        $upgradeHelper   = new UpgradeHelper($this->container);
+        $collection      = $schemaHelper->getTableOrCollection('product_draft');
+        $draftCollection = new \MongoCollection($upgradeHelper->getMongoInstance(), $collection);
 
+        $drafts = $draftCollection->find();
         foreach ($drafts as $draft) {
             $changeStatus = $this->getChangeStatusFromDraftStatus($draft['status']);
             $statuses     = $this->getReviewStatuses($draft['changes']['values'], $changeStatus);
@@ -195,63 +196,5 @@ class Version20160118155644 extends AbstractMigration implements ContainerAwareI
         }
 
         return $statuses;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return \MongoClient
-     */
-    private function getMongoClient()
-    {
-        if (!$this->areProductsStoredInMongo()) {
-            throw new \Exception('Your application does not store products in Mongo.');
-        }
-        $server = $this->container->getParameter('mongodb_server');
-
-        return new \MongoClient($server);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return \MongoDB
-     */
-    private function getMongoInstance()
-    {
-        if (!$this->areProductsStoredInMongo()) {
-            throw new \Exception('Your application does not store products in Mongo.');
-        }
-        $database = $this->container->getParameter('mongodb_database');
-
-        return $this->getMongoClient()->$database;
-    }
-
-    /**
-     * @return bool
-     */
-    private function areProductsStoredInMongo()
-    {
-        $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
-
-        return $storage === AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
-    }
-
-    /**
-     * @return string
-     */
-    private function getTableOrCollectionForMongoProductDrafts()
-    {
-        $class = $this->container->getParameter('pimee_workflow.model.product_draft.class');
-
-        return $this->getDocumentManager()->getClassMetadata($class)->getCollection();
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    private function getDocumentManager()
-    {
-        return $this->container->get('doctrine.odm.mongodb.document_manager');
     }
 }

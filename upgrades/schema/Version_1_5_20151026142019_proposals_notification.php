@@ -1,6 +1,6 @@
 <?php
 
-namespace Pimee\Upgrade\Schema;
+namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -13,7 +13,7 @@ use Doctrine\DBAL\Schema\Schema;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class Version20151026142019 extends AbstractMigration
+class Version_1_5_20151026142019_proposals_notification extends AbstractMigration
 {
     /**
      * @param Schema $schema

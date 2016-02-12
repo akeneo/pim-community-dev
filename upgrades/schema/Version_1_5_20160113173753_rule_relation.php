@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pimee\Upgrade\Schema;
+namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -19,7 +19,7 @@ use Doctrine\DBAL\Schema\Schema;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class Version20160113173753 extends AbstractMigration
+class Version_1_5_20160113173753_rule_relation extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -36,8 +36,6 @@ class Version20160113173753 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('RENAME TABLE akeneo_rule_engine_rule_relation TO pimee_catalog_rule_rule_relation');
+        $this->throwIrreversibleMigrationException();
     }
 }
