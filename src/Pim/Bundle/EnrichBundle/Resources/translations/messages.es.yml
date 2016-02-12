@@ -717,6 +717,7 @@ pim_enrich.mass_edit_action:
     label: Cambiar la familia de los productos
     description: La familia de los productos seleccionados se cambiará a la familia elegida
     success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
+    no_family: Ninguna familia
   add-to-groups:
     label: Agregar a grupos
     description: Seleccione los grupos en los cuales agregará los productos seleccionados
