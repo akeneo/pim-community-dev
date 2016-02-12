@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ChosableInterface;
+use Pim\Component\Enrich\Model\ChosableInterface;
 
 class ChoicesBuilderSpec extends ObjectBehavior
 {
@@ -35,7 +35,7 @@ class ChoicesBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \InvalidArgumentException(sprintf(
-                '%s must implement Pim\Component\Catalog\Model\ChosableInterface',
+                '%s must implement Pim\Component\Enrich\Model\ChosableInterface',
                 get_class($invalidItem)
             ))
         )->duringBuildChoices([$validItem, $invalidItem]);

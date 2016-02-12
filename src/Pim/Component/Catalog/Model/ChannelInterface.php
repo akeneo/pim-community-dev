@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Pim\Component\Enrich\Model\ChosableInterface;
 
 /**
  * Channel interface

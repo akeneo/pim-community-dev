@@ -4,301 +4,7 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
-## PHP7 and HHVM
-
-We continue to do several compatibility tests for PHP7 and HHVM.
-
-Our dependencies are becoming more and more compliant and our Continuous integration is configured to run our unit tests suites with PHP 5.4, 5.5, 5.6, 7.0 and HHVM.
-
-Akeneo PIM is still not production ready with PHP7 and HHVM but we're definitely getting closer.
-
-## Oro Platform Bundles
-
-Akeneo PIM is based on a fork of a very old beta5 version of oro/platform (2013/10).
-
-We started the development of Akeneo PIM by actively contributing to oro/platform and by upgrading the platform each week.
-
-The use of the platform drastically speed up our first stages to create Akeneo PIM, especially to manage users, security and to provide UI elements.
-
-During the end of 2013, it appeared that our first stable release ETA (2014/01) was incompatible with the stable platform ETA (2014/04).
-
-So we've created a fork to be able to stabilize, tweak and fix this version to make our application production ready.
-
-Then we strongly focused on the Akeneo PIM development to build our first stable versions.
-
-The gap between our forked version and the stable platform became bigger and bigger (the migration cost too).
-
-We had customers in production and the migration would imply a lot of impacts so we never upgraded the platform.
-
-The overall strategy was to reduce dependencies to our very old beta platform to be able at some point to migrate to a stable and recent platform.
-
-So, in Akeneo PIM 1.x versions, to reduce the dependencies, ease the maintenance and enhance performance, we dropped several old oro bundles we don't even use.
-
-In the v1.5, we move these bundles from our fork to our main repository to ease the cleanup and make our technical stack more understandable.
-
-## Architecture [WIP]
-
-Once Oro bundles moved, there is the re-work strategy for v1.5.
-
-The idea is to provide a cleaner and more understandable stack by removing override and "twin bundles".
-
-There is the v1.4 version with Oro bundles moved in src,
-
-```
-src/
-├── Acme
-│   └── Bundle
-│       └── AppBundle
-├── Akeneo
-│   ├── Bundle
-│   │   ├── ClassificationBundle
-│   │   ├── FileStorageBundle
-│   │   └── StorageUtilsBundle
-│   └── Component
-│       ├── Analytics
-│       ├── Classification
-│       ├── Console
-│       ├── FileStorage
-│       └── StorageUtils
-├── Oro
-│   └── Bundle
-│       ├── AsseticBundle           -> -
-│       ├── ConfigBundle            -> -
-│       ├── DataGridBundle          -> -
-│       ├── EntityBundle            -> [Done] - removed (DoctrineOrmMappingsPass has been extracted in Akeneo/StorageUtilsBundle)
-│       ├── EntityConfigBundle      -> [Done] - removed (ServiceLinkPass has been extracted in Oro/SecurityBundle)
-│       ├── DistributionBundle      -> [Done] - removed (automatic routing has been dropped and routes are explicitly declared in routing.yml)
-│       ├── FilterBundle            -> -
-│       ├── FormBundle              -> merge useful parts to Oro/ConfigBundle and Pim/EnrichBundle
-│       ├── LocaleBundle            -> [Done] - removed
-│       ├── NavigationBundle        -> -
-│       ├── RequireJSBundle         -> -
-│       ├── SecurityBundle          -> -
-│       ├── TranslationBundle       -> merge useful parts to Akeneo/Pim Localization then remove
-│       ├── UIBundle                -> merge useful parts to Pim/UIBundle
-│       └── UserBundle              -> merge useful parts to Pim/UserBundle
-└── Pim
-    ├── Bundle
-    │   ├── AnalyticsBundle         -> -
-    │   ├── BaseConnectorBundle     -> could be totally deprecated (but kept with tests) once exports re-worked in ConnectorBundle
-    │   ├── CatalogBundle           -> continue to extract business code to relevant components
-    │   ├── CommentBundle           -> could be splitted in a Akeneo component + bundle (does not rely on PIM domain)
-    │   ├── ConnectorBundle         -> could welcome new classes if we re-work export
-    │   ├── DashboardBundle         -> -
-    │   ├── DataGridBundle          -> move generic classes to Oro/DataGridBundle, move specific related to product to Pim/EnrichBundle
-    │   ├── EnrichBundle            -> could contain all Akeneo PIM UI (except independent bundles as workflow, pam)
-    │   ├── FilterBundle            -> merge in Oro/DataGridBundle or Pim/DataGridBundle
-    │   ├── ImportExportBundle      -> could be merged to EnrichBundle it mainly contain UI related classes
-    │   ├── InstallerBundle         -> -
-    │   ├── JsFormValidationBundle  -> -
-    │   ├── NavigationBundle        -> -
-    │   ├── NotificationBundle      -> bit re-worked during the collaborative workflow epic
-    │   ├── PdfGeneratorBundle      -> -
-    │   ├── ReferenceDataBundle     -> -
-    │   ├── TransformBundle         -> move normalizer/denormalizer part and deprecate all other parts (related to deprecated import system)
-    │   ├── TranslationBundle       -> copy useful classes in new Localization component + bundle, then remove this bundle
-    │   ├── UIBundle                -> mainly used for js/css third party libraries, we should load them via a dedicated package manager
-    │   ├── UserBundle              -> merge used parts of Oro/UserBundle to Pim/UserBundle
-    │   ├── VersioningBundle        -> -
-    │   └── WebServiceBundle        -> -
-    └── Component
-        ├── Catalog
-        ├── Connector
-        └── ReferenceData
-```
-
-Ideally, the 1.5 version could be the following, (depending on the amount of tech cleaning we manage to do),
-
-```
-src/
-├── Acme
-│   └── Bundle
-│       └── AppBundle               Dev examples for product value override and specific reference data
-├── Akeneo
-│   ├── Bundle
-│   │   ├── BatchBundle             Doctrine and Symfony implementations for the Batch component
-│   │   ├── ClassificationBundle    Doctrine generic implementations for classification trees and related DI
-│   │   ├── FileStorageBundle       Doctrine and Symfony implementations for files storage
-│   │   └── StorageUtilsBundle      Doctrine implementations for storage access (remover, saver, updater, repositories, etc)
-│   └── Component
-│       ├── Analytics               Data collector interfaces to aggregate statistics
-│       ├── Batch                   New (introduced v1.5) Batch domain interfaces and classes (extracted from previous BatchBundle version)
-│       ├── Buffer                  New (introduced v1.5) Buffer domain interfaces and classes (extracted from previous BatchBundle version)
-│       ├── Classification          Generic classes for classification trees (implemented by product categories and asset categories) and tags
-│       ├── Console                 Utility classes to execute commands
-│       ├── FileStorage             Business interfaces and classes to handle files storage with filesystem abstraction
-│       ├── Localization            New (introduced v1.5) Localization domain interfaces and classes
-│       ├── StorageUtils            Business interfaces and classes to abstract storage access (remover, saver, updater, repositories, etc)
-│       └── Versioning              New (introduced v1.5) Versioning domain interfaces and classes
-├── Oro
-│   └── Bundle
-│       ├── AsseticBundle           CSS assets management, assets can be distributed across several bundles
-│       ├── ConfigBundle            Application configuration, other bundles can declare their own configurations
-│       ├── DataGridBundle          Generic interfaces and classes to implement Datagrid
-│       ├── FilterBundle            Generic interfaces and classes to implement Datagrid filters
-│       ├── FormBundle              Form utils
-│       ├── RequireJSBundle         Generates a require.js config file for a project, minify and merge all JS-file into one resources
-│       └── SecurityBundle          Advanced ACL management
-└── Pim
-    ├── Bundle
-    │   ├── AnalyticsBundle         Implementations of data collectors to provide PIM statistics
-    │   ├── CatalogBundle           PIM business classes (models, model updaters, storage access, validation, etc)
-    │   ├── CommentBundle           Generic comment implementations, used by products
-    │   ├── ConnectorBundle         New (introduced in v1.5) classes to integrate import system with Symfony and Doctrine
-    │   ├── DashboardBundle         Dashboard and widget system
-    │   ├── EnrichBundle            Symfony and Doctrine glue classes to provide User Interface
-    │   ├── InstallerBundle         Installation system of the PIM
-    │   ├── JsFormValidationBundle  Override of APY/JsFormValidationBundle to provide javascript validation for dynamic models
-    │   ├── LocalizationBundle      Symfony implementation of localization features
-    │   ├── NotificationBundle      Implementation of a centralized PIM notifications system
-    │   ├── PdfGeneratorBundle      Classes to generate a PDF datasheet for a product
-    │   ├── ReferenceDataBundle     Classes to provide reference data support for PIM features
-    │   ├── TransformBundle         Handles normalization and denormalization of PIM models
-    │   ├── UserBundle              Interfaces and classes to manage Users, Roles and Groups
-    │   ├── VersioningBundle        Versioning implementation for the PIM domain models
-    │   └── WebServiceBundle        Very light Web Rest API (json format)
-    └── Component
-        ├── Catalog                 New (introduced v1.4) PIM domain interfaces and classes, most of them still remain in CatalogBundle for legacy reasons
-        ├── Connector               New (introduced v1.4) PIM business interfaces and classes to handle data import
-        └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
-```
-
-## Component & Bundle
-
-Since the 1.3, Akeneo PIM introduced several components, they contain pure PIM business logic (Pim namespace) or technical logic (Akeneo namespace).
-
-The code located in components is not coupled to Symfony Framework or Doctrine ORM/MongoDBODM.
-
-The bundles contain specific Doctrine implementations and the Symfony glue to assemble components together.
-
-At the end, this decoupling is very powerful, it allows to all our business code to rely only on interfaces and allow to change specific implementation easily.
-
-For instance, in previous versions, by introducing SaverInterface and BulkSaverInterface, we've decoupled our business code from Doctrine by avoiding the direct use of persist/flush everywhere in the code.
-
-With this move, we were able to replace the bulk saving of a products by a more efficient one without breaking anything in the business code.
-
-Our very new features are done in this way but what to do with our legacy code?
-
-We were really hesitating about this topic, because re-organizing has an impact on projects migration and not re-organizing makes the technical stack even harder to understand.
-
-We've decided to assume the re-organization of our legacy code by providing a clear way to migrate from minor version to the upcoming one.
-
-At the end, most of these changes consist in moving classes from bundles to move them into components and can be fixed by search & replace (cf last chapter).
-
-These changes will continue to improve Developer eXperience by bringing a more understandable technical stack and by simplifying future evolutions and maintenance.
-
-## Doctrine events [WIP]
-
-By the past, we've plugged a lot of ou business code on Doctrine events (prePersist, preUpdate, onFlush, postFlush).
-
-For instance, to create versions, to convert metric values, to update properties 'created at' and 'updated at', etc.
-
-This practice strongly couple our business code to Doctrine entity lifecyle and causes several performance issues.
-
-In 1.4,
- - we've introduced our own business events that are dispatched by Saver, BulkSaver, Remover, BulkRemover
- - we've continued to use these Saver, BulkSaver, Remover, BulkRemover
-
-The strategy is to use our own business events to plug the business logic that was relying on doctrine events.
-
-## Doctrine repositories [WIP]
-
-In very early version of the Akeneo PIM, we've used Doctrine repository in a quite standard way.
-
-We define them by using the Doctrine factory service:
-
-```
-    pim_catalog.repository.attribute:
-        class: %pim_catalog.repository.attribute.class%
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.attribute.class%]
-        tags:
-            - { name: 'pim_repository' }
-```
-
-In the code we fetched them by using the following methods of the Doctrine ObjectManager:
-
-```
-    $entityManager->getRepository('PimCatalogBundle:Attribute')
-    $entityManager->getRepository('Pim\Bundle\CatalogBundle\Entity\Attribute')
-```
-
-With our following versions, this practice shows limitation, it forbid to override models in project.
-
-So, in 1.2, 1.3, 1.4 versions we've continuously replaced '$entityManager->getRepository(' by the injection of the service repository.
-
-We're getting rid of factory service to instanciate new repositories as standard services to be able to have several repositories for an object.
-
-For instance, a product repository in catalog bundle, another one in enrich with methods related to grid and forms, etc.
-
-It allows a better separation of concerns and a more atomic customization in projects.
-
-## Batch Bundle & Component
-
-The Akeneo/BatchBundle has been introduced in the very first version of the PIM.
-
-It resides in a dedicated Github repository and, due to that, it has not been enhanced as much as the other bundles.
-
-It's a shame because this bundle provides the main interfaces and classes to structure the connectors for import/export.
-
-To ease the improvements of this key part of the PIM, we moved the bundle in the pim-community-dev repository.
-
-With the same strategy than for other old bundles, main technical interfaces and classes are extracted in a Akeneo/Batch component.
-
-It helps to clearly separate its business logic and the Symfony and Doctrine "glue".
-
-Has been done:
- - move BatchBundle to pim-community-dev repository
- - extract main Step interface and classes
- - extract main Item interface and classes
- - extract main exceptions
- - extract main Event interface and classes
- - extract main Job interface and classes
- - extract domain models (doctrine entities) and move doctrine mapping to yml files
- - extract annotation validation in yml files (move also existing constraint from ImportExportBundle)
- - replace unit tests by specs, add missing specs
- - remove useless batch bundle files (composer, readme, upgrade, travis setup, etc)
-
-After this re-work, several batch domain classes remain in the BatchBundle.
-
-Several of these classes are deprecated, several others are not even used in the context of the PIM (we need extra analysis to know what to do with these).
-
-Another remaining issue with the Batch component is the mix of concerns, batch logic, job and step configuration and step element UI configuration.
-
-The Akeneo\Component\Batch\Step\StepInterface should not contain getConfiguration(), setConfiguration() and getConfigurableStepElements().
-
-The Akeneo\Component\Batch\Step\StepInterface should not assume the use of Akeneo\Component\Batch\Item\AbstractConfigurableStepElement.
-
-Another issue in the Batch Bundle is the way the 'batch_jobs.yml' files are parsed and systematically stored in the DIC.
-
-We could rely on a more standard way to define the batch services.
-
-As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
-
-During upgrade, you also have to remove the following line from your project composer.json:
-
-```
-    "akeneo/batch-bundle": "0.4.5",
-```
-
-## ConnectorBundle & BaseConnectorBundle [WIP]
-
-In 1.4, we re-worked the PIM import system and we've depreciated the old import system.
-
-The new system has been implemented in Connector component and ConnectorBundle and we kept the old system in BaseConnectorBundle (deprecated for imports, still in use for exports).
-
-In 1.5, for performance reason, we re-worked the export writer part, we introduced new classes and services in Connector component and ConnectorBundle.
-
-Old export writer classes and services are still in BaseConnectorBundle and are marked as deprecated.
-
-The strategy is to be able to depreciate entirely the BaseConnectorBundle once we'll have re-worked remaining export parts (mainly reader and processor).
-
-TODO:
- - re-work legacy readers and processors pieces in Connector component
- - depreciate legacy readers and processors pieces in BaseConnector bundle
-
-## Catalog Bundle & Component [WIP]
+## Catalog Bundle & Component
 
 We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
  - model interfaces and classes as ProductInterface
@@ -307,7 +13,7 @@ We've extracted following classes and interfaces from the Catalog bundle to the 
 
 In v1.4, we've re-worked the file storage system, the model `Pim\Component\Catalog\Model\ProductMediaInterface` is not used anymore, we now use `Akeneo\Component\FileStorage\Model\FileInfoInterface`.
 
-In v1.5, we've removed following deprecated classes, interfaces and services:
+In v1.5, we've removed the following deprecated classes, interfaces and services:
  - `Pim\Component\Catalog\Model\ProductMediaInterface`
  - `Pim\Component\Catalog\Model\AbstractProductMedia`
  - `Pim\Component\Catalog\Model\ProductMedia`
@@ -322,16 +28,16 @@ In v1.5, we've removed following deprecated classes, interfaces and services:
  - `PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ProductValuePresenterInterface`
  - `PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension`
 
-We've also removed following requirements from composer.json, you can do the same in your project:
+We've also removed the following requirements from composer.json, you can do the same in your project:
 
 ```
     "knplabs/gaufrette": "0.1.9",
     "knplabs/knp-gaufrette-bundle": "0.1.7"
 ```
 
-As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
+As usual, we provide upgrade commands to easily update projects migrating from 1.4 to 1.5.
 
-Don't forget to change the app/config.yml if you did mapping overrides:
+The app/config.yml mapping overrides has change:
 
 v1.4
 ```
@@ -351,139 +57,64 @@ akeneo_storage_utils:
             override: Acme\Bundle\AppBundle\Model\ProductValue
 ```
 
-## Localization Component & Bundle [WIP]
+## Update dependencies and configuration
 
-One key feature of the 1.5 is the proper localization of the PIM for number format, date format and UI translation.
-
-In 1.4, internationalization is partial and some parts are handled by Oro/Bundle/LocaleBundle, Oro/Bundle/TranslationBundle and Pim/Bundle/TranslationBundle.
-
-The 1.5 covers,
- - UI language per user
- - Rework of UI components (a single localized date picker for instance)
- - Number and date format in UI
- - Number and date format in import/export
- - Translations of error messages in import/export
-
-The Pim/Localization component provides classes to deal with localization, the related bundle provides Symfony integration.
-
-DONE:
- - From Oro/Bundle/LocaleBundle, move UTCDateTimeType in Akeneo/Bundle/StorageUtilsBundle
- - From Oro/Bundle/LocaleBundle, move DateRangeType and DateTimeRangeType in Pim/Bundle/FilterBundle
- - Remove Oro/Bundle/LocaleBundle
- - From Pim/Bundle/TranslationBundle, move translations models and factory to our new component Akeneo/Component/Localization
- - From Pim/Bundle/TranslationBundle, move Form, DI and js to Pim/Bundle/EnrichBundle
- - Remove Pim/Bundle/TranslationBundle
-
-TODO:
- - Akeneo vs Pim namespace to discuss
- - From Oro/Bundle/TranslationBundle, move dump command & controller in our new bundle
- - Remove Oro/Bundle/TranslationBundle
-
-## Versioning Bundle & Component [WIP]
-
-Versioning system has been introduced in a really early version of the PIM and has never been re-worked.
-
-Up to the version 1.3, the saving of an object was done through direct calls to Doctrine persist/flush anywhere in the application.
-
-The versioning system relies on Doctrine events to detect if an object has been changed to write a new version if this object is versionable.
-
-Since the 1.3, we've introduced the SaverInterface and BulkSaverInterface and make all our business code rely on it.
-
-It allows to decouple business code from Doctrine ORM persistence and make the object saving more explicit from business code point of view.
-
-Our future plan for the versioning is to rely on these save calls to create new versions (and avoid to guess if any object has been updated).
-
-This guessing part is very greedy and we expect to enhance the performances by making it more straightforward.
-
-To prepare this shiny future, we've introduced a new Akeneo component which contains only pure business logic related to the versioning.
-
-The versioning process itself will be re-worked in a future version. To make this future change painless, you can ensure to always rely on the SaverInterface, the BulkSaverInterface and the Versioning component models.
-
-As usual, we provide upgrade commands (cf last chapter) to easily update projects migrating from 1.4 to 1.5.
-
-TODO:
- - re-work the versioning system in the new component
- - rely on business save & saveAll and not anymore on doctrine events
- - depreciate the legacy system
-
-## Normalizers & Denormalizers [WIP]
-
-The PIM heavily uses the Serializer component of Symfony http://symfony.com/doc/2.7/components/serializer.html.
-
-Especially, classes which implement,
- - NormalizerInterface to transform object to array  
- - DenormalizerInterface to transform array to object
-
-We have a lot of different formats and for backward compatibility reason, we never re-organized them.
+Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
 
 ```
-Pim/Bundle/CatalogBundle
-└── MongoDB
-    └── Normalizer          -> format "mongodb_json", used to generate the field normalizedData in a product mongo document
-
-Pim/Bundle/TransformBundle
-├── Denormalizer
-│   ├── Flat                -> format "flat", "csv", used to revert versions (legacy, it should use structured format + updater api)
-│   └── Structured          -> format "json", use to denormalize product templates values
-└── Normalizer
-    ├── Flat                -> format "flat", "csv", used to generate csv files and versionning format (legacy, it should use structured format)
-    ├── MongoDB             -> format "mongodb_document", used to transform a whole object to a MongoDB Document
-    └── Structured          -> format "json", "xml", used to generate internal standard format (product template values, product draft values), or for rest api, can also be used with the updater api
-
-Pim/Bundle/EnrichBundle
-└── Normalizer              -> format "internal_api", used by the internal rest api to communicate with new UI Forms (product edit form)
+ wget http://www.akeneo.com/pim-community-standard-v1.5-latest.tar.gz
+ tar -zxf pim-community-standard-v1.5-latest.tar.gz
+ cd pim-community-standard-v1.5.*/
 ```
 
-DONE:
-
- - The "mongodb_json" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/CatalogBundle/MongoDB/Normalizer -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/NormalizedData
- - The parameters and services 'pim_catalog.mongodb.normalizer.*' have been renamed to 'pim_catalog.mongodb.normalizer.normalized_data.*'
- - The "mongodb_document" format has been moved in Catalog Bundle (not in component because rely on storage classes): Pim/Bundle/TransformBundle/Normalizer/MongoDB -> Pim/Bundle/CatalogBundle/Normalizer/MongoDB/Document
- - The parameters and services 'pim_serializer.normalizer.mongodb.*' have been renamed to 'pim_catalog.mongodb.normalizer.document.*'
-
-TODO:
-
-The "structured/json/standard" format could be moved to Catalog component:
- - Pim/Bundle/TransformBundle/Normalizer/Structured -> Pim/Component/Catalog/Normalizer/Structured
-
-The "flat/csv" format should be only used for import/export and could reside in Connector component:
-Pim/Bundle/TransformBundle/Normalizer/Flat -> Pim/Component/Connector/Normalizer/Flat
- -> because should only be used for csv import/export (and currently versioning for legacy reasons)
-
-The "internal_api" format could be renamed in Enrich bundle:
- -> Pim/Bundle/EnrichBundle/Normalizer -> Pim/Bundle/EnrichBundle/Normalizer/InternalRest
-
-Other bundles register normalizers/denormalizers for these formats and could be re-organized:
+Copy the following files to your PIM installation:
 
 ```
-├── ImportExportBundle
-│   ├── Normalizer
-├── ReferenceDataBundle
-│   ├── MongoDB
-│   ├── Normalizer
-├── UserBundle
-│   ├── Normalizer
-├── LocalizationBundle
-│   ├── Normalizer
-└── Localization
-    ├── Denormalizer
-    └── Normalizer
+ export PIM_DIR=/path/to/your/pim/installation
+ cp app/SymfonyRequirements.php $PIM_DIR/app
+ cp app/config/config.yml $PIM_DIR/app/config/
+ cp composer.json $PIM_DIR/
 ```
 
-## JMS Serializer [WIP]
+**In case your products are stored in Mongo**, don't forget to re-add the mongo dependencies to your *composer.json*:
 
-Since early version of the PIM, this library is required by Oro navigation.
+```
+ "doctrine/mongodb-odm-bundle": "3.0.1"
+```
 
-As some point, we used JMS\Serializer\Annotation\Exclude to be able to fix issues with the serialization of our entities.
+The mongodb-odm-bundle has been upgraded in the v1.5. Don't use anymore :
 
-DONE:
- - Remove the use of annotations from entities
+```
+ "doctrine/mongodb-odm": "v1.0.0-beta12@dev",
+ "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev"
+```
 
-TODO:
- - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Provider\TitleService
- - Remove the JMS dependency from Oro\Bundle\NavigationBundle\Title\StoredTitle
- - Remove the JMS dependency from Oro\Bundle\UIBundle\Twig\Md5Extension
- - Remove the "jms/serializer" and "jms/serializer-bundle"
+And don't forget to add your own dependencies to your *composer.json* in case you have some.
+
+Merge the following files into your PIM installation:
+ - *app/AppKernel.php*: We added the Pim *Localization bundle*. We merged some Oro Platform bundles in our structure. The easiest way to merge is to copy the PIM-1.5 *AppKernel.php* file into your installation (`cp app/AppKernel.php $PIM_DIR/app/`), and then register your custom bundles. Don't forget to register *DoctrineMongoDBBundle* in case your products are stored with *MongoDB*.
+ - *app/config/routing.yml*: we have added the entries *pim_localization* and merged some entry from Oro bundles. The easiest way to merge is copy the PIM-1.5 *routing.yml* file into your installation (`cp app/config/routing.yml $PIM_DIR/app/config/`), and then register your custom routes.
+ - *app/config/config.yml*: the entry *pim_localization* has been added. The easiest way to merge is copy the PIM-1.5 *config.yml* file into your installation (`cp app/config/config.yml $PIM_DIR/app/config/`), and then register your own bundles' configuration.
+
+Then remove your old upgrades folder:
+```
+ rm upgrades/ -rf
+```
+
+Now you're ready to update your dependencies:
+
+```
+ cd $PIM_DIR
+ composer update
+```
+
+This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root to allow you to migrate.
+
+Then you can migrate your database using:
+
+```
+ php app/console doctrine:migration:migrate
+```
 
 ## Partially fix BC breaks
 
@@ -520,8 +151,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupInterface/Component\\Catalog\\Model\\GroupInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupTypeInterface/Component\\Catalog\\Model\\GroupTypeInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocaleInterface/Component\\Catalog\\Model\\LocaleInterface/g'
-    # TODO should not be moved here, should be moved in Localization component because other component rely on it!
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocalizableInterface/Component\\Catalog\\Model\\LocalizableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocalizableInterface/Component\\Localization\\Model\\LocalizableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Metric/Component\\Catalog\\Model\\Metric/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\MetricInterface/Component\\Catalog\\Model\\MetricInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Product/Component\\Catalog\\Model\\Product/g'
@@ -534,10 +164,8 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ReferableInterface/Component\\Catalog\\Model\\ReferableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ScopableInterface/Component\\Catalog\\Model\\ScopableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\TimestampableInterface/Component\\Catalog\\Model\\TimestampableInterface/g'
-    # TODO: should not be moved here but in Enrich because only used here!
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AvailableAttributes/Component\\Catalog\\Model\\AvailableAttributes/g'
-    # TODO: should not be moved here but in Enrich because only used here!
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChosableInterface/Component\\Catalog\\Model\\ChosableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\AvailableAttributes/Component\\Enrich\\Model\\AvailableAttributes/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ChosableInterface/Component\\Enrich\\Model\\ChosableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\ConnectorBundle\\Writer\\File\\ContextableCsvWriter/Bundle\\BaseConnectorBundle\\Writer\\File\\ContextableCsvWriter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilderInterface/Pim\\Component\\Catalog\\Builder\\ProductBuilderInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Util\\ProductValueKeyGenerator/Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/g'
@@ -608,6 +236,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Normalizer\\MongoDB\\ReferenceDataNormalizer/Pim\\Bundle\\ReferenceDataBundle\\MongoDB\\Normalizer\\Document\\ReferenceDataNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.normalized_data./g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer.normalizer.mongodb./pim_catalog.mongodb.normalizer.document./g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.entity.available_attributes.class/pim_enrich.entity.available_attributes.class/g'
 ```
 
 ## EnrichBundle

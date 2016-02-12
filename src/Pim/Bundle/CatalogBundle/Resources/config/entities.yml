@@ -26,4 +26,3 @@ parameters:
     pim_catalog.entity.metric.class:                      Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:               Pim\Component\Catalog\Model\ProductPrice
     pim_catalog.entity.product_template.class:            Pim\Bundle\CatalogBundle\Entity\ProductTemplate
-    pim_catalog.entity.available_attributes.class:        Pim\Component\Catalog\Model\AvailableAttributes

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Pim\Component\Enrich\Model;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;

@@ -8,6 +8,7 @@ use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
+use Pim\Component\Localization\Model\LocalizableInterface;
 
 /**
  * Product interface

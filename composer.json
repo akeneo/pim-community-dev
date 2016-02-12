@@ -13,6 +13,9 @@
             "": "src/",
             "Context": "features/",
             "Pim\\Behat": "features/"
+        },
+        "psr-4": {
+            "Pim\\Upgrade\\": "upgrades/"
         }
     },
     "require": {

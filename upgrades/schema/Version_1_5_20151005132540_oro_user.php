@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pim\Upgrade\schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Class Version20151005132540
+ * Class Version_1_5_20151005132540_oro_user
  * This migration adds a column ui_locale_id for the oro_user table. Because the column will not be null,
  * the default value is generated in this order:
  * - if PIM config has a full locale (fr_FR, en_US), set it,
@@ -18,7 +18,7 @@ use Doctrine\DBAL\Schema\Schema;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20151005132540 extends AbstractMigration
+class Version_1_5_20151005132540_oro_user extends AbstractMigration
 {
     const CONFIG_VALUE_TABLE = 'oro_config_value';
 

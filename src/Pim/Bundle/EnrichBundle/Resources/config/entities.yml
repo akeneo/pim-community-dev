@@ -1,2 +1,3 @@
 parameters:
-    pim_enrich.entity.sequential_edit.class:             Pim\Bundle\EnrichBundle\Entity\SequentialEdit
+    pim_enrich.entity.sequential_edit.class:      Pim\Bundle\EnrichBundle\Entity\SequentialEdit
+    pim_enrich.entity.available_attributes.class: Pim\Component\Enrich\Model\AvailableAttributes

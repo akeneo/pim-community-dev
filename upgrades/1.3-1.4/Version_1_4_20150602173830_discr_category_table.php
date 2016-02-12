@@ -6,13 +6,11 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Notification migration for the Comment column
- *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20151006132723 extends AbstractMigration
+class Version_1_4_20150602173830_discr_category_table extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -21,7 +19,9 @@ class Version20151006132723 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE pim_notification_notification ADD comment VARCHAR(255) DEFAULT NULL');
+        $sessionTableSql = 'ALTER TABLE pim_catalog_category DROP discr';
+
+        $this->addSql($sessionTableSql);
     }
 
     /**
