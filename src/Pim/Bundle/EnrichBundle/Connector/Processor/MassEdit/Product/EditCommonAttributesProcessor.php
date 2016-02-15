@@ -5,8 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
@@ -36,12 +38,21 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
+    /** @var CollectionFilterInterface */
+    protected $objectFilter;
+
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
+
     /**
      * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param ObjectUpdaterInterface               $productUpdater
+     * @param CollectionFilterInterface                $objectFilter
+     * @param CurrencyRepositoryInterface          $currencyRepository
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
@@ -49,7 +60,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        CollectionFilterInterface $objectFilter,
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         parent::__construct($jobConfigurationRepo);
 
@@ -57,6 +70,8 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater      = $productUpdater;
+        $this->objectFilter        = $objectFilter;
+        $this->currencyRepository  = $currencyRepository;
     }
 
     /**
@@ -77,6 +92,11 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         }
 
         $actions = $configuration['actions'];
+
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+        $this->objectFilter->filterCollection($product->getValues(), 'pim.internal_api.product_value.view', [
+            'currencies' => $currencies
+        ]);
 
         $product = $this->updateProduct($product, $actions);
         if (null !== $product && !$this->isProductValid($product)) {

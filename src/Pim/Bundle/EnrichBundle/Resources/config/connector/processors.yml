@@ -30,6 +30,8 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.updater.product'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.currency'
 
     pim_enrich.connector.processor.mass_edit.family.set_requirements:
         class: %pim_enrich.connector.processor.mass_edit.family.set_requirements.class%
