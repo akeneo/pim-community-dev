@@ -7,9 +7,11 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
@@ -27,7 +29,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        CollectionFilterInterface $objectFilter,
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $this->beConstructedWith(
             $propertySetter,
@@ -35,7 +39,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $massActionRepository,
             $attributeRepository,
             $jobConfigurationRepo,
-            $productUpdater
+            $productUpdater,
+            $objectFilter,
+            $currencyRepository
         );
     }
 
@@ -99,6 +105,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(false);
+
+        $product->getValues()->willReturn([]);
+
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
@@ -148,6 +157,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
+
+        $product->getValues()->willReturn([]);
+
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
@@ -199,6 +211,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getValues()->willReturn([]);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
         $this->setStepExecution($stepExecution);

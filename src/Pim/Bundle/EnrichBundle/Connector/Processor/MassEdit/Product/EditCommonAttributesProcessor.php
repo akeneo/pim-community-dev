@@ -51,7 +51,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param ObjectUpdaterInterface               $productUpdater
-     * @param CollectionFilterInterface                $objectFilter
+     * @param CollectionFilterInterface            $objectFilter
      * @param CurrencyRepositoryInterface          $currencyRepository
      */
     public function __construct(

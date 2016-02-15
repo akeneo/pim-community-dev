@@ -55,7 +55,7 @@ class ProductController
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ObjectFilterInterface */
+    /** @var ObjectFilterInterface | CollectionFilterInterface */
     protected $objectFilter;
 
     /** @var CollectionFilterInterface */
@@ -96,7 +96,7 @@ class ProductController
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
-        CurrencyRepositoryInterface $currencyRepository = null
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
