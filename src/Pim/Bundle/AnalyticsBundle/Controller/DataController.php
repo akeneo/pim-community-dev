@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\Controller;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Component\Analytics\ChainedDataCollector;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DataController
 {
-    /** @var DataCollectorInterface */
+    /** @var ChainedDataCollector */
     protected $dataCollector;
 
     /**
-     * @param DataCollectorInterface $dataCollector
+     * @param ChainedDataCollector $dataCollector
      */
-    public function __construct(DataCollectorInterface $dataCollector)
+    public function __construct(ChainedDataCollector $dataCollector)
     {
         $this->dataCollector = $dataCollector;
     }
@@ -32,7 +32,7 @@ class DataController
      */
     public function collectAction()
     {
-        $data = $this->dataCollector->collect();
+        $data = $this->dataCollector->collect('update_checker');
 
         return new JsonResponse($data);
     }
