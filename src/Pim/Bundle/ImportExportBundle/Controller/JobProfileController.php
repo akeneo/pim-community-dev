@@ -442,7 +442,7 @@ class JobProfileController
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
         $this->request->getSession()->getFlashBag()
-            ->add('success', new Message(sprintf('The %s is running.', $this->getJobType())));
+            ->add('success', new Message(sprintf('flash.%s.running', $this->getJobType())));
 
         return $jobExecution;
     }

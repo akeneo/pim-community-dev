@@ -48,6 +48,10 @@ pim_enrich:
         tab:
             property.title: Properties
             history.title:  History
+    # Category
+    locale:
+        tab:
+            property.title: Properties
     # Product group
     group:
         axis.help: 'Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group.'
@@ -613,6 +617,10 @@ Drop a file or click here:           Drop a file or click here
 Drop an image or click here:         Drop an image or click here
 Automatic option sorting:            Automatic option sorting
 save_attribute_before_manage_option: To manage options, please save the attribute first
+Please select:                       Please select
+Active:                              Active
+Inactive:                            Inactive
+Do not convert:                      Do not convert
 
 Create:               Create
 Cancel:               Cancel

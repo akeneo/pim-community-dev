@@ -20,6 +20,6 @@ class LocaleListener
     {
         $user = $event->getAuthenticationToken()->getUser();
 
-        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
+        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
     }
 }

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CommentBundle\Normalizer\Structured;
 
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Pim\Component\Localization\LocaleResolver;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -18,6 +20,22 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /** @var string[] $supportedFormats */
     protected $supportedFormats = ['json', 'xml'];
 
+    /** @var PresenterInterface */
+    protected $datetimePresenter;
+
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
+    /**
+     * @param PresenterInterface $datetimePresenter
+     * @param LocaleResolver     $localeResolver
+     */
+    public function __construct(PresenterInterface $datetimePresenter, LocaleResolver $localeResolver)
+    {
+        $this->datetimePresenter = $datetimePresenter;
+        $this->localeResolver    = $localeResolver;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,6 +44,8 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
+
+        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
 
         $data = [
             'id'           => $comment->getId(),
@@ -36,8 +56,8 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 'fullName' => $comment->getAuthor()->getFirstName() . ' ' . $comment->getAuthor()->getLastName()
             ],
             'body'         => $comment->getBody(),
-            'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'json', ['format' => 'M jS g:ia']),
-            'replied'      => $this->serializer->normalize($comment->getRepliedAt(), 'json', ['format' => 'M jS g:ia']),
+            'created'      => $this->datetimePresenter->present($comment->getCreatedAt(), $context),
+            'replied'      => $this->datetimePresenter->present($comment->getRepliedAt(), $context),
             'replies'      => $this->serializer->normalize($comment->getChildren(), 'json'),
         ];
 

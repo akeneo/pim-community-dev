@@ -22,7 +22,7 @@
                 initSelect2.init($('#{{ form.vars.id }}'));
 
                 _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init(field.getAttribute('id'));
+                    datepicker.init($(field).closest('div'));
                 });
 
                 {% if form.rolesCollection is defined %}

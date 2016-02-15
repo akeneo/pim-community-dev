@@ -17,17 +17,25 @@ class AttributeExtension extends \Twig_Extension
     /** @var PresenterInterface */
     protected $datePresenter;
 
+    /** @var PresenterInterface */
+    protected $datetimePresenter;
+
     /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
      * @param PresenterInterface $datePresenter
+     * @param PresenterInterface $datetimePresenter
      * @param LocaleResolver     $localeResolver
      */
-    public function __construct(PresenterInterface $datePresenter, LocaleResolver $localeResolver)
-    {
-        $this->datePresenter  = $datePresenter;
-        $this->localeResolver = $localeResolver;
+    public function __construct(
+        PresenterInterface $datePresenter,
+        PresenterInterface $datetimePresenter,
+        LocaleResolver $localeResolver
+    ) {
+        $this->datePresenter     = $datePresenter;
+        $this->datetimePresenter = $datetimePresenter;
+        $this->localeResolver    = $localeResolver;
     }
 
     /**
@@ -58,7 +66,7 @@ class AttributeExtension extends \Twig_Extension
      */
     public function datetimePresenter($date)
     {
-        return $this->datePresenter->present($date, ['locale' => $this->localeResolver->getCurrentLocale()]);
+        return $this->datetimePresenter->present($date, ['locale' => $this->localeResolver->getCurrentLocale()]);
     }
 
     /**

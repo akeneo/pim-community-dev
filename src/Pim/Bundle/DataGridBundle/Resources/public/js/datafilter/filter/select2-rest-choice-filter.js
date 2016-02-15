@@ -9,9 +9,10 @@ define(
         'pim/formatter/choices/base',
         'pim/user-context',
         'text!pim/template/datagrid/filter/select2-choice-filter',
+        'pim/initselect2',
         'jquery.select2'
     ],
-    function($, _, Routing, TextFilter, ChoicesFormatter, UserContext, template) {
+    function($, _, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
@@ -68,7 +69,6 @@ define(
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
-                    allowClear: false,
                     width: '290px',
                     minimumInputLength: 0
                 };
@@ -135,7 +135,7 @@ define(
                     })
                 );
 
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
             },
 
             _onClickCriteriaSelector: function(e) {

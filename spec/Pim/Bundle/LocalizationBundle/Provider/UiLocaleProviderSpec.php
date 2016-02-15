@@ -4,27 +4,40 @@ namespace spec\Pim\Bundle\LocalizationBundle\Provider;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Translator;
 
 class UiLocaleProviderSpec extends ObjectBehavior
 {
-    function let(Translator $translator)
-    {
+    function let(
+        Translator $translator,
+        MessageCatalogueInterface $messageCatalogueAll,
+        MessageCatalogueInterface $messageCatalogueFR,
+        MessageCatalogueInterface $messageCatalogueEN,
+        MessageCatalogueInterface $messageCatalogueDE
+    ) {
         $this->beConstructedWith($translator, 0.7);
         $translator->getFallbackLocales()->willReturn(['en_US']);
-        $translator->getMessages(Argument::any())->willReturn([]);
-        $translator->getMessages('en')->willReturn([
-            'scope1' => ['k1' => 't1', 'k2' => 't2'],
+        $translator->getCatalogue(Argument::any())->willReturn($messageCatalogueAll);
+        $messageCatalogueAll->all()->willReturn([]);
+
+        $messageCatalogueEN->all()->willReturn([
+            'scope1' => ['k1' => 't1', 'k2' => 't2', 'k3' => 't3'],
             'scope2' => ['k3' => 't3']
         ]);
-        $translator->getMessages('fr')->willReturn([
+        $translator->getCatalogue('en')->willReturn($messageCatalogueEN);
+
+        $messageCatalogueFR->all()->willReturn([
             'scope1' => ['k1' => 't1', 'k2' => 't2'],
             'scope2' => ['k3' => 't3' ]
         ]);
-        $translator->getMessages('de')->willReturn([
+        $translator->getCatalogue('fr')->willReturn($messageCatalogueFR);
+
+        $messageCatalogueDE->all()->willReturn([
             'scope1' => ['k1' => 't1'],
             'scope2' => ['k3' => 'k3']
         ]);
+        $translator->getCatalogue('de')->willReturn($messageCatalogueDE);
     }
 
     function it_is_initializable()

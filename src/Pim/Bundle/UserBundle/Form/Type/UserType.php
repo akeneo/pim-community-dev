@@ -132,6 +132,7 @@ class UserType extends AbstractType
                 'oro_change_password'
             )
             ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
+                'label'    => 'user.product_grid_filters',
                 'multiple' => true,
             ]);
     }

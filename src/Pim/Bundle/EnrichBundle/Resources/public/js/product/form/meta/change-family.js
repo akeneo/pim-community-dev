@@ -18,10 +18,22 @@ define(
         'pim/user-context',
         'pim/i18n',
         'routing',
+        'pim/initselect2',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext, i18n, Routing) {
+    function (
+        _,
+        Backbone,
+        BaseForm,
+        FetcherRegistry,
+        ProductManager,
+        modalTemplate,
+        UserContext,
+        i18n,
+        Routing,
+        initSelect2
+    ) {
         return BaseForm.extend({
             tagName: 'i',
             className: 'icon-pencil change-family',
@@ -37,6 +49,7 @@ define(
             showModal: function () {
                 var familyModal = new Backbone.BootstrapModal({
                     allowCancel: true,
+                    cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
                     title: _.__('pim_enrich.form.product.change_family.modal.title'),
                     content: this.modalTemplate({
                         product: this.getFormData()
@@ -58,7 +71,9 @@ define(
                 }.bind(this));
 
                 familyModal.open();
-                familyModal.$('.family-select2').select2({
+                var self = this;
+
+                var options = {
                     allowClear: true,
                     ajax: {
                         url: Routing.generate('pim_enrich_family_rest_index'),
@@ -89,10 +104,10 @@ define(
                         }
                     },
                     initSelection: function (element, callback) {
-                        var productFamily = this.getFormData().family;
+                        var productFamily = self.getFormData().family;
                         if (null !== productFamily) {
                             FetcherRegistry.getFetcher('family')
-                                .fetch(this.getFormData().family)
+                                .fetch(self.getFormData().family)
                                 .then(function (family) {
                                     callback({
                                         id: family.code,
@@ -100,8 +115,11 @@ define(
                                     });
                                 });
                         }
-                    }.bind(this)
-                }).select2('val', []);
+
+                    }
+                };
+
+                initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
                 familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
             }
         });

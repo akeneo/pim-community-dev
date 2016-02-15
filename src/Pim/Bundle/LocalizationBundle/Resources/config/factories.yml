@@ -1,16 +1,13 @@
 parameters:
-    pim_localization.factory.date.class: Pim\Component\Localization\Factory\DateFactory
-    pim_localization.factory.number.class: Pim\Component\Localization\Factory\NumberFactory
+    pim_localization.factory.date.class:     Pim\Component\Localization\Factory\DateFactory
+    pim_localization.factory.datetime.class: Pim\Component\Localization\Factory\DateTimeFactory
+    pim_localization.factory.number.class:   Pim\Component\Localization\Factory\NumberFactory
 
     pim_localization.factory.date.formats:
-        en: 'MM/dd/yyyy'
         en_US: 'MM/dd/yyyy'
-        fr: 'dd/MM/yyyy'
         fr_FR: 'dd/MM/yyyy'
     pim_localization.factory.datetime.formats:
-        en: 'MM/dd/yyyy HH:mm'
-        en_US: 'MM/dd/yyyy HH:mm'
-        fr: 'dd/MM/yyyy HH:mm'
+        en_US: 'MM/dd/yyyy hh:mm a'
         fr_FR: 'dd/MM/yyyy HH:mm'
     pim_localization.factory.currency.formats:
         en_US: '¤#,##0.00'
@@ -33,6 +30,6 @@ services:
             - %pim_localization.factory.date.formats%
 
     pim_localization.factory.datetime:
-        class: %pim_localization.factory.date.class%
+        class: %pim_localization.factory.datetime.class%
         arguments:
             - %pim_localization.factory.datetime.formats%

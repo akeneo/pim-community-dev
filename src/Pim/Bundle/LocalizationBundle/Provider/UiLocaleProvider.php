@@ -44,11 +44,11 @@ class UiLocaleProvider implements LocaleProviderInterface
         $locales = [];
 
         $fallbackLocales = $this->translator->getFallbackLocales();
-        $localeNames = Intl::getLocaleBundle()->getLocaleNames($this::MAIN_LOCALE);
-        $mainProgress = $this->getProgress($this::MAIN_LOCALE);
+        $localeNames = Intl::getLocaleBundle()->getLocaleNames(self::MAIN_LOCALE);
+        $mainProgress = $this->getProgress(self::MAIN_LOCALE);
 
         foreach ($localeNames as $code => $locale) {
-            if ($this->isAvailableLocale($fallbackLocales, $code, $mainProgress)) {
+            if ($this->isAvailableLocale($fallbackLocales, $locales, $code, $mainProgress)) {
                 $locales[$code] = $locale;
             }
         }
@@ -65,9 +65,9 @@ class UiLocaleProvider implements LocaleProviderInterface
      */
     protected function getProgress($locale)
     {
-        $messages = $this->translator->getMessages($locale);
+        $catalogue = $this->translator->getCatalogue($locale);
 
-        return count($messages, COUNT_RECURSIVE) - count($messages);
+        return count($catalogue->all(), COUNT_RECURSIVE);
     }
 
     /**
@@ -75,14 +75,19 @@ class UiLocaleProvider implements LocaleProviderInterface
      * translated to more than the percentage of the main locale.
      *
      * @param array  $fallbackLocales
+     * @param array  $locales
      * @param string $code
      * @param int    $mainProgress
      *
      * @return bool
      */
-    protected function isAvailableLocale(array $fallbackLocales, $code, $mainProgress)
+    protected function isAvailableLocale(array $fallbackLocales, array $locales, $code, $mainProgress)
     {
         if (in_array($code, $fallbackLocales)) {
+            return true;
+        }
+
+        if (strlen($code) > 2 && isset($locales[substr($code, 0, 2)])) {
             return true;
         }
         $progress = $this->getProgress($code);
