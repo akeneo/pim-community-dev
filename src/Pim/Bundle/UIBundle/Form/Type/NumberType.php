@@ -57,14 +57,13 @@ class NumberType extends AbstractType
         $decimalSeparator = $this->localeResolver->getFormats()['decimal_separator'];
 
         $constraint = new NumberFormat();
+        $constraintParams = $constraint->getMessageParams($decimalSeparator);
 
         $resolver->setDefaults(
-            [
+            array_merge([
                 'decimals_allowed'           => true,
-                'invalid_message'            => $constraint->message,
-                'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
                 'locale_options'             => $options
-            ]
+            ], $constraintParams)
         );
     }
 

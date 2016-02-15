@@ -22,9 +22,13 @@ class NumberFormatValidator extends ConstraintValidator
         preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
 
         if (isset($matches['decimal']) && $matches['decimal'] !== $constraint->decimalSeparator) {
-            $violation = $this->context->buildViolation($constraint->message, [
-                '{{ decimal_separator }}' => $constraint->decimalSeparator
-            ]);
+            $messageParams = $constraint->getMessageParams();
+
+            $violation = $this->context->buildViolation(
+                $messageParams['invalid_message'],
+                $messageParams['invalid_message_parameters']
+            );
+
             $violation->atPath($constraint->path);
 
             $violation->addViolation();
