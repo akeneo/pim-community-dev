@@ -12,6 +12,7 @@ class NumberFormatValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContextInterface $context)
     {
+        $this->beConstructedWith(['.' => 'dot (.)']);
         $this->initialize($context);
     }
 
@@ -49,7 +50,10 @@ class NumberFormatValidatorSpec extends ObjectBehavior
         $constraint->decimalSeparator = $decimalSeparator;
 
         $context
-            ->buildViolation($constraint->message, ['{{ decimal_separator }}' => $decimalSeparator])
+            ->buildViolation(
+                'This type of value expects the use of dot (.) to separate decimals.',
+                ['{{ decimal_separator }}' => '.']
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 

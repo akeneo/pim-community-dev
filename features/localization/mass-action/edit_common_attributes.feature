@@ -74,7 +74,7 @@ Feature: Edit common localized attributes of many products at once
     And I change the "Price" to "100.50 USD"
     And I change the "Price" to "150.75 EUR"
     And I move on to the next step
-    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
+    Then I should see validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
 
   Scenario: Fail to update many metric values at once
     Given I mass-edit products boots and sandals
@@ -82,7 +82,7 @@ Feature: Edit common localized attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600.55"
     And I move on to the next step
-    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
+    Then I should see validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
 
   Scenario: Fail to update many number values at once
     Given I mass-edit products boots and sandals
@@ -90,4 +90,4 @@ Feature: Edit common localized attributes of many products at once
     And I display the Time attribute
     And I change the "Time" to "25.75"
     And I move on to the next step
-    Then I should see validation error "Ce type de valeur attend , comme séparateur de décimales."
+    Then I should see validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
