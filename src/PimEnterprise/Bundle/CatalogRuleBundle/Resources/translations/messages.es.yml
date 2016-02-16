@@ -25,6 +25,8 @@ pimee_catalog_rule:
       EMPTY: vacío
       IN: en
       NOT IN: no en
+      IN CHILDREN: en descendiente
+      NOT IN CHILDREN: no en descendiente
       UNCLASSIFIED: sin clasificar
       IN OR UNCLASSIFIED: sin clasificar o dentro
       BETWEEN: entre
