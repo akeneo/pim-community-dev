@@ -141,3 +141,12 @@ Status: Status
 Summary: Zusammenfassung
 Start: Start
 End: Ende
+set_attribute_requirements: Attribut-Anforderungen festlegen
+COMPLETED: ABGESCHLOSSEN
+STARTING: STARTEN
+STARTED: GESTARTET
+STOPPING: STOPPEN
+STOPPED: GESTOPPT
+FAILED: FEHLGESCHLAGEN
+ABANDONED: AUFGEGEBEN
+UNKNOWN: UNBEKANNT
