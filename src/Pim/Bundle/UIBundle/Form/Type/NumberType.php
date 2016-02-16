@@ -27,22 +27,16 @@ class NumberType extends AbstractType
     /** @var LocaleResolver */
     protected $localeResolver;
 
-    /** @var array */
-    protected $decimalSeparators;
-
     /**
      * @param LocalizerInterface $localizer
      * @param LocaleResolver     $localeResolver
-     * @param array              $decimalSeparators
      */
     public function __construct(
         LocalizerInterface $localizer,
-        LocaleResolver $localeResolver,
-        array $decimalSeparators
+        LocaleResolver $localeResolver
     ) {
-        $this->localizer         = $localizer;
-        $this->localeResolver    = $localeResolver;
-        $this->decimalSeparators = $decimalSeparators;
+        $this->localizer      = $localizer;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -62,15 +56,14 @@ class NumberType extends AbstractType
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
         $decimalSeparator = $this->localeResolver->getFormats()['decimal_separator'];
 
-        $constraint = new NumberFormat($this->decimalSeparators);
-        $constraint->decimalSeparator = $decimalSeparator;
+        $constraint = new NumberFormat();
 
         $resolver->setDefaults(
             [
                 'decimals_allowed'           => true,
-                'locale_options'             => $options,
-                'invalid_message'            => $constraint->getMessageKey(),
-                'invalid_message_parameters' => $constraint->getMessageParams(),
+                'invalid_message'            => $constraint->message,
+                'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
+                'locale_options'             => $options
             ]
         );
     }

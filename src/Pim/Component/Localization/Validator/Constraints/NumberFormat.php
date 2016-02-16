@@ -13,9 +13,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class NumberFormat extends Constraint
 {
-    /** @var array */
-    protected $decimalSeparators;
-
     /** @var string */
     public $message = 'This type of value expects the use of {{ decimal_separator }} to separate decimals.';
 
@@ -24,48 +21,6 @@ class NumberFormat extends Constraint
 
     /** @var string */
     public $path;
-
-    /**
-     * @param array $decimalSeparators
-     */
-    public function __construct(array $decimalSeparators)
-    {
-        parent::__construct();
-
-        $this->decimalSeparators = $decimalSeparators;
-    }
-
-    /**
-     * Return the message translation key for constraint display.
-     *
-     * @return string
-     */
-    public function getMessageKey()
-    {
-        if (isset($this->decimalSeparators[$this->decimalSeparator])) {
-            return str_replace(
-                '{{ decimal_separator }}',
-                $this->decimalSeparators[$this->decimalSeparator],
-                $this->message
-            );
-        }
-
-        return $this->message;
-    }
-
-    /**
-     * Return the message translation params for constraint display.
-     *
-     * @return array
-     */
-    public function getMessageParams()
-    {
-        if (isset($this->decimalSeparators[$this->decimalSeparator])) {
-            return [];
-        }
-
-        return ['{{ decimal_separator }}' => $this->decimalSeparator];
-    }
 
     /**
      * {@inheritdoc}

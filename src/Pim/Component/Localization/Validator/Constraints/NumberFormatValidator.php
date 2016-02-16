@@ -14,6 +14,17 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class NumberFormatValidator extends ConstraintValidator
 {
+    /** @var array */
+    protected $decimalSeparators;
+
+    /**
+     * @param array $decimalSeparators
+     */
+    public function __construct(array $decimalSeparators)
+    {
+        $this->decimalSeparators = $decimalSeparators;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,8 +33,20 @@ class NumberFormatValidator extends ConstraintValidator
         preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
 
         if (isset($matches['decimal']) && $matches['decimal'] !== $constraint->decimalSeparator) {
-            $violation = $this->context->buildViolation($constraint->getMessageKey(), $constraint->getMessageParams());
-
+            if (isset($this->decimalSeparators[$constraint->decimalSeparator])) {
+                $violation = $this->context->buildViolation(
+                    str_replace(
+                        '{{ decimal_separator }}',
+                        $this->decimalSeparators[$constraint->decimalSeparator],
+                        $constraint->message
+                    )
+                );
+            } else {
+                $violation = $this->context->buildViolation(
+                    $constraint - message,
+                    ['{{ decimal_separator }}' => $constraint->decimalSeparator]
+                );
+            }
             $violation->atPath($constraint->path);
 
             $violation->addViolation();
