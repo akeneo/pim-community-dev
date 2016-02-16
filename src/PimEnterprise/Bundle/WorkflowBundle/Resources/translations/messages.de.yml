@@ -21,13 +21,16 @@ pimee_workflow:
       can_not_be_approved: Sie können nicht diesen Vorschlag überprüfen, weil alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
       can_not_be_deleted: Dieser Vorschlag kann nicht gelöscht werden, da alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
     action:
-      approve: Genehmigen
-      refuse: Ablehnen
+      approve: Alle genehmigen
+      refuse: Alle ablehnen
       remove: Entfernen
       partial_approve: 'Änderungen des Attributs %attribute% von Produkt %product% genehmigen'
+      partial_reject: 'Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%'
     notification:
       partial_approve:
         "%owner% has accepted the value for %attribute% for the product": '%product%'
+      partial_reject:
+        "%owner% has rejected the value for %attribute% for the product": '%product%'
       approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
@@ -46,6 +49,7 @@ pimee_workflow:
     original_value: Original
     new_value: Neu
     no_diff: 'Der Wert "%value%" ist im Vorschlag und der Arbeitskopie identisch.'
+    draft_in_progress: 'Für dieses Produkt existiert ein Entwurf von %author%.'
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt
@@ -74,6 +78,7 @@ pimee_workflow_import_notification_new_proposals: Neue Vorschläge aus Import
 btn.publish: Veröffentlichen
 btn.unpublish: Veröffentlichung entziehen
 pimee_workflow_product_draft_notification_partial_approve: Vorschlag teilweise genehmigt
+pimee_workflow_product_draft_notification_partial_reject: Vorschlag teilweise abgelehnt
 pimee_workflow_product_draft_notification_approve: Vorschlag genehmigt
 pimee_workflow_product_draft_notification_refuse: Vorschlag abgelehnt
 pimee_workflow_product_draft_notification_remove: Vorschlag gelöscht
