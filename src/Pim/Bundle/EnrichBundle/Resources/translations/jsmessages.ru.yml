@@ -212,7 +212,6 @@ pim_enrich:
             add: Добавить
             add_attributes: Добавить атрибуты
           info:
-            search_attributes: Поиск
             no_available_attributes: Нет больше атрибутов для добавления
         categories:
           title: Категории

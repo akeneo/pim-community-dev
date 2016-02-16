@@ -212,7 +212,6 @@ pim_enrich:
             add: Lisää
             add_attributes: Lisää määritteet
           info:
-            search_attributes: Haku
             no_available_attributes: Määritteitä ei ole enää lisättävänä
         categories:
           title: Kategoriat
