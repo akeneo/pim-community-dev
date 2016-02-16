@@ -141,3 +141,12 @@ Status: Statut
 Summary: Résumé
 Start: Début
 End: Fin
+set_attribute_requirements: "Configurer les exigences d'attributs de familles"
+COMPLETED: TERMINÉ
+STARTING: DÉMARRAGE EN COURS
+STARTED: DÉMARRÉ
+STOPPING: ARRÊT EN COURS
+STOPPED: ARRÊTÉ
+FAILED: EN ÉCHEC
+ABANDONED: ABANDONNÉ
+UNKNOWN: INCONNUN
