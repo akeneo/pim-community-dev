@@ -216,7 +216,6 @@ pim_enrich:
             add: Ajouter
             add_attributes: Ajouter des attributs
           info:
-            search_attributes: Rechercher
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
             attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
         categories:
