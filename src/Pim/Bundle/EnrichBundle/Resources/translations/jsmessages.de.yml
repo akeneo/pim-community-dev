@@ -216,7 +216,6 @@ pim_enrich:
             add: Hinzufügen
             add_attributes: Attribute hinzufügen
           info:
-            search_attributes: Suche
             no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
             attributes_selected: '{{ attributeCount }} Attribute ausgewählt'
         categories:
