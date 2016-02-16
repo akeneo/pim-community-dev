@@ -4,6 +4,12 @@ Approve: Genehmigen
 Refuse: Ablehen
 Approve selected: Ausgewählte freigeben
 Refuse selected: Ausgewählte ablehnen
+oro:
+  datagrid:
+    noentities:
+      proposal: Es gibt keinen Vorschlag zu prüfen.
+    noresults:
+      proposal: Es gibt keinen Vorschlag zu prüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
 pimee_workflow:
   entity:
     published_product:
@@ -20,3 +26,15 @@ pimee_workflow:
       modal.label: Kommentar hinterlassen (optional)
       modal.error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
       modal.success: Der Vorschlag wurde erfolgreich teilweise überprüft
+    partial_approve:
+      modal:
+        title: Änderungen teilweise genehmigen
+        label: Kommentar hinterlassen (optional)
+        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
+        success: Die Änderungen wurden erfolgreich genehmigt
+    partial_reject:
+      modal:
+        title: Änderungen teilweise ablehnen
+        label: Kommentar hinterlassen (optional)
+        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise abgelehnt
+        success: Die Änderungen wurden erfolgreich abgelehnt

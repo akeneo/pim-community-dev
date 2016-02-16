@@ -36,7 +36,7 @@ btn:
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
+      not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
     publish:
       label: Productos publicados
       description: Publicar los productos seleccionados, la presente información publicada será eliminada por la copia de trabajo actual.
@@ -94,13 +94,13 @@ flash.locale.updated: El local y los permisos han sido actualizados
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Permisos
+      permission.title: Permisiones
   product:
     tab:
       proposal.title: Propuestas
   category:
     tab:
-      permission.title: Permisos
+      permission.title: Permisiones
   channel:
     tab:
       asset_transformation.title: Transformaciones de recursos
@@ -143,6 +143,7 @@ pimee_enrich:
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
 edit_common_attributes_with_permission: Editar los atributos comunes con permisiones
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar los atributos comunes con permisiones
 job_execution.summary:
   mass_published: Productos publicados
   mass_unpublished: Productos no publicados
