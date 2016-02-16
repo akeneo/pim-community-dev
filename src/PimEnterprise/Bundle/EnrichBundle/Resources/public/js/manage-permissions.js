@@ -43,11 +43,11 @@ define(
                     _.each(opts.update.add[e.target.id], function (selectId) {
                         var $toUpdate = $('#' + selectId);
                         if ($.inArray(e.added.id, $toUpdate.val()) === -1) {
+                            var values = $.makeArray($toUpdate.val());
+                            values.push(e.added.id);
+
                             var propagateEvent = $.Event('change');
                             propagateEvent.added = e.added;
-                            var values = ($toUpdate.val() === null) ?
-                                [e.added.id] :
-                                $.merge($toUpdate.val(), e.added.id);
                             $toUpdate.val(values).trigger(propagateEvent);
                         }
                     });
