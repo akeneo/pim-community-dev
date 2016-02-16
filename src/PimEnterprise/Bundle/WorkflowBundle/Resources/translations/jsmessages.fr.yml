@@ -4,6 +4,12 @@ Approve: Accepter
 Refuse: Rejeter
 Approve selected: Approuver les éléments sélectionnés
 Refuse selected: Rejeter les éléments sélectionnés
+oro:
+  datagrid:
+    noentities:
+      proposal: "Il n'y a aucune proposition à réviser."
+    noresults:
+      proposal: "Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche."
 pimee_workflow:
   entity:
     published_product:
@@ -20,3 +26,15 @@ pimee_workflow:
       modal.label: Laisser un commentaire (facultatif)
       modal.error: "Une erreur s'est produite, la proposition n'a pas été partiellement approuvée"
       modal.success: La proposition partielle a été validée avec succès
+    partial_approve:
+      modal:
+        title: Accepter partiellement les modifications
+        label: Laisser un commentaire (facultatif)
+        error: "Une erreur s'est produite, la proposition n'a pas été partiellement approuvée"
+        success: Les modifications ont été approuvées avec succès
+    partial_reject:
+      modal:
+        title: Rejeter partiellement les modifications
+        label: Laisser un commentaire (facultatif)
+        error: "Une erreur s'est produite, la proposition n'a pas été partiellement rejetée"
+        success: Les changements ont été rejetés avec succès

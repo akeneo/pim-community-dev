@@ -21,13 +21,16 @@ pimee_workflow:
       can_not_be_approved: "Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
       can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
     action:
-      approve: Accepter
-      refuse: Refuser
+      approve: Tout approuver
+      refuse: Tout rejeter
       remove: Supprimer
       partial_approve: "Approuver les modifications sur l'attribut %attribute% du produit %product%"
+      partial_reject: "Rejeter les modifications sur l'attribut %attribute% du produit %product%"
     notification:
       partial_approve:
         "%owner% has accepted the value for %attribute% for the product": '%product%'
+      partial_reject:
+        "%owner% has rejected the value for %attribute% for the product": '%product%'
       approve: '%owner% a accepté votre proposition pour le produit %product%'
       refuse: '%owner% a rejeté votre proposition pour le produit %product%'
       remove: '%owner% a supprimé votre proposition pour le produit %product%'
@@ -45,6 +48,8 @@ pimee_workflow:
     generic_import: "Vous avez des propositions de relectures venant d'un import"
     original_value: Original
     new_value: Nouveau
+    no_diff: 'La valeur "%value%" est identique entre la proposition et la copie de travail.'
+    draft_in_progress: 'Un brouillon est en cours par %author% sur ce produit.'
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -73,6 +78,7 @@ pimee_workflow_import_notification_new_proposals: "Nouvelles propositions de rel
 btn.publish: Publier
 btn.unpublish: Dépublier
 pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
+pimee_workflow_product_draft_notification_partial_reject: Proposition partiellement rejetée
 pimee_workflow_product_draft_notification_approve: Proposition approuvée
 pimee_workflow_product_draft_notification_refuse: Proposition rejetée
 pimee_workflow_product_draft_notification_remove: Proposition supprimée
