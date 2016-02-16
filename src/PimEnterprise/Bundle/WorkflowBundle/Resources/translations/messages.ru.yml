@@ -16,8 +16,6 @@ pimee_workflow:
       can_not_be_approved: Не может быть пересмотрено
       can_not_be_deleted: Не может быть удален
     action:
-      approve: Одобрить
-      refuse: Отклонить
       remove: Удалить
       partial_approve: 'Утвердить изменения на атрибута %attribute% продукта %product%'
     notification:
