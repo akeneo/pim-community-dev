@@ -1196,6 +1196,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 ],
             ],
             'family' => 'Tshirt',
+            'enabled' => true
         ];
         $converterOptions = [
             "mapping"           => ["family" => "family", "categories" => "categories", "groups" => "groups"],
@@ -1208,6 +1209,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Tshirt',
+            'enabled' => true
         ];
 
         $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
@@ -1215,7 +1217,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
-        $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)

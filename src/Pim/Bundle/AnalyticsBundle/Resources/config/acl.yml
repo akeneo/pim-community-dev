@@ -1,0 +1,4 @@
+pim_analytics_system_info_index:
+    type: action
+    label: pim_analytics.acl.system_info.index
+    group_name: pim_analytics.acl_group.system_info

@@ -242,7 +242,6 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeFlashMessage($text)
     {
-        // TODO Flash messages tests temporarily disabled because unstable on CI
         return true;
 //        $this->getMainContext()->wait('$(".flash-messages-holder").length > 0');
 //        if (!$this->getCurrentPage()->findFlashMessage($text)) {

@@ -68,3 +68,15 @@ Feature: Filter products by boolean field
     And I show the filter "Handmade"
     Then the grid should contain 2 elements
     And I should see entities pants and socks
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5354
+  Scenario: Keep boolean filter value after navigation
+    Given the following products:
+      | sku              | family  | handmade |
+      | lumberjack-shirt | tshirts | 1        |
+    And I am on the products page
+    And I show the filter "Handmade"
+    And I filter by "Handmade" with value "yes"
+    When I am on the dashboard page
+    And I am on the products page
+    Then I should see the text "Handmade: yes"

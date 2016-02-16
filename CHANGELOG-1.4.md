@@ -1,9 +1,19 @@
+# 1.4.x
+
+# 1.4.19 (2016-02-11)
+
+## Bug fixes
+- PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
+- PIM-5470: Fix Doctrine memory leak
+- PIM-5354: Fix select/boolean filter value display after navigation
+
 # 1.4.18 (2016-01-28)
 
 ## Bug fixes
 - PIM-5478: Fix attribute permissions issue in attribute searchable repository
 - PIM-5492: Fix complete group loading on useless cases
 - Fix `Akeneo\Component\Console\CommandLauncher` to launch as a backend task
+- PIM-5471: Close & destroy select2 on page change with hash-navigation
 
 # 1.4.17 (2016-01-19)
 
@@ -74,7 +84,7 @@
 - In case you wrote your own associations import, please add the parameter `batch_size: 1` to the `import_associations` step element of your `batch_jobs.yml`.
 - Changed constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`.
   Required, because we now use the standard ProductUpdater to be consistent.
-- Changed constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add 
+- Changed constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add
     `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`,
     `Symfony\Component\Validator\Validator\ValidatorInterface`,
     `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
@@ -197,7 +207,6 @@
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\MassEditActionController`, added `$gridNameRouteMapping` as the last argument.
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
-- Renoved `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver` in favor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver` 
 
 # 1.4.1 (2015-09-24)
 
