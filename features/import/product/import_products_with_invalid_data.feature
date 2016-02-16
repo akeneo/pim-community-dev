@@ -38,7 +38,7 @@ Feature: Execute a job
       | price | 50.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: invalid"
+    And I should see "Please specify a valid currency: 12 invalid"
     And I should see "This value should be a valid number.: gruik EUR"
     And I should see "Please specify a valid currency: 90 gruik"
 
@@ -89,7 +89,7 @@ Feature: Execute a job
       | price | 8.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: invalid"
+    And I should see "Please specify a valid currency: 12 invalid"
     And I should see "This value should be a valid number.: gruik EUR"
     And I should see "Please specify a valid currency: 90 gruik"
 

@@ -278,7 +278,7 @@ class Grid extends Index
         $container = $this->getElement('Grid container');
         $noDataDiv = $this->spin(function () use ($container) {
             return $container->find('css', '.no-data');
-        }, 20, '"No data" div not found');
+        }, '"No data" div not found');
 
         return $noDataDiv->isVisible();
     }
