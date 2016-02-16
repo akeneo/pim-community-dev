@@ -46,7 +46,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 - treeRight
     oneToMany:
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
+            targetEntity: Pim\Component\Catalog\Model\CategoryTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

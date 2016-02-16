@@ -30,20 +30,20 @@ interface TranslatableInterface
     /**
      * Add translation
      *
-     * @param AbstractTranslation $translation
+     * @param TranslationInterface $translation
      *
      * @return TranslatableInterface
      */
-    public function addTranslation(AbstractTranslation $translation);
+    public function addTranslation(TranslationInterface $translation);
 
     /**
      * Remove translation
      *
-     * @param AbstractTranslation $translation
+     * @param TranslationInterface $translation
      *
      * @return TranslatableInterface
      */
-    public function removeTranslation(AbstractTranslation $translation);
+    public function removeTranslation(TranslationInterface $translation);
 
     /**
      * Get translation full qualified class name

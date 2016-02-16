@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Pim\Component\Catalog\Model\AssociationTypeTranslationInterface;
 
 /**
  * Association type translation entity
@@ -11,28 +12,18 @@ use Akeneo\Component\Localization\Model\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeTranslation extends AbstractTranslation
+class AssociationTypeTranslation extends AbstractTranslation implements AssociationTypeTranslationInterface
 {
-    /**
-     * All required columns are mapped through inherited superclass
-     */
+    /** All required columns are mapped through inherited superclass */
 
-    /**
-     * Change foreign key to add constraint and work with basic entity
-     */
+    /** Change foreign key to add constraint and work with basic entity */
     protected $foreignKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $label;
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return AssociationTypeTranslation
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -42,9 +33,7 @@ class AssociationTypeTranslation extends AbstractTranslation
     }
 
     /**
-     * Get the label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {

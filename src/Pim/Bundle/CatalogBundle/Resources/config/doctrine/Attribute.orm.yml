@@ -141,7 +141,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
+            targetEntity: Pim\Component\Catalog\Model\AttributeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

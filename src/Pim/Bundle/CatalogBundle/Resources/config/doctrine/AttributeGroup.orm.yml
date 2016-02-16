@@ -33,7 +33,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

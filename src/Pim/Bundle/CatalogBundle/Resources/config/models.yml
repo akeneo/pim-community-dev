@@ -19,3 +19,12 @@ parameters:
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
     pim_catalog.model.product_template.interface:       Pim\Component\Catalog\Model\ProductTemplateInterface
+
+    pim_catalog.model.category_translation.interface:         Pim\Component\Catalog\Model\CategoryTranslationInterface
+    pim_catalog.model.family_translation.interface:           Pim\Component\Catalog\Model\FamilyTranslationInterface
+    pim_catalog.model.association_type_translation.interface: Pim\Component\Catalog\Model\AssociationTypeTranslationInterface
+    pim_catalog.model.attribute_group_translation.interface:  Pim\Component\Catalog\Model\AttributeGroupTranslationInterface
+    pim_catalog.model.attribute_translation.interface:        Pim\Component\Catalog\Model\AttributeTranslationInterface
+    pim_catalog.model.group_translation.interface:            Pim\Component\Catalog\Model\GroupTranslationInterface
+    pim_catalog.model.group_type_translation.interface:       Pim\Component\Catalog\Model\GroupTypeTranslationInterface
+

@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             mappedBy: type
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
+            targetEntity: Pim\Component\Catalog\Model\GroupTypeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

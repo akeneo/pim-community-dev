@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -150,7 +150,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(AbstractTranslation $translation)
+    public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -162,7 +162,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(AbstractTranslation $translation)
+    public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
 
