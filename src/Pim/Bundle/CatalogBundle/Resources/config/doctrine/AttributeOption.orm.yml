@@ -31,7 +31,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
                     onDelete: CASCADE
     oneToMany:
         optionValues:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionValueInterface
             indexBy: locale
             cascade:
                 - persist

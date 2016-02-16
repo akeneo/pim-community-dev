@@ -133,7 +133,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: datetime
     oneToMany:
         options:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             mappedBy: attribute
             cascade:
                 - persist
@@ -148,7 +148,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - detach
     manyToOne:
         group:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
             inversedBy: attributes
             joinColumns:
                 group_id:

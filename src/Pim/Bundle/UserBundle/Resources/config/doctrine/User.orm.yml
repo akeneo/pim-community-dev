@@ -140,7 +140,7 @@ Pim\Bundle\UserBundle\Entity\User:
               name: ui_locale_id
               nullable: false
         catalogScope:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
         defaultTree:
             targetEntity: Pim\Component\Catalog\Model\CategoryInterface
     oneToOne:

@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             column: is_variant
     oneToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
             mappedBy: type
         translations:
             targetEntity: Pim\Component\Catalog\Model\GroupTypeTranslationInterface

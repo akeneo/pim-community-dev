@@ -15,7 +15,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             unique: true
     manyToOne:
         type:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupType
+            targetEntity: Pim\Component\Catalog\Model\GroupTypeInterface
             inversedBy: groups
             joinColumns:
                 type_id:

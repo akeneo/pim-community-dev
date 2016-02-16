@@ -23,7 +23,7 @@ Pim\Component\Catalog\Model\ProductValue:
             type: string
         attribute:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
         entity:
             reference: true
             type: one
@@ -31,11 +31,11 @@ Pim\Component\Catalog\Model\ProductValue:
             inversedBy: values
         option:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
         options:
             notSaved: true
             type: entities
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             idsField: optionIds
         optionIds:
             type: collection
@@ -49,4 +49,4 @@ Pim\Component\Catalog\Model\ProductValue:
             targetDocument: Pim\Component\Catalog\Model\ProductPriceInterface
         media:
             type: entity
-            targetEntity: Akeneo\Component\FileStorage\Model\FileInfo
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfoInterface

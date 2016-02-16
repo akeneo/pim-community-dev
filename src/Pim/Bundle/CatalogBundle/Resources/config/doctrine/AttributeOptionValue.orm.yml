@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
             length: 100
     manyToOne:
         option:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             inversedBy: optionValues
             joinColumns:
                 option_id:

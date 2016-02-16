@@ -30,14 +30,14 @@ Pim\Bundle\CommentBundle\Entity\Comment:
             column: replied_at
     oneToMany:
         children:
-            targetEntity: Pim\Bundle\CommentBundle\Entity\Comment
+            targetEntity: Pim\Bundle\CommentBundle\Model\CommentInterface
             mappedBy: parent
             orderBy:
                 createdAt: ASC
 
     manyToOne:
         parent:
-            targetEntity: Pim\Bundle\CommentBundle\Entity\Comment
+            targetEntity: Pim\Bundle\CommentBundle\Model\CommentInterface
             inversedBy: children
             joinColumn:
                 onDelete: CASCADE

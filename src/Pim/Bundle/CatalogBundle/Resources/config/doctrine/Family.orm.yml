@@ -46,7 +46,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 - detach
                 - remove
         requirements:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+            targetEntity: Pim\Component\Catalog\Model\AttributeRequirementInterface
             mappedBy: family
             orphanRemoval: true
             cascade:
