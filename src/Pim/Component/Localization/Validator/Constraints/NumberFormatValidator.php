@@ -26,6 +26,26 @@ class NumberFormatValidator extends ConstraintValidator
     }
 
     /**
+     * Returns the message for the constraint translation.
+     *
+     * @param Constraint $constraint
+     *
+     * @return mixed
+     */
+    public function getMessage(Constraint $constraint)
+    {
+        if (isset($this->decimalSeparators[$constraint->decimalSeparator])){
+            return str_replace(
+                '{{ decimal_separator }}',
+                $this->decimalSeparators[$constraint->decimalSeparator],
+                $constraint->message
+            );
+        } else {
+            return $constraint->message;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function validate($number, Constraint $constraint)
@@ -33,20 +53,11 @@ class NumberFormatValidator extends ConstraintValidator
         preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
 
         if (isset($matches['decimal']) && $matches['decimal'] !== $constraint->decimalSeparator) {
-            if (isset($this->decimalSeparators[$constraint->decimalSeparator])) {
-                $violation = $this->context->buildViolation(
-                    str_replace(
-                        '{{ decimal_separator }}',
-                        $this->decimalSeparators[$constraint->decimalSeparator],
-                        $constraint->message
-                    )
-                );
-            } else {
-                $violation = $this->context->buildViolation(
-                    $constraint - message,
-                    ['{{ decimal_separator }}' => $constraint->decimalSeparator]
-                );
-            }
+            $violation = $this->context->buildViolation(
+                $this->getMessage($constraint),
+                ['{{ decimal_separator }}' => $constraint->decimalSeparator]
+            );
+
             $violation->atPath($constraint->path);
 
             $violation->addViolation();
