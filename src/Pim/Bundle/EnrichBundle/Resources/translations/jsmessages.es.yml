@@ -10,10 +10,13 @@ confirmation:
     variant group: ¿Está seguro que desea eliminar este grupo variante?
     group type: ¿Está seguro que desea eliminar este tipo de grupo?
     import profile: ¿Está seguro que desea eliminar este perfil de importación?
-    export profile: ¿Está seguro que desea eliminar este perfil exportador?
+    export profile: ¿Está seguro que desea eliminar este perfil de exportación?
     user: ¿Seguro que desea eliminar este usuario?
     role: ¿Está seguro que desea eliminar este rol?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Exportación rápida
   mass_action:
     delete:
       confirm_content: ¿Está seguro que desea eliminar los productos seleccionados?
@@ -41,7 +44,7 @@ flash:
   import profile:
     removed: Perfil de importación eliminado correctamente
   export profile:
-    removed: Perfil Exportador eliminado correctamente
+    removed: Perfil de exportación eliminado correctamente
   user:
     removed: Usuario eliminado correctamente
   role:
@@ -213,8 +216,8 @@ pim_enrich:
             add: Agregar
             add_attributes: Agregar atributos
           info:
-            search_attributes: Buscar
             no_available_attributes: No hay más atributos a agregar
+            attributes_selected: '{{ attributeCount }} atributo(s) seleccionado(s)'
         categories:
           title: Categorías
       panel:
