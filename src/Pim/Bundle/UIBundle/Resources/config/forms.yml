@@ -31,6 +31,7 @@ services:
         arguments:
             - '@pim_localization.localizer.number'
             - '@pim_localization.resolver.locale'
+            - %pim_localization.decimal_separators%
         tags:
             - { name: form.type, alias: pim_number }
 

@@ -21,6 +21,7 @@ services:
         arguments:
             - '@validator'
             - '@pim_localization.factory.number'
+            - %pim_localization.decimal_separators%
             - ['pim_catalog_number']
         tags:
             - { name: pim_localization.localizer }
@@ -30,6 +31,7 @@ services:
         arguments:
             - '@validator'
             - '@pim_localization.factory.number'
+            - %pim_localization.decimal_separators%
             - ['pim_catalog_price_collection']
         tags:
             - { name: pim_localization.localizer }
@@ -39,6 +41,7 @@ services:
         arguments:
             - '@validator'
             - '@pim_localization.factory.number'
+            - %pim_localization.decimal_separators%
             - ['pim_catalog_metric']
         tags:
             - { name: pim_localization.localizer }

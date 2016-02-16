@@ -12,7 +12,7 @@ class MetricLocalizerSpec extends ObjectBehavior
 {
     function let(ValidatorInterface $validator, NumberFactory $numberFactory)
     {
-        $this->beConstructedWith($validator, $numberFactory, ['pim_catalog_metric']);
+        $this->beConstructedWith($validator, $numberFactory, ['.' => 'dot (.)'], ['pim_catalog_metric']);
     }
 
     function it_is_a_localizer()

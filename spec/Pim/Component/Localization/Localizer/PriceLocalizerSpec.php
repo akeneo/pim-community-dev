@@ -13,7 +13,7 @@ class PriceLocalizerSpec extends ObjectBehavior
 {
     function let(ValidatorInterface $validator, NumberFactory $numberFactory)
     {
-        $this->beConstructedWith($validator, $numberFactory, ['pim_catalog_price_collection']);
+        $this->beConstructedWith($validator, $numberFactory, ['.' => 'dot (.)'], ['pim_catalog_price_collection']);
     }
 
     function it_is_a_localizer()

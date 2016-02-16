@@ -14,17 +14,10 @@ use Symfony\Component\Validator\Constraint;
 class NumberFormat extends Constraint
 {
     /** @var array */
-    protected $separators = [
-        '.' => 'point',
-        ',' => 'comma',
-        '٫' => 'arabic_decimal_separator',
-    ];
+    protected $decimalSeparators;
 
     /** @var string */
     public $message = 'This type of value expects the use of {{ decimal_separator }} to separate decimals.';
-
-    /** @var string */
-    public $messageKey = 'decimal_separator';
 
     /** @var string */
     public $decimalSeparator;
@@ -33,30 +26,45 @@ class NumberFormat extends Constraint
     public $path;
 
     /**
-     * Return the message parameters for constraint display.
+     * @param array $decimalSeparators
+     */
+    public function __construct(array $decimalSeparators)
+    {
+        parent::__construct();
+
+        $this->decimalSeparators = $decimalSeparators;
+    }
+
+    /**
+     * Return the message translation key for constraint display.
      *
-     * @param string|null $decimalSeparator
+     * @return string
+     */
+    public function getMessageKey()
+    {
+        if (isset($this->decimalSeparators[$this->decimalSeparator])) {
+            return str_replace(
+                '{{ decimal_separator }}',
+                $this->decimalSeparators[$this->decimalSeparator],
+                $this->message
+            );
+        }
+
+        return $this->message;
+    }
+
+    /**
+     * Return the message translation params for constraint display.
      *
      * @return array
      */
-    public function getMessageParams($decimalSeparator = null)
+    public function getMessageParams()
     {
-        if (null === $decimalSeparator) {
-            $decimalSeparator = $this->decimalSeparator;
+        if (isset($this->decimalSeparators[$this->decimalSeparator])) {
+            return [];
         }
 
-        if (isset($this->separators[$decimalSeparator])) {
-            $key = sprintf('%s.%s', $this->messageKey, $this->separators[$decimalSeparator]);
-            return [
-                'invalid_message'            => $key,
-                'invalid_message_parameters' => []
-            ];
-        }
-
-        return [
-            'invalid_message'            => $this->message,
-            'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
-        ];
+        return ['{{ decimal_separator }}' => $this->decimalSeparator];
     }
 
     /**

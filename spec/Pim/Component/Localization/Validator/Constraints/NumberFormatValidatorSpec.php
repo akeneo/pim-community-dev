@@ -47,15 +47,11 @@ class NumberFormatValidatorSpec extends ObjectBehavior
     ) {
         $decimalSeparator = '.';
         $constraint->decimalSeparator = $decimalSeparator;
-        $constraint->getMessageParams()->willReturn(
-            [
-                'invalid_message' => 'decimal_separator.point',
-                'invalid_message_parameters' => []
-            ]
-        );
+        $constraint->getMessageKey()->willReturn('decimal_separator.dot');
+        $constraint->getMessageParams()->willReturn([]);
 
         $context
-            ->buildViolation('decimal_separator.point', [])
+            ->buildViolation('decimal_separator.dot', [])
             ->shouldBeCalled()
             ->willReturn($violation);
 

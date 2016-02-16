@@ -24,19 +24,25 @@ class NumberLocalizer implements LocalizerInterface
     /** @var array */
     protected $attributeTypes;
 
+    /** @var array */
+    protected $decimalSeparators;
+
     /**
      * @param ValidatorInterface $validator
      * @param NumberFactory      $numberFactory
+     * @param array              $decimalSeparators
      * @param array              $attributeTypes
      */
     public function __construct(
         ValidatorInterface $validator,
         NumberFactory $numberFactory,
+        array $decimalSeparators,
         array $attributeTypes
     ) {
-        $this->validator      = $validator;
-        $this->numberFactory  = $numberFactory;
-        $this->attributeTypes = $attributeTypes;
+        $this->validator         = $validator;
+        $this->numberFactory     = $numberFactory;
+        $this->decimalSeparators = $decimalSeparators;
+        $this->attributeTypes    = $attributeTypes;
     }
 
     /**
@@ -106,7 +112,7 @@ class NumberLocalizer implements LocalizerInterface
             $options['decimal_separator'] = $numberFormatter->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
         }
 
-        $constraint = new NumberFormat();
+        $constraint = new NumberFormat($this->decimalSeparators);
         $constraint->decimalSeparator = $options['decimal_separator'];
         $constraint->path = $attributeCode;
 
