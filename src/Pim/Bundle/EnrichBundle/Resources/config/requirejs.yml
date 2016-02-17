@@ -45,6 +45,7 @@ config:
                 family:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pim_enrich_family_rest_index
                             get: pim_enrich_family_rest_get
