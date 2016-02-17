@@ -48,7 +48,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
 - Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
-- Add `Pim\Component\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
+- Add `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Add an array `$decimalSeparators` to `Pim\Component\Connector\Reader\File\CsvProductReader`
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Remove OroEntityBundle

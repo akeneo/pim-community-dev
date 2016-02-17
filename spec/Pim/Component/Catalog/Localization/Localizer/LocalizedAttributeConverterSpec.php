@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Localization\Localizer;
+namespace spec\Pim\Component\Catalog\Localization\Localizer;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;

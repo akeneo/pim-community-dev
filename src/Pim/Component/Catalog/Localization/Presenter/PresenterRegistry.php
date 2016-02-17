@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Presenter;
+namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
