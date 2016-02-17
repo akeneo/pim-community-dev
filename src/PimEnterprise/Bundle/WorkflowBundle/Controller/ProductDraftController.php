@@ -14,14 +14,13 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -85,6 +84,9 @@ class ProductDraftController
     /** @var OroToPimGridFilterAdapter  */
     protected $gridFilterAdapter;
 
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
     /**
      * @param Request                       $request
      * @param RouterInterface               $router
@@ -98,6 +100,7 @@ class ProductDraftController
      * @param MassActionParametersParser    $gridParameterParser
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param OroToPimGridFilterAdapter     $gridFilterAdapter
+     * @param CollectionFilterInterface     $collectionFilter
      */
     public function __construct(
         Request $request,
@@ -111,7 +114,8 @@ class ProductDraftController
         JobInstanceRepository $jobInstanceRepository,
         MassActionParametersParser $gridParameterParser,
         AuthorizationCheckerInterface $authorizationChecker,
-        OroToPimGridFilterAdapter $gridFilterAdapter
+        OroToPimGridFilterAdapter $gridFilterAdapter,
+        CollectionFilterInterface $collectionFilter
     ) {
         $this->request               = $request;
         $this->router                = $router;
@@ -125,6 +129,7 @@ class ProductDraftController
         $this->gridParameterParser   = $gridParameterParser;
         $this->authorizationChecker  = $authorizationChecker;
         $this->gridFilterAdapter     = $gridFilterAdapter;
+        $this->collectionFilter      = $collectionFilter;
     }
 
     /**
@@ -148,6 +153,7 @@ class ProductDraftController
     /**
      * @param Request    $request
      * @param int|string $id
+     * @param string     $action either "approve" or "refuse"
      *
      * @throws \LogicException
      * @throws NotFoundHttpException
@@ -155,29 +161,18 @@ class ProductDraftController
      *
      * @return JsonResponse|RedirectResponse
      */
-    public function approveAction(Request $request, $id)
+    public function reviewAction(Request $request, $id, $action)
     {
         if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
-        }
-
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
-            throw new AccessDeniedHttpException();
-        }
-
         try {
-            $this->manager->approve($productDraft, [
-                'comment' => $request->request->get('comment')
-            ]);
-
+            $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
             $status = 'success';
             $messageParams = [];
         } catch (ValidatorException $e) {
@@ -185,67 +180,21 @@ class ProductDraftController
             $messageParams = ['%error%' => $e->getMessage()];
         }
 
+        $message = 'approve' === $action ?
+            $this->translator->trans(sprintf('flash.product_draft.approve.%s', $status), $messageParams) :
+            $this->translator->trans('flash.product_draft.refuse.success');
+
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(
                 [
                     'successful' => $status === 'success',
-                    'message'    => $this->translator->trans(
-                        sprintf('flash.product_draft.approve.%s', $status),
-                        $messageParams
-                    )
+                    'message'    => $message
                 ]
             );
         }
 
         $this->request->getSession()->getFlashBag()
-            ->add('success', new Message(sprintf('flash.product_draft.approve.%s', $status)));
-
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_product_edit',
-                [
-                    'id'         => $productDraft->getProduct()->getId(),
-                    'dataLocale' => $this->getCurrentLocaleCode()
-                ]
-            )
-        );
-    }
-
-    /**
-     * @param Request    $request
-     * @param int|string $id
-     *
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedHttpException
-     *
-     * @return RedirectResponse
-     */
-    public function refuseAction(Request $request, $id)
-    {
-        if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
-        }
-
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $this->manager->refuse($productDraft, [
-            'comment' => $request->request->get('comment')
-        ]);
-
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'successful' => true,
-                    'message'    => $this->translator->trans('flash.product_draft.refuse.success')
-                ]
-            );
-        }
+            ->add($status, new Message($message));
 
         return new RedirectResponse(
             $this->router->generate(

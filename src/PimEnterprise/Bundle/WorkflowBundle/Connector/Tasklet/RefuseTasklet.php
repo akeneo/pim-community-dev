@@ -14,8 +14,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Tasklet for product drafts mass refusal.
@@ -33,19 +31,41 @@ class RefuseTasklet extends AbstractReviewTasklet
     public function execute(array $configuration)
     {
         $this->initSecurityContext($this->stepExecution);
-
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
+        $context = ['comment' => $configuration['comment']];
+
+        $this->processDrafts($productDrafts, $context);
+    }
+
+    /**
+     * Skip or refuse given $productDrafts depending on permission
+     *
+     * @param mixed $productDrafts
+     * @param array $context
+     */
+    protected function processDrafts($productDrafts, array $context)
+    {
         foreach ($productDrafts as $productDraft) {
-            try {
-                $this->refuseDraft($productDraft, $configuration['comment']);
-                $this->stepExecution->incrementSummaryInfo('refused');
-            } catch (DraftNotReviewableException $e) {
+            if ($this->permissionHelper->canEditOneChangeToReview($productDraft)) {
+                try {
+                    $this->refuseDraft($productDraft, $context);
+                    $this->stepExecution->incrementSummaryInfo('refused');
+                } catch (DraftNotReviewableException $e) {
+                    $this->skipWithWarning(
+                        $this->stepExecution,
+                        self::TASKLET_NAME,
+                        $e->getMessage(),
+                        [],
+                        $productDraft->getProduct()
+                    );
+                }
+            } else {
                 $this->skipWithWarning(
                     $this->stepExecution,
                     self::TASKLET_NAME,
-                    $e->getMessage(),
+                    self::ERROR_CANNOT_EDIT_ATTR,
                     [],
-                    $productDraft
+                    $productDraft->getProduct()
                 );
             }
         }
@@ -55,20 +75,20 @@ class RefuseTasklet extends AbstractReviewTasklet
      * Refuse a draft
      *
      * @param ProductDraftInterface $productDraft
-     * @param string|null           $comment
+     * @param array                 $context
      *
-     * @throws DraftNotReviewableException If draft cannot be refused
+     * @throws DraftNotReviewableException
      */
-    protected function refuseDraft(ProductDraftInterface $productDraft, $comment)
+    protected function refuseDraft(ProductDraftInterface $productDraft, array $context)
     {
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
+        }
+
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
-            throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
-        }
-
-        $this->productDraftManager->refuse($productDraft, ['comment' => $comment]);
+        $this->productDraftManager->refuse($productDraft, $context);
     }
 }

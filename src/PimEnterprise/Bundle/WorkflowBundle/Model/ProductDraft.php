@@ -138,7 +138,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChangesToReview()
+    public function getChangesByStatus($status)
     {
         $changes = $this->changes;
 
@@ -148,14 +148,24 @@ class ProductDraft implements ProductDraftInterface
 
         foreach ($changes['values'] as $code => $changeset) {
             foreach ($changeset as $index => $change) {
-                $status = $this->getReviewStatusForChange($code, $change['locale'], $change['scope']);
-                if (self::CHANGE_TO_REVIEW !== $status) {
+                $changeStatus = $this->getReviewStatusForChange($code, $change['locale'], $change['scope']);
+                if ($status !== $changeStatus) {
                     unset($changes['values'][$code][$index]);
                 }
             }
         }
 
+        $changes['values'] = array_filter($changes['values']);
+
         return $changes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChangesToReview()
+    {
+        return $this->getChangesByStatus(self::CHANGE_TO_REVIEW);
     }
 
     /**

@@ -30,14 +30,22 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_REMOVE => ['send', 10],
+            ProductDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
         ];
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function sendNotificationForRemoval(GenericEvent $event)
+    {
+        $this->send($event);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(GenericEvent $event)
+    protected function send(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
 

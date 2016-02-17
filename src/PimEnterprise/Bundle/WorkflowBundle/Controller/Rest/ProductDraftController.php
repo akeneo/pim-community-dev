@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -24,7 +25,6 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes as WorkflowAttributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -71,6 +71,9 @@ class ProductDraftController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
     /** @var array */
     protected $supportedReviewActions = ['approve', 'refuse'];
 
@@ -85,6 +88,7 @@ class ProductDraftController
      * @param ChannelRepositoryInterface      $channelRepository
      * @param LocaleRepositoryInterface       $localeRepository
      * @param UserContext                     $userContext
+     * @param CollectionFilterInterface       $collectionFilter
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -96,7 +100,8 @@ class ProductDraftController
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        UserContext $userContext
+        UserContext $userContext,
+        CollectionFilterInterface $collectionFilter
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository           = $repository;
@@ -108,6 +113,7 @@ class ProductDraftController
         $this->channelRepository    = $channelRepository;
         $this->localeRepository     = $localeRepository;
         $this->userContext          = $userContext;
+        $this->collectionFilter     = $collectionFilter;
     }
 
     /**
@@ -145,7 +151,7 @@ class ProductDraftController
     }
 
     /**
-     * Approve an attribute change in a product draft
+     * Partially approve or refuse an attribute change in a product draft
      *
      * @param Request $request
      * @param mixed   $id
@@ -170,29 +176,23 @@ class ProductDraftController
             throw new AccessDeniedHttpException();
         }
 
+        $channelCode = $request->query->get('scope', null);
+        $channel = null !== $channelCode ? $this->findChannelOr404($channelCode) : null;
+
+        $localeCode = $request->query->get('locale', null);
+        $locale = null !== $localeCode ? $this->findLocaleOr404($localeCode) : null;
+
         $attribute = $this->findAttributeOr404($code);
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ATTRIBUTES, $attribute->getGroup())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $channel = null;
-        if ($request->query->has('scope')) {
-            $channel = $this->findChannelOr404($request->query->get('scope'));
-        }
-
-        $locale = null;
-        if ($request->query->has('locale')) {
-            $locale = $this->findLocaleOr404($request->query->get('locale'));
-            if (!$this->authorizationChecker->isGranted(SecurityAttributes::EDIT_ITEMS, $locale)) {
-                throw new AccessDeniedHttpException();
-            }
-        }
 
         try {
-            $method = 'partial' . ucfirst($action);
-            $this->manager->$method($productDraft, $attribute, $channel, $locale, [
-                'comment' => $request->query->get('comment')
-            ]);
+            $method = $action . 'Value';
+            $this->manager->$method(
+                $productDraft,
+                $attribute,
+                $locale,
+                $channel,
+                ['comment' => $request->query->get('comment')]
+            );
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
@@ -210,78 +210,34 @@ class ProductDraftController
     }
 
     /**
-     * Approve a product draft
+     * Approve or refuse a product draft
      *
      * @param Request $request
      * @param mixed   $id
+     * @param string  $action either "approve" or "refuse"
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function approveAction(Request $request, $id)
+    public function reviewAction(Request $request, $id, $action)
     {
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft that is not ready can not be approved');
+        if (!in_array($action, $this->supportedReviewActions)) {
+            throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
         try {
-            $this->manager->approve($productDraft, [
-                'comment' => $request->request->get('comment')
-            ]);
+            $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
-
-        $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
-            'disable_grouping_separator' => true
-        ];
-
-        return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
-            'internal_api',
-            $normalizationContext
-        ));
-    }
-
-    /**
-     * Reject a product draft
-     *
-     * @param Request $request
-     * @param mixed   $id
-     *
-     * @throws \LogicException
-     * @throws AccessDeniedHttpException
-     *
-     * @return JsonResponse
-     */
-    public function rejectAction(Request $request, $id)
-    {
-        $productDraft = $this->findProductDraftOr404($id);
-
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $this->manager->refuse($productDraft, [
-            'comment' => $request->request->get('comment')
-        ]);
 
         $normalizationContext = $this->userContext->toArray() + [
             'filter_type'                => 'pim.internal_api.product_value.view',
@@ -311,10 +267,6 @@ class ProductDraftController
         $productDraft = $this->findProductDraftOr404($id);
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if (!$this->authorizationChecker->isGranted(WorkflowAttributes::FULL_REVIEW, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

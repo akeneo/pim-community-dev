@@ -45,9 +45,9 @@ Feature: Partial review a proposal
     When I am logged in as "Mary"
     And I am on the dashboard page
     Then I should see notifications:
-      | type    | message                                                                           |
-      | error   | Julia Stark has rejected the value for Weather conditions for the product: jacket |
-      | success | Julia Stark has accepted the value for Name for the product: jacket               |
+      | type    | message                                                                         |
+      | error   | Julia Stark has rejected value(s) for Weather conditions for the product jacket |
+      | success | Julia Stark has accepted value(s) for Name for the product jacket               |
     And Mary proposed the following change to "jacket":
       | field              | value |
       | Weather conditions | Hot   |

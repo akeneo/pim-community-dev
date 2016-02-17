@@ -70,6 +70,7 @@ services:
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -79,6 +80,7 @@ services:
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -88,6 +90,7 @@ services:
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }
 

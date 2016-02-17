@@ -2,7 +2,7 @@
 Feature: Partial approve
   In order to easily accept changes in proposals
   As a product owner
-  I need to be able to partialy approve a proposal
+  I need to be able to partially approve a proposal
 
   Background:
     Given an "clothing" catalog configuration
@@ -33,10 +33,10 @@ Feature: Partial approve
     And I am on the dashboard page
     Then I should have 2 new notification
     And I should see notification:
-      | type    | message                                                                     |
-      | success | Julia Stark has accepted the value for Name for the product: tshirt        |
-      | success | Julia Stark has accepted the value for Description for the product: tshirt |
-    When I click on the notification "Julia Stark has accepted the value for Name for the product: tshirt"
+      | type    | message                                                                          |
+      | success | Julia Stark has accepted value(s) for Name for the product Summer t-shirt        |
+      | success | Julia Stark has accepted value(s) for Description for the product Summer t-shirt |
+    When I click on the notification "Julia Stark has accepted value(s) for Name for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | name-en_US               | Summer t-shirt             |
