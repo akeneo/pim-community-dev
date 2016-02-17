@@ -13,8 +13,10 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes;
 use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -42,25 +44,31 @@ class GridHelper
     /** @var ProductDraftGrantedAttributeProvider */
     protected $attributeProvider;
 
+    /** @var ProductDraftChangesPermissionHelper */
+    protected $permissionHelper;
+
     /**
      * @param ProductDraftRepositoryInterface      $draftRepository
      * @param AuthorizationCheckerInterface        $authorizationChecker
      * @param TokenStorageInterface                $tokenStorage
      * @param RequestStack                         $requestStack
      * @param ProductDraftGrantedAttributeProvider $attributeProvider
+     * @param ProductDraftChangesPermissionHelper  $permissionHelper
      */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         RequestStack $requestStack,
-        ProductDraftGrantedAttributeProvider $attributeProvider
+        ProductDraftGrantedAttributeProvider $attributeProvider,
+        ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->draftRepository      = $draftRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage         = $tokenStorage;
         $this->requestStack         = $requestStack;
         $this->attributeProvider    = $attributeProvider;
+        $this->permissionHelper     = $permissionHelper;
     }
 
     /**
@@ -71,13 +79,14 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (null !== $this->authorizationChecker &&
-                !$this->authorizationChecker->isGranted(Attributes::FULL_REVIEW, $record->getRootEntity())
-            ) {
-                return ['approve' => false, 'refuse' => false];
-            }
+            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getRootEntity());
+            $toReview = $record->getRootEntity()->getStatus() === ProductDraftInterface::READY;
+            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $record->getRootEntity()->getProduct());
 
-            return [];
+            return [
+                'approve' => $isOwner && $toReview && $canReview,
+                'refuse'  => $isOwner && $toReview && $canReview
+            ];
         };
     }
 

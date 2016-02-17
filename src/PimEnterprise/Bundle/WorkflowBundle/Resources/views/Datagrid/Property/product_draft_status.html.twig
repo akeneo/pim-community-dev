@@ -1,18 +1,6 @@
-{% if is_granted(constant('PimEnterprise\\Bundle\\WorkflowBundle\\Security\\Attributes::FULL_REVIEW'), record.rootEntity) %}
-    {% set message = '' %}
-    {% set status = 'pimee_workflow.product_draft.status.' ~ (value == 1 ? 'ready' : 'in_progress') %}
-{% elseif is_granted(constant('PimEnterprise\\Bundle\\WorkflowBundle\\Security\\Attributes::PARTIAL_REVIEW'), record.rootEntity) %}
-    {% set message = 'pimee_workflow.product_draft.status_message.can_be_partially_reviewed' %}
-    {% set status = 'pimee_workflow.product_draft.status.' ~ (value == 1 ? 'can_be_partially_reviewed' : 'in_progress') %}
-{% else %}
-    {% if value == 1 %}
-        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_approved' %}
-        {% set status = 'pimee_workflow.product_draft.status.can_not_be_approved' %}
-    {% else %}
-        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_deleted' %}
-        {% set status = 'pimee_workflow.product_draft.status.can_not_be_deleted' %}
-    {% endif %}
-{% endif %}
+{% set status = get_draft_status_grid(record.rootEntity) %}
+{% set message = get_draft_status_tooltip_grid(record.rootEntity) %}
+
 <span class="badge-info-large"{% if '' != message %} title="{{ message|trans }}"{% endif %}>
     {{ status|trans }}
 </span>

@@ -32,9 +32,9 @@ Feature: Partial approve
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                     | comment                                      |
-      | success | Julia Stark has accepted the value for Description for the product: tshirt | Yes, remember to update the price next time! |
-    When I click on the notification "Julia Stark has accepted the value for Description for the product: tshirt"
+      | type    | message                                                                  | comment                                      |
+      | success | Julia Stark has accepted value(s) for Description for the product tshirt | Yes, remember to update the price next time! |
+    When I click on the notification "Julia Stark has accepted value(s) for Description for the product tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | description-en_US-mobile | Summer t-shirt description |

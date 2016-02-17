@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -57,25 +58,31 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var AuthorizationCheckerInterface */
     protected $tokenStorage;
 
+    /** @var ProductDraftChangesPermissionHelper */
+    protected $permissionHelper;
+
     /**
-     * @param ProductDraftRepositoryInterface $draftRepository
-     * @param ProductDraftManager             $productDraftManager
-     * @param UserProviderInterface           $userProvider
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param TokenStorageInterface           $tokenStorage
+     * @param ProductDraftRepositoryInterface     $draftRepository
+     * @param ProductDraftManager                 $productDraftManager
+     * @param UserProviderInterface               $userProvider
+     * @param AuthorizationCheckerInterface       $authorizationChecker
+     * @param TokenStorageInterface               $tokenStorage
+     * @param ProductDraftChangesPermissionHelper $permissionHelper
      */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
         ProductDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->draftRepository      = $draftRepository;
         $this->productDraftManager  = $productDraftManager;
         $this->userProvider         = $userProvider;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage         = $tokenStorage;
+        $this->permissionHelper     = $permissionHelper;
     }
 
     /**

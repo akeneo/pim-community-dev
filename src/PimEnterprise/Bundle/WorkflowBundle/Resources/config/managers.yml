@@ -34,3 +34,4 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.saver.product_draft'
             - '@pimee_workflow.remover.product_draft'
+            - '@pim_enrich.filter.product_values_edit_data'

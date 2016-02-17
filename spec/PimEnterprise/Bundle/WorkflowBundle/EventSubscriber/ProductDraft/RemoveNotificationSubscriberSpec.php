@@ -3,11 +3,13 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
@@ -16,9 +18,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveNotificationSubscriberSpec extends ObjectBehavior
 {
-    function let(NotificationManager $notifier, UserContext $context, UserRepositoryInterface $userRepository)
-    {
-        $this->beConstructedWith($notifier, $context, $userRepository);
+    function let(
+        NotificationManager $notifier,
+        UserContext $context,
+        UserRepositoryInterface $userRepository,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->beConstructedWith($notifier, $context, $userRepository, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -29,46 +35,67 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_REMOVE => ['send', 10],
+            ProductDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
         ]);
     }
 
     function it_does_not_send_on_non_object($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
-        $this->send($event);
+        $this->sendNotificationForRemoval($event);
     }
 
     function it_does_not_send_on_non_product_draft($notifier, GenericEvent $event)
     {
         $event->getSubject()->willReturn(new \stdClass());
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
-        $this->send($event);
+        $this->sendNotificationForRemoval($event);
     }
 
     function it_does_not_send_on_unknown_user(
         $notifier,
         $userRepository,
+        $attributeRepository,
+        $context,
         ProductDraftInterface $draft,
-        GenericEvent $event
+        GenericEvent $event,
+        AttributeInterface $attribute
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn(null);
         $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $context->getUser()->willReturn(null);
 
-        $this->send($event);
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn([
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ]);
+        $draft->getChangesToReview()->willReturn([]);
+
+        $event->setArgument('actionType', Argument::any())->willReturn();
+        $event->setArgument('message', Argument::any())->willReturn();
+        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
+
+        $context->getCurrentLocaleCode()->willReturn(Argument::any());
+        $attribute->getLabel()->willReturn(Argument::any());
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+
+        $this->sendNotificationForRemoval($event);
     }
 
     function it_does_not_send_notification_if_author_does_not_want(
         $userRepository,
+        $attributeRepository,
         $notifier,
-        GenericEvent $event,
+        $context,
+        ProductDraftInterface $draft,
         UserInterface $author,
-        ProductDraftInterface $draft
+        GenericEvent $event,
+        AttributeInterface $attribute
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
@@ -76,12 +103,28 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $author->hasProposalsStateNotification()->willReturn(false);
 
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
+        $context->getUser()->willReturn(null);
 
-        $this->send($event)->shouldReturn(null);
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn([
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ]);
+        $draft->getChangesToReview()->willReturn([]);
+
+        $event->setArgument('actionType', Argument::any())->willReturn();
+        $event->setArgument('message', Argument::any())->willReturn();
+        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
+
+        $context->getCurrentLocaleCode()->willReturn(Argument::any());
+        $attribute->getLabel()->willReturn(Argument::any());
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+
+        $this->sendNotificationForRemoval($event);
     }
 
     function it_sends_on_product_draft(
         $notifier,
+        $attributeRepository,
         $context,
         $userRepository,
         GenericEvent $event,
@@ -89,10 +132,27 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier
+        ProductValueInterface $identifier,
+        AttributeInterface $attribute
     ) {
-        $event->hasArgument('comment')->willReturn(false);
+        $context->getCurrentLocaleCode()->willReturn(Argument::any());
+
         $event->getSubject()->willReturn($draft);
+        $event->hasArgument(Argument::any())->willReturn(true);
+        $event->setArgument(Argument::cetera())->willReturn(true);
+        $event->hasArgument('comment')->willReturn(false);
+        $event->getArgument('message')->willReturn('pimee_workflow.product_draft.notification.approve');
+        $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_approve');
+        $event->getArgument('messageParams')->willReturn([]);
+        $event->getArgument('updatedValues')->willReturn([
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ]);
+
+        $attribute->setLocale(Argument::any())->willReturn();
+        $attribute->getLabel()->willReturn(Argument::any());
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+
+        $draft->getChangesToReview()->willReturn([]);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(true);
@@ -125,11 +185,12 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->send($event);
+        $this->sendNotificationForRemoval($event);
     }
 
     function it_sends_on_product_draft_with_a_comment(
         $notifier,
+        $attributeRepository,
         $context,
         $userRepository,
         GenericEvent $event,
@@ -137,9 +198,22 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier
+        ProductValueInterface $identifier,
+        AttributeInterface $attribute
     ) {
+        $attribute->setLocale(Argument::any())->willReturn();
+        $attribute->getLabel()->willReturn(Argument::any());
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+
         $event->getSubject()->willReturn($draft);
+        $context->getCurrentLocaleCode()->willReturn(Argument::any());
+        $draft->getChangesToReview()->willReturn([]);
+        $event->setArgument(Argument::cetera())->willReturn(true);
+
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn([
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ]);
         $event->hasArgument('comment')->willReturn(true);
         $event->getArgument('comment')->willReturn('Nope Mary.');
 
@@ -175,6 +249,6 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->send($event);
+        $this->sendNotificationForRemoval($event);
     }
 }

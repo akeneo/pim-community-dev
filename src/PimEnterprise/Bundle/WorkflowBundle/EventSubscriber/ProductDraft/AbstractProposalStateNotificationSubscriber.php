@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -25,6 +25,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 abstract class AbstractProposalStateNotificationSubscriber
 {
+    const NOTIFICATION_MAX_ATTRIBUTES = 3;
+
     /** @var NotificationManager */
     protected $notifier;
 
@@ -34,19 +36,25 @@ abstract class AbstractProposalStateNotificationSubscriber
     /** @var UserRepositoryInterface */
     protected $userRepository;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param NotificationManager     $notifier
-     * @param UserContext             $userContext
-     * @param UserRepositoryInterface $userRepository
+     * @param NotificationManager          $notifier
+     * @param UserContext                  $userContext
+     * @param UserRepositoryInterface      $userRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         NotificationManager $notifier,
         UserContext $userContext,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->notifier       = $notifier;
-        $this->userContext    = $userContext;
-        $this->userRepository = $userRepository;
+        $this->notifier            = $notifier;
+        $this->userContext         = $userContext;
+        $this->userRepository      = $userRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -54,7 +62,7 @@ abstract class AbstractProposalStateNotificationSubscriber
      *
      * @param GenericEvent $event
      */
-    abstract public function send(GenericEvent $event);
+    abstract protected function send(GenericEvent $event);
 
     /**
      * @param ProductDraftInterface $productDraft
@@ -72,5 +80,53 @@ abstract class AbstractProposalStateNotificationSubscriber
         }
 
         return $author->hasProposalsStateNotification();
+    }
+
+    /**
+     * @param GenericEvent $event
+     *
+     * @return bool
+     */
+    protected function isEventValid(GenericEvent $event)
+    {
+        $productDraft = $event->getSubject();
+
+        if (!is_object($productDraft) || !$productDraft instanceof ProductDraftInterface) {
+            return false;
+        }
+
+        $updatedValues = $event->hasArgument('updatedValues') ? $event->getArgument('updatedValues') : [];
+
+        return !empty($updatedValues);
+    }
+
+    /**
+     * @param GenericEvent $event
+     * @param string       $type
+     *
+     * @return GenericEvent
+     */
+    protected function buildNotificationMessage(GenericEvent $event, $type)
+    {
+        $updatedValues = $event->getArgument('updatedValues');
+
+        $event->setArgument('actionType', sprintf('pimee_workflow_product_draft_notification_%s', $type));
+
+        if (count($updatedValues) > self::NOTIFICATION_MAX_ATTRIBUTES) {
+            $event->setArgument('message', sprintf('pimee_workflow.product_draft.notification.%s_number', $type));
+            $event->setArgument('messageParams', ['%attributes_count%' => count($updatedValues)]);
+        } else {
+            $attributeLabels = array_map(function ($attributeCode) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                $attribute->setLocale($this->userContext->getCurrentLocaleCode());
+
+                return $attribute->getLabel();
+            }, array_keys($updatedValues));
+
+            $event->setArgument('message', sprintf('pimee_workflow.product_draft.notification.%s', $type));
+            $event->setArgument('messageParams', ['%attributes%' => implode(', ', $attributeLabels)]);
+        }
+
+        return $event;
     }
 }
