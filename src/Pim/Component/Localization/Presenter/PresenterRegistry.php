@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Localization\Presenter;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**

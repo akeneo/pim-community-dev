@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Pim\Component\Localization\Localizer\ConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;

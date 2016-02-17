@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Localization\Denormalizer\Structured;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class MetricDenormalizerSpec extends ObjectBehavior

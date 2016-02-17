@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CommentBundle\Normalizer\Structured;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 

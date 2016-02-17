@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

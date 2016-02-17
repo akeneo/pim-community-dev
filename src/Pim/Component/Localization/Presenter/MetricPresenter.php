@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Localization\Presenter;
 
-use Pim\Component\Localization\Factory\NumberFactory;
+use Akeneo\Component\Localization\Factory\NumberFactory;
+use Akeneo\Component\Localization\Presenter\NumberPresenter;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

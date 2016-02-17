@@ -1,9 +1,9 @@
 parameters:
-    pim_localization.localizer.registry.class:  Pim\Component\Localization\Localizer\LocalizerRegistry
-    pim_localization.localizer.number.class:    Pim\Component\Localization\Localizer\NumberLocalizer
+    pim_localization.localizer.registry.class:  Akeneo\Component\Localization\Localizer\LocalizerRegistry
+    pim_localization.localizer.number.class:    Akeneo\Component\Localization\Localizer\NumberLocalizer
     pim_localization.localizer.price.class:     Pim\Component\Localization\Localizer\PriceLocalizer
     pim_localization.localizer.metric.class:    Pim\Component\Localization\Localizer\MetricLocalizer
-    pim_localization.localizer.date.class:      Pim\Component\Localization\Localizer\DateLocalizer
+    pim_localization.localizer.date.class:      Akeneo\Component\Localization\Localizer\DateLocalizer
     pim_localization.localizer.converter.class: Pim\Component\Localization\Localizer\LocalizedAttributeConverter
 
 services:
