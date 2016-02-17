@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'pim/date-context', 'bootstrap.datetimepicker'],
-    function ($, _, DateContext) {
+    ['jquery', 'underscore', 'oro/translator', 'pim/date-context', 'bootstrap.datetimepicker'],
+    function ($, _, __, DateContext) {
         'use strict';
 
         return {
@@ -20,7 +20,7 @@ define(
                     _.each(_.keys(defaultOptions), function (key) {
                         languageOptions[key] = [];
                         _.each(defaultOptions[key], function (value) {
-                            languageOptions[key].push(_.__('datetimepicker.' + key + '.' + value));
+                            languageOptions[key].push(__('datetimepicker.' + key + '.' + value));
                         });
                     });
 

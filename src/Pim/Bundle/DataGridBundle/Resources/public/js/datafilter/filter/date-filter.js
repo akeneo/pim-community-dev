@@ -27,9 +27,9 @@ function($, _, __, ChoiceFilter, Datepicker) {
                     '</select>' +
                 '</div>' +
                 '<div>' +
-                    '<span class="start"><input type="text" value="" class="<%= inputClass %> add-on" name="start" placeholder="'+__('from')+'"></span>' +
+                    '<span class="start"><input type="text" value="" class="<%= inputClass %> add-on" name="start" placeholder="' + __('from') + '"></span>' +
                     '<span class="filter-separator">-</span>' +
-                    '<span class="end"><input type="text" value="" class="<%= inputClass %> add-on" name="end" placeholder="'+__('to')+'"></span>' +
+                    '<span class="end"><input type="text" value="" class="<%= inputClass %> add-on" name="end" placeholder="' + __('to') + '"></span>' +
                 '</div>' +
                 '<div class="oro-action">' +
                     '<div class="btn-group">' +
