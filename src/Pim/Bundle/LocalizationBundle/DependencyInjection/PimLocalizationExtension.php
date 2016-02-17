@@ -37,7 +37,6 @@ class PimLocalizationExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('factories.yml');
-        $loader->load('denormalizers.yml');
         $loader->load('factories.yml');
         $loader->load('localizers.yml');
         $loader->load('normalizers.yml');
