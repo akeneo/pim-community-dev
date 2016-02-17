@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Localizer;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

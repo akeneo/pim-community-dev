@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Prophecy\Argument;

@@ -3,8 +3,8 @@ parameters:
 
     pim_localization.presenter.prices.class:   Pim\Component\Localization\Presenter\PricesPresenter
     pim_localization.presenter.metric.class:   Pim\Component\Localization\Presenter\MetricPresenter
-    pim_localization.presenter.number.class:   Pim\Component\Localization\Presenter\NumberPresenter
-    pim_localization.presenter.date.class:     Pim\Component\Localization\Presenter\DatePresenter
+    pim_localization.presenter.number.class:   Akeneo\Component\Localization\Presenter\NumberPresenter
+    pim_localization.presenter.date.class:     Akeneo\Component\Localization\Presenter\DatePresenter
 
 services:
     pim_localization.presenter.registry:

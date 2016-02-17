@@ -2,16 +2,15 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -77,7 +76,7 @@ class ProductProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface               $builder            product builder
+     * @param ProductBuilderInterface               $builder            product builder
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          product validator
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip

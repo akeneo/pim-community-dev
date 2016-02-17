@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Localization\Localizer;
 
+use Akeneo\Component\Localization\Factory\NumberFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Factory\NumberFactory;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -18,7 +18,7 @@ class PriceLocalizerSpec extends ObjectBehavior
 
     function it_is_a_localizer()
     {
-        $this->shouldImplement('Pim\Component\Localization\Localizer\LocalizerInterface');
+        $this->shouldImplement('Akeneo\Component\Localization\Localizer\LocalizerInterface');
     }
 
     function it_supports_attribute_type()

@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Component\Localization\Localizer;
 
-use PhpSpec\Exception\Example\FailureException;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,7 +20,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface');
     }
 
     function it_converts_a_number($localizerRegistry, $attributeRepository, LocalizerInterface $localizer)

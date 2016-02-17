@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

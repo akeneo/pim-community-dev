@@ -12,10 +12,10 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +81,7 @@ class ProductController
      * @param ObjectFilterInterface                $objectFilter
      * @param CollectionFilterInterface            $productEditDataFilter
      * @param RemoverInterface                     $productRemover
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
+     * @param ProductBuilderInterface              $productBuilder
      * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(

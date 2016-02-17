@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;

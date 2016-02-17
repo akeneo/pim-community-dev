@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

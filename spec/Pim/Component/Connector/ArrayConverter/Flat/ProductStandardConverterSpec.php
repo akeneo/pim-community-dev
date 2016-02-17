@@ -13,7 +13,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\Exception\ArrayConversionException;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
 
 class ProductStandardConverterSpec extends ObjectBehavior

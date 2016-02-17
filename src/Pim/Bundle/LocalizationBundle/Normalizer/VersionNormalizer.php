@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\LocalizationBundle\Normalizer;
 
+use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

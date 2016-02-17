@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Localization\Presenter;
 
+use Akeneo\Component\Localization\Presenter\NumberPresenter;
+
 /**
  * Price presenter, able to render price readable for a human
  *

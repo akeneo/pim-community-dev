@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Localization\Presenter;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Presenter\PresenterInterface;
 use Prophecy\Argument;
 
 class PresenterRegistrySpec extends ObjectBehavior
@@ -17,7 +17,7 @@ class PresenterRegistrySpec extends ObjectBehavior
 
     function it_is_a_localizer_registry()
     {
-        $this->shouldImplement('Pim\Component\Localization\Presenter\PresenterRegistryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface');
     }
 
     function it_get_localizer(

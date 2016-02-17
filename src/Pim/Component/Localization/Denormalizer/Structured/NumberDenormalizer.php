@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Localization\Denormalizer\Structured;
 
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
