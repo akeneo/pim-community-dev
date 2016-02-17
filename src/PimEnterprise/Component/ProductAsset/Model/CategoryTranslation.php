@@ -12,32 +12,23 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Component\Localization\Model\TranslationInterface;
 
 /**
  * Asset category translation
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class CategoryTranslation extends AbstractTranslation
+class CategoryTranslation extends AbstractTranslation implements TranslationInterface
 {
-    /**
-     * All required columns are mapped through inherited superclass
-     */
-
-    /**
-     * Change foreign key to add constraint and work with basic entity
-     */
+    /** Change foreign key to add constraint and work with basic entity */
     protected $foreignKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $label;
 
     /**
-     * @param string $label
-     *
-     * @return AbstractTranslation
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -47,7 +38,7 @@ class CategoryTranslation extends AbstractTranslation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
