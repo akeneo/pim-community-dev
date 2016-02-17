@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Bundle\RuleEngineBundle\Runner\ChainedRunner;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -70,19 +73,28 @@ class ProductController
     /** @var LocalizedAttributeConverterInterface */
     protected $localizedConverter;
 
+    /**  @var ChainedRunner */
+    protected $runnerRegistry;
     /**
-     * @param ProductRepositoryInterface           $productRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param PropertySetterInterface              $productUpdater
-     * @param SaverInterface                       $productSaver
-     * @param NormalizerInterface                  $normalizer
-     * @param ValidatorInterface                   $validator
-     * @param UserContext                          $userContext
-     * @param ObjectFilterInterface                $objectFilter
-     * @param CollectionFilterInterface            $productEditDataFilter
-     * @param RemoverInterface                     $productRemover
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
-     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @var RuleDefinitionRepositoryInterface
+     */
+    private $ruleDefinitionRepo;
+
+    /**
+     * @param ProductRepositoryInterface                             $productRepository
+     * @param AttributeRepositoryInterface                           $attributeRepository
+     * @param PropertySetterInterface                                $productUpdater
+     * @param SaverInterface                                         $productSaver
+     * @param NormalizerInterface                                    $normalizer
+     * @param ValidatorInterface                                     $validator
+     * @param UserContext                                            $userContext
+     * @param ObjectFilterInterface                                  $objectFilter
+     * @param CollectionFilterInterface                              $productEditDataFilter
+     * @param RemoverInterface                                       $productRemover
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface $productBuilder
+     * @param LocalizedAttributeConverterInterface                   $localizedConverter
+     * @param ChainedRunner                                          $runnerRegistry
+     * @param RuleDefinitionRepositoryInterface                      $ruleDefinitionRepo
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -96,7 +108,9 @@ class ProductController
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
-        LocalizedAttributeConverterInterface $localizedConverter
+        LocalizedAttributeConverterInterface $localizedConverter,
+        ChainedRunner $runnerRegistry,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -110,6 +124,8 @@ class ProductController
         $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
         $this->localizedConverter    = $localizedConverter;
+        $this->runnerRegistry        = $runnerRegistry;
+        $this->ruleDefinitionRepo    = $ruleDefinitionRepo;
     }
 
     /**
@@ -189,6 +205,7 @@ class ProductController
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
+            $this->applyRule($product);
 
             $normalizationContext = $this->userContext->toArray() + [
                 'filter_type'                => 'pim.internal_api.product_value.view',
@@ -207,6 +224,18 @@ class ProductController
 
             return new JsonResponse($errors, 400);
         }
+    }
+
+    protected function applyRule(ProductInterface $product)
+    {
+        $rules = $this->ruleDefinitionRepo->findAllOrderedByPriority();
+        $options = [];
+        $options['id'] = $product->getId();
+
+        foreach ($rules as $rule) {
+            $this->runnerRegistry->run($rule, $options);
+        }
+
     }
 
     /**
