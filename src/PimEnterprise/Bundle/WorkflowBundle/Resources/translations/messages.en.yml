@@ -27,8 +27,10 @@ pimee_workflow:
             partial_approve: Approve changes on attribute %attribute% of the product %product%
             partial_reject: Reject changes on attribute %attribute% of the product %product%
         notification:
-            partial_approve: %owner% has accepted the value for %attribute% for the product: %product%
-            partial_reject: %owner% has rejected the value for %attribute% for the product: %product%
+            partial_approve: %owner% has accepted value(s) for %attributes% for the product %product%
+            partial_approve_number: %owner% has accepted values for %attributes_count% attributes for the product %product%
+            partial_reject: %owner% has rejected value(s) for %attributes% for the product %product%
+            partial_reject_number: %owner% has rejected values for %attributes_count% attributes for the product %product%
             approve: %owner% has accepted your proposal for the product %product%
             refuse: %owner% has rejected your proposal for the product %product%
             remove: %owner% has deleted your proposal for the product %product%
@@ -71,6 +73,8 @@ pimee_workflow:
             perform.title: Refuse proposals
     steps:
         product_draft_processor.title: Proposal processor
+        approve.title: Approve proposal
+        refuse.title: Refuse proposal
 pimee_workflow_product_draft_notification_new_proposal: New proposal
 pimee_workflow_import_notification_new_proposals: New proposals from import
 

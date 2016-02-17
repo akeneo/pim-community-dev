@@ -12,8 +12,9 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -26,12 +27,19 @@ class GridHelper
     /** @var AuthorizationCheckerInterface  */
     protected $authorizationChecker;
 
+    /** @var ProductDraftChangesPermissionHelper */
+    protected $permissionHelper;
+
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param AuthorizationCheckerInterface       $authorizationChecker
+     * @param ProductDraftChangesPermissionHelper $permissionHelper
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductDraftChangesPermissionHelper $permissionHelper
+    ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->permissionHelper     = $permissionHelper;
     }
 
     /**
@@ -42,17 +50,20 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (null !== $this->authorizationChecker &&
-                !$this->authorizationChecker->isGranted(Attributes::FULL_REVIEW, $record->getRootEntity())
-            ) {
-                return ['approve' => false, 'refuse' => false, 'remove' => false];
-            }
+            $productDraft = $record->getRootEntity();
 
-            if (ProductDraftInterface::IN_PROGRESS === $record->getValue('status')) {
-                return ['approve' => false, 'refuse' => false];
-            }
+            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getRootEntity());
+            $canDelete = $this->permissionHelper->canEditAllChangesDraft($record->getRootEntity());
 
-            return ['remove' => false];
+            $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
+            $inProgress = $productDraft->isInProgress();
+            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct());
+
+            return [
+                'approve' => $toReview && $isOwner && $canReview,
+                'refuse'  => $toReview && $isOwner && $canReview,
+                'remove'  => $inProgress && $isOwner && $canDelete
+            ];
         };
     }
 

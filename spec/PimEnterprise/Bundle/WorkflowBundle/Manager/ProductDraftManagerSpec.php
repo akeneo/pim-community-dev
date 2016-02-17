@@ -5,11 +5,13 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
@@ -28,8 +30,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
-        SaverInterface $saver,
-        RemoverInterface $remover
+        SaverInterface $draftSaver,
+        RemoverInterface $remover,
+        CollectionFilterInterface $valuesFilter
     ) {
         $this->beConstructedWith(
             $workingCopySaver,
@@ -38,228 +41,257 @@ class ProductDraftManagerSpec extends ObjectBehavior
             $repository,
             $applier,
             $dispatcher,
-            $saver,
-            $remover
+            $draftSaver,
+            $remover,
+            $valuesFilter
         );
     }
 
-    function it_applies_changes_to_the_product_when_approving_a_product_draft(
-        $workingCopySaver,
-        $applier,
-        $dispatcher,
-        $remover,
-        ProductDraftInterface $productDraft,
-        ProductInterface $product
-    ) {
-        $productDraft->getChanges()->willReturn([
-            'values' => [
-                'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
-                ]
-            ],
-            'review_statuses' => [
-                'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
-                ]
-            ]
-        ]);
-        $productDraft->getProduct()->willReturn($product);
-        $productDraft->getId()->willReturn(42);
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $applier->applyToReviewChanges($product, $productDraft)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(false);
-        $productDraft->removeChange('name', 'en_US', 'ecommerce')->shouldBeCalled();
-        $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $this->approve($productDraft);
-    }
-
-    function it_applies_changes_to_the_product_when_partially_approve_a_product_draft(
-        $workingCopySaver,
-        $factory,
-        $applier,
-        $dispatcher,
-        $saver,
-        $remover,
-        ProductDraftInterface $productDraft,
-        ProductDraftInterface $partialDraft,
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $productDraft->getProduct()->willReturn($product);
-        $productDraft->getAuthor()->willReturn('Mary');
-        $productDraft->getChange('name', null, null)->willReturn('new name');
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-
-        $attribute->getLabel()->willReturn('Name');
-        $attribute->getCode()->willReturn('name');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-
-        $changes = [
-            'values' => [
-                'name' => [
-                    ['scope' => null, 'locale' => null, 'data' => 'new name']
-                ]
-            ]
-        ];
-        $partialDraft->setChanges($changes)->shouldBeCalled();
-        $partialDraft->getChanges()->willReturn($changes);
-        $factory->createProductDraft($product, 'Mary')->willReturn($partialDraft);
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_PARTIAL_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
-        $workingCopySaver->save($product)->shouldBeCalled();
-        $productDraft->removeChange('name', null, null)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(true);
-        $remover->remove(Argument::cetera())->shouldNotBeCalled();
-        $saver->save($productDraft)->shouldBeCalled();
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_PARTIAL_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $this->partialApprove($productDraft, $attribute);
-    }
-
-    function it_applies_changes_and_removes_the_draft_when_partially_approve_a_product_draft(
-        $workingCopySaver,
-        $factory,
-        $applier,
-        $dispatcher,
-        $saver,
-        $remover,
-        ProductDraftInterface $productDraft,
-        ProductDraftInterface $partialDraft,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ChannelInterface $channel,
-        LocaleInterface $locale
-    ) {
-        $productDraft->getProduct()->willReturn($product);
-        $productDraft->getAuthor()->willReturn('Mary');
-        $productDraft->getChange('name', null, null)->willReturn('new name');
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-
-        $attribute->getLabel()->willReturn('Name');
-        $attribute->getCode()->willReturn('name');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-
-        $changes = [
-            'values' => [
-                'name' => [
-                    ['scope' => null, 'locale' => null, 'data' => 'new name']
-                ]
-            ]
-        ];
-        $partialDraft->setChanges($changes)->shouldBeCalled();
-        $partialDraft->getChanges()->willReturn($changes);
-        $factory->createProductDraft($product, 'Mary')->willReturn($partialDraft);
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_PARTIAL_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
-        $workingCopySaver->save($product)->shouldBeCalled();
-        $productDraft->removeChange('name', null, null)->shouldBeCalled();
-        $productDraft->hasChanges()->willReturn(false);
-        $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
-        $saver->save($productDraft)->shouldNotBeCalled();
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_PARTIAL_APPROVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $this->partialApprove($productDraft, $attribute, $channel, $locale);
-    }
-
-    function it_marks_a_change_as_draft_on_partial_reject(
-        $dispatcher,
-        $saver,
-        ProductDraftInterface $productDraft,
+    function it_throws_an_exception_when_trying_to_approve_a_change_on_a_non_ready_draft(
+        ProductDraftInterface $draft,
         AttributeInterface $attribute
     ) {
-        $attribute->getCode()->willReturn('name');
-        $attribute->getLabel()->willReturn('Name');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_PARTIAL_REFUSE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-        $productDraft
-            ->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'name', null, null)
-            ->shouldBeCalled();
-        $saver->save($productDraft)->shouldBeCalled();
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_PARTIAL_REFUSE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-
-        $this->partialRefuse($productDraft, $attribute);
+        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $this->shouldThrow('\LogicException')->during('approveValue', [$draft, $attribute]);
     }
 
-    function it_marks_a_product_draft_as_in_progress_when_refusing_it(
+    function it_approves_a_change(
         $dispatcher,
-        $saver,
-        ProductDraftInterface $productDraft
+        $valuesFilter,
+        $factory,
+        $applier,
+        $workingCopySaver,
+        $remover,
+        ProductDraftInterface $draft,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        ProductDraftInterface $partialDraft
     ) {
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_REFUSE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
-        $saver->save($productDraft)->shouldBeCalled();
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_REFUSE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
+        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getProduct()->willReturn($product);
+        $draft->getAuthor()->willReturn('author');
+        $attribute->getCode()->willReturn('sku');
+        $partialDraft->getProduct()->willReturn($product);
 
-        $this->refuse($productDraft);
+        $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
+
+        $draft->getChange('sku', null, null)->willReturn('ak-mug');
+        $wholeChange = ['sku' => [['locale' => null, 'scope' => null, 'data' => 'ak-mug']]];
+
+        $valuesFilter->filterCollection(
+            $wholeChange,
+            'pim.internal_api.attribute.edit'
+        )->shouldBeCalled()->willReturn($wholeChange);
+
+        $factory->createProductDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $partialDraft->setChanges(['values' => $wholeChange])->shouldBeCalled();
+        $partialDraft->getId()->willReturn(null);
+
+        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+
+        $draft->removeChange('sku', null, null)->willReturn(false);
+        $draft->hasChanges()->willReturn(false);
+
+        $remover->remove($draft, Argument::any())->shouldBeCalled();
+
+        $this->approveValue($draft, $attribute);
+    }
+
+    function it_throws_an_exception_when_trying_to_refuse_a_change_on_a_non_ready_draft(
+        ProductDraftInterface $draft,
+        AttributeInterface $attribute
+    ) {
+        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $this->shouldThrow('\LogicException')->during('refuseValue', [$draft, $attribute]);
+    }
+
+    function it_refuses_a_change(
+        $dispatcher,
+        $valuesFilter,
+        $workingCopySaver,
+        ProductDraftInterface $draft,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        ProductDraftInterface $partialDraft
+    ) {
+        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getProduct()->willReturn($product);
+        $draft->getAuthor()->willReturn('author');
+        $attribute->getCode()->willReturn('sku');
+        $partialDraft->getProduct()->willReturn($product);
+
+        $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
+
+        $wholeChange = ['sku' => [['locale' => null, 'scope' => null]]];
+
+        $valuesFilter->filterCollection(
+            $wholeChange,
+            'pim.internal_api.attribute.edit'
+        )->shouldBeCalled()->willReturn($wholeChange);
+
+        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
+        $workingCopySaver->save($draft);
+
+        $this->refuseValue($draft, $attribute);
+    }
+
+    function it_throws_an_exception_when_trying_to_approve_a_whole_non_ready_draft(ProductDraftInterface $draft)
+    {
+        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $this->shouldThrow('\LogicException')->during('approve', [$draft]);
+    }
+
+    function it_approves_a_whole_draft_with_all_changes_approvable(
+        $dispatcher,
+        $valuesFilter,
+        $factory,
+        $applier,
+        $workingCopySaver,
+        $remover,
+        ProductDraftInterface $draft,
+        ProductInterface $product
+    ) {
+        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getProduct()->willReturn($product);
+
+        $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
+
+        $wholeChanges = [
+            'sku' => [['locale' => null, 'scope' => null]],
+            'description' => [
+                ['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'foo'],
+                ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar']
+            ]
+        ];
+
+        $draft->getChangesToReview()->willReturn(['values' => $wholeChanges]);
+        $valuesFilter->filterCollection(
+            $wholeChanges,
+            'pim.internal_api.attribute.edit'
+        )->shouldBeCalled()->willReturn($wholeChanges);
+
+        $factory->createProductDraft(Argument::cetera())->shouldNotBeCalled();
+
+        $draft->getId()->willReturn(12);
+        $applier->applyToReviewChanges($product, $draft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+
+        $draft->removeChange('sku', null, null)->shouldBeCalled();
+        $draft->removeChange('description', 'en_US', 'ecommerce')->shouldBeCalled();
+        $draft->removeChange('description', 'fr_FR', 'tablet')->shouldBeCalled();
+
+        $draft->hasChanges()->willReturn(false);
+        $remover->remove($draft, Argument::any())->shouldBeCalled();
+
+        $this->approve($draft);
+    }
+
+    function it_approves_a_whole_draft_with_some_changes_not_approvable(
+        $dispatcher,
+        $valuesFilter,
+        $factory,
+        $applier,
+        $workingCopySaver,
+        $remover,
+        $draftSaver,
+        ProductDraftInterface $draft,
+        ProductInterface $product,
+        ProductDraftInterface $partialDraft
+    ) {
+        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getProduct()->willReturn($product);
+        $draft->getAuthor()->willReturn('author');
+        $partialDraft->getProduct()->willReturn($product);
+
+        $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
+
+        $wholeChanges = [
+            'sku' => [['locale' => null, 'scope' => null]],
+            'description' => [
+                ['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'foo'],
+                ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar']
+            ]
+        ];
+        $approvableChanges = [
+            'sku' => [['locale' => null, 'scope' => null]],
+            'description' => [
+                ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar']
+            ]
+        ];
+
+        $draft->getChangesToReview()->willReturn(['values' => $wholeChanges]);
+        $valuesFilter->filterCollection(
+            $wholeChanges,
+            'pim.internal_api.attribute.edit'
+        )->shouldBeCalled()->willReturn($approvableChanges);
+
+        $factory->createProductDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $partialDraft->getId()->willReturn(null);
+        $partialDraft->setChanges(['values' => $approvableChanges])->shouldBeCalled();
+
+        $applier->applyAllChanges($product, $partialDraft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+
+        $draft->removeChange('sku', null, null)->shouldBeCalled();
+        $draft->removeChange('description', 'fr_FR', 'tablet')->shouldBeCalled();
+        $draft->removeChange('description', 'en_US', 'ecommerce')->shouldNotBeCalled();
+
+        $draft->hasChanges()->willReturn(true);
+        $remover->remove(Argument::cetera())->shouldNotBeCalled();
+        $draftSaver->save($draft)->shouldBeCalled();
+
+        $this->approve($draft);
+    }
+
+    function it_throws_an_exception_when_trying_to_refuse_a_whole_non_ready_draft(ProductDraftInterface $draft)
+    {
+        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $this->shouldThrow('\LogicException')->during('refuse', [$draft]);
+    }
+
+    function it_refuses_a_whole_draft(
+        $dispatcher,
+        $valuesFilter,
+        $draftSaver,
+        ProductDraftInterface $draft
+    ) {
+        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+
+        $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, Argument::any())->shouldBeCalled();
+
+        $wholeChanges = [
+            'sku' => [['locale' => null, 'scope' => null]],
+            'description' => [
+                ['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'foo'],
+                ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar']
+            ]
+        ];
+        $refusableChanges = [
+            'sku' => [['locale' => null, 'scope' => null]],
+            'description' => [
+                ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar']
+            ]
+        ];
+
+        $draft->getChangesToReview()->willReturn(['values' => $wholeChanges]);
+        $valuesFilter->filterCollection(
+            $wholeChanges,
+            'pim.internal_api.attribute.edit'
+        )->shouldBeCalled()->willReturn($refusableChanges);
+
+        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
+        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'description', 'fr_FR', 'tablet' )->shouldBeCalled();
+        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'description', 'en_US', 'ecommerce' )->shouldNotBeCalled();
+
+        $draftSaver->save($draft)->shouldBeCalled();
+
+        $this->refuse($draft);
     }
 
     function it_finds_a_product_draft_when_it_already_exists(
@@ -303,7 +335,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->duringFindOrCreate($product, 'fr_FR');
     }
 
-    function it_marks_product_draft_as_ready($dispatcher, $saver, ProductDraftInterface $productDraft)
+    function it_marks_product_draft_as_ready($dispatcher, $draftSaver, ProductDraftInterface $productDraft)
     {
         $dispatcher
             ->dispatch(
@@ -312,7 +344,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
-        $saver->save($productDraft)->shouldBeCalled();
+        $draftSaver->save($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_READY,
@@ -321,29 +353,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->markAsReady($productDraft);
-    }
-
-    function it_throws_an_exception_when_trying_to_partially_approve_a_scopable_attribute_without_channel(
-        ProductDraftInterface $productDraft,
-        AttributeInterface $attribute,
-        LocaleInterface $locale
-    ) {
-        $attribute->getCode()->willReturn('name');
-        $attribute->isScopable()->willReturn(true);
-
-        $this->shouldThrow('\LogicException')->during('partialApprove', [$productDraft, $attribute, null, $locale]);
-    }
-
-    function it_throws_an_exception_when_trying_to_partially_approve_a_localizable_attribute_without_locale(
-        ProductDraftInterface $productDraft,
-        AttributeInterface $attribute,
-        ChannelInterface $channel
-    ) {
-        $attribute->getCode()->willReturn('name');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(true);
-
-        $this->shouldThrow('\LogicException')->during('partialApprove', [$productDraft, $attribute, $channel]);
     }
 
     function it_removes_a_product_draft($dispatcher, $remover, ProductDraftInterface $productDraft)

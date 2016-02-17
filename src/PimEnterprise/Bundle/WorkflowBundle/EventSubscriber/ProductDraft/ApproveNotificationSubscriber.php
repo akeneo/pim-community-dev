@@ -30,28 +30,52 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_APPROVE         => ['send', 10],
-            ProductDraftEvents::POST_PARTIAL_APPROVE => ['send', 10]
+            ProductDraftEvents::POST_APPROVE         => ['sendNotificationForApproval', 10],
+            ProductDraftEvents::POST_PARTIAL_APPROVE => ['sendNotificationForPartialApproval', 10]
         ];
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function sendNotificationForPartialApproval(GenericEvent $event)
+    {
+        if (!$this->isEventValid($event)) {
+            return;
+        }
+
+        $event = $this->buildNotificationMessage($event, 'partial_approve');
+        $this->send($event);
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function sendNotificationForApproval(GenericEvent $event)
+    {
+        if (!$this->isEventValid($event)) {
+            return;
+        }
+
+        $draftChanges = $event->getSubject()->getChangesToReview();
+        $type = empty($draftChanges['values']) ? 'approve' : 'partial_approve';
+        $event = $this->buildNotificationMessage($event, $type);
+
+        $this->send($event);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(GenericEvent $event)
+    protected function send(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
 
-        if (!is_object($productDraft) ||
-            !$productDraft instanceof ProductDraftInterface ||
-            !$this->authorWantToBeNotified($productDraft)
-        ) {
+        if (null === $user = $this->userContext->getUser()) {
             return;
         }
 
-        $user = $this->userContext->getUser();
-
-        if (null === $user) {
+        if (!$this->authorWantToBeNotified($productDraft)) {
             return;
         }
 
@@ -61,7 +85,7 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
             'route'         => 'pim_enrich_product_edit',
             'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
             'messageParams' => [
-                '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
+                '%product%' => $productDraft->getProduct()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context'       => [

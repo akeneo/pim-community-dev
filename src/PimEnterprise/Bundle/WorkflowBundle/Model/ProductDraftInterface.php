@@ -88,7 +88,16 @@ interface ProductDraftInterface
     public function hasChanges();
 
     /**
-     * Return only changes with the status CHANGE_TO_REVIEW
+     * Return only changes with the given $status
+     *
+     * @param string $status
+     *
+     * @return array
+     */
+    public function getChangesByStatus($status);
+
+    /**
+     * Return only changes to review
      *
      * @return array
      */

@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.twig.extension.group_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Twig\GroupProductValuesExtension
+    pimee_workflow.twig.extension.product_draft_status_grid.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftStatusGridExtension
 
 services:
     pimee_workflow.twig.extension.group_product_values:
@@ -7,5 +8,12 @@ services:
         arguments:
             - '@pimee_workflow.helper.filter_product_values'
             - '@pimee_workflow.helper.sort_product_values'
+        tags:
+            - { name: twig.extension }
+
+    pimee_workflow.twig.extension.product_draft_status_grid:
+        class: %pimee_workflow.twig.extension.product_draft_status_grid.class%
+        arguments:
+            - '@pimee_workflow.helper.product_draft_changes_permission'
         tags:
             - { name: twig.extension }

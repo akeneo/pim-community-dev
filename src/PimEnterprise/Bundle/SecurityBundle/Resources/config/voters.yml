@@ -48,11 +48,6 @@ services:
 
     pimee_security.voter.product_draft:
         class: %pimee_security.voter.product_draft.class%
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_catalog.repository.locale'
-            - '@pimee_security.manager.attribute_group_access'
-            - '@pimee_security.voter.locale'
         tags:
             - { name: security.voter }
 

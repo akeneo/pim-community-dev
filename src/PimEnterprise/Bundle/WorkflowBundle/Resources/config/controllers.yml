@@ -23,6 +23,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@security.authorization_checker'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_catalog.filter.chained'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
@@ -60,6 +61,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
 
     pimee_workflow.controller.rest.product:
         class: %pimee_workflow.controller.rest.product.class%

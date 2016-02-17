@@ -27,9 +27,9 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       |
-      | success | Julia Stark has accepted your proposal for the product tshirt |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the proposal grid with a comment
@@ -43,9 +43,9 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       | comment                                         |
-      | success | Julia Stark has accepted your proposal for the product tshirt | You did a nice job on this proposal. Thank you! |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               | comment                                         |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
@@ -59,9 +59,9 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       |
-      | success | Julia Stark has accepted your proposal for the product tshirt |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
@@ -76,9 +76,9 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       | comment                                         |
-      | success | Julia Stark has accepted your proposal for the product tshirt | You did a nice job on this proposal. Thank you! |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               | comment                                         |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
@@ -92,9 +92,9 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       |
-      | success | Julia Stark has accepted your proposal for the product tshirt |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve and comment a proposal from mass approval
@@ -109,7 +109,7 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                       | comment                                         |
-      | success | Julia Stark has accepted your proposal for the product tshirt | You did a nice job on this proposal. Thank you! |
-    When I click on the notification "Julia Stark has accepted your proposal for the product tshirt"
+      | type    | message                                                               | comment                                         |
+      | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
+    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page

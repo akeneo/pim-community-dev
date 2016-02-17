@@ -7,6 +7,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
@@ -23,14 +24,16 @@ class GridHelperSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         RequestStack $requestStack,
-        ProductDraftGrantedAttributeProvider $attributeProvider
+        ProductDraftGrantedAttributeProvider $attributeProvider,
+        ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->beConstructedWith(
             $repository,
             $authorizationChecker,
             $tokenStorage,
             $requestStack,
-            $attributeProvider
+            $attributeProvider,
+            $permissionHelper
         );
     }
 
