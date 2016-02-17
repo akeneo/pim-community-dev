@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Localization\Validator\Constraints;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,32 +18,33 @@ class NumberFormatValidator extends ConstraintValidator
     /** @var array */
     protected $decimalSeparators;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param array $decimalSeparators
      */
-    public function __construct(array $decimalSeparators)
+    public function __construct(array $decimalSeparators, TranslatorInterface $translator)
     {
         $this->decimalSeparators = $decimalSeparators;
+        $this->translator        = $translator;
     }
 
     /**
-     * Returns the message for the constraint translation.
+     * Returns the decimal separator label for the constraint translation.
      *
      * @param Constraint $constraint
      *
      * @return mixed
      */
-    public function getMessage(Constraint $constraint)
+    public function getLabel(Constraint $constraint)
     {
-        if (isset($this->decimalSeparators[$constraint->decimalSeparator])){
-            return str_replace(
-                '{{ decimal_separator }}',
-                $this->decimalSeparators[$constraint->decimalSeparator],
-                $constraint->message
-            );
-        } else {
-            return $constraint->message;
+        $label = $constraint->decimalSeparator;
+        if (isset($this->decimalSeparators[$label])) {
+            $label = $this->translator->trans($this->decimalSeparators[$label], [], 'validators');
         }
+
+        return $label;
     }
 
     /**
@@ -54,8 +56,8 @@ class NumberFormatValidator extends ConstraintValidator
 
         if (isset($matches['decimal']) && $matches['decimal'] !== $constraint->decimalSeparator) {
             $violation = $this->context->buildViolation(
-                $this->getMessage($constraint),
-                ['{{ decimal_separator }}' => $constraint->decimalSeparator]
+                $constraint->message,
+                ['{{ decimal_separator }}' => $this->getLabel($constraint)]
             );
 
             $violation->atPath($constraint->path);

@@ -9,6 +9,7 @@ services:
         class: %pim_localization.validator.constraint.number_format.class%
         arguments:
             - %pim_localization.decimal_separators%
+            - '@translator'
         tags:
             - { name: validator.constraint_validator, alias: pim_localization_number_format }
 

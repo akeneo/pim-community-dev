@@ -65,13 +65,13 @@ class NumberType extends AbstractType
 
         $constraint = new NumberFormat();
         $constraint->decimalSeparator = $decimalSeparator;
-        $message = $this->formatValidator->getMessage($constraint);
+        $label = $this->formatValidator->getLabel($constraint);
 
         $resolver->setDefaults(
             [
                 'decimals_allowed'           => true,
-                'invalid_message'            => $message,
-                'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
+                'invalid_message'            => $constraint->message,
+                'invalid_message_parameters' => ['{{ decimal_separator }}' => $label],
                 'locale_options'             => $options
             ]
         );
