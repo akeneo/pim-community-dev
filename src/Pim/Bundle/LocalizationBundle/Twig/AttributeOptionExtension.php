@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
+use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 
 /**
  * Twig extension to present localized attribute options

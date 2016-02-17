@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 
 /**
@@ -17,15 +18,20 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     /** @var MetricFactory */
     protected $factory;
 
+    /** @var LocalizerInterface */
+    protected $localizer;
+
     /**
-     * @param array         $supportedTypes
-     * @param MetricFactory $factory
+     * @param array              $supportedTypes
+     * @param MetricFactory      $factory
+     * @param LocalizerInterface $localizer
      */
-    public function __construct(array $supportedTypes, MetricFactory $factory)
+    public function __construct(array $supportedTypes, MetricFactory $factory, LocalizerInterface $localizer)
     {
         parent::__construct($supportedTypes);
 
-        $this->factory = $factory;
+        $this->factory   = $factory;
+        $this->localizer = $localizer;
     }
 
     /**
@@ -38,7 +44,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         }
 
         $metric = $this->factory->createMetric($context['attribute']->getMetricFamily());
-        $metric->setData($data['data']);
+        $metric->setData($this->localizer->localize($data['data'], $context));
         $metric->setUnit($data['unit']);
 
         return $metric;

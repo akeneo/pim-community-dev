@@ -4,13 +4,13 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 

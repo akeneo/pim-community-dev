@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

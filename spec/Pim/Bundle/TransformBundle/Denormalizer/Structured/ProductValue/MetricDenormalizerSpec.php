@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -9,9 +10,9 @@ use Pim\Component\Catalog\Model\MetricInterface;
 
 class MetricDenormalizerSpec extends ObjectBehavior
 {
-    function let(MetricFactory $factory)
+    function let(MetricFactory $factory, LocalizerInterface $localizer)
     {
-        $this->beConstructedWith(['pim_catalog_metric'], $factory);
+        $this->beConstructedWith(['pim_catalog_metric'], $factory, $localizer);
     }
 
     function it_is_initializable()
@@ -38,8 +39,12 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->denormalize([], 'pim_catalog_metric', 'json')->shouldReturn(null);
     }
 
-    function it_denormalizes_data_into_metric(AttributeInterface $attribute, $factory, MetricInterface $metric)
-    {
+    function it_denormalizes_data_into_metric_with_en_US_locale(
+        $localizer,
+        $factory,
+        AttributeInterface $attribute,
+        MetricInterface $metric
+    ) {
         $attribute->getMetricFamily()->willReturn('Frequency');
 
         $factory
@@ -47,18 +52,53 @@ class MetricDenormalizerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($metric);
 
-        $metric->setData(3)->shouldBeCalled();
+        $context = ['attribute' => $attribute, 'locale' => 'en_US'];
+        $localizer->localize(3.5, $context)->willReturn(3.5);
+
+        $metric->setData(3.5)->shouldBeCalled();
         $metric->setUnit('GIGAHERTZ')->shouldBeCalled();
 
         $this
             ->denormalize(
                 [
-                    'data' => 3,
+                    'data' => 3.5,
                     'unit' => 'GIGAHERTZ'
                 ],
                 'pim_catalog_metric',
                 'json',
-                ['attribute' => $attribute]
+                $context
+            )
+            ->shouldReturn($metric);
+    }
+
+    function it_denormalizes_data_into_metric_with_fr_FR_locale(
+        $localizer,
+        $factory,
+        AttributeInterface $attribute,
+        MetricInterface $metric
+    ) {
+        $attribute->getMetricFamily()->willReturn('Frequency');
+
+        $factory
+            ->createMetric('Frequency')
+            ->shouldBeCalled()
+            ->willReturn($metric);
+
+        $context = ['attribute' => $attribute, 'locale' => 'fr_FR'];
+        $localizer->localize(3.5, $context)->willReturn('3,5');
+
+        $metric->setData('3,5')->shouldBeCalled();
+        $metric->setUnit('GIGAHERTZ')->shouldBeCalled();
+
+        $this
+            ->denormalize(
+                [
+                    'data' => 3.5,
+                    'unit' => 'GIGAHERTZ'
+                ],
+                'pim_catalog_metric',
+                'json',
+                $context
             )
             ->shouldReturn($metric);
     }

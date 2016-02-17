@@ -10,9 +10,9 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
+use Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

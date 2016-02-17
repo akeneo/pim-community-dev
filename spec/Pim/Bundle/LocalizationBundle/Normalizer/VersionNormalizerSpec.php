@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\LocalizationBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

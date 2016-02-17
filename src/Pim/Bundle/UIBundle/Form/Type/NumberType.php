@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
 use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\Validator\Constraints\NumberFormat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

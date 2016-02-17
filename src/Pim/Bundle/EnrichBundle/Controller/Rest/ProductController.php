@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -15,7 +16,6 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

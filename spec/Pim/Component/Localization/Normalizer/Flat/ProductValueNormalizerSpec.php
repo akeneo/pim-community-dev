@@ -6,9 +6,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\DateLocalizer;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
-use Pim\Component\Localization\Localizer\NumberLocalizer;
+use Akeneo\Component\Localization\Localizer\DateLocalizer;
+use Akeneo\Component\Localization\Localizer\LocalizerRegistryInterface;
+use Akeneo\Component\Localization\Localizer\NumberLocalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

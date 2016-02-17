@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Localization;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Factory\DateFactory;
-use Pim\Component\Localization\Factory\NumberFactory;
+use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Component\Localization\Factory\NumberFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
