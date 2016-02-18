@@ -46,7 +46,7 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
     }
 
     /**
-     * Resolve target document interfaces by using container parameters
+     * Resolve target document interfaces AND target entity interfaces by using container parameters
      *
      * @param ContainerBuilder $container
      */
@@ -60,6 +60,21 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetDocument',
+                [
+                    $interface,
+                    new Parameter($parameterName),
+                    []
+                ]
+            );
+        }
+
+        if (!$container->hasDefinition('akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity')) {
+            return;
+        }
+        $definition = $container->findDefinition('akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity');
+        foreach ($this->getParametersMapping() as $interface => $parameterName) {
+            $definition->addMethodCall(
+                'addResolveTargetEntity',
                 [
                     $interface,
                     new Parameter($parameterName),

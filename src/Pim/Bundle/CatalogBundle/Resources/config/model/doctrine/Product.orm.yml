@@ -25,7 +25,7 @@ Pim\Component\Catalog\Model\Product:
                     onDelete: 'SET NULL'
     manyToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:

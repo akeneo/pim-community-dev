@@ -18,10 +18,10 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             column: is_variant
     oneToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
             mappedBy: type
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
+            targetEntity: Pim\Component\Catalog\Model\GroupTypeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

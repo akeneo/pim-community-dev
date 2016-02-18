@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
@@ -47,7 +47,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = [];
-        if ($entity instanceof AbstractTranslation) {
+        if ($entity instanceof TranslationInterface) {
             $translatedEntity = $entity->getForeignKey();
             if ($translatedEntity instanceof VersionableInterface ||
                 in_array(ClassUtils::getClass($translatedEntity), $this->versionableEntities)) {

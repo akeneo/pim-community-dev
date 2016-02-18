@@ -2,11 +2,10 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Abstract product attribute
@@ -952,7 +951,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(AbstractTranslation $translation)
+    public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -964,7 +963,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(AbstractTranslation $translation)
+    public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
 

@@ -11,7 +11,7 @@ Pim\Component\Catalog\Model\Completeness:
             type: int
         channel:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
         locale:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface

@@ -9,7 +9,7 @@ Pim\Component\Catalog\Model\Association:
         groups:
             notSaved: true
             type: entities
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
             idsField: groupIds
         groupIds:
             type: collection

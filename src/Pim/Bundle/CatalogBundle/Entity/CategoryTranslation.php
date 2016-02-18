@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Pim\Component\Catalog\Model\CategoryTranslationInterface;
 
 /**
  * Category translation entity
@@ -11,28 +12,16 @@ use Akeneo\Component\Localization\Model\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryTranslation extends AbstractTranslation
+class CategoryTranslation extends AbstractTranslation implements CategoryTranslationInterface
 {
-    /**
-     * All required columns are mapped through inherited superclass
-     */
-
-    /**
-     * Change foreign key to add constraint and work with basic entity
-     */
+    /** Change foreign key to add constraint and work with basic entity */
     protected $foreignKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $label;
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return AbstractTranslation
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -42,9 +31,7 @@ class CategoryTranslation extends AbstractTranslation
     }
 
     /**
-     * Get label
-     *
-     * @return string $label
+     * {@inheritdoc}
      */
     public function getLabel()
     {

@@ -15,7 +15,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             unique: true
     manyToOne:
         type:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupType
+            targetEntity: Pim\Component\Catalog\Model\GroupTypeInterface
             inversedBy: groups
             joinColumns:
                 type_id:
@@ -36,7 +36,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                         referencedColumnName: id
     oneToMany:
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
+            targetEntity: Pim\Component\Catalog\Model\GroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

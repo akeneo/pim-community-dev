@@ -39,14 +39,14 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                         onDelete: CASCADE
     oneToMany:
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
+            targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
                 - detach
                 - remove
         requirements:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+            targetEntity: Pim\Component\Catalog\Model\AttributeRequirementInterface
             mappedBy: family
             orphanRemoval: true
             cascade:
