@@ -31,7 +31,7 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
      * @param ProductManager $productManager
      * @param EntityManager  $entityManager
      */
-    public function __construct(ProductManager $productManager, EntityManager $entityManager = null)
+    public function __construct(ProductManager $productManager, EntityManager $entityManager)
     {
         $this->productManager = $productManager;
         $this->entityManager  = $entityManager;
@@ -89,11 +89,7 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         switch ($publishedValue->getAttribute()->getBackendType()) {
             case AbstractAttributeType::BACKEND_TYPE_MEDIA:
                 if (null !== $publishedValue->getMedia()) {
-                    if (null === $this->entityManager) {
-                        $this->getObjectManager()->detach($publishedValue->getMedia());
-                    } else {
-                        $this->entityManager->detach($publishedValue->getMedia());
-                    }
+                    $this->entityManager->detach($publishedValue->getMedia());
                 }
                 break;
             case AbstractAttributeType::BACKEND_TYPE_METRIC:
