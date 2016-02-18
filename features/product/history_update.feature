@@ -4,166 +4,36 @@ Feature: Update the product history
   As a product manager
   I need to have access to a product history
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3420
-  Scenario: Update product history when a linked attribute option is removed
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | weather_conditions |
-      | boots | cold,snowy         |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property           | value      |
-      | 1       | Weather conditions | cold,snowy |
-    When I close the "history" panel
-    When I edit the "weather_conditions" attribute
-    And I visit the "Values" tab
-    And I remove the "snowy" option
-    And I confirm the deletion
-    And I save the attribute
-    And I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 updates
-    And I should see history:
-      | version | property           | value      |
-      | 1       | Weather conditions | cold,snowy |
-
-  Scenario: Update product history when a linked category is removed
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | categories   |
-      | boots | winter_boots |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property   | value        |
-      | 1       | categories | winter_boots |
-    When I close the "history" panel
-    When I edit the "winter_boots" category
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 2 updates
-    And I should see history:
-      | version | property   | value |
-      | 2       | categories |       |
-
-  Scenario: Update product history when multiple linked categories are removed
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku   | categories                               |
-      | boots | men_2014,men_2015_autumn,men_2015_winter |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property   | value                                    |
-      | 1       | categories | men_2014,men_2015_autumn,men_2015_winter |
-    When I close the "history" panel
-    When I edit the "men_2015_autumn" category
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 2 updates
-    And I should see history:
-      | version | property   | value                    |
-      | 2       | categories | men_2014,men_2015_winter |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-3420
-  Scenario: Update product history when a linked attribute is removed
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | manufacturer |
-      | boots | Converse     |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property     | value    |
-      | 1       | Manufacturer | Converse |
-    When I close the "history" panel
-    When I edit the "manufacturer" attribute
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 updates
-    And I should see history:
-      | version | property     | value    |
-      | 1       | manufacturer | Converse |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-3420
-  Scenario: Update product history when multiple linked attributes are removed
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | weather_conditions | comment    |
-      | boots | cold,snowy         | nice boots |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property           | value      |
-      | 1       | Weather conditions | cold,snowy |
-      | 1       | Comment            | nice boots |
-    When I close the "history" panel
-    When I edit the "weather_conditions" attribute
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I edit the "comment" attribute
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I edit the "boots" product
-    And the history of the product "boots" has been built
-    When I open the history
-    Then there should be 1 update
-    And I should see history:
-      | version | property           | value      |
-      | 1       | weather_conditions | cold,snowy |
-      | 1       | comment            | nice boots |
-
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product prices
     Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | price          |
-      | boots | 10 EUR, 20 USD |
     And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I am on the "boots" product page
+    And I add available attributes Price
+    And I change the Price to "20 USD"
+    And I change the Price to "10 EUR"
+    And I save the product
     When I open the history
-    Then there should be 1 update
+    Then there should be 2 update
     And I should see history:
       | version | property  | value  |
-      | 1       | Price EUR | €10.00 |
-      | 1       | Price USD | $20.00 |
+      | 2       | Price EUR | €10.00 |
+      | 2       | Price USD | $20.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 2 updates
+    Then there should be 3 updates
     And I should see history:
       | version | property  | value  |
-      | 2       | Price USD | $19.00 |
+      | 3       | Price USD | $19.00 |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -172,37 +42,41 @@ Feature: Update the product history
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 3 updates
+    Then there should be 4 updates
     And I should see history:
       | version | property  | value |
-      | 3       | Price EUR |       |
-      | 3       | Price USD |       |
+      | 4       | Price EUR |       |
+      | 4       | Price USD |       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | length        |
-      | boots | 30 CENTIMETER |
     And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I am on the "boots" product page
+    And I add available attributes Length
+    And I change the "Length" to "30"
+    And I save the product
     When I open the history
-    Then there should be 1 update
+    Then there should be 2 update
     And I should see history:
       | version | property    | value      |
-      | 1       | Length      | 30         |
-      | 1       | Length unit | Centimeter |
+      | 2       | Length      | 30         |
+      | 2       | Length unit | Centimeter |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I change the "Length" to "35 Centimeter"
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 2 updates
+    Then there should be 3 updates
     And I should see history:
       | version | property | value   |
-      | 2       | Length   | 35      |
+      | 3       | Length   | 35      |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
@@ -210,11 +84,11 @@ Feature: Update the product history
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 3 updates
+    Then there should be 4 updates
     And I should see history:
       | version | property    | value |
-      | 3       | Length      |       |
-      | 3       | Length unit |       |
+      | 4       | Length      |       |
+      | 4       | Length unit |       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product media
