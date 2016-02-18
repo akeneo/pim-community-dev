@@ -15,10 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterDataCollectorPass implements CompilerPassInterface
 {
-    /** @staticvar string The registry service id */
-    const REGISTRY_ID = 'pim_analytics.data_collector.chained';
-
-    /** @staticvar string */
+    const REGISTRY_ID   = 'pim_analytics.data_collector.chained';
     const COLLECTOR_TAG = 'pim_analytics.data_collector';
 
     /**
@@ -32,13 +29,16 @@ class RegisterDataCollectorPass implements CompilerPassInterface
 
         $registryDefinition = $container->getDefinition(static::REGISTRY_ID);
         $services = $container->findTaggedServiceIds(static::COLLECTOR_TAG);
-        foreach (array_keys($services) as $serviceId) {
-            $registryDefinition->addMethodCall(
-                'addCollector',
-                [
-                    new Reference($serviceId)
-                ]
-            );
+        foreach ($services as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                $registryDefinition->addMethodCall(
+                    'addCollector',
+                    [
+                        new Reference($serviceId),
+                        $tag['type']
+                    ]
+                );
+            }
         }
     }
 }

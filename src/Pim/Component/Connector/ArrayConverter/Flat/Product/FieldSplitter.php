@@ -62,7 +62,7 @@ class FieldSplitter
         if ('' !== $value) {
             preg_match_all('/
                 (?P<prices>
-                    ([a-z0-9]+)    # int or blank (if there is no price defined)
+                    (-?[a-z0-9]+)  # int or blank (if there is no price defined)
                     (?:[^0-9]\d+)? # decimal separator and decimal
                     [a-z\s]+       # currency
                 )/ix', $value, $matches);

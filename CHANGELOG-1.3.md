@@ -1,3 +1,16 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5532: Fix localized media thumbnail not displayable in grid
+
+# 1.3.37 (2016-01-29)
+
+## Bug fixes
+
+- PIM-5161: Fix the is_associated sort on MongoDB association grid
+- PIM-5150: Improve the product grid loading performance when a lot of attribute filters are available
+
 # 1.3.36 (2016-01-15)
 
 ## Bug fixes

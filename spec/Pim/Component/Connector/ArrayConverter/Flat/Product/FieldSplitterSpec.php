@@ -12,6 +12,7 @@ class FieldSplitterSpec extends ObjectBehavior
         $this->splitPrices('120,25 EUR, 125 USD')->shouldReturn(['120,25 EUR','125 USD']);
         $this->splitPrices('120,25 EUR, 125,50 USD')->shouldReturn(['120,25 EUR','125,50 USD']);
         $this->splitPrices('120.25 EUR, 125,50 USD')->shouldReturn(['120.25 EUR','125,50 USD']);
+        $this->splitPrices('120.25 EUR, -125,50 USD')->shouldReturn(['120.25 EUR','-125,50 USD']);
         $this->splitPrices(' EUR, USD')->shouldReturn(['EUR','USD']);
         $this->splitPrices('EUR,USD')->shouldReturn(['EUR','USD']);
         $this->splitPrices('120 EUR,125,50 USD,150.52 OOO, RRR, 1864|44 MMM')

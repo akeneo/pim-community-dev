@@ -19,6 +19,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base',
+        'oro/mediator',
         'pim/initselect2'
     ],
     function (
@@ -32,6 +33,7 @@ define(
         UserContext,
         FetcherRegistry,
         ChoicesFormatter,
+        mediator,
         initSelect2
     ) {
         return BaseForm.extend({
@@ -151,6 +153,12 @@ define(
 
                 opts = $.extend(true, this.defaultOptions, opts);
                 $select = initSelect2.init($select, opts);
+
+                // Close & destroy select2 DOM on change page via hash-navigation
+                mediator.once('hash_navigation_request:start', function () {
+                    $select.select2('close');
+                    $select.select2('destroy');
+                });
 
                 // On select2 "selecting" event, we bypass the selection to handle it ourself.
                 $select.on('select2-selecting', function (event) {
