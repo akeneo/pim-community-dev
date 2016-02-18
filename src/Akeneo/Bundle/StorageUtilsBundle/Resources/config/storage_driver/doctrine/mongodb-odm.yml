@@ -1,6 +1,7 @@
 parameters:
     akeneo_storage_utils.event_subscriber.mongodb.entities_type.class:        Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
     akeneo_storage_utils.event_subscriber.mongodb.entity_type.class:          Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
+    akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity.class: Akeneo\Bundle\StorageUtilsBundle\EventListener\MongoDBODM\ResolveTargetEntityListener
     akeneo_storage_utils.mongodb.mongo_objects_factory.class:                 Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory
     akeneo_storage_utils.doctrine.smart_manager_registry.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry
     akeneo_storage_utils.doctrine.mongo_mappings_override_configurator.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\MappingsOverrideConfigurator
@@ -26,6 +27,11 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity:
+        class: %akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity.class%
+        tags:
+            - { name: doctrine_mongodb.odm.event_listener, event: loadClassMetadata }
 
     akeneo_storage_utils.mongodb.mongo_objects_factory:
         class: %akeneo_storage_utils.mongodb.mongo_objects_factory.class%
