@@ -268,9 +268,9 @@ Feature: Read a single product by applying rules
       | datasheet                | akeneo             |
       | side_view                | akeneo2            |
       | length                   | 50.0000 CENTIMETER |
-      | weather_conditions       | [dry], [hot]       |
+      | weather_conditions       | Dry, Hot           |
       | number_in_stock-tablet   | 8000               |
-      | size                     | [L]                |
+      | size                     | L                  |
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
     Then product "my-jacket" should be disabled
@@ -372,12 +372,12 @@ Feature: Read a single product by applying rules
       | top_view                 | akeneo2                |
       | length                   | 55.0000 CENTIMETER     |
       | width                    | 55.0000 CENTIMETER     |
-      | weather_conditions       | [hot], [cold]          |
-      | climate                  | [hot], [cold]          |
+      | weather_conditions       | Hot, Cold              |
+      | climate                  | Hot, Cold              |
       | number_in_stock-mobile   | 800.00                 |
       | number_in_stock-tablet   | 800.00                 |
-      | main_color               | [white]                |
-      | secondary_color          | [white]                |
+      | main_color               | White                  |
+      | secondary_color          | White                  |
       | name-en_US               | White jacket           |
       | name-fr_FR               | White jacket           |
       | description-en_US-mobile | A stylish white jacket |
@@ -520,5 +520,5 @@ Feature: Read a single product by applying rules
     And the category of "my-jacket" should be "jackets"
     Given the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
-      | weather_conditions       | [dry], [wet], [hot], [cold] |
+      | weather_conditions       | Dry, Wet, Hot, Cold |
     And the category of "my-jacket" should be "jackets, tshirts"

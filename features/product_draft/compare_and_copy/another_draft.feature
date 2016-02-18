@@ -9,8 +9,6 @@ Feature: Copy value from a draft to an other
     And the following product:
       | sku    | family | categories | name-fr_FR | description-en_US-mobile | description-fr_FR-mobile |
       | tshirt | tees   | tees       | Floup      | City tee                 | T-shirt de ville         |
-    And I am logged in as "Mary"
-    And I edit the "tshirt" product
 
   Scenario: Successfully copy value from another draft
     Given Mary proposed the following change to "tshirt":
