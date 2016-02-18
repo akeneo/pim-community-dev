@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Scalability improvements
+- PIM-5579: Add the possibility to disable the export of products media if needed
+
 # 1.4.19 (2016-02-11)
 
 ## Bug fixes

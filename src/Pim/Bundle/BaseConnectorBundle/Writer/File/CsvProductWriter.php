@@ -19,6 +19,9 @@ class CsvProductWriter extends ContextableCsvWriter
     /** @var FileExporterInterface */
     protected $fileExporter;
 
+    /** @var bool */
+    protected $copyMedia;
+
     /** @var string */
     protected $bufferFile;
 
@@ -27,12 +30,14 @@ class CsvProductWriter extends ContextableCsvWriter
 
     /**
      * @param FileExporterInterface $fileExporter
+     * @param bool                  $copyMedia
      */
-    public function __construct(FileExporterInterface $fileExporter)
+    public function __construct(FileExporterInterface $fileExporter, $copyMedia = true)
     {
         parent::__construct();
 
         $this->fileExporter = $fileExporter;
+        $this->copyMedia    = $copyMedia;
     }
 
     /**
@@ -49,7 +54,7 @@ class CsvProductWriter extends ContextableCsvWriter
             $this->writeProductToBuffer($item['product']);
 
             foreach ($item['media'] as $media) {
-                if ($media && isset($media['filePath']) && $media['filePath']) {
+                if ($this->copyMedia && $media && isset($media['filePath']) && $media['filePath']) {
                     $this->copyMedia($media);
                 }
             }
