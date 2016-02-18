@@ -25,7 +25,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
                 default: false
     manyToOne:
         attributeGroup:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
             joinColumns:
                 attribute_group_id:
                     referencedColumnName: id
