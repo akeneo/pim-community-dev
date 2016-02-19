@@ -66,3 +66,8 @@ Feature: Edit a product with localized attributes
     And I follow "Products"
     And I click on the "foo" row
     Then the field Date should contain "28/05/2015"
+
+  Scenario: Successfully show datetimepicker in my UI locale
+    When I click on the field Date
+    Then I should see the text "Mai"
+    And I should see the text "Lu"

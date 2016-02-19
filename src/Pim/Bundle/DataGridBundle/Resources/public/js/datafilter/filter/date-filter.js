@@ -1,7 +1,21 @@
 /* global define */
 define(
-    ['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'datepicker'],
-function($, _, __, ChoiceFilter, Datepicker) {
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/choice-filter',
+        'datepicker',
+        'text!pim/template/datagrid/filter/date-filter'
+    ],
+function(
+    $,
+    _,
+    __,
+    ChoiceFilter,
+    Datepicker,
+    template
+) {
     'use strict';
 
     /**
@@ -17,27 +31,7 @@ function($, _, __, ChoiceFilter, Datepicker) {
          *
          * @property {function(Object, ?Object=): String}
          */
-        popupCriteriaTemplate: _.template(
-            '<div>' +
-                '<div class="horizontal clearfix type">' +
-                    '<select name="<%= name %>" class="filter-select-oro">' +
-                        '<% _.each(choices, function (option) { %>' +
-                        '<option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>' +
-                        '<% }); %>' +
-                    '</select>' +
-                '</div>' +
-                '<div>' +
-                    '<span class="start"><input type="text" value="" class="<%= inputClass %> add-on" name="start" placeholder="from"></span>' +
-                    '<span class="filter-separator">-</span>' +
-                    '<span class="end"><input type="text" value="" class="<%= inputClass %> add-on" name="end" placeholder="to"></span>' +
-                '</div>' +
-                '<div class="oro-action">' +
-                    '<div class="btn-group">' +
-                        '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>'
-        ),
+        popupCriteriaTemplate: _.template(template),
 
         /**
          * Selectors for filter data

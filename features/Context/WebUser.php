@@ -869,6 +869,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param $field
+     *
+     * @When /^I click on the field (?P<field>\w+)$/
+     * @When /^I click on the field "(?P<field>[^"]+)"$/
+     */
+    public function iClickOnTheField($field)
+    {
+        $field = $this->getCurrentPage()->findField($field);
+        $field->click();
+    }
+
+    /**
      * @param string $not
      * @param string $attributes
      * @param string $group

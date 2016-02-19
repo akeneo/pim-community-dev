@@ -25,7 +25,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
         datetimepickerOptions: {
             format: DateContext.get('time').format,
             defaultFormat: DateContext.get('time').defaultFormat,
-            locale: DateContext.get('language'),
+            language: DateContext.get('language'),
             pickTime: true,
             pickSeconds: false
         }
