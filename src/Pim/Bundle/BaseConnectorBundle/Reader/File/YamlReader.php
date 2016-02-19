@@ -42,7 +42,7 @@ class YamlReader extends FileReader implements
      * @var bool
      *
      * @Assert\Type(type="bool")
-     * @Assert\True(groups={"UploadExecution"})
+     * @Assert\IsTrue(groups={"UploadExecution"})
      */
     protected $uploadAllowed = false;
 
