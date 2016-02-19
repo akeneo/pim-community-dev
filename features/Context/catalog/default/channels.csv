@@ -1,0 +1,3 @@
+code;label;locales;currencies;tree
+ecommerce;E-Commerce;en_US,fr_FR;EUR,USD;default
+mobile;Mobile;fr_FR;EUR;default
