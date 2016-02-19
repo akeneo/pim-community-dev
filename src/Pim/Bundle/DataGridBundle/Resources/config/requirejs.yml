@@ -99,3 +99,4 @@ config:
         pim/template/datagrid/actions-group:                    pimdatagrid/templates/datagrid/actions-group.html
         pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html
+        pim/template/datagrid/filter/date-filter:               pimdatagrid/templates/filter/date-filter.html
