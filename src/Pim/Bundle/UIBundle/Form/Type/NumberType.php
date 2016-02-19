@@ -7,6 +7,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
 use Pim\Component\Localization\LocaleResolver;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Localization\Validator\Constraints\NumberFormat;
+use Pim\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,16 +28,22 @@ class NumberType extends AbstractType
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var NumberFormatValidator */
+    protected $formatValidator;
+
     /**
-     * @param LocalizerInterface $localizer
-     * @param LocaleResolver     $localeResolver
+     * @param LocalizerInterface    $localizer
+     * @param LocaleResolver        $localeResolver
+     * @param NumberFormatValidator $formatValidator
      */
     public function __construct(
         LocalizerInterface $localizer,
-        LocaleResolver $localeResolver
+        LocaleResolver $localeResolver,
+        NumberFormatValidator $formatValidator
     ) {
-        $this->localizer        = $localizer;
-        $this->localeResolver   = $localeResolver;
+        $this->localizer       = $localizer;
+        $this->localeResolver  = $localeResolver;
+        $this->formatValidator = $formatValidator;
     }
 
     /**
@@ -57,11 +64,13 @@ class NumberType extends AbstractType
         $decimalSeparator = $this->localeResolver->getFormats()['decimal_separator'];
 
         $constraint = new NumberFormat();
+        $constraint->decimalSeparator = $decimalSeparator;
+        $message = $this->formatValidator->getMessage($constraint);
 
         $resolver->setDefaults(
             [
                 'decimals_allowed'           => true,
-                'invalid_message'            => $constraint->message,
+                'invalid_message'            => $message,
                 'invalid_message_parameters' => ['{{ decimal_separator }}' => $decimalSeparator],
                 'locale_options'             => $options
             ]
