@@ -75,6 +75,12 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.applier.product_template'
 
+    pim_connector.writer.doctrine.channel:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pim_catalog.saver.channel'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     # File writers
     pim_connector.writer.file.simple_file:
         class: %pim_connector.writer.file.simple_file.class%

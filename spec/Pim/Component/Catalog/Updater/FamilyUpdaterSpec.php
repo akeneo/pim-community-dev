@@ -21,7 +21,6 @@ class FamilyUpdaterSpec extends ObjectBehavior
 {
     function let(
         FamilyRepositoryInterface $familyRepository,
-        FamilyFactory $familyFactory,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
@@ -29,7 +28,6 @@ class FamilyUpdaterSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $familyRepository,
-            $familyFactory,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
