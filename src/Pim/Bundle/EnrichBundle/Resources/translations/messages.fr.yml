@@ -39,6 +39,9 @@ pim_enrich:
     tab:
       property.title: Propriétés
       history.title: Historique
+  locale:
+    tab:
+      property.title: Propriétés
   group:
     axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Il ne peuvent pas être modifiés après la création.
     type:
@@ -575,6 +578,10 @@ Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique
 save_attribute_before_manage_option: "Pour gérer les options, veuillez d'abord enregistrer l'attribut"
+Please select: Veuillez sélectionner
+Active: Actif
+Inactive: Inactif
+Do not convert: Ne pas convertir
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
