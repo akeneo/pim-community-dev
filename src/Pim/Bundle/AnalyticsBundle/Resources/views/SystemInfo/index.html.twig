@@ -17,7 +17,7 @@
                     <th>{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
                     <td>
                         {% if info is iterable %}
-                            {{ infoRow|join('<br>') }}
+                            {{ info|join('<br>')|raw }}
                         {% else %}
                             {{ info }}
                         {% endif %}
