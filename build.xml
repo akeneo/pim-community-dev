@@ -320,6 +320,7 @@
     <target name="vendors-no-scripts" description="Install vendors">
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
+            <arg value="-d 'memory_limit=-1'" />
             <arg value="--no-progress" />
             <arg value="--no-interaction" />
             <arg value="--prefer-dist" />
