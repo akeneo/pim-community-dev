@@ -111,6 +111,7 @@ pim_localization:
     decimal_separators:
         - { value: '.', label: 'dot (.)' }
         - { value: ',', label: 'comma (,)' }
+        - { value: '٫', label: 'arabic decimal separator (٫)' }
     date_formats:
         - { value: 'yyyy-MM-dd', label: 'yyyy-mm-dd' }
         - { value: 'yyyy/MM/dd', label: 'yyyy/mm/dd' }

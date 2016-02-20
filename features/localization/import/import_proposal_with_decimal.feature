@@ -162,4 +162,4 @@ Feature: Import proposals with decimals
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
     Then I should see "skipped 3"
-    And I should see "This type of value expects the use of . to separate decimals."
+    And I should see "This type of value expects the use of a dot (.) to separate decimals."
