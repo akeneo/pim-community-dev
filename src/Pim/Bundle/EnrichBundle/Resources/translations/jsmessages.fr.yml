@@ -172,8 +172,8 @@ pim_enrich:
       variant_group:
         updated_by: Mis à jour par un groupe de variantes
         switch:
-          "yes": true
-          "no": false
+          "yes": Oui
+          "no": Non
       optional_attribute:
         remove: Supprimer cet attribut
       locale_specific_attribute:
@@ -216,8 +216,11 @@ pim_enrich:
             add: Ajouter
             add_attributes: Ajouter des attributs
           info:
+            search_attributes: Rechercher...
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
             attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
+            no_match: Aucune correspondance trouvée
+            load_more: Chargement de plus de résultats...
         categories:
           title: Catégories
       panel:
@@ -230,8 +233,8 @@ pim_enrich:
         history:
           title: Historique
       switch:
-        "no": false
-        "yes": true
+        "no": Non
+        "yes": Oui
       sequential_edit:
         info:
           products: Produits
@@ -262,8 +265,8 @@ pim_enrich:
         cancel: Annuler
     entity:
       switch:
-        "no": false
-        "yes": true
+        "no": Non
+        "yes": Oui
   mass_edit_action:
     edit_common_attributes:
       description: 'Les attributs des produits sélectionnés vont être édités pour les paramètres régionaux <span class="bold-purple">{{ locale }}</span> et le canal <span class="bold-purple">{{ channel }}</span>, choisis dans la grille des produits.'
