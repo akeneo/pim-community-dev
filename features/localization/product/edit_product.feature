@@ -60,7 +60,7 @@ Feature: Edit a product with localized attributes
     When I edit my profile
     And I visit the "Interfaces" tab
     And I fill in the following information:
-      | Ui locale | anglais (Royaume-Uni) |
+      | Langage de l'interface | anglais (Royaume-Uni) |
     And I save the user
     And I follow "Enrich"
     And I follow "Products"

@@ -104,3 +104,19 @@ datetimepicker:
        Oct: Oct
        Nov: Nov
        Dec: Dec
+
+# ORO
+oro_config:
+    form:
+        config:
+            title: System configuration
+            tab:
+                system:
+                    title: System
+            group:
+                localization:
+                    title: Localization
+                    system_locale: Language
+                notification:
+                    title: Notifications
+                    system_notification: New versions notifications

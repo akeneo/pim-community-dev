@@ -183,8 +183,8 @@ pim_enrich:
             variant_group:
                 updated_by: Updated by variant group
                 switch:
-                    yes: Yes
-                    no: No
+                    "yes": "Yes"
+                    "no": "No"
             optional_attribute:
                 remove: Remove this attribute
             locale_specific_attribute:
@@ -244,8 +244,8 @@ pim_enrich:
                 history:
                     title: History
             switch:
-                no: No
-                yes: Yes
+                "no": "No"
+                "yes": "Yes"
             sequential_edit:
                 info:
                     products: products
@@ -276,8 +276,8 @@ pim_enrich:
                 cancel: Cancel
         entity:
             switch:
-                no: No
-                yes: Yes
+                "no": "No"
+                "yes": "Yes"
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.

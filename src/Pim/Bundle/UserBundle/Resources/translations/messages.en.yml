@@ -78,6 +78,12 @@ Contact Information: Contact Information
 User name: User name
 Birthday: Birthday
 API key: API key
+Ui locale: UI locale
+UI locale: UI locale
+User salt: User salt
+Current password: Current password
+New password: New password
+Repeat new password: New password (repeat)
 Generate key: Generate key
 Primary: primary
 Removed user: Removed user

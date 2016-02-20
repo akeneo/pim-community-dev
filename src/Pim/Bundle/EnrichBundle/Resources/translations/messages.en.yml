@@ -48,10 +48,11 @@ pim_enrich:
         tab:
             property.title: Properties
             history.title:  History
-    # Category
+    # Locale
     locale:
         tab:
             property.title: Properties
+            permission.title: Permissions
     # Product group
     group:
         axis.help: 'Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group.'
