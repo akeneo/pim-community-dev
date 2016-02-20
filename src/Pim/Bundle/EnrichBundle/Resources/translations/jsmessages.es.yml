@@ -171,9 +171,6 @@ pim_enrich:
         copy: Copiar
       variant_group:
         updated_by: Actualizado por grupo de variantes
-        switch:
-          "yes": true
-          "no": false
       optional_attribute:
         remove: Suprimir este atributo
       locale_specific_attribute:
@@ -229,9 +226,6 @@ pim_enrich:
           missing_values: Valores faltantes
         history:
           title: Historial
-      switch:
-        "no": false
-        "yes": true
       sequential_edit:
         info:
           products: productos
@@ -260,10 +254,6 @@ pim_enrich:
         title: Agregar opción de atributo
         confirm: Agregar
         cancel: Cancelar
-    entity:
-      switch:
-        "no": false
-        "yes": true
   mass_edit_action:
     edit_common_attributes:
       description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'

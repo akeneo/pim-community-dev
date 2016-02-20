@@ -65,11 +65,17 @@ Last logged in: Dernière connexion
 Login count: Nombre de connexion
 Additional Information: Informations complémentaires
 Interfaces: Interfaces
-Basic Information: Informations générale
+Basic Information: Informations générales
 Contact Information: Information Contact
 User name: "Nom d'utilisateur"
 Birthday: Date d’anniversaire
 API key: Clé API
+Ui locale: "Langage de l'interface"
+UI locale: "Langage de l'interface"
+User salt: Sel de hachage
+Current password: Mot de passe actuel 
+New password: Nouveau mot de passe 
+Repeat new password: Nouveau mot de passe (répéter)
 Generate key: Générer une clé
 Primary: principal
 Removed user: Utilisateur supprimé
