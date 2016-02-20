@@ -37,6 +37,9 @@ class ProductBuilder implements ProductBuilderInterface
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
+    
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var AttributeValuesResolver */
     protected $valuesResolver;
