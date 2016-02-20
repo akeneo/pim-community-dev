@@ -107,6 +107,9 @@ pimee_enrich:
   category:
     tab:
       permission.title: Autorisations 
+  locale:
+    tab:
+      permission.title: Permissions
   channel:
     tab:
       asset_transformation.title: Transformations de la ressource
@@ -149,6 +152,7 @@ pimee_enrich:
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Modifier les attributs communs avec permission
 job_execution.summary:
   mass_published: Produit publié
   mass_unpublished: Produit dépublié

@@ -27,10 +27,6 @@ pimee_workflow:
       partial_approve: 'Änderungen des Attributs %attribute% von Produkt %product% genehmigen'
       partial_reject: 'Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%'
     notification:
-      partial_approve:
-        "%owner% has accepted the value for %attribute% for the product": '%product%'
-      partial_reject:
-        "%owner% has rejected the value for %attribute% for the product": '%product%'
       approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
