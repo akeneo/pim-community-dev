@@ -31,7 +31,7 @@ Feature: Display localized numbers in proposals
     And I edit my profile
     And I visit the "Interfaces" tab
     And I fill in the following information:
-      | Ui locale | French (France) |
+      | UI locale | French (France) |
     And I save the user
     And I am on the "tshirt" product page
     When I visit the "Propositions" tab
