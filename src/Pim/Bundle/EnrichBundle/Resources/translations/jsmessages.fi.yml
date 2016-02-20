@@ -167,9 +167,6 @@ pim_enrich:
         none: Ei yhtään
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
-        switch:
-          "yes": true
-          "no": false
       optional_attribute:
         remove: Poista määrite
       locale_specific_attribute:
@@ -223,9 +220,6 @@ pim_enrich:
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
         history:
           title: Historiatiedot
-      switch:
-        "no": false
-        "yes": true
       sequential_edit:
         info:
           products: tuotteet
@@ -251,9 +245,5 @@ pim_enrich:
         title: Lisää määritteen vaihtoehto
         confirm: Lisää
         cancel: Peruuta
-    entity:
-      switch:
-        "no": false
-        "yes": true
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'

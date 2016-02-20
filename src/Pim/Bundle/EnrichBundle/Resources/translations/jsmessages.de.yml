@@ -171,9 +171,6 @@ pim_enrich:
         copy: Kopie
       variant_group:
         updated_by: Aktualisiert durch eine Variantengruppe
-        switch:
-          "yes": true
-          "no": false
       optional_attribute:
         remove: Dieses Attribut entfernen
       locale_specific_attribute:
@@ -229,9 +226,6 @@ pim_enrich:
           missing_values: Fehlende Werte
         history:
           title: Historie
-      switch:
-        "no": false
-        "yes": true
       sequential_edit:
         info:
           products: Produkte
@@ -260,10 +254,6 @@ pim_enrich:
         title: Attributoption hinzufügen
         confirm: Hinzufügen
         cancel: Abbrechen
-    entity:
-      switch:
-        "no": false
-        "yes": true
   mass_edit_action:
     edit_common_attributes:
       description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'
