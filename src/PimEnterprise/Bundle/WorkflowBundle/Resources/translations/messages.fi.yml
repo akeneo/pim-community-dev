@@ -19,8 +19,6 @@ pimee_workflow:
       remove: Poista
       partial_approve: 'Hyväksy muutokset tuote-%product% %attribute% attribuuttiin'
     notification:
-      partial_approve:
-        "%owner% has accepted the value for %attribute% for the product": '%product%'
       approve: '%owner% hyväksyi ehdotuksenne tuotteeseen %product%'
       refuse: '%owner% on hylännyt ehdotuksen koskien tuotetta %product%'
       remove: '%owner% on poistanut ehdotuksen koskien tuotetta %product%'

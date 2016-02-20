@@ -19,8 +19,6 @@ pimee_workflow:
       remove: Удалить
       partial_approve: 'Утвердить изменения на атрибута %attribute% продукта %product%'
     notification:
-      partial_approve:
-        "%owner% has accepted the value for %attribute% for the product": '%product%'
       approve: '%owner% принял ваше предложение %product%'
       refuse: '%owner% отклонил ваше предложение %product%'
       remove: '%owner% удалил ваше предложение %product%'
