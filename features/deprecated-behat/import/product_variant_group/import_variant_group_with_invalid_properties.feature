@@ -23,8 +23,8 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "No identifier column"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "No identifier column"
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
@@ -37,9 +37,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Attributes: This property cannot be changed."
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
@@ -56,9 +56,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Attributes: This property cannot be changed."
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
@@ -75,9 +75,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"NO_AXIS\" must be defined with at least one axis"
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Variant group \"NO_AXIS\" must be defined with at least one axis"
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
@@ -94,9 +94,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Cannot process group \"NOT_VG\", only variant groups are accepted"
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Cannot process group \"NOT_VG\", only variant groups are accepted"
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |

@@ -25,7 +25,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -51,7 +51,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 3 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -73,7 +73,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -95,7 +95,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -118,7 +118,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 1 product
     And the product "SKU-001" should have the following value:
       | number_in_stock | 2000.0000 |
@@ -140,7 +140,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
       | number_in_stock | 4000 |
@@ -168,8 +168,8 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     And there should be 1 product
-    And I should see "frontView: File not found"
-    And I should see "userManual: File not found"
+    And I should see the text "frontView: File not found"
+    And I should see the text "userManual: File not found"
     And the product "fanatic-freewave-76" should have the following values:
       | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
@@ -199,10 +199,10 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
-    And I should see "frontView: File not found"
-    And I should see "userManual: File not found"
+    And I should see the text "frontView: File not found"
+    And I should see the text "userManual: File not found"
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
@@ -227,8 +227,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And I should see "identifier: This value should not be blank"
+    Then I should see the text "skipped 3"
+    And I should see the text "identifier: This value should not be blank"
     And there should be 1 product
     And the product "SKU-002" should have the following value:
       | name-en_US | product 002 |
@@ -246,8 +246,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code"
-    And I should see "was already read in this file"
+    Then I should see the text "The unique code"
+    And I should see the text "was already read in this file"
     And there should be 1 product
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
@@ -265,8 +265,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "PRODUCT IMPORT Locale wronglocale does not exist."
-    And I should see "FAILED"
+    Then I should see the text "PRODUCT IMPORT Locale wronglocale does not exist."
+    And I should see the text "FAILED"
     And there should be 0 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
@@ -282,8 +282,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "PRODUCT IMPORT Channel wrongchannel does not exist."
-    And I should see "FAILED"
+    Then I should see the text "PRODUCT IMPORT Channel wrongchannel does not exist."
+    And I should see the text "FAILED"
     And there should be 0 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
@@ -299,6 +299,6 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "PRODUCT IMPORT Currency FCFA does not exist."
-    And I should see "FAILED"
+    Then I should see the text "PRODUCT IMPORT Currency FCFA does not exist."
+    And I should see the text "FAILED"
     And there should be 0 product

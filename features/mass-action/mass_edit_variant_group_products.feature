@@ -51,10 +51,10 @@ Feature: Apply restrictions when mass editing products with variant groups
       | type    | message                                                                  |
       | warning | Mass edit Mass add products to variant group finished with some warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
-    And I should see "skipped products 2"
-    And I should see "first warnings displayed 2/2"
-    And I should see "EXCLUDED PRODUCT"
-    And I should see "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
+    And I should see the text "skipped products 2"
+    And I should see the text "first warnings displayed 2/2"
+    And I should see the text "EXCLUDED PRODUCT"
+    And I should see the text "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
 
   Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
@@ -69,7 +69,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | type    | message                                                                  |
       | warning | Mass edit Mass add products to variant group finished with some warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
-    And I should see "skipped products 2"
-    And I should see "first warnings displayed 2/2"
-    And I should see "DUPLICATED AXIS"
-    And I should see "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
+    And I should see the text "skipped products 2"
+    And I should see the text "first warnings displayed 2/2"
+    And I should see the text "DUPLICATED AXIS"
+    And I should see the text "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"

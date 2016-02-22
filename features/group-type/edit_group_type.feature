@@ -15,7 +15,7 @@ Feature: Edit a group type
     When I fill in the following information:
       | English (United States) | My cross-sell type |
     And I press the "Save" button
-    Then I should see "My cross-sell type"
+    Then I should see the text "My cross-sell type"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "VARIANT" group type page

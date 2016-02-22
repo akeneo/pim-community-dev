@@ -14,8 +14,8 @@ Feature: Search in Akeneo PIM
     When I fill in the following information:
       | search | p |
     And I press the "Search" button
-    Then I should see "Peter Williams"
-    And I should see "product_test"
+    Then I should see the text "Peter Williams"
+    And I should see the text "product_test"
 
   Scenario: Use the quick search form
     Given I am on the search page
@@ -23,7 +23,7 @@ Feature: Search in Akeneo PIM
       | search | p       |
       | type   | Product |
     And I press the "Go" button
-    Then I should see "product_test"
+    Then I should see the text "product_test"
     And I should not see "Peter Williams"
 
   @jira https://akeneo.atlassian.net/browse/PIM-2011 @skip-doc

@@ -40,5 +40,5 @@ Feature: Import association types
     When I am on the "footwear_association_type_import" import job page
     And I launch the import job
     And I wait for the "footwear_association_type_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "code: This value should not be blank"
+    Then I should see the text "skipped 1"
+    And I should see the text "code: This value should not be blank"

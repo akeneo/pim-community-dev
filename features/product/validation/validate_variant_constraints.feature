@@ -16,4 +16,4 @@ Feature:
     And I visit the "Sizes" group
     And I change the "Size" to "41"
     And I save the product
-    Then I should see "Group \"Caterpillar boots\" already contains another product with values \"size: 41, color: Black\""
+    Then I should see the text "Group \"Caterpillar boots\" already contains another product with values \"size: 41, color: Black\""

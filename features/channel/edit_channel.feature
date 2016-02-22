@@ -15,7 +15,7 @@ Feature: Edit a channel
     When I fill in the following information:
       | Default label | My tablet |
     And I press the "Save" button
-    Then I should see "My tablet"
+    Then I should see the text "My tablet"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "mobile" channel page
@@ -52,12 +52,12 @@ Feature: Edit a channel
     And I visit the "History" tab
     And I am on the products page
     Then I am on the "tablet" channel page
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I am on the "tablet" channel page
     And I visit the "History" tab
     And I save the channel
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"

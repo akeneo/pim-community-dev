@@ -14,7 +14,7 @@ Feature: Sortd attribute options
       | Attribute group | Other |
     And I visit the "Values" tab
     Then I should see the "Options" section
-    Then I should see "To manage options, please save the attribute first"
+    Then I should see the text "To manage options, please save the attribute first"
     And I save the attribute
     Then I should see flash message "Attribute successfully created"
     And I wait for options to load

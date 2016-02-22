@@ -47,7 +47,7 @@ Feature: Product category back to the grid
   @unstable
   Scenario: Successfully display the no results found message
     Given I filter by "SKU" with value "novalues"
-    Then I should see "No results found. Try to change your search criteria."
+    Then I should see the text "No results found. Try to change your search criteria."
 
   @jira https://akeneo.atlassian.net/browse/PIM-4538
   Scenario: Successfully sidebarize tree from indirect url

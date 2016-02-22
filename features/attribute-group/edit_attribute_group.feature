@@ -15,7 +15,7 @@ Feature: Edit an attribute group
     When I fill in the following information:
       | English (United States) | My sizes |
     And I press the "Save" button
-    Then I should see "My sizes"
+    Then I should see the text "My sizes"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "media" attribute group page
@@ -38,12 +38,12 @@ Feature: Edit an attribute group
     And I visit the "History" tab
     And I am on the products page
     Then I am on the "media" attribute group page
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I am on the "media" attribute group page
     And I visit the "History" tab
     And I save the "attribute group"
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"

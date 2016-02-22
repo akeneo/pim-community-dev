@@ -25,7 +25,7 @@ Feature: Quick export many products from datagrid
       | type    | message                                        |
       | success | Quick export CSV product quick export finished |
     Then I go on the last executed job resume of "csv_product_quick_export"
-    And I should see "COMPLETED"
+    And I should see the text "COMPLETED"
     And the path of the exported file of "csv_product_quick_export" should be "/tmp/products_export_en_US_tablet.csv"
     And exported file of "csv_product_quick_export" should contain:
     """

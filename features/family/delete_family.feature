@@ -30,4 +30,4 @@ Feature: Delete a family
     When I press the "Delete" button
     And I confirm the deletion
     When I edit the "foo" product
-    Then I should see "Family: None"
+    Then I should see the text "Family: None"

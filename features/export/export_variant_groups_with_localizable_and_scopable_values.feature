@@ -43,8 +43,8 @@ Feature: Export variant groups
   And I am on the "variant_group_export" export job page
   When I launch the export job
   And I wait for the "variant_group_export" job to finish
-  Then I should see "Read 3"
-  And I should see "Written 3"
+  Then I should see the text "Read 3"
+  And I should see the text "Written 3"
   And exported file of "variant_group_export" should contain:
     """
     code;axis;label-de_DE;label-en_GB;label-en_US;label-fr_FR;localizable_date-en_US;localizable_date-fr_FR;localizable_scopable_date-de_DE-print;localizable_scopable_date-en_GB-tablet;localizable_scopable_date-en_US-ecommerce;localizable_scopable_date-en_US-print;localizable_scopable_date-en_US-tablet;localizable_scopable_date-fr_FR-ecommerce;localizable_scopable_text-de_DE-print;localizable_scopable_text-en_GB-tablet;localizable_scopable_text-en_US-ecommerce;localizable_scopable_text-en_US-print;localizable_scopable_text-en_US-tablet;localizable_scopable_text-fr_FR-ecommerce;localizable_text-en_US;localizable_text-fr_FR;scopable_date-ecommerce;scopable_date-tablet;scopable_text-ecommerce;scopable_text-tablet;type

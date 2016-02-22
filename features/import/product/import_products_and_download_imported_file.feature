@@ -31,4 +31,4 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Download read file"
+    Then I should see the text "Download read file"

@@ -20,7 +20,7 @@ Feature: Product creation
       | SKU | caterpillar_1 |
     And I press the "Save" button in the popin
     Then I should be on the product "caterpillar_1" edit page
-    And I should see "caterpillar_1"
+    And I should see the text "caterpillar_1"
 
   Scenario: Successfully create a product with family
     Given I create a new product
@@ -30,8 +30,8 @@ Feature: Product creation
       | Choose a family | Sandals       |
     And I press the "Save" button in the popin
     Then I should be on the product "caterpillar_1" edit page
-    And I should see "caterpillar_1"
-    And I should see "Family: sandals"
+    And I should see the text "caterpillar_1"
+    And I should see the text "Family: sandals"
 
   Scenario: Fail to create a product with an already used code
     Given I create a new product

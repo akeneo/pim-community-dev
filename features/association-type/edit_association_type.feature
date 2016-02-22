@@ -15,7 +15,7 @@ Feature: Edit an association type
     When I fill in the following information:
       | English (United States) | My substitution |
     And I press the "Save" button
-    Then I should see "My substitution"
+    Then I should see the text "My substitution"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "PACK" association type page
@@ -37,12 +37,12 @@ Feature: Edit an association type
     And I visit the "History" tab
     And I am on the products page
     Then I am on the "PACK" association type page
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I am on the "PACK" association type page
     And I visit the "History" tab
     And I save the "association type"
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"

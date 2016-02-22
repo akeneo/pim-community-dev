@@ -17,7 +17,7 @@ Feature: Edit a product group
     When I fill in the following information:
       | English (United States) | My similar boots |
     And I press the "Save" button
-    Then I should see "My similar boots"
+    Then I should see the text "My similar boots"
 
   Scenario: Successfully browse to the history tab after save
     When I fill in the following information:
@@ -42,10 +42,10 @@ Feature: Edit a product group
   Scenario: Successfully retrieve the last visited tab
     Given I am on the categories page
     And I am on the "similar_boots" product group page
-    And I should see "Code"
-    And I should see "Type"
+    And I should see the text "Code"
+    And I should see the text "Type"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I save the family
-    And I should see "Code"
-    And I should see "Type"
+    And I should see the text "Code"
+    And I should see the text "Type"
