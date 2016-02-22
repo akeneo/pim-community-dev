@@ -870,11 +870,14 @@ class Form extends Base
         if (!$label->getAttribute('for') && null !== $label->channel) {
             $label = $label->getParent()->find('css', sprintf('[data-scope="%s"] label', $label->channel));
         }
-
         $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 
         $field->setValue($value);
+
+        $this->spin(function () use ($field, $value) {
+            return $field->getValue() === $value;
+        }, 'field failed to be fulfilled');
     }
 
     /**

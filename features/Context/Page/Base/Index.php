@@ -36,6 +36,10 @@ class Index extends Base
      */
     public function clickCreationLink()
     {
-        $this->getElement('Creation link')->click();
+        $this->spin(function () {
+            $this->getElement('Creation link')->click();
+
+            return true;
+        }, 'Cannot click on the creation link');
     }
 }

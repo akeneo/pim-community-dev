@@ -467,16 +467,12 @@ class Grid extends Index
     public function isSortedAndOrdered($columnName, $order)
     {
         $order = strtolower($order);
-        $notOrdered = $this->spin(function () use ($columnName, $order) {
-            return $this->getColumnHeader($columnName)->getAttribute('class') !== $order;
-        }, 'The column is not well ordered');
-        if ($notOrdered) {
+        if ($this->getColumnHeader($columnName)->getAttribute('class') !== $order) {
             return false;
         }
 
         $values = $this->getValuesInColumn($columnName);
         $values = $this->formatColumnValues($values);
-
         $sortedValues = $values;
 
         if ($order === 'ascending') {
