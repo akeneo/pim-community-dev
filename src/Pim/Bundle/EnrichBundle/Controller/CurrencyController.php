@@ -81,6 +81,6 @@ class CurrencyController
             $flashbag->add('error', new Message('flash.error ocurred'));
         }
 
-        return new RedirectResponse($this->router->generate('pim_enrich_currency_index'));
+        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
     }
 }

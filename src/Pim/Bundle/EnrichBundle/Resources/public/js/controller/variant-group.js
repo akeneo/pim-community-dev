@@ -38,7 +38,7 @@ define(
                 });
 
                 _.each(this.$('form input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init(field.getAttribute('id'));
+                    datepicker.init($('#' + field.getAttribute('id')));
                 });
 
                 mediator.trigger('pim:reinit');
