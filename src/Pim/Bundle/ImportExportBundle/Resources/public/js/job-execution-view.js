@@ -53,7 +53,7 @@ define(
                 this.model.bind('request', this.ajaxStart, this);
                 this.model.bind('sync', this.ajaxComplete, this);
                 this.model.bind('error', this.ajaxError, this);
-                this.listenTo(router, 'route_start', this.stopRefresh;
+                this.listenTo(router, 'route_start', this.stopRefresh);
             },
 
             ajaxStart: function () {

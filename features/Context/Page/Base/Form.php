@@ -80,7 +80,7 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->spin(function () {
+        $tabs = $this->spin(function () use ($tab) {
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);

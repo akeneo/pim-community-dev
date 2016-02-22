@@ -46,7 +46,7 @@ class VersioningController
      * @param string $entityType
      * @param string $entityId
      *
-     * @return JSONResponse
+     * @return JsonResponse
      */
     public function getAction($entityType, $entityId)
     {
