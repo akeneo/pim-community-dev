@@ -33,6 +33,7 @@ parameters:
     oro_security.action_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheClearer
 
     oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
+    oro_security.listener.exception_listener.class:            Oro\Bundle\SecurityBundle\EventListener\ExceptionListener
 
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 

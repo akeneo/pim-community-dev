@@ -80,13 +80,18 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-        }
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-        }
+        $this->spin(function () use ($tab) {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        });
+
         $tabs->clickLink($tab);
     }
 
