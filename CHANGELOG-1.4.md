@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Scalability improvements
+- PIM-5575: Remove families JS fetchers warmup
+
 # 1.4.19 (2016-02-11)
 
 ## Bug fixes
