@@ -180,21 +180,11 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
-        $button = $this->getButton($locator);
-
-        if (!$button) {
-            $button = $this->find(
-                'named',
-                [
-                    'link',
-                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                ]
-            );
-        }
-
-        if (null === $button) {
-            throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
-        }
+        $button = $this->spin(function () use ($locator){
+            return $this->getButton($locator);
+        }, (new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator))
+            ->getMessage()
+        );
 
         $button->click();
     }
@@ -218,6 +208,16 @@ class Base extends Page
         if (!$button) {
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
+        }
+
+        if (!$button) {
+            $button = $this->find(
+                'named',
+                [
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                ]
+            );
         }
 
         return $button;

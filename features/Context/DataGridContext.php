@@ -474,11 +474,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $columnName = strtoupper($columnName);
 
-        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
-            throw $this->createExpectationException(
-                sprintf('The rows are not sorted %s by column %s', $order, $columnName)
-            );
-        }
+        $this->spin(function () use ($columnName, $order) {
+            return $this->datagrid->isSortedAndOrdered($columnName, $order);
+        }, sprintf('The rows are not sorted %s by column %s', $order, $columnName));
     }
 
     /**
