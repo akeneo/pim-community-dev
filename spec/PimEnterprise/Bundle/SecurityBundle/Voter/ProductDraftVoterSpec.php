@@ -42,8 +42,13 @@ class ProductDraftVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_abstains_if_attribute_is_not_supported(TokenInterface $token, ProductDraftInterface $draft)
-    {
+    function it_abstains_if_attribute_is_not_supported(
+        TokenInterface $token,
+        ProductDraftInterface $draft,
+        UserInterface $user
+    ) {
+        $token->getUser()->willReturn($user);
+
         $this->vote($token, $draft, ['foo'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
@@ -74,15 +79,21 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_does_not_vote_if_the_attribute_own_is_not_being_checked(
         TokenInterface $token,
-        ProductDraftInterface $productDraft
+        ProductDraftInterface $productDraft,
+        UserInterface $user
     ) {
+        $token->getUser()->willReturn($user);
+
         $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
     function it_does_not_vote_if_checking_the_own_access_of_something_else_than_a_product_draft(
         TokenInterface $token,
-        ProductInterface $product
+        ProductInterface $product,
+        UserInterface $user
     ) {
+        $token->getUser()->willReturn($user);
+
         $this->vote($token, $product, [SecurityAttributes::OWN])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 }
