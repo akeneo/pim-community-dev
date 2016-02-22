@@ -58,8 +58,8 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "This value is too long. It should have 255 characters or less.: My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
-    And I should see "Skipped 1"
+    Then I should see the text "This value is too long. It should have 255 characters or less.: My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
+    And I should see the text "Skipped 1"
 
   Scenario: Skip variant group when a text value is too long (max_characters to 22)
     Given the following CSV file to import:
@@ -72,8 +72,8 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "This value is too long. It should have 22 characters or less.: My title is soooo long, soooo long, soooo long."
-    And I should see "Skipped 1"
+    Then I should see the text "This value is too long. It should have 22 characters or less.: My title is soooo long, soooo long, soooo long."
+    And I should see the text "Skipped 1"
 
   Scenario: Skip variant group when a text value does not match the expected regex
     Given the following CSV file to import:
@@ -86,8 +86,8 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "This value is not valid.: ThisIsNotABarcode"
-    And I should see "Skipped 1"
+    Then I should see the text "This value is not valid.: ThisIsNotABarcode"
+    And I should see the text "Skipped 1"
 
   Scenario: Skip variant group when a text value is not an url as expected
     Given the following CSV file to import:
@@ -100,8 +100,8 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "This value is not a valid URL.: ThisIsNotAnUrl"
-    And I should see "Skipped 1"
+    Then I should see the text "This value is not a valid URL.: ThisIsNotAnUrl"
+    And I should see the text "Skipped 1"
 
   Scenario: Fail to add unique attributes to variant group during import
     Given the following attributes:
@@ -122,4 +122,4 @@ Feature: Execute an import
     """
     Variant group "caterpillar_boots" cannot contain values for axis or unique attributes: "unique_description", "unique_label"
     """
-    And I should see "Skipped 1"
+    And I should see the text "Skipped 1"

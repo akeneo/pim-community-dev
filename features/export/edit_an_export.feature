@@ -14,7 +14,7 @@ Feature: Edit an export
     When I fill in the following information:
       | Label | My export |
     And I press the "Save" button
-    Then I should see "My export"
+    Then I should see the text "My export"
 
   @javascript
   Scenario: Successfully update export job configuration

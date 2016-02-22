@@ -16,7 +16,7 @@ Feature: Edit a category
       | English (United States) | My sandals |
     And I save the category
     Then I should be on the category "sandals" edit page
-    And I should see "My sandals"
+    And I should see the text "My sandals"
 
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page
@@ -49,8 +49,8 @@ Feature: Edit a category
     Then I am on the categories page
     And I select the "2014 collection" tree
     And I click on the "Summer collection" category
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I am on the categories page
@@ -58,5 +58,5 @@ Feature: Edit a category
     And I click on the "Summer collection" category
     And I visit the "History" tab
     And I save the category
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"

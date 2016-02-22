@@ -60,12 +60,12 @@ Feature: Edit an identifier attribute
     And I visit the "History" tab
     And I am on the products page
     Then I am on the "SKU" attribute page
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"
 
   Scenario: Successfully retrieve the last visited tab after a save
     Given I am on the "SKU" attribute page
     And I visit the "History" tab
     Then I save the "attribute"
-    And I should see "version"
-    And I should see "author"
+    And I should see the text "version"
+    And I should see the text "author"

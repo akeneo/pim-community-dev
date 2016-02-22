@@ -59,4 +59,4 @@ Feature: Define user rights
     Then I reset the "Administrator" rights
     And I wait 10 seconds
     And I am on the products page
-    And I should see "2014 Collection"
+    And I should see the text "2014 Collection"

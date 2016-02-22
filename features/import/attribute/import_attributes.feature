@@ -62,7 +62,7 @@ Feature: Import attributes
     When I am on the "attribute_import" import job page
     And I launch the import job
     And I wait for the "attribute_import" job to finish
-    And I should see "metricFamily: This property cannot be changed."
+    And I should see the text "metricFamily: This property cannot be changed."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new attributes with invalid data during an import
@@ -80,7 +80,7 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be the following attributes:
       | type         | code       | label-en_US    | group  | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
       | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
@@ -102,7 +102,7 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be the following attributes:
       | type         | code       | label-en_US    | group  | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
       | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
@@ -123,7 +123,7 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    And I should see "Field \"code\" must be filled"
+    And I should see the text "Field \"code\" must be filled"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3786
   Scenario: Skip attributes with empty type
@@ -139,8 +139,8 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "attributeType: This value should not be blank."
+    Then I should see the text "skipped 1"
+    And I should see the text "attributeType: This value should not be blank."
 
   Scenario: Successfully import and update existing attribute
     Given the "footwear" catalog configuration
@@ -156,8 +156,8 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 1"
-    Then I should see "processed 1"
+    Then I should see the text "read lines 1"
+    Then I should see the text "processed 1"
     And there should be the following attributes:
       | type         | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | localizable | scopable | available_locales | sort_order | max_characters | validation_rule | validation_regexp | wysiwyg_enabled | number_min | number_max | decimals_allowed | negative_allowed | date_min   | date_max   | metric_family | default_metric_unit | max_file_size | allowed_extensions |
       | simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | validation_rule |                   | 1               | 3          | 5          | true             | true             | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
@@ -176,9 +176,9 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 1"
-    Then I should see "skipped 1"
-    Then I should see "Attribute expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given"
+    Then I should see the text "read lines 1"
+    Then I should see the text "skipped 1"
+    Then I should see the text "Attribute expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given"
 
   Scenario: Fail to import attribute with invalid date
     Given the "footwear" catalog configuration
@@ -194,9 +194,9 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 1"
-    Then I should see "skipped 1"
-    Then I should see "Invalid date, \"2000-99-12\" given"
+    Then I should see the text "read lines 1"
+    Then I should see the text "skipped 1"
+    Then I should see the text "Invalid date, \"2000-99-12\" given"
 
   Scenario: Fail to import attribute with invalid data
     Given the "footwear" catalog configuration
@@ -213,10 +213,10 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 2"
-    Then I should see "skipped 2"
-    Then I should see "maxFileSize: This value should be 0.01 or more.: 0"
-    Then I should see "AttributeGroup \"not a group\" does not exist"
+    Then I should see the text "read lines 2"
+    Then I should see the text "skipped 2"
+    Then I should see the text "maxFileSize: This value should be 0.01 or more.: 0"
+    Then I should see the text "AttributeGroup \"not a group\" does not exist"
 
   Scenario: Successfully import new attribute
     Given the "footwear" catalog configuration
@@ -232,8 +232,8 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 1"
-    Then I should see "created 1"
+    Then I should see the text "read lines 1"
+    Then I should see the text "created 1"
     And there should be the following attributes:
       | type         | code          | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | localizable | scopable | available_locales | sort_order | max_characters | validation_rule | validation_regexp | wysiwyg_enabled | number_min | number_max | decimals_allowed | negative_allowed | date_min   | date_max   | metric_family | default_metric_unit | max_file_size | allowed_extensions |
       | simpleselect | myawesomecode | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | validation_rule |                   | 1               | 3          | 5          | true             | true             | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
@@ -252,8 +252,8 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "read lines 1"
-    Then I should see "skipped 1"
-    Then I should see "attributeType: This property cannot be changed.: SKU"
-    Then I should see "localizable: This property cannot be changed.: SKU"
-    Then I should see "unique: This property cannot be changed.: SKU"
+    Then I should see the text "read lines 1"
+    Then I should see the text "skipped 1"
+    Then I should see the text "attributeType: This property cannot be changed.: SKU"
+    Then I should see the text "localizable: This property cannot be changed.: SKU"
+    Then I should see the text "unique: This property cannot be changed.: SKU"

@@ -20,5 +20,5 @@ Feature: Execute a job
     When I am on the "product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "The locale \"fr_FR\" of the field \"description-fr_FR-print\" is not available in scope \"print\""
+    Then I should see the text "Status: FAILED"
+    And I should see the text "The locale \"fr_FR\" of the field \"description-fr_FR-print\" is not available in scope \"print\""

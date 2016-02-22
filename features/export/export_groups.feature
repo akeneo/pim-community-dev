@@ -12,8 +12,8 @@ Feature: Export groups
     And I am on the "footwear_group_export" export job page
     When I launch the export job
     And I wait for the "footwear_group_export" job to finish
-    Then I should see "Read 1"
-    And I should see "Written 1"
+    Then I should see the text "Read 1"
+    And I should see the text "Written 1"
     And exported file of "footwear_group_export" should contain:
     """
     code;type;label-en_US

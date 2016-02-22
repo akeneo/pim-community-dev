@@ -47,5 +47,5 @@ Feature: Import options
     When I am on the "footwear_option_import" import job page
     And I launch the import job
     And I wait for the "footwear_option_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "code: This value should not be blank"
+    Then I should see the text "skipped 1"
+    And I should see the text "code: This value should not be blank"

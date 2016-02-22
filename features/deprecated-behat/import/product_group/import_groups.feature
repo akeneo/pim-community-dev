@@ -28,9 +28,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "read lines 4"
-    And I should see "Created 2"
-    And I should see "Processed 2"
+    Then I should see the text "read lines 4"
+    And I should see the text "Created 2"
+    And I should see the text "Processed 2"
     And I should not see "Skip"
     Then there should be the following groups:
       | code           | label-en_US    | label-fr_FR          | type    | axis       |
@@ -52,9 +52,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "This property cannot be changed"
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "This property cannot be changed"
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     Then there should be the following groups:
       | code           | label-en_US    | label-fr_FR          | type    | axis       |
       | ORO_TSHIRT     | Oro T-shirt    |                      | VARIANT | color,size |
@@ -74,9 +74,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Code must be provided"
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Code must be provided"
 
   Scenario: Skip the line if we encounter a new variant group
     Given the following CSV file to import:
@@ -89,9 +89,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Cannot process variant group \"New_VG\", only groups are accepted"
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Cannot process variant group \"New_VG\", only groups are accepted"
 
   Scenario: Skip the line if we encounter an existing variant group
     Given the following CSV file to import:
@@ -104,9 +104,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Cannot process variant group \"AKENEO_TSHIRT\", only groups are accepted"
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Cannot process variant group \"AKENEO_TSHIRT\", only groups are accepted"
 
   Scenario: Skip the line if we try to set axis on a standard group
     Given the following CSV file to import:
@@ -119,6 +119,6 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Group \"STANDARD_WITH_AXIS\", which is not variant, can not be defined with axes"
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Group \"STANDARD_WITH_AXIS\", which is not variant, can not be defined with axes"
