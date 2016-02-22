@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  *
- * @deprecated Will be removed in 1.5
+ * @deprecated Will be removed in 1.6
  */
 class CategoryManager extends BaseCategoryManager
 {
