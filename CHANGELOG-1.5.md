@@ -12,6 +12,9 @@
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController` to add `Pim\Bundle\CatalogBundle\Factory\AttributeFactory`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeOptionController` to add `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\TransformBundle\Transformer\AttributeTransformer` to remove `Pim\Bundle\CatalogBundle\Manager\AttributeManager` and add `Pim\Bundle\CatalogBundle\Factory\AttributeFactory`
 
 # 1.5.0-ALPHA1 (2016-01-26)
 
