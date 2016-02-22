@@ -11,6 +11,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
@@ -63,6 +64,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
+        $this->useContext('domain-completeness', new CompletenessContext());
 
         $this->setTimeout($parameters);
     }
