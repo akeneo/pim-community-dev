@@ -42,6 +42,7 @@ config:
                 pim_enrich_categorytree_edit:                pim/controller/form
                 pim_enrich_categorytree_index:               pim/controller/form
                 pim_enrich_channel_edit:                     pim/controller/channel
+                pim_enrich_channel_create:                   pim/controller/channel
                 pim_enrich_family_edit:                      pim/controller/form
                 pim_enrich_group_edit:                       pim/controller/form
                 pim_enrich_grouptype_edit:                   pim/controller/form

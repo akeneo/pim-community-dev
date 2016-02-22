@@ -120,10 +120,10 @@ class ChannelController
      *
      * @return array
      */
-    public function editAction(Request $request, Channel $channel)
+    public function editAction(Channel $channel)
     {
         if ($this->channelHandler->process($channel)) {
-            $request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
 
             return new JsonResponse([
                 'route'  => 'pim_enrich_channel_edit',
