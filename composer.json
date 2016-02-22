@@ -85,7 +85,8 @@
         "akeneo/phpspec-skip-example-extension": "1.1.*"
     },
     "suggest": {
-        "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
+        "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
+        "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
     "repositories": [
         {
