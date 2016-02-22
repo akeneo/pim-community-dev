@@ -30,20 +30,6 @@ interface ProductCategoryRepositoryInterface
     public function getProductCountByTree(ProductInterface $product);
 
     /**
-     * Get product ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return array
-     *
-     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
-     */
-    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
-
-    /**
      * Count products linked to a node.
      * You can define if you just want to get the property of the actual node
      * or with its children with the direct parameter

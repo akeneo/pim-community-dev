@@ -52,23 +52,6 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     }
 
     /**
-     * Returns all public views
-     *
-     * @param string $alias
-     *
-     * @return DatagridView
-     */
-    public function findPublic($alias)
-    {
-        return $this->repository->findBy(
-            [
-                'datagridAlias' => $alias,
-                'type'          => DatagridView::TYPE_PUBLIC
-            ]
-        );
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @deprecated will be removed in 1.6 please use SaverInterface::save
@@ -86,6 +69,23 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     public function remove($object, array $options = [])
     {
         $this->remover->remove($object, $options);
+    }
+
+    /**
+     * Returns all public views
+     *
+     * @param string $alias
+     *
+     * @return DatagridView
+     */
+    public function findPublic($alias)
+    {
+        return $this->repository->findBy(
+            [
+                'datagridAlias' => $alias,
+                'type'          => DatagridView::TYPE_PUBLIC
+            ]
+        );
     }
 
     /**

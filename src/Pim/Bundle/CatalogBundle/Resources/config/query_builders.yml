@@ -20,15 +20,6 @@ services:
             - @pim_catalog.query.sorter.registry
             - @pim_catalog.factory.product_cursor
 
-    # deprecated : will be removed in 1.6, please use pim_catalog.query.product_query_builder_factory
-    pim_catalog.doctrine.product_query_builder:
-        class: %pim_catalog.query.product_query_builder.class%
-        arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.query.filter.registry
-            - @pim_catalog.query.sorter.registry
-            - @pim_catalog.factory.product_cursor
-
     pim_catalog.query.filter.registry:
         class: %pim_catalog.query.filter.registry.class%
         arguments:

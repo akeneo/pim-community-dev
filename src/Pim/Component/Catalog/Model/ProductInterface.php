@@ -282,15 +282,6 @@ interface ProductInterface extends
     public function markIndexedValuesOutdated();
 
     /**
-     * Get all the media of the product
-     *
-     * @deprecated will be removed in 1.6
-     *
-     * @return FileInfoInterface[]
-     */
-    public function getMedia();
-
-    /**
      * Get product label
      *
      * @param string $locale

@@ -5,7 +5,6 @@ parameters:
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
 
-    pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
     pim_base_connector.writer.file.csv.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
     pim_base_connector.writer.file.csv_product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter
     pim_base_connector.writer.file.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter
@@ -14,10 +13,6 @@ services:
     # deprecated will be removed in 1.6
     pim_base_connector.writer.file:
         class: %pim_base_connector.writer.file.class%
-
-    # deprecated will be removed in 1.6
-    pim_base_connector.writer.dummy:
-        class: %pim_base_connector.writer.dummy.class%
 
     # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv:
