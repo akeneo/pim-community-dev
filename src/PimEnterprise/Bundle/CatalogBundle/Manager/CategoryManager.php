@@ -89,27 +89,6 @@ class CategoryManager extends BaseCategoryManager
     }
 
     /**
-     * Get only the granted direct children for a parent category id.
-     *
-     * @param int      $parentId
-     * @param int|bool $selectNodeId
-     *
-     * @return ArrayCollection
-     */
-    public function getGrantedChildren($parentId, $selectNodeId = false)
-    {
-        $children = $this->getChildren($parentId, $selectNodeId);
-        foreach ($children as $indChild => $child) {
-            $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
-                unset($children[$indChild]);
-            }
-        }
-
-        return $children;
-    }
-
-    /**
      * Provides a tree filled up to the categories provided, with all their ancestors
      * and ancestors sibligns are filled too, in order to be able to display the tree
      * directly without loading other data
