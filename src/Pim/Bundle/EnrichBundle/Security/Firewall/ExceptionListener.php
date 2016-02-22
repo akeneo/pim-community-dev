@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Security\Firewall;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseExceptionListener;
 
 /**
@@ -14,6 +18,26 @@ use Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseExceptionL
  */
 class ExceptionListener extends BaseExceptionListener
 {
+    /**
+     * Handles security related exceptions.
+     *
+     * @param GetResponseForExceptionEvent $event An GetResponseForExceptionEvent instance
+     */
+    public function onKernelException(GetResponseForExceptionEvent $event)
+    {
+        $exception = $event->getException();
+        $request = $event->getRequest();
+        if (!$request->isXmlHttpRequest() || !($exception instanceof AuthenticationException)) {
+            return parent::onKernelException($event);
+        }
+
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
+
+        // Send the modified response object to the event
+        $event->setResponse($response);
+    }
+
     /**
      * {@inheritdoc}
      */

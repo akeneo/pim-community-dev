@@ -81,7 +81,6 @@ class Form extends Base
     public function visitTab($tab)
     {
         $tabs = $this->spin(function () {
-
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -92,7 +91,7 @@ class Form extends Base
 
             return $tabs;
 
-        }, "Findind $tab tab");
+        }, sprintf('Cannot find the tab %s', $tab));
 
         $tabs->clickLink($tab);
     }

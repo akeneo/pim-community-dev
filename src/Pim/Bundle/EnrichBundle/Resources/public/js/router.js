@@ -73,7 +73,7 @@ define(
                     currentController = new Controller({ el: $view });
                     currentController.renderRoute(route, path).done(_.bind(function () {
                         this.triggerComplete(route);
-                    }, this)).fail(this.errorPage.bind(this)).always(this.hideLoadingMask);
+                    }, this)).fail(this.handleError.bind(this)).always(this.hideLoadingMask);
                 }, this));
             },
 
@@ -82,6 +82,17 @@ define(
              */
             notFound: function () {
                 this.displayErrorPage('Page not found', 404);
+            },
+
+            handleError: function (xhr) {
+                switch(xhr.status) {
+                    case 401:
+                        window.location = this.generate('oro_user_security_login');
+                        break;
+                    default:
+                        this.errorPage(xhr);
+                        break;
+                }
             },
 
             /**
