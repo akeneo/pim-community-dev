@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated Will be removed in 1.5
+ * @deprecated Will be removed in 1.6
  */
 class CategoryManager
 {
@@ -55,7 +55,7 @@ class CategoryManager
      *
      * @return ObjectManager
      *
-     * @deprecated Will be removed in 1.5
+     * @deprecated Will be removed in 1.6
      */
     public function getObjectManager()
     {
@@ -67,7 +67,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated Please use CategoryFactory::create() instead, will be removed in 1.5
+     * @deprecated Please use CategoryFactory::create() instead, will be removed in 1.6
      */
     public function getCategoryInstance()
     {
@@ -77,7 +77,7 @@ class CategoryManager
     /**
      * Return category class name (mainly used in Doctrine context)
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      *
      * @return string category class name
      *
@@ -103,7 +103,7 @@ class CategoryManager
     /**
      * Get a new tree instance
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      *
      * @return CategoryInterface
      *
@@ -154,7 +154,7 @@ class CategoryManager
     /**
      * @return array
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      */
     public function getTreeChoices()
     {
@@ -220,7 +220,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      */
     public function getTreeByCode($code)
     {
@@ -236,7 +236,7 @@ class CategoryManager
      *
      * @return CategoryInterface
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      */
     public function getCategoryByCode($code)
     {
@@ -254,7 +254,7 @@ class CategoryManager
      * @param int $parentId
      * @param int $prevSiblingId
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
@@ -288,7 +288,7 @@ class CategoryManager
      *
      * @return bool
      *
-     * @deprecated not used anymore, will be removed in 1.5
+     * @deprecated not used anymore, will be removed in 1.6
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {

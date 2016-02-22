@@ -12,7 +12,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated not used anymore, will be removed in 1.5
+ * @deprecated not used anymore, will be removed in 1.6
  */
 class FamilyManager
 {
@@ -39,7 +39,7 @@ class FamilyManager
     /**
      * Get choices, only used by datagrids, should be moved
      *
-     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.5
+     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.6
      *
      * @return array
      */

@@ -675,7 +675,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.4
+     * @deprecated will be removed in 1.6
      */
     public function getMedia()
     {

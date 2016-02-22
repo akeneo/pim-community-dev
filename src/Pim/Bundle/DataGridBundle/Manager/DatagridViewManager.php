@@ -71,7 +71,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5 please use SaverInterface::save
+     * @deprecated will be removed in 1.6 please use SaverInterface::save
      */
     public function save($object, array $options = [])
     {
@@ -81,7 +81,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
+     * @deprecated will be removed in 1.6 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {

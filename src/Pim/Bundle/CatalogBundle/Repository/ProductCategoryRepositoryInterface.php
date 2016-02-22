@@ -25,7 +25,7 @@ interface ProductCategoryRepositoryInterface
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
      *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductCountByTree(ProductInterface $product);
 
@@ -39,7 +39,7 @@ interface ProductCategoryRepositoryInterface
      *
      * @return array
      *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
@@ -54,7 +54,7 @@ interface ProductCategoryRepositoryInterface
      *
      * @return int
      *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
@@ -72,7 +72,7 @@ interface ProductCategoryRepositoryInterface
      *
      * @param mixed $qb query builder to update
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByUnclassified($qb);
 
@@ -84,7 +84,7 @@ interface ProductCategoryRepositoryInterface
      * @param bool  $include     if yes, get product in those categories, if false
      *                           products NOT in those categories
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
@@ -94,7 +94,7 @@ interface ProductCategoryRepositoryInterface
      * @param mixed $qb          query builder to update
      * @param array $categoryIds category ids
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);
 }

@@ -284,7 +284,7 @@ interface ProductInterface extends
     /**
      * Get all the media of the product
      *
-     * @deprecated will be removed in 1.4
+     * @deprecated will be removed in 1.6
      *
      * @return FileInfoInterface[]
      */

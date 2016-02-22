@@ -63,7 +63,7 @@ class AttributeManager
      *
      * @return AttributeInterface
      *
-     * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
+     * @deprecated will be removed in 1.6, please use AttributeFactory::createAttribute
      */
     public function createAttribute($type = null)
     {
@@ -75,7 +75,7 @@ class AttributeManager
      *
      * @return string
      *
-     * @deprecated will be removed in 1.5 please use %pim_catalog.entity.attribute.class%
+     * @deprecated will be removed in 1.6 please use %pim_catalog.entity.attribute.class%
      */
     public function getAttributeClass()
     {
@@ -126,7 +126,7 @@ class AttributeManager
      *
      * @return AttributeInterface
      *
-     * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
+     * @deprecated will be removed in 1.6 please use AttributeRepositoryInterface->find()
      */
     public function getAttribute($id)
     {
