@@ -1,4 +1,4 @@
-# 1.5.x
+# 1.5.0-BETA1 (2016-02-22)
 
 ## Bug fixes
 
@@ -9,7 +9,6 @@
 - Change interface `PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface` to change apply method to applyAllChanges and add applyToReviewChanges
 - Change interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` : change getChangeForAttribute method to getChange, change removeChangeForAttribute to removeChange, remove setStatus, add getChangesToReview, getReviewStatusForChange, setReviewStatusForChange, removeReviewStatusForChange, setAllReviewStatuses, areAllReviewStatusesTo, markAsInProgress and markAsReady
 - Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Symfony\Component\Routing\RouterInterface`.
-- Remove the extend of the `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper`. Add `PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Add `PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper`.
 - Remove constructor of `PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter` which now takes no argument at all.
@@ -19,6 +18,12 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
 - Update `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`, remove method `approveAction` and `rejectAction` to a unique method `reviewAction`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
+- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface`
+- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
 # 1.5.0-ALPHA1 (2016-01-26)
 
