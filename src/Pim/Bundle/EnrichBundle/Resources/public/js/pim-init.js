@@ -69,7 +69,7 @@ define(
 
                 //Flash messages:
                 if (window.flashMessages) {
-                    _.each(window.flashMessages, function(messages, type) {
+                    _.each(window.flashMessages, function (messages, type) {
                         _.each(messages, function (message) {
                             messenger.notificationFlashMessage(
                                 type,
@@ -86,6 +86,13 @@ define(
             $(function () {
                 $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
+                });
+
+                $(document).on('shown', 'a[data-toggle="tab"]', function () {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 var secret = '38384040373937396665';

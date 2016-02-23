@@ -331,6 +331,18 @@ class Base extends Page
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clickLink($link)
+    {
+        $this->spin(function () use ($link) {
+            parent::clickLink($link);
+
+            return true;
+        });
+    }
+
+    /**
      * Find a flash message containing text
      *
      * @param string $text
