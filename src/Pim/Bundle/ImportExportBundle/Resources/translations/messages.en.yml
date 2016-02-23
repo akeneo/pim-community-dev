@@ -18,7 +18,7 @@ pim_import_export:
         8: UNKNOWN
 
     download_archive:
-        archive: download generated file|download generated files
+        archive: download generated archive|download generated archives
         output:  download generated file|download generated files
         input:   download read file|download read files
         invalid: download invalid data
