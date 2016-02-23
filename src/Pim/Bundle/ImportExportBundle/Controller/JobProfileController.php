@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -302,11 +302,7 @@ class JobProfileController
         $this->entityManager->remove($jobInstance);
         $this->entityManager->flush();
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToIndexView();
-        }
+        return $this->redirectToIndexView();
     }
 
     /**
@@ -344,7 +340,7 @@ class JobProfileController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function launchUploadedAction($id)
     {
@@ -370,7 +366,7 @@ class JobProfileController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function launchAction($id)
     {
@@ -491,7 +487,7 @@ class JobProfileController
      *
      * @throws NotFoundHttpException
      *
-     * @return Job|RedirectResponse
+     * @return Job|JsonResponse
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
@@ -542,13 +538,11 @@ class JobProfileController
     /**
      * Redirect to the index view
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function redirectToIndexView()
     {
-        return new RedirectResponse(
-            $this->router->generate((sprintf('pim_importexport_%s_profile_index', $this->getJobType())))
-        );
+        return new JsonResponse(['route' => (sprintf('pim_importexport_%s_profile_index', $this->getJobType()))]);
     }
 
     /**
@@ -556,14 +550,14 @@ class JobProfileController
      *
      * @param int $jobId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function redirectToShowView($jobId)
     {
-        return new RedirectResponse($this->router->generate(
-            sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
-            ['id' => $jobId]
-        ));
+        return new JsonResponse([
+            'route'  => sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
+            'params' => ['id' => $jobId]
+        ]);
     }
 
     /**
@@ -571,14 +565,14 @@ class JobProfileController
      *
      * @param int $jobId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function redirectToReportView($jobId)
     {
-        return new RedirectResponse($this->router->generate(
-            sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
-            ['id' => $jobId]
-        ));
+        return new JsonResponse([
+            'route'  => sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
+            'params' => ['id' => $jobId]
+        ]);
     }
 
     /**

@@ -29,9 +29,9 @@ Feature: Edit a user
     And I save the user
     Then I should see the flash message "User saved"
     When I am on the products page
-    Then I should see "Products / DE"
-    And I should see "Print"
-    And I should see "2015 Männer-Kollektion"
-    And I should see "2015 Damenkollektion"
+    Then I should see the text "Products / DE"
+    And I should see the text "Print"
+    And I should see the text "2015 Männer-Kollektion"
+    And I should see the text "2015 Damenkollektion"
     And I should see the filters Name, Family and SKU
     And I should not see the filters Status

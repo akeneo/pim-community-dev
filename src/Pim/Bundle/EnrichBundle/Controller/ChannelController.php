@@ -12,6 +12,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,9 +125,10 @@ class ChannelController
         if ($this->channelHandler->process($channel)) {
             $this->request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
 
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_channel_edit', ['id' => $channel->getId()])
-            );
+            return new JsonResponse([
+                'route'  => 'pim_enrich_channel_edit',
+                'params' => ['id' => $channel->getId()]
+            ]);
         }
 
         return ['form' => $this->channelForm->createView()];
@@ -152,10 +154,6 @@ class ChannelController
 
         $this->channelRemover->remove($channel);
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_channel_index'));
-        }
+        return new JsonResponse(['route' => 'pim_enrich_channel_index']);
     }
 }

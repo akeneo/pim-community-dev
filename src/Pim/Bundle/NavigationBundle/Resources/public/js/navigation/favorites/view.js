@@ -41,8 +41,8 @@ function(_, Backbone, app, mediator, error,
              * Render links in favorites menu after hash navigation request is completed
              */
             mediator.bind(
-                "hash_navigation_request:complete",
-                function() {
+                'route_complete',
+                function () {
                     this.render();
                 },
                 this

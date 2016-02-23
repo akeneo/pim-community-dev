@@ -26,6 +26,7 @@ Feature: Remove attribute from a family
     And I confirm the deletion
     Then I should see flash message "Attribute successfully removed from the family"
     And I should see attribute "Long Description" in group "Other"
+    And I wait 3 seconds
     When I am on the "bag-dolce-vita" product page
     Then I should see a remove link next to the "Manufacturer" field
 

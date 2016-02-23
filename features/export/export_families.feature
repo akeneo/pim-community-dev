@@ -12,8 +12,8 @@ Feature: Export families
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish
-    Then I should see "Read 4"
-    And I should see "Written 4"
+    Then I should see the text "Read 4"
+    And I should see the text "Written 4"
     And exported file of "csv_footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
@@ -34,8 +34,8 @@ Feature: Export families
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish
-    Then I should see "Read 5"
-    And I should see "Written 5"
+    Then I should see the text "Read 5"
+    And I should see the text "Written 5"
     And exported file of "csv_footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet

@@ -27,7 +27,7 @@ Feature: Set the attribute used as label
       | Attribute used as label | Brand |
     And I save the family
     Then I am on the families page
-    And I should see "Brand"
+    And I should see the text "Brand"
 
   Scenario: Successfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label

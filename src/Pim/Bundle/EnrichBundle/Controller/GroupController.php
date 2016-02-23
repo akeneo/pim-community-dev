@@ -144,10 +144,10 @@ class GroupController
      *
      * @return array
      */
-    public function editAction(Group $group)
+    public function editAction(Request $request, Group $group)
     {
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.updated'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.group.updated'));
         }
 
         return [

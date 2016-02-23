@@ -7,10 +7,13 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 class ImportProfilesContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string       $extension
      * @param PyStringNode $string
@@ -91,7 +94,11 @@ class ImportProfilesContext extends PimContext
      */
     public function iUploadAndImportTheFile($file)
     {
-        $this->getCurrentPage()->clickLink('Upload and import');
+        $this->spin(function () {
+            $this->getCurrentPage()->clickLink('Upload and import');
+
+            return true;
+        }, 'Cannot click on the upload and import link');
         $this->getMainContext()->getSubcontext('job')
             ->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
         $this->getCurrentPage()->pressButton('Upload and import now');

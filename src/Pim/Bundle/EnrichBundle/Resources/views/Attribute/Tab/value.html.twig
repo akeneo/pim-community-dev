@@ -1,9 +1,5 @@
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {% spaceless %}
-    {% if elements is not defined %}
-        {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-    {% endif %}
-    {% endspaceless %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
     {% set accordionContent = { 'pane.accordion.label_translations': form_row(form.label) } %}
     {% if form['autoOptionSorting'] is defined %}
         {% set optionsContent %}

@@ -194,7 +194,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully import products with attributes with full numeric codes
     Given the following CSV file to import:

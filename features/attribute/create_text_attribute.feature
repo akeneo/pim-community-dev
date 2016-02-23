@@ -12,8 +12,8 @@ Feature: Create an attribute
 
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
-      | Code            | short_description |
       | Attribute group | Other             |
+      | Code            | short_description |
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
 

@@ -24,8 +24,8 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
     And I display the Nom and Taille attributes
-    Then I should see "[info]"
-    And I should see "[sizes]"
-    And I should see "Nom"
+    Then I should see the text "[info]"
+    And I should see the text "[sizes]"
+    And I should see the text "Nom"
     When I visit the "[sizes]" group
-    Then I should see "Taille"
+    Then I should see the text "Taille"

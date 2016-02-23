@@ -20,12 +20,12 @@ Feature: View and access products belonging to the same variant group from the p
   Scenario: Successfully display an overview of products belonging to the same variant group
     Given I am on the "big_boot" product page
     When I press the "Similar boots" button
-    Then I should see "big_boot"
-    And I should see "small_boot"
-    And I should see "medium_boot"
-    And I should see "sandals"
-    And I should see "dance_shoe"
-    And I should see "2 more products"
+    Then I should see the text "big_boot"
+    And I should see the text "small_boot"
+    And I should see the text "medium_boot"
+    And I should see the text "sandals"
+    And I should see the text "dance_shoe"
+    And I should see the text "2 more products"
 
   Scenario: Successfully go on the page of a product belonging to the same variant group
     Given I am on the "big_boot" product page

@@ -17,7 +17,7 @@ Feature: Family creation
     And I press the "Save" button
     And I wait 5 seconds
     Then I should be on the "CAR" family page
-    And I should see "Edit family - [CAR]"
+    And I should see the text "Edit family - [CAR]"
 
   Scenario: Fail to create a family with an empty or invalid code
     Given I press the "Save" button

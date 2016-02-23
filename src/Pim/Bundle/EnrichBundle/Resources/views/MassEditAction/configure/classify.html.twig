@@ -1,33 +1,5 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-        require(
-            ['jquery', 'underscore', 'pim/tree/associate'],
-            function($, _, TreeAssociate){
-                'use strict';
-                $(function() {
-                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}', {
-                        list_categories: 'pim_enrich_product_listcategories',
-                        children:        'pim_enrich_categorytree_children'
-                    });
-                    var $nextBtn = $('a.next');
-                    $nextBtn.hide();
-                    $('#{{ form.operation.categories.vars.id }}').on('change', function() {
-                        if ($(this).val()) {
-                            $nextBtn.show();
-                        } else {
-                            $nextBtn.hide();
-                        }
-                    });
-                });
-            }
-        );
-    </script>
-{% endblock %}
-
 {% block formContent %}
 
     {{ form_widget(form.operation.categories) }}
@@ -72,4 +44,25 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/tree/associate'],
+            function($, _, TreeAssociate){
+                'use strict';
+                $(function() {
+                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}');
+                    var $nextBtn = $('a.next');
+                    $nextBtn.hide();
+                    $('#{{ form.operation.categories.vars.id }}').on('change', function() {
+                        if ($(this).val()) {
+                            $nextBtn.show();
+                        } else {
+                            $nextBtn.hide();
+                        }
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock %}

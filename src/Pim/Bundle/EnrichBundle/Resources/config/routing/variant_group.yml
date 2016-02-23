@@ -1,8 +1,6 @@
 pim_enrich_variant_group_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.variant_group:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.variant_group:indexAction }
 
 pim_enrich_variant_group_create:
     path: /create
@@ -38,12 +36,12 @@ pim_enrich_variant_group_remove_attribute:
 
 pim_enrich_variant_group_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:indexAction }
     methods: [GET]
 
 pim_enrich_variant_group_rest_get:
     path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]

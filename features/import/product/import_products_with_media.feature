@@ -80,9 +80,9 @@ Feature: Import media with products
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 0 products
-    And I should see "skipped 2"
-    And I should see "values[frontView].media: The file extension is not allowed (allowed extensions: gif, jpg)"
-    And I should see "values[userManual].media: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
+    And I should see the text "skipped 2"
+    And I should see the text "values[frontView].media: The file extension is not allowed (allowed extensions: gif, jpg)"
+    And I should see the text "values[userManual].media: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
 
   Scenario: Import several times the same media
     Given the following CSV file to import:
@@ -134,8 +134,8 @@ Feature: Import media with products
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
-    And I should see "processed 3"
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "processed 3"
+    And I should see the text "skipped product (no differences) 1"
     And the product "bic-core-148" should have the following values:
       | userManual | bic-core-148.txt |
     And the product "fanatic-freewave-76" should have the following values:
