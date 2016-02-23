@@ -34,6 +34,7 @@ class PimUserExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
         $loader->load('repositories.yml');
+        $loader->load('savers.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/user.yml');
