@@ -155,7 +155,7 @@ define(
                 $select = initSelect2.init($select, opts);
 
                 // Close & destroy select2 DOM on change page via hash-navigation
-                mediator.once('hash_navigation_request:start', function () {
+                mediator.once('route_start', function () {
                     $select.select2('close');
                     $select.select2('destroy');
                 });
