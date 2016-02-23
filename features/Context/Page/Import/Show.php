@@ -23,6 +23,10 @@ class Show extends JobShow
      */
     public function execute()
     {
-        $this->clickLink('Import now');
+        $this->spin(function () {
+            $this->clickLink('Import now');
+
+            return true;
+        }, 'Cannot click on the export now button');
     }
 }

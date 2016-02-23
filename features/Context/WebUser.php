@@ -1177,6 +1177,8 @@ class WebUser extends RawMinkContext
 
                 return $element;
             }, 'Cannot find the popin in the current page');
+        } else {
+            $element = null;
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
