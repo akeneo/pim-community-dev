@@ -9,6 +9,15 @@ define(
                 return;
             }
             initialized = true;
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+                var $container = $('.scrollable-container');
+                $target.find('.fullheight').filter(':visible').each(function () {
+                    $(this).height($container.height() - $(this).position().top + $container.position().top);
+                });
+            };
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
@@ -57,6 +66,21 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
+
+                //Flash messages:
+                if (window.flashMessages) {
+                    _.each(window.flashMessages, function(messages, type) {
+                        _.each(messages, function (message) {
+                            messenger.notificationFlashMessage(
+                                type,
+                                message
+                            );
+                        });
+                    });
+                }
+                window.flashMessages = [];
+
+                setFullHeight($target);
             };
 
             $(function () {
