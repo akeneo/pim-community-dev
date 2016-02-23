@@ -34,7 +34,7 @@ Feature: Execute an import with axis as data
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "color": [SANDAL]
     """
-    And I should see "Skipped 1"
+    And I should see the text "Skipped 1"
 
   Scenario: Skip variant group if many axis are used as values
     Given the following CSV file to import:
@@ -51,7 +51,7 @@ Feature: Execute an import with axis as data
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "size", "color": [SANDAL]
     """
-    And I should see "Skipped 1"
+    And I should see the text "Skipped 1"
 
   Scenario: Skip variant group if identifier is used as value
     Given the following CSV file to import:
@@ -68,4 +68,4 @@ Feature: Execute an import with axis as data
     """
     Variant group "SANDAL" cannot contain values for axis or unique attributes: "sku": [SANDAL]
     """
-    And I should see "Skipped 1"
+    And I should see the text "Skipped 1"

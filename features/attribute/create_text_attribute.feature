@@ -12,10 +12,10 @@ Feature: Create an attribute
 
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
-      | Code            | short_description |
       | Attribute group | Other             |
+      | Code            | short_description |
     And I save the attribute
-    Then I should see "Attribute successfully created"
+    Then I should see flash message "Attribute successfully created"
 
   @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with an invalid or reserved code

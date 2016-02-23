@@ -329,7 +329,7 @@ class ProductController
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @Template
+     * @Template("PimEnrichBundle:Product:listCategories.json.twig")
      * @AclAncestor("pim_enrich_product_categories_view")
      *
      * @return array

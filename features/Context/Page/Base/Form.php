@@ -54,7 +54,12 @@ class Form extends Base
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $this->spin(function() {
+            $this->getElement('Save')->click();
+
+            return true;
+        });
+
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $this->getSession()->wait($this->getTimeout(), '!$.active');
         }
@@ -75,13 +80,18 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-        }
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-        }
+        $tabs = $this->spin(function () use ($tab) {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        });
+
         $tabs->clickLink($tab);
     }
 
@@ -860,11 +870,15 @@ class Form extends Base
         if (!$label->getAttribute('for') && null !== $label->channel) {
             $label = $label->getParent()->find('css', sprintf('[data-scope="%s"] label', $label->channel));
         }
-
         $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 
-        $field->setValue($value);
+
+        $this->spin(function () use ($field, $value) {
+            $field->setValue($value);
+
+            return $field->getValue() == $value;
+        }, 'field failed to be fulfilled');
     }
 
     /**

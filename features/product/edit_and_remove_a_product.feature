@@ -25,13 +25,13 @@ Feature: Edit and remove a product
     Given I am on the products page
     Then I should see product boots
     When I click on the "Delete the product" action of the row which contains "boots"
-    Then I should see "Delete confirmation"
+    Then I should see the text "Delete confirmation"
     When I confirm the removal
     Then I should be on the products page
     And I should not see product boots
 
   Scenario: Successfully delete a product from the edit form
     Given I press the "Delete" button
-    Then I should see "Confirm deletion"
+    Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots

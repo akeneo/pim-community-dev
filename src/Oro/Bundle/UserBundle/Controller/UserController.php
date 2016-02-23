@@ -163,22 +163,10 @@ class UserController extends Controller
                 $this->get('translator')->trans('oro.user.controller.user.message.saved')
             );
 
-            if (count($viewRoute)) {
-                $closeButtonRoute = $viewRoute;
-            } else {
-                $closeButtonRoute = [
-                    'route'      => 'oro_user_view',
-                    'parameters' => ['id' => $user->getId()]
-                ];
-            }
-
-            $response = $this->get('oro_ui.router')->actionRedirect(
-                [
-                    'route'      => 'oro_user_update',
-                    'parameters' => ['id' => $user->getId()],
-                ],
-                $closeButtonRoute
-            );
+            $response = new JsonResponse([
+                'route'      => 'oro_user_update',
+                'parameters' => ['id' => $user->getId()]
+            ]);
 
             $response->headers->set('oroFullRedirect', true);
 

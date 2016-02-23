@@ -48,9 +48,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the english tablet name of "sandal-white-37" should be "My sandal"
     And the english tablet description of "sandal-white-37" should be "My sandal description for locale en_US and channel tablet"
     And the english tablet name of "sandal-white-38" should be "My sandal"
@@ -68,9 +68,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | number_in_stock | 44 |
     And the product "sandal-white-38" should have the following value:
@@ -88,9 +88,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | manufacturer | [Converse] |
     And the product "sandal-white-38" should have the following value:
@@ -108,9 +108,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | weather_conditions | [dry], [wet] |
     And the product "sandal-white-38" should have the following value:
@@ -128,9 +128,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | destocking_date | 2015-12-14 |
     And the product "sandal-white-38" should have the following value:
@@ -148,9 +148,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | handmade | 1 |
     And the product "sandal-white-38" should have the following value:
@@ -168,9 +168,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | handmade |  |
     And the product "sandal-white-38" should have the following value:
@@ -188,9 +188,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "sandal-white-38" should have the following value:
@@ -208,9 +208,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "sandal-white-38" should have the following value:
@@ -228,9 +228,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | length | 4000.0000 CENTIMETER |
     And the product "sandal-white-38" should have the following value:
@@ -248,9 +248,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following value:
       | length | 4000.0000 CENTIMETER |
     And the product "sandal-white-38" should have the following value:
@@ -275,9 +275,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 1"
-    And I should see "Processed 1"
-    And I should see "Updated products 6"
+    And I should see the text "read lines 1"
+    And I should see the text "Processed 1"
+    And I should see the text "Updated products 6"
     And the product "sandal-white-37" should have the following values:
       | frontView  | bic-core-148.gif |
       | userManual | bic-core-148.txt |

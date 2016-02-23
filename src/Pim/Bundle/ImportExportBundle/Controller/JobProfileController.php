@@ -593,4 +593,12 @@ class JobProfileController
     {
         return $this->formFactory->create(new UploadType(), null, ['validation_groups' => ['upload']]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
+    }
 }

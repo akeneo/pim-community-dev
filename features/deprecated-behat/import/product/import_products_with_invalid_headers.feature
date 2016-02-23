@@ -20,8 +20,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "The field \"comment-fr_FR-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "The field \"comment-fr_FR-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3374
   Scenario: Skip import with a not expected channel for a global attribute
@@ -35,8 +35,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "The field \"comment-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "The field \"comment-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3375
   Scenario: Skip import with a not expected locale for a global attribute
@@ -50,8 +50,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "The field \"comment-fr_FR\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "The field \"comment-fr_FR\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
@@ -65,8 +65,8 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "Locale fr_CA does not exist"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "Locale fr_CA does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3370
   Scenario: Skip import with a not existing channel for a scopable attribute
@@ -80,6 +80,6 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "Channel noexistingchannel does not exist"
+    Then I should see the text "Status: FAILED"
+    And I should see the text "Channel noexistingchannel does not exist"
 

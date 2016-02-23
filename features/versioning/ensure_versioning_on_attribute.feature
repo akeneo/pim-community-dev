@@ -1,3 +1,4 @@
+@javascript
 Feature: Ensure versioning on attribute
   In order to see old version of an existing attribute
   As a product manager
@@ -7,7 +8,6 @@ Feature: Ensure versioning on attribute
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully version an attribute
     Given I am on the "manufacturer" attribute page
     And I visit the "History" tab

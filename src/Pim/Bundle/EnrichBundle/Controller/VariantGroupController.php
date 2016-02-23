@@ -10,12 +10,14 @@ use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +55,9 @@ class VariantGroupController extends GroupController
     /** @var HandlerInterface */
     protected $groupHandler;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param Request                        $request
      * @param EngineInterface                $templating
@@ -65,6 +70,8 @@ class VariantGroupController extends GroupController
      * @param RemoverInterface               $groupRemover
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
+     * @param RemoverInterface               $groupRemover
+     * @param UserContext                    $userContext
      */
     public function __construct(
         Request $request,
@@ -77,7 +84,9 @@ class VariantGroupController extends GroupController
         FormFactoryInterface $formFactory,
         RemoverInterface $groupRemover,
         AttributeRepositoryInterface $attributeRepository,
-        VariantGroupAttributesResolver $groupAttrResolver
+        VariantGroupAttributesResolver $groupAttrResolver,
+        RemoverInterface $groupRemover,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -90,9 +99,6 @@ class VariantGroupController extends GroupController
             $groupRemover
         );
 
-        $this->request             = $request;
-        $this->templating          = $templating;
-        $this->router              = $router;
         $this->formFactory         = $formFactory;
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
@@ -100,6 +106,7 @@ class VariantGroupController extends GroupController
         $this->groupFactory        = $groupFactory;
         $this->groupForm           = $groupForm;
         $this->groupHandler        = $groupHandler;
+        $this->userContext         = $userContext;
     }
 
     /**
@@ -125,14 +132,10 @@ class VariantGroupController extends GroupController
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_variant_group_index'));
-        }
-
         $group = $this->groupFactory->createGroup('VARIANT');
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_variant_group_edit',
@@ -156,14 +159,19 @@ class VariantGroupController extends GroupController
      * @AclAncestor("pim_enrich_variant_group_edit")
      * @Template
      */
-    public function editAction(Group $group)
+    public function editAction(Request $request, Group $group)
     {
         if (!$group->getType()->isVariant()) {
             throw new NotFoundHttpException(sprintf('Variant group with id %d not found.', $group->getId()));
         }
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.updated'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.updated'));
+
+            return new JsonResponse([
+                'route'  => 'pim_enrich_variant_group_edit',
+                'params' => ['id' => $group->getId(), 'dataLocale' => $this->userContext->getCurrentLocale()->getCode()]
+            ]);
         }
 
         return [

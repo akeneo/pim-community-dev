@@ -16,13 +16,17 @@ class Show extends JobShow
     /**
      * @var string
      */
-    protected $path = '/collect/import/{id}';
+    protected $path = '#/collect/import/{id}';
 
     /**
      * Click the job execution link
      */
     public function execute()
     {
-        $this->clickLink('Import now');
+        $this->spin(function () {
+            $this->clickLink('Import now');
+
+            return true;
+        }, 'Cannot click on the export now button');
     }
 }

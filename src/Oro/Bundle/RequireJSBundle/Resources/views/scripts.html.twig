@@ -5,7 +5,9 @@
                 for (var i in b)b[i].toString()==='[object Object]'?m(a[i]||(a[i]={}),b[i]):a[i]=b[i]}
             return r;
         }());
-        {% placeholder requirejs_config_extend %}
+        {% include 'OroUIBundle::requirejs.config.js.twig' %}
+        {% include 'OroNavigationBundle:Js:requirejs.config.js.twig' %}
+        {% include 'OroTranslationBundle::requirejs.config.js.twig' %}
         require = require.c;
     </script>
     <script type="text/javascript" src="{{ asset(get_requirejs_build_path()) }}"></script>
@@ -15,6 +17,8 @@
         {{ get_requirejs_config() }}
     </script>
     <script type="text/javascript">
-        {% placeholder requirejs_config_extend %}
+        {% include 'OroUIBundle::requirejs.config.js.twig' %}
+        {% include 'OroNavigationBundle:Js:requirejs.config.js.twig' %}
+        {% include 'OroTranslationBundle::requirejs.config.js.twig' %}
     </script>
 {% endif %}

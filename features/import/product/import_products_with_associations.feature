@@ -28,7 +28,7 @@ Feature: Execute a job
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
-    Then I should see "2 products and 1 groups"
+    Then I should see the text "2 products and 1 groups"
 
   @pim-2445
   Scenario: Successfully skip associations with not existing product (owner side)
@@ -43,7 +43,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 0 product
-    And I should see "No product with identifier \"SKU-001\" has been found"
+    And I should see the text "No product with identifier \"SKU-001\" has been found"
 
   Scenario: Successfully skip associations with no existing product (associated side)
     Given the following CSV file to import:
@@ -57,7 +57,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"SKU-002\" given"
+    And I should see the text "Attribute or field \"associations\" expects existing product identifier as data, \"SKU-002\" given"
 
   Scenario: Successfully import a csv file with associations between invalid but existing products
     Given the following products:
@@ -81,7 +81,7 @@ Feature: Execute a job
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
-    Then I should see "2 products and 1 groups"
+    Then I should see the text "2 products and 1 groups"
     And the english name of "SKU-001" should be "Before"
 
   Scenario: Successfully skip associations without modification
@@ -105,7 +105,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully remove associations
     Given the following product:
@@ -130,4 +130,4 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" tab
     And I visit the "Cross sell" group
-    Then I should see "0 products and 0 groups"
+    Then I should see the text "0 products and 0 groups"

@@ -48,4 +48,4 @@ Feature: Classify a product
     And I expand the "2014 collection" category
     And I click on the "123" category
     When I save the product
-    Then I should see "Product successfully updated"
+    Then I should see the text "Product successfully updated"

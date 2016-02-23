@@ -2,7 +2,7 @@
 /*jslint browser: true, nomen: true, todo: true, vars: true*/
 /*global define*/
 
-define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
+define(['jquery', 'bootstrap'], function ($) {
     'use strict';
 
     // todo: remove this or move somewhere else
@@ -86,14 +86,6 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
         setTimeout(function () {
             layout.scrollspyTop();
         }, 500);
-    };
-
-    layout.hideProgressBar = function () {
-        var $bar = $('#progressbar');
-        if ($bar.is(':visible')) {
-            $bar.hide();
-            $('#page').show();
-        }
     };
 
     layout.adjustScrollspy = function () {

@@ -63,7 +63,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code \"SKU-001\" was already read in this file"
+    Then I should see the text "The unique code \"SKU-001\" was already read in this file"
     Then there should be 1 product
     And the english tablet name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
@@ -191,4 +191,4 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The provided specific locale \"fr_FR\" does not exist for \"locale_specific_attribute\" attribute"
+    Then I should see the text "The provided specific locale \"fr_FR\" does not exist for \"locale_specific_attribute\" attribute"

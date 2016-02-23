@@ -39,13 +39,6 @@ class OroNavigationExtension extends Extension
                         }
                     }
                 }
-
-                if (isset($bundleConfig['oro_titles'])) {
-                    $titlesConfig = array_merge(
-                        $titlesConfig,
-                        is_array($bundleConfig['oro_titles']) ? $bundleConfig['oro_titles'] : []
-                    );
-                }
             }
         }
 
@@ -56,6 +49,5 @@ class OroNavigationExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $container->setParameter('oro_menu_config', $config);
-        $container->setParameter('oro_titles', $titlesConfig);
     }
 }

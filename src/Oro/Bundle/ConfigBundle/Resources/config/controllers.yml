@@ -1,5 +1,5 @@
 parameters:
-    oro_config.controller.configuration.class: Oro\Bundle\ConfigBundle\Controller\Rest\ConfigurationController
+    oro_config.controller.configuration.class: Oro\Bundle\ConfigBundle\Controller\ConfigurationController
 
 services:
     oro_config.controller.configuration:
