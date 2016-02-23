@@ -34,14 +34,14 @@ jobs:
             filePath: group_types.yml
             multiple: false
 
-    fixtures_channel_yml:
+    fixtures_channel_csv:
         order: 40
         connector: Data fixtures
-        alias:     fixtures_channel_yml
+        alias:     fixtures_channel_csv
         label:     Channels data fixtures
         type:      fixtures
         configuration:
-            filePath: channels.yml
+            filePath: channels.csv
             multiple: false
 
     fixtures_association_type_csv:
