@@ -1168,9 +1168,15 @@ class WebUser extends RawMinkContext
      */
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
-        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
-        if ($popin && !$element) {
-            $element = $this->getCurrentPage()->find('css', '.modal');
+        if ($popin) {
+            $element = $this->spin(function () {
+                $element = $this->getCurrentPage()->find('css', '.ui-dialog');
+                if (!$element) {
+                    $element = $this->getCurrentPage()->find('css', '.modal');
+                }
+
+                return $element;
+            }, 'Cannot find the popin in the current page');
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
