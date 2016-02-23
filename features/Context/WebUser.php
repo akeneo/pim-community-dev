@@ -1270,6 +1270,7 @@ class WebUser extends RawMinkContext
     {
         return [
             new Step\Then(sprintf('I am on the "%s" role page', $role)),
+            new Step\Then('I visit the "Permission" tab'),
             new Step\Then('I grant all rights'),
             new Step\Then('I save the role')
         ];
@@ -1286,6 +1287,7 @@ class WebUser extends RawMinkContext
     {
         $steps = [];
 
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
@@ -1312,6 +1314,7 @@ class WebUser extends RawMinkContext
     {
         $steps = [];
 
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should see the text "%s"', $data['section']));
