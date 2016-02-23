@@ -111,9 +111,6 @@ class UserLoader extends LoadUserData
         $user->setProposalsStateNotification($data['proposals_state_notifications']);
 
         $this->getUserManager()->updateUser($user);
-        // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
-        $this->getUserManager()->getStorageManager()->clear('Pim\Bundle\UserBundle\Entity\User');
-        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
     }
 
     /**
@@ -127,9 +124,7 @@ class UserLoader extends LoadUserData
 
         if (!$role) {
             $role = new Role($code);
-            // TODO use a Saver
-            $this->om->persist($role);
-            $this->om->flush();
+            $this->container->get('pim_user.saver.role')->save($role);
         }
 
         return $role;
@@ -146,8 +141,7 @@ class UserLoader extends LoadUserData
 
         if (!$group) {
             $group = new Group($name);
-            $this->om->persist($group);
-            $this->om->flush();
+            $this->container->get('pim_user.saver.group')->save($group);
         }
 
         return $group;
