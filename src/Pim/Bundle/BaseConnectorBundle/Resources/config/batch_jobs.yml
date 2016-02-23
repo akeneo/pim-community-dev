@@ -83,3 +83,15 @@ connector:
                         reader:    pim_base_connector.reader.orm.family
                         processor: pim_base_connector.processor.normalization.family.flat
                         writer:    pim_connector.writer.file.simple_file
+        xlsx_product_export:
+            title: pim_base_connector.jobs.xlsx_product_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.xslx_product_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.doctrine.product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_connector.writer.file.xlsx_product
+                    parameters:
+                        batch_size: 10
