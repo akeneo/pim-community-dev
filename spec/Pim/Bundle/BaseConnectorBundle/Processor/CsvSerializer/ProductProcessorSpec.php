@@ -5,9 +5,12 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -104,8 +107,8 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $products = [$product1, $product2];
 
-        $product1->getMedia()->willReturn([]);
-        $product2->getMedia()->willReturn([]);
+        $product1->getValues()->willReturn([]);
+        $product2->getValues()->willReturn([]);
 
         $stepExecution->addSummaryInfo('write', 1)->shouldBeCalled();
 
@@ -129,8 +132,8 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $products = [$product1, $product2];
 
-        $product1->getMedia()->willReturn([]);
-        $product2->getMedia()->willReturn([]);
+        $product1->getValues()->willReturn([]);
+        $product2->getValues()->willReturn([]);
 
         $stepExecution->addSummaryInfo('write', 2)->shouldBeCalled();
 
@@ -151,12 +154,29 @@ class ProductProcessorSpec extends ObjectBehavior
         ProductInterface $product2,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        ProductValueInterface $value1,
+        ProductValueInterface $value2,
+        ProductValueInterface $value3,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
+        AttributeInterface $attribute3
     ) {
         $products = [$product1, $product2];
 
-        $product1->getMedia()->willReturn([$media1]);
-        $product2->getMedia()->willReturn([$media2]);
+        $product1->getValues()->willReturn([$value1]);
+        $product2->getValues()->willReturn([$value2, $value3]);
+
+        $value1->getAttribute()->willReturn($attribute1);
+        $value2->getAttribute()->willReturn($attribute2);
+        $value3->getAttribute()->willReturn($attribute3);
+
+        $attribute1->getAttributeType()->willReturn(AttributeTypes::IMAGE);
+        $attribute2->getAttributeType()->willReturn(AttributeTypes::FILE);
+        $attribute3->getAttributeType()->willReturn(AttributeTypes::TEXT);
+
+        $value1->getData()->willReturn($media1);
+        $value2->getData()->willReturn($media2);
 
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
@@ -179,8 +199,8 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $products = [$product1, $product2];
 
-        $product1->getMedia()->willReturn([]);
-        $product2->getMedia()->willReturn([]);
+        $product1->getValues()->willReturn([]);
+        $product2->getValues()->willReturn([]);
 
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
@@ -200,7 +220,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ChannelInterface $channel
     ) {
-        $product->getMedia()->willReturn([]);
+        $product->getValues()->willReturn([]);
 
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');

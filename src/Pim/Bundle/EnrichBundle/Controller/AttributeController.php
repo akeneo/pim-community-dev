@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
@@ -98,6 +99,7 @@ class AttributeController
      * @param HandlerInterface             $attributeHandler
      * @param Form                         $attributeForm
      * @param AttributeManager             $attributeManager
+     * @param AttributeFactory             $attributeFactory
      * @param AttributeOptionManager       $optionManager
      * @param LocaleRepositoryInterface    $localeRepository
      * @param VersionManager               $versionManager
@@ -116,6 +118,7 @@ class AttributeController
         HandlerInterface $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
+        AttributeFactory $attributeFactory,
         AttributeOptionManager $optionManager,
         LocaleRepositoryInterface $localeRepository,
         VersionManager $versionManager,
@@ -133,6 +136,7 @@ class AttributeController
         $this->attributeHandler    = $attributeHandler;
         $this->attributeForm       = $attributeForm;
         $this->attributeManager    = $attributeManager;
+        $this->attributeFactory    = $attributeFactory;
         $this->optionManager       = $optionManager;
         $this->localeRepository    = $localeRepository;
         $this->versionManager      = $versionManager;
@@ -176,7 +180,7 @@ class AttributeController
             return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
         }
 
-        $attribute = $this->attributeManager->createAttribute($attributeType);
+        $attribute = $this->attributeFactory->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
             $this->request->getSession()->getFlashBag()
@@ -356,7 +360,7 @@ class AttributeController
 
         if (null === $attribute) {
             throw new NotFoundHttpException(
-                sprintf('%s entity not found', $this->attributeManager->getAttributeClass())
+                sprintf('%s entity not found', $this->attributeRepository->getClassName())
             );
         }
 

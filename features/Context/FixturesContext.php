@@ -12,6 +12,7 @@ use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -1265,12 +1266,15 @@ class FixturesContext extends BaseFixturesContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $allMedia     = $product->getMedia();
         $mountManager = $this->getMountManager();
-        foreach ($allMedia as $media) {
-            if (null !== $media) {
-                $fs = $mountManager->getFilesystem($media->getStorage());
-                $fs->delete($media->getKey());
+
+        foreach ($product->getValues() as $value) {
+            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+                $media = $value->getData();
+                if (null !== $media) {
+                    $fs = $mountManager->getFilesystem($media->getStorage());
+                    $fs->delete($media->getKey());
+                }
             }
         }
     }

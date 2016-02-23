@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -22,8 +22,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class AttributeTransformer extends NestedEntityTransformer
 {
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeFactory */
+    protected $attributeFactory;
 
     /** @var AttributeOptionManager */
     protected $optionManager;
@@ -39,7 +39,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
-     * @param AttributeManager               $attributeManager
+     * @param AttributeFactory               $attributeFactory
      * @param AttributeOptionManager         $optionManager
      * @param DoctrineCache                  $doctrineCache
      */
@@ -49,13 +49,13 @@ class AttributeTransformer extends NestedEntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
-        AttributeManager $attributeManager,
+        AttributeFactory $attributeFactory,
         AttributeOptionManager $optionManager,
         DoctrineCache $doctrineCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
 
-        $this->attributeManager = $attributeManager;
+        $this->attributeFactory = $attributeFactory;
         $this->optionManager    = $optionManager;
         $this->doctrineCache    = $doctrineCache;
     }
@@ -104,6 +104,6 @@ class AttributeTransformer extends NestedEntityTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return $this->attributeManager->createAttribute($data['type']);
+        return $this->attributeFactory->createAttribute($data['type']);
     }
 }

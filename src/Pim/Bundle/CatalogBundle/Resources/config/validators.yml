@@ -281,6 +281,6 @@ services:
             - '@validator.validator_factory'
             - []
 
-    # deprecated will be removed in 1.5, please use pim_catalog.validator.product
+    # deprecated will be removed in 1.6, please use pim_catalog.validator.product
     pim_validator:
         alias: pim_catalog.validator.product

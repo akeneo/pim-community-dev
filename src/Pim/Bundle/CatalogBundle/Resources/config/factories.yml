@@ -18,7 +18,7 @@ services:
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
 
-    # deprecated: will be removed in 1.4
+    # deprecated: will be removed in 1.6
     pim_catalog.factory.referenced_collection:
         alias: akeneo_storage_utils.factory.referenced_collection
 
