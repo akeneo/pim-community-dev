@@ -71,10 +71,8 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     {
         if ('code' == $field) {
             $attributeGroup->setCode($data);
-
         } elseif ('sort_order' == $field) {
             $attributeGroup->setSortOrder($data);
-
         } elseif ('attributes' == $field) {
             foreach ($data as $attributeCode) {
                 $attribute = $this->findAttribute($attributeCode);
@@ -87,7 +85,6 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
                     ));
                 }
             }
-
         } elseif ('label' == $field) {
             foreach ($data as $locale => $label) {
                 $attributeGroup->setLocale($locale);

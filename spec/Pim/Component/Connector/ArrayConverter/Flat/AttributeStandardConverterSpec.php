@@ -3,9 +3,15 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 
 class AttributeStandardConverterSpec extends ObjectBehavior
 {
+    function let(FieldsRequirementValidator $validator)
+    {
+        $this->beConstructedWith($validator);
+    }
+
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(

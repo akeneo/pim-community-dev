@@ -4,12 +4,13 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 
 class AttributeOptionStandardConverterSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $localeRepository)
+    function let(LocaleRepositoryInterface $localeRepository, FieldsRequirementValidator $validator)
     {
-        $this->beConstructedWith($localeRepository);
+        $this->beConstructedWith($localeRepository, $validator);
     }
 
     function it_is_a_standard_array_converter()
@@ -46,22 +47,23 @@ class AttributeOptionStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_exception_when_the_attribute_field_is_missing()
+    function it_throws_exception_when_the_attribute_field_is_missing($validator)
     {
+        $item = [
+            'code'         => '210_x_1219_mm',
+            'sort_order'   => '2',
+            'label-de_DE'  => '210 x 1219 mm',
+            'label-en_US'  => '210 x 1219 mm',
+            'label-fr_FR'  => '210 x 1219 mm',
+        ];
+
+        $validator
+            ->validateFields($item, ['attribute', 'code'], false)
+            ->willThrow('Pim\Component\Connector\Exception\ArrayConversionException');
+
         $this
             ->shouldThrow('Pim\Component\Connector\Exception\ArrayConversionException')
-            ->during(
-                'convert',
-                [
-                    [
-                        'code'         => '210_x_1219_mm',
-                        'sort_order'   => '2',
-                        'label-de_DE'  => '210 x 1219 mm',
-                        'label-en_US'  => '210 x 1219 mm',
-                        'label-fr_FR'  => '210 x 1219 mm',
-                    ]
-                ]
-            );
+            ->during('convert', [$item]);
     }
 
     function it_throws_exception_when_unauthorized_field_is_provided($localeRepository)

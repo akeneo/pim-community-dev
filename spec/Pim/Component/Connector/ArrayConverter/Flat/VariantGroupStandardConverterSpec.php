@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class VariantGroupStandardConverterSpec extends ObjectBehavior
@@ -13,9 +14,15 @@ class VariantGroupStandardConverterSpec extends ObjectBehavior
     function let(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductStandardConverter $productConverter
+        ProductStandardConverter $productConverter,
+        FieldsRequirementValidator $validator
     ) {
-        $this->beConstructedWith($localeRepository, $attributeRepository, $productConverter);
+        $this->beConstructedWith(
+            $localeRepository,
+            $attributeRepository,
+            $productConverter,
+            $validator
+        );
     }
 
     function it_converts(
@@ -79,44 +86,69 @@ class VariantGroupStandardConverterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_required_fields_are_not_in_array()
+    function it_throws_an_exception_if_required_fields_are_not_in_array($validator)
     {
-        $this->shouldThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'))->during(
-            'convert',
-            [['not_a_code' => '']]
-        );
+        $item = ['not_a_code' => ''];
+
+        $validator
+            ->validateFields($item, ['code', 'type'])
+            ->willThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'));
+
+        $this
+            ->shouldThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'))
+            ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_type_is_not_in_array()
+    function it_throws_an_exception_if_required_field_type_is_not_in_array($validator)
     {
-        $this->shouldThrow(new \LogicException('Field "type" is expected, provided fields are "code, not_a_code"'))->during(
-            'convert',
-            [['code' => 'my-code', 'not_a_code' => '']]
-        );
+        $item = ['code' => 'my-code', 'not_a_code' => ''];
+
+        $validator
+            ->validateFields($item, ['code', 'type'])
+            ->willThrow(new \LogicException('Field "type" is expected, provided fields are "code, not_a_code"'));
+
+        $this
+            ->shouldThrow(new \LogicException('Field "type" is expected, provided fields are "code, not_a_code"'))
+            ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_code_is_empty()
+    function it_throws_an_exception_if_required_field_code_is_empty($validator)
     {
-        $this->shouldThrow(new \LogicException('Field "code" must be filled'))->during(
-            'convert',
-            [['type' => 'RELATED', 'code' => '']]
-        );
+        $item = ['type' => 'RELATED', 'code' => ''];
+
+        $validator
+            ->validateFields($item, ['code', 'type'])
+            ->willThrow(new \LogicException('Field "code" must be filled'));
+
+        $this
+            ->shouldThrow(new \LogicException('Field "code" must be filled'))
+            ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_fields_are_empty()
+    function it_throws_an_exception_if_required_fields_are_empty($validator)
     {
-        $this->shouldThrow(new \LogicException('Field "code" must be filled'))->during(
-            'convert',
-            [['type' => '', 'code' => '']]
-        );
+        $item = ['type' => '', 'code' => ''];
+
+        $validator
+            ->validateFields($item, ['code', 'type'])
+            ->willThrow(new \LogicException('Field "code" must be filled'));
+
+        $this
+            ->shouldThrow(new \LogicException('Field "code" must be filled'))
+            ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_type_is_empty()
+    function it_throws_an_exception_if_required_field_type_is_empty($validator)
     {
-        $this->shouldThrow(new \LogicException('Field "type" must be filled'))->during(
-            'convert',
-            [['code' => 'my-code', 'type' => '']]
-        );
+        $item = ['code' => 'my-code', 'type' => ''];
+
+        $validator
+            ->validateFields($item, ['code', 'type'])
+            ->willThrow(new \LogicException('Field "type" must be filled'));
+
+        $this
+            ->shouldThrow(new \LogicException('Field "type" must be filled'))
+            ->during('convert', [$item]);
     }
 
     function it_throws_an_exception_if_there_is_non_authorized_fields_in_array($localeRepository)

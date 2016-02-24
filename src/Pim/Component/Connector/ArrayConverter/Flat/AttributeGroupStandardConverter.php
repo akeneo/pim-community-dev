@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Channel Flat to Standard format Converter
@@ -14,6 +14,17 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class AttributeGroupStandardConverter implements StandardArrayConverterInterface
 {
+    /** @var FieldsRequirementValidator */
+    protected $validator;
+
+    /**
+     * @param FieldsRequirementValidator $validator
+     */
+    public function __construct(FieldsRequirementValidator $validator)
+    {
+        $this->validator = $validator;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -41,10 +52,10 @@ class AttributeGroupStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validateRequiredFields($item, ['code', 'sort_order']);
+        $this->validator->validateFields($item, ['code']);
 
         $convertedItem = [];
-        foreach($item as $field => $data) {
+        foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
 
@@ -72,35 +83,5 @@ class AttributeGroupStandardConverter implements StandardArrayConverterInterface
         }
 
         return $convertedItem;
-    }
-
-    /**
-     * TODO: Should be refactored with Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter
-     *
-     * @param array $item
-     * @param array $requiredFields
-     */
-    protected function validateRequiredFields(array $item, array $requiredFields)
-    {
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' == $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
-                        $requiredField
-                    )
-                );
-            }
-        }
     }
 }
