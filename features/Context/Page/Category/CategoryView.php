@@ -39,18 +39,6 @@ abstract class CategoryView extends Form
     }
 
     /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function selectTree($category)
-    {
-        $this->getElement('Tree select')->selectOption($category);
-
-        return $this;
-    }
-
-    /**
      * @param string $action
      *
      * @throws \InvalidArgumentException
