@@ -25,20 +25,26 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
-
+    
+    /** @var array */
+    protected $supportedFields = [];
+    
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param array $supportedFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        array $supportedFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->supportedFields = $supportedFields;
     }
 
     /**
@@ -114,7 +120,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $values) {
-            if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
+            if (in_array($field, $this->supportedFields)) {
                 $this->updateProductFields($product, $field, $values);
             } else {
                 $this->updateProductValues($product, $field, $values);
