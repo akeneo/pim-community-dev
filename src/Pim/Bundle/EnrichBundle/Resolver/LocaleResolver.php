@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization;
+namespace Pim\Bundle\EnrichBundle\Resolver;
 
 use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Factory\NumberFactory;

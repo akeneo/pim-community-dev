@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Localization\LocaleResolver;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -37,12 +37,12 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     protected $productClass;
 
     /**
-     * @param NormalizerInterface   $normalizer
-     * @param DenormalizerInterface $denormalizer
-     * @param ProductBuilder        $productBuilder
-     * @param LocaleResolver        $localeResolver
-     * @param string                $productTemplateClass
-     * @param string                $productClass
+     * @param NormalizerInterface                              $normalizer
+     * @param DenormalizerInterface                            $denormalizer
+     * @param ProductBuilder                                   $productBuilder
+     * @param \Pim\Bundle\EnrichBundle\Resolver\LocaleResolver $localeResolver
+     * @param string                                           $productTemplateClass
+     * @param string                                           $productClass
      */
     public function __construct(
         NormalizerInterface $normalizer,

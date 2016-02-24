@@ -4,7 +4,7 @@ namespace Pim\Bundle\LocalizationBundle\Controller;
 
 use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\LocaleResolver;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -26,9 +26,9 @@ class FormatController
     protected $localeResolver;
 
     /**
-     * @param DateFactory    $dateFactory
-     * @param DateFactory    $datetimeFactory
-     * @param LocaleResolver $localeResolver
+     * @param DateFactory                                      $dateFactory
+     * @param DateFactory                                      $datetimeFactory
+     * @param \Pim\Bundle\EnrichBundle\Resolver\LocaleResolver $localeResolver
      */
     public function __construct(DateFactory $dateFactory, DateFactory $datetimeFactory, LocaleResolver $localeResolver)
     {

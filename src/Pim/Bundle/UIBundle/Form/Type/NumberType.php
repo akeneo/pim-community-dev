@@ -4,13 +4,12 @@ namespace Pim\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
-use Pim\Component\Localization\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * PIM number type
@@ -24,7 +23,7 @@ class NumberType extends AbstractType
     /** @var LocalizerInterface */
     protected $localizer;
 
-    /** @var LocaleResolver */
+    /** @var \Pim\Bundle\EnrichBundle\Resolver\LocaleResolver */
     protected $localeResolver;
 
     /**

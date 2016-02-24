@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
-use Pim\Component\Localization\LocaleResolver;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

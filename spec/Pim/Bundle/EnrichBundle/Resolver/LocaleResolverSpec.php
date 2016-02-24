@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Localization;
+namespace spec\Pim\Bundle\EnrichBundle\Resolver;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Localization\Factory\DateFactory;

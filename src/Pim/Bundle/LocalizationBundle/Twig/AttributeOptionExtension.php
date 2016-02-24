@@ -3,7 +3,7 @@
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
-use Pim\Component\Localization\LocaleResolver;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Twig extension to present localized attribute options
@@ -17,12 +17,12 @@ class AttributeOptionExtension extends \Twig_Extension
     /** @var PresenterRegistryInterface */
     protected $presenterRegistry;
 
-    /** @var LocaleResolver */
+    /** @var \Pim\Bundle\EnrichBundle\Resolver\LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param PresenterRegistryInterface $presenterRegistry
-     * @param LocaleResolver             $localeResolver
+     * @param PresenterRegistryInterface                       $presenterRegistry
+     * @param \Pim\Bundle\EnrichBundle\Resolver\LocaleResolver $localeResolver
      */
     public function __construct(PresenterRegistryInterface $presenterRegistry, LocaleResolver $localeResolver)
     {
