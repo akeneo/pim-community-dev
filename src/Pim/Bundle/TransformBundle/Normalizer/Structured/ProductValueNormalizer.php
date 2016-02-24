@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Akeneo\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,10 +21,19 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @var SerializerInterface */
     protected $serializer;
 
-    /**
-     * @var string[]
-     */
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
+
+    /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
+
+    /**
+     * @param LocalizerRegistryInterface $localizerRegistry
+     */
+    public function __construct(LocalizerRegistryInterface $localizerRegistry)
+    {
+        $this->localizerRegistry = $localizerRegistry;
+    }
 
     /**
      * {@inheritdoc}
@@ -46,6 +56,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
         } else {
             $data = $this->serializer->normalize($entity->getData(), $format, $context);
+        }
+
+        $type = $entity->getAttribute()->getAttributeType();
+
+        $localizer = $this->localizerRegistry->getLocalizer($type);
+        if (null !== $localizer) {
+            $data = $localizer->localize($data, $context);
         }
 
         return [

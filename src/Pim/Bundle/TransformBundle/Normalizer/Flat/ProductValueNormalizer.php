@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Akeneo\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -22,20 +23,24 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @var SerializerInterface */
     protected $serializer;
 
-    /**
-     * @var string[]
-     */
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
+
+
+    /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
 
     /** @var int */
     protected $precision;
 
     /**
-     * @param int $precision
+     * @param LocalizerRegistryInterface $localizerRegistry
+     * @param int                        $precision
      */
-    public function __construct($precision = 4)
+    public function __construct(LocalizerRegistryInterface $localizerRegistry, $precision = 4)
     {
-        $this->precision = $precision;
+        $this->localizerRegistry = $localizerRegistry;
+        $this->precision         = $precision;
     }
 
     /**
@@ -104,6 +109,15 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                     is_object($data) ? get_class($data) : gettype($data)
                 )
             );
+        }
+
+        $type = $entity->getAttribute()->getAttributeType();
+
+        $localizer = $this->localizerRegistry->getLocalizer($type);
+        if (null !== $localizer) {
+            foreach ($result as $field => $data) {
+                $result[$field] = $localizer->localize($data, $context);
+            }
         }
 
         return $result;
