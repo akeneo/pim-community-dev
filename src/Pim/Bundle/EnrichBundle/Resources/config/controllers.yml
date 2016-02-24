@@ -293,7 +293,6 @@ services:
         scope: request
         class: %pim_enrich.controller.variant_group_attribute.class%
         arguments:
-            - '@router'
             - '@form.factory'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.saver.group'

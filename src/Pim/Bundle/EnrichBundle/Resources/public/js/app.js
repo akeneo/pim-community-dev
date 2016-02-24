@@ -32,9 +32,7 @@ define([
                 initSignin();
                 this.debug = !!options.debug;
 
-                FetcherRegistry.initialize().then(function () {
-                    FetcherRegistry.warmUp();
-                });
+                FetcherRegistry.initialize();
 
                 messenger.setup({
                     container: '#flash-messages .flash-messages-holder',

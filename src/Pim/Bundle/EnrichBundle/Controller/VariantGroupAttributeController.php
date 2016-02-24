@@ -14,10 +14,7 @@ use Pim\Component\Enrich\Model\AvailableAttributes;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Variant group attribute controller, allows to add and remove optional attributes to a variant group
@@ -28,9 +25,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class VariantGroupAttributeController
 {
-    /** @var RouterInterface */
-    protected $router;
-
     /** @var FormFactoryInterface */
     protected $formFactory;
 
@@ -50,7 +44,6 @@ class VariantGroupAttributeController
     protected $groupAttrResolver;
 
     /**
-     * @param RouterInterface                 $router
      * @param FormFactoryInterface            $formFactory
      * @param GroupRepositoryInterface        $groupRepository
      * @param SaverInterface                  $groupSaver
@@ -59,7 +52,6 @@ class VariantGroupAttributeController
      * @param VariantGroupAttributesResolver  $groupAttrResolver
      */
     public function __construct(
-        RouterInterface $router,
         FormFactoryInterface $formFactory,
         GroupRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
@@ -67,7 +59,6 @@ class VariantGroupAttributeController
         ProductTemplateBuilderInterface $templateBuilder,
         VariantGroupAttributesResolver $groupAttrResolver
     ) {
-        $this->router              = $router;
         $this->formFactory         = $formFactory;
         $this->groupRepository     = $groupRepository;
         $this->groupSaver          = $groupSaver;
@@ -103,7 +94,7 @@ class VariantGroupAttributeController
         $this->groupSaver->save($group, ['copy_values_to_products' => false]);
         $this->addFlash($request, 'success', 'flash.variant group.attributes_added');
 
-        return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $id]);
+        return new JsonResponse(['route' => 'pim_enrich_variant_group_edit', 'params' => ['id' => $id]]);
     }
 
     /**
@@ -130,11 +121,7 @@ class VariantGroupAttributeController
             $this->groupSaver->save($group);
         }
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        }
-
-        return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $groupId]);
+        return new JsonResponse(['route' => 'pim_enrich_variant_group_edit', 'params' => ['id' => $groupId]]);
     }
 
     /**
@@ -196,49 +183,6 @@ class VariantGroupAttributeController
             $availableAttributes,
             ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
         );
-    }
-
-    /**
-     * Create a redirection to a given route
-     *
-     * @param string $route
-     * @param mixed  $parameters
-     * @param int    $status
-     *
-     * @return JsonResponse
-     */
-    protected function redirectToRoute($route, $parameters = [], $status = 302)
-    {
-        return new JsonResponse(['route' => $route, 'params' => $parameters], $status);
-    }
-
-    /**
-     * Returns a JsonResponse to the given URL.
-     *
-     * @param string $url    The URL to redirect to
-     * @param int    $status The status code to use for the Response
-     *
-     * @return JsonResponse
-     */
-    protected function redirect($url, $status = 302)
-    {
-        return new JsonResponse($this->generateUrl('oro_default') . '#' . $url, $status);
-    }
-
-    /**
-     * Generates a URL from the given parameters.
-     *
-     * @param string      $route         The name of the route
-     * @param mixed       $parameters    An array of parameters
-     * @param bool|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
-     *
-     * @return string The generated URL
-     *
-     * @see UrlGeneratorInterface
-     */
-    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
-    {
-        return $this->router->generate($route, $parameters, $referenceType);
     }
 
     /**

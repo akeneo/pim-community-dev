@@ -15,7 +15,7 @@ define(
         return FormController.extend({
             events: {
                 'submit form.form-horizontal': 'submitForm',
-                'submit form#pim_available_attributes': 'clearCache'
+                'submit form#pim_available_attributes': 'addAvailableAttributes'
             },
 
             /**
@@ -47,8 +47,9 @@ define(
             /**
              * Clear the variant group cache after variant group edition
              */
-            clearCache: function () {
+            addAvailableAttributes: function (event) {
                 FetcherRegistry.getFetcher('variant-group').clear();
+                this.submitForm(event);
             }
         });
     }

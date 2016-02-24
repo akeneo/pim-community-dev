@@ -57,8 +57,6 @@ class HookContext extends PimContext
      */
     public function purgeDatabase()
     {
-        $this->getSession()->visit($this->locatePath('/user/logout'));
-
         $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
         if (file_exists($excludedTablesFile)) {
             $parser         = new Parser();

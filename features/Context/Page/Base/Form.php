@@ -341,14 +341,16 @@ class Form extends Base
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
-        return $this->getElement('Available attributes form')->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        return $this->spin(function() use ($attribute, $group) {
+            return $this->getElement('Available attributes form')->find(
+                'css',
+                sprintf(
+                    'optgroup[label="%s"] option:contains("%s")',
+                    $group,
+                    $attribute
+                )
+            );
+        }, 'Cannot find the available attribute in group');
     }
 
     /**
