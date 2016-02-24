@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Provider;
+namespace Akeneo\Component\Localization\Provider;
 
 /**
  * Interface LocaleProviderInterface
