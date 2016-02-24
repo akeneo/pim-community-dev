@@ -14,7 +14,7 @@ Feature: Update product history when rules are executed
       | SKU             | converse-sneakers |
       | Choose a family | Sneakers          |
     And I press the "Save" button in the popin
-    And I am on the "converse-sneakers" product page
+    And I wait to be on the "converse-sneakers" product page
     And I fill in the following information:
       | Name        | Black sneakers         |
       | Description | Classic black sneakers |

@@ -24,7 +24,7 @@ Feature: Revert a product to a previous version
     And I fill in the following information in the popin:
       | SKU | red-heels |
     And I press the "Save" button in the popin
-    And I am on the "red-heels" product page
+    And I wait to be on the "red-heels" product page
     And I add available attributes Main color and Main fabric
     And I fill in the following information:
       | Main color  | [red]                          |
