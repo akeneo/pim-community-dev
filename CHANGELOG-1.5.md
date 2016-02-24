@@ -6,7 +6,7 @@
 
 ## BC breaks
 
-- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
+- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface`
 - Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
@@ -43,11 +43,11 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType` to keep only $dataclass
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`. Removed arguments `Pim\Bundle\CatalogBundle\Context\CatalogContext`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Akeneo\Component\FileStorage\File\FileStorerInterface`, `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager`. Added arguments `Akeneo\Component\Localization\Localizer\LocalizerRegistry` and `Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
 - Service `oro_form.type.date` is removed and replaced by `pim_form.type.date` (alias `oro_date` is replaced by `pim_date`)
-- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` and `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
 - Add `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Add an array `$decimalSeparators` to `Pim\Component\Connector\Reader\File\CsvProductReader`
 - Column 'comment' has been added on the `pim_notification_notification` table.

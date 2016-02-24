@@ -3,7 +3,7 @@
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Component\Localization\LocaleResolver;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Twig extension to present localized data

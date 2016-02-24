@@ -14,4 +14,4 @@ services:
         arguments:
             - '@pim_localization.factory.date'
             - '@pim_localization.factory.datetime'
-            - '@pim_localization.resolver.locale'
+            - '@pim_enrich.resolver.locale'

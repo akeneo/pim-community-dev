@@ -4,7 +4,7 @@ namespace Pim\Bundle\CommentBundle\Normalizer\Structured;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
-use Pim\Component\Localization\LocaleResolver;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 

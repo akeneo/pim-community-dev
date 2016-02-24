@@ -1,5 +1,5 @@
 parameters:
-    pim_localization.resolver.locale.class: Pim\Component\Localization\LocaleResolver
+    pim_localization.resolver.locale.class: Pim\Bundle\EnrichBundle\Resolver\LocaleResolver
 
 services:
     pim_localization.resolver.locale:
