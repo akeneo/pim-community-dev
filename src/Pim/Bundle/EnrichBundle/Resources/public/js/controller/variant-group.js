@@ -49,7 +49,8 @@ define(
              */
             addAvailableAttributes: function (event) {
                 FetcherRegistry.getFetcher('variant-group').clear();
-                this.submitForm(event);
+
+                return this.submitForm(event);
             }
         });
     }

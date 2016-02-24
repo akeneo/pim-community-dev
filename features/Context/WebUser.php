@@ -966,15 +966,13 @@ class WebUser extends RawMinkContext
     {
         $attributes = $this->listToArray($attributes);
         foreach ($attributes as $attribute) {
-            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see attribute %s under group %s, but was not present.',
-                        $attribute,
-                        $group
-                    )
-                );
-            }
+            $this->spin(function () use ($attribute, $group) {
+                return $this->getCurrentPage()->getAttribute($attribute, $group);
+            }, sprintf(
+                'Expecting to see attribute %s under group %s, but was not present.',
+                $attribute,
+                $group
+            ));
         }
     }
 
