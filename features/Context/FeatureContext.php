@@ -326,6 +326,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function assertPageContainsText($text)
+    {
+        $this->spin(function () use ($text) {
+            parent::assertPageContainsText($text);
+
+            return true;
+        }, "Spining for asserting page contains text $text");
+    }
+
+    /**
      * Set the waiting timeout
      *
      * @param $parameters

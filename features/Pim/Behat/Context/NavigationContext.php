@@ -4,6 +4,7 @@ namespace Pim\Behat\Context;
 
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
+use Behat\Mink\Exception\DriverException;
 use Context\Page\Base\Base;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -85,16 +86,28 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $username
+     * @param string  $username
      *
      * @Given /^I am logged in as "([^"]*)"$/
      */
     public function iAmLoggedInAs($username)
     {
-        $this->username = $username;
-        $this->password = $username;
-
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.title-box');
+        });
+
+        $this->getSession()->getPage()->fillField('_username', $username);
+        $this->getSession()->getPage()->fillField('_password', $username);
+
+        $this->getSession()->getPage()->pressButton('Log in');
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.version-container');
+        }, "Spining for login with $username");
     }
 
     /**
@@ -206,6 +219,21 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I wait to be on the "([^"]*)" (\w+) page$/
+     */
+    public function iWaitForTheEntityEditPage($identifier, $page)
+    {
+        $page   = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->setCurrentPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
         $this->wait();
     }
 
@@ -222,7 +250,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
-        $this->wait();
     }
 
     /**
@@ -288,30 +315,33 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $page
+     * @param string $pageName
      * @param array  $options
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($page, array $options = [])
+    public function openPage($pageName, array $options = [])
     {
-        $this->currentPage = $page;
+        $this->currentPage = $pageName;
 
-        /** @var Base $page */
         $page = $this->getCurrentPage()->open($options);
 
-        // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page, $options) {
-            if ($this->loginIfRequired()) {
-                $page = $this->getCurrentPage()->open($options);
-                $this->wait();
-            }
-
-            return $page->verifyAfterLogin();
-        }, 'Trying to open page ' . $this->currentPage);
         $this->wait();
 
         return $page;
+    }
+
+    /**
+     * @param string $pageName
+     * @param array  $options
+     *
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    public function setCurrentPage($pageName, array $options = [])
+    {
+        $this->currentPage = $pageName;
+
+        return $this->getCurrentPage();
     }
 
     /**
@@ -367,25 +397,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         }
 
         return $filteredUrl;
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     *
-     * @return bool true if login was required, false if not
-     */
-    protected function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

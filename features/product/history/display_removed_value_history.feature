@@ -13,7 +13,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Weather conditions
     And I change the "Weather conditions" to "Cold, Snowy"
     And I save the product
@@ -44,7 +44,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I edit the "boots" product
+    And I wait to be on the "boots" product page
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
     And I expand the "2014 collection" category
@@ -76,7 +76,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I edit the "boots" product
+    And I wait to be on the "boots" product page
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
     And I expand the "2014 collection" category
@@ -113,7 +113,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Manufacturer
     And I change the "Manufacturer" to "Converse"
     And I save the product
@@ -144,7 +144,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Weather conditions, Comment
     And I change the "Weather conditions" to "Cold, Snowy"
     And I visit the "Other" group

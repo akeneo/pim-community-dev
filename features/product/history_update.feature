@@ -13,7 +13,7 @@ Feature: Update the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Price
     And I change the Price to "20 USD"
     And I change the Price to "10 EUR"
@@ -57,7 +57,7 @@ Feature: Update the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Length
     And I change the "Length" to "30"
     And I save the product

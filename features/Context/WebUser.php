@@ -13,6 +13,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
@@ -984,7 +985,12 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
-        $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+        try {
+            $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+        } catch (TimeoutException $te) {
+            $removeLink = null;
+        }
+
         if ($not) {
             if ($removeLink) {
                 throw $this->createExpectationException(

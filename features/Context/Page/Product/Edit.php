@@ -82,23 +82,20 @@ class Edit extends ProductEditForm
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $element = $this->getElement('Save');
+
+        $this->spin(function () use ($element) {
+            return $element->isVisible();
+        }, "Waiting for save button to be visible");
+
+        $element->click();
+
         $this->spin(function () {
             return null === $this->find(
                 'css',
                 '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
             );
         });
-    }
-
-    public function verifyAfterLogin()
-    {
-        $formContainer = $this->find('css', 'div.product-edit-form');
-        if (!$formContainer) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -192,18 +189,30 @@ class Edit extends ProductEditForm
      */
     public function getAttributePosition($attribute)
     {
-        $rows = $this->find('css', '.tab-pane.active.product-values')->findAll('css', '.field-container');
+        $productValues = $this->spin(function () {
+            return $this->find('css', '.tab-pane.active.product-values');
+        }, "Spining on find for product-values tab to get attribute position");
 
-        foreach ($rows as $index => $row) {
-            if ($row->find('css', sprintf(':contains("%s")', $attribute))) {
-                return $index + 1;
+        $rows = $this->spin(function () use ($productValues) {
+            return $productValues->findAll('css', '.field-container');
+        }, "Spining on findAll for rows on product-values to get attribute position");
+
+        $position = $this->spin(function () use ($rows, $attribute) {
+            foreach ($rows as $index => $row) {
+                if ($row->find('css', sprintf(':contains("%s")', $attribute))) {
+                    return $index + 1;
+                }
             }
+        }, "Spining on scanning rows to get attribute position");
+
+        if (!$position) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                sprintf('Attribute "%s" not found', $attribute)
+            );
         }
 
-        throw new ElementNotFoundException(
-            $this->getSession(),
-            sprintf('Attribute "%s" not found', $attribute)
-        );
+        return $position;
     }
 
     /**
@@ -277,23 +286,27 @@ class Edit extends ProductEditForm
      */
     public function getRemoveLinkFor($field)
     {
-        $link = $this->find(
-            'css',
-            sprintf(
-                '.control-group:contains("%s") .remove-attribute',
-                $field
-            )
-        );
-
-        if (!$link) {
+        $link = $this->spin(function () use ($field) {
             $link = $this->find(
                 'css',
                 sprintf(
-                    '.field-container:contains("%s") .remove-attribute',
+                    '.control-group:contains("%s") .remove-attribute',
                     $field
                 )
             );
-        }
+
+            if (!$link) {
+                $link = $this->find(
+                    'css',
+                    sprintf(
+                        '.field-container:contains("%s") .remove-attribute',
+                        $field
+                    )
+                );
+            }
+
+            return $link;
+        }, "Spining to get remove link on product edit form for field $field");
 
         return $link;
     }
@@ -338,7 +351,12 @@ class Edit extends ProductEditForm
     public function disableProduct()
     {
         $el = $this->getElement('Status switcher');
-        $el->find('css', 'a.dropdown-toggle')->click();
+
+        $statusToggle = $this->spin(function () use ($el) {
+            return $el->find('css', 'a.dropdown-toggle');
+        }, "Spining to get the status dropdown toggle to disable product on PEF");
+
+        $statusToggle->click();
         $button = $el->find('css', 'ul a[data-status="disable"]');
         if ($button) {
             $button->click();
@@ -355,7 +373,12 @@ class Edit extends ProductEditForm
     public function enableProduct()
     {
         $el = $this->getElement('Status switcher');
-        $el->find('css', 'a.dropdown-toggle')->click();
+
+        $statusToggle = $this->spin(function () use ($el) {
+            return $el->find('css', 'a.dropdown-toggle');
+        }, "Spining to get the status dropdown toggle to enable product on PEF");
+
+        $statusToggle->click();
         $button = $el->find('css', 'ul a[data-status="enable"]');
         if ($button) {
             $button->click();
