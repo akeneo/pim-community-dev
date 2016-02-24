@@ -330,22 +330,7 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param object $object
-     * @param bool   $flush
      *
-     * TODO use Savers
-     */
-    protected function persist($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->persist($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
      * @param object $object
      * @param bool   $flush
      *
