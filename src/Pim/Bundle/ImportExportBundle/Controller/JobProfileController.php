@@ -302,11 +302,7 @@ class JobProfileController
         $this->entityManager->remove($jobInstance);
         $this->entityManager->flush();
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToIndexView();
-        }
+        return $this->redirectToIndexView();
     }
 
     /**

@@ -61,6 +61,10 @@ config:
                 pim_enrich_mass_edit_action_choose:            pim/controller/form
                 pim_enrich_mass_edit_action_configure:         pim/controller/form
                 pim_importexport_import_profile_launch_upload: pim/controller/redirect
+                pim_importexport_import_profile_launch:        pim/controller/redirect
+                pim_importexport_import_profile_remove:        pim/controller/redirect
+                pim_importexport_export_profile_launch:        pim/controller/redirect
+                pim_importexport_export_profile_remove:        pim/controller/redirect
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
