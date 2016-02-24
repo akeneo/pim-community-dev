@@ -10,6 +10,7 @@ parameters:
     pim_connector.array_converter.flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter
     pim_connector.array_converter.flat.family.class:                                  Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter
     pim_connector.array_converter.flat.channel.class:                                 Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter
+    pim_connector.array_converter.flat.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter
 
     pim_connector.array_converter.flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter
@@ -47,6 +48,9 @@ services:
 
     pim_connector.array_converter.flat.channel:
         class: %pim_connector.array_converter.flat.channel.class%
+
+    pim_connector.array_converter.flat.attribute_group:
+        class: %pim_connector.array_converter.flat.attribute_group.class%
 
     pim_connector.array_converter.flat.association_type:
         class: %pim_connector.array_converter.flat.association_type.class%

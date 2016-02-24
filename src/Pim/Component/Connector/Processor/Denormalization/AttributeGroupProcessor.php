@@ -4,22 +4,25 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Factory\ChannelFactory;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Factory\AttributeGroupFactory;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Channel import processor
+ * Attribute Group import processor
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelProcessor extends AbstractProcessor
+class AttributeGroupProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
-    protected $channelConverter;
+    protected $groupConverter;
+
+    /** @var AttributeGroupFactory */
+    protected $groupFactory;
 
     /** @var ObjectUpdaterInterface */
     protected $updater;
@@ -27,29 +30,26 @@ class ChannelProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ChannelFactory */
-    protected $channelFactory;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $channelConverter
-     * @param ChannelFactory                        $channelFactory
+     * @param StandardArrayConverterInterface       $groupConverter
+     * @param AttributeGroupFactory                 $groupFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $channelConverter,
-        ChannelFactory $channelFactory,
+        StandardArrayConverterInterface $groupConverter,
+        AttributeGroupFactory $groupFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->channelConverter = $channelConverter;
-        $this->channelFactory   = $channelFactory;
-        $this->updater          = $updater;
-        $this->validator        = $validator;
+        $this->groupConverter = $groupConverter;
+        $this->groupFactory   = $groupFactory;
+        $this->updater        = $updater;
+        $this->validator      = $validator;
     }
 
     /**
@@ -57,35 +57,35 @@ class ChannelProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->channelConverter->convert($item);
-        $channel = $this->findOrCreateChannel($convertedItem);
+        $convertedItem = $this->groupConverter->convert($item);
+        $attributeGroup = $this->findOrCreateAttributeGroup($convertedItem);
 
         try {
-            $this->updater->update($channel, $convertedItem);
+            $this->updater->update($attributeGroup, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->validator->validate($channel);
+        $violations = $this->validator->validate($attributeGroup);
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        return $channel;
+        return $attributeGroup;
     }
 
     /**
      * @param array $convertedItem
      *
-     * @return ChannelInterface
+     * @return AttributeGroupInterface
      */
-    protected function findOrCreateChannel(array $convertedItem)
+    protected function findOrCreateAttributeGroup(array $convertedItem)
     {
-        $channel = $this->findObject($this->repository, $convertedItem);
-        if (null === $channel) {
-            return $this->channelFactory->create();
+        $attributeGroup = $this->findObject($this->repository, $convertedItem);
+        if (null === $attributeGroup) {
+            return $this->groupFactory->create();
         }
 
-        return $channel;
+        return $attributeGroup;
     }
 }

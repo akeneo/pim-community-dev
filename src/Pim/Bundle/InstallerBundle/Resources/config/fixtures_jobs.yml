@@ -14,14 +14,14 @@ jobs:
             circularRefsChecked: true
             uploadAllowed: true
 
-    fixtures_attribute_group_yml:
+    fixtures_attribute_group_csv:
         order: 30
         connector: Data fixtures
-        alias:     fixtures_attribute_group_yml
+        alias:     fixtures_attribute_group_csv
         label:     Attribute groups data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_groups.yml
+            filePath: attribute_groups.csv
             multiple: false
 
     fixtures_group_type_yml:
