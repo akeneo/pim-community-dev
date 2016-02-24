@@ -80,7 +80,7 @@ class StepExecutionNormalizer implements NormalizerInterface
      */
     protected function normalizeWarnings(Collection $warnings, array $context = [])
     {
-        $result = [];
+        $results = [];
         $selectedWarnings = [];
 
         if (isset($context['limit_warnings']) && $context['limit_warnings'] > 0) {
@@ -89,16 +89,32 @@ class StepExecutionNormalizer implements NormalizerInterface
             $selectedWarnings = $warnings;
         }
 
+
+        $items = [];
         foreach ($selectedWarnings as $warning) {
-            $result[] =  [
-                'label'  => $this->translator->trans($warning->getName()),
-                'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
-                'item'   => $warning->getItem(),
-            ];
+            $parameters = $warning->getReasonParameters();
+            $reason = sprintf('%s: %s: %s',
+                $parameters['attribute'],
+                $this->translator->trans($warning->getReason(), $parameters, 'validators'),
+                $parameters['invalid_value']
+            );
+            $itemIndex = array_search($warning->getItem(), $items);
+
+            if(False !== $itemIndex){
+                $results[$itemIndex]['reasons'][] = $reason;
+            } else {
+                $items[] = $warning->getItem();
+                $results[] = [
+                    'label'  => $this->translator->trans($warning->getName()),
+                    'reasons' => [$reason],
+                    'item'   => $warning->getItem(),
+                ];
+            }
         }
 
-        return $result;
+        return $results;
     }
+
 
     /**
      * Normalizes the summary

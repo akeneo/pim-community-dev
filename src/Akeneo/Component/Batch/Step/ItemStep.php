@@ -278,12 +278,14 @@ class ItemStep extends AbstractStep
             $warningName = get_class($element);
         }
 
-        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getMessageParameters(), $e->getItem());
-        $this->dispatchInvalidItemEvent(
-            get_class($element),
-            $e->getMessage(),
-            $e->getMessageParameters(),
-            $e->getItem()
-        );
+        foreach($e->getMessageParameters() as $error){
+            $stepExecution->addWarning($warningName, $error["message"], $error, $e->getItem());
+            $this->dispatchInvalidItemEvent(
+                get_class($element),
+                $e->getMessage(),
+                $e->getMessageParameters(),
+                $e->getItem()
+            );
+        }
     }
 }

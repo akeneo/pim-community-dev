@@ -118,7 +118,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        $errors = [];
+        $errorsParameters = [];
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
@@ -133,14 +133,24 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             } elseif (is_array($invalidValue)) {
                 $invalidValue = implode(', ', $invalidValue);
             }
-            $errors[] = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
+
+
+            $violationParameters = $violation->getMessageParameters();
+            $violationParameters["message"] = $violation->getMessageTemplate();
+            $violationParameters["attribute"] = $violation->getPropertyPath();
+            $violationParameters["invalid_value"] = $invalidValue;
+
+            $errorsParameters[] = $violationParameters;
         }
 
-        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
+        $errorSummary = implode('\n', array_map(function($error){
+            return $error["message"];
+        }, $errorsParameters));
+
+        dump("######");
+        dump($errorSummary);
+        dump("######");
+
+        throw new InvalidItemException($errorSummary, $item, $errorsParameters, 0, $previousException);
     }
 }
