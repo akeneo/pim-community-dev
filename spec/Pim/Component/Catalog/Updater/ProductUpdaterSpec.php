@@ -2,22 +2,22 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater,
-        ValidatorInterface $validator
+        ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater, $validator);
+        $this->beConstructedWith(
+            $propertySetter,
+            $templateUpdater,
+            ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
+        );
     }
 
     function it_is_initializable()
