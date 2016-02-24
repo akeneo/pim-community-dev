@@ -1585,7 +1585,6 @@ class FixturesContext extends RawMinkContext
         $rows = $values->getHash();
 
         foreach ($rows as $row) {
-
             $association = $owner->getAssociationForTypeCode($row['type']);
 
             if (null === $association) {
