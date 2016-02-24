@@ -117,5 +117,4 @@ class EnterpriseWebUser extends BaseWebUser
             );
         }
     }
-
 }
