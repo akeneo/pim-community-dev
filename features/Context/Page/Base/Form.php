@@ -188,33 +188,39 @@ class Form extends Base
      */
     public function visitGroup($group)
     {
-        $groups = $this->find('css', $this->elements['Groups']['css']);
-        if (!$groups) {
-            $groups = $this->getElement('Form Groups');
+        $this->spin(function () use ($group) {
+            $groups = $this->find('css', $this->elements['Groups']['css']);
 
-            $groupsContainer = $this->spin(function () use ($groups, $group) {
-                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, "Finding the group $group");
+            if ($groups) {
+                $groups->clickLink($group);
 
-            $button = null;
+                return true;
+            } else {
+                $groups = $this->getElement('Form Groups');
 
-            if ($groupsContainer) {
-                $button = $groupsContainer->getParent();
+                $groupsContainer = $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+                $button = null;
+
+                if ($groupsContainer) {
+                    $button = $groupsContainer->getParent();
+                }
+
+                if (!$button) {
+                    $labels = array_map(function ($element) {
+                        return $element->getText();
+                    }, $groups->findAll('css', '.group-label'));
+                    throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                        $group,
+                        implode(', ', $labels)
+                    ));
+                }
+                $button->click();
+
+                return true;
             }
 
-            if (!$button) {
-                $labels = array_map(function ($element) {
-                    return $element->getText();
-                }, $groups->findAll('css', '.group-label'));
-                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                    $group,
-                    implode(', ', $labels)
-                ));
-            }
-            $button->click();
-        } else {
-            $groups->clickLink($group);
-        }
+            return false;
+        }, sprintf('Cannot visit group %s', $group));
 
         return true;
     }

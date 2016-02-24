@@ -95,13 +95,6 @@ class Edit extends ProductEditForm
         }, "Waiting for save button to be visible");
 
         $element->click();
-
-        $this->spin(function () {
-            return null === $this->find(
-                'css',
-                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
-            );
-        });
     }
 
     /**
