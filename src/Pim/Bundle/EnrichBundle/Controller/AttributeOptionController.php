@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,6 +45,9 @@ class AttributeOptionController
     /** @var AttributeManager */
     protected $attributeManager;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /** @var AttributeOptionManager */
     protected $optionManager;
 
@@ -56,14 +60,15 @@ class AttributeOptionController
     /**
      * Constructor
      *
-     * @param NormalizerInterface    $normalizer
-     * @param EntityManager          $entityManager
-     * @param FormFactoryInterface   $formFactory
-     * @param ViewHandlerInterface   $viewHandler
-     * @param AttributeManager       $attributeManager
-     * @param AttributeOptionManager $optionManager
-     * @param SaverInterface         $optionSaver
-     * @param RemoverInterface       $optionRemover
+     * @param NormalizerInterface          $normalizer
+     * @param EntityManager                $entityManager
+     * @param FormFactoryInterface         $formFactory
+     * @param ViewHandlerInterface         $viewHandler
+     * @param AttributeManager             $attributeManager
+     * @param AttributeOptionManager       $optionManager
+     * @param SaverInterface               $optionSaver
+     * @param RemoverInterface             $optionRemover
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -73,16 +78,18 @@ class AttributeOptionController
         AttributeManager $attributeManager,
         AttributeOptionManager $optionManager,
         SaverInterface $optionSaver,
-        RemoverInterface $optionRemover
+        RemoverInterface $optionRemover,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->normalizer       = $normalizer;
-        $this->entityManager    = $entityManager;
-        $this->formFactory      = $formFactory;
-        $this->viewHandler      = $viewHandler;
-        $this->attributeManager = $attributeManager;
-        $this->optionManager    = $optionManager;
-        $this->optionRemover    = $optionRemover;
-        $this->optionSaver      = $optionSaver;
+        $this->normalizer          = $normalizer;
+        $this->entityManager       = $entityManager;
+        $this->formFactory         = $formFactory;
+        $this->viewHandler         = $viewHandler;
+        $this->attributeManager    = $attributeManager;
+        $this->optionManager       = $optionManager;
+        $this->optionRemover       = $optionRemover;
+        $this->optionSaver         = $optionSaver;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -228,7 +235,7 @@ class AttributeOptionController
     protected function findAttributeOr404($id)
     {
         try {
-            $result = $this->attributeManager->getAttribute($id);
+            $result = $this->attributeRepository->find($id);
         } catch (EntityNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

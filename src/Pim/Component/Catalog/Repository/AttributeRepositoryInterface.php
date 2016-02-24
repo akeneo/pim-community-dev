@@ -33,7 +33,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.5
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.6
      *
      * @return AttributeInterface[]
      */
@@ -67,7 +67,7 @@ interface AttributeRepositoryInterface extends
      *
      * @see findAllAxisQB
      *
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.5
+     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.6
      *
      * @return array
      */
@@ -76,7 +76,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Get available attributes as label as a choice
      *
-     * @deprecated only used in grid, will be removed in 1.5
+     * @deprecated only used in grid, will be removed in 1.6
      *
      * @return array
      */

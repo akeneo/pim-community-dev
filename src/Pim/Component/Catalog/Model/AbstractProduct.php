@@ -674,26 +674,6 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getMedia()
-    {
-        $media = [];
-        foreach ($this->getValues() as $value) {
-            if (in_array(
-                $value->getAttribute()->getAttributeType(),
-                [AttributeTypes::IMAGE, AttributeTypes::FILE]
-            )) {
-                $media[] = $value->getData();
-            }
-        }
-
-        return $media;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function addAssociation(AssociationInterface $association)
     {

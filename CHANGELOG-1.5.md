@@ -1,12 +1,20 @@
-# 1.5.x
+# 1.5.0-BETA1 (2016-02-22)
+
+## Bug fixes
+
+- PIM-5508: Variant group edition fix
 
 ## BC breaks
+
 - Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface`
 - Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController` to add `Pim\Bundle\CatalogBundle\Factory\AttributeFactory`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeOptionController` to add `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\TransformBundle\Transformer\AttributeTransformer` to remove `Pim\Bundle\CatalogBundle\Manager\AttributeManager` and add `Pim\Bundle\CatalogBundle\Factory\AttributeFactory`
 
 # 1.5.0-ALPHA1 (2016-01-26)
 
