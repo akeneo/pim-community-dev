@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Prophecy\Argument;
