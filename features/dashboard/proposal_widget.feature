@@ -11,10 +11,10 @@ Feature: Display proposal widget
       | my-jacket    | jackets | jackets    |
       | my-tee-shirt | jackets | jackets    |
     And the following product drafts:
-      | product      | author | status |
-      | my-jacket    | mary   | ready  |
-      | my-jacket    | sandra | ready  |
-      | my-tee-shirt | sandra | ready  |
+      | product      | author | status | result                                                                    |
+      | my-jacket    | mary   | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | my-jacket    | sandra | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
+      | my-tee-shirt | sandra | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
     And I am logged in as "Julia"
 
   Scenario: Successfully get redirected to correct Sandra's proposal grid filtered on selected proposal

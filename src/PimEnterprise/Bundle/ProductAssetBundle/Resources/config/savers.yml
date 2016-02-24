@@ -44,7 +44,7 @@ services:
             - %pimee_product_asset.model.file_metadata.class%
 
     pimee_product_asset.saver.category:
-        class: %pim_catalog.saver.base.class%
+        class: %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
@@ -52,7 +52,7 @@ services:
             - %pimee_product_asset.model.category.interface%
 
     pimee_product_asset.saver.channel_configuration:
-        class: %pim_catalog.saver.base.class%
+        class: %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'

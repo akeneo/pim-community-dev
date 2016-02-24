@@ -127,13 +127,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            if ('ready' === $data['status']) {
-                $productDraft->markAsReady();
-            }
             if (isset($data['createdAt'])) {
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {
                 $changes = json_decode($data['result'], true);
@@ -150,9 +146,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->setChanges($changes);
             }
 
-            $manager->persist($productDraft);
+            if ('ready' === $data['status']) {
+                $productDraft->markAsReady();
+                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+            } else {
+                $productDraft->markAsInProgress();
+                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+            }
+
+            $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
         }
-        $manager->flush();
     }
 
     /**
@@ -893,11 +896,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $rule->setCode($data['code']);
             $rule->setPriority((int) $data['priority']);
             $rule->setType('product');
-            // TODO : via EM to avoid validation
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition')->save($rule);
         }
-        $manager->flush();
     }
 
     /**
@@ -1057,11 +1057,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
          * before adding and persisting products inside it
          */
         $assets = $category->getAssets();
-        $this->persist($category, true);
+        $this->getContainer()->get('pimee_product_asset.saver.category')->save($category);
         foreach ($assets as $asset) {
             $asset->addCategory($category);
-            // TODO replace by call to a saver
-            $this->flush($asset);
+            $this->getContainer()->get('pimee_product_asset.saver.asset')->save($asset);
         }
 
         return $category;

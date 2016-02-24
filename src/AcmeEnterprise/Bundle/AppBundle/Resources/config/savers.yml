@@ -1,16 +1,16 @@
 services:
-    pimee_catalog_rule.saver.rule_relation:
+    acme_app.saver.color:
         class: %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %akeneo_rule_engine.model.rule_relation.class%
+            - %acme_app.entity.color.class%
 
-    pimee_catalog_rule.remover.rule_relation:
-        class: %pim_catalog.remover.base.class%
+    acme_app.saver.fabric:
+        class: %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.remover.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %akeneo_rule_engine.model.rule_relation.class%
+            - %acme_app.entity.fabric.class%
