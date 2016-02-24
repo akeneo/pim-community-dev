@@ -98,17 +98,9 @@ class Grid extends Index
     {
         $value   = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function () use ($value) {
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();
     }

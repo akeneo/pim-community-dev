@@ -33,21 +33,4 @@ class Classify extends Wizard
             ]
         );
     }
-
-    /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function selectTree($category)
-    {
-        $link = $this->getElement('Trees list')
-            ->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-        if (!$link) {
-            throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
-        }
-        $link->click();
-
-        return $this;
-    }
 }
