@@ -6,6 +6,7 @@ use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 use Oro\Bundle\UserBundle\Form\EventListener\UserApiSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Pim\Bundle\UserBundle\Form\Type\UserType;
 
 class UserApiType extends UserType
 {
