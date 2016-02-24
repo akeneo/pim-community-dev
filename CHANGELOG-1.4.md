@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.20 (2016-02-24)
 
 ## Improvements
 - PIM-5579: Enable `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` even for exports with several files
