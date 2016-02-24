@@ -364,15 +364,11 @@ class CategoryTreeController extends Controller
 
         $category = $this->findCategory($id);
         $parent   = $category->getParent();
-        $params   = (null !== $parent) ? ['node' => $parent->getId()] : [];
+        $params   = (null !== $parent) ? ['node' => $parent->getId()] : ['node' => 0];
 
         $this->categoryRemover->remove($category, ['flush' => true]);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute($this->buildRouteName('categorytree_index'), $params);
-        }
+        return new JsonResponse(['route' => 'categorytree_index', 'params' => $params]);
     }
 
     /**

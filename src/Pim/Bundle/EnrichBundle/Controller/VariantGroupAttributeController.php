@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -84,7 +84,7 @@ class VariantGroupAttributeController
      *
      * @AclAncestor("pim_enrich_group_add_attribute")
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function addAttributesAction(Request $request, $id)
     {
@@ -117,7 +117,7 @@ class VariantGroupAttributeController
      *
      * @throws NotFoundHttpException
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function removeAttributeAction(Request $request, $groupId, $attributeId)
     {
@@ -205,24 +205,24 @@ class VariantGroupAttributeController
      * @param mixed  $parameters
      * @param int    $status
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
-        return $this->redirect($this->generateUrl($route, $parameters), $status);
+        return new JsonResponse(['route' => $route, 'params' => $parameters], $status);
     }
 
     /**
-     * Returns a RedirectResponse to the given URL.
+     * Returns a JsonResponse to the given URL.
      *
      * @param string $url    The URL to redirect to
      * @param int    $status The status code to use for the Response
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     protected function redirect($url, $status = 302)
     {
-        return new RedirectResponse($this->generateUrl('oro_default') . '#' . $url, $status);
+        return new JsonResponse($this->generateUrl('oro_default') . '#' . $url, $status);
     }
 
     /**

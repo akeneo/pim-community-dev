@@ -67,8 +67,8 @@ define(
                 ControllerRegistry.get(route.name).done(_.bind(function (Controller) {
                     if (currentController) {
                         currentController.remove();
-                        $('#container').empty();
                     }
+                    $('#container').empty();
                     var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
                     currentController = new Controller({ el: $view });
                     currentController.renderRoute(route, path).done(_.bind(function () {

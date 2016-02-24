@@ -735,15 +735,17 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $row      = $this->getRow($value);
-        $checkbox = $this->spin(function () use ($row) {
-            return $row->find('css', 'input[type="checkbox"]');
-        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
+        $checkbox = $this->spin(function () use ($row, $check) {
+            $checkbox = $row->find('css', 'input[type="checkbox"]');
+            if ($check) {
+                $checkbox->check();
+            } else {
+                $checkbox->uncheck();
+            }
 
-        if ($check) {
-            $checkbox->check();
-        } else {
-            $checkbox->uncheck();
-        }
+            return true;
+        }, sprintf('Couldn\'t check the checkbox for row "%s"', $value));
+
 
         return $checkbox;
     }

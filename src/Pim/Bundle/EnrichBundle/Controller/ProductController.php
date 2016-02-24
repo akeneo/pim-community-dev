@@ -30,7 +30,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -207,10 +206,6 @@ class ProductController
      */
     public function createAction(Request $request, $dataLocale)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
         $product = $this->productBuilder->createProduct();
         $form    = $this->formFactory->create('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
@@ -258,7 +253,7 @@ class ProductController
      * @param Request $request
      * @param int     $id
      *
-     * @return Response|RedirectResponse
+     * @return Response|JsonResponse
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
@@ -272,13 +267,9 @@ class ProductController
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                ['successful' => true, 'message' => $this->translator->trans($successMessage)]
-            );
-        } else {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
+        return new JsonResponse(
+            ['successful' => true, 'message' => $this->translator->trans($successMessage)]
+        );
     }
 
     /**
@@ -297,7 +288,7 @@ class ProductController
                 break;
         }
 
-        return $this->redirectToRoute($route, $params);
+        return new JsonResponse(['route' => $route, 'params' => $params]);
     }
 
     /**
@@ -383,18 +374,6 @@ class ProductController
     protected function getProductCountByTree(ProductInterface $product)
     {
         return $this->productCatManager->getProductCountByTree($product);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function redirectToRoute($route, $parameters = [])
-    {
-        if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocaleCode();
-        }
-
-        return new RedirectResponse($this->router->generate($route, $parameters));
     }
 
     /**
