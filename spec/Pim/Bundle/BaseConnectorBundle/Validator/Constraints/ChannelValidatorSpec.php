@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -13,9 +14,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ChannelValidatorSpec extends ObjectBehavior
 {
-    function let(ChannelRepositoryInterface $channelRepository)
+    function let(ChannelRepositoryInterface $channelRepository, UiChannelRepository $uiChannelRepository)
     {
-        $this->beConstructedWith($channelRepository);
+        $this->beConstructedWith($channelRepository, $uiChannelRepository);
     }
 
     function it_is_initializable()
@@ -33,9 +34,9 @@ class ChannelValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('\Symfony\Component\Validator\ConstraintValidatorInterface');
     }
 
-    function it_throws_an_exception_if_there_is_no_channel_choices($channelRepository, Constraint $constraint)
+    function it_throws_an_exception_if_there_is_no_channel_choices($uiChannelRepository, Constraint $constraint)
     {
-        $channelRepository->getLabelsIndexedByCode()->willReturn([]);
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn([]);
 
         $this
             ->shouldThrow(new ConstraintDefinitionException('No channel is set in the application'))
@@ -43,12 +44,12 @@ class ChannelValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_a_non_existent_channel(
-        $channelRepository,
+        $uiChannelRepository,
         Channel $constraint,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile' => 'mobile']);
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(['mobile' => 'mobile']);
 
         $context->buildViolation(Argument::cetera())
             ->shouldBeCalled()

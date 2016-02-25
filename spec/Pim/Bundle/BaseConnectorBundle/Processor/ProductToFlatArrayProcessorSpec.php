@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -21,11 +22,13 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function let(
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
         ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
             $serializer,
             $channelRepository,
+            $uiChannelRepository,
             $productBuilder,
             ['pim_catalog_file', 'pim_catalog_image'],
             ['.', ','],
@@ -46,9 +49,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
-    function it_provides_configuration_fields($channelRepository)
+    function it_provides_configuration_fields($uiChannelRepository)
     {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'magento']);
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'magento']);
 
         $this->getConfigurationFields()->shouldReturn(
             [
@@ -157,7 +160,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(
@@ -198,7 +201,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);

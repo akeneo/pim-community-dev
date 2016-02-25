@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -18,9 +19,10 @@ class ProductProcessorSpec extends ObjectBehavior
         SerializerInterface $serializer,
         LocaleRepositoryInterface $localeRepository,
         StepExecution $stepExecution,
-        ChannelRepositoryInterface $channelRepository
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository
     ) {
-        $this->beConstructedWith($serializer, $localeRepository, $channelRepository);
+        $this->beConstructedWith($serializer, $localeRepository, $channelRepository, $uiChannelRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -39,9 +41,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_provides_configuration_fields($channelRepository)
+    function it_provides_configuration_fields($uiChannelRepository)
     {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'Magento']);
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'Magento']);
 
         $this->getConfigurationFields()->shouldReturn([
             'delimiter' => [
@@ -109,7 +111,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 1)->shouldBeCalled();
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -134,7 +136,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 2)->shouldBeCalled();
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -158,7 +160,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $product1->getMedia()->willReturn([$media1]);
         $product2->getMedia()->willReturn([$media2]);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -182,7 +184,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $product1->getMedia()->willReturn([]);
         $product2->getMedia()->willReturn([]);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -202,7 +204,7 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $product->getMedia()->willReturn([]);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');

@@ -36,7 +36,7 @@ class ChannelExtensionSpec extends ObjectBehavior
         ChannelInterface $channel,
         $colorsProvider
     ) {
-        $channelRepository->findOneBy(Argument::not(null))->willReturn($channel);
+        $channelRepository->findOneByIdentifier(Argument::not(null))->willReturn($channel);
         $channel->getColor()->willReturn('blue');
         $colorsProvider->getColorCode('blue')->willReturn('0,31,63,.4');
         $colorsProvider->getFontColor('blue')->willReturn('#ccc');
@@ -47,7 +47,7 @@ class ChannelExtensionSpec extends ObjectBehavior
 
     function it_returns_an_empty_string_if_code_is_null_or_channel_is_not_found($channelRepository)
     {
-        $channelRepository->findOneBy(Argument::any())->willReturn(null);
+        $channelRepository->findOneByIdentifier(Argument::any())->willReturn(null);
 
         $this->channelColor('test')->shouldReturn('');
         $this->channelColor(null)->shouldReturn('');
