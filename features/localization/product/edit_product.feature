@@ -22,10 +22,10 @@ Feature: Edit a product with localized attributes
       | sku | family | number  | weight        | price-EUR | date       |
       | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   | 2015-05-28 |
     And I am logged in as "Julien"
-    And I am on the "foo" product page
 
   Scenario: Successfully view and edit localized number
-    Given the field Nombre should contain "-12,50"
+    Given I am on the "foo" product page
+    Then the field Nombre should contain "-12,50"
     When I change the "Nombre" to "-25,75"
     And I save the product
     Then the field Nombre should contain "-25,75"
@@ -33,7 +33,8 @@ Feature: Edit a product with localized attributes
       | number | -25.75 |
 
   Scenario: Successfully view and edit localized metric
-    Given the field Poids should contain "150,8675"
+    Given I am on the "foo" product page
+    Then the field Poids should contain "150,8675"
     When I change the "Poids" to "151"
     And I save the product
     Then the field Poids should contain "151"
@@ -41,7 +42,8 @@ Feature: Edit a product with localized attributes
       | weight | 151.0000 GRAM |
 
   Scenario: Successfully view and edit localized price
-    Given the field Prix should contain "1000,50"
+    Given I am on the "foo" product page
+    Then the field Prix should contain "1000,50"
     When I change the "Prix" to "1200,50 EUR"
     And I save the product
     Then the field Prix should contain "1200,50"
@@ -49,7 +51,8 @@ Feature: Edit a product with localized attributes
       | price-EUR | 1200.50 |
 
   Scenario: Successfully view and edit localized date
-    Given the field Date should contain "28/05/2015"
+    Given I am on the "foo" product page
+    Then the field Date should contain "28/05/2015"
     When I change the "Date" to "01/12/2015"
     And I save the product
     Then the field Date should contain "01/12/2015"
@@ -68,6 +71,7 @@ Feature: Edit a product with localized attributes
     Then the field Date should contain "28/05/2015"
 
   Scenario: Successfully show datetimepicker in my UI locale
+    Given I am on the "foo" product page
     When I click on the field Date
     Then I should see the text "Mai"
     And I should see the text "Lu"

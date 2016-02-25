@@ -34,13 +34,15 @@ services:
         class: %pim_base_connector.processor.csv_serializer.product.class%
         parent: pim_base_connector.processor.csv_serializer
         arguments:
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
+            - '@pim_enrich.repository.channel.ui'
 
     pim_base_connector.processor.product_to_flat_array:
         class: %pim_base_connector.processor.product_to_flat_array.class%
         arguments:
             - '@pim_serializer'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
+            - '@pim_enrich.repository.channel.ui'
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
             - %pim_localization.decimal_separators%
@@ -92,6 +94,7 @@ services:
             - %pim_catalog.entity.category.class%
             - '@pim_transform.cache.doctrine_cache'
 
+    # @deprecated Will be removed in 1.6
     pim_base_connector.processor.association_type:
         parent: pim_base_connector.processor.transformer
         arguments:

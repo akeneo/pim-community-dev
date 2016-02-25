@@ -237,6 +237,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.mongodb.normalizer./pim_catalog.mongodb.normalizer.normalized_data./g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_serializer.normalizer.mongodb./pim_catalog.mongodb.normalizer.document./g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.entity.available_attributes.class/pim_enrich.entity.available_attributes.class/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\ChannelManager/Pim\\Component\\Catalog\\Repository\\ChannelRepositoryInterface/g'
 ```
 
 ## EnrichBundle

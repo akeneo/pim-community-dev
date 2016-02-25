@@ -1,6 +1,6 @@
 services:
     pim_enrich.saver.mass_edit.configuration:
-        class:  %pim_catalog.saver.base.class%
+        class:  %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
@@ -8,7 +8,7 @@ services:
             - %pim_connector.model.job_configuration.class%
 
     pim_enrich.saver.sequential_edit:
-        class:  %pim_catalog.saver.base.class%
+        class:  %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'

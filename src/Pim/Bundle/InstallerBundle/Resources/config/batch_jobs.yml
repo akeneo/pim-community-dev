@@ -36,21 +36,21 @@ connector:
                         processor: pim_base_connector.processor.attribute_group
                         writer:    pim_base_connector.writer.doctrine
 
-        fixtures_channel_yml:
+        fixtures_channel_csv:
             title: pim_installer.jobs.fixtures_channel_yml.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_channel_yml.validation.title
+                    title: pim_connector.jobs.fixtures_attribute_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_channel_yml.import.title
+                    title:     pim_installer.jobs.fixtures_channel_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.channel
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_channel
+                        processor: pim_connector.processor.denormalization.channel.flat
+                        writer:    pim_connector.writer.doctrine.channel
 
         fixtures_group_type_yml:
             title: pim_installer.jobs.fixtures_group_type_yml.title

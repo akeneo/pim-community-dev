@@ -22,7 +22,7 @@ Feature: Edit a product
       | product | attribute   | value                                | locale | scope     |
       | sandal  | description | My awesome description for ecommerce | en_US  | ecommerce |
       | sandal  | description | My awesome description for mobile    | en_US  | mobile    |
-      | sandal  | other_name  | My awesome sandals                   | en_US  | ecommerce |
+      | sandal  | other_name  | My awesome sandals for ecommerce     | en_US  | ecommerce |
       | sandal  | other_name  | My awesome sandals for mobile        | en_US  | mobile    |
       | sandal  | name        | My sandals name                      |        |           |
       | sandal  | length      | 29 CENTIMETER                        |        |           |
@@ -56,14 +56,14 @@ Feature: Edit a product
     And I reset the "Administrator" rights
 
   @jira https://akeneo.atlassian.net/browse/PIM-3615
-  Scenario: Successfully edit a product description, and have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).
+  Scenario: Successfully have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page
-    And the english mobile other_name of "sandal" should be "My awesome sandals for mobile"
+    Then the product Description should be "My awesome description for mobile"
     Then I logout
     And I am logged in as "Julia"
     When I am on the "sandal" product page
-    Then the english ecommerce other_name of "sandal" should be "My awesome sandals"
+    Then the product Description should be "My awesome description for ecommerce"
 
   # Working well in application but scenario fails
   @skip-pef

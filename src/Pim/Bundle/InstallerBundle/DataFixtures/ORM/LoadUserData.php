@@ -164,10 +164,10 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getChannel($channelCode)
     {
-        $channelManager = $this->container->get('pim_catalog.manager.channel');
-        $channel        = $channelManager->getChannelByCode($channelCode);
+        $channelRepository = $this->container->get('pim_catalog.repository.channel');
+        $channel           = $channelRepository->findOneByIdentifier($channelCode);
 
-        return $channel ? $channel : current($channelManager->getChannels());
+        return $channel ? $channel : current($channelRepository->findAll());
     }
 
     /**

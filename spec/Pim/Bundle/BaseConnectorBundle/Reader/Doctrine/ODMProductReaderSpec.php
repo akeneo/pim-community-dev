@@ -8,12 +8,13 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -22,13 +23,21 @@ class ODMProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $repository,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $converter,
         StepExecution $stepExecution,
         DocumentManager $documentManager
     ) {
-        $this->beConstructedWith($repository, $channelManager, $completenessManager, $converter, $documentManager);
+        $this->beConstructedWith(
+            $repository,
+            $channelRepository,
+            $uiChannelRepository,
+            $completenessManager,
+            $converter,
+            $documentManager
+        );
 
         $this->setStepExecution($stepExecution);
     }
@@ -40,7 +49,7 @@ class ODMProductReaderSpec extends ObjectBehavior
     }
 
     function it_reads_products_one_by_one(
-        $channelManager,
+        $channelRepository,
         $repository,
         ChannelInterface $channel,
         Builder $builder,
@@ -48,7 +57,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -63,7 +72,7 @@ class ODMProductReaderSpec extends ObjectBehavior
     }
 
     function it_generates_channel_completenesses_first_time_it_reads(
-        $channelManager,
+        $channelRepository,
         $completenessManager,
         $repository,
         ChannelInterface $channel,
@@ -72,7 +81,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -89,7 +98,7 @@ class ODMProductReaderSpec extends ObjectBehavior
     }
 
     function it_converts_metric_values(
-        $channelManager,
+        $channelRepository,
         $repository,
         $converter,
         ChannelInterface $channel,
@@ -98,7 +107,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -115,7 +124,7 @@ class ODMProductReaderSpec extends ObjectBehavior
     }
 
     function it_increments_read_count_each_time_it_reads(
-        $channelManager,
+        $channelRepository,
         $repository,
         $stepExecution,
         ChannelInterface $channel,
@@ -124,7 +133,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -141,31 +150,31 @@ class ODMProductReaderSpec extends ObjectBehavior
         $this->read();
     }
 
-    function it_exposes_the_channel_field($channelManager)
+    function it_exposes_the_channel_field($uiChannelRepository)
     {
-        $channelManager->getChannelChoices()->willReturn(
-            array(
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(
+            [
                 'foo' => 'Foo',
                 'bar' => 'Bar',
-            )
+            ]
         );
 
         $this->getConfigurationFields()->shouldReturn(
-            array(
-                'channel' => array(
+            [
+                'channel' => [
                     'type'    => 'choice',
-                    'options' => array(
-                        'choices'  => array(
+                    'options' => [
+                        'choices'  => [
                             'foo' => 'Foo',
                             'bar' => 'Bar',
-                        ),
+                        ],
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_base_connector.export.channel.label',
                         'help'     => 'pim_base_connector.export.channel.help'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
     }
 }
