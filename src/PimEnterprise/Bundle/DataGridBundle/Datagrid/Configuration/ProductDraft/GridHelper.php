@@ -53,7 +53,7 @@ class GridHelper
             $productDraft = $record->getRootEntity();
 
             $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getRootEntity());
-            $canDelete = $this->permissionHelper->canEditAllChangesDraft($record->getRootEntity());
+            $canDelete = $this->permissionHelper->canEditOneChangeDraft($record->getRootEntity());
 
             $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
             $inProgress = $productDraft->isInProgress();

@@ -185,7 +185,7 @@ class ProductDraftController
         $attribute = $this->findAttributeOr404($code);
 
         try {
-            $method = $action . 'Value';
+            $method = $action . 'Change';
             $this->manager->$method(
                 $productDraft,
                 $attribute,

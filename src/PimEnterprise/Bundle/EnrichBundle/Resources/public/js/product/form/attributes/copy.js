@@ -30,7 +30,7 @@ define(
          * @return {Array}
          */
         var mergeSourcesAndDrafts = function (sources, drafts) {
-            var drafts = _.reject(drafts, function (draft) {
+            drafts = _.reject(drafts, function (draft) {
                 return draft.author === UserContext.get('username');
             });
 
@@ -89,6 +89,7 @@ define(
                 this.otherDraftsPromise = null;
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.startCopyingWorkingCopy);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:proposal:post_remove:success', this.invalidDraftPromise);
 
                 this.onExtensions('pim_enrich:form:source_switcher:render:before', this.ensureSwitcherContext);
                 this.onExtensions('pim_enrich:form:source_switcher:source_change', this.changeCurrentSource);
@@ -110,9 +111,9 @@ define(
                 }
 
                 if (this.copying) {
-                        this.otherDraftsPromise.then(function () {
-                            return Copy.prototype.render.apply(this, arguments);
-                        }.bind(this));
+                    this.otherDraftsPromise.then(function () {
+                        return Copy.prototype.render.apply(this, arguments);
+                    }.bind(this));
 
                     return this;
                 }
@@ -192,6 +193,15 @@ define(
             startCopyingWorkingCopy: function () {
                 this.currentSource = _.findWhere(this.sources, {code: 'working_copy'});
                 this.startCopying();
+            },
+
+            /**
+             * Invalid the cached promises on user drafts
+             */
+            invalidDraftPromise: function () {
+                this.otherDraftsPromise = null;
+                this.changeCurrentSource('working_copy');
+                this.stopCopying();
             }
         });
     }

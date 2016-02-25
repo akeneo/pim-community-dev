@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -59,74 +60,57 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     function it_does_not_send_on_unknown_user(
         $notifier,
         $userRepository,
-        $attributeRepository,
         $context,
         ProductDraftInterface $draft,
-        GenericEvent $event,
-        AttributeInterface $attribute
+        GenericEvent $event
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn(null);
-        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $context->getUser()->willReturn(null);
 
-        $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
+        $values = [
             'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
+        ];
+
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
         $draft->getChangesToReview()->willReturn([]);
 
-        $event->setArgument('actionType', Argument::any())->willReturn();
-        $event->setArgument('message', Argument::any())->willReturn();
-        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
-
-        $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attribute->setLocale(Argument::any())->shouldBeCalled();
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $this->sendNotificationForApproval($event);
     }
 
     function it_does_not_send_if_author_does_not_want_to_receive_notification(
         $userRepository,
-        $attributeRepository,
         $notifier,
         $context,
         ProductDraftInterface $draft,
         UserInterface $author,
-        GenericEvent $event,
-        AttributeInterface $attribute
+        GenericEvent $event
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(false);
-        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $context->getUser()->willReturn(null);
 
-        $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
+        $values = [
             'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
+        ];
+
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
         $draft->getChangesToReview()->willReturn([]);
 
-        $event->setArgument('actionType', Argument::any())->willReturn();
-        $event->setArgument('message', Argument::any())->willReturn();
-        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
-
-        $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attribute->setLocale(Argument::any())->shouldBeCalled();
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $this->sendNotificationForApproval($event);
     }
 
     function it_sends_a_notification(
         $notifier,
-        $attributeRepository,
         $context,
         $userRepository,
         GenericEvent $event,
@@ -134,27 +118,21 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier,
-        AttributeInterface $attribute
+        ProductValueInterface $identifier
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
+        $values = [
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ];
 
         $event->getSubject()->willReturn($draft);
         $event->hasArgument(Argument::any())->willReturn(true);
-        $event->setArgument(Argument::cetera())->willReturn(true);
         $event->hasArgument('comment')->willReturn(false);
         $event->getArgument('message')->willReturn('pimee_workflow.product_draft.notification.approve');
         $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_approve');
         $event->getArgument('messageParams')->willReturn([]);
-        $event->getArgument('updatedValues')->willReturn([
-            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
-
-        $attribute->setLocale(Argument::any())->willReturn();
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-
-        $draft->getChangesToReview()->willReturn([]);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(true);
@@ -179,7 +157,10 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'T-Shirt', '%owner%' => 'John Doe'],
+                'messageParams' => [
+                    '%product%'    => 'T-Shirt',
+                    '%owner%'      => 'John Doe'
+                ],
                 'context'       => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_approve',
                     'showReportButton' => false
@@ -216,20 +197,21 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $owner->getLastName()->willReturn('Doe');
 
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $draft->getChangesToReview()->willReturn([]);
-        $event->setArgument(Argument::cetera())->willReturn(true);
+
+        $values = [
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ];
 
         $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
-            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
         $event->hasArgument('comment')->willReturn(true);
         $event->hasArgument('message')->willReturn(true);
         $event->hasArgument('messageParams')->willReturn(true);
         $event->hasArgument('actionType')->willReturn(true);
         $event->getArgument('comment')->willReturn('a comment');
         $event->getArgument('message')->willReturn('a message');
-        $event->getArgument('messageParams')->willReturn(['%owner%' => 'Joe Doe', '%attribute%' => 'name']);
+        $event->getArgument('messageParams')->willReturn(['%owner%' => 'Joe Doe', '%attributes%' => 'Name']);
         $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_partial_approve');
 
         $context->getUser()->willReturn($owner);
@@ -250,9 +232,9 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
                 'messageParams' => [
-                    '%product%'   => 'T-Shirt',
-                    '%owner%'     => 'Joe Doe',
-                    '%attribute%' => 'name'
+                    '%product%'    => 'T-Shirt',
+                    '%owner%'      => 'Joe Doe',
+                    '%attributes%' => 'Name'
                 ],
                 'context' => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_partial_approve',

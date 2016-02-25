@@ -117,7 +117,7 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
         }
 
         if ($canDelete) {
-            return 'pimee_workflow.product_draft.status_message.can_be_partially_reviewed';
+            return 'pimee_workflow.product_draft.status_message.in_progress';
         }
 
         return 'pimee_workflow.product_draft.status_message.can_not_be_deleted';
