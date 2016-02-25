@@ -9,23 +9,32 @@ use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 class ORMProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductRepository $repository,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution,
         EntityManager $entityManager
     ) {
-        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter, $entityManager);
+        $this->beConstructedWith(
+            $repository,
+            $channelRepository,
+            $uiChannelRepository,
+            $completenessManager,
+            $metricConverter,
+            $entityManager
+        );
 
         $this->setStepExecution($stepExecution);
     }
@@ -43,7 +52,7 @@ class ORMProductReaderSpec extends ObjectBehavior
     }
 
     function it_reads_products_one_by_one(
-        $channelManager,
+        $channelRepository,
         $repository,
         ChannelInterface $channel,
         From $from,
@@ -53,7 +62,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -75,7 +84,7 @@ class ORMProductReaderSpec extends ObjectBehavior
     }
 
     function it_generates_channel_completenesses_first_time_it_reads(
-        $channelManager,
+        $channelRepository,
         $completenessManager,
         $repository,
         From $from,
@@ -86,7 +95,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -110,7 +119,7 @@ class ORMProductReaderSpec extends ObjectBehavior
     }
 
     function it_converts_metric_values(
-        $channelManager,
+        $channelRepository,
         $repository,
         $metricConverter,
         ChannelInterface $channel,
@@ -121,7 +130,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -145,7 +154,7 @@ class ORMProductReaderSpec extends ObjectBehavior
     }
 
     function it_increments_read_count_each_time_it_reads(
-        $channelManager,
+        $channelRepository,
         $repository,
         $stepExecution,
         ChannelInterface $channel,
@@ -156,7 +165,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -183,31 +192,31 @@ class ORMProductReaderSpec extends ObjectBehavior
         $this->read();
     }
 
-    function it_exposes_the_channel_field($channelManager)
+    function it_exposes_the_channel_field($uiChannelRepository)
     {
-        $channelManager->getChannelChoices()->willReturn(
-            array(
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(
+            [
                 'foo' => 'Foo',
                 'bar' => 'Bar',
-            )
+            ]
         );
 
         $this->getConfigurationFields()->shouldReturn(
-            array(
-                'channel' => array(
+            [
+                'channel' => [
                     'type'    => 'choice',
-                    'options' => array(
-                        'choices'  => array(
+                    'options' => [
+                        'choices'  => [
                             'foo' => 'Foo',
                             'bar' => 'Bar',
-                        ),
+                        ],
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_base_connector.export.channel.label',
                         'help'     => 'pim_base_connector.export.channel.help'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
     }
 }

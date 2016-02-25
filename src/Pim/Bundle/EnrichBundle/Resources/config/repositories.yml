@@ -2,6 +2,7 @@ parameters:
     pim_enrich.repository.sequential_edit.class:  Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
     pim_enrich.repository.family.search.class:    Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
     pim_enrich.repository.attribute.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
+    pim_enrich.repository.channel.ui.class:          Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository
 
 services:
     pim_enrich.repository.sequential_edit:
@@ -23,3 +24,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.attribute.class%
+
+    pim_enrich.repository.channel.ui:
+        class: %pim_enrich.repository.channel.ui.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.channel.class%

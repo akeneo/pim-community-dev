@@ -7,10 +7,11 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,59 +31,43 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     protected $channel;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var AbstractQuery
-     */
+    /** @var AbstractQuery */
     protected $query;
 
-    /**
-     * @var Cursor
-     */
+    /** @var Cursor */
     protected $products;
 
-    /**
-     * @var DocumentManager
-     */
+    /** @var DocumentManager */
     protected $documentManager;
 
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $repository;
 
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var MetricConverter
-     */
+    /** @var MetricConverter */
     protected $metricConverter;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $executed = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $missingCompleteness;
+
+    /** @var UiChannelRepository */
+    protected $uiChannelRepository;
 
     /**
      * @param ProductRepositoryInterface $repository
-     * @param ChannelManager             $channelManager
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param UiChannelRepository        $uiChannelRepository
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param DocumentManager            $documentManager
@@ -90,7 +75,8 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function __construct(
         ProductRepositoryInterface $repository,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         DocumentManager $documentManager,
@@ -98,10 +84,11 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     ) {
         $this->documentManager     = $documentManager;
         $this->repository          = $repository;
-        $this->channelManager      = $channelManager;
+        $this->channelRepository   = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
         $this->missingCompleteness = $missingCompleteness;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -124,7 +111,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         if (!$this->executed) {
             $this->executed = true;
             if (!is_object($this->channel)) {
-                $this->channel = $this->channelManager->getChannelByCode($this->channel);
+                $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
             }
 
             if ($this->missingCompleteness) {
@@ -162,7 +149,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelManager->getChannelChoices(),
+                    'choices'  => $this->uiChannelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',

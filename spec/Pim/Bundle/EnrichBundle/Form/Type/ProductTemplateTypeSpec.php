@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,9 +16,9 @@ class ProductTemplateTypeSpec extends ObjectBehavior
         ProductFormViewInterface $formView,
         TransformProductTemplateValuesSubscriber $subscriber,
         UserContext $userContext,
-        ChannelManager $channelManager
+        ChannelRepositoryInterface $channelRepository
     ) {
-        $this->beConstructedWith($formView, $subscriber, $userContext, $channelManager, 'ProductTemplate');
+        $this->beConstructedWith($formView, $subscriber, $userContext, $channelRepository, 'ProductTemplate');
     }
 
     function it_is_initializable()
@@ -54,14 +54,14 @@ class ProductTemplateTypeSpec extends ObjectBehavior
             ->add(
                 'values',
                 'pim_enrich_localized_collection',
-                array(
+                [
                     'type'               => 'pim_product_value',
                     'allow_add'          => false,
                     'allow_delete'       => false,
                     'by_reference'       => false,
                     'cascade_validation' => true,
                     'currentLocale'      => 'en_GB',
-                )
+                ]
             )
             ->shouldBeCalled()
             ->willReturn($builder);

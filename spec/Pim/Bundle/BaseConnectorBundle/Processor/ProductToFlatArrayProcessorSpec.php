@@ -6,23 +6,29 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager, ProductBuilderInterface $productBuilder)
-    {
+    function let(
+        Serializer $serializer,
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
+        ProductBuilderInterface $productBuilder
+    ) {
         $this->beConstructedWith(
             $serializer,
-            $channelManager,
+            $channelRepository,
+            $uiChannelRepository,
             $productBuilder,
             ['pim_catalog_file', 'pim_catalog_image'],
             ['.', ','],
@@ -43,9 +49,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
-    function it_provides_configuration_fields($channelManager)
+    function it_provides_configuration_fields($uiChannelRepository)
     {
-        $channelManager->getChannelChoices()->willReturn(['mobile', 'magento']);
+        $uiChannelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'magento']);
 
         $this->getConfigurationFields()->shouldReturn(
             [
@@ -96,7 +102,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        $channelManager,
+        $channelRepository,
         Filesystem $filesystem,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -154,7 +160,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(
@@ -169,7 +175,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         ProductInterface $product,
         Serializer $serializer
     ) {
@@ -195,7 +201,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);

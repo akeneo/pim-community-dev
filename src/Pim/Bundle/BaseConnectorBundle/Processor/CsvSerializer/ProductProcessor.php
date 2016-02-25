@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,27 +26,30 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     protected $channel;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var UiChannelRepository */
+    protected $uiChannelRepository;
 
     /**
-     * @param SerializerInterface       $serializer
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param ChannelManager            $channelManager
      * @param SerializerInterface        $serializer
      * @param LocaleRepositoryInterface  $localeRepository
-     * @param ChannelManager             $channelManager
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param UiChannelRepository        $uiChannelRepository
      */
     public function __construct(
         SerializerInterface $serializer,
         LocaleRepositoryInterface $localeRepository,
-        ChannelManager $channelManager
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository
     ) {
         parent::__construct($serializer, $localeRepository);
 
-        $this->localeRepository = $localeRepository;
-        $this->serializer       = $serializer;
-        $this->channelManager   = $channelManager;
+        $this->localeRepository    = $localeRepository;
+        $this->serializer          = $serializer;
+        $this->channelRepository   = $channelRepository;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -115,7 +119,7 @@ class ProductProcessor extends HeterogeneousProcessor
                 'channel' => [
                     'type'    => 'choice',
                     'options' => [
-                        'choices'  => $this->channelManager->getChannelChoices(),
+                        'choices'  => $this->uiChannelRepository->getLabelsIndexedByCode(),
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_base_connector.export.channel.label',
@@ -135,7 +139,7 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelManager->getChannelByCode($channelCode);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }
