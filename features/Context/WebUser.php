@@ -440,10 +440,6 @@ class WebUser extends RawMinkContext
     public function iSave()
     {
         $this->getCurrentPage()->save();
-
-        if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
-            $this->wait();
-        }
     }
 
     /**
