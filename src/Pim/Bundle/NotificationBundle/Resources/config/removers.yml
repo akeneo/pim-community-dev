@@ -1,0 +1,8 @@
+services:
+    pim_notification.remover.notification:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_notification.entity.notification.class%

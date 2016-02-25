@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\NotificationBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
@@ -20,9 +22,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class NotificationManager
 {
-    /** @var EntityManager */
-    protected $em;
-
     /** @var EntityRepository */
     protected $repository;
 
@@ -35,25 +34,40 @@ class NotificationManager
     /** @var UserProviderInterface */
     protected $userProvider;
 
+    /** @var SaverInterface  */
+    protected $notificationSaver;
+
+    /** @var BulkSaverInterface */
+    protected $userNotifsSaver;
+
+    /** @var RemoverInterface */
+    protected $userNotifRemover;
+
     /**
-     * @param EntityManager           $em
      * @param EntityRepository        $repository
      * @param NotificationFactory     $notificationFactory
      * @param UserNotificationFactory $userNotifFactory
      * @param UserProviderInterface   $userProvider
+     * @param SaverInterface          $notificationSaver
+     * @param BulkSaverInterface      $userNotifsSaver
+     * @param RemoverInterface        $userNotifRemover
      */
     public function __construct(
-        EntityManager $em,
         EntityRepository $repository,
         NotificationFactory $notificationFactory,
         UserNotificationFactory $userNotifFactory,
-        UserProviderInterface $userProvider
+        UserProviderInterface $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        RemoverInterface $userNotifRemover
     ) {
-        $this->em                  = $em;
         $this->repository          = $repository;
         $this->notificationFactory = $notificationFactory;
         $this->userNotifFactory    = $userNotifFactory;
         $this->userProvider        = $userProvider;
+        $this->notificationSaver   = $notificationSaver;
+        $this->userNotifsSaver     = $userNotifsSaver;
+        $this->userNotifRemover = $userNotifRemover;
     }
 
     /**
@@ -87,12 +101,8 @@ class NotificationManager
             }
         }
 
-        $this->em->persist($notification);
-        foreach ($userNotifications as $userNotification) {
-            $this->em->persist($userNotification);
-        }
-        $this->em->flush($notification);
-        $this->em->flush($userNotifications);
+        $this->notificationSaver->save($notification);
+        $this->userNotifsSaver->saveAll($userNotifications);
 
         return $this;
     }
@@ -150,8 +160,7 @@ class NotificationManager
         );
 
         if ($notification) {
-            $this->em->remove($notification);
-            $this->em->flush($notification);
+            $this->userNotifRemover->remove($notification);
         }
     }
 }
