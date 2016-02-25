@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,10 +56,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);
-
-        $objectManager = $this->getObjectManager();
-        $objectManager->persist($jobInstance);
-        $objectManager->flush();
+        $this->getJobInstanceSaver()->save($jobInstance);
     }
 
     /**
@@ -71,10 +68,10 @@ class CreateJobCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ObjectManager
+     * @return SaverInterface
      */
-    protected function getObjectManager()
+    protected function getJobInstanceSaver()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->getContainer()->get('akeneo_batch.saver.job_instance');
     }
 }
