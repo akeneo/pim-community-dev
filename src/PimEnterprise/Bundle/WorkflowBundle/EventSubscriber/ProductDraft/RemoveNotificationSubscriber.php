@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -39,34 +38,37 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
      */
     public function sendNotificationForRemoval(GenericEvent $event)
     {
-        $this->send($event);
+        if (!$this->isEventValid($event)) {
+            return;
+        }
+
+        $type = $event->getArgument('isPartial') ? 'partial_remove' : 'remove';
+        $messageInfos = $this->buildNotificationMessageInfos($event, $type);
+
+        $this->send($event, $messageInfos);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function send(GenericEvent $event)
+    protected function send(GenericEvent $event, array $messageInfos)
     {
         $productDraft = $event->getSubject();
-
-        if (!is_object($productDraft) ||
-            !$productDraft instanceof ProductDraftInterface ||
-            !$this->authorWantToBeNotified($productDraft)
-        ) {
-            return;
-        }
-
         $user = $this->userContext->getUser();
 
-        if (null === $user) {
+        if (null === $user || !$this->authorWantToBeNotified($productDraft)) {
             return;
         }
+
+        $message = isset($messageInfos['message'])
+            ? $messageInfos['message']
+            : 'pimee_workflow.product_draft.notification.remove';
 
         $options = [
             'route'         => 'pim_enrich_product_edit',
             'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
             'messageParams' => [
-                '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
+                '%product%' => $productDraft->getProduct()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context'       => [
@@ -75,15 +77,12 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
             ]
         ];
 
+        $options = array_replace_recursive($options, $messageInfos['options']);
+
         if ($event->hasArgument('comment')) {
             $options['comment'] = $event->getArgument('comment');
         }
 
-        $this->notifier->notify(
-            [$productDraft->getAuthor()],
-            'pimee_workflow.product_draft.notification.remove',
-            'error',
-            $options
-        );
+        $this->notifier->notify([$productDraft->getAuthor()], $message, 'error', $options);
     }
 }
