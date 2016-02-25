@@ -29,8 +29,8 @@ class JobContext extends PimContext
         }
 
         $jobInstance->setRawConfiguration($configuration);
-        // TODO use a Saver
-        $this->getFixturesContext()->flush();
+        $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
+        $saver->save($jobInstance);
     }
 
     /**
