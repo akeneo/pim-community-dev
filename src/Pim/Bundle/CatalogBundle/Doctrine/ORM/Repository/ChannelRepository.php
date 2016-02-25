@@ -175,19 +175,4 @@ SQL;
     {
         return ['code'];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChannelChoices()
-    {
-        $channels = $this->findAll();
-
-        $choices = [];
-        foreach ($channels as $channel) {
-            $choices[$channel->getCode()] = $channel->getLabel();
-        }
-
-        return $choices;
-    }
 }

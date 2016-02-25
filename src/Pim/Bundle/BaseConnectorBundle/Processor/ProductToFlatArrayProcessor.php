@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -37,6 +38,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var UiRepositoryInterface */
+    protected $uiChannelRepository;
+
     /** @var array Normalizer context */
     protected $normalizerContext;
 
@@ -61,6 +65,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * @param Serializer                 $serializer
      * @param ChannelRepositoryInterface $channelRepository
+     * @param UiRepositoryInterface      $uiChannelRepository
      * @param ProductBuilderInterface    $productBuilder
      * @param string[]                   $mediaAttributeTypes
      * @param array                      $decimalSeparators
@@ -69,6 +74,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function __construct(
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
+        UiRepositoryInterface $uiChannelRepository,
         ProductBuilderInterface $productBuilder,
         array $mediaAttributeTypes,
         array $decimalSeparators,
@@ -80,6 +86,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $this->decimalSeparators   = $decimalSeparators;
         $this->dateFormats         = $dateFormats;
         $this->productBuilder      = $productBuilder;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -87,7 +94,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
-        $contextChannel = $this->channelRepository->findOneBy(['code' => $this->channel]);
+        $contextChannel = $this->channelRepository->findOneByIdentifier($this->channel);
         $this->productBuilder->addMissingProductValues(
             $product,
             [$contextChannel],
@@ -119,7 +126,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelRepository->getChannelChoices(),
+                    'choices'  => $this->uiChannelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',
@@ -241,7 +248,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $channelCode]);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }

@@ -143,7 +143,7 @@ class ODMProductReaderSpec extends ObjectBehavior
 
     function it_exposes_the_channel_field($channelRepository)
     {
-        $channelRepository->getChannelChoices()->willReturn(
+        $channelRepository->getLabelsIndexedByCode()->willReturn(
             [
                 'foo' => 'Foo',
                 'bar' => 'Bar',

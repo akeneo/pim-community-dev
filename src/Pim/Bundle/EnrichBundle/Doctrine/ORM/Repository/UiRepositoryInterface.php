@@ -1,32 +1,21 @@
 <?php
 
-namespace Akeneo\Component\StorageUtils\Repository;
+namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 /**
- * Searchable repository interface
+ * Ui repository interface
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SearchableRepositoryInterface
+interface UiRepositoryInterface
 {
-    const FETCH_LIMIT = 20;
-
     /**
-     * Returns an array of option ids and values
+     * Get channel choices
+     * Allow to list channels in an array like array[<code>] = <label>
      *
-     * The returned format must be the one expected by select2 :
-     *
-     *  return [
-     *      ['id' => 1, 'text' => 'Choice 1'],
-     *      ['id' => 2, 'text' => 'Choice 2'],
-     *  ];
-     *
-     * @param string $search
-     * @param array  $options
-     *
-     * @return array
+     * @return string[]
      */
-    public function findBySearch($search = null, array $options = []);
+    public function getLabelsIndexedByCode();
 }

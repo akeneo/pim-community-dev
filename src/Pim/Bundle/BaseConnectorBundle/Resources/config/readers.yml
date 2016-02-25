@@ -20,6 +20,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.channel'
+            - '@pim_enrich.repository.channel.ui'
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
             - '@pim_catalog.object_manager.product'

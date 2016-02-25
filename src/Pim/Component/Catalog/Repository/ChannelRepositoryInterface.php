@@ -61,12 +61,4 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      * @return int
      */
     public function getChannelCountUsingCurrency(CurrencyInterface $currency);
-
-    /**
-     * Get channel choices
-     * Allow to list channels in an array like array[<code>] = <label>
-     *
-     * @return string[]
-     */
-    public function getChannelChoices();
 }

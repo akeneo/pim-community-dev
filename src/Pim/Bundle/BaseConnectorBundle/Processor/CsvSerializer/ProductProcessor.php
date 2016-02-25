@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
@@ -31,21 +32,27 @@ class ProductProcessor extends HeterogeneousProcessor
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var UiChannelRepository */
+    protected $uiChannelRepository;
+
     /**
      * @param SerializerInterface        $serializer
      * @param LocaleRepositoryInterface  $localeRepository
      * @param ChannelRepositoryInterface $channelRepository
+     * @param UiChannelRepository        $uiChannelRepository
      */
     public function __construct(
         SerializerInterface $serializer,
         LocaleRepositoryInterface $localeRepository,
-        ChannelRepositoryInterface $channelRepository
+        ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository
     ) {
         parent::__construct($serializer, $localeRepository);
 
-        $this->localeRepository  = $localeRepository;
-        $this->serializer        = $serializer;
-        $this->channelRepository = $channelRepository;
+        $this->localeRepository    = $localeRepository;
+        $this->serializer          = $serializer;
+        $this->channelRepository   = $channelRepository;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -115,7 +122,7 @@ class ProductProcessor extends HeterogeneousProcessor
                 'channel' => [
                     'type'    => 'choice',
                     'options' => [
-                        'choices'  => $this->channelRepository->getChannelChoices(),
+                        'choices'  => $this->uiChannelRepository->getLabelsIndexedByCode(),
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_base_connector.export.channel.label',
@@ -135,7 +142,7 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $channelCode]);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }
