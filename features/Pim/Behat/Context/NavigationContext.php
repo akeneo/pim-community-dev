@@ -323,12 +323,16 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function openPage($pageName, array $options = [])
     {
         $this->currentPage = $pageName;
+        $this->spin(function () use ($options) {
+            $page = $this->getCurrentPage()->open($options);
+            $this->assertAddress($this->getCurrentPage()->getUrl($options));
 
-        $page = $this->getCurrentPage()->open($options);
+            return true;
+        });
 
         $this->wait();
 
-        return $page;
+        return $this->getCurrentPage()->open($options);
     }
 
     /**
@@ -360,7 +364,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->spin(function () use ($expected) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $result        = substr($expected, 1) === $actualUrl;
+            $result        = substr($expected, 1) === $actualUrl || $expected === $actualUrl;
 
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
