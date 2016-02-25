@@ -1224,7 +1224,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
-    public function iVeRemovedTheAttribute($attribute)
+    public function iHaveRemovedTheAttribute($attribute)
     {
         $remover = $this->getContainer()->get('pim_catalog.remover.attribute');
         $remover->remove($this->getAttribute($attribute));

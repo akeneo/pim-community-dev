@@ -298,29 +298,4 @@ class FixturesContext extends PimContext
             $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
         }
     }
-
-    /**
-     * @param object $object
-     */
-    public function flush($object = null)
-    {
-        if (!$object) {
-            $this->flushAll();
-
-            return;
-        }
-
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->flush($object);
-    }
-
-    /**
-     * Flush all managers
-     */
-    protected function flushAll()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
-    }
 }

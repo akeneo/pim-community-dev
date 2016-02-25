@@ -22,4 +22,4 @@
     `Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter` and
     `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
 - Remove deprecated argument $propertyCopier from constructor of `Pim\Component\Catalog\Updater\ProductUpdater` and allow to inject supported fields
-- Remove argument $em from constructor of `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and inject SaverInterface and RemoverInterface
+- Remove argument $em from constructor of `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and inject `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`
