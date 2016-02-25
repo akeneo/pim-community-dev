@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an import
   In order to manage existing import jobs
   As an administrator
@@ -16,7 +17,6 @@ Feature: Edit an import
     And I press the "Save" button
     Then I should see the text "My import"
 
-  @javascript
   Scenario: Successfully update import job configuration
     Given I am on the "footwear_product_import" import job edit page
     Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator and Date format fields
@@ -56,7 +56,6 @@ Feature: Edit an import
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the import profile if you leave this page. |
 
-  @javascript
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "footwear_product_import" import job edit page
     When I fill in the following information:

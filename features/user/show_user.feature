@@ -1,3 +1,4 @@
+@javascript
 Feature: Show a user
   In order to manage the users
   As an administrator
