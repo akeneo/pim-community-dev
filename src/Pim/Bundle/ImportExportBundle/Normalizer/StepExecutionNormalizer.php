@@ -89,32 +89,33 @@ class StepExecutionNormalizer implements NormalizerInterface
             $selectedWarnings = $warnings;
         }
 
-
         $items = [];
         foreach ($selectedWarnings as $warning) {
             $parameters = $warning->getReasonParameters();
-            $reason = sprintf('%s: %s: %s',
-                $parameters['attribute'],
-                $this->translator->trans($warning->getReason(), $parameters, 'validators'),
-                $parameters['invalid_value']
-            );
+            $reason = $this->translator->trans($warning->getReason(), $parameters, 'validators');
+            if(array_key_exists('attribute', $parameters)) {
+                $reason = sprintf('%s: %s: %s',
+                    $parameters['attribute'],
+                    $this->translator->trans($warning->getReason(), $parameters, 'validators'),
+                    $parameters['invalid_value']
+                );
+            }
             $itemIndex = array_search($warning->getItem(), $items);
 
-            if(False !== $itemIndex){
-                $results[$itemIndex]['reasons'][] = $reason;
-            } else {
+            if(false === $itemIndex){
                 $items[] = $warning->getItem();
                 $results[] = [
-                    'label'  => $this->translator->trans($warning->getName()),
+                    'label' => $this->translator->trans($warning->getName()),
                     'reasons' => [$reason],
-                    'item'   => $warning->getItem(),
+                    'item' => $warning->getItem(),
                 ];
+            } else {
+                $results[$itemIndex]['reasons'][] = $reason;
             }
         }
 
         return $results;
     }
-
 
     /**
      * Normalizes the summary

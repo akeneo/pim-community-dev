@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -275,11 +276,22 @@ class ItemStep extends AbstractStep
         if ($element instanceof AbstractConfigurableStepElement) {
             $warningName = $element->getName();
         } else {
-            $warningName = get_class($element);
+            $warningName = ClassUtils::getClass($element);
         }
 
-        foreach($e->getMessageParameters() as $error){
-            $stepExecution->addWarning($warningName, $error["message"], $error, $e->getItem());
+        $errors = $e->getDetails();
+        if(count($errors) !== 0){
+            foreach ($errors as $error) {
+                $stepExecution->addWarning($warningName, $error['message'], $error['parameters'], $e->getItem());
+                $this->dispatchInvalidItemEvent(
+                    get_class($element),
+                    $error['message'],
+                    $error['parameters'],
+                    $e->getItem()
+                );
+            }
+        } else {
+            $stepExecution->addWarning($warningName, $e->getMessage(), $e->getMessageParameters(), $e->getItem());
             $this->dispatchInvalidItemEvent(
                 get_class($element),
                 $e->getMessage(),
