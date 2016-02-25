@@ -161,7 +161,8 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     throw new \LogicException(
                         sprintf(
                             'Property "%s" of "%s" should be an instance of ' .
-                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection, got "%s"',
+                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection, ' .
+                            'got "%s"',
                             $field,
                             get_class($document),
                             is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
