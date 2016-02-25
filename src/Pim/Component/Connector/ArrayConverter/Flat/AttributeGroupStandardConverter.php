@@ -4,16 +4,15 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Channel Flat to Standard format Converter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelStandardConverter implements StandardArrayConverterInterface
+class AttributeGroupStandardConverter implements StandardArrayConverterInterface
 {
     /** @var FieldsRequirementValidator */
     protected $validator;
@@ -33,27 +32,27 @@ class ChannelStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'         => 'ecommerce',
-     *      'label'        => 'Ecommerce',
-     *      'locales'      => 'en_US,fr_FR',
-     *      'currencies'   => 'EUR,USD',
-     *      'tree'         => 'master_catalog',
-     *      'color'        => 'orange'
+     *     'code'        => 'sizes',
+     *     'sort_order'  => 1,
+     *     'attributes'  => 'size,main_color',
+     *     'label-en_US' => 'Sizes',
+     *     'label-fr_FR' => 'Tailles'
      * ]
      *
      * After:
      * [
-     *     'code'   => 'ecommerce',
-     *     'label'  => 'Ecommerce',
-     *     'locales'    => ['en_US', 'fr_FR'],
-     *     'currencies' => ['EUR', 'USD'],
-     *     'tree'       => 'master_catalog',
-     *     'color'      => 'orange'
+     *     'code'       => 'sizes',
+     *     'sort_order' => 1,
+     *     'attributes' => ['size', 'main_color'],
+     *     'label'      => [
+     *         'en_US' => 'Sizes',
+     *         'fr_FR' => 'Tailles'
+     *     ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['code', 'tree', 'locales', 'currencies']);
+        $this->validator->validateFields($item, ['code']);
 
         $convertedItem = [];
         foreach ($item as $field => $data) {
@@ -72,8 +71,13 @@ class ChannelStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        if (in_array($field, ['code', 'color', 'tree', 'label'])) {
+        if (in_array($field, ['code', 'sort_order'])) {
             $convertedItem[$field] = $data;
+        } elseif (preg_match('/^label-([\w_]+)$/', $field, $matches)) {
+            if (!isset($convertedItem['label'])) {
+                $convertedItem['label'] = [];
+            }
+            $convertedItem['label'][$matches[1]] = $data;
         } else {
             $convertedItem[$field] = explode(',', $data);
         }

@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
@@ -13,7 +14,6 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\Exception\ArrayConversionException;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
 
 class ProductStandardConverterSpec extends ObjectBehavior
@@ -26,7 +26,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        LocalizerRegistryInterface $localizerRegistry
+        FieldsRequirementValidator $validator
     ) {
         $this->beConstructedWith(
             $fieldExtractor,
@@ -36,7 +36,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
             $fieldConverter,
             $columnsMerger,
             $columnsMapper,
-            $localizerRegistry
+            $validator
         );
     }
 

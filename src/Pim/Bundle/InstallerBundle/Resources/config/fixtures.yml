@@ -24,9 +24,7 @@ categories:
 attribute_groups:
     order: 30
     csv:
-        processor:         pim_base_connector.processor.attribute_group
-    yml:
-        processor:         pim_base_connector.processor.attribute_group
+        processor:         pim_connector.processor.denormalization.attribute_group.flat
 
 channels:
     order: 30

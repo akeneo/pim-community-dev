@@ -6,6 +6,7 @@ parameters:
     pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
     pim_catalog.factory.association_type.class:      Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory
     pim_catalog.factory.channel.class:               Pim\Component\Catalog\Factory\ChannelFactory
+    pim_catalog.factory.attribute_group.class:       Pim\Component\Catalog\Factory\AttributeGroupFactory
 
 services:
     pim_catalog.factory.family:
@@ -20,6 +21,11 @@ services:
         class: %pim_catalog.factory.channel.class%
         arguments:
             - %pim_catalog.entity.channel.class%
+
+    pim_catalog.factory.attribute_group:
+        class: %pim_catalog.factory.attribute_group.class%
+        arguments:
+            - %pim_catalog.entity.attribute_group.class%
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%

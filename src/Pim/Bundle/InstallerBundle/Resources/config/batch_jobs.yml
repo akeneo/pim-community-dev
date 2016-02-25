@@ -20,21 +20,21 @@ connector:
                     parameters:
                         batchSize: 1
 
-        fixtures_attribute_group_yml:
-            title: pim_installer.jobs.fixtures_attribute_group_yml.title
+        fixtures_attribute_group_csv:
+            title: pim_installer.jobs.fixtures_attribute_group_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_attribute_group_yml.validation.title
+                    title: pim_connector.jobs.fixtures_attribute_group_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_attribute_group_yml.import.title
+                    title: pim_installer.jobs.fixtures_attribute_group_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.attribute_group
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_attribute_group
+                        processor: pim_connector.processor.denormalization.attribute_group.flat
+                        writer:    pim_connector.writer.doctrine.attribute_group
 
         fixtures_channel_csv:
             title: pim_installer.jobs.fixtures_channel_yml.title
