@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -138,7 +139,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_media1', 'normalized_media2']);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
@@ -147,16 +150,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
-    $this->process($product)->shouldReturn(
-        [
-            'media'   => ['normalized_media1', 'normalized_media2'],
-            'product' => ['normalized_product']
-        ]
-    );
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => ['normalized_media1', 'normalized_media2'],
+                'product' => ['normalized_product']
+            ]
+        );
     }
 
     function it_returns_flat_data_without_media(
@@ -182,7 +185,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
@@ -265,7 +268,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
@@ -318,7 +321,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
