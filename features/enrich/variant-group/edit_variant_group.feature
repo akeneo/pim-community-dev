@@ -18,6 +18,7 @@ Feature: Edit a variant group
     And I press the "Save" button
     Then I should see the text "My boots"
 
+  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I fill in the following information:
       | English (United States) | My boots |
