@@ -29,28 +29,28 @@ class AssociationTypeProcessor extends AbstractProcessor
     protected $validator;
 
     /** @var AssociationTypeFactory */
-    protected $associationTypeFactory;
+    protected $assocTypeFactory;
 
     /**
      * @param StandardArrayConverterInterface       $arrayConverter
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param AssociationTypeFactory                $associationTypeFactory
+     * @param AssociationTypeFactory                $assocTypeFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        AssociationTypeFactory $associationTypeFactory,
+        AssociationTypeFactory $assocTypeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter          = $arrayConverter;
-        $this->associationTypeFactory  = $associationTypeFactory;
-        $this->updater                 = $updater;
-        $this->validator               = $validator;
+        $this->arrayConverter    = $arrayConverter;
+        $this->assocTypeFactory  = $assocTypeFactory;
+        $this->updater           = $updater;
+        $this->validator         = $validator;
     }
 
     /**
@@ -94,7 +94,7 @@ class AssociationTypeProcessor extends AbstractProcessor
     {
         $associationType = $this->findObject($this->repository, $convertedItem);
         if (null === $associationType) {
-            return $this->associationTypeFactory->createAssociationType();
+            return $this->assocTypeFactory->createAssociationType();
         }
 
         return $associationType;

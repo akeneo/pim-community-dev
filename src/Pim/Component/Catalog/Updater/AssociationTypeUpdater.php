@@ -22,15 +22,15 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
     protected $accessor;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $associationTypeRepository;
+    protected $assocTypeRepository;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $associationTypeRepository
+     * @param IdentifiableObjectRepositoryInterface $assocTypeRepository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $associationTypeRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $assocTypeRepository)
     {
         $this->accessor                  = PropertyAccess::createPropertyAccessor();
-        $this->associationTypeRepository = $associationTypeRepository;
+        $this->associationTypeRepository = $assocTypeRepository;
     }
 
     /**

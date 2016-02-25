@@ -140,7 +140,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
             $authorizedFields[] = 'label-' . $code;
         }
 
-        foreach ($item as $field => $data) {
+        foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields)) {
                 throw new ArrayConversionException(
                     sprintf(

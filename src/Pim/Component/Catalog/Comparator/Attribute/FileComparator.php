@@ -46,35 +46,21 @@ class FileComparator implements ComparatorInterface
         $default   = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
+        if (!isset($data['data']['filePath']) && !isset($originals['data']['filePath']) ||
+            $this->filesMatch($data, $originals)
+        ) {
+            return null;
+        }
+
         // compare a local file and a stored file (can happen during an import for instance)
-        if (isset($data['data']['filePath']) &&
-            isset($originals['data']['filePath']) &&
+        if (isset($originals['data']['filePath']) &&
+            isset($data['data']['filePath']) &&
             is_file($data['data']['filePath'])
         ) {
             $originalFile = $this->repository->findOneByIdentifier($originals['data']['filePath']);
             if (null !== $originalFile && $originalFile->getHash() === $this->getHashFile($data['data']['filePath'])) {
                 return null;
             }
-        }
-
-        // compare the two stored files by their filepaths
-        if (isset($data['data']['filePath']) &&
-            isset($originals['data']['filePath']) &&
-            $data['data']['filePath'] === $originals['data']['filePath']
-        ) {
-            return null;
-        }
-
-        // compare the two stored files by their hashes
-        if (isset($data['data']['hash']) &&
-            isset($originals['data']['hash']) &&
-            $data['data']['hash'] === $originals['data']['hash']
-        ) {
-            return null;
-        }
-
-        if (!isset($data['data']['filePath']) && !isset($originals['data']['filePath'])) {
-            return null;
         }
 
         return $data;
@@ -88,5 +74,27 @@ class FileComparator implements ComparatorInterface
     protected function getHashFile($filePath = null)
     {
         return null !== $filePath ? sha1_file($filePath) : null;
+    }
+
+    /**
+     * Check if files match by their hash or path
+     *
+     * @param mixed  $data
+     * @param mixed  $originals
+     *
+     * @return bool
+     */
+    protected function filesMatch($data, $originals)
+    {
+        return
+            (
+                isset($data['data']['filePath']) &&
+                isset($originals['data']['filePath']) &&
+                $data['data']['filePath'] === $originals['data']['filePath']
+            ) || (
+                isset($data['data']['hash']) &&
+                isset($originals['data']['hash']) &&
+                $data['data']['hash'] === $originals['data']['hash']
+            );
     }
 }

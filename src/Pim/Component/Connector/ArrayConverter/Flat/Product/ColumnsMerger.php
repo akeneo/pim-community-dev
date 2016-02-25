@@ -153,7 +153,7 @@ class ColumnsMerger
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
             if (!in_array($cleanField, array_keys($collectedPrices))) {
-                $collectedMetrics[$cleanField] = [];
+                $collectedPrices[$cleanField] = [];
             }
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',

@@ -20,18 +20,18 @@ class AssociationColumnsResolver
     const PRODUCT_ASSOCIATION_SUFFIX = '-products';
 
     /** @var AssociationTypeRepositoryInterface */
-    protected $associationTypeRepo;
+    protected $assocTypeRepository;
 
     /** @var array */
-    protected $associationFieldsCache;
+    protected $assocFieldsCache;
 
     /**
      * @param AssociationTypeRepositoryInterface $repository
      */
     public function __construct(AssociationTypeRepositoryInterface $repository)
     {
-        $this->associationTypeRepo = $repository;
-        $this->associationFieldsCache = [];
+        $this->assocTypeRepository = $repository;
+        $this->assocFieldsCache    = [];
     }
 
     /**
@@ -41,16 +41,16 @@ class AssociationColumnsResolver
      */
     public function resolveAssociationColumns()
     {
-        if (empty($this->associationFieldsCache)) {
+        if (empty($this->assocFieldsCache)) {
             $fieldNames = [];
-            $assocTypes = $this->associationTypeRepo->findAll();
+            $assocTypes = $this->assocTypeRepository->findAll();
             foreach ($assocTypes as $assocType) {
                 $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
                 $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
             }
-            $this->associationFieldsCache = $fieldNames;
+            $this->assocFieldsCache = $fieldNames;
         }
 
-        return $this->associationFieldsCache;
+        return $this->assocFieldsCache;
     }
 }
