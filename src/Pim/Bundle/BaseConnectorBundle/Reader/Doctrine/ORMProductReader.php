@@ -10,6 +10,7 @@ use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -89,9 +90,13 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     protected $missingCompleteness;
 
+    /** @var UiChannelRepository */
+    protected $uiChannelRepository;
+
     /**
      * @param ProductRepositoryInterface $repository
      * @param ChannelRepositoryInterface $channelRepository
+     * @param UiChannelRepository        $uiChannelRepository
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param EntityManager              $entityManager
@@ -100,6 +105,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     public function __construct(
         ProductRepositoryInterface $repository,
         ChannelRepositoryInterface $channelRepository,
+        UiChannelRepository $uiChannelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         EntityManager $entityManager,
@@ -112,6 +118,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         $this->metricConverter     = $metricConverter;
         $this->products            = new \ArrayIterator();
         $this->missingCompleteness = $missingCompleteness;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -169,7 +176,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelRepository->getChannelChoices(),
+                    'choices'  => $this->uiChannelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',
@@ -235,7 +242,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected function getIds()
     {
         if (!is_object($this->channel)) {
-            $this->channel = $this->channelRepository->findOneBy(['code' => $this->channel]);
+            $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
         }
 
         if ($this->missingCompleteness) {

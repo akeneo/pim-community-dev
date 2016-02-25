@@ -28,7 +28,7 @@ class FamilyFactory
     protected $familyClass;
 
     /**
-     * @param ChannelRepositoryInterface               $channelRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRequirementFactory  $factory
      * @param AttributeRepositoryInterface $attributeRepository
      * @param string                       $familyClass

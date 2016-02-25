@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;

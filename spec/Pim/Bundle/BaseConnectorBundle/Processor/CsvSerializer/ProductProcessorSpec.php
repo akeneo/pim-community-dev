@@ -41,7 +41,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_provides_configuration_fields($channelRepository)
     {
-        $channelRepository->getChannelChoices()->willReturn(['mobile', 'Magento']);
+        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'Magento']);
 
         $this->getConfigurationFields()->shouldReturn([
             'delimiter' => [

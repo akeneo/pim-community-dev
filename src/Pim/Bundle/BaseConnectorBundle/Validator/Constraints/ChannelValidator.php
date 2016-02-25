@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\UiChannelRepository;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
@@ -19,12 +20,17 @@ class ChannelValidator extends ChoiceValidator
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var UiChannelRepository */
+    protected $uiChannelRepository;
+
     /**
      * @param ChannelRepositoryInterface $channelRepository
+     * @param UiChannelRepository        $uiChannelRepository
      */
-    public function __construct(ChannelRepositoryInterface $channelRepository)
+    public function __construct(ChannelRepositoryInterface $channelRepository, UiChannelRepository $uiChannelRepository)
     {
-        $this->channelRepository = $channelRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->uiChannelRepository = $uiChannelRepository;
     }
 
     /**
@@ -32,7 +38,7 @@ class ChannelValidator extends ChoiceValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $channels = $this->channelRepository->getChannelChoices();
+        $channels = $this->uiChannelRepository->getLabelsIndexedByCode();
         if (0 === count($channels)) {
             throw new ConstraintDefinitionException('No channel is set in the application');
         }
