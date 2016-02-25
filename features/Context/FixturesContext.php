@@ -1226,8 +1226,8 @@ class FixturesContext extends BaseFixturesContext
      */
     public function iVeRemovedTheAttribute($attribute)
     {
-        // TODO use a Remover
-        $this->remove($this->getAttribute($attribute));
+        $remover = $this->getContainer()->get('pim_catalog.remover.attribute');
+        $remover->remove($this->getAttribute($attribute));
     }
 
     /**

@@ -300,23 +300,6 @@ class FixturesContext extends PimContext
     }
 
     /**
-     *
-     * @param object $object
-     * @param bool   $flush
-     *
-     * * TODO use Removers
-     */
-    protected function remove($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->remove($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
      * @param object $object
      */
     public function flush($object = null)

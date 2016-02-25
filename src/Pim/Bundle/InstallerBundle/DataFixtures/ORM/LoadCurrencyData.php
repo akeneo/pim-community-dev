@@ -28,15 +28,14 @@ class LoadCurrencyData extends AbstractInstallerFixture
 
         // remove useless currencies
         $allCurrencies = array_diff(array_keys($allCurrencies), $removedCurrencies);
-        $newCurrencies = [];
         foreach ($allCurrencies as $currencyCode) {
             $activated = in_array($currencyCode, $activatedCurrencies);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference(get_class($currency).'.'. $currencyCode, $currency);
             $this->validate($currency, $currencyCode);
-            $newCurrencies[] = $currency;
+            $manager->persist($currency);
         }
-        $this->container->get('pim_catalog.saver.currency')->saveAll($newCurrencies);
+        $manager->flush();
     }
 
     /**
