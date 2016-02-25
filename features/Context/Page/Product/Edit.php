@@ -48,6 +48,12 @@ class Edit extends ProductEditForm
                         'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
                     ]
                 ],
+                'Category tree selector'           => [
+                    'css'        => '#trees-list',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeSelectorDecorator\ListDecorator'
+                    ]
+                ],
                 'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
