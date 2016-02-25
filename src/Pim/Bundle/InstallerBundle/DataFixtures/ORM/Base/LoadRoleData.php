@@ -39,9 +39,8 @@ class LoadRoleData extends AbstractInstallerFixture
             $dataRole['role'] = $code;
             $role = $this->buildRole($dataRole);
             $roles[] = $role;
-            $manager->persist($role);
         }
-        $manager->flush();
+        $this->container->get('pim_user.saver.role')->saveAll($roles);
 
         foreach ($roles as $role) {
             $this->loadAcls($aclManager, $role);

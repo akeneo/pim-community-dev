@@ -67,7 +67,7 @@ class NotificationManager
         $this->userProvider        = $userProvider;
         $this->notificationSaver   = $notificationSaver;
         $this->userNotifsSaver     = $userNotifsSaver;
-        $this->userNotifRemover = $userNotifRemover;
+        $this->userNotifRemover    = $userNotifRemover;
     }
 
     /**
