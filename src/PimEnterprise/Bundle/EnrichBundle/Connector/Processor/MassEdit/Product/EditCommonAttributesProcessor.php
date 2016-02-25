@@ -3,12 +3,14 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -36,10 +38,10 @@ class EditCommonAttributesProcessor extends BaseProcessor
     /**
      * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
-     * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param ProductRepositoryInterface           $productRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param ObjectUpdaterInterface               $productUpdater
+     * @param ObjectDetacherInterface              $productDetacher
      * @param UserManager                          $userManager
      * @param TokenStorageInterface                $tokenStorage
      * @param AuthorizationCheckerInterface        $authorizationChecker
@@ -47,10 +49,10 @@ class EditCommonAttributesProcessor extends BaseProcessor
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -58,10 +60,10 @@ class EditCommonAttributesProcessor extends BaseProcessor
         BaseProcessor::__construct(
             $propertySetter,
             $validator,
-            $massActionRepository,
-            $attributeRepository,
+            $productRepository,
             $jobConfigurationRepo,
-            $productUpdater
+            $productUpdater,
+            $productDetacher
         );
 
         $this->tokenStorage         = $tokenStorage;
