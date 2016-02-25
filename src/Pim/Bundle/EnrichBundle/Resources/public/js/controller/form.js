@@ -46,6 +46,10 @@ define([
              * @param {Object} xhr
              */
             afterSubmit: function (xhr) {
+                if (!this.active) {
+                    return;
+                }
+
                 if (xhr.responseJSON && xhr.responseJSON.route) {
                     router.redirectToRoute(
                         xhr.responseJSON.route,

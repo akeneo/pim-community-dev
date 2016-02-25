@@ -19,6 +19,10 @@ define(
              * @param {String} content
              */
             renderTemplate: function (content) {
+                if (!this.active) {
+                    return;
+                }
+
                 this.$el.html(content);
             }
         });

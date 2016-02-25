@@ -24,6 +24,10 @@ define(
             renderTemplate: function () {
                 FormController.prototype.renderTemplate.apply(this, arguments);
 
+                if (!this.active) {
+                    return;
+                }
+
                 _.each(this.$('a.add-attribute-option'), function (optionLink) {
                     optionform.init('#' + optionLink.getAttribute('id'));
                 });

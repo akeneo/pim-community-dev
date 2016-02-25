@@ -3,6 +3,8 @@
 
 define(['backbone'], function (Backbone) {
     return Backbone.View.extend({
+        active: false,
+
         /**
          * Render the route given in parameter
          *
@@ -13,6 +15,14 @@ define(['backbone'], function (Backbone) {
          */
         renderRoute: function (route, path) {
             throw new Error('Method renderRoute is abstract and must be implemented!');
+        },
+
+        remove: function () {
+            this.setActive(false);
+        },
+
+        setActive: function (active) {
+            this.active = active;
         }
     });
 });

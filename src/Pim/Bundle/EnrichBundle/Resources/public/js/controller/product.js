@@ -19,6 +19,10 @@ define(
             renderRoute: function (route) {
                 return ProductManager.get(route.params.id)
                     .then(function (product) {
+                        if (!this.active) {
+                            return;
+                        }
+
                         PageTitle.set({'product.sku': _.escape(product.meta.label[UserContext.get('catalogLocale')]) });
 
                         FormBuilder.build(product.meta.form)

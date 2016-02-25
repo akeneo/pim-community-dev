@@ -332,7 +332,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
         $this->wait();
 
-        return $this->getCurrentPage()->open($options);
+        return $this->getCurrentPage();
     }
 
     /**

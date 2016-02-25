@@ -17,6 +17,10 @@ define(
              * @param {Object} response
              */
             redirect: function (response) {
+                if (!this.active) {
+                    return;
+                }
+
                 router.redirectToRoute(
                     response.route,
                     response.params ? response.params : {},

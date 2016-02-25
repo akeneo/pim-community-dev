@@ -70,7 +70,8 @@ define(
                     }
                     $('#container').empty();
                     var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
-                    currentController = new Controller({ el: $view });
+                    currentController = new Controller({ el: $view});
+                    currentController.setActive(true);
                     currentController.renderRoute(route, path).done(_.bind(function () {
                         this.triggerComplete(route);
                     }, this)).fail(this.handleError.bind(this)).always(this.hideLoadingMask);

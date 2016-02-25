@@ -2416,13 +2416,7 @@ class WebUser extends RawMinkContext
      */
     protected function openPage($page, array $options = [])
     {
-        $this-spin(function () use ($page, $options) {
-            $page = $this->getNavigationContext()->openPage($page, $options);
-            $this->assertAddress($this->getCurrentPage()->getUrl($options));
-
-            return true;
-        });
-
+        $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();
 
         return $page;
