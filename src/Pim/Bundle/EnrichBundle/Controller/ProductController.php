@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
@@ -83,9 +82,6 @@ class ProductController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
     /** @var ProductCategoryManager */
     protected $productCatManager;
 
@@ -123,7 +119,6 @@ class ProductController
      * @param TranslatorInterface         $translator
      * @param EventDispatcherInterface    $eventDispatcher
      * @param ProductRepositoryInterface  $productRepository
-     * @param CategoryManager             $categoryManager
      * @param CategoryRepositoryInterface $categoryRepository
      * @param UserContext                 $userContext
      * @param VersionManager              $versionManager
@@ -144,7 +139,6 @@ class ProductController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
-        CategoryManager $categoryManager,
         CategoryRepositoryInterface $categoryRepository,
         UserContext $userContext,
         VersionManager $versionManager,
@@ -163,7 +157,6 @@ class ProductController
         $this->validator          = $validator;
         $this->translator         = $translator;
         $this->productRepository  = $productRepository;
-        $this->categoryManager    = $categoryManager;
         $this->userContext        = $userContext;
         $this->versionManager     = $versionManager;
         $this->securityFacade     = $securityFacade;
@@ -344,33 +337,20 @@ class ProductController
         }
 
         $categories = null;
-
-        $includeParent = $request->get('include_parent', false);
-        $includeParent = ($includeParent === 'true');
-
         $selectedCategoryIds = $request->get('selected', null);
+
         if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryManager->getCategoriesByIds($selectedCategoryIds);
+            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
         } elseif (null !== $product) {
             $categories = $product->getCategories();
         }
 
-        $trees = $this->getFilledTree($parent, $categories);
+        $trees = $this->categoryRepository->getFilledTree($parent, $categories);
 
-        return ['trees' => $trees, 'categories' => $categories];
-    }
-
-    /**
-     * Fetch the filled tree
-     *
-     * @param CategoryInterface $parent
-     * @param Collection        $categories
-     *
-     * @return CategoryInterface[]
-     */
-    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
-    {
-        return $this->categoryManager->getFilledTree($parent, $categories);
+        return [
+            'trees'      => $trees,
+            'categories' => $categories
+        ];
     }
 
     /**

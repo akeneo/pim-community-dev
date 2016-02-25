@@ -6,6 +6,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -346,6 +347,21 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getTreeChoices()
+    {
+        $trees   = $this->getTrees();
+        $choices = [];
+
+        foreach ($trees as $tree) {
+            $choices[$tree->getId()] = $tree->getLabel();
+        }
+
+        return $choices;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGrantedTrees(array $grantedCategoryIds = [])
     {
         $qb = $this->getChildrenQueryBuilder(null, true, 'created', 'DESC');
@@ -396,5 +412,30 @@ class CategoryRepository extends NestedTreeRepository implements
         $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
+    {
+        $parentsIds = [];
+
+        foreach ($categories as $category) {
+            $categoryParentsIds = [];
+            $path               = $this->getPath($category);
+
+            if ($path[0]->getId() === $root->getId()) {
+                foreach ($path as $pathItem) {
+                    $categoryParentsIds[] = $pathItem->getId();
+                }
+            }
+
+            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
+        }
+
+        $parentsIds = array_unique($parentsIds);
+
+        return $this->getTreeFromParents($parentsIds);
     }
 }

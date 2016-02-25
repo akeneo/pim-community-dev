@@ -164,6 +164,11 @@ interface CategoryRepositoryInterface extends
     public function getTrees();
 
     /**
+     * @return array
+     */
+    public function getTreeChoices();
+
+    /**
      * Get trees of granted categories
      *
      * @param array $grantedCategoryIds
@@ -188,4 +193,16 @@ interface CategoryRepositoryInterface extends
      * @return array
      */
     public function getOrderedAndSortedByTreeCategories();
+
+    /**
+     * Provides a tree filled up to the categories provided, with all their ancestors
+     * and ancestors siblings are filled too, in order to be able to display the tree
+     * directly without loading other data.
+     *
+     * @param CategoryInterface $root       Tree root category
+     * @param Collection        $categories categories
+     *
+     * @return array Multi-dimensional array representing the tree
+     */
+    public function getFilledTree(CategoryInterface $root, Collection $categories);
 }

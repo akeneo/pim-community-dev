@@ -3,23 +3,19 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ClassifyTypeSpec extends ObjectBehavior
 {
-    function let(
-        CategoryManager $categoryManager,
-        CategoryRepositoryInterface $categoryRepository
-    ) {
-        $categoryRepository->findBy(['parent' => null])->willReturn(['this', 'is', 'a', 'category', 'tree']);
-        $categoryManager->getEntityRepository()->willReturn($categoryRepository);
+    function let(CategoryRepositoryInterface $categoryRepository)
+    {
+        $categoryRepository->getClassName()->willReturn('Pim\Bundle\CatalogBundle\Entity\Category');
+        $categoryRepository->getTrees()->willReturn(['this', 'is', 'a', 'category', 'tree']);
 
         $this->beConstructedWith(
-            $categoryManager,
-            'Pim\Bundle\CatalogBundle\Entity\Category',
+            $categoryRepository,
             'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify'
         );
     }

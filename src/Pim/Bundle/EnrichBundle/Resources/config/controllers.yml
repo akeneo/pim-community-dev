@@ -170,7 +170,6 @@ services:
             - '@translator'
             - '@event_dispatcher'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.category'
             - '@pim_catalog.repository.category'
             - '@pim_user.context.user'
             - '@pim_versioning.manager.version'
