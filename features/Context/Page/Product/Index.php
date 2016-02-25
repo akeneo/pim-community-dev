@@ -43,7 +43,12 @@ class Index extends Grid
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
                 ],
-                'Tree select'      => ['css' => '#tree_select'],
+                'Category tree selector'           => [
+                    'css'        => '#tree_select',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeSelectorDecorator\SelectDecorator'
+                    ]
+                ],
                 'Locales dropdown' => ['css' => '#locale-switcher'],
             ]
         );

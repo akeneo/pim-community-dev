@@ -38,28 +38,4 @@ class JsTreeDecorator extends ElementDecorator
             $nodeElement->click();
         }
     }
-
-    /**
-     * @param string $treeName
-     */
-    public function selectTree($treeName)
-    {
-        $this->spin(function () use ($treeName) {
-            if (null !== $treeSelect = $this->find('css', '#tree_select')) {
-                $treeSelect->selectOption($treeName);
-
-                return true;
-            }
-
-            $link = $this->find('css', sprintf('#trees-list li a:contains("%s")', $treeName));
-
-            if (null === $link) {
-                return false;
-            }
-
-            $link->click();
-
-            return true;
-        }, sprintf('Tree "%s" not found', $treeName));
-    }
 }
