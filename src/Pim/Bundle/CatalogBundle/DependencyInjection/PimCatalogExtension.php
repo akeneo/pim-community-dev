@@ -21,6 +21,11 @@ class PimCatalogExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $this->loadLocalizationConfiguration($container, $config);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
@@ -35,8 +40,10 @@ class PimCatalogExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('filters.yml');
         $loader->load('helpers.yml');
+        $loader->load('localization/factories.yml');
         $loader->load('localization/localizers.yml');
         $loader->load('localization/presenters.yml');
+        $loader->load('localization/validators.yml');
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('query_builders.yml');
@@ -64,5 +71,26 @@ class PimCatalogExtension extends Extension
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    protected function loadLocalizationConfiguration(ContainerBuilder $container, array $config)
+    {
+        $localization = $config['localization'];
+
+        $decimalSeparators = [];
+        foreach ($localization['decimal_separators'] as $decimalSeparator) {
+            $decimalSeparators[$decimalSeparator['value']] = $decimalSeparator['label'];
+        }
+        $container->setParameter('pim_catalog.localization.decimal_separators', $decimalSeparators);
+
+        $dateFormats = [];
+        foreach ($localization['date_formats'] as $dateFormat) {
+            $dateFormats[$dateFormat['value']] = $dateFormat['label'];
+        }
+        $container->setParameter('pim_catalog.localization.date_formats', $dateFormats);
     }
 }

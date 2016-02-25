@@ -5,7 +5,7 @@ services:
     pim_serializer.normalizer.comment:
         class: %pim_serializer.normalizer.comment.class%
         arguments:
-            - '@pim_localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

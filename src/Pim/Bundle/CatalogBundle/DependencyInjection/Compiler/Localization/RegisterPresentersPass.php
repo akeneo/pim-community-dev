@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterPresentersPass implements CompilerPassInterface
 {
-    const LOCALIZATION_PRESENTER_REGISTRY = 'pim_localization.presenter.registry';
+    const LOCALIZATION_PRESENTER_REGISTRY = 'pim_catalog.localization.presenter.registry';
 
-    const LOCALIZATION_PRESENTER_TAG = 'pim_localization.presenter';
+    const LOCALIZATION_PRESENTER_TAG = 'pim_catalog.localization.presenter';
 
     /**
      * {@inheritdoc}

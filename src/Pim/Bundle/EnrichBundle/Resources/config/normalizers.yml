@@ -61,8 +61,8 @@ services:
         arguments:
             - '@oro_user.manager'
             - '@translator'
-            - '@pim_localization.presenter.datetime'
-            - '@pim_localization.presenter.registry'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -50,7 +50,7 @@ services:
     pim_serializer.normalizer.product_value:
         class: %pim_serializer.normalizer.product_value.class%
         arguments:
-            - '@pim_localization.localizer.registry'
+            - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -192,7 +192,7 @@ services:
         class: %pim_serializer.denormalizer.prices.class%
         arguments:
             - ['pim_catalog_price_collection']
-            - '@pim_localization.localizer.metric'
+            - '@pim_catalog.localization.localizer.metric'
             - %pim_catalog.entity.product_price.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -202,7 +202,7 @@ services:
         arguments:
             - ['pim_catalog_metric']
             - '@pim_catalog.factory.metric'
-            - '@pim_localization.localizer.metric'
+            - '@pim_catalog.localization.localizer.metric'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -210,7 +210,7 @@ services:
         class: %pim_serializer.denormalizer.number.class%
         arguments:
             - ['pim_catalog_number']
-            - '@pim_localization.localizer.number'
+            - '@pim_catalog.localization.localizer.number'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

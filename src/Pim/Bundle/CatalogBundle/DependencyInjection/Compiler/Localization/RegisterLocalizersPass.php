@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterLocalizersPass implements CompilerPassInterface
 {
-    const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_localization.localizer.registry';
+    const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_catalog.localization.localizer.registry';
 
-    const LOCALIZATION_LOCALIZER_TAG = 'pim_localization.localizer';
+    const LOCALIZATION_LOCALIZER_TAG = 'pim_catalog.localization.localizer';
 
     /**
      * {@inheritdoc}
