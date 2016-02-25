@@ -170,36 +170,6 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param string $entityName
-     *
-     * @Given /^there is no (.*)$/
-     *
-     * @throws \Exception
-     */
-    public function thereIsNoEntity($entityName)
-    {
-        if (strpos($entityName, ' ')) {
-            $entityName = implode('', array_map('ucfirst', explode(' ', $entityName)));
-        }
-
-        $entityName = ucfirst($entityName);
-
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        $namespace = $this->getEntities()[$entityName];
-        $entities  = $this->getRepository($namespace)->findAll();
-
-        foreach ($entities as $entity) {
-            // TODO use a Remover
-            $this->remove($entity, false);
-        }
-        $this->flush();
-    }
-
-
-    /**
      * @param mixed  $data
      * @param string $value
      */
