@@ -181,11 +181,12 @@ SQL;
      */
     public function getChannelChoices()
     {
-        $channels = $this->findAll();
-
+        $qb = $this->getEntityManager()->createQueryBuilder()->select('c');
+        $qb->select('c.code, c.label');
+        $channels = $qb->getQuery()->getArrayResult();
         $choices = [];
         foreach ($channels as $channel) {
-            $choices[$channel->getCode()] = $channel->getLabel();
+            $choices[$channel['code']] = $channel['label'];
         }
 
         return $choices;
