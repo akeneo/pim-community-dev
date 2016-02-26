@@ -135,7 +135,7 @@ class ProductProcessor extends HeterogeneousProcessor
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $channelCode]);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }

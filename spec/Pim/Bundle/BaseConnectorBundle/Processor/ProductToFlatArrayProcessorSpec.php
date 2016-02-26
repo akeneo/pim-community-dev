@@ -157,7 +157,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(
@@ -198,7 +198,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);

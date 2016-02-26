@@ -87,7 +87,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
-        $contextChannel = $this->channelRepository->findOneBy(['code' => $this->channel]);
+        $contextChannel = $this->channelRepository->findOneByIdentifier($this->channel);
         $this->productBuilder->addMissingProductValues(
             $product,
             [$contextChannel],
@@ -241,7 +241,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $channelCode]);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }

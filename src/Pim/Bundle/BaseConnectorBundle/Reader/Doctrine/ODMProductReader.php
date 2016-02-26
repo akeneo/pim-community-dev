@@ -104,7 +104,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         if (!$this->executed) {
             $this->executed = true;
             if (!is_object($this->channel)) {
-                $this->channel = $this->channelRepository->findOneBy(['code' => $this->channel]);
+                $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
             }
 
             if ($this->missingCompleteness) {

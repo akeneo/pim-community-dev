@@ -59,7 +59,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -92,7 +92,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -127,7 +127,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -162,7 +162,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku2,
         ProductInterface $sku3
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);

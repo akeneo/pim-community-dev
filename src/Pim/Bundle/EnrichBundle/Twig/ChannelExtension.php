@@ -52,7 +52,7 @@ class ChannelExtension extends \Twig_Extension
      */
     public function channelColor($code)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $code]);
+        $channel = $this->channelRepository->findOneByIdentifier(['code' => $code]);
 
         return $channel ? $this->colorsProvider->getColorCode($channel->getColor()) : '';
     }
@@ -66,7 +66,7 @@ class ChannelExtension extends \Twig_Extension
      */
     public function channelFontColor($code)
     {
-        $channel = $this->channelRepository->findOneBy(['code' => $code]);
+        $channel = $this->channelRepository->findOneByIdentifier($code);
 
         return $channel ? $this->colorsProvider->getFontColor($channel->getColor()) : '';
     }

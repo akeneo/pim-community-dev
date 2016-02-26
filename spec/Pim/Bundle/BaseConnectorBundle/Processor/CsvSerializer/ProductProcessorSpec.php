@@ -112,7 +112,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 1)->shouldBeCalled();
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -137,7 +137,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 2)->shouldBeCalled();
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -178,7 +178,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $value1->getData()->willReturn($media1);
         $value2->getData()->willReturn($media2);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -202,7 +202,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $product1->getValues()->willReturn([]);
         $product2->getValues()->willReturn([]);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -222,7 +222,7 @@ class ProductProcessorSpec extends ObjectBehavior
     ) {
         $product->getValues()->willReturn([]);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');

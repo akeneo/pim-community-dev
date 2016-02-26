@@ -48,7 +48,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -72,7 +72,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -98,7 +98,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);
@@ -124,7 +124,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         Cursor $cursor
     ) {
-        $channelRepository->findOneBy(['code' => 'foobar'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
         $builder->getQuery()->willReturn($query);

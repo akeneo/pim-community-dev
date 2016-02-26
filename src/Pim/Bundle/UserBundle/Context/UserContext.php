@@ -157,7 +157,7 @@ class UserContext
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
-        return $catalogScope ?: $this->channelRepository->findOneBy([]);
+        return $catalogScope ?: $this->channelRepository->findOneByIdentifier([]);
     }
 
     /**

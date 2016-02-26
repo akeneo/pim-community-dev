@@ -235,7 +235,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected function getIds()
     {
         if (!is_object($this->channel)) {
-            $this->channel = $this->channelRepository->findOneBy(['code' => $this->channel]);
+            $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
         }
 
         if ($this->missingCompleteness) {

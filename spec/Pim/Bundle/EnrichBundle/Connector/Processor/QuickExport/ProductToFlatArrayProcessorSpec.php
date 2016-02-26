@@ -148,7 +148,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
@@ -183,7 +183,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
@@ -266,7 +266,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
@@ -319,7 +319,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);
 
-        $channelRepository->findOneBy(['code' => 'mobile'])->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
