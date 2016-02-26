@@ -163,7 +163,7 @@ class LocaleAccessManager
      *
      * @return LocaleAccess
      */
-    public function builGrantAccess(LocaleInterface $locale, Group $group, $accessLevel)
+    protected function builGrantAccess(LocaleInterface $locale, Group $group, $accessLevel)
     {
         $access = $this->getLocaleAccess($locale, $group);
         $access
