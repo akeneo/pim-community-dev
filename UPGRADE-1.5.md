@@ -94,7 +94,7 @@ And don't forget to add your own dependencies to your *composer.json* in case yo
 Merge the following files into your PIM installation:
  - *app/AppKernel.php*: We added the Pim *Localization bundle*. We merged some Oro Platform bundles in our structure. The easiest way to merge is to copy the PIM-1.5 *AppKernel.php* file into your installation (`cp app/AppKernel.php $PIM_DIR/app/`), and then register your custom bundles. Don't forget to register *DoctrineMongoDBBundle* in case your products are stored with *MongoDB*.
  - *app/config/routing.yml*: we have added the entries *pim_localization* and merged some entry from Oro bundles. The easiest way to merge is copy the PIM-1.5 *routing.yml* file into your installation (`cp app/config/routing.yml $PIM_DIR/app/config/`), and then register your custom routes.
- - *app/config/config.yml*: the entry *pim_localization* has been added. The easiest way to merge is copy the PIM-1.5 *config.yml* file into your installation (`cp app/config/config.yml $PIM_DIR/app/config/`), and then register your own bundles' configuration.
+ - *app/config/config.yml*: the entry *pim_catalog* has been added. The easiest way to merge is copy the PIM-1.5 *config.yml* file into your installation (`cp app/config/config.yml $PIM_DIR/app/config/`), and then register your own bundles' configuration.
 
 Then remove your old upgrades folder:
 ```
@@ -151,7 +151,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupInterface/Component\\Catalog\\Model\\GroupInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\GroupTypeInterface/Component\\Catalog\\Model\\GroupTypeInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocaleInterface/Component\\Catalog\\Model\\LocaleInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\LocalizableInterface/Component\\Localization\\Model\\LocalizableInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Model\\LocalizableInterface/Akeneo\\Component\\Localization\\Model\\LocalizableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Metric/Component\\Catalog\\Model\\Metric/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\MetricInterface/Component\\Catalog\\Model\\MetricInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\Product/Component\\Catalog\\Model\\Product/g'
