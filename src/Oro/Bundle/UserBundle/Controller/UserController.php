@@ -163,14 +163,10 @@ class UserController extends Controller
                 $this->get('translator')->trans('oro.user.controller.user.message.saved')
             );
 
-            $response = new JsonResponse([
+            return new JsonResponse([
                 'route'      => 'oro_user_update',
-                'parameters' => ['id' => $user->getId()]
+                'params' => ['id' => $user->getId()]
             ]);
-
-            $response->headers->set('oroFullRedirect', true);
-
-            return $response;
         }
 
         return [

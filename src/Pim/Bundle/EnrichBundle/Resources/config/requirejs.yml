@@ -66,6 +66,7 @@ config:
                 pim_importexport_import_profile_show:          pim/controller/form
                 pim_importexport_export_profile_launch:        pim/controller/redirect
                 pim_importexport_export_profile_remove:        pim/controller/redirect
+                oro_user_profile_update:                       pim/controller/form
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
