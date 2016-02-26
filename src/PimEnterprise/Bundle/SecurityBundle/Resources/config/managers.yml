@@ -30,7 +30,8 @@ services:
     pimee_security.manager.locale_access:
         class: %pimee_security.manager.locale_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.locale_access'
+            - '@pimee_security.saver.locale_access'
             - %pimee_security.entity.locale_access.class%
 
     pimee_security.manager.datagtrid_view_access:

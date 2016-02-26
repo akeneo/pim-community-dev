@@ -11,11 +11,13 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
 
 /**
@@ -25,25 +27,24 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository
  */
 class LocaleAccessManager
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    /** @var LocaleAccessRepository */
+    protected $repository;
 
-    /**
-     * @var string
-     */
+    /** @var BulkSaverInterface */
+    protected $saver;
+
+    /** @var string */
     protected $localeAccessClass;
 
     /**
-     * Constructor
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $localeAccessClass
+     * @param LocaleAccessRepository $repository
+     * @param BulkSaverInterface     $saver
+     * @param string                 $localeAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $localeAccessClass)
+    public function __construct(LocaleAccessRepository $repository, BulkSaverInterface $saver, $localeAccessClass)
     {
-        $this->registry          = $registry;
+        $this->repository = $repository;
+        $this->saver = $saver;
         $this->localeAccessClass = $localeAccessClass;
     }
 
@@ -56,7 +57,7 @@ class LocaleAccessManager
      */
     public function getViewUserGroups(LocaleInterface $locale)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::VIEW_ITEMS);
+        return $this->repository->getGrantedUserGroups($locale, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -68,7 +69,7 @@ class LocaleAccessManager
      */
     public function getEditUserGroups(LocaleInterface $locale)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::EDIT_ITEMS);
+        return $this->repository->getGrantedUserGroups($locale, Attributes::EDIT_ITEMS);
     }
 
     /**
@@ -80,21 +81,22 @@ class LocaleAccessManager
      */
     public function setAccess(LocaleInterface $locale, $viewUserGroups, $editUserGroups)
     {
+        $grantedAccesses = [];
         $grantedUserGroups = [];
         foreach ($editUserGroups as $group) {
-            $this->grantAccess($locale, $group, Attributes::EDIT_ITEMS);
+            $grantedAccesses[] = $this->builGrantAccess($locale, $group, Attributes::EDIT_ITEMS);
             $grantedUserGroups[] = $group;
         }
 
         foreach ($viewUserGroups as $group) {
             if (!in_array($group, $grantedUserGroups)) {
-                $this->grantAccess($locale, $group, Attributes::VIEW_ITEMS);
+                $grantedAccesses[] = $this->builGrantAccess($locale, $group, Attributes::VIEW_ITEMS);
                 $grantedUserGroups[] = $group;
             }
         }
 
         $this->revokeAccess($locale, $grantedUserGroups);
-        $this->getObjectManager()->flush();
+        $this->saver->saveAll($grantedAccesses);
     }
 
     /**
@@ -106,12 +108,8 @@ class LocaleAccessManager
      */
     public function grantAccess(LocaleInterface $locale, Group $group, $accessLevel)
     {
-        $access = $this->getLocaleAccess($locale, $group);
-        $access
-            ->setViewProducts(true)
-            ->setEditProducts($accessLevel === Attributes::EDIT_ITEMS);
-
-        $this->getObjectManager()->persist($access);
+        $access = $this->builGrantAccess($locale, $group, $accessLevel);
+        $this->saver->saveAll([$access]);
     }
 
     /**
@@ -125,7 +123,7 @@ class LocaleAccessManager
      */
     public function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {
-        return $this->getAccessRepository()->revokeAccess($locale, $excludedUserGroups);
+        return $this->repository->revokeAccess($locale, $excludedUserGroups);
     }
 
     /**
@@ -138,7 +136,7 @@ class LocaleAccessManager
      */
     protected function getLocaleAccess(LocaleInterface $locale, Group $group)
     {
-        $access = $this->getAccessRepository()
+        $access = $this->repository
             ->findOneBy(
                 [
                     'locale'    => $locale,
@@ -157,22 +155,21 @@ class LocaleAccessManager
     }
 
     /**
-     * Get locale access repository
+     * Build specified access on an attribute locale for the provided user group
      *
-     * @return LocaleAccessRepository
+     * @param LocaleInterface $locale
+     * @param Group           $group
+     * @param string          $accessLevel
+     *
+     * @return LocaleAccess
      */
-    protected function getAccessRepository()
+    public function builGrantAccess(LocaleInterface $locale, Group $group, $accessLevel)
     {
-        return $this->registry->getRepository($this->localeAccessClass);
-    }
+        $access = $this->getLocaleAccess($locale, $group);
+        $access
+            ->setViewProducts(true)
+            ->setEditProducts($accessLevel === Attributes::EDIT_ITEMS);
 
-    /**
-     * Get the object manager
-     *
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->registry->getManagerForClass($this->localeAccessClass);
+        return $access;
     }
 }
