@@ -6,9 +6,14 @@
 
 ## BC breaks
 
-- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
-- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface`
-- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer`. Add `Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface`.
+- Change constructor of `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValue\ProductValueNormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\TransformBundle\Normalizer\Flat\ProductValueNormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface`
+- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
@@ -41,15 +46,15 @@
 - Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
 - Delete class `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager` its service `pim_catalog.manager.product_mass_action`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType` to keep only $dataclass
-- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`. Removed arguments `Pim\Bundle\CatalogBundle\Context\CatalogContext`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Akeneo\Component\FileStorage\File\FileStorerInterface`, `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager`. Added arguments `Pim\Component\Localization\Localizer\LocalizerRegistry` and `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`. Removed arguments `Pim\Bundle\CatalogBundle\Context\CatalogContext`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Akeneo\Component\FileStorage\File\FileStorerInterface`, `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager`. Added arguments `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistry` and `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Service `oro_form.type.date` is removed and replaced by `pim_form.type.date` (alias `oro_date` is replaced by `pim_date`)
-- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Pim\Component\Localization\Localizer\LocalizerInterface`.
-- Add `Pim\Component\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
-- Add an array `$decimalSeparators` to `Pim\Component\Connector\Reader\File\CsvProductReader`
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` and `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverter`. Add argument `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
+- Change constructor of `Pim\Component\Connector\Reader\File\CsvProductReader`. Add an array `$decimalSeparators`
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Remove OroEntityBundle
 - Remove OroEntityConfigBundle
@@ -58,7 +63,7 @@
 - Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
 - Change constructor of `Pim\Bundle\TranslationBundle\Twig\TranslationsExtension`. Replace `Oro\Bundle\LocaleBundle\Model\LocaleSettings` by `Symfony\Component\HttpFoundation\RequestStack`.
 - Removed `Pim\Bundle\UserBundle\EventListener\LocalListener` (use `Pim\Bundle\UserBundle\EventListener\LocaleListener` instead).
-- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Pim\Component\Localization\Provider\LocaleProviderInterface` as the first argument.
+- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Akeneo\Component\Localization\Provider\LocaleProviderInterface` as the first argument.
 - Move `LocaleType` from `Oro\Bundle\LocalBundle\Form\Type` to `Pim\Bundle\LocalizationBundle\Form\Type`
 - Move `UserType` from `Oro\Bundle\UserBundle\Form\Type` to `Pim\Bundle\UserBundle\Form\Type`
 - Added Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface to the constructor of Pim\Component\Catalog\Updater\Remover\RemoverRegistry, Pim\Component\Catalog\Updater\Adder\AdderRegistry, Pim\Component\Catalog\Updater\Setter\SetterRegistry and Pim\Component\Catalog\Updater\Copier\CopierRegistry
@@ -74,13 +79,11 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
 - Deleted class `Pim\Bundle\CatalogBundle\Manager\LocaleManager` we should now use the `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
-- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
-- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
-- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\NumberProperty`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
+- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty`. Add `Akeneo\Component\Localization\Presenter\PresenterInterface`.
+- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty`. Add `Akeneo\Component\Localization\Presenter\PresenterInterface`.
+- Change constructor of `Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\NumberProperty`. Add `Akeneo\Component\Localization\Presenter\PresenterInterface`.
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `array` of available decimal separators and `array` of available date formats.
-- Change constructor of `Pim\Component\Localization\Normalizer\ProductValueNormalizer`. Add `Pim\Component\Localization\Localizer\LocalizerRegistryInterface`.
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor`. Add `array` of available decimal separators and `array` of available date formats as third and fourth parameter.
-- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Add `Pim\Component\Localization\Provider\DateFormatProviderInterface` as third parameter.
 - Change constructor of `Pim\Bundle\CatalogBundle\Factory\FamilyFactory`. Add family classname as last parameter.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController`. Add family classname as last parameter.
 - Change `Pim\Bundle\EnrichBundle\Controller\FamilyController` methods parameters for `editAction`, `removeAction`, `historyAction` and `addAttributesAction` changing Family by integer (id).

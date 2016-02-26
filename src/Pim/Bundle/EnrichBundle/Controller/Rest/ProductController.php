@@ -12,10 +12,10 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,22 +67,22 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
     /**
-     * @param ProductRepositoryInterface           $productRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param PropertySetterInterface              $productUpdater
-     * @param SaverInterface                       $productSaver
-     * @param NormalizerInterface                  $normalizer
-     * @param ValidatorInterface                   $validator
-     * @param UserContext                          $userContext
-     * @param ObjectFilterInterface                $objectFilter
-     * @param CollectionFilterInterface            $productEditDataFilter
-     * @param RemoverInterface                     $productRemover
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
-     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param PropertySetterInterface      $productUpdater
+     * @param SaverInterface               $productSaver
+     * @param NormalizerInterface          $normalizer
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
+     * @param ObjectFilterInterface        $objectFilter
+     * @param CollectionFilterInterface    $productEditDataFilter
+     * @param RemoverInterface             $productRemover
+     * @param ProductBuilderInterface      $productBuilder
+     * @param AttributeConverterInterface  $localizedConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -96,7 +96,7 @@ class ProductController
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -314,8 +314,7 @@ class ProductController
     protected function convertLocalizedAttributes(array $data)
     {
         $locale         = $this->userContext->getUiLocale()->getCode();
-        $data['values'] = $this->localizedConverter
-            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
+        $data['values'] = $this->localizedConverter->convertToDefaultFormats($data['values'], ['locale' => $locale]);
 
         return $data;
     }

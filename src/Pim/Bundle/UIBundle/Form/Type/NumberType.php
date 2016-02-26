@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
+use Akeneo\Component\Localization\Factory\NumberFactory;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
+use Akeneo\Component\Localization\Validator\Constraints\NumberFormatValidator;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Localization\Validator\Constraints\NumberFormat;
-use Pim\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * PIM number type
@@ -31,19 +31,25 @@ class NumberType extends AbstractType
     /** @var NumberFormatValidator */
     protected $formatValidator;
 
+    /** @var NumberFactory */
+    protected $numberFactory;
+
     /**
-     * @param LocalizerInterface    $localizer
-     * @param LocaleResolver        $localeResolver
+     * @param LocalizerInterface $localizer
+     * @param LocaleResolver $localeResolver
      * @param NumberFormatValidator $formatValidator
+     * @param NumberFactory $numberFactory
      */
     public function __construct(
         LocalizerInterface $localizer,
         LocaleResolver $localeResolver,
-        NumberFormatValidator $formatValidator
+        NumberFormatValidator $formatValidator,
+        NumberFactory $numberFactory
     ) {
         $this->localizer       = $localizer;
         $this->localeResolver  = $localeResolver;
         $this->formatValidator = $formatValidator;
+        $this->numberFactory   = $numberFactory;
     }
 
     /**
@@ -61,7 +67,8 @@ class NumberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
-        $decimalSeparator = $this->localeResolver->getFormats()['decimal_separator'];
+        $decimalSeparator = $this->numberFactory->create($options)
+            ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
         $constraint = new NumberFormat();
         $constraint->decimalSeparator = $decimalSeparator;

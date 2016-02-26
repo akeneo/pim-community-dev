@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\LocalizationBundle\Controller;
 
-use Pim\Component\Localization\Factory\DateFactory;
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

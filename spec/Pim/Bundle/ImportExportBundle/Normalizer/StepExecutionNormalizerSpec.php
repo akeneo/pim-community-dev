@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Model\Warning;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

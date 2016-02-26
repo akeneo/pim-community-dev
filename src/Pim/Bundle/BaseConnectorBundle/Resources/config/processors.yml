@@ -43,8 +43,8 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
-            - %pim_localization.decimal_separators%
-            - %pim_localization.date_formats%
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
@@ -172,8 +172,8 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
-            - %pim_localization.decimal_separators%
-            - %pim_localization.date_formats%
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
             - %upload_dir%
             - 'csv'
 
