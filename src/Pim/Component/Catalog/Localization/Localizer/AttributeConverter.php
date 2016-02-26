@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizedAttributeConverter implements LocalizedAttributeConverterInterface
+class AttributeConverter implements AttributeConverterInterface
 {
     /** @var LocalizerRegistryInterface */
     protected $localizerRegistry;
@@ -40,7 +40,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefaultValues(array $items, array $options = [])
+    public function convertToDefaultFormats(array $items, array $options = [])
     {
         $this->violations = new ConstraintViolationList();
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
@@ -51,7 +51,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
 
                 if (null !== $localizer) {
                     foreach ($item as $index => $data) {
-                        $items[$code][$index] = $this->convertLocalizedToDefaultValue(
+                        $items[$code][$index] = $this->convertToDefaultFormat(
                             $localizer,
                             $data,
                             $options,
@@ -83,7 +83,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      *
      * @return array
      */
-    protected function convertLocalizedToDefaultValue(LocalizerInterface $localizer, array $item, array $options, $path)
+    protected function convertToDefaultFormat(LocalizerInterface $localizer, array $item, array $options, $path)
     {
         $violations = $localizer->validate($item['data'], $path, $options);
         if (null !== $violations) {

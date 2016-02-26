@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,7 +19,7 @@ class GroupHandlerSpec extends ObjectBehavior
         Request $request,
         SaverInterface $saver,
         ProductRepositoryInterface $repository,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     )
     {
         $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter);

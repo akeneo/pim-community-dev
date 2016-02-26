@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-class LocalizedAttributeConverterSpec extends ObjectBehavior
+class AttributeConverterSpec extends ObjectBehavior
 {
 
     function let(LocalizerRegistryInterface $localizerRegistry, AttributeRepositoryInterface $attributeRepository)
@@ -20,7 +20,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface');
     }
 
     function it_converts_a_number($localizerRegistry, $attributeRepository, LocalizerInterface $localizer)
@@ -32,7 +32,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizer->validate('10,45', 'values[number]', $options)->willReturn(null);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
-        $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
+        $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
     }
 
@@ -46,7 +46,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizerRegistry->getLocalizer('pim_family')->willReturn($localizer);
         $localizer->supports('pim_family')->willReturn(false);
 
-        $this->convertLocalizedToDefaultValues(['family' => [['data' => 'boots']]], $options)
+        $this->convertToDefaultFormats(['family' => [['data' => 'boots']]], $options)
             ->shouldReturn(['family' => [['data' => 'boots']]]);
     }
 
@@ -65,7 +65,7 @@ class LocalizedAttributeConverterSpec extends ObjectBehavior
         $localizer->validate('10,45', 'values[number]', $options)->willReturn($constraints);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
-        $this->convertLocalizedToDefaultValues(['number' => [['data' => '10,45']]], $options)
+        $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)
             ->shouldReturn(['number' => [['data' => '10.45']]]);
         $this->getViolations()->shouldHaveCount(1);
     }

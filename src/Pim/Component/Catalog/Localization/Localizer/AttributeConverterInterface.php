@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface LocalizedAttributeConverterInterface
+interface AttributeConverterInterface
 {
     /**
      * Convert localized attributes to default format
@@ -21,7 +21,7 @@ interface LocalizedAttributeConverterInterface
      *
      * @return mixed
      */
-    public function convertLocalizedToDefaultValues(array $items, array $options = []);
+    public function convertToDefaultFormats(array $items, array $options = []);
 
     /**
      * Get list of violations return by localizers
