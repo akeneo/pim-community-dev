@@ -80,8 +80,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $attGrpAccessManager->grantAccess(
             $attributeGroup,
             $userGroup,
-            Attributes::EDIT_ATTRIBUTES,
-            true
+            Attributes::EDIT_ATTRIBUTES
         )->shouldBeCalled();
 
         $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);

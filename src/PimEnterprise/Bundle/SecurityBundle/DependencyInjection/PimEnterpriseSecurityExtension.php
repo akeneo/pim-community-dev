@@ -35,6 +35,7 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
+        $loader->load('savers.yml');
         $loader->load('subscribers.yml');
         $loader->load('twig.yml');
         $loader->load('voters.yml');

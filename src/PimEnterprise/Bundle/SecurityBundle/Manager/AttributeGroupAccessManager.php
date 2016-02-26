@@ -11,8 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -28,19 +27,27 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AttributeGroupAccessManager
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var AttributeGroupAccessRepository */
+    protected $repository;
+
+    /** @var BulkSaverInterface */
+    protected $saver;
 
     /** @var string */
     protected $attGroupAccessClass;
 
     /**
-     * @param ManagerRegistry $registry
-     * @param string          $attGroupAccessClass
+     * @param AttributeGroupAccessRepository $repository
+     * @param BulkSaverInterface             $saver
+     * @param string                         $attGroupAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $attGroupAccessClass)
-    {
-        $this->registry                  = $registry;
+    public function __construct(
+        AttributeGroupAccessRepository $repository,
+        BulkSaverInterface $saver,
+        $attGroupAccessClass
+    ) {
+        $this->repository = $repository;
+        $this->saver = $saver;
         $this->attGroupAccessClass = $attGroupAccessClass;
     }
 
@@ -83,7 +90,7 @@ class AttributeGroupAccessManager
      */
     public function getViewUserGroups(AttributeGroupInterface $group)
     {
-        return $this->getRepository()->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES);
+        return $this->repository->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES);
     }
 
     /**
@@ -95,7 +102,7 @@ class AttributeGroupAccessManager
      */
     public function getEditUserGroups(AttributeGroupInterface $group)
     {
-        return $this->getRepository()->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES);
+        return $this->repository->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES);
     }
 
     /**
@@ -107,21 +114,22 @@ class AttributeGroupAccessManager
      */
     public function setAccess(AttributeGroupInterface $attributeGroup, $viewUserGroups, $editGroups)
     {
+        $grantAccesses = [];
         $grantedUserGroups = [];
         foreach ($editGroups as $userGroup) {
-            $this->grantAccess($attributeGroup, $userGroup, Attributes::EDIT_ATTRIBUTES);
+            $grantAccesses[] = $this->buildGrantAccess($attributeGroup, $userGroup, Attributes::EDIT_ATTRIBUTES);
             $grantedUserGroups[] = $userGroup;
         }
 
         foreach ($viewUserGroups as $userGroup) {
             if (!in_array($userGroup, $grantedUserGroups)) {
-                $this->grantAccess($attributeGroup, $userGroup, Attributes::VIEW_ATTRIBUTES);
+                $grantAccesses[] = $this->buildGrantAccess($attributeGroup, $userGroup, Attributes::VIEW_ATTRIBUTES);
                 $grantedUserGroups[] = $userGroup;
             }
         }
 
         $this->revokeAccess($attributeGroup, $grantedUserGroups);
-        $this->getObjectManager()->flush();
+        $this->saver->saveAll($grantAccesses);
     }
 
     /**
@@ -130,23 +138,11 @@ class AttributeGroupAccessManager
      * @param AttributeGroupInterface $attributeGroup
      * @param UserGroup               $userGroup
      * @param string                  $accessLevel
-     * @param bool                    $flush
      */
-    public function grantAccess(
-        AttributeGroupInterface $attributeGroup,
-        UserGroup $userGroup,
-        $accessLevel,
-        $flush = false
-    ) {
-        $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
-        $access
-            ->setViewAttributes(true)
-            ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
-
-        $this->getObjectManager()->persist($access);
-        if (true === $flush) {
-            $this->getObjectManager()->flush();
-        }
+    public function grantAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup, $accessLevel)
+    {
+        $access = $this->buildGrantAccess($attributeGroup, $userGroup, $accessLevel);
+        $this->saver->saveAll([$access]);
     }
 
     /**
@@ -160,7 +156,7 @@ class AttributeGroupAccessManager
      */
     public function revokeAccess(AttributeGroupInterface $attributeGroup, array $excludedUserGroups = [])
     {
-        return $this->getRepository()->revokeAccess($attributeGroup, $excludedUserGroups);
+        return $this->repository->revokeAccess($attributeGroup, $excludedUserGroups);
     }
 
     /**
@@ -173,7 +169,7 @@ class AttributeGroupAccessManager
      */
     protected function getAttributeGroupAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup)
     {
-        $access = $this->getRepository()
+        $access = $this->repository
             ->findOneBy(
                 [
                     'attributeGroup' => $attributeGroup,
@@ -193,22 +189,21 @@ class AttributeGroupAccessManager
     }
 
     /**
-     * Get repository
+     * Build specified access on an attribute group for the provided user group
      *
-     * @return AttributeGroupAccessRepository
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup               $userGroup
+     * @param string                  $accessLevel
+     *
+     * @return AttributeGroupAccess
      */
-    protected function getRepository()
+    protected function buildGrantAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup, $accessLevel)
     {
-        return $this->registry->getRepository($this->attGroupAccessClass);
-    }
+        $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
+        $access
+            ->setViewAttributes(true)
+            ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
 
-    /**
-     * Get the object manager
-     *
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->registry->getManagerForClass($this->attGroupAccessClass);
+        return $access;
     }
 }

@@ -9,7 +9,8 @@ services:
     pimee_security.manager.attribute_group_access:
         class: %pimee_security.manager.attribute_group_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pimee_security.saver.attribute_group_access'
             - %pimee_security.entity.attribute_group_access.class%
 
     pimee_security.manager.category_access:
