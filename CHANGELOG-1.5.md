@@ -18,9 +18,9 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
 - Update `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`, remove method `approveAction` and `rejectAction` to a unique method `reviewAction`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
-- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Pim\Component\Localization\LocaleResolver`
-- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Pim\Component\Localization\Presenter\PresenterInterface`
-- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Pim\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Change constructor of `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to add `Akeneo\Component\Localization\Presenter\PresenterInterface`
+- Change constructor of `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to add `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Removed `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
@@ -36,19 +36,19 @@
 
 ## BC breaks
 
-- Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Pim\Component\Localization\Presenter\PresenterInterface`.
+- Change constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`. Add `Akeneo\Component\Localization\Presenter\PresenterInterface`.
 - Service `oro_filter.form.type.date_range` is removed and replaced by `pim_filter.form.type.date_range`
 - Service `oro_filter.form.type.datetime_range` is removed and replaced by `pim_filter.form.type.datetime_range`
 - Remove class `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
-- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Component\Localization\LocaleResolver` as the fourth argument.
+- Change constructor of `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder`. Add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` as the fourth argument.
 - Change constructor of `Pim\Bundle\CatalogRuleBundle\Controller\RuleController`. Kept only the repository and the remover as arguments.
 - Change interface RuleDefinitionRepositoryInterface to add a createDatagridQueryBuilder method
 - Change interface RuleDefinitionInterface to add a relation mapping to RuleRelation
 - Move RuleRelation model and repository to the Akeneo\RuleBundle
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Component\Localization\LocaleResolver` and `Pim\Component\Localization\Localizer\LocalizerInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add argument `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler`. Add argument `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber`. Add argument `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `Pim\Bundle\UIBundle\Form\Type\NumberType`. Add arguments `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` and `Pim\Component\Localization\Localizer\LocalizerInterface`.
 - Rename service `pimee_product_asset.extension.formatter.property.product_value.product_asset_property` to `pimee_product_asset.datagrid.extension.formatter.property.product_value.product_asset_property`
 - Column 'comment' has been added on the `pim_notification_notification` table.
 - Columns 'proposalsToReviewNotification' and 'proposalsStateNotification' has been added on the `oro_user` table (only EE).
@@ -70,10 +70,10 @@
 - Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type`. Add argument `PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`.
 - Remove ProductValue repository from container
 - Remove ProductValue repository from the PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Presenter\MetricPresenter` and `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Presenter\PricesPresenter` and `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter`. Add `Pim\Component\Localization\Presenter\DatePresenter` and `Pim\Component\Localization\LocaleResolver`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter`. Add `Pim\Component\Localization\Presenter\NumberPresenter` and `Pim\Component\Localization\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter`. Add `Pim\Component\Localization\Presenter\MetricPresenter` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter`. Add `Pim\Component\Localization\Presenter\PricesPresenter` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter`. Add `Pim\Component\Localization\Presenter\DatePresenter` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter`. Add `Pim\Component\Localization\Presenter\NumberPresenter` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to inject ProductRepositoryInterface an AttributeRepositoryInterface
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization\RuleDefinitionProcessor
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor to PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor
@@ -109,5 +109,5 @@
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
 - Update schema of `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric`. Increase precision of data and baseData.
-- Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Add argument `Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface`.
+- Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Add argument `Pim\Component\Catalog\Localization\Localizer\LocalizedAttributeConverterInterface`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add argument `PimEnterprise\Bundle\UserBundle\Context\UserContext`.

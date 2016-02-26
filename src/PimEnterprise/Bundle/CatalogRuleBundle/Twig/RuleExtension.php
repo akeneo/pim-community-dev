@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
 
 /**
  * Twig extension for rule presentation
