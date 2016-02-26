@@ -14,8 +14,8 @@ Feature: Edit a user
       | First name | John  |
       | Last name  | Smith |
     And I save the user
-    Then I should see "User saved"
-    And I should see "John Smith"
+    Then I should see the text "User saved"
+    And I should see the text "John Smith"
 
   @javascript
   Scenario: Successfully edit and apply user preferences
@@ -27,6 +27,7 @@ Feature: Edit a user
       | Default tree         | 2015 collection   |
       | Product grid filters | SKU, Name, Family |
     And I save the user
+    Then I should see the text "User saved"
     When I am on the products page
     Then I should see "Products / DE"
     And I should see "Print"

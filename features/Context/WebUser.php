@@ -128,14 +128,14 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $tabLocator = sprintf('$("a:contains(\'%s\')").length > 0;', $tab);
-        $this->wait($tabLocator);
         $this->getCurrentPage()->visitTab($tab);
         $this->wait();
     }
 
     /**
      * @param string $tab
+     *
+     * @throws ExpectationException
      *
      * @Then /^I should be on the "([^"]*)" tab$/
      */

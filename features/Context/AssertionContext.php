@@ -232,6 +232,9 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * TODO We really should replace this method; a lot of tests are checking flash messages, and are completely
+     *      outdated.
+     *
      * @param string $text
      *
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/

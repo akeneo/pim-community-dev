@@ -15,8 +15,9 @@ Feature: Edit a category
     When I fill in the following information:
       | English (United States) | My sandals |
     And I save the category
-    Then I should be on the category "sandals" edit page
-    And I should see "My sandals"
+    Then I should see the text "Category successfully updated"
+    And I should be on the category "sandals" edit page
+    And I should see the text "My sandals"
 
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page

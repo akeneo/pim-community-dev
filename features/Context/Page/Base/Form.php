@@ -72,14 +72,23 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-        }
-        if (!$tabs) {
-            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-        }
-        $tabs->clickLink($tab);
+        $tabs = $this->spin(function () {
+            $tabs = $this->find('css', $this->elements['Tabs']['css']);
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+            }
+            if (!$tabs) {
+                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+            }
+
+            return $tabs;
+        }, 'Could not find any tabs container element');
+
+        $tab_dom = $this->spin(function () use ($tabs, $tab) {
+            return $tabs->findLink($tab);
+        }, sprintf('Could not find a tab named "%s"', $tab));
+
+        $tab_dom->click();
     }
 
     /**

@@ -46,6 +46,7 @@ Feature: Add attributes to a variant group
     And I add available attribute Name
     Then the english Name of "boot" should be "foo"
     When I save the variant group
+    And I should see the text "Variant group successfully updated"
     Then the english Name of "boot" should be ""
 
   @javascript
@@ -59,6 +60,7 @@ Feature: Add attributes to a variant group
     And I fill in the following information:
      | Name | bar |
     And I save the variant group
+    And I should see the text "Variant group successfully updated"
     Then the english Name of "boot" should be "bar"
 
   @javascript

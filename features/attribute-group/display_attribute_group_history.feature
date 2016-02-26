@@ -15,16 +15,17 @@ Feature: Display the attribute group history
     Given I am on the attribute group creation page
     And I change the Code to "Technical"
     And I save the group
+    And I should see the text "Attribute group successfully created"
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
       | version | property | value     |
       | 1       | code     | Technical |
-
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | My technical group |
     And I save the group
+    And I should see the text "Attribute group successfully updated"
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
