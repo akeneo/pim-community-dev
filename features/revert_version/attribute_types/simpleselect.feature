@@ -19,7 +19,7 @@ Feature: Revert product attributes to a previous version
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    Then I should see a flash message "Product successfully reverted"
+    Then I should see a flash message "Product successfully restored"
 
   Scenario: Successfully revert a simpleselect attribute
     Given the following product:

@@ -14,6 +14,7 @@ Feature: Display assets thumbnails
     And I switch the locale to "de_DE"
     And I upload the reference file chicagoskyline-de.jpg
     And I save the asset
+    And I am on the "chicagoskyline" asset page
     And I switch the locale to "en_US"
     And I upload the reference file chicagoskyline-en.jpg
     And I save the asset

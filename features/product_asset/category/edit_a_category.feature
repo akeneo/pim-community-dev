@@ -15,6 +15,7 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | My images |
     And I save the category
+    And I should see the text "Category successfully updated"
     Then I should be on the asset category "images" edit page
     And I should see "My images"
 
@@ -47,9 +48,10 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | Situ |
     And I save the category
-    Then I should be on the asset category "situ" edit page
-    And I should see "Situ"
-    And I should see "Prioritised images"
+    Then I should see the text "Category successfully updated"
+    And I should be on the asset category "situ" edit page
+    And I should see the text "Situ"
+    And I should see the text "Prioritised images"
 
   @javascript
   Scenario: Stay on the asset category when I save it and keep category tree open (with oro nav)
@@ -59,6 +61,7 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | Situ |
     And I save the category
-    Then I should be on the asset category "situ" edit page
-    And I should see "Situ"
-    And I should see "Prioritised images"
+    Then I should see the text "Category successfully updated"
+    And I should be on the asset category "situ" edit page
+    And I should see the text "Situ"
+    And I should see the text "Prioritised images"

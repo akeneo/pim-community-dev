@@ -13,6 +13,7 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should see the text "Variation files have been generated successfully."
     And I delete the reference file
     And I confirm the deletion
     Then I should see the reference upload zone
@@ -25,6 +26,7 @@ Feature: Edit product assets variations
     Then I should see the reference upload zone
     And I upload the reference file akeneo.jpg
     When I save the asset
+    And I should see the text "Variation files have been generated successfully."
     Then I should see "akeneo.jpg"
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
@@ -42,6 +44,7 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should see the text "Variation files have been generated successfully."
     Given I delete the Tablet variation file
     And I confirm the deletion
     Then I should be able to generate Tablet from reference
@@ -56,6 +59,7 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akeneo (copy).jpg
     And I save the asset
+    And I should see the text "Variation files have been generated successfully."
     Given I reset variations files
     And I confirm the action
 
@@ -64,6 +68,7 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should see the text "Variation files have been generated successfully."
     Given I delete the Mobile variation file
     And I confirm the deletion
     Then I should be able to generate Mobile from reference
@@ -75,5 +80,5 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
-    And I should see "KB"
-    And I should see "KB"
+    And I should see the text "Variation files have been generated successfully."
+    And I should see the text "KB"

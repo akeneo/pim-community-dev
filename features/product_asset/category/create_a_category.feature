@@ -30,7 +30,7 @@ Feature: Create an asset category
       | Code | newcategory |
     And I save the asset category
     Then I should be on the asset category "newcategory" edit page
-    And I should see "Tree successfully created"
+    And I should see the text "Tree successfully created"
     Then I edit the "mugs" asset
     And I visit the "Categories" tab
     Then I should see the text "[newcategory]"
