@@ -28,7 +28,7 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /**
      * @param PropertySetterInterface         $propertySetter
-     * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
+     * @param PropertyCopierInterface         $propertyCopier  will be removed in 1.6
      * @param ProductTemplateUpdaterInterface $templateUpdater
      */
     public function __construct(

@@ -65,7 +65,7 @@ interface ProductBuilderInterface
      *
      * @return bool
      *
-     * @deprecated will be remove in 1.5
+     * @deprecated will be removed in 1.6
      */
     public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
 
