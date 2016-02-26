@@ -26,14 +26,24 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessManager */
     protected $accessManager;
 
+    /** @var string */
+    protected $categoryClass;
+
+    /** @var boolean */
+    protected $withOwnerPermission;
+
     /**
      * Constructor
      *
      * @param CategoryAccessManager $accessManager
+     * @param string                $categoryClass
+     * @param boolean               $withOwnerPermission
      */
-    public function __construct(CategoryAccessManager $accessManager)
+    public function __construct(CategoryAccessManager $accessManager, $categoryClass, $withOwnerPermission)
     {
         $this->accessManager = $accessManager;
+        $this->categoryClass = $categoryClass;
+        $this->withOwnerPermission = $withOwnerPermission;
     }
 
     /**
@@ -54,6 +64,8 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     public function addNewCategoryPermissions(GenericEvent $event)
     {
         $category = $event->getSubject();
-        $this->accessManager->setAccessLikeParent($category);
+        if ($category instanceof $this->categoryClass) {
+            $this->accessManager->setAccessLikeParent($category, ['owner' => $this->withOwnerPermission]);
+        }
     }
 }

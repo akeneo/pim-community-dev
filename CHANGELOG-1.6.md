@@ -8,6 +8,7 @@
 
 - Installer fixtures now support csv format for channels setup and not anymore the yml format
 - Installer fixtures does not support anymore the yml format for association types
-- AttributeGroupAccessManager now takes AttributeGroupAccessRepository $repository, BulkSaverInterface $saver, $attGroupAccessClass as constructor arguments
-- LocaleAccessManager now takes LocaleAccessRepository $repository, BulkSaverInterface $saver, $localeClass as constructor arguments
-- JobProfileAccessManager now takes JobProfileAccessRepository $repository, BulkSaverInterface $saver, $localeClass as constructor arguments
+- AttributeGroupAccessManager now takes `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository` $repository, `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface` $saver, $attGroupAccessClass as constructor arguments
+- LocaleAccessManager now takes `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository` $repository, BulkSaverInterface $saver, $localeClass as constructor arguments
+- JobProfileAccessManager now takes `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository` $repository, `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface` $saver, $localeClass as constructor arguments
+- CategoryAccessManager now takes `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository` $repository, BulkSaverInterface $saver, $categoryClass as constructor arguments

@@ -44,6 +44,10 @@ Feature: Classify a product in the trees I have access
     And I visit the "Permissions" tab
     Then I fill in "Allowed to view products" with "" on the current page
     And I save the category
+    Then I edit the "boots" category
+    And I visit the "Permissions" tab
+    Then I fill in "Allowed to view products" with "Manager" on the current page
+    And I save the category
     When I edit the "rangers" product
     And I visit the "Categories" tab
     Then I should see the text "Boots"

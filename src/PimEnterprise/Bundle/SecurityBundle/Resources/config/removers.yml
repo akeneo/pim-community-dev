@@ -1,0 +1,16 @@
+services:
+    pimee_security.remover.product_category_access:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.product_category_access.class%
+
+    pimee_security.remover.asset_category_access:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.asset_category_access.class%
