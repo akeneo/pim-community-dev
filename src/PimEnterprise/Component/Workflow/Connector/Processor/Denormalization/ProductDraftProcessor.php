@@ -12,10 +12,10 @@
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
@@ -62,7 +62,7 @@ class ProductDraftProcessor extends AbstractProcessor
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
     /**
@@ -73,7 +73,7 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param ProductDraftBuilderInterface          $productDraftBuilder product draft builder
      * @param ProductDraftApplierInterface          $productDraftApplier product draft applier
      * @param ProductDraftRepositoryInterface       $productDraftRepo    product draft repository
-     * @param LocalizedAttributeConverterInterface  $localizedConverter  attributes localized converter
+     * @param AttributeConverterInterface           $localizedConverter  attributes localized converter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -83,7 +83,7 @@ class ProductDraftProcessor extends AbstractProcessor
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
         ProductDraftRepositoryInterface $productDraftRepo,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         parent::__construct($repository);
 
@@ -205,7 +205,7 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     protected function convertLocalizedAttributes(array $convertedItem)
     {
-        return $this->localizedConverter->convertLocalizedToDefaultValues($convertedItem, [
+        return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
             'decimal_separator' => $this->decimalSeparator,
             'date_format'       => $this->dateFormat
         ]);
