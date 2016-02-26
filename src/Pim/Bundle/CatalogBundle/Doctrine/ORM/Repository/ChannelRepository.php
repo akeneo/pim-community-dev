@@ -179,7 +179,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function getChannelChoices()
+    public function getLabelsIndexedByCode()
     {
         $qb = $this->getEntityManager()->createQueryBuilder()->select('c');
         $qb->select('c.code, c.label');

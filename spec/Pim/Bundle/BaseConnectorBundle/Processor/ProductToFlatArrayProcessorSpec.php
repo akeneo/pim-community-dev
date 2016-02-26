@@ -48,7 +48,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_provides_configuration_fields($channelRepository)
     {
-        $channelRepository->getChannelChoices()->willReturn(['mobile', 'magento']);
+        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'magento']);
 
         $this->getConfigurationFields()->shouldReturn(
             [

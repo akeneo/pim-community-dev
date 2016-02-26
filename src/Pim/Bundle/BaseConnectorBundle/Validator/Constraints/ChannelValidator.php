@@ -32,7 +32,7 @@ class ChannelValidator extends ChoiceValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $channels = $this->channelRepository->getChannelChoices();
+        $channels = $this->channelRepository->getLabelsIndexedByCode();
         if (0 === count($channels)) {
             throw new ConstraintDefinitionException('No channel is set in the application');
         }

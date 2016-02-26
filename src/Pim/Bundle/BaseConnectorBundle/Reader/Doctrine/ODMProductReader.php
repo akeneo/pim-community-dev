@@ -142,7 +142,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelRepository->getChannelChoices(),
+                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',

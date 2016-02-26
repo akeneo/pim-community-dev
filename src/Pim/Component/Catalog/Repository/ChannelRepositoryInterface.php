@@ -68,5 +68,5 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      *
      * @return string[]
      */
-    public function getChannelChoices();
+    public function getLabelsIndexedByCode();
 }
