@@ -188,7 +188,7 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
             $authorizedFields[] = 'label-' . $code;
         }
 
-        foreach ($item as $field => $data) {
+        foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields) && !$this->isAttribute($field)) {
                 throw new ArrayConversionException(
                     sprintf(

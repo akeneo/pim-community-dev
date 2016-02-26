@@ -286,7 +286,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                     $newKey = $code;
                     $newKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
                     $newKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
-                    foreach ($originalValues[$code] as $currentIndex => $currentValue) {
+                    foreach (array_keys($originalValues[$code]) as $currentIndex) {
                         $currentKey = $code;
                         $currentKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
                         $currentKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
@@ -317,7 +317,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         foreach ($mergedValues as $value) {
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
-                foreach ($mergedValuesData[$attributeCode] as $index => $data) {
+                foreach (array_keys($mergedValuesData[$attributeCode]) as $index) {
                     $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
                 }
             }

@@ -95,10 +95,10 @@ class FileStorer implements FileStorerInterface
      */
     protected function deleteRawFile(\SplFileInfo $file)
     {
-        $fs = new Filesystem();
+        $filesystem = new Filesystem();
 
         try {
-            $fs->remove($file->getPathname());
+            $filesystem->remove($file->getPathname());
         } catch (IOException $e) {
             throw new FileRemovalException(
                 sprintf('Unable to delete the file "%s".', $file->getPathname()),
