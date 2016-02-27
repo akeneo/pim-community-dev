@@ -13,7 +13,7 @@ Feature: Edit a user groups and roles
     And I visit the "Groups and Roles" tab
     And I check "Redactor"
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     And the user "admin" should be in 2 groups
     And the user "admin" should be in the "Redactor" group
     Given I edit the "admin" user
@@ -21,7 +21,7 @@ Feature: Edit a user groups and roles
     When I uncheck "IT support"
     And I uncheck "Redactor"
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     And the user "admin" should be in 0 group
 
   Scenario: Successfully change a user role
@@ -29,7 +29,7 @@ Feature: Edit a user groups and roles
     And I visit the "Groups and Roles" tab
     And I check "User"
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     And the user "admin" should have 2 roles
     And the user "admin" should have the "ROLE_USER" role
     Given I edit the "admin" user
@@ -46,7 +46,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     And I click on the "Peter" row
     And I save the group
-    Then I should see the text "Group saved"
+    Then I should see the flash message "Group saved"
     And the user "Peter" should be in 2 group
     And the user "Peter" should be in the "Redactor" group
     And the user "Peter" should be in the "IT support" group
@@ -56,7 +56,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     And I click on the "Peter" row
     And I save the role
-    Then I should see the text "Role saved"
+    Then I should see the flash message "Role saved"
     And the user "Peter" should have 2 roles
     And the user "Peter" should have the "ROLE_CATALOG_MANAGER" role
 
@@ -67,7 +67,7 @@ Feature: Edit a user groups and roles
     And I click on the "System" ACL group
     And I click on the "Edit roles" ACL role
     Then I save the group
-    Then I should see the text "Role saved"
+    Then I should see the flash message "Role saved"
     When I logout
     And I am logged in as "Mary"
     And I am on the userRole index page

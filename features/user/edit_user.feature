@@ -14,7 +14,7 @@ Feature: Edit a user
       | First name | John  |
       | Last name  | Smith |
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     And I should see the text "John Smith"
 
   @javascript
@@ -27,7 +27,7 @@ Feature: Edit a user
       | Default tree         | 2015 collection   |
       | Product grid filters | SKU, Name, Family |
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     When I am on the products page
     Then I should see "Products / DE"
     And I should see "Print"

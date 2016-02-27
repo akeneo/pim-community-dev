@@ -232,24 +232,41 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * TODO We really should replace this method; a lot of tests are checking flash messages, and are completely
-     *      outdated.
+     * This function was disabled because it generates too many failing tests. Warning, some tests are always
+     * using it, and it checks nothing at all.
+     *
+     * @deprecated Will be removed in 1.6. Use iShouldSeeTheFlashMessage instead.
      *
      * @param string $text
      *
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/
-     *
-     * @throws ExpectationException
      *
      * @return bool
      */
     public function iShouldSeeFlashMessage($text)
     {
         return true;
-//        $this->getMainContext()->wait('$(".flash-messages-holder").length > 0');
-//        if (!$this->getCurrentPage()->findFlashMessage($text)) {
-//            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
-//        }
+    }
+
+    /**
+     * @param $text
+     *
+     * @Then /^I should see the flash message "([^"]*)"$/
+     *
+     * @throws Spin\TimeoutException
+     */
+    public function iShouldSeeTheFlashMessage($text)
+    {
+        $this->spin(function () use ($text) {
+            $flashes = $this->getCurrentPage()->findAll('css', '.flash-messages-holder > div');
+            foreach ($flashes as $flash) {
+                if (false !== strpos($flash->getText(), $text)) {
+                    return true;
+                }
+            }
+
+            return null;
+        }, sprintf('Can not find flash message with text "%s"', $text));
     }
 
     /**

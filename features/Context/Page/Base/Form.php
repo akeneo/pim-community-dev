@@ -84,11 +84,11 @@ class Form extends Base
             return $tabs;
         }, 'Could not find any tabs container element');
 
-        $tab_dom = $this->spin(function () use ($tabs, $tab) {
+        $tabDom = $this->spin(function () use ($tabs, $tab) {
             return $tabs->findLink($tab);
         }, sprintf('Could not find a tab named "%s"', $tab));
 
-        $tab_dom->click();
+        $tabDom->click();
     }
 
     /**

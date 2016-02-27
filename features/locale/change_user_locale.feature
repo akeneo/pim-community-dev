@@ -14,7 +14,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see the text "Utilisateur enregistré"
+    Then I should see the flash message "Utilisateur enregistré"
     And I should see the text "Collecter"
 
   Scenario: Successfully change Mary's locale
@@ -23,7 +23,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see the text "User saved"
+    Then I should see the flash message "User saved"
     Then I should not see the text "Collecter"
 
   Scenario: Should only see translated locales

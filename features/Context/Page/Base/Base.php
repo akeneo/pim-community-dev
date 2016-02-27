@@ -340,26 +340,6 @@ class Base extends Page
     }
 
     /**
-     * Find a flash message containing text
-     *
-     * @param string $text
-     *
-     * @throws \Exception
-     *
-     * @return null|Element
-     */
-    public function findFlashMessage($text)
-    {
-        $holder = $this->getElement('Flash messages');
-
-        if (!$holder) {
-            throw new \Exception('Could not find the flash messages holder');
-        }
-
-        return $holder->find('css', sprintf('.message:contains("%s")', $text));
-    }
-
-    /**
      * @param string $item
      * @param string $button
      *

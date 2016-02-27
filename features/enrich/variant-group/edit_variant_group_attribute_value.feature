@@ -48,7 +48,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Other" group
     And I check the "Handmade" switch
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | handmade | 1 |
 
@@ -56,21 +56,21 @@ Feature: Editing attribute values of a variant group also updates products
     Given I visit the "Other" group
     When I change the "Destocking date" to "01/01/2001"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | destocking_date | 2001-01-01 |
 
   Scenario: Change a pim_catalog_metric attribute of a variant group
     When I change the "Length" to "5"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | length | 5.0000 CENTIMETER |
 
   Scenario: Change a pim_catalog_multiselect attribute of a variant group
     When I change the "Weather conditions" to "Wet, Cold"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | weather_conditions | [wet], [cold] |
 
@@ -78,7 +78,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I visit the "Other" group
     And I change the "Number in stock" to "8000"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | number_in_stock | 8000.0000 |
 
@@ -86,7 +86,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I visit the "Marketing" group
     And I change the "€ Price" to "89"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | price | 89.00 EUR |
 
@@ -94,21 +94,21 @@ Feature: Editing attribute values of a variant group also updates products
     When I visit the "Marketing" group
     And I change the "Rating" to "5"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | rating | [5] |
 
   Scenario: Change a pim_catalog_text attribute of a variant group
     When I change the "Name" to "In a galaxy far far away"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | name-en_US | In a galaxy far far away |
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
     When I change the "tablet Description" to "The best boots!"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | description-en_US-tablet | The best boots! |
 
@@ -117,7 +117,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | side_view | SNKRS-1R.png |
 
@@ -127,11 +127,11 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     And I visit the "Products" tab
     And I uncheck the row "boot"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     And I reload the page
     Then the row "boot" should not be checked
 
@@ -140,6 +140,6 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Technical description"
     And I save the variant group
-    And I should see the text "Variant group successfully updated"
+    And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
       | technical_description | SNKRS-1R.png |
