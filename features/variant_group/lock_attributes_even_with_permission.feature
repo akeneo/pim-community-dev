@@ -22,6 +22,7 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
     And I add available attributes Side view
     And I attach file "akeneo.jpg" to "Side view"
     And I save the variant group
+    And I should see the flash message "Variant group successfully updated"
     And I logout
     And I am logged in as "Mary"
     And I am on the "star_wars_jacket" product page
@@ -39,6 +40,7 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
     And I add available attributes Side view
     And I attach file "akeneo.jpg" to "Side view"
     And I save the variant group
+    And I should see the flash message "Variant group successfully updated"
     And I logout
     And I am logged in as "Mary"
     And I am on the "star_wars_jacket" product page

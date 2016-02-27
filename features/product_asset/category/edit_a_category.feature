@@ -15,7 +15,7 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | My images |
     And I save the category
-    And I should see the text "Category successfully updated"
+    And I should see the flash message "Category successfully updated"
     Then I should be on the asset category "images" edit page
     And I should see "My images"
 
@@ -48,7 +48,7 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | Situ |
     And I save the category
-    Then I should see the text "Category successfully updated"
+    Then I should see the flash message "Category successfully updated"
     And I should be on the asset category "situ" edit page
     And I should see the text "Situ"
     And I should see the text "Prioritised images"
@@ -61,7 +61,7 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | Situ |
     And I save the category
-    Then I should see the text "Category successfully updated"
+    Then I should see the flash message "Category successfully updated"
     And I should be on the asset category "situ" edit page
     And I should see the text "Situ"
     And I should see the text "Prioritised images"

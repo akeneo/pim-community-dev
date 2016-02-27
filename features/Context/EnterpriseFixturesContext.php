@@ -706,7 +706,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $this->getEntityManager()->refresh($user);
             $emailNotifications = (bool) $user->isEmailNotifications();
 
-            return ($emailNotifications === $value) ? true : null;
+            return $emailNotifications === $value;
         }, sprintf('Email notifications of %s does not change to %s.', $username, $value ? 'true' : 'false'));
     }
 

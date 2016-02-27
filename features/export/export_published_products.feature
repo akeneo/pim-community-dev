@@ -40,7 +40,7 @@ Feature: Export published products
     And I visit the "Variations" tab
     And I upload the reference file akeneo.jpg
     And I save the asset
-    And I should see the text "Variation files have been generated successfully."
+    And I should see the flash message "Variation files have been generated successfully."
     And I launched the completeness calculator
     And I edit the "jacket-white" product
     When I press the "Publish" button
