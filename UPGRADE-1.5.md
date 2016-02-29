@@ -45,7 +45,10 @@ akeneo_storage_utils:
     mapping_overrides:
         -
             original: Pim\Bundle\CatalogBundle\Model\ProductValue
-            override: Acme\Bundle\AppBundle\Model\ProductValue
+            override: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+        -
+            original: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+            override: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
 ```
 
 v1.5
@@ -54,7 +57,10 @@ akeneo_storage_utils:
     mapping_overrides:
         -
             original: Pim\Component\Catalog\Model\ProductValue
-            override: Acme\Bundle\AppBundle\Model\ProductValue
+            override: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+        -
+            original: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+            override: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
 ```
 
 ## Update dependencies and configuration
@@ -158,7 +164,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPrice/Component\\Catalog\\Model\\ProductPrice/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductPriceInterface/Component\\Catalog\\Model\\ProductPriceInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductTemplateInterface/Component\\Catalog\\Model\\ProductTemplateInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductValue/Component\\Catalog\\Model\\ProductValue/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Model\\ProductValue/Pim\\Component\\Catalog\\Model\\ProductValue/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Model\\ProductValueInterface/Pim\\Component\\Catalog\\Model\\ProductValueInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ReferableInterface/Component\\Catalog\\Model\\ReferableInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ScopableInterface/Component\\Catalog\\Model\\ScopableInterface/g'
