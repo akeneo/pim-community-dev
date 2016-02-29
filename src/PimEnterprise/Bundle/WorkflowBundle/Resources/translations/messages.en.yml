@@ -71,6 +71,9 @@ pimee_workflow:
         refuse_product_draft:
             title: Refuse proposals
             perform.title: Refuse proposals
+        xlsx_published_product_export:
+            title: Published product export in XLSX
+            export.title: Published product export
     steps:
         product_draft_processor.title: Proposal processor
         approve.title: Approve proposal

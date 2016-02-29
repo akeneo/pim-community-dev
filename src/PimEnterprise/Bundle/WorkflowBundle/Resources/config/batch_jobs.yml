@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo CSV Connector
+    name: Akeneo Native Connector
     jobs:
         approve_product_draft:
             title: pimee_workflow.jobs.approve_product_draft.title
@@ -29,5 +29,17 @@ connector:
                         reader:    pimee_workflow.reader.file.csv_product_draft
                         processor: pimee_base_connector.processor.denormalization.product_draft.flat
                         writer:    pim_base_connector.writer.doctrine.product_draft
+                    parameters:
+                        batch_size: 10
+        xlsx_published_product_export:
+            title: pimee_workflow.jobs.xlsx_published_product_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_workflow.jobs.xlsx_product_export.export.title
+                    services:
+                        reader:    pimee_base_connector.reader.doctrine.published_product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_connector.writer.file.xlsx_product
                     parameters:
                         batch_size: 10
