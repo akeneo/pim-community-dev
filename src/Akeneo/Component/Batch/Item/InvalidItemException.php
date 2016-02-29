@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\Batch\Item;
 
-use Exception;
-
 /**
  * Exception throw during step execution when an item is invalid
  *
