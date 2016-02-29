@@ -25,17 +25,6 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['array'];
 
-    /** @var PresenterRegistryInterface */
-    protected $presenterRegistry;
-
-    /**
-     * @param PresenterRegistryInterface $presenterRegistry
-     */
-    public function __construct(PresenterRegistryInterface $presenterRegistry)
-    {
-        $this->presenterRegistry = $presenterRegistry;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,7 +35,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
             'code'     => $ruleDefinition->getCode(),
             'type'     => $ruleDefinition->getType(),
             'priority' => $ruleDefinition->getPriority(),
-            'content'  => $this->localizeContent($ruleDefinition->getContent(), $context)
+            'content'  => $ruleDefinition->getContent(),
         ];
     }
 
@@ -56,30 +45,5 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof RuleDefinitionInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Localize content of Rule Definition
-     *
-     * @param array $content
-     * @param array $context
-     *
-     * @return array
-     */
-    protected function localizeContent(array $content, array $context)
-    {
-        foreach ($content as $key => $items) {
-            foreach ($items as $index => $action) {
-                if (isset($action['field']) && isset($action['value'])) {
-                    $presenter = $this->presenterRegistry->getPresenterByAttributeCode($action['field']);
-
-                    if (null !== $presenter) {
-                        $content[$key][$index]['value'] = $presenter->present($action['value'], $context);
-                    }
-                }
-            }
-        }
-
-        return $content;
     }
 }

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Akeneo\Component\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 
 /**
  * Twig extension for rule presentation
