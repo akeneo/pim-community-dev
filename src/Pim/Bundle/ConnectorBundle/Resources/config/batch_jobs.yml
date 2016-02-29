@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo CSV Connector
+    name: Akeneo Connector
     jobs:
         csv_product_import:
             title: pim_connector.jobs.csv_product_import.title
@@ -133,3 +133,15 @@ connector:
                         reader:    pim_connector.reader.file.csv_family
                         processor: pim_connector.processor.denormalization.family.flat
                         writer:    pim_connector.writer.doctrine.family
+        xlsx_product_export:
+             title: pim_connector.jobs.xlsx_product_export.title
+             type:  export
+             steps:
+                 export:
+                     title: pim_connector.jobs.xslx_product_export.export.title
+                     services:
+                         reader:    pim_base_connector.reader.doctrine.product
+                         processor: pim_base_connector.processor.product_to_flat_array
+                         writer:    pim_connector.writer.file.xlsx_product
+                     parameters:
+                         batch_size: 10

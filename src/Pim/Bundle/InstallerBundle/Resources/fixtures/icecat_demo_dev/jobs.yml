@@ -1,6 +1,6 @@
 jobs:
     csv_product_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_import
         label:     Demo product import
         type:      import
@@ -18,7 +18,7 @@ jobs:
             decimalSeparator: .
             dateFormat: Y-m-d
     csv_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_export
         label:     Demo product export
         type:      export
@@ -30,7 +30,7 @@ jobs:
             filePath:   /tmp/product.csv
             decimalSeparator: .
     csv_category_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_category_import
         label:     Demo category import
         type:      import
@@ -42,7 +42,7 @@ jobs:
             escape:              '\'
             circularRefsChecked: true
     csv_category_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_category_export
         label:     Demo category export
         type:      export
@@ -52,7 +52,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/category.csv
     csv_association_type_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_association_type_import
         label:     Demo association type import
         type:      import
@@ -63,7 +63,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_association_type_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_association_type_export
         label:     Demo association type export
         type:      export
@@ -73,7 +73,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/association_type.csv
     csv_group_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_group_import
         label:     Demo group import
         type:      import
@@ -84,7 +84,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_variant_group_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_variant_group_import
         label:     Demo variant group import
         type:      import
@@ -95,7 +95,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_group_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_group_export
         label:     Demo group export
         type:      export
@@ -105,7 +105,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/group.csv
     csv_variant_group_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_variant_group_export
         label:     Demo variant group export
         type:      export
@@ -116,7 +116,7 @@ jobs:
             filePath:   /tmp/variant_group.csv
             decimalSeparator: .
     csv_attribute_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_import
         label:     Demo attribute import
         type:      import
@@ -127,7 +127,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_attribute_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_export
         label:     Demo attribute export
         type:      export
@@ -137,7 +137,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/attribute.csv
     csv_option_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_option_import
         label:     Demo option import
         type:      import
@@ -148,7 +148,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_family_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_family_import
         label:     Demo family import
         type:      import
@@ -159,7 +159,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     csv_option_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_option_export
         label:     Demo option export
         type:      export
@@ -204,7 +204,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
     csv_family_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_family_export
         label:     Demo family export
         type:      export
@@ -213,3 +213,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    xlsx_product_export:
+        connector: Akeneo Connector
+        alias:     xlsx_product_export
+        label:     Demo xlsx product export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/product.csv

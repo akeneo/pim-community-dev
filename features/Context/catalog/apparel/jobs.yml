@@ -1,6 +1,6 @@
 jobs:
     product_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_import
         label:     Product import
         type:      import
@@ -16,7 +16,7 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
     ecommerce_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_export
         label:     Product export for ecommerce
         type:      export
@@ -26,7 +26,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     tablet_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_export
         label:     Product export for tablet
         type:      export
@@ -36,7 +36,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     print_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_product_export
         label:     Product export for print
         type:      export
@@ -46,7 +46,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     footwear_family_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_family_export
         label:     Footwear family export
         type:      export
@@ -55,7 +55,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     category_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_category_import
         label:     Category import
         type:      import
@@ -66,7 +66,7 @@ jobs:
             escape:              '\'
             circularRefsChecked: true
     category_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_category_export
         label:     Category export
         type:      export
@@ -75,7 +75,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     association_type_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_association_type_import
         label:     Association type import
         type:      import
@@ -85,7 +85,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     association_type_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_association_type_export
         label:     Association type export
         type:      export
@@ -94,7 +94,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     group_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_group_import
         label:     Group import
         type:      import
@@ -104,7 +104,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     group_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_group_export
         label:     Group export
         type:      export
@@ -113,7 +113,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     variant_group_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_variant_group_import
         label:     Variant group import
         type:      import
@@ -124,7 +124,7 @@ jobs:
             escape:        '\'
             copyValues: true
     variant_group_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_variant_group_export
         label:     Variant group export
         type:      export
@@ -133,7 +133,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     attribute_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_import
         label:     Attribute import
         type:      import
@@ -143,7 +143,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     attribute_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_export
         label:     Attribute export
         type:      export
@@ -152,7 +152,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     option_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_option_import
         label:     Option import
         type:      import
@@ -162,7 +162,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     option_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Connector
         alias:     csv_attribute_option_export
         label:     Option export
         type:      export
