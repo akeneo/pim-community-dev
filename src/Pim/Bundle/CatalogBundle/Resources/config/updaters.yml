@@ -14,6 +14,7 @@ parameters:
     pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
     pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater
+    pim_catalog.updater.currency.class:                       Pim\Component\Catalog\Updater\CurrencyUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
@@ -138,6 +139,9 @@ services:
 
     pim_catalog.updater.group_type:
         class: %pim_catalog.updater.group_type.class%
+
+    pim_catalog.updater.currency:
+        class: %pim_catalog.updater.currency.class%
 
     pim_catalog.updater.association_type:
         class: %pim_catalog.updater.association_type.class%

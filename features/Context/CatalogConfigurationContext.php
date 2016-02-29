@@ -40,7 +40,6 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var array Entity loaders and corresponding files
      */
     protected $preEntityLoaders = array(
-        'CurrencyLoader' => 'currencies',
         'LocaleLoader'   => null,
     );
 

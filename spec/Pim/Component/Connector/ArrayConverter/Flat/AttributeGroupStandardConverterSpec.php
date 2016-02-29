@@ -19,7 +19,7 @@ class AttributeGroupStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_convertes_an_item_to_standard_format()
+    function it_converts_an_item_to_standard_format()
     {
         $item = [
             'code'        => 'sizes',

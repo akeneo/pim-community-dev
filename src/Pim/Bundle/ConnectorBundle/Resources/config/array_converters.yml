@@ -12,6 +12,7 @@ parameters:
     pim_connector.array_converter.flat.channel.class:                                 Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter
     pim_connector.array_converter.flat.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter
     pim_connector.array_converter.flat.group_type.class:                              Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter
+    pim_connector.array_converter.flat.currency.class:                                Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter
 
     pim_connector.array_converter.flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter
@@ -68,6 +69,11 @@ services:
 
     pim_connector.array_converter.flat.group_type:
         class: %pim_connector.array_converter.flat.group_type.class%
+        arguments:
+            - '@pim_connector.array_convertor.validator.fields_requirement'
+
+    pim_connector.array_converter.flat.currency:
+        class: %pim_connector.array_converter.flat.currency.class%
         arguments:
             - '@pim_connector.array_convertor.validator.fields_requirement'
 
