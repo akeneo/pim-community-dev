@@ -36,7 +36,7 @@ config:
         bootstrap.bootstrapswitch:
             deps:
                 - jquery
-        bootstrap.bootstrapsdatepicker:
+        bootstrap.datetimepicker:
             deps:
                 - jquery
         jquery.sidebarize:
