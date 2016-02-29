@@ -23,7 +23,8 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        state: this.getParent().state.toJSON()
+                        panels: this.getParent().panels,
+                        currentPanel: this.getParent().getCurrentPanelCode()
                     })
                 );
 
@@ -32,10 +33,10 @@ define(
                 return this;
             },
             changePanel: function (event) {
-                if (this.getParent().state.get('currentPanel') === event.currentTarget.dataset.panel) {
-                    this.getParent().state.set('currentPanel', null);
+                if (this.getParent().getCurrentPanelCode() === event.currentTarget.dataset.panel) {
+                    this.getParent().setCurrentPanelCode(null);
                 } else {
-                    this.getParent().state.set('currentPanel', event.currentTarget.dataset.panel);
+                    this.getParent().setCurrentPanelCode(event.currentTarget.dataset.panel);
                 }
 
                 this.getParent().closeFullPanel();
