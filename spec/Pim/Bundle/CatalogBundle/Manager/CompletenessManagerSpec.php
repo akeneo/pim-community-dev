@@ -81,9 +81,9 @@ class CompletenessManagerSpec extends ObjectBehavior
         $productValueCompleteChecker->isComplete($nameValue, $mobile, $en);
 
         $this->getProductCompleteness($product, [$mobile], [$en], 'en_US')->shouldReturn([
-            'en_US' => [
+            [
                 'channels' => [
-                    'mobile' => [
+                    [
                         'completeness' => $completeness,
                         'missing' => [
                             $name
@@ -94,6 +94,7 @@ class CompletenessManagerSpec extends ObjectBehavior
                     'total' => 1,
                     'complete' => 0,
                 ],
+                'locale' => 'en_US'
             ],
         ]);
     }
@@ -139,9 +140,9 @@ class CompletenessManagerSpec extends ObjectBehavior
         $productValueCompleteChecker->isComplete($nameValue, $mobile, $en);
 
         $this->getProductCompleteness($product, [$mobile], [$en], 'en_US')->shouldReturn([
-            'en_US' => [
+            [
                 'channels' => [
-                    'mobile' => [
+                    [
                         'completeness' => $completeness,
                         'missing' => [],
                     ],
@@ -150,6 +151,7 @@ class CompletenessManagerSpec extends ObjectBehavior
                     'total' => 1,
                     'complete' => 0,
                 ],
+                'locale' => 'en_US'
             ],
         ]);
     }
@@ -157,17 +159,16 @@ class CompletenessManagerSpec extends ObjectBehavior
     function it_provide_product_completeness_if_family_is_not_defined(
         ProductInterface $product,
         ChannelInterface $mobile,
-        LocaleInterface $en,
-        FamilyInterface $shirt
+        LocaleInterface $en
     ) {
         $product->getFamily()->willReturn(null);
         $en->getCode()->willReturn('en_US');
         $mobile->getCode()->willReturn('mobile');
 
         $this->getProductCompleteness($product, [$mobile], [$en], 'en_US')->shouldReturn([
-            'en_US' => [
+            [
                 'channels' => [
-                    'mobile' => [
+                    [
                         'completeness' => null,
                         'missing' => [],
                     ],
@@ -176,6 +177,7 @@ class CompletenessManagerSpec extends ObjectBehavior
                     'total' => 0,
                     'complete' => 0,
                 ],
+                'locale' => ''
             ],
         ]);
     }

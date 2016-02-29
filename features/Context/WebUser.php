@@ -1950,7 +1950,10 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
-        $this->wait();
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.completeness-block');
+        }, sprintf('Can\'t find completeness block in panel'));
+
         $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .btn');
 
         foreach ($collapseSwitchers as $switcher) {
