@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;

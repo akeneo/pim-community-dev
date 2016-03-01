@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
+use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
