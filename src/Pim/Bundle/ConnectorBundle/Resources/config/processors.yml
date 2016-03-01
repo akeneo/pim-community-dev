@@ -11,6 +11,7 @@ parameters:
     pim_connector.processor.denormalization.family.class:              Pim\Component\Connector\Processor\Denormalization\FamilyProcessor
     pim_connector.processor.denormalization.channel.class:             Pim\Component\Connector\Processor\Denormalization\ChannelProcessor
     pim_connector.processor.denormalization.attribute_group.class:     Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor
+    pim_connector.processor.denormalization.group_type.class:          Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor
 
 services:
     # Dummy processor
@@ -129,4 +130,13 @@ services:
             - '@pim_connector.array_converter.flat.attribute_group'
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.updater.attribute_group'
+            - '@pim_catalog.validator.product'
+
+    pim_connector.processor.denormalization.group_type.flat:
+        class: %pim_connector.processor.denormalization.group_type.class%
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_connector.array_converter.flat.group_type'
+            - '@pim_catalog.factory.group_type'
+            - '@pim_catalog.updater.group_type'
             - '@pim_catalog.validator.product'
