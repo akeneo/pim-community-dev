@@ -1630,7 +1630,6 @@ class WebUser extends RawMinkContext
         $this->spin(function () use ($count) {
             return (int) $count === count($this->getCurrentPage()->getHistoryRows());
         }, sprintf('Expected %d updates, saw %d.', $count, count($this->getCurrentPage()->getHistoryRows())));
-
     }
 
     /**

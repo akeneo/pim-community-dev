@@ -23,15 +23,15 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     protected $fieldChecker;
 
     /**
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param FieldsRequirementChecker $fieldChecker
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param FieldsRequirementChecker  $fieldChecker
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         FieldsRequirementChecker $fieldChecker
     ) {
         $this->localeRepository = $localeRepository;
-        $this->fieldChecker        = $fieldChecker;
+        $this->fieldChecker     = $fieldChecker;
     }
 
     /**

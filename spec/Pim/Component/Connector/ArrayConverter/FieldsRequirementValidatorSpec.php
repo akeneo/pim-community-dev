@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter;
 
-class FieldsRequirementCheckerSpec extends \PhpSpec\ObjectBehavior
+use PhpSpec\ObjectBehavior;
+
+class FieldsRequirementCheckerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

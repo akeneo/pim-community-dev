@@ -2,13 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Updates a channel
@@ -89,30 +86,33 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 break;
             case 'tree':
                 $category = $this->categoryRepository->findOneByIdentifier($data);
-                if (null !== $category) {
-                    $channel->setCategory($category);
-                } else {
+                if (null === $category) {
                     throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $data));
                 }
+                $channel->setCategory($category);
                 break;
             case 'locales':
                 foreach ($data as $localeCode) {
                     $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-                    if (null !== $locale) {
-                        $channel->addLocale($locale);
-                    } else {
-                        throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+                    if (null === $locale) {
+                        throw new \InvalidArgumentException(sprintf(
+                            'Locale with "%s" code does not exist',
+                            $localeCode
+                        ));
                     }
+                    $channel->addLocale($locale);
                 }
                 break;
             case 'currencies':
                 foreach ($data as $currencyCode) {
                     $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
-                    if (null !== $currency) {
-                        $channel->addCurrency($currency);
-                    } else {
-                        throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+                    if (null === $currency) {
+                        throw new \InvalidArgumentException(sprintf(
+                            'Currency with "%s" code does not exist',
+                            $currencyCode
+                        ));
                     }
+                    $channel->addCurrency($currency);
                 }
                 break;
             case 'label':

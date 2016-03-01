@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * User Flat to Standard format Converter
