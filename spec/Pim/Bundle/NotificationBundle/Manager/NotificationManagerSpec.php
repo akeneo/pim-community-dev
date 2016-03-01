@@ -2,6 +2,9 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
@@ -16,13 +19,23 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class NotificationManagerSpec extends ObjectBehavior
 {
     function let(
-        EntityManager $em,
         UserNotificationRepository $repository,
         NotificationFactory $notificationFactory,
         UserProviderInterface $userProvider,
-        UserNotificationFactory $userNotificationFactory
+        UserNotificationFactory $userNotificationFactory,
+        SaverInterface $notifSaver,
+        BulkSaverInterface $userNotifsSaver,
+        RemoverInterface $userNotifRemover
     ) {
-        $this->beConstructedWith($em, $repository, $notificationFactory, $userNotificationFactory, $userProvider);
+        $this->beConstructedWith(
+            $repository,
+            $notificationFactory,
+            $userNotificationFactory,
+            $userProvider,
+            $notifSaver,
+            $userNotifsSaver,
+            $userNotifRemover
+        );
     }
 
     function it_is_initializable()
@@ -34,9 +47,10 @@ class NotificationManagerSpec extends ObjectBehavior
         UserInterface $user,
         Notification $notification,
         UserNotification $userNotification,
-        $em,
         $notificationFactory,
-        $userNotificationFactory
+        $userNotificationFactory,
+        $notifSaver,
+        $userNotifsSaver
     ) {
         $notificationFactory
             ->createNotification('Some message', 'success', Argument::any())
@@ -46,10 +60,9 @@ class NotificationManagerSpec extends ObjectBehavior
             ->createUserNotification($notification, $user)
             ->shouldBeCalled()
             ->willReturn($userNotification);
-        $em->persist($notification)->shouldBeCalled();
-        $em->persist($userNotification)->shouldBeCalled();
-        $em->flush($notification)->shouldBeCalled();
-        $em->flush([$userNotification])->shouldBeCalled();
+
+        $notifSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
         $this->notify([$user], 'Some message');
     }
@@ -59,9 +72,10 @@ class NotificationManagerSpec extends ObjectBehavior
         UserInterface $user2,
         Notification $notification,
         UserNotification $userNotification,
-        $em,
         $notificationFactory,
-        $userNotificationFactory
+        $userNotificationFactory,
+        $notifSaver,
+        $userNotifsSaver
     ) {
         $notificationFactory
             ->createNotification('Some message', 'success', Argument::any())
@@ -73,10 +87,8 @@ class NotificationManagerSpec extends ObjectBehavior
             )
             ->willReturn($userNotification);
 
-        $em->persist($notification)->shouldBeCalled();
-        $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\UserNotification'))->shouldBeCalledTimes(2);
-        $em->flush($notification)->shouldBeCalled();
-        $em->flush([$userNotification, $userNotification])->shouldBeCalled();
+        $notifSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification, $userNotification])->shouldBeCalled();
 
         $this->notify([$user, $user2], 'Some message');
     }
@@ -104,12 +116,14 @@ class NotificationManagerSpec extends ObjectBehavior
         $this->markAsViewed($user, 'all');
     }
 
-    function it_can_remove_a_notification(UserNotification $userNotification, UserInterface $user, $repository, $em)
-    {
+    function it_can_remove_a_notification(
+        UserNotification $userNotification,
+        UserInterface $user,
+        $repository,
+        $userNotifRemover
+    ) {
         $repository->findOneBy(['id' => 1, 'user' => $user])->willReturn($userNotification);
-
-        $em->remove($userNotification)->shouldBeCalled();
-        $em->flush($userNotification)->shouldBeCalled();
+        $userNotifRemover->remove($userNotification)->shouldBeCalled();
 
         $this->remove($user, 1);
     }

@@ -28,7 +28,6 @@ class LoadCurrencyData extends AbstractInstallerFixture
 
         // remove useless currencies
         $allCurrencies = array_diff(array_keys($allCurrencies), $removedCurrencies);
-
         foreach ($allCurrencies as $currencyCode) {
             $activated = in_array($currencyCode, $activatedCurrencies);
             $currency = $this->createCurrency($currencyCode, $activated);
@@ -36,7 +35,6 @@ class LoadCurrencyData extends AbstractInstallerFixture
             $this->validate($currency, $currencyCode);
             $manager->persist($currency);
         }
-
         $manager->flush();
     }
 
