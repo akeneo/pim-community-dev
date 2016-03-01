@@ -93,6 +93,12 @@ services:
             - '@pim_catalog.saver.group_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.writer.doctrine.currency:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pim_catalog.saver.currency'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     # File writers
     pim_connector.writer.file.simple_file:
         class: %pim_connector.writer.file.simple_file.class%
