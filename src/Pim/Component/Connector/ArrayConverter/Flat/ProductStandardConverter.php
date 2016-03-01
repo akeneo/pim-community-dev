@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
@@ -43,8 +43,8 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     /** @var ColumnsMapper */
     protected $columnsMapper;
 
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
 
     /** @var array */
     protected $optionalAssociationFields;
@@ -57,7 +57,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
-     * @param FieldsRequirementValidator      $validator
+     * @param FieldsRequirementChecker        $fieldChecker
      */
     public function __construct(
         AttributeColumnInfoExtractor $attrFieldExtractor,
@@ -67,16 +67,16 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementValidator $validator
+        FieldsRequirementChecker $fieldChecker
     ) {
-        $this->attrFieldExtractor   = $attrFieldExtractor;
-        $this->converterRegistry    = $converterRegistry;
-        $this->assocColumnsResolver = $assocColumnsResolver;
-        $this->attrColumnsResolver  = $attrColumnsResolver;
-        $this->fieldConverter       = $fieldConverter;
-        $this->columnsMerger        = $columnsMerger;
-        $this->columnsMapper        = $columnsMapper;
-        $this->validator            = $validator;
+        $this->attrFieldExtractor        = $attrFieldExtractor;
+        $this->converterRegistry         = $converterRegistry;
+        $this->assocColumnsResolver      = $assocColumnsResolver;
+        $this->attrColumnsResolver       = $attrColumnsResolver;
+        $this->fieldConverter            = $fieldConverter;
+        $this->columnsMerger             = $columnsMerger;
+        $this->columnsMapper             = $columnsMapper;
+        $this->fieldChecker              = $fieldChecker;
         $this->optionalAssociationFields = [];
     }
 
@@ -331,7 +331,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected function validateItem(array $item, $withRequiredSku)
     {
         $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
-        $this->validator->validateFields($item, $requiredFields, false);
+        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
     }

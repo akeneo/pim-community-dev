@@ -52,4 +52,26 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('c')
+            ->from($this->categoryClass, 'c', 'c.id')
+            ->where('c.code = :code')
+            ->setParameter('code', $identifier);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

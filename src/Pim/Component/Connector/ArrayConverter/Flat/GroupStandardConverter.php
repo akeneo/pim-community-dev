@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -19,19 +19,19 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
 
     /**
      * @param LocaleRepositoryInterface  $localeRepository
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker   $fieldChecker
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        FieldsRequirementValidator $validator
+        FieldsRequirementChecker $fieldChecker
     ) {
         $this->localeRepository = $localeRepository;
-        $this->validator        = $validator;
+        $this->fieldChecker     = $fieldChecker;
     }
 
     /**
@@ -100,7 +100,8 @@ class GroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validator->validateFields($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsPresence($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code', 'type']);
         $this->validateAuthorizedFields($item, ['type', 'code']);
     }
 

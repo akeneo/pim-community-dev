@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -15,15 +15,15 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class UserRoleStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldsChecker;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $fieldsChecker
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $fieldsChecker)
     {
-        $this->validator = $validator;
+        $this->fieldsChecker = $fieldsChecker;
     }
 
     /**
@@ -45,7 +45,8 @@ class UserRoleStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['role', 'label'], true);
+        $this->fieldsChecker->checkFieldsPresence($item, ['role', 'label']);
+        $this->fieldsChecker->checkFieldsFilling($item, ['role', 'label']);
 
         return $item;
     }

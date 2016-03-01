@@ -83,67 +83,44 @@ class ChannelUpdater implements ObjectUpdaterInterface
      */
     protected function setData(ChannelInterface $channel, $field, $data)
     {
-        if ('code' === $field) {
-            $channel->setCode($data);
-        } elseif ('tree' === $field) {
-            $category = $this->findCategory($data);
-            if (null !== $category) {
-                $channel->setCategory($category);
-            } else {
-                throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $data));
-            }
-        } elseif ('locales' === $field) {
-            foreach ($data as $localeCode) {
-                $locale = $this->findLocale($localeCode);
-                if (null !== $locale) {
-                    $channel->addLocale($locale);
+        switch ($field) {
+            case 'code':
+                $channel->setCode($data);
+                break;
+            case 'tree':
+                $category = $this->categoryRepository->findOneByIdentifier($data);
+                if (null !== $category) {
+                    $channel->setCategory($category);
                 } else {
-                    throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+                    throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $data));
                 }
-            }
-        } elseif ('currencies' === $field) {
-            foreach ($data as $currencyCode) {
-                $currency = $this->findCurrency($currencyCode);
-                if (null !== $currency) {
-                    $channel->addCurrency($currency);
-                } else {
-                    throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+                break;
+            case 'locales':
+                foreach ($data as $localeCode) {
+                    $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+                    if (null !== $locale) {
+                        $channel->addLocale($locale);
+                    } else {
+                        throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+                    }
                 }
-            }
-        } elseif ('label' === $field) {
-            $channel->setLabel($data);
-        } elseif ('color' === $field) {
-            $channel->setColor($data);
+                break;
+            case 'currencies':
+                foreach ($data as $currencyCode) {
+                    $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
+                    if (null !== $currency) {
+                        $channel->addCurrency($currency);
+                    } else {
+                        throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+                    }
+                }
+                break;
+            case 'label':
+                $channel->setLabel($data);
+                break;
+            case 'color':
+                $channel->setColor($data);
+                break;
         }
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return CategoryInterface|null
-     */
-    protected function findCategory($code)
-    {
-        return $this->categoryRepository->findOneByIdentifier($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return LocaleInterface|null
-     */
-    protected function findLocale($code)
-    {
-        return $this->localeRepository->findOneByIdentifier($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return CurrencyInterface|null
-     */
-    protected function findCurrency($code)
-    {
-        return $this->currencyRepository->findOneByIdentifier($code);
     }
 }

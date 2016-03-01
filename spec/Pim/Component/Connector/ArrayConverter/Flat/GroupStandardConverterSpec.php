@@ -6,14 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class GroupStandardConverterSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $localeRepository, FieldsRequirementValidator $validator)
+    function let(LocaleRepositoryInterface $localeRepository, FieldsRequirementChecker $fieldChecker)
     {
-        $this->beConstructedWith($localeRepository, $validator);
+        $this->beConstructedWith($localeRepository, $fieldChecker);
     }
 
     function it_converts($localeRepository)
@@ -37,12 +37,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_required_fields_are_not_in_array($validator)
+    function it_throws_an_exception_if_required_fields_are_not_in_array($fieldChecker)
     {
         $item = ['not_a_code' => ''];
 
-        $validator
-            ->validateFields($item, ['code', 'type'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code', 'type'])
             ->willThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'));
 
         $this
@@ -50,12 +50,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
             ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_type_is_not_in_array($validator)
+    function it_throws_an_exception_if_required_field_type_is_not_in_array($fieldChecker)
     {
         $item = ['code' => 'my-code', 'not_a_code' => ''];
 
-        $validator
-            ->validateFields($item, ['code', 'type'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code', 'type'])
             ->willThrow(new \LogicException('Field "type" is expected, provided fields are "code, not_a_code"'));
 
         $this
@@ -63,12 +63,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
             ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_code_is_empty($validator)
+    function it_throws_an_exception_if_required_field_code_is_empty($fieldChecker)
     {
         $item = ['type' => 'RELATED', 'code' => ''];
 
-        $validator
-            ->validateFields($item, ['code', 'type'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code', 'type'])
             ->willThrow(new \LogicException('Field "code" must be filled'));
 
         $this
@@ -76,12 +76,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
             ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_fields_are_empty($validator)
+    function it_throws_an_exception_if_required_fields_are_empty($fieldChecker)
     {
         $item = ['type' => '', 'code' => ''];
 
-        $validator
-            ->validateFields($item, ['code', 'type'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code', 'type'])
             ->willThrow(new \LogicException('Field "code" must be filled'));
 
         $this
@@ -89,12 +89,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
             ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_type_is_empty($validator)
+    function it_throws_an_exception_if_required_field_type_is_empty($fieldChecker)
     {
         $item = ['code' => 'my-code', 'type' => ''];
 
-        $validator
-            ->validateFields($item, ['code', 'type'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code', 'type'])
             ->willThrow(new \LogicException('Field "type" must be filled'));
 
         $this

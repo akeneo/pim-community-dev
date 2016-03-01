@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -15,15 +15,15 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class ChannelStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $fieldChecker
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $fieldChecker)
     {
-        $this->validator = $validator;
+        $this->fieldChecker = $fieldChecker;
     }
 
     /**
@@ -53,7 +53,8 @@ class ChannelStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['code', 'tree', 'locales', 'currencies']);
+        $this->fieldChecker->checkFieldsPresence($item, ['code', 'tree', 'locales', 'currencies']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code', 'tree', 'locales', 'currencies']);
 
         $convertedItem = [];
         foreach ($item as $field => $data) {

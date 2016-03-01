@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -26,25 +26,25 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
     /** @var ProductStandardConverter */
     protected $productConverter;
 
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
 
     /**
      * @param LocaleRepositoryInterface    $localeRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ProductStandardConverter     $productConverter
-     * @param FieldsRequirementValidator   $validator
+     * @param FieldsRequirementChecker     $fieldChecker
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
         ProductStandardConverter $productConverter,
-        FieldsRequirementValidator $validator
+        FieldsRequirementChecker $fieldChecker
     ) {
         $this->localeRepository    = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productConverter    = $productConverter;
-        $this->validator           = $validator;
+        $this->fieldChecker        = $fieldChecker;
     }
 
     /**
@@ -147,7 +147,8 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validator->validateFields($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsPresence($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code', 'type']);
         $this->validateAuthorizedFields($item, ['axis', 'type', 'code']);
     }
 

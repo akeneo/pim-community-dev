@@ -29,15 +29,16 @@ class UserStandardConverterSpec extends ObjectBehavior
             'enabled'        => '1',
         ];
 
-        $validator->validateFields(
+        $validator->checkFieldsPresence(
             $fields,
-            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name'],
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name', 'groups'],
             true
         )->shouldBeCalled();
 
-        $validator->validateFields(
+        $validator->checkFieldsFilling(
             $fields,
-            ['groups']
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name'],
+            true
         )->shouldBeCalled();
 
         $this->convert($fields)->shouldReturn([
