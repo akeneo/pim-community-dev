@@ -6,11 +6,11 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -21,9 +21,9 @@ class ProductProcessorSpec extends ObjectBehavior
         SerializerInterface $serializer,
         LocaleRepositoryInterface $localeRepository,
         StepExecution $stepExecution,
-        ChannelManager $channelManager
+        ChannelRepositoryInterface $channelRepository
     ) {
-        $this->beConstructedWith($serializer, $localeRepository, $channelManager);
+        $this->beConstructedWith($serializer, $localeRepository, $channelRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -42,9 +42,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_provides_configuration_fields($channelManager)
+    function it_provides_configuration_fields($channelRepository)
     {
-        $channelManager->getChannelChoices()->willReturn(['mobile', 'Magento']);
+        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'Magento']);
 
         $this->getConfigurationFields()->shouldReturn([
             'delimiter' => [
@@ -100,7 +100,7 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_increments_summary_info_including_header(
         $stepExecution,
         $serializer,
-        $channelManager,
+        $channelRepository,
         ProductInterface $product1,
         ProductInterface $product2,
         ChannelInterface $channel
@@ -112,7 +112,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 1)->shouldBeCalled();
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -125,7 +125,7 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_increments_summary_info_excluding_header(
         $stepExecution,
         $serializer,
-        $channelManager,
+        $channelRepository,
         ProductInterface $product1,
         ProductInterface $product2,
         ChannelInterface $channel
@@ -137,7 +137,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->addSummaryInfo('write', 2)->shouldBeCalled();
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -149,7 +149,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_processes_items_with_media(
         $serializer,
-        $channelManager,
+        $channelRepository,
         ProductInterface $product1,
         ProductInterface $product2,
         FileInfoInterface $media1,
@@ -178,7 +178,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $value1->getData()->willReturn($media1);
         $value2->getData()->willReturn($media2);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -192,7 +192,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_processes_items_without_media(
         $serializer,
-        $channelManager,
+        $channelRepository,
         ProductInterface $product1,
         ProductInterface $product2,
         ChannelInterface $channel
@@ -202,7 +202,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $product1->getValues()->willReturn([]);
         $product2->getValues()->willReturn([]);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
@@ -216,13 +216,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_processes_items_even_if_it_is_not_an_array(
         $serializer,
-        $channelManager,
+        $channelRepository,
         ProductInterface $product,
         ChannelInterface $channel
     ) {
         $product->getValues()->willReturn([]);
 
-        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn('en-US');
 
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');

@@ -51,7 +51,7 @@ class UserContextSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('de_DE')->willReturn($de);
 
         $localeRepository->getActivatedLocales()->willReturn([$en, $fr, $de]);
-        $channelRepository->findOneBy([])->willReturn($mobile);
+        $channelRepository->findOneByIdentifier([])->willReturn($mobile);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
         $this->beConstructedWith(
@@ -153,7 +153,7 @@ class UserContextSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $userChannel->getCode()->willReturn('mobile');
-        $channelRepository->findOneBy([])->willReturn($userChannel);
+        $channelRepository->findOneByIdentifier([])->willReturn($userChannel);
         $tokenStorage->getToken()->willReturn($token);
 
         $token->getUser()->willReturn($user);

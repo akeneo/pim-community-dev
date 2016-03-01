@@ -175,4 +175,20 @@ SQL;
     {
         return ['code'];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabelsIndexedByCode()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()->select('c');
+        $qb->select('c.code, c.label');
+        $channels = $qb->getQuery()->getArrayResult();
+        $choices = [];
+        foreach ($channels as $channel) {
+            $choices[$channel['code']] = $channel['label'];
+        }
+
+        return $choices;
+    }
 }

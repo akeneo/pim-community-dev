@@ -194,7 +194,7 @@ datagrid:
                     data_name: values.scope
                     options:
                         field_options:
-                            choices: '@pim_catalog.manager.channel->getChannelChoices'
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode'
                 completeness:
                     type:      product_completeness
                     label:     Complete

@@ -9,17 +9,18 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 
 class FamilyFactorySpec extends ObjectBehavior
 {
     function let(
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
-            $channelManager,
+            $channelRepository,
             $factory,
             $attributeRepository,
             'Pim\Bundle\CatalogBundle\Entity\Family'
@@ -28,7 +29,7 @@ class FamilyFactorySpec extends ObjectBehavior
 
     function it_creates_a_family(
         $attributeRepository,
-        $channelManager,
+        $channelRepository,
         $factory,
         AttributeInterface $identifierAttribute,
         ChannelInterface $printChannel,
@@ -54,7 +55,7 @@ class FamilyFactorySpec extends ObjectBehavior
         $ecommerceRequirement->getChannelCode()
             ->willReturn('ecommerce');
 
-        $channelManager->getChannels()
+        $channelRepository->findAll()
             ->willReturn([$printChannel, $ecommerceChannel])
             ->shouldBeCalled();
 
