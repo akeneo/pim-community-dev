@@ -81,7 +81,16 @@ class DateFilterSpec extends ObjectBehavior
         $expr->isNull('p.release_date')->willReturn('p.release_date IS NULL');
         $qb->andWhere('p.release_date IS NULL')->shouldBeCalled();
 
-        $this->addFieldFilter('release_date', 'EMPTY', '');
+        $this->addFieldFilter('release_date', 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
+    {
+        $qb->expr()->willReturn($expr);
+        $expr->isNotNull('p.release_date')->shouldBeCalled()->willReturn('p.release_date IS NOT NULL');
+        $qb->andWhere('p.release_date IS NOT NULL')->shouldBeCalled();
+
+        $this->addFieldFilter('release_date', 'NOT EMPTY', null);
     }
 
     function it_adds_a_greater_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)

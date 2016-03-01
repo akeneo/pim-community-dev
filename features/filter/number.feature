@@ -13,10 +13,11 @@ Feature: Filter on price attributes
       | BOOTBL  | 0               |
       | BOOTRXS |                 |
     Then I should get the following results for the given filters:
-      | filter                                                            | result                                     |
-      | [{"field":"number_in_stock", "operator":"=",     "value": 44   }] | ["BOOTBS"]                                 |
-      | [{"field":"number_in_stock", "operator":"<",     "value": 25   }] | ["BOOTBL", "BOOTBXS"]                      |
-      | [{"field":"number_in_stock", "operator":"<=",    "value": 44   }] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTBXS"] |
-      | [{"field":"number_in_stock", "operator":">=",    "value": 35   }] | ["BOOTBS", "BOOTWXS"]                      |
-      | [{"field":"number_in_stock", "operator":">",     "value": 35   }] | ["BOOTBS"]                                 |
-      | [{"field":"number_in_stock", "operator":"EMPTY", "value": null }] | ["BOOTRXS"]                                |
+      | filter                                                                | result                                      |
+      | [{"field":"number_in_stock", "operator":"=",         "value": 44   }] | ["BOOTBS"]                                  |
+      | [{"field":"number_in_stock", "operator":"<",         "value": 25   }] | ["BOOTBL", "BOOTBXS"]                       |
+      | [{"field":"number_in_stock", "operator":"<=",        "value": 44   }] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTBXS"]  |
+      | [{"field":"number_in_stock", "operator":">=",        "value": 35   }] | ["BOOTBS", "BOOTWXS"]                       |
+      | [{"field":"number_in_stock", "operator":">",         "value": 35   }] | ["BOOTBS"]                                  |
+      | [{"field":"number_in_stock", "operator":"EMPTY",     "value": null }] | ["BOOTRXS"]                                 |
+      | [{"field":"number_in_stock", "operator":"NOT EMPTY", "value": null }] | ["BOOTBXS" , "BOOTWXS", "BOOTBS", "BOOTBL"] |

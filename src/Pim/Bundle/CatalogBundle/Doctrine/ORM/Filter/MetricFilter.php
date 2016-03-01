@@ -64,12 +64,12 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
-            $this->addNonEmptyFilter($attribute, $operator, $value, $locale, $scope);
+            $this->addFilter($attribute, $operator, $value, $locale, $scope);
         } else {
-            $this->addEmptyFilter($attribute, $locale, $scope);
+            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         }
 
         return $this;
@@ -84,39 +84,40 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     }
 
     /**
-     * Add empty filter to the qb
+     * Add empty or not empty filter to the qb
      *
      * @param AttributeInterface $attribute
+     * @param string             $operator
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addEmptyFilter(
+    protected function addEmptyTypeFilter(
         AttributeInterface $attribute,
+        $operator,
         $locale = null,
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
         $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
+        $joinCondition   = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
             $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
-            $condition
+            $joinCondition
         );
 
-        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
+        $joinAliasOpt   = $this->getUniqueAlias('filterM' . $attribute->getCode());
+        $backendField   = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+        $whereCondition = $this->prepareCriteriaCondition($backendField, $operator, null);
+
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
-        $this->qb->andWhere($condition);
+        $this->qb->andWhere($whereCondition);
     }
 
     /**
-     * Add non empty filter to the query
+     * Add filter to the query
      *
      * @param AttributeInterface $attribute
      * @param string             $operator
@@ -124,7 +125,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addNonEmptyFilter(
+    protected function addFilter(
         AttributeInterface $attribute,
         $operator,
         $value,

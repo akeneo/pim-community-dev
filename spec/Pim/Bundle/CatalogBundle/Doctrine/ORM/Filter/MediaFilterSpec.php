@@ -17,7 +17,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($qb);
 
@@ -44,7 +44,7 @@ class MediaFilterSpec extends ObjectBehavior
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         );
 
         $this->supportsOperator('=')->shouldReturn(true);
@@ -177,7 +177,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($image, '=', 'foo');
     }
 
-    function it_adds_a_empty_filter_on_an_attribute_in_the_query($qb, $expr, $image)
+    function it_adds_a_empty_type_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
         $qb->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
@@ -193,6 +193,24 @@ class MediaFilterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_attribute_in_the_query($qb, $expr, $image)
+    {
+        $qb->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($qb);
+
+        $expr->isNotNull(Argument::any())
+            ->willReturn('filterMediapicture.originalFilename IS NOT NULL');
+
+        $qb->leftJoin(Argument::any(), Argument::any())
+            ->shouldBeCalled();
+
+        $qb->andWhere('filterMediapicture.originalFilename IS NOT NULL')
+            ->shouldBeCalled();
+
+        $this->addAttributeFilter($image, 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_valid(AttributeInterface $attribute)

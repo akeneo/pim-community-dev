@@ -50,11 +50,11 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if ($operator !== Operators::IS_EMPTY && $operator !== Operators::NOT_EMPTY) {
             $this->checkValue($attribute, $value);
             $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
         } else {
-            $this->addIsEmptyFilter($attribute, $locale, $scope);
+            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         }
 
         return $this;
@@ -70,10 +70,11 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
     /**
      * @param AttributeInterface $attribute the attribute
+     * @param string             $operator  the operator
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      */
-    protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
+    protected function addEmptyTypeFilter(AttributeInterface $attribute, $operator, $locale, $scope)
     {
         $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $this->addValuesLeftJoin($attribute, $locale, $scope, $joinAlias);
@@ -81,7 +82,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
         $this->addMediaLeftJoin($attribute, $joinAlias, $joinAliasMedia);
         $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
-        $mediaCondition = $this->prepareCondition($backendField, Operators::IS_EMPTY, null);
+        $mediaCondition = $this->prepareCondition($backendField, $operator, null);
         $this->qb->andWhere($mediaCondition);
     }
 

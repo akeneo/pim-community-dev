@@ -59,10 +59,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
         $this->checkValue($attribute, $value);
 
-        if (Operators::IS_EMPTY !== $operator) {
-            $this->addNonEmptyFilter($attribute, $value, $operator, $locale, $scope);
+        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+            $this->addFilter($attribute, $value, $operator, $locale, $scope);
         } else {
-            $this->addEmptyFilter($attribute, $value, $locale, $scope);
+            $this->addEmptyTypeFilter($attribute, $value, $operator, $locale, $scope);
         }
 
         return $this;
@@ -79,17 +79,19 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * @param AttributeInterface $attribute
      * @param array              $value
+     * @param string             $operator
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addEmptyFilter(
+    protected function addEmptyTypeFilter(
         AttributeInterface $attribute,
         array $value,
+        $operator,
         $locale = null,
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -106,11 +108,37 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $priceData      = $joinAlias . '.' . $backendType;
         $this->qb->leftJoin($priceData, $joinAliasPrice);
 
-        // add conditions
+        if (Operators::NOT_EMPTY === $operator) {
+            $this->addNotEmptyCondition($value, $joinAliasPrice);
+        } elseif (Operators::IS_EMPTY === $operator) {
+            $this->addEmptyCondition($value, $joinAliasPrice);
+        }
+    }
+
+    /**
+     * Add
+     * @param array  $value
+     * @param string $joinAliasPrice
+     */
+    protected function addEmptyCondition(array $value, $joinAliasPrice)
+    {
         $condition = $this->preparePriceCondition($value, $joinAliasPrice, Operators::IS_EMPTY);
-        $exprNull  = $this->qb->expr()->isNull($joinAliasPrice . '.id');
+        $exprNull  = $this->prepareCriteriaCondition($joinAliasPrice . '.id', Operators::IS_EMPTY, null);
         $exprOr    = $this->qb->expr()->orX($condition, $exprNull);
         $this->qb->andWhere($exprOr);
+    }
+
+    /**
+     * Add
+     * @param array  $value
+     * @param string $joinAliasPrice
+     */
+    protected function addNotEmptyCondition(array $value, $joinAliasPrice)
+    {
+        $condition   = $this->preparePriceCondition($value, $joinAliasPrice, Operators::NOT_EMPTY);
+        $exprNotNull = $this->prepareCriteriaCondition($joinAliasPrice . '.id', Operators::NOT_EMPTY, null);
+        $exprAnd     = $this->qb->expr()->andX($condition, $exprNotNull);
+        $this->qb->andWhere($exprAnd);
     }
 
     /**
@@ -120,7 +148,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addNonEmptyFilter(
+    protected function addFilter(
         AttributeInterface $attribute,
         array $value,
         $operator,

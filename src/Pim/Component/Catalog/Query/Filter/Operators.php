@@ -16,6 +16,7 @@ class Operators
     const CONTAINS                = 'CONTAINS';
     const DOES_NOT_CONTAIN        = 'DOES NOT CONTAIN';
     const IS_EMPTY                = 'EMPTY';
+    const NOT_EMPTY               = 'NOT EMPTY';
     const IN_LIST                 = 'IN';
     const NOT_IN_LIST             = 'NOT IN';
     const IN_CHILDREN_LIST        = 'IN CHILDREN';
@@ -24,6 +25,10 @@ class Operators
     const IN_LIST_OR_UNCLASSIFIED = 'IN OR UNCLASSIFIED';
     const BETWEEN                 = 'BETWEEN';
     const NOT_BETWEEN             = 'NOT BETWEEN';
+    const IS_NULL                 = 'NULL';
+    const NOT_NULL                = 'NOT NULL';
+    const IS_LIKE                 = 'LIKE';
+    const NOT_LIKE                = 'NOT LIKE';
     const GREATER_THAN            = '>';
     const GREATER_OR_EQUAL_THAN   = '>=';
     const LOWER_THAN              = '<';

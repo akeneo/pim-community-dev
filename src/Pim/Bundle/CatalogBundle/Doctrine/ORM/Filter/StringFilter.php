@@ -68,13 +68,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
-        if ($operator === Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -84,7 +84,15 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            if (Operators::NOT_EMPTY === $operator) {
+                $condition .= sprintf(
+                    'AND (%s AND %s)',
+                    $this->qb->expr()->isNotNull($backendField),
+                    $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
+                );
+            } else {
+                $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            }
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias() . '.values',
@@ -139,7 +147,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
             case Operators::EQUALS:
                 $operator = 'LIKE';
-                $value    = $value;
                 break;
             default:
                 break;

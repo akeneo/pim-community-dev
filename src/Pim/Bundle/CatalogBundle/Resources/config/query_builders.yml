@@ -96,7 +96,7 @@ services:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_date']
             - ['created', 'updated']
-            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -107,7 +107,7 @@ services:
             - @akeneo_measure.manager
             - @akeneo_measure.measure_converter
             - ['pim_catalog_metric']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -116,7 +116,7 @@ services:
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_number']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -126,7 +126,7 @@ services:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.doctrine.query.filter.object_id_resolver
             - ['pim_catalog_simpleselect']
-            - ['IN', 'EMPTY']
+            - ['IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -136,7 +136,7 @@ services:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.doctrine.query.filter.object_id_resolver
             - ['pim_catalog_multiselect']
-            - ['IN', 'EMPTY']
+            - ['IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -146,7 +146,7 @@ services:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.repository.currency
             - ['pim_catalog_price_collection']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -163,7 +163,7 @@ services:
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_text', 'pim_catalog_textarea']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -181,7 +181,7 @@ services:
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_image', 'pim_catalog_file']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

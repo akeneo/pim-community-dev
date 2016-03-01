@@ -76,7 +76,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
 
-        if ($operator != Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
@@ -84,7 +84,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $joinAliasOpt = $this->getUniqueAlias('filterO' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
-        if (Operators::IS_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -94,7 +94,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
             $this->qb
                 ->leftJoin($joinAlias . '.' . $attribute->getBackendType(), $joinAliasOpt)
-                ->andWhere($this->qb->expr()->isNull($backendField));
+                ->andWhere($this->prepareCriteriaCondition($backendField, $operator, null));
         } else {
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
