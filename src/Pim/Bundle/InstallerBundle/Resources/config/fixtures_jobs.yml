@@ -1,4 +1,14 @@
 jobs:
+    fixtures_currency_csv:
+        order: 10
+        connector: Data fixtures
+        alias:     fixtures_currency_csv
+        label:     Currencies data fixtures
+        type:      fixtures
+        configuration:
+            filePath: currencies.csv
+            multiple: false
+
     fixtures_category_csv:
         order: 30
         connector: Data fixtures

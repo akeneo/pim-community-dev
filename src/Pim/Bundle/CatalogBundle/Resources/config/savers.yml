@@ -6,7 +6,6 @@ parameters:
     pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
-    pim_catalog.saver.channel.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver
     pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
 
 services:
@@ -17,14 +16,6 @@ services:
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - %pim_catalog.model.group_type.interface%
-
-    pim_catalog.saver.currency:
-        class: %pim_catalog.saver.base.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
-            - '@event_dispatcher'
-            - %pim_catalog.model.currency.interface%
 
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
@@ -69,6 +60,14 @@ services:
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - %pim_catalog.model.attribute_group.interface%
+
+    pim_catalog.saver.currency:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_catalog.model.currency.interface%
 
     pim_catalog.saver.attribute:
         class: %pim_catalog.saver.attribute.class%
