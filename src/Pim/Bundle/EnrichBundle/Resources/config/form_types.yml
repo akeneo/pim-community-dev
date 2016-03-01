@@ -366,8 +366,7 @@ services:
     pim_enrich.form.type.classify:
         class: %pim_enrich.form.type.classify.class%
         arguments:
-            - '@pim_catalog.manager.category'
-            - %pim_catalog.entity.category.class%
+            - '@pim_catalog.repository.category'
             - %pim_enrich.mass_edit_action.classify.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_classify }

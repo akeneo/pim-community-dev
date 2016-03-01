@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,11 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ClassifyType extends AbstractType
 {
-    /** @var string */
-    protected $categoryClass;
-
-    /** @var CategoryManager */
-    protected $categoryManager;
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
 
     /** @var string */
     protected $dataClass;
@@ -32,16 +29,14 @@ class ClassifyType extends AbstractType
     protected $trees;
 
     /**
-     * @param CategoryManager $categoryManager
-     * @param string          $categoryClass
-     * @param string          $dataClass
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param string                      $dataClass
      */
-    public function __construct(CategoryManager $categoryManager, $categoryClass, $dataClass)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, $dataClass)
     {
-        $this->categoryManager = $categoryManager;
-        $this->categoryClass   = $categoryClass;
-        $this->dataClass       = $dataClass;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
+        $this->categoryRepository = $categoryRepository;
+        $this->dataClass          = $dataClass;
+        $this->trees              = $categoryRepository->getTrees();
     }
 
     /**
@@ -54,7 +49,7 @@ class ClassifyType extends AbstractType
                 'trees',
                 'oro_entity_identifier',
                 [
-                    'class'    => $this->categoryClass,
+                    'class'    => $this->categoryRepository->getClassName(),
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
@@ -66,7 +61,7 @@ class ClassifyType extends AbstractType
                 'categories',
                 'oro_entity_identifier',
                 [
-                    'class'    => $this->categoryClass,
+                    'class'    => $this->categoryRepository->getClassName(),
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
@@ -103,6 +98,7 @@ class ClassifyType extends AbstractType
     }
 
     /**
+     * @deprecated Will be removed in 1.6, this method should not be called as we expose the trees in the form view
      * @return CategoryInterface[]
      */
     public function getTrees()
