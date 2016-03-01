@@ -34,9 +34,7 @@ channels:
 group_types:
     order: 30
     csv:
-        processor:         pim_base_connector.processor.group_type
-    yml:
-        processor:         pim_base_connector.processor.group_type
+        processor:         pim_connector.processor.denormalization.group_type.flat
 
 association_types:
     order: 40
