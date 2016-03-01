@@ -12,7 +12,6 @@ parameters:
     oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.change_password.subscriber.class:              Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
-
 services:
     oro_user.manager:
         class:                        %oro_user.manager.class%

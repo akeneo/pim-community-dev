@@ -37,4 +37,4 @@ Feature: Add products to a variant group
       | version | author                                                            | property | value           |
       | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
+      | 1       | John Doe - admin@example.com                                     | SKU      | sandal-white-37 |

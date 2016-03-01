@@ -60,7 +60,7 @@ class FamilyTransformerTest extends EntityTransformerTestCase
         $this->family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
         $this->familyFactory
             ->expects($this->any())
-            ->method('createFamily')
+            ->method('create')
             ->will($this->returnValue($this->family));
     }
 

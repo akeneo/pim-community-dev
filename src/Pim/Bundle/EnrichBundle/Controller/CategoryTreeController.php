@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -46,7 +46,7 @@ class CategoryTreeController extends Controller
     /** @var RemoverInterface */
     protected $categoryRemover;
 
-    /** @var CategoryFactory */
+    /** @var SimpleFactoryInterface */
     protected $categoryFactory;
 
     /** @var CategoryRepositoryInterface */
@@ -65,7 +65,7 @@ class CategoryTreeController extends Controller
      * @param UserContext                 $userContext
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
-     * @param CategoryFactory             $categoryFactory
+     * @param SimpleFactoryInterface      $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param SecurityFacade              $securityFacade
      * @param array                       $rawConfiguration
@@ -75,7 +75,7 @@ class CategoryTreeController extends Controller
         UserContext $userContext,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         array $rawConfiguration

@@ -9,6 +9,7 @@
 
 - PIM-5589: introduce a channels, attribute groups, group types and currencies import using the new import system introduced in v1.4
 - PIM-5589: introduce a channels and attribute groups import using the new import system introduced in v1.4
+- PIM-5589: introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
 
 ## BC breaks
@@ -50,3 +51,14 @@
     `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
 - Remove deprecated argument $propertyCopier from constructor of `Pim\Component\Catalog\Updater\ProductUpdater` and allow to inject supported fields
 - Remove argument $em from constructor of `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and inject `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`
+- Rename createFamily to create in the `Pim\Bundle\CatalogBundle\Factory\FamilyFactory`
+- Removed createUser from the `Oro\Bundle\UserBundle\Entity\UserManager`. You can now use the SimpleFactory to create new users
+- Removed `Pim\Component\Catalog\Factory\ChannelFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Removed `Akeneo\Component\Classification\Factory\CategoryFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Removed `Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Removed `Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Removed `Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Removed `Pim\Component\Connector\Processor\Denormalization\CategoryProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Removed `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Removed `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Inverted the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
