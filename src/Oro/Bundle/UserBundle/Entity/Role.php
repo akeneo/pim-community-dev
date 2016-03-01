@@ -5,6 +5,7 @@ namespace Oro\Bundle\UserBundle\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
+use Pim\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 /**
@@ -48,7 +49,7 @@ class Role extends BaseRole
      */
     public function __construct($role = '')
     {
-        $this->role  =
+        $this->role  = $role;
         $this->label = $role;
     }
 
@@ -94,7 +95,7 @@ class Role extends BaseRole
         $this->role = (string) strtoupper($role);
 
         // every role should be prefixed with 'ROLE_'
-        if (strpos($this->role, 'ROLE_') !== 0) {
+        if (strpos($this->role, 'ROLE_') !== 0 && User::ROLE_ANONYMOUS !== $role) {
             $this->role = 'ROLE_' . $this->role;
         }
 

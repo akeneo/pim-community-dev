@@ -21,8 +21,8 @@ class AttributeProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
-            $arrayConverter,
             $repository,
+            $arrayConverter,
             $attributeFactory,
             $updater,
             $validator

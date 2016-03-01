@@ -49,7 +49,6 @@ services:
 
     oro_security.acl.manager:
         class: %oro_security.acl.manager.class%
-        scope: prototype
         arguments:
             - @oro_security.acl.object_identity_factory
             - @oro_security.acl.extension_selector

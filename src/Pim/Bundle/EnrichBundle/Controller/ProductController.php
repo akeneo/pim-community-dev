@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -107,8 +107,11 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var CategoryFactory */
+    /** @var SimpleFactoryInterface */
     protected $categoryFactory;
+
+    /** @var string */
+    protected $categoryClass;
 
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
@@ -132,7 +135,8 @@ class ProductController
      * @param SaverInterface              $productSaver
      * @param SequentialEditManager       $seqEditManager
      * @param ProductBuilderInterface     $productBuilder
-     * @param CategoryFactory             $categoryFactory
+     * @param SimpleFactoryInterface      $categoryFactory
+     * @param string                      $categoryClass
      */
     public function __construct(
         Request $request,
@@ -153,7 +157,8 @@ class ProductController
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
-        CategoryFactory $categoryFactory
+        SimpleFactoryInterface $categoryFactory,
+        $categoryClass
     ) {
         $this->request            = $request;
         $this->templating         = $templating;
@@ -174,6 +179,7 @@ class ProductController
         $this->categoryFactory    = $categoryFactory;
         $this->eventDispatcher    = $eventDispatcher;
         $this->categoryRepository = $categoryRepository;
+        $this->categoryClass      = $categoryClass;
     }
 
     /**
@@ -340,7 +346,7 @@ class ProductController
         $parent = $this->categoryRepository->find($categoryId);
 
         if (null === $parent) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->categoryFactory->getCategoryClass()));
+            throw new NotFoundHttpException(sprintf('%s entity not found', $this->categoryClass));
         }
 
         $categories = null;

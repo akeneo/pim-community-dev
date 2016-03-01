@@ -29,6 +29,7 @@ class PimUserExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('factories.yml');
         $loader->load('form.yml');
         $loader->load('form_types.yml');
         $loader->load('normalizers.yml');
@@ -36,6 +37,7 @@ class PimUserExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('twig.yml');
+        $loader->load('updaters.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/user.yml');
     }

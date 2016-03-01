@@ -23,7 +23,7 @@ class RoleRepository extends BaseRoleRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(['label' => $code]);
+        return $this->findOneBy(['role' => $code]);
     }
 
     /**
@@ -43,6 +43,6 @@ class RoleRepository extends BaseRoleRepository implements
      */
     public function getIdentifierProperties()
     {
-        return ['label'];
+        return ['role'];
     }
 }

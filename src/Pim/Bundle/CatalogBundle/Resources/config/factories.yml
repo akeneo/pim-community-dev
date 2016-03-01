@@ -20,12 +20,12 @@ services:
             - %pim_catalog.entity.family.class%
 
     pim_catalog.factory.channel:
-        class: %pim_catalog.factory.channel.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.channel.class%
 
     pim_catalog.factory.attribute_group:
-        class: %pim_catalog.factory.attribute_group.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.attribute_group.class%
 
@@ -65,11 +65,11 @@ services:
             - %pim_catalog.entity.group.class%
 
     pim_catalog.factory.category:
-        class: %akeneo_classification.factory.category.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.category.class%
 
     pim_catalog.factory.association_type:
-        class: %pim_catalog.factory.association_type.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.association_type.class%

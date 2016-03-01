@@ -44,13 +44,6 @@ class CatalogConfigurationContext extends RawMinkContext
     );
 
     /**
-     * @var array Entity loaders and corresponding files
-     */
-    protected $postEntityLoaders = array(
-        'UserLoader' => 'users',
-    );
-
-    /**
      * Add an additional directory for catalog configuration files
      *
      * @param string $directory
@@ -100,15 +93,6 @@ class CatalogConfigurationContext extends RawMinkContext
                     $this->referenceRepository,
                     $files
                 );
-        }
-
-        foreach ($this->postEntityLoaders as $loaderName => $fileName) {
-            $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file   = $this->getLoaderFile($files, $fileName);
-            if ($file) {
-                $treatedFiles[] = $file;
-            }
-            $this->runLoader($loader, $file);
         }
 
         $bundles = $this->getContainer()->getParameter('kernel.bundles');

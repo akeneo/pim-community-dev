@@ -115,6 +115,36 @@ jobs:
             filePath: groups.csv
             multiple: false
 
+    fixtures_user_group_csv:
+        order: 75
+        connector: Data fixtures
+        alias:     fixtures_user_group_csv
+        label:     User groups data fixtures
+        type:      fixtures
+        configuration:
+            filePath: user_groups.csv
+            multiple: false
+
+    fixtures_user_role_csv:
+        order: 75
+        connector: Data fixtures
+        alias:     fixtures_user_role_csv
+        label:     User roles data fixtures
+        type:      fixtures
+        configuration:
+            filePath: user_roles.csv
+            multiple: false
+
+    fixtures_user_csv:
+        order: 79
+        connector: Data fixtures
+        alias:     fixtures_user_csv
+        label:     Users data fixtures
+        type:      fixtures
+        configuration:
+            filePath: users.csv
+            multiple: false
+
     fixtures_product_csv:
         order: 80
         connector: Data fixtures

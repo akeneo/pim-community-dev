@@ -165,7 +165,7 @@ class FamilyController
             return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
         }
 
-        $family = $this->familyFactory->createFamily();
+        $family = $this->familyFactory->create();
 
         if ($this->familyHandler->process($family)) {
             $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
