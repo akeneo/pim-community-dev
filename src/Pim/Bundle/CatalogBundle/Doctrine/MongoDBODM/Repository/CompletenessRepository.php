@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
@@ -66,7 +67,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+            $categoryIds = $this->getCategoryIds($categoryQb);
 
             $qb = $productRepo->createQueryBuilder()
                 ->hydrate(false)
@@ -95,7 +96,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+            $categoryIds = $this->getCategoryIds($categoryQb);
 
             foreach ($channel->getLocales() as $locale) {
                 $data = [];
@@ -119,5 +120,25 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         }
 
         return $productsCount;
+    }
+
+    /**
+     * Return categories ids provided by the categoryQb
+     *
+     * @param OrmQueryBuilder $categoryQb
+     *
+     * @return array
+     */
+    protected function getCategoryIds(OrmQueryBuilder $categoryQb)
+    {
+        $categoryIds = [];
+        $categoryAlias = $categoryQb->getRootAlias();
+        $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 }

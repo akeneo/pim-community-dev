@@ -6,6 +6,7 @@
 
 ## BC breaks
 
+- Method `getCategoryIds` of `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` has been removed
 - Installer fixtures now support csv format for channels setup and not anymore the yml format
 - Installer fixtures does not support anymore the yml format for association types
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format

@@ -163,27 +163,6 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null)
-    {
-        $categoryIds = [];
-
-        if (null !== $categoryQb) {
-            $categoryAlias = $categoryQb->getRootAlias();
-            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
-        } else {
-            $categories = [['id' => $category->getId()]];
-        }
-
-        foreach ($categories as $category) {
-            $categoryIds[] = $category['id'];
-        }
-
-        return $categoryIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getChildrenByParentId($parentId)
     {
         $parent = $this->find($parentId);

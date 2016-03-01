@@ -86,16 +86,6 @@ interface CategoryRepositoryInterface extends
     public function getAllChildrenIds(CategoryInterface $parent);
 
     /**
-     * Return categories ids provided by the categoryQb or by the provided category
-     *
-     * @param CategoryInterface $category
-     * @param QueryBuilder      $categoryQb
-     *
-     * @return array $categoryIds
-     */
-    public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null);
-
-    /**
      * Get children from a parent id
      *
      * @param int $parentId
