@@ -219,7 +219,5 @@ jobs:
         label:     Demo xlsx product export
         type:      export
         configuration:
-            delimiter:  ;
-            enclosure:  '"'
             withHeader: true
             filePath:   /tmp/product.csv

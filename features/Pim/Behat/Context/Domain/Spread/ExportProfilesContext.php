@@ -6,6 +6,8 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Pim\Behat\Context\PimContext;
 
 class ExportProfilesContext extends PimContext
@@ -62,60 +64,29 @@ class ExportProfilesContext extends PimContext
                 );
             }
         }
+        $this->compareFile($expectedLines, $actualLines, $path);
+    }
 
-        $expectedCount = count($expectedLines);
-        $actualCount   = count($actualLines);
-        assertSame(
-            $expectedCount,
-            $actualCount,
-            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
-        );
+    /**
+     * @param string    $code
+     * @param TableNode $exectedLines
+     *
+     * @Then /^exported xlsx file of "([^"]*)" should contain:$/
+     *
+     * @throws ExpectationException
+     * @throws \Exception
+     */
+    public function exportedXlsxFileOfShouldContain($code, TableNode $exectedLines)
+    {
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
 
-        if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
-            throw new \Exception(
-                sprintf(
-                    'Header in the file %s does not match expected one: %s',
-                    $path,
-                    implode(' | ', $actualLines[0])
-                )
-            );
-        }
-        unset($actualLines[0]);
-        unset($expectedLines[0]);
+        $reader = ReaderFactory::create(Type::XLSX);
+        $reader->open($path);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $actualLines = iterator_to_array($sheet->getRowIterator());
+        $reader->close();
 
-        foreach ($expectedLines as $expectedLine) {
-            $originalExpectedLine = $expectedLine;
-            $found = false;
-            foreach ($actualLines as $index => $actualLine) {
-                // Order of columns is not ensured
-                // Sorting the line values allows to have two identical lines
-                // with values in different orders
-                sort($expectedLine);
-                sort($actualLine);
-
-                // Same thing for the rows
-                // Order of the rows is not reliable
-                // So we generate a hash for the current line and ensured that
-                // the generated file contains a line with the same hash
-                if (md5(json_encode($actualLine)) === md5(json_encode($expectedLine))) {
-                    $found = true;
-
-                    // Unset line to prevent comparing it twice
-                    unset($actualLines[$index]);
-
-                    break;
-                }
-            }
-            if (!$found) {
-                throw new \Exception(
-                    sprintf(
-                        'Could not find a line containing "%s" in %s',
-                        implode(' | ', $originalExpectedLine),
-                        $path
-                    )
-                );
-            }
-        }
+        $this->compareFile(array_values($exectedLines->getRows()), array_values($actualLines), $path);
     }
 
     /**
@@ -172,5 +143,44 @@ class ExportProfilesContext extends PimContext
                 );
             }
         }
+    }
+
+    /**
+     * @param array  $expectedLines
+     * @param array  $actualLines
+     * @param string $path
+     *
+     * @throws \Exception
+     */
+    protected function compareFile(array $expectedLines, array $actualLines, $path)
+    {
+        $expectedCount = count($expectedLines);
+        $actualCount = count($actualLines);
+        assertSame(
+            $expectedCount,
+            $actualCount,
+            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
+        );
+
+        if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
+            throw new \Exception(
+                sprintf('Header in the file %s does not match expected one: %s', $path, implode(' | ', $actualLines[0]))
+            );
+        }
+
+        unset($actualLines[0]);
+        unset($expectedLines[0]);
+
+        array_map(function ($needle) use ($path, $expectedLines) {
+            $rows = array_filter($expectedLines, function ($item) use ($needle){
+                return 0 === count(array_diff($item, $needle));
+            });
+
+            if (1 !== count($rows)) {
+                throw new \Exception(
+                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $needle), $path)
+                );
+            }
+        }, $actualLines);
     }
 }

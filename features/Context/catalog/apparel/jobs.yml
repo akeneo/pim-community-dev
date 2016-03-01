@@ -35,6 +35,14 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    xlsx_tablet_product_export:
+        connector: Akeneo Connector
+        alias:     xlsx_product_export
+        label:     XLSX product export for tablet
+        type:      export
+        configuration:
+            channel:    tablet
+            withHeader: true
     print_product_export:
         connector: Akeneo Connector
         alias:     csv_product_export
