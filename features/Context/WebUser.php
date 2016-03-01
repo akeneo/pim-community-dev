@@ -172,7 +172,7 @@ class WebUser extends RawMinkContext
      */
     public function iOpenTheHistory()
     {
-        $this->getCurrentPage()->openPanel('History');
+        $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
         $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
 
         $expandButton = $this->getMainContext()->spin(function () {
@@ -208,30 +208,6 @@ class WebUser extends RawMinkContext
                 )
             );
         }
-    }
-
-    /**
-     * @param string $panel
-     *
-     * @Given /^I open the "([^"]*)" panel$/
-     */
-    public function iOpenThePanel($panel)
-    {
-        $this->wait();
-        $this->getCurrentPage()->openPanel($panel);
-        $this->wait();
-    }
-
-    /**
-     * @param string $panel
-     *
-     * @Given /^I close the "([^"]*)" panel$/
-     */
-    public function iCloseThePanel($panel)
-    {
-        $this->wait();
-        $this->getCurrentPage()->closePanel($panel);
-        $this->wait();
     }
 
     /**
