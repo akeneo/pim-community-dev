@@ -85,7 +85,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         $object = $event->getSubject();
         if ($object instanceof AttributeGroupInterface) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
-            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
+            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES);
         }
     }
 }

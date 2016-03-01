@@ -83,8 +83,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $this->createProduct($data);
         }
-
-        $this->flush();
     }
 
     /**

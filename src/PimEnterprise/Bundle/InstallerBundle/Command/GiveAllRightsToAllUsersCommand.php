@@ -69,13 +69,13 @@ class GiveAllRightsToAllUsersCommand extends ContainerAwareCommand
 
         foreach ($catalogCategories as $category) {
             $categoryManager = $this->getAccessCategoryManager();
-            $categoryManager->setAccess($category, [$group], [$group], [$group], true);
+            $categoryManager->setAccess($category, [$group], [$group], [$group]);
             $categoryManager->updateChildrenAccesses($category, [$group], [$group], [$group], [], [], []);
         }
 
         foreach ($assetCategories as $category) {
             $categoryManager = $this->getAccessCategoryAssetManager();
-            $categoryManager->setAccess($category, [$group], [$group], [$group], true);
+            $categoryManager->setAccess($category, [$group], [$group], [$group]);
             $categoryManager->updateChildrenAccesses($category, [$group], [$group], [$group], [], [], []);
         }
     }

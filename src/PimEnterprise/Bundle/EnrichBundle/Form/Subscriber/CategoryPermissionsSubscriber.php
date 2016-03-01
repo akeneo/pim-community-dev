@@ -116,7 +116,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
             $ownRoles = isset($this->previousRoles['own']) ? $form->get('permissions')->get('own')->getData() : [];
-            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles, true);
+            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
             if ($updateChildren === true) {

@@ -12,7 +12,7 @@ class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(CategoryAccessManager $accessManager)
     {
-        $this->beConstructedWith($accessManager);
+        $this->beConstructedWith($accessManager, 'Pim\Component\Catalog\Model\CategoryInterface', true);
     }
 
     function it_subscribes_events()
@@ -26,7 +26,7 @@ class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
         CategoryAccessManager $accessManager
     ) {
         $event->getSubject()->willReturn($category);
-        $accessManager->setAccessLikeParent($category)->shouldBeCalled();
+        $accessManager->setAccessLikeParent($category, ['owner' => true])->shouldBeCalled();
         $this->addNewCategoryPermissions($event);
     }
 }

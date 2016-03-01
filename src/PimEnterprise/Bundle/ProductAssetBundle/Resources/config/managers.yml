@@ -2,10 +2,12 @@ services:
     pimee_product_asset.manager.category_access:
         class: %pimee_security.manager.category_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@pimee_product_asset.repository.category'
+            - '@pim_user.repository.group'
+            - '@pimee_security.saver.asset_category_access'
+            - '@pimee_security.remover.asset_category_access'
             - %pimee_security.entity.asset_category_access.class%
-            - %pimee_product_asset.model.category.class%
-            - %pim_user.entity.group.class%
 
     pimee_product_asset.manager.category:
         class: %pim_catalog.manager.category.class%

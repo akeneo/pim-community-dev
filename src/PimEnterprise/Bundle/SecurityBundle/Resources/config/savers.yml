@@ -1,0 +1,40 @@
+services:
+    pimee_security.saver.attribute_group_access:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.attribute_group_access.class%
+
+    pimee_security.saver.product_category_access:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.product_category_access.class%
+
+    pimee_security.saver.asset_category_access:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.asset_category_access.class%
+
+    pimee_security.saver.job_profile_access:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.job_profile_access.class%
+
+    pimee_security.saver.locale_access:
+        class: %akeneo_storage_utils.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_security.entity.locale_access.class%

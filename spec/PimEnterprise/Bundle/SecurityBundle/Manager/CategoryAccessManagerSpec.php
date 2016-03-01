@@ -2,10 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -16,20 +18,21 @@ use Prophecy\Argument;
 class CategoryAccessManagerSpec extends ObjectBehavior
 {
     function let(
-        SmartManagerRegistry $registry,
-        ObjectManager $objectManager,
         CategoryAccessRepository $accessRepository,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        GroupRepository $groupRepository,
+        BulkSaverInterface $accessSaver,
+        BulkRemoverInterface $accessRemover
     ) {
-        $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
-
         $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess';
-        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
-        $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
-        $registry->getRepository($accessClass)->willReturn($accessRepository);
-        $registry->getRepository($categoryClass)->willReturn($categoryRepository);
-
-        $this->beConstructedWith($registry, $accessClass, $categoryClass, $userGroupClass);
+        $this->beConstructedWith(
+            $accessRepository,
+            $categoryRepository,
+            $groupRepository,
+            $accessSaver,
+            $accessRemover,
+            $accessClass
+        );
     }
 
     function it_provides_user_groups_that_have_access_to_a_category(CategoryInterface $category, $accessRepository)
@@ -46,36 +49,28 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     function it_grants_access_on_a_category_for_the_provided_user_groups(
         CategoryInterface $category,
         $accessRepository,
-        $objectManager,
+        $accessSaver,
         Group $user,
         Group $admin
     ) {
         $category->getId()->willReturn(1);
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
         $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
-
-        $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
-            ->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalled();
-
+        $accessSaver->saveAll(Argument::any())->shouldBeCalled();
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], true);
     }
 
     function it_grants_access_on_a_category_for_the_provided_user_groups_and_does_not_flush(
         CategoryInterface $category,
         $accessRepository,
-        $objectManager,
+        $accessSaver,
         Group $user,
         Group $admin
     ) {
         $category->getId()->willReturn(1);
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
         $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
-
-        $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
-            ->shouldBeCalledTimes(2);
+        $accessSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], false);
     }
@@ -83,16 +78,12 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     function it_grants_access_on_a_new_category_for_the_provided_user_groups(
         CategoryInterface $category,
         $accessRepository,
-        $objectManager,
+        $accessSaver,
         Group $user,
         Group $admin
     ) {
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
-
-        $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
-            ->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalled();
+        $accessSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], true);
     }
@@ -103,8 +94,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         CategoryInterface $childTwo,
         $categoryRepository,
         $accessRepository,
-        Group $user,
-        $objectManager
+        $accessSaver,
+        Group $user
     ) {
         $addViewGroups = [$user];
         $addEditGroups = [];
@@ -118,8 +109,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository->getCategoryIdsWithExistingAccess([$user], $childrenIds)->willReturn([]);
 
         $categoryRepository->findBy(['id' => $childrenIds])->willReturn([$childOne, $childTwo]);
-        $objectManager->persist(Argument::any())->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalled();
+        $accessSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->updateChildrenAccesses(
             $parent,
@@ -139,7 +129,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $categoryRepository,
         $accessRepository,
         Group $user,
-        $objectManager
+        $accessSaver
     ) {
         $addViewGroups = [$user];
         $addEditGroups = [];
@@ -158,9 +148,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
         $accessOne->setViewItems(true)->shouldBeCalled();
         $accessTwo->setViewItems(true)->shouldBeCalled();
-        $objectManager->persist($accessOne)->shouldBeCalled();
-        $objectManager->persist($accessTwo)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $accessSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->updateChildrenAccesses(
             $parent,
@@ -180,7 +168,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $categoryRepository,
         $accessRepository,
         Group $manager,
-        $objectManager
+        $accessRemover
     ) {
         $addViewGroups = [];
         $addEditGroups = [];
@@ -196,10 +184,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository
             ->findBy(['category' => $childrenIds, 'userGroup' => $manager])
             ->willReturn([$accessOne, $accessTwo]);
-
-        $objectManager->remove($accessOne)->shouldBeCalled();
-        $objectManager->remove($accessTwo)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $accessRemover->removeAll([$accessOne, $accessTwo])->shouldBeCalled();
 
         $this->updateChildrenAccesses(
             $parent,

@@ -98,7 +98,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $ownForm->getData()->shouldNotBeCalled();
         $applyForm->getData()->willReturn(false);
 
-        $accessManager->setAccess($category, ['one', 'two'], ['three'], [], true)->shouldBeCalled();
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], [])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
@@ -117,7 +117,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $ownForm->getData()->shouldNotBeCalled();
         $applyForm->getData()->willReturn(true);
 
-        $accessManager->setAccess($category, ['one', 'two'], ['three'], [], true)->shouldBeCalled();
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], [])->shouldBeCalled();
         $accessManager
             ->updateChildrenAccesses($category, ['one', 'two'], ['three'], [], [], [], [])
             ->shouldBeCalled();
