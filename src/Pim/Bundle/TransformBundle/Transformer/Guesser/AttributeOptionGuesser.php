@@ -13,6 +13,8 @@ use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class AttributeOptionGuesser extends RelationGuesser
 {
@@ -40,7 +42,7 @@ class AttributeOptionGuesser extends RelationGuesser
     public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         if ($this->valueClass != $metadata->getName() ||
-            !in_array($columnInfo->getPropertyPath(), array('option', 'options'))
+            !in_array($columnInfo->getPropertyPath(), ['option', 'options'])
         ) {
             return;
         }
@@ -50,7 +52,7 @@ class AttributeOptionGuesser extends RelationGuesser
             list($transformer, $options) = $info;
             $options['reference_prefix'] = $columnInfo->getName();
 
-            return array($transformer, $options);
+            return [$transformer, $options];
         }
 
         return null;

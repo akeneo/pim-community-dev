@@ -16,7 +16,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
         template:_.template(
             '<div class="grid-toolbar">' +
                 '<div class="pull-left">' +
-                    '<div class="mass-actions-panel btn-group icons-holder"></div>' +
+                    '<div class="mass-actions-panel icons-holder"></div>' +
                 '</div>' +
                 '<div class="pull-right">' +
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
@@ -72,10 +72,10 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                 this.hide();
             }
 
-            this.massActionsPanel = new this.massActionsPanel();
-            if (options.massActions) {
-                this.massActionsPanel.setActions(options.massActions);
-            }
+            this.massActionsPanel = new this.massActionsPanel({
+                actionsGroups: options.massActionsGroups,
+                actions:       options.massActions
+            });
 
             Backbone.View.prototype.initialize.call(this, options);
         },

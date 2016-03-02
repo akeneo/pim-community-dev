@@ -1,0 +1,4 @@
+code;label;locales;currencies;tree
+ecommerce;Ecommerce;en_US,en_GB,fr_FR,de_DE;USD,GBP,EUR;2014_collection
+tablet;Tablet;en_US,en_GB;USD,GBP;2013_collection
+print;Print;en_US,de_DE;USD,EUR;2015_collection

@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * AclAccessLevelSelector form type
@@ -47,7 +47,7 @@ class AclAccessLevelSelectorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [
             AccessLevel::NONE_LEVEL,

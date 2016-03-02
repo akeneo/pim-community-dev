@@ -27,8 +27,6 @@ Feature: Well display navigation titles
       | "info" attribute group                    | Attribute groups Product information \| Edit    |
       | locales                                   | Locales                                         |
       | products                                  | Products                                        |
-      | "sandals" product                         | Products sandals \| Edit                        |
-      | variant groups                            | Variant groups                                  |
       | "caterpillar_boots" variant group         | Variant groups Caterpillar boots \| Edit        |
       | product groups                            | Groups                                          |
       | "similar_boots" product group             | Groups Similar boots \| Edit                    |
@@ -42,3 +40,5 @@ Feature: Well display navigation titles
       | "footwear_product_import" import job edit | Import profiles Footwear product import \| Edit |
       | import executions                         | Import executions history                       |
       | export executions                         | Export executions history                       |
+      | variant groups                            | Variant groups                                  |
+      | "sandals" product                         | Products sandals \| Edit                        |

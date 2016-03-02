@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\ProductValue:
+Pim\Component\Catalog\Model\ProductValue:
     type: embeddedDocument
     fields:
         id:
@@ -23,31 +23,30 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             type: string
         attribute:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
         entity:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductInterface
             inversedBy: values
         option:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
         options:
             notSaved: true
             type: entities
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             idsField: optionIds
         optionIds:
             type: collection
         metric:
             embedded: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\MetricInterface
+            targetDocument: Pim\Component\Catalog\Model\MetricInterface
         prices:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductPriceInterface
         media:
-            embedded: true
-            type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
+            type: entity
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfoInterface

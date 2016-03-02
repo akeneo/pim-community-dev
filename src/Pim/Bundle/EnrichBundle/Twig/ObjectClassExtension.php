@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use Doctrine\Common\Util\ClassUtils;
+
 /**
  * Twig filter to get entity FQCN
  *
@@ -16,9 +18,9 @@ class ObjectClassExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             'class' => new \Twig_Filter_Method($this, 'getClass')
-        );
+        ];
     }
 
     /**
@@ -30,7 +32,7 @@ class ObjectClassExtension extends \Twig_Extension
      */
     public function getClass($entity)
     {
-        return get_class($entity);
+        return ClassUtils::getClass($entity);
     }
 
     /**

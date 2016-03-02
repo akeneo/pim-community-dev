@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -29,11 +29,12 @@ class NotDecimalValidator extends ConstraintValidator
             return;
         }
         if (is_numeric($value) && floor($value) != $value) {
+            $violation = $this->context->buildViolation($constraint->message);
             if (isset($propertyPath)) {
-                $this->context->addViolationAt($propertyPath, $constraint->message);
-            } else {
-                $this->context->addViolation($constraint->message);
+                $violation->atPath($propertyPath);
             }
+
+            $violation->addViolation();
         }
     }
 }

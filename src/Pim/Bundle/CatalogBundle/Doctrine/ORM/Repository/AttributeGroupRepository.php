@@ -34,7 +34,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     public function getIdToLabelOrderedBySortOrder()
     {
         $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
-        $orderedGroups = array();
+        $orderedGroups = [];
         foreach ($groups as $group) {
             $orderedGroups[$group->getId()] = $group->getLabel();
         }
@@ -48,7 +48,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     public function getAttributeGroupChoices()
     {
         $groups = $this->findAllWithTranslations();
-        $choices = array();
+        $choices = [];
         foreach ($groups as $group) {
             $choices[$group->getCode()] = $group->getLabel();
         }
@@ -62,7 +62,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
      */
     public function findDefaultAttributeGroup()
     {
-        return $this->findOneBy(array('code' => AttributeGroup::DEFAULT_GROUP_CODE));
+        return $this->findOneBy(['code' => AttributeGroup::DEFAULT_GROUP_CODE]);
     }
 
     /**
@@ -106,7 +106,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -114,6 +114,6 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

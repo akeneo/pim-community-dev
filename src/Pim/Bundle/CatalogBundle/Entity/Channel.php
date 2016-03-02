@@ -3,11 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Channel entity
@@ -15,8 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 class Channel implements ChannelInterface
 {
@@ -39,7 +36,7 @@ class Channel implements ChannelInterface
     protected $locales;
 
     /** @var array $conversionUnits */
-    protected $conversionUnits = array();
+    protected $conversionUnits = [];
 
     /** @var string $color */
     protected $color;
@@ -259,5 +256,21 @@ class Channel implements ChannelInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChoiceValue()
+    {
+        return $this->getCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChoiceLabel()
+    {
+        return $this->getLabel();
     }
 }

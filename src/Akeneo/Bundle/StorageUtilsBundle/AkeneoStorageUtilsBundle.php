@@ -56,7 +56,7 @@ class AkeneoStorageUtilsBundle extends Bundle
                 'doctrine_mongodb.odm.listeners.resolve_target_document',
                 'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
             );
-            $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
+            $definition->addTag('doctrine_mongodb.odm.event_listener', ['event' => 'loadClassMetadata']);
         }
     }
 }

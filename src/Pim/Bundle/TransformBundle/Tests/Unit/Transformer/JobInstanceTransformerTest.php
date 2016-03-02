@@ -39,7 +39,7 @@ class JobInstanceTransformerTest extends EntityTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1')
+            ['code' => 'code', 'col1' => 'val1']
         );
         $this->assertInstanceOf('stdClass', $object);
         $this->assertEmpty($this->transformer->getErrors('stdClass'));

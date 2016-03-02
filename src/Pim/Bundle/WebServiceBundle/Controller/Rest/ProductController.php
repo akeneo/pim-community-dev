@@ -6,7 +6,7 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -78,8 +78,8 @@ class ProductController extends FOSRestController
      */
     protected function handleGetRequest($identifier, $channels, $locales)
     {
-        $manager = $this->get('pim_catalog.manager.product');
-        $product = $manager->findByIdentifier($identifier);
+        $productRepository = $this->container->get('pim_catalog.repository.product');
+        $product = $productRepository->findOneByIdentifier($identifier);
 
         if (!$product) {
             return new Response(sprintf('Product "%s" not found', $identifier), 404);
@@ -107,12 +107,12 @@ class ProductController extends FOSRestController
     {
         $url = $this->generateUrl(
             'oro_api_get_product',
-            array(
+            [
                 'identifier' => $product->getIdentifier()->getData()
-            ),
+            ],
             true
         );
-        $handler = $this->get('pim_webservice.handler.rest.product');
+        $handler = $this->container->get('pim_webservice.handler.rest.product');
         $data = $handler->get($product, $channels, $locales, $url);
 
         return $data;

@@ -27,8 +27,8 @@ Feature: Export products
     And I wait for the "footwear_product_export" job to finish
     Then exported file of "footwear_product_export" should contain:
     """
-    sku;categories;color;enabled;family;groups;heel_color;name-en_US;price-EUR;price-USD;size;sole_color;sole_fabric
-    SNKRS-1B;summer_collection;black;1;sneakers;;;"Model 1";50.00;70.00;45;;
-    SNKRS-1R;summer_collection;red;1;sneakers;;Red;"Model 1";50.00;70.00;45;Red;Neoprene,Silk
-    SNKRS-1C;summer_collection;charcoal;1;sneakers;;;"Model 1";55.00;75.00;45;;
+    sku;categories;color;description-en_US-mobile;enabled;family;groups;heel_color;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;sole_color;sole_fabric;top_view;weather_conditions
+    SNKRS-1B;summer_collection;black;;1;sneakers;;;;;"Model 1";50.00;70.00;;;45;;;;
+    SNKRS-1R;summer_collection;red;;1;sneakers;;Red;;;"Model 1";50.00;70.00;;;45;Red;Neoprene,Silk;;
+    SNKRS-1C;summer_collection;charcoal;;1;sneakers;;;;;"Model 1";55.00;75.00;;;45;;;;
     """

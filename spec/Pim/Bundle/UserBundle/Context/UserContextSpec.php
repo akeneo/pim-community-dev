@@ -3,23 +3,25 @@
 namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class UserContextSpec extends ObjectBehavior
 {
     function let(
-        SecurityContextInterface $securityContext,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        TokenStorageInterface $tokenStorage,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
         TokenInterface $token,
         User $user,
         LocaleInterface $en,
@@ -28,9 +30,12 @@ class UserContextSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         ChannelInterface $mobile,
         CategoryInterface $firstTree,
-        CategoryInterface $secondTree
+        CategoryInterface $secondTree,
+        CategoryRepositoryInterface $productCategoryRepo,
+        RequestStack $requestStack,
+        ChoicesBuilderInterface $choicesBuilder
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $en->getCode()->willReturn('en_US');
@@ -41,22 +46,33 @@ class UserContextSpec extends ObjectBehavior
         $fr->isActivated()->willReturn(true);
         $de->isActivated()->willReturn(true);
 
-        $localeManager->getLocaleByCode('en_US')->willReturn($en);
-        $localeManager->getLocaleByCode('fr_FR')->willReturn($fr);
-        $localeManager->getLocaleByCode('de_DE')->willReturn($de);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($en);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($fr);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($de);
 
-        $localeManager->getActiveLocales()->willReturn([$en, $fr, $de]);
-        $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
-        $categoryManager->getTrees()->willReturn([$firstTree, $secondTree]);
+        $localeRepository->getActivatedLocales()->willReturn([$en, $fr, $de]);
+        $channelRepository->findOneBy([])->willReturn($mobile);
+        $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
-        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $categoryManager, 'en_US');
+        $this->beConstructedWith(
+            $tokenStorage,
+            $localeRepository,
+            $channelRepository,
+            $productCategoryRepo,
+            $requestStack,
+            $choicesBuilder,
+            'en_US'
+        );
     }
 
-    function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
+    function it_provides_locale_from_the_request_if_it_has_been_set(
+        RequestStack $requestStack,
+        Request $request,
+        $fr)
     {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $request->get('dataLocale')->willReturn('fr_FR');
 
-        $this->setRequest($request);
         $this->getCurrentLocale()->shouldReturn($fr);
     }
 
@@ -71,10 +87,10 @@ class UserContextSpec extends ObjectBehavior
         $this->getCurrentLocale()->shouldReturn($en);
     }
 
-    function it_throws_an_exception_if_there_are_no_activated_locales($localeManager)
+    function it_throws_an_exception_if_there_are_no_activated_locales($localeRepository)
     {
-        $localeManager->getLocaleByCode('en_US')->willReturn(null);
-        $localeManager->getActiveLocales()->willReturn([]);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn(null);
+        $localeRepository->getActivatedLocales()->willReturn([]);
 
         $this
             ->shouldThrow(new \Exception('There are no activated locales'))
@@ -116,12 +132,51 @@ class UserContextSpec extends ObjectBehavior
     function its_get_user_tree_method_returns_user_tree_if_available(User $user, $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
-        $this->getUserTree()->shouldReturn($secondTree);
+        $this->getUserProductCategoryTree()->shouldReturn($secondTree);
     }
 
     function its_get_user_tree_method_returns_the_first_available_tree_if_user_tree_is_not_available($firstTree)
     {
-        $this->getUserTree()->shouldReturn($firstTree);
+        $this->getUserProductCategoryTree()->shouldReturn($firstTree);
+    }
+
+    function it_builds_user_product_context_for_normalization(
+        $tokenStorage,
+        $localeRepository,
+        $channelRepository,
+        $choicesBuilder,
+        ChannelInterface $userChannel,
+        ChannelInterface $ecommerce,
+        LocaleInterface $fr,
+        LocaleInterface $en,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
+        $userChannel->getCode()->willReturn('mobile');
+        $channelRepository->findOneBy([])->willReturn($userChannel);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $token->getUser()->willReturn($user);
+
+        $channelRepository->findAll()->willReturn([$ecommerce]);
+        $choicesBuilder->buildChoices([$ecommerce])->willReturn([
+            'mobile' => $userChannel,
+            'ecommerce' => $ecommerce
+        ]);
+
+        $fr->getCode()->willReturn('fr_FR');
+        $en->getCode()->willReturn('en_US');
+
+        $localeRepository->getActivatedLocales()->willReturn([$en, $fr]);
+
+        $user->getUiLocale()->willReturn($fr);
+        $user->getCatalogScope()->willReturn($userChannel);
+
+        $this->toArray()->shouldReturn([
+            'locales'  => ['en_US', 'fr_FR'],
+            'channels' => ['mobile', 'ecommerce'],
+            'locale'   => 'fr_FR'
+        ]);
     }
 }
 

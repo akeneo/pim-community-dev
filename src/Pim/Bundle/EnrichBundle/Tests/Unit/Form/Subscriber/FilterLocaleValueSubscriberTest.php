@@ -38,7 +38,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $this->assertEquals(array('form.pre_set_data' => 'preSetData'), $this->target->getSubscribedEvents());
+        $this->assertEquals(['form.pre_set_data' => 'preSetData'], $this->target->getSubscribedEvents());
     }
 
     /**
@@ -60,7 +60,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSetData()
     {
-        $data = array(
+        $data = [
             'name_current'               => $this->getProductValueMock(
                 $this->getAttributeMock(),
                 self::CURRENT_LOCALE
@@ -70,7 +70,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
                 self::OTHER_LOCALE
             ),
             'not_localizable_attribute' => $this->getProductValueMock($this->getAttributeMock(false), null),
-        );
+        ];
 
         $form  = $this->getFormMock();
         $event = $this->getEventMock($data, $form);
@@ -84,10 +84,10 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testSetComparisonAttributesDisabled()
     {
-        $data = array(
+        $data = [
             'name_current'    => $this->getProductValueMock($this->getAttributeMock(), self::CURRENT_LOCALE),
             'name_comparison' => $this->getProductValueMock($this->getAttributeMock(), self::COMPARISON_LOCALE),
-        );
+        ];
 
         $form  = $this->getFormMock();
         $event = $this->getEventMock($data, $form);
@@ -97,12 +97,12 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
             ->with(
                 'name_comparison',
                 'pim_product_value',
-                array(
+                [
                     'disabled'     => true,
-                    'block_config' => array(
+                    'block_config' => [
                         'mode' => 'comparison'
-                    )
-                )
+                    ]
+                ]
             );
 
         $this->target->preSetData($event);
@@ -147,11 +147,11 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param mixed $attribute
      * @param mixed $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
+     * @return \Pim\Component\Catalog\Model\ProductValue
      */
     private function getProductValueMock($attribute, $locale)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
+        $value = $this->getMock('Pim\Component\Catalog\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -167,7 +167,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * @param bool $localizable
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     private function getAttributeMock($localizable = true)
     {

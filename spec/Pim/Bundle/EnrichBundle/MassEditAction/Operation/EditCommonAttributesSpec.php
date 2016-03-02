@@ -2,83 +2,58 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
-        CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
-        NormalizerInterface $normalizer,
-        MediaManager $mediaManager,
-        ProductMassActionManager $massActionManager
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        NormalizerInterface $internalNormalizer,
+        LocalizedAttributeConverterInterface $localizedConverter,
+        LocalizerRegistryInterface $localizerRegistry,
+        CollectionFilterInterface $productValuesFilter,
+        $tmpStorageDir = '/tmp/pim/file_storage'
     ) {
-        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
-
         $this->beConstructedWith(
             $productBuilder,
             $userContext,
-            $catalogContext,
             $attributeRepository,
-            $normalizer,
-            $mediaManager,
-            $massActionManager,
-            $path
+            $productUpdater,
+            $productValidator,
+            $internalNormalizer,
+            $localizedConverter,
+            $localizerRegistry,
+            $productValuesFilter,
+            $tmpStorageDir
         );
     }
 
-    function it_sets_and_gets_values(Collection $values)
+    function it_sets_and_gets_values()
     {
-        $this->getValues()->shouldReturnAnInstanceOf('Doctrine\Common\Collections\Collection');
-        $this->setValues($values);
-        $this->getValues()->shouldReturn($values);
-    }
-
-    function it_sets_and_gets_locale(LocaleInterface $locale)
-    {
-        $this->getLocale()->shouldReturn(null);
-        $this->setLocale($locale);
-        $this->getLocale()->shouldReturn($locale);
-    }
-
-    function it_sets_and_gets_displayed_attributes(Collection $attributes)
-    {
-        $this->getDisplayedAttributes()->shouldReturnAnInstanceOf('Doctrine\Common\Collections\Collection');
-        $this->setDisplayedAttributes($attributes);
-        $this->getDisplayedAttributes()->shouldReturn($attributes);
+        $this->getValues()->shouldReturn('');
+        $this->setValues('Values');
+        $this->getValues()->shouldReturn('Values');
     }
 
     function it_gets_the_form_type()
     {
         $this->getFormType()->shouldReturn('pim_enrich_mass_edit_common_attributes');
-    }
-
-    function it_gets_the_form_options($userContext, $attributeRepository, LocaleInterface $locale)
-    {
-        $locale->getCode()->shouldBeCalled()->willReturn('fr_FR');
-        $this->setLocale($locale);
-
-        $attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]])
-            ->shouldBeCalled()
-            ->willReturn([]);
-        $userContext->getUserLocales()->shouldBeCalled();
-
-        $this->getFormOptions();
     }
 
     function it_gets_the_operation_alias()
@@ -96,89 +71,114 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getItemsName()->shouldReturn('product');
     }
 
-    function it_initializes_itself(
-        $productBuilder,
-        $catalogContext,
-        $attributeRepository,
-        $massActionManager,
-        LocaleInterface $deLocale,
-        AttributeInterface $attr1,
-        AttributeInterface $attr2,
-        ProductValueInterface $prodVal1,
-        ProductValueInterface $prodVal2,
-        ChannelInterface $channel,
-        AttributeGroupInterface $attrGroup
-    ) {
-        $deLocale->getCode()->willReturn('de_DE');
-        $this->setLocale($deLocale);
+    function it_gets_configuration($userContext, LocaleInterface $locale)
+    {
+        $locale->getCode()->willReturn('fr_FR');
+        $expected = addslashes(json_encode([
+            'filters' => null,
+            'actions' => [
+                'normalized_values' => '',
+                'ui_locale'         => 'fr_FR',
+                'attribute_locale'  => null,
+                'attribute_channel' => null,
+            ]
+        ]));
 
-        $catalogContext->setLocaleCode('de_DE')->shouldBeCalled();
-        $attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]])
-            ->shouldBeCalled()
-            ->willReturn([$attr1, $attr2]);
-
-        $attr1->setLocale('de_DE')->shouldBeCalled();
-        $attr2->setLocale('de_DE')->shouldBeCalled();
-
-        $attr1->getGroup()->willReturn($attrGroup);
-        $attr2->getGroup()->willReturn($attrGroup);
-
-        $attrGroup->setLocale('de_DE')->shouldBeCalledTimes(2);
-
-        $massActionManager->filterLocaleSpecificAttributes([$attr1, $attr2], 'de_DE')
-            ->willReturn([$attr1, $attr2]);
-
-        // First attribute
-        $deLocale->getChannels()->willReturn([$channel]);
-        $attr1->isScopable()->willReturn(true);
-        $attr1->getCode()->willReturn('color');
-        $channel->getCode()->willReturn('mobile');
-
-        $productBuilder->createProductValue($attr1, 'de_DE', 'mobile')
-            ->shouldBeCalled()
-            ->willReturn($prodVal1);
-        $productBuilder->addMissingPrices($prodVal1)->shouldBeCalled();
-
-        // Second attribute
-        $attr2->isScopable()->willReturn(false);
-        $attr2->getCode()->willReturn('price');
-
-        $productBuilder->createProductValue($attr2, 'de_DE')
-            ->shouldBeCalled()
-            ->willReturn($prodVal2);
-        $productBuilder->addMissingPrices($prodVal2)->shouldBeCalled();
-
-        $this->initialize();
-
-        $this->getValues()->shouldHaveCount(2);
+        $userContext->getUiLocale()->willReturn($locale);
+        $this->getBatchConfig()->shouldReturn($expected);
     }
 
-    function it_gets_all_product_attributes_and_sets_correct_locale(
+    function it_sanitizes_data_during_finalization(
+        $userContext,
         $attributeRepository,
-        $massActionManager,
-        AttributeInterface $attr1,
-        AttributeInterface $attr2,
-        AttributeGroupInterface $attrGroup,
-        LocaleInterface $enLocale
+        $localizerRegistry,
+        $productValuesFilter,
+        LocaleInterface $fr,
+        AttributeInterface $normalAttr,
+        AttributeInterface $scopableAttr,
+        AttributeInterface $localisableAttr,
+        AttributeInterface $localiedAttr,
+        LocalizerInterface $localizer
     ) {
-        $enLocale->getCode()->willReturn('en_US');
-        $this->setLocale($enLocale);
+        $attributeRepository->findOneByIdentifier('normal_attr')->willReturn($normalAttr);
+        $attributeRepository->findOneByIdentifier('scopable_attr')->willReturn($scopableAttr);
+        $attributeRepository->findOneByIdentifier('localisable_attr')->willReturn($localisableAttr);
+        $attributeRepository->findOneByIdentifier('localised_attr')->willReturn($localiedAttr);
 
-        $attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]])
-            ->shouldBeCalled()
-            ->willReturn([$attr1, $attr2]);
+        $normalAttr->getAttributeType()->willReturn('not_localized');
+        $scopableAttr->getAttributeType()->willReturn('not_localized');
+        $localisableAttr->getAttributeType()->willReturn('not_localized');
+        $localiedAttr->getAttributeType()->willReturn('localized');
 
-        $attr1->setLocale('en_US')->shouldBeCalled();
-        $attr2->setLocale('en_US')->shouldBeCalled();
+        $localizerRegistry->getLocalizer('not_localized')->willReturn(null);
+        $localizerRegistry->getLocalizer('localized')->willReturn($localizer);
 
-        $attr1->getGroup()->willReturn($attrGroup);
-        $attr2->getGroup()->willReturn($attrGroup);
+        $fr->getCode()->willReturn('fr');
+        $userContext->getUiLocale()->willReturn($fr);
 
-        $massActionManager->filterLocaleSpecificAttributes([$attr1, $attr2], 'en_US')
-            ->willReturn([$attr1, $attr2]);
+        $this->setAttributeLocale('fr');
+        $this->setAttributeChannel('tablet');
 
-        $attrGroup->setLocale('en_US')->shouldBeCalledTimes(2);
+        $rawData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+                ['data' => 'bar', 'scope' => 'ecommerce', 'locale' => null]
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+                ['data' => 'bar', 'scope' => null, 'locale' => 'de']
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45,59', 'currency' => 'EUR'],
+                    ['data' => '18,22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+        $this->setValues(json_encode($rawData));
 
-        $this->getAllAttributes()->shouldReturn([$attr1, $attr2]);
+        $localizer->delocalize(
+            [['data' => '45,59', 'currency' => 'EUR'],['data' => '18,22', 'currency' => 'USD']],
+            ["locale" => "fr"]
+        )->willReturn([['data' => '45.59', 'currency' => 'EUR'],['data' => '18.22', 'currency' => 'USD']]);
+
+        $sanitizedData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45.59', 'currency' => 'EUR'],
+                    ['data' => '18.22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+
+        $localizedData = [
+            'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],
+            'scopable_attr' => [
+                ['data' => 'foo', 'scope' => 'tablet', 'locale' => null],
+            ],
+            'localisable_attr' => [
+                ['data' => 'foo', 'scope' => null, 'locale' => 'fr'],
+            ],
+            'localised_attr' => [
+                ['data' => [
+                    ['data' => '45,59', 'currency' => 'EUR'],
+                    ['data' => '18,22', 'currency' => 'USD'],
+                ], 'scope' => null, 'locale' => null]
+            ],
+        ];
+
+        $productValuesFilter->filterCollection($localizedData, 'pim.internal_api.product_values_data.edit')
+            ->willReturn($localizedData);
+
+        $this->finalize();
+        $this->getValues()->shouldReturn(json_encode($sanitizedData));
     }
 }

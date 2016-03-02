@@ -3,12 +3,13 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
 {
@@ -31,7 +32,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_text');
 
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint);
@@ -52,7 +53,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $identifier->getId()->willReturn(1);
 
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint);
@@ -63,7 +64,8 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $attributeRepository,
         AttributeInterface $attribute,
         AttributeInterface $identifier,
-        SingleIdentifierAttribute $constraint
+        SingleIdentifierAttribute $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(2);
@@ -73,8 +75,12 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $identifier->getId()->willReturn(1);
 
         $context
-            ->addViolationAt('attributeType', $constraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('attributeType')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }

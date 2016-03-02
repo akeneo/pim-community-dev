@@ -72,19 +72,19 @@ define(
                 if (this.scopable) {
                     mediator.on('scopablefield:changescope', function (scope) {
                         this._changeDefault(scope);
-                    }, this);
+                    }.bind(this));
 
                     mediator.on('scopablefield:collapse', function (id) {
                         if (!id || this.$el.find('#' + id).length) {
                             this._collapse();
                         }
-                    }, this);
+                    }.bind(this));
 
                     mediator.on('scopablefield:expand', function (id) {
                         if (!id || this.$el.find('#' + id).length) {
                             this._expand();
                         }
-                    }, this);
+                    }.bind(this));
                 }
             },
 

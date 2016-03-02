@@ -11,11 +11,9 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code     | label    | type | useable as grid filter |
+      | code     | label    | type | useable_as_grid_filter |
       | delivery | Delivery | date | yes                    |
       | supply   | Supply   | date | yes                    |
-    And the following "delivery" attribute options: Black and Green
-    And the following "supply" attribute options: Black and White and Red
     And the following products:
       | sku    | family    | supply     | delivery   |
       | BOOK   | library   |            |            |
@@ -27,19 +25,14 @@ Feature: Filter products
       | POST-1 | furniture | 2014-08-01 |            |
       | POST-2 | furniture | 2014-08-01 |            |
       | POST-3 | furniture | 2014-09-01 |            |
-    And the following product groups:
-      | code   | label  | axis             | type    | products                          |
-      | MUG    | Mug    | delivery, supply | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
-      | POSTIT | Postit | supply           | X_SELL  | POST-1, POST-2, POST-3            |
-      | EMPTY  | Empty  |                  | X_SELL  |                                   |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "between 2014-08-01 and 2014-08-01"
+    And I filter by "Supply" with value "between 08/01/2014 and 08/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "between 2014-05-01 and 2014-05-01"
+    And I filter by "Delivery" with value "between 05/01/2014 and 05/01/2014"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Supply"
@@ -48,9 +41,9 @@ Feature: Filter products
   Scenario: Successfully filter product without commons attributes
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "between 2014-09-01 and 2014-10-01"
+    And I filter by "Supply" with value "between 09/01/2014 and 10/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "more than 2014-04-01"
+    And I filter by "Delivery" with value "more than 01/04/2014"
     Then the grid should contain 0 elements
     And I hide the filter "Supply"
     And I hide the filter "Delivery"
@@ -58,9 +51,9 @@ Feature: Filter products
   Scenario: Successfully filter only one product
     Given I am on the products page
     And I show the filter "Supply"
-    And I filter by "Supply" with value "less than 2014-02-01"
+    And I filter by "Supply" with value "less than 02/01/2014"
     And I show the filter "Delivery"
-    And I filter by "Delivery" with value "between 2014-01-01 and 2014-06-01"
+    And I filter by "Delivery" with value "between 01/01/2014 and 06/01/2014"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
     And I hide the filter "Supply"

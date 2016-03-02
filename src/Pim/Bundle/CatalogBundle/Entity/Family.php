@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Family entity
@@ -15,8 +15,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 class Family implements FamilyInterface
 {
@@ -179,7 +177,7 @@ class Family implements FamilyInterface
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
-        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
         }
 
@@ -214,7 +212,7 @@ class Family implements FamilyInterface
      */
     public function getGroupedAttributes()
     {
-        $result = array();
+        $result = [];
         foreach ($this->attributes as $attribute) {
             $result[(string) $attribute->getGroup()][] = $attribute;
         }
@@ -265,7 +263,7 @@ class Family implements FamilyInterface
             function ($attribute) {
                 return in_array(
                     $attribute->getAttributeType(),
-                    ['pim_catalog_text', 'pim_catalog_identifier']
+                    [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
                 );
             }
         )->toArray();
@@ -316,7 +314,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(AbstractTranslation $translation)
+    public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -328,7 +326,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(AbstractTranslation $translation)
+    public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
 
@@ -409,7 +407,7 @@ class Family implements FamilyInterface
      */
     public function getAttributeRequirements()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->requirements as $requirement) {
             $key = $this->getAttributeRequirementKey($requirement);

@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Attribute Group entity
@@ -14,8 +13,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
 class AttributeGroup implements AttributeGroupInterface
 {
@@ -269,7 +266,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(AbstractTranslation $translation)
+    public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -281,7 +278,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(AbstractTranslation $translation)
+    public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
 

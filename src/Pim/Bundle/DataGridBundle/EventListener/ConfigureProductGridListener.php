@@ -3,11 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 
 /**
  * Grid listener to configure columns, filters and sorters based on product attributes and business rules

@@ -9,7 +9,7 @@ Feature: Execute an import
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | size, color | VARIANT |
-      | NOT_VG | Not VG | color, size | RELATED |
+      | NOT_VG | Not VG |             | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Stop the import if variant group code column is not provided

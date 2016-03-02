@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -16,11 +16,11 @@ class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         StepExecution $stepExecution,
         ChannelManager $channelManager
     ) {
-        $this->beConstructedWith($serializer, $localeManager, $channelManager);
+        $this->beConstructedWith($serializer, $localeRepository, $channelManager);
         $this->setStepExecution($stepExecution);
     }
 
@@ -31,12 +31,12 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_provides_configuration_fields($channelManager)
@@ -149,8 +149,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelManager,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         ChannelInterface $channel
     ) {
         $products = [$product1, $product2];

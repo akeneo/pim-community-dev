@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -38,9 +38,9 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-        );
+        ];
     }
 
     /**
@@ -68,12 +68,12 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
                 $form->add(
                     $name,
                     'pim_product_value',
-                    array(
+                    [
                         'disabled'     => true,
-                        'block_config' => array(
+                        'block_config' => [
                             'mode' => 'comparison'
-                        )
-                    )
+                        ]
+                    ]
                 );
             }
         }

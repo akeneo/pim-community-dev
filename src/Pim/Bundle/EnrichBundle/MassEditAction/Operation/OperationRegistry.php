@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 /**
  * Registry of mass edit actions indexed by gridName alias
  *
@@ -17,6 +20,26 @@ class OperationRegistry implements OperationRegistryInterface
     /** @var MassEditOperationInterface[] */
     protected $gridOperations = [];
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /**
+     * OperationRegistry constructor.
+     *
+     * @param TokenStorageInterface $tokenStorage
+     * @param SecurityFacade        $securityFacade
+     */
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade
+    ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->securityFacade = $securityFacade;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -28,6 +51,10 @@ class OperationRegistry implements OperationRegistryInterface
             throw new \InvalidArgumentException(
                 sprintf('An operation with the alias "%s" is already registered', $operationAlias)
             );
+        }
+
+        if (null !== $acl && null !== $this->tokenStorage->getToken() && !$this->securityFacade->isGranted($acl)) {
+            return;
         }
 
         if (null !== $gridName) {

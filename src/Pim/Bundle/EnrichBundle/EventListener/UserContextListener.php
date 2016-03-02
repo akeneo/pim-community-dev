@@ -3,13 +3,13 @@
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
+use Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * User context listener
@@ -23,9 +23,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class UserContextListener implements EventSubscriberInterface
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var AddLocaleListener
@@ -45,21 +45,21 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param AddLocaleListener        $listener
-     * @param CatalogContext           $catalogContext
-     * @param UserContext              $userContext
+     * @param TokenStorageInterface $tokenStorage
+     * @param AddLocaleListener     $listener
+     * @param CatalogContext        $catalogContext
+     * @param UserContext           $userContext
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         AddLocaleListener $listener,
         CatalogContext $catalogContext,
         UserContext $userContext
     ) {
-        $this->securityContext = $securityContext;
-        $this->listener        = $listener;
-        $this->catalogContext  = $catalogContext;
-        $this->userContext     = $userContext;
+        $this->tokenStorage   = $tokenStorage;
+        $this->listener       = $listener;
+        $this->catalogContext = $catalogContext;
+        $this->userContext    = $userContext;
     }
 
     /**
@@ -67,9 +67,9 @@ class UserContextListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             KernelEvents::REQUEST => 'onKernelRequest'
-        );
+        ];
     }
 
     /**
@@ -77,7 +77,7 @@ class UserContextListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->securityContext->getToken()) {
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
             return;
         }
 

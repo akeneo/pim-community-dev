@@ -1,0 +1,9 @@
+pim_analytics:
+  new_patch_available: Доступен новый патч
+  system_config:
+    group:
+      notification.title: Уведомления
+      version_update.title: Oбновления версии
+    form:
+      version_update.label: Уведомления о новых версиях
+      version_update.tooltip: Отправить запрос на отдаленный сервер для извлечения уведомлений о выпуске новых патчей

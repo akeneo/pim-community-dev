@@ -133,7 +133,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: datetime
     oneToMany:
         options:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             mappedBy: attribute
             cascade:
                 - persist
@@ -141,14 +141,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
+            targetEntity: Pim\Component\Catalog\Model\AttributeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
                 - detach
     manyToOne:
         group:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
             inversedBy: attributes
             joinColumns:
                 group_id:
@@ -156,7 +156,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     onDelete: 'SET NULL'
     manyToMany:
         availableLocales:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:
@@ -168,5 +168,5 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                         referencedColumnName: id
                         onDelete: CASCADE
         families:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
+            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
             mappedBy: attributes

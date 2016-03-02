@@ -1,0 +1,7 @@
+Pim\Component\Connector\Writer\File\AbstractFileWriter:
+    properties:
+        filePath:
+            - NotBlank:
+                groups: [Execution]
+            - Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory:
+                groups: [Execution]

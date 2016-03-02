@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,20 +17,20 @@ class JobInstanceNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $results = array(
+        $results = [
             'code'          => $object->getCode(),
             'label'         => $object->getLabel(),
             'connector'     => $object->getConnector(),
             'type'          => $object->getType(),
             'configuration' => $this->normalizeConfiguration($object)
-        );
+        ];
 
         return $results;
     }

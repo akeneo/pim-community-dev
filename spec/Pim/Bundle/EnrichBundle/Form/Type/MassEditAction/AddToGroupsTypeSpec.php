@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddToGroupsTypeSpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class AddToGroupsTypeSpec extends ObjectBehavior
 
     function it_sets_default_options(
         $groupRepository,
-        OptionsResolverInterface $resolver,
+        OptionsResolver $resolver,
         GroupInterface $minimalGroup,
         GroupInterface $progressiveGroup
     ) {

@@ -20,37 +20,36 @@ define(
         'pim/i18n',
         'pim/user-context'
     ],
-    function ($,
-            _,
-            mediator,
-            BaseForm,
-            messenger,
-            LoadingMask,
-            ProductManager,
-            FieldManager,
-            i18n,
-            UserContext
+    function (
+        $,
+        _,
+        mediator,
+        BaseForm,
+        messenger,
+        LoadingMask,
+        ProductManager,
+        FieldManager,
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             className: 'btn-group',
             updateSuccessMessage: _.__('pim_enrich.entity.product.info.update_successful'),
             updateFailureMessage: _.__('pim_enrich.entity.product.info.update_failed'),
             configure: function () {
-                if ('save-buttons' in this.parent.extensions) {
-                    this.parent.extensions['save-buttons'].addButton({
-                        className: 'save-product',
-                        priority: 200,
-                        label: _.__('pim_enrich.entity.product.btn.save'),
-                        events: {
-                            'click .save-product': _.bind(this.save, this)
-                        }
-                    });
-                }
+                this.trigger('save-buttons:register-button', {
+                    className: 'save-product',
+                    priority: 200,
+                    label: _.__('pim_enrich.entity.product.btn.save'),
+                    events: {
+                        'click .save-product': this.save.bind(this)
+                    }
+                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
-                var product = $.extend(true, {}, this.getData());
+                var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;
@@ -77,35 +76,33 @@ define(
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                mediator.trigger('product:action:pre_save');
+                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
                 return ProductManager
                     .save(productId, product)
-                    .done(_.bind(ProductManager.generateMissing, this))
-                    .done(_.bind(function (data) {
+                    .then(ProductManager.generateMissing.bind(ProductManager))
+                    .then(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
                             this.updateSuccessMessage
                         );
 
-                        this.setData(data);
+                        this.setData(data, options);
 
-                        if (!options || !options.silent) {
-                            mediator.trigger('product:action:post_update', data);
-                        }
-                    }, this))
+                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
+                    }.bind(this))
                     .fail(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
-                                    'entity:action:validation_error',
+                                    'pim_enrich:form:entity:bad_request',
                                     {'sentData': product, 'response': response.responseJSON}
                                 );
                                 break;
                             case 500:
                                 /* global console */
                                 console.log('Errors:', response.responseJSON);
-                                mediator.trigger('entity:error:save', response.responseJSON);
+                                this.getRoot().trigger('pim_enrich:form:entity:error:save', response.responseJSON);
                                 break;
                             default:
                         }
@@ -114,7 +111,8 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }).always(function () {
+                    }.bind(this))
+                    .always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

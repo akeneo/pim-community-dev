@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,10 +11,13 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
@@ -23,7 +27,9 @@ class GroupSaverSpec extends ObjectBehavior
         ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
-        VersionContext $versionContext
+        VersionContext $versionContext,
+        EventDispatcherInterface $eventDispatcher,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -32,6 +38,8 @@ class GroupSaverSpec extends ObjectBehavior
             $templateApplier,
             $versionContext,
             $optionsResolver,
+            $eventDispatcher,
+            $localizedConverter,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }
@@ -44,6 +52,7 @@ class GroupSaverSpec extends ObjectBehavior
     function it_saves_a_group_and_flushes_by_default(
         $objectManager,
         $optionsResolver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type
     ) {
@@ -60,6 +69,9 @@ class GroupSaverSpec extends ObjectBehavior
         $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($group);
     }
 
@@ -67,6 +79,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $productSaver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $addedProduct
@@ -89,6 +102,9 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$addedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
 
@@ -96,6 +112,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $productSaver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $removedProduct
@@ -118,11 +135,15 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$removedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
 
     function it_handles_media_values_of_variant_group_product_templates(
         $templateMediaManager,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductTemplateInterface $template
@@ -134,6 +155,9 @@ class GroupSaverSpec extends ObjectBehavior
 
         $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group);
     }
 
@@ -141,6 +165,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $templateApplier,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $product,
@@ -170,6 +195,9 @@ class GroupSaverSpec extends ObjectBehavior
             ->apply($template, [$product])
             ->shouldBeCalled();
 
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group, ['copy_values_to_products' => true]);
     }
 
@@ -180,7 +208,7 @@ class GroupSaverSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                        'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )

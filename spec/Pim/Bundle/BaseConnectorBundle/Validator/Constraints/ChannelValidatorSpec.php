@@ -8,7 +8,8 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ChannelValidatorSpec extends ObjectBehavior
 {
@@ -44,11 +45,18 @@ class ChannelValidatorSpec extends ObjectBehavior
     function it_does_not_validate_a_non_existent_channel(
         $channelManager,
         Channel $constraint,
-        ExecutionContextInterface $context
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $channelManager->getChannelChoices()->willReturn(['mobile' => 'mobile']);
 
-        $context->addViolation(Argument::cetera())->shouldBeCalled();
+        $context->buildViolation(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->setParameter(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->initialize($context);
         $this->validate('Magento', $constraint);

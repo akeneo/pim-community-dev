@@ -319,9 +319,11 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                     selectedText: this.addButtonHint,
                     classes: 'filter-list select-filter-widget',
                     open: $.proxy(function () {
-                        this.selectWidget.onOpenDropdown();
-                        this._setDropdownWidth();
-                        this._updateDropdownPosition();
+                        if (this.$el.is(':visible')) {
+                            this.selectWidget.onOpenDropdown();
+                            this._setDropdownWidth();
+                            this._updateDropdownPosition();
+                        }
                     }, this)
                 }
             });

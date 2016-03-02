@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Association repository
@@ -89,6 +89,6 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

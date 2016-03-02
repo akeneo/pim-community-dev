@@ -2,12 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -28,7 +29,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                ProductEvents::POST_REMOVE      => 'removeAssociatedProduct',
+                StorageEvents::POST_REMOVE      => 'removeAssociatedProduct',
                 ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts'
             ]
         );
@@ -37,11 +38,11 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
     function it_removed_associated_product(
         $productRepository,
         $assocTypeRepository,
-        GenericEvent $event,
+        RemoveEvent $event,
         ProductInterface $product
     ) {
         $event->getSubject()->willReturn($product);
-        $product->getId()->willReturn(2);
+        $event->getSubjectId()->willReturn(2);
 
         $assocTypeRepository->countAll()->willReturn(5);
         $productRepository->removeAssociatedProduct(2, 5)->shouldBeCalled();
@@ -52,7 +53,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
     function it_removed_associated_products_on_many_products(
         $productRepository,
         $assocTypeRepository,
-        GenericEvent $event
+        RemoveEvent $event
     ) {
         $event->getSubject()->willReturn([1, 2, 3]);
         $assocTypeRepository->countAll()->willReturn(5);

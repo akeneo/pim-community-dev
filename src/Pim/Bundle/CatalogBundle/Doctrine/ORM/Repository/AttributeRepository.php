@@ -6,9 +6,11 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Repository for attribute entity
@@ -27,11 +29,9 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithTranslations()
+    public function findWithGroups(array $attributeIds = [], array $criterias = [])
     {
-        $qb = $this->createQueryBuilder('a')
-            ->addSelect('translation')
-            ->leftJoin('a.translations', 'translation');
+        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
 
         return $qb->getQuery()->execute();
     }
@@ -39,11 +39,16 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findWithGroups(array $attributeIds = array(), array $criterias = array())
+    public function findAllInDefaultGroup()
     {
-        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->innerJoin('a.group', 'g')
+            ->where('g.code != :default_code')
+            ->orderBy('a.code')
+            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
 
-        return $qb->getQuery()->execute();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -54,7 +59,7 @@ class AttributeRepository extends EntityRepository implements
      *
      * @return QueryBuilder
      */
-    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -136,21 +141,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllInDefaultGroup()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->innerJoin('a.group', 'g')
-            ->where('g.code != :default_code')
-            ->orderBy('a.code')
-            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueAttributeCodes()
     {
         $codes = $this
@@ -179,10 +169,10 @@ class AttributeRepository extends EntityRepository implements
             ->select('a.code')
             ->andWhere('a.attributeType IN (:file_type, :image_type)')
             ->setParameters(
-                array(
-                    ':file_type'  => 'pim_catalog_file',
-                    ':image_type' => 'pim_catalog_image',
-                )
+                [
+                    ':file_type'  => AttributeTypes::FILE,
+                    ':image_type' => AttributeTypes::IMAGE,
+                ]
             )
             ->getQuery()
             ->getArrayResult();
@@ -203,7 +193,10 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect'])
+                $qb->expr()->in(
+                    'a.attributeType',
+                    [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT]
+                )
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
             ->andWhere($qb->expr()->neq('a.localizable', 1));
@@ -231,7 +224,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array('pim_catalog_text', 'pim_catalog_identifier'))
+                $qb->expr()->in('a.attributeType', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
             );
 
         return $qb->getQuery()->getResult();
@@ -244,7 +237,7 @@ class AttributeRepository extends EntityRepository implements
     {
         $attributes = $this->getAvailableAttributesAsLabel();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -257,7 +250,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -265,7 +258,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 
     /**
@@ -279,7 +272,7 @@ class AttributeRepository extends EntityRepository implements
         if (!empty($ids)) {
             $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
         }
-        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $results = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
             $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
@@ -297,7 +290,7 @@ class AttributeRepository extends EntityRepository implements
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
-            $attributes = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            $attributes = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
             foreach ($attributes as $data) {
                 $results[$data['code']]['label']      = $data['label'];
                 $results[$data['code']]['group']      = $data['groupLabel'];
@@ -329,23 +322,10 @@ class AttributeRepository extends EntityRepository implements
             return [];
         }
 
+        $qb->andWhere('att.useableAsGridFilter = :useableInGrid');
+        $qb->setParameter('useableInGrid', 1);
+
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
-
-        return array_keys($result);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeIds($codes)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('att.id')
-            ->from($this->_entityName, 'att', 'att.id')
-            ->andWhere('att.code IN (:codes)');
-
-        $parameters = ['codes' => $codes];
-        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);
     }
@@ -384,7 +364,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifier()
     {
-        return $this->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+        return $this->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**
@@ -408,7 +388,7 @@ class AttributeRepository extends EntityRepository implements
 
         $qb
             ->andWhere($qb->expr()->neq('a.attributeType', '?1'))
-            ->setParameter(1, 'pim_catalog_identifier');
+            ->setParameter(1, AttributeTypes::IDENTIFIER);
 
         return $qb->getQuery()->getResult();
     }
@@ -433,5 +413,58 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $attributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeCodesByType($type)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.code')
+            ->where($qb->expr()->eq('a.attributeType', ':type'))
+            ->setParameter(':type', $type);
+
+        $result = $qb->getQuery()->getScalarResult();
+
+        if (null === $result) {
+            return [];
+        } else {
+            return array_map('current', $qb->getQuery()->getScalarResult());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeCodesByGroup(AttributeGroupInterface $group)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.code')
+            ->where($qb->expr()->eq('a.group', ':group'))
+            ->setParameter(':group', $group);
+
+        $result = $qb->getQuery()->getScalarResult();
+
+        if (null === $result) {
+            return [];
+        }
+
+        return array_map('current', $qb->getQuery()->getScalarResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
     }
 }

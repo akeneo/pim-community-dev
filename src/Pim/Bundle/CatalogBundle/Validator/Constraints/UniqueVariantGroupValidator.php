@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -28,13 +28,13 @@ class UniqueVariantGroupValidator extends ConstraintValidator
                 }
             }
             if (count($variantGroups) > 1) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->message,
-                    array(
+                    [
                         '%groups%'  => $this->formatValues($variantGroups, ConstraintValidator::OBJECT_TO_STRING),
                         '%product%' => $product->getIdentifier()
-                    )
-                );
+                    ]
+                )->addViolation();
             }
         }
     }

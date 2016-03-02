@@ -3,7 +3,7 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
@@ -17,18 +17,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommandContext extends RawMinkContext
+class CommandContext extends PimContext
 {
     /**
      * @Given /^I launched the completeness calculator$/
      */
     public function iLaunchedTheCompletenessCalculator()
     {
-        $this->getFixturesContext()->clearUOW();
-        $this
-            ->getContainer()
-            ->get('pim_catalog.manager.completeness')
-            ->generateMissing();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+
+        $commandLauncher = $this->getService('pim_catalog.command_launcher');
+        $commandLauncher->executeForeground('pim:completeness:calculate');
     }
 
     /**
@@ -82,7 +81,7 @@ class CommandContext extends RawMinkContext
                 [
                     'command'      => $updateCommand->getName(),
                     'identifier'   => $update['product'],
-                    'json_updates' => $update['actions'],
+                    'json_updates' => $this->sanitizeProductActions($update['actions']),
                     'username'     => $username
                 ]
             );
@@ -127,6 +126,24 @@ class CommandContext extends RawMinkContext
                 $diff
             );
         }
+    }
+
+    /**
+     * @param string $rawActions
+     *
+     * @return string
+     */
+    protected function sanitizeProductActions($rawActions)
+    {
+        $actions = json_decode($rawActions);
+
+        foreach ($actions as $key => $action) {
+            if (isset($action->data->filePath)) {
+                $action->data->filePath = self::replacePlaceholders($action->data->filePath);
+            }
+        }
+
+        return json_encode($actions);
     }
 
     /**
@@ -182,7 +199,7 @@ class CommandContext extends RawMinkContext
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

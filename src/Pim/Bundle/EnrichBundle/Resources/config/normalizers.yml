@@ -12,6 +12,8 @@ parameters:
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
+    pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
+    pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -22,7 +24,7 @@ services:
     pim_enrich.normalizer.attribute_option:
         class: %pim_enrich.normalizer.attribute_option.class%
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
             - '@pim_catalog.manager.attribute_option'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
@@ -38,7 +40,9 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.provider.structure_version.product'
+            - '@pim_enrich.provider.form.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -57,6 +61,7 @@ services:
         arguments:
             - '@oro_user.manager'
             - '@translator'
+            - '@pim_localization.presenter.datetime'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -88,8 +93,8 @@ services:
         class: %pim_enrich.normalizer.attribute.class%
         arguments:
             - '@pim_serializer'
-            - '@pim_enrich.provider.field.registry'
-            - '@pim_enrich.provider.empty_value.registry'
+            - '@pim_enrich.provider.field.chained'
+            - '@pim_enrich.provider.empty_value.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -104,5 +109,15 @@ services:
         class: %pim_enrich.normalizer.group.class%
         arguments:
             - '@pim_serializer.normalizer.group'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.file:
+        class: %pim_enrich.normalizer.file.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_violation:
+        class: %pim_enrich.normalizer.product_violation.class%
         tags:
             - { name: pim_internal_api_serializer.normalizer }

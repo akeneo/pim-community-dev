@@ -1,5 +1,0 @@
-Akeneo\Component\FileStorage\Model\File:
-    #TODO: add other properties
-    properties:
-        uploadedFile:
-            - File: ~

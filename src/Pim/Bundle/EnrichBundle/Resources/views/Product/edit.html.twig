@@ -29,19 +29,18 @@
                                         template: _.template($.trim($('#message-item-template').html()))
                                     });
                                     {% if app.session.flashbag.peekAll|length > 0 %}
-                                    $(function() {
-                                        {% for type, messages in app.session.flashbag.all %}
-                                        {% for message in messages %}
-                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
-                                        {% endfor %}
-                                        {% endfor %}
-                                    });
+                                        $(function() {
+                                            {% for type, messages in app.session.flashbag.all %}
+                                                {% for message in messages %}
+                                                    messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                                {% endfor %}
+                                            {% endfor %}
+                                        });
                                     {% endif %}
                                 });
                     </script>
                 {% endblock messages %}
             </div>
-
         </div>
         {% endblock before_content %}
         <div class="hash-loading-mask"></div>
@@ -54,30 +53,38 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
-                                        FormBuilder.build('pim/product-edit-form')
-                                            .done(function (form) {
-                                                ProductManager.get('{{ productId }}').done(function (product) {
-                                                    document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
-                                                    form.setData(product, {silent: true});
-                                                    form.setElement('#product-edit-form').render();
-                                                });
+                                        ProductManager.get('{{ productId }}')
+                                            .then(function (product) {
+                                                var sku      = _.escape(product.meta.label[UserContext.get('catalogLocale')]);
+                                                var newTitle = document.title.replace('%product.sku%', sku);
+
+                                                document.title  = newTitle;
+                                                var navigation  = Navigation.getInstance();
+                                                var navTitle    = navigation.getPinButtonsData('title');
+                                                navTitle.params = {'%product.sku%': sku};
+                                                navigation.setPinButtonsData('title', navTitle);
+                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+
+                                                FormBuilder.build(product.meta.form)
+                                                    .then(function (form) {
+                                                        form.setData(product);
+
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+
+                                                        form.setElement('#product-edit-form').render();
+                                                    });
                                             }).fail(function(response, textStatus, errorThrown) {
-                                                switch (response.status) {
-                                                    case 400:
-                                                    case 403:
-                                                        Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
-                                                        break;
-                                                }
+                                                var errorView = new Error(response.responseJSON.message, response.status);
+                                                errorView.setElement('#product-edit-form').render();
                                             });
                                     })
                                 });
                             });
                     </script>
-
                     {% placeholder content_after %}
                 {% endblock content %}
             {% endblock page_container %}

@@ -34,7 +34,7 @@ class FormExtensionProvider
     protected $defaults = [
         'module'        => null,
         'parent'        => null,
-        'targetZone'    => null,
+        'targetZone'    => 'self',
         'zones'         => [],
         'aclResourceId' => null
     ];

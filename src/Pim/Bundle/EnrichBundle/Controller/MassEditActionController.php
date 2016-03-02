@@ -3,26 +3,24 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Mass edit operation controller
@@ -31,8 +29,23 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditActionController extends AbstractDoctrineController
+class MassEditActionController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var ManagerRegistry */
+    protected $doctrine;
+
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
@@ -54,15 +67,17 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditFormResolver */
     protected $massEditFormResolver;
 
+    /** @var array */
+    protected $gridNameRouteMapping;
+
+    /** @var OperationRegistryInterface */
+    protected $operationRegistry;
+
     /**
      * @param Request                    $request
      * @param EngineInterface            $templating
      * @param RouterInterface            $router
-     * @param SecurityContextInterface   $securityContext
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param EventDispatcherInterface   $eventDispatcher
+     * @param TokenStorageInterface      $tokenStorage
      * @param ManagerRegistry            $doctrine
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
@@ -71,16 +86,13 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver
+     * @param array                      $gridNameRouteMapping
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
+        TokenStorageInterface $tokenStorage,
         ManagerRegistry $doctrine,
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
@@ -88,20 +100,17 @@ class MassEditActionController extends AbstractDoctrineController
         JobRepositoryInterface $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
-        MassEditFormResolver $massEditFormResolver
+        MassEditFormResolver $massEditFormResolver,
+        array $gridNameRouteMapping = [
+            'family-grid' => 'pim_enrich_family_index',
+            'default'     => 'pim_enrich_product_index'
+        ]
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
+        $this->request              = $request;
+        $this->templating           = $templating;
+        $this->router               = $router;
+        $this->tokenStorage         = $tokenStorage;
+        $this->doctrine             = $doctrine;
         $this->parametersParser     = $parametersParser;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->simpleJobLauncher    = $simpleJobLauncher;
@@ -109,6 +118,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->connectorRegistry    = $connectorRegistry;
         $this->operationRegistry    = $operationRegistry;
         $this->massEditFormResolver = $massEditFormResolver;
+        $this->gridNameRouteMapping = $gridNameRouteMapping;
     }
 
     /**
@@ -130,9 +140,11 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                return $this->redirectToRoute(
-                    'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
+                return new RedirectResponse(
+                    $this->router->generate(
+                        'pim_enrich_mass_edit_action_configure',
+                        $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
+                    )
                 );
             }
         }
@@ -169,7 +181,7 @@ class MassEditActionController extends AbstractDoctrineController
             $operation = $form->getNormData();
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
                 'form'           => $form->createView(),
@@ -208,7 +220,8 @@ class MassEditActionController extends AbstractDoctrineController
             $operation->setFilters($pimFilters);
 
             $jobCode = $operation->getBatchJobCode();
-            $jobInstance = $this->getRepository('AkeneoBatchBundle:JobInstance')->findOneBy(['code' => $jobCode]);
+            $jobInstance = $this->doctrine->getRepository('Akeneo\Component\Batch\Model\JobInstance')
+                ->findOneBy(['code' => $jobCode]);
 
             if (null === $jobInstance) {
                 throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
@@ -217,25 +230,29 @@ class MassEditActionController extends AbstractDoctrineController
             $operation->finalize();
 
             $rawConfiguration = $operation->getBatchConfig();
-            $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+            $this->simpleJobLauncher->launch(
+                $jobInstance,
+                $this->tokenStorage->getToken()->getUser(),
+                $rawConfiguration
+            );
         }
 
         if ($form->isValid()) {
-            $this->addFlash(
-                'success',
-                sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
+            $this->request->getSession()
+                ->getFlashBag()
+                ->add(
+                    'success',
+                    new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
+                );
+
+            $route = $this->getRouteFromMapping($gridName);
+
+            return new RedirectResponse(
+                $this->router->generate($route, ['dataLocale' => $this->getQueryParams()['dataLocale']])
             );
-
-            $route = 'pim_enrich_product_index';
-
-            if ('family-grid' === $gridName) {
-                $route = 'pim_enrich_family_index';
-            }
-
-            return $this->redirectToRoute($route);
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
                 'form'           => $form->createView(),
@@ -254,16 +271,12 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getItemName($gridName)
     {
-        switch ($gridName) {
-            case 'product-grid':
-                $itemsName = 'product';
-                break;
-            case 'family-grid':
-                $itemsName = 'family';
-                break;
-            default:
-                $itemsName = 'item';
-                break;
+        $gridPattern = '-grid';
+        if (false === strpos($gridName, $gridPattern)) {
+            $itemsName = 'item';
+        } else {
+            $itemsName = str_replace($gridPattern, '', $gridName);
+            $itemsName = str_replace('-', '_', $itemsName);
         }
 
         return $itemsName;
@@ -286,5 +299,21 @@ class MassEditActionController extends AbstractDoctrineController
         $params['objectsCount'] = $this->request->get('objectsCount');
 
         return $params;
+    }
+
+    /**
+     * Return the route to follow after a performed action
+     *
+     * @param string $gridName
+     *
+     * @return string
+     */
+    protected function getRouteFromMapping($gridName)
+    {
+        if (isset($this->gridNameRouteMapping[$gridName])) {
+            return $this->gridNameRouteMapping[$gridName];
+        }
+
+        return $this->gridNameRouteMapping['default'];
     }
 }

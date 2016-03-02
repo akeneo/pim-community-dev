@@ -1,100 +1,72 @@
-/* global tinymce */
+'use strict';
+
+/**
+ * This class is used to manage wysiwyg
+ *
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define(
-    ['jquery', 'underscore', 'backbone', 'tinymce'],
+    ['jquery', 'underscore', 'backbone', 'summernote'],
     function ($, _, Backbone) {
-        'use strict';
-
+        /**
+         * Wysiwyg editor default configuration
+         */
         var config = {
-            plugins:   'link preview code paste',
-            statusbar: true,
-            menubar:   false,
-            toolbar:   'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
-            readonly:  false,
-            setup:     function (ed) {
-                var $el = $('#' + ed.id);
-                $el.data('value', $el.val());
-                ed.on('change', function () {
-                    $el.data('dirty', true);
-                    $el.trigger('change');
-                });
-                ed.on('saveContent', function (e) {
-                    if (true !== $el.data('dirty')) {
-                        e.content = $el.data('value');
-                    }
-                });
-            }
-        };
-        var destroyEditor = function (id) {
-            var instance = tinymce.get(id);
-            if (instance) {
-                tinymce.execCommand('mceRemoveControl', true, id);
-                tinymce.remove(instance);
-
-                var $textarea = $('#' + id);
-                $textarea.show();
-            }
-        };
-
-        var isAlreadyRendered = function (id) {
-            for (var i = tinymce.editors.length - 1; i >= 0; i--) {
-                if (tinymce.editors[i].id === id) {
-                    return true;
-                }
-            }
-
-            return false;
+            disableResizeEditor: true,
+            height: 200,
+            iconPrefix: 'icon-',
+            toolbar: [
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol']],
+                ['insert', ['link']],
+                ['view', ['codeview']]
+            ]
         };
 
         Backbone.Router.prototype.on('route', function () {
-            for (var i = tinymce.editors.length - 1; i >= 0; i--) {
-                destroyEditor(tinymce.editors[i].id);
-            }
+            $('textarea.wysiwyg').each(function () {
+                $(this).destroy();
+            });
         });
 
         return {
+            /**
+             * Wysiwyg editor settings
+             */
             settings: [],
+
+            /**
+             * Initialise the wysiwyg
+             *
+             * @param {jquery} $el
+             * @param {Array}  options
+             *
+             * @returns {Object}
+             */
             init: function ($el, options) {
-
-                var id = $el.attr('id');
-
-                this.settings[id] = _.extend(
+                this.settings = _.extend(
                     _.clone(config),
-                    { selector: '#' + id, readonly: $el.is('[disabled]') },
                     options
                 );
 
-                // Avoid to bind several times the 'onClick' action, or tinymce will be instantiated
-                // X times on the same element.
-                if (!$el.data('bind-wysiwyg')) {
-
-                    $el.on('click', _.bind(function () {
-                        if (!isAlreadyRendered(id)) {
-                            tinymce.init(this);
-                            setTimeout(_.bind(function () {
-                                tinymce.execCommand('mceFocus', true, this);
-                            }, this), 200);
-                        }
-                    }, this.settings[id]));
-
-                    // Mark this textarea as already bind
-                    $el.data('bind-wysiwyg', true);
-                }
+                $el.summernote(this.settings);
 
                 return this;
             },
-            destroy: function ($el) {
-                destroyEditor($el.attr('id'));
 
-                return this;
-            },
-            reinit: function ($el) {
-                var id = $el.attr('id');
-                this.settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
+            /**
+             * Put the wysiwyg in readonly mode for the given element
+             *
+             * @param {jquery} $el
+             *
+             * @returns {Object}
+             */
+            readonly: function ($el) {
+                var editable = $el.parent().find('.note-editable');
 
-                return this.destroy($el).init($el, this.settings);
-            },
-            readonly: function ($el, state) {
-                this.destroy($el).init($el, { readonly: state });
+                editable.attr('contenteditable', false);
 
                 return this;
             }

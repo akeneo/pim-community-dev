@@ -4,10 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -42,6 +43,7 @@ class IndexCreator
      * @param NamingUtility   $namingUtility
      * @param string          $productClass
      * @param LoggerInterface $logger
+     * @param string          $attributeClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
@@ -70,11 +72,11 @@ class IndexCreator
 
         switch ($attribute->getBackendType()) {
             case "prices":
-                $attributeFields = $this->addFieldsFromPrices($attributeFields, $attribute);
+                $attributeFields = $this->addFieldsFromPrices($attributeFields);
                 break;
             case "option":
             case "options":
-                $attributeFields = $this->addFieldsFromOption($attributeFields, $attribute);
+                $attributeFields = $this->addFieldsFromOption($attributeFields);
                 break;
         }
         $this->ensureIndexes($attributeFields);
@@ -91,8 +93,6 @@ class IndexCreator
      */
     public function ensureIndexesFromChannel(ChannelInterface $channel)
     {
-        $this->channel = null;
-
         $completenessFields = $this->getCompletenessNormFields($channel);
         $this->ensureIndexes($completenessFields);
 
@@ -103,7 +103,7 @@ class IndexCreator
     }
 
     /**
-     * Ensure indexes from potentialy newly activated locale
+     * Ensure indexes from potentially newly activated locale
      *
      * Indexes will be created on the normalizedData part for:
      * - completenesses

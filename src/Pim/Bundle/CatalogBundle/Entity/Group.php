@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,8 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Assert\GroupSequenceProvider
- *
- * @ExclusionPolicy("all")
  */
 class Group implements GroupInterface
 {
@@ -153,7 +150,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(AbstractTranslation $translation)
+    public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -165,7 +162,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(AbstractTranslation $translation)
+    public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
 
@@ -312,7 +309,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAxisAttributes(array $newAttributes = array())
+    public function setAxisAttributes(array $newAttributes = [])
     {
         foreach ($this->attributes as $attribute) {
             if (!in_array($attribute, $newAttributes)) {
@@ -329,7 +326,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributes(array $attributes = array())
+    public function setAttributes(array $attributes = [])
     {
         return $this->setAxisAttributes($attributes);
     }
@@ -341,7 +338,7 @@ class Group implements GroupInterface
      */
     public function getGroupSequence()
     {
-        return array('Default', strtolower($this->getType()->getCode()));
+        return ['Group', strtolower($this->getType()->getCode())];
     }
 
     /**

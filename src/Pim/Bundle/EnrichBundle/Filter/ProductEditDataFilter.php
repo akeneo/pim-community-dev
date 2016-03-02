@@ -3,13 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Filter;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product edit data filter
@@ -23,37 +18,28 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
+    /** @var CollectionFilterInterface */
+    protected $productValuesFilter;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var AttributeInterface[] */
-    protected $attributes = [];
-
-    /** @var LocaleInterface[] */
-    protected $locales = [];
+    /** @var array */
+    protected $acls = [
+        'family'       => 'pim_enrich_product_change_family',
+        'groups'       => 'pim_enrich_product_add_to_groups',
+        'categories'   => 'pim_enrich_product_categories_view',
+        'enabled'      => 'pim_enrich_product_change_state',
+        'associations' => 'pim_enrich_associations_view'
+    ];
 
     /**
-     * @param SecurityFacade               $securityFacade
-     * @param ObjectFilterInterface        $objectFilter
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param LocaleRepositoryInterface    $localeRepository
+     * @param SecurityFacade            $securityFacade
+     * @param CollectionFilterInterface $productValuesFilter
      */
     public function __construct(
         SecurityFacade $securityFacade,
-        ObjectFilterInterface $objectFilter,
-        AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository
+        CollectionFilterInterface $productValuesFilter
     ) {
         $this->securityFacade      = $securityFacade;
-        $this->objectFilter        = $objectFilter;
-        $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
+        $this->productValuesFilter = $productValuesFilter;
     }
 
     /**
@@ -64,15 +50,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     public function filterCollection($collection, $type, array $options = [])
     {
         $newProductData = [];
+        $product = $options['product'];
 
         foreach ($collection as $type => $data) {
-            if ('values' === $type) {
-                $newProductData['values'] = $this->filterValuesData($data);
-            } else {
-                $acl = $this->getAclForType($type);
-                if (null === $acl || $this->securityFacade->isGranted($acl)) {
-                    $newProductData[$type] = $data;
-                }
+            if ($this->isAllowed($product, $type)) {
+                $newProductData[$type] = $this->filterData($type, $data);
             }
         }
 
@@ -88,35 +70,143 @@ class ProductEditDataFilter implements CollectionFilterInterface
     }
 
     /**
-     * @param array $valuesData
+     * Filter & return the given $data for the given $type
      *
-     * @return array
+     * @param string $type
+     * @param mixed  $data
+     *
+     * @return mixed
      */
-    protected function filterValuesData($valuesData)
+    protected function filterData($type, $data)
     {
-        $newValuesData = [];
-
-        foreach ($valuesData as $attributeCode => $contextValues) {
-            $attribute = $this->getAttribute($attributeCode);
-            if (!$this->objectFilter->filterObject($attribute, 'pim.internal_api.attribute.edit')) {
-                $newContextValues = [];
-
-                foreach ($contextValues as $contextValue) {
-                    if (null === $contextValue['locale'] ||
-                        !$this->objectFilter->filterObject(
-                            $this->getLocale($contextValue['locale']),
-                            'pim.internal_api.locale.edit'
-                        )
-                    ) {
-                        $newContextValues[] = $contextValue;
-                    }
-                }
-
-                $newValuesData[$attributeCode] = $newContextValues;
-            }
+        if ('values' === $type) {
+            $data = $this->productValuesFilter->filterCollection($data, 'pim.internal_api.product_values_data.edit');
         }
 
-        return array_filter($newValuesData);
+        return $data;
+    }
+
+    /**
+     * Return whether the current user is allowed to update the given modification $type
+     * on the given $product
+     *
+     * @param ProductInterface $product
+     * @param string           $type
+     *
+     * @return bool
+     */
+    protected function isAllowed(ProductInterface $product, $type)
+    {
+        $isAllowed = true;
+
+        switch ($type) {
+            case 'family':
+                $isAllowed = $this->isAllowedToUpdateFamily($product);
+                break;
+            case 'groups':
+                $isAllowed = $this->isAllowedToUpdateGroups($product);
+                break;
+            case 'categories':
+                $isAllowed = $this->isAllowedToClassify($product);
+                break;
+            case 'enabled':
+                $isAllowed = $this->isAllowedToUpdateStatus($product);
+                break;
+            case 'associations':
+                $isAllowed = $this->isAllowedToUpdateAssociations($product);
+                break;
+            case 'values':
+                $isAllowed = $this->isAllowedToUpdateValues($product);
+                break;
+        }
+
+        return $isAllowed;
+    }
+
+    /**
+     * Return whether the current user is allowed to update family of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateFamily(ProductInterface $product)
+    {
+        return $this->checkAclForType('family');
+    }
+
+    /**
+     * Return whether the current user is allowed to update groups of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateGroups(ProductInterface $product)
+    {
+        return $this->checkAclForType('groups');
+    }
+
+    /**
+     * Return whether the current user is allowed to update categories of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToClassify(ProductInterface $product)
+    {
+        return $this->checkAclForType('categories');
+    }
+
+    /**
+     * Return whether the current user is allowed to update status of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateStatus(ProductInterface $product)
+    {
+        return $this->checkAclForType('enabled');
+    }
+
+    /**
+     * Return whether the current user is allowed to update associations of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateAssociations(ProductInterface $product)
+    {
+        return $this->checkAclForType('associations');
+    }
+
+    /**
+     * Return whether the current user is allowed to update product values of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateValues(ProductInterface $product)
+    {
+        return $this->checkAclForType('values');
+    }
+
+    /**
+     * Return whether the current user has ACL to do the given modification $type on the product
+     *
+     * @param $type
+     *
+     * @return bool
+     */
+    protected function checkAclForType($type)
+    {
+        $acl = $this->getAclForType($type);
+
+        return null === $acl || $this->securityFacade->isGranted($acl);
     }
 
     /**
@@ -128,72 +218,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
      */
     protected function getAclForType($type)
     {
-        switch ($type) {
-            case 'family':
-                $acl = 'pim_enrich_product_change_family';
-                break;
-            case 'groups':
-                $acl = 'pim_enrich_product_add_to_groups';
-                break;
-            case 'categories':
-                $acl = 'pim_enrich_product_categories_view';
-                break;
-            case 'enabled':
-                $acl = 'pim_enrich_product_change_state';
-                break;
-            case 'associations':
-                $acl = 'pim_enrich_associations_view';
-                break;
-            default:
-                $acl = null;
-        }
-
-        return $acl;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @throws ObjectNotFoundException
-     *
-     * @return AttributeInterface
-     */
-    protected function getAttribute($code)
-    {
-        if (!array_key_exists($code, $this->attributes)) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (!$attribute) {
-                throw new ObjectNotFoundException(sprintf('Attribute with code "%s" was not found.', $code));
-            }
-
-            $this->attributes[$code] = $attribute;
-        }
-
-        return $this->attributes[$code];
-    }
-
-    /**
-     * @param string $code
-     * @param bool   $activeOnly
-     *
-     * @throws ObjectNotFoundException
-     *
-     * @return LocaleInterface
-     */
-    protected function getLocale($code, $activeOnly = true)
-    {
-        if (!array_key_exists($code, $this->locales)) {
-            $locale = $this->localeRepository->findOneByIdentifier($code);
-            if (!$locale) {
-                throw new ObjectNotFoundException(sprintf('Locale with code "%s" was not found.', $code));
-            }
-            if ($activeOnly && !$locale->isActivated()) {
-                throw new ObjectNotFoundException(sprintf('Active locale with code "%s" was not found.', $code));
-            }
-
-            $this->locales[$code] = $locale;
-        }
-
-        return $this->locales[$code];
+        return isset($this->acls[$type]) ? $this->acls[$type] : null;
     }
 }

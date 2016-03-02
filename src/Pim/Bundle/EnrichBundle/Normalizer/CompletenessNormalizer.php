@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\CompletenessInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +20,7 @@ class CompletenessNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($completeness, $format = null, array $context = array())
+    public function normalize($completeness, $format = null, array $context = [])
     {
         return [
             'required' => $completeness->getRequiredCount(),

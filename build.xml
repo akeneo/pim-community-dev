@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pim" default="build">
-    <property name="symfony.upload.dir" value="product" />
+<project name="pim" default="build"
+>
+    <property name="symfony.catalog.storage.dir" value="catalog" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
@@ -14,7 +15,7 @@
 
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
 
     <target name="prepare-deprecated-behat" description="Build deprecated behats">
         <!--
@@ -77,7 +78,7 @@
                 <include name="parameters*.yml" />
             </fileset>
         </replaceregexp>
-        <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+        <replaceregexp match="catalog_storage_dir:.*$" replace="catalog_storage_dir: %kernel.root_dir%/file_storage/%catalog.storage.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters.yml" />
             </fileset>
@@ -87,7 +88,7 @@
                 <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
-        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
+        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" overwrite="true"/>
         <replaceregexp match="pim-behat" replace="${behat.base_url}" byline="true">
             <fileset dir="${basedir}">
                 <include name="behat.yml" />
@@ -96,6 +97,17 @@
         <replaceregexp match="tags: .*$" replace="tags: ${behat.tags}" byline="true">
             <fileset dir="${basedir}">
                 <include name="behat.yml" />
+            </fileset>
+        </replaceregexp>
+        <condition property="hasBuildTags">
+            <and>
+                <isset property="buildTags" />
+                <length string="${buildTags}" trim="true" when="greater" length="0"/>
+            </and>
+        </condition>
+        <replaceregexp match="tags: (.*)$" replace="tags: \1&amp;&amp;${buildTags}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" if="hasBuildTags" />
             </fileset>
         </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
@@ -248,7 +260,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
 
         <exec executable="php">
@@ -304,16 +316,24 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="-c" />
             <arg value="${behat.concurrency}" />
+            <arg value="-x" />
             <arg value="${behat.xdebug}" />
+            <arg value="-d" />
             <arg value="${symfony.database.name}_" />
+            <arg value="-p" />
             <arg value="${behat.profile.prefix}-" />
-            <arg value="${basedir}/bin/behat ${behat.options}" />
+            <arg value="-f"/>
+            <arg value="${behat.features} "/>
+            <arg value="-b"/>
+            <arg value="${basedir}/bin/behat ${behat.options}"/>
             <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
+            <env key="BEHAT_CONTEXT" value="JENKINS" />
         </exec>
     </target>
 
@@ -340,13 +360,7 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
-            <arg value="v3.0.0-BETA6@dev" />
-        </exec>
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="require" />
-            <arg value="--no-update" />
-            <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta12@dev" />
+            <arg value="v3.0.1" />
         </exec>
     </target>
 
@@ -361,7 +375,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -406,27 +420,25 @@
     <target name="setupdb" description="Setup db">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
     <target name="setupdb-test" description="Setup db for test env">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--env=test" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -439,7 +451,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -451,7 +463,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 

@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -80,12 +80,12 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             return $data;
         }
 
-        $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS] = $this->getGroups($product);
+        $data[self::FIELD_FAMILY]        = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS]        = $this->getGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
-        $data[self::FIELD_ENABLED] = $product->isEnabled();
-        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
+        $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes();
+        $data[self::FIELD_ENABLED]       = $product->isEnabled();
+        $data[self::FIELD_VALUES]        = $this->normalizeValues($product->getValues(), $format, $context);
 
         if (false === $context['exclude_associations']) {
             $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
@@ -163,7 +163,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $groups = [];
 
         if ($product->getGroupCodes()) {
-            $groups = explode(',', $product->getGroupCodes());
+            $groups = $product->getGroupCodes();
             if ($product->getVariantGroup()) {
                 $variantGroup = $product->getVariantGroup()->getCode();
                 $groups = array_diff($groups, [$variantGroup]);

@@ -12,6 +12,8 @@ use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class NestedTranslationGuesser implements GuesserInterface
 {
@@ -40,7 +42,7 @@ class NestedTranslationGuesser implements GuesserInterface
             return null;
         }
 
-        return array($this->transformer, array('propertyPath' => $mapping[$columnInfo->getName()]));
+        return [$this->transformer, ['propertyPath' => $mapping[$columnInfo->getName()]]];
     }
 
     /**
@@ -53,8 +55,8 @@ class NestedTranslationGuesser implements GuesserInterface
      */
     protected function getMapping()
     {
-        return array(
+        return [
             'labels' => 'label'
-        );
+        ];
     }
 }

@@ -14,14 +14,14 @@ jobs:
             circularRefsChecked: true
             uploadAllowed: true
 
-    fixtures_attribute_group_yml:
+    fixtures_attribute_group_csv:
         order: 30
         connector: Data fixtures
-        alias:     fixtures_attribute_group_yml
+        alias:     fixtures_attribute_group_csv
         label:     Attribute groups data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_groups.yml
+            filePath: attribute_groups.csv
             multiple: false
 
     fixtures_group_type_yml:
@@ -34,14 +34,14 @@ jobs:
             filePath: group_types.yml
             multiple: false
 
-    fixtures_channel_yml:
+    fixtures_channel_csv:
         order: 40
         connector: Data fixtures
-        alias:     fixtures_channel_yml
+        alias:     fixtures_channel_csv
         label:     Channels data fixtures
         type:      fixtures
         configuration:
-            filePath: channels.yml
+            filePath: channels.csv
             multiple: false
 
     fixtures_association_type_csv:
@@ -93,6 +93,7 @@ jobs:
         configuration:
             filePath: variant_groups.csv
             multiple: false
+            decimalSeparator: .
 
     fixtures_group_csv:
         order: 70
@@ -123,7 +124,9 @@ jobs:
             mediaAttributes:
                 - 'pdf_description'
                 - 'picture'
-            enabledComparison: false
+            enabledComparison: true
+            decimalSeparator: .
+            dateFormat: Y-m-d
 
     fixtures_job_yml:
         order: 100

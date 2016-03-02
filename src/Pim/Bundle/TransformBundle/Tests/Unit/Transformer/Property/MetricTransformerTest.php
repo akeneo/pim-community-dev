@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
+use Pim\Component\Catalog\Model\Metric;
 
 /**
  * Tests related class
@@ -17,13 +17,13 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function getSetValueData()
     {
-        return array(
-            'only_data'     => array(null, '54.25', false, '54.25', null),
-            'create'        => array(null, '54.25', true, '54.25', null),
-            'data_and_unit' => array(null, '54.25 KG', false, '54.25', 'KG'),
-            'only_unit'     => array('unit', 'KG', false, null, 'KG'),
-            'null'          => array(null, null, false, null, null)
-        );
+        return [
+            'only_data'     => [null, '54.25', false, '54.25', null],
+            'create'        => [null, '54.25', true, '54.25', null],
+            'data_and_unit' => [null, '54.25 KG', false, '54.25', 'KG'],
+            'only_unit'     => ['unit', 'KG', false, null, 'KG'],
+            'null'          => [null, null, false, null, null]
+        ];
     }
 
     /**
@@ -34,10 +34,10 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array($columnSuffix)));
+            ->will($this->returnValue([$columnSuffix]));
 
-        $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\AbstractAttribute')
-            ->setMethods(array('getMetricFamily'))
+        $attribute = $this->getMockBuilder('Pim\Component\Catalog\Model\AbstractAttribute')
+            ->setMethods(['getMetricFamily'])
             ->getMock();
         $columnInfo->expects($this->any())
             ->method('getAttribute')
@@ -46,7 +46,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getMetricFamily')
             ->will($this->returnValue('metric_family'));
 
-        $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+        $object = $this->getMockBuilder('Pim\Component\Catalog\Model\ProductValueInterface')
             ->setMethods(
                 [
                     'setText',
@@ -125,10 +125,10 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $metricFactory = new MetricFactory('Pim\Bundle\CatalogBundle\Model\Metric');
+        $metricFactory = new MetricFactory('Pim\Component\Catalog\Model\Metric');
         $transformer = new MetricTransformer($metricFactory);
         $transformer->setValue($object, $columnInfo, $data);
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Metric', $metric);
+        $this->assertInstanceOf('Pim\Component\Catalog\Model\Metric', $metric);
         $this->assertEquals('metric_family', $metric->getFamily());
         $this->assertEquals($expectedData, $metric->getData());
         $this->assertEquals($expectedUnit, $metric->getUnit());

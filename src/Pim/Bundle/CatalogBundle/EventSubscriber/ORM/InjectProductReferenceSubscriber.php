@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Inject Product references into entities that needs them.
@@ -44,9 +44,9 @@ class InjectProductReferenceSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'postLoad'
-        );
+        ];
     }
 
     /**
@@ -62,10 +62,10 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         if ($entity instanceof GroupInterface) {
             $this->setProductPersistentCollection(
                 $entity,
-                array(
+                [
                     'mappedBy' => 'groups',
                     'fetch'    => ClassMetadata::FETCH_LAZY
-                ),
+                ],
                 $entityManager
             );
         }
@@ -73,10 +73,10 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         if ($entity instanceof CategoryInterface) {
             $this->setProductPersistentCollection(
                 $entity,
-                array(
+                [
                     'mappedBy' => 'categories',
                     'fetch'    => ClassMetadata::FETCH_EXTRA_LAZY
-                ),
+                ],
                 $entityManager
             );
         }

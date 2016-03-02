@@ -3,11 +3,9 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Updates a product
@@ -16,30 +14,30 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
+class ProductUpdater implements ObjectUpdaterInterface
 {
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var PropertyCopierInterface */
-    protected $propertyCopier;
-
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
-
+    
+    /** @var array */
+    protected $supportedFields = [];
+    
     /**
      * @param PropertySetterInterface         $propertySetter
-     * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param array                           $supportedFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        PropertyCopierInterface $propertyCopier,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        array $supportedFields
     ) {
         $this->propertySetter = $propertySetter;
-        $this->propertyCopier = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
+        $this->supportedFields = $supportedFields;
     }
 
     /**
@@ -108,61 +106,20 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" provided.',
                     ClassUtils::getClass($product)
                 )
             );
         }
 
         foreach ($data as $field => $values) {
-            if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
+            if (in_array($field, $this->supportedFields)) {
                 $this->updateProductFields($product, $field, $values);
             } else {
                 $this->updateProductValues($product, $field, $values);
             }
         }
         $this->updateProductVariantValues($product, $data);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::setData(
-     */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->propertySetter->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::copyData(
-     */
-    public function copyValue(
-        array $products,
-        $fromField,
-        $toField,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
-    ) {
-        $options = [
-            'from_locale' => $fromLocale,
-            'to_locale'   => $toLocale,
-            'from_scope'  => $fromScope,
-            'to_scope'    => $toScope,
-        ];
-        foreach ($products as $product) {
-            $this->propertyCopier->copyData($product, $product, $fromField, $toField, $options);
-        }
 
         return $this;
     }

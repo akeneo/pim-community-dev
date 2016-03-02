@@ -1,8 +1,4 @@
-parameters:
-    pim_import_export.factory.job_instance.class: Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory
-
 services:
+    # deprecated: will be removed in 1.5
     pim_import_export.factory.job_instance:
-        class: %pim_import_export.factory.job_instance.class%
-        arguments:
-            - %akeneo_batch.entity.job_instance.class%
+        alias: akeneo_batch.job_instance_factory

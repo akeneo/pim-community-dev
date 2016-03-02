@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MetricTypeSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Model\Metric'
+            'Pim\Component\Catalog\Model\Metric'
         );
     }
 
@@ -24,13 +24,13 @@ class MetricTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_metric');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
+                'data_class' => 'Pim\Component\Catalog\Model\Metric',
                 'units'        => [],
                 'default_unit' => null,
                 'family'       => null

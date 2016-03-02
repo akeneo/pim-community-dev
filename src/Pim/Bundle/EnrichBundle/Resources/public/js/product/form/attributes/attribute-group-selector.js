@@ -9,69 +9,76 @@
  */
 define(
     [
-        'jquery',
-        'backbone',
         'underscore',
-        'pim/form',
-        'oro/mediator',
+        'pim/form/common/group-selector',
         'pim/attribute-group-manager',
         'text!pim/template/product/tab/attribute/attribute-group-selector',
         'pim/user-context',
         'pim/i18n'
     ],
-    function ($, Backbone, _, BaseForm, mediator, AttributeGroupManager, template, UserContext, i18n) {
-        return BaseForm.extend({
-            tagName: 'ul',
-            className: 'nav nav-tabs attribute-group-selector',
+    function (_, GroupSelectorForm, AttributeGroupManager, template, UserContext, i18n) {
+        return GroupSelectorForm.extend({
             template: _.template(template),
-            state: null,
-            badges: {},
-            events: {
-                'click li': 'change'
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
+
+                return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
-            initialize: function () {
-                this.state = new Backbone.Model({});
-                this.listenTo(this.state, 'change', this.render);
-                this.badges = {};
 
-                this.stopListening(mediator, 'entity:action:validation_error');
-                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
-
-                this.stopListening(mediator, 'product:action:post_update');
-                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+            /**
+             * Triggered on validation error
+             *
+             * @param {Event} event
+             */
             onValidationError: function (event) {
                 this.removeBadges();
 
                 var product = event.sentData;
-                var valuesErrors = event.response.values;
+                var valuesErrors = _.uniq(event.response.values, function (error) {
+                    return JSON.stringify(error);
+                });
+
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
-                        .then(_.bind(function (attributeGroups) {
-                            _.each(valuesErrors, _.bind(function (fieldError, attributeCode) {
+                        .then(function (attributeGroups) {
+                            _.each(valuesErrors, function (error) {
                                 var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                                     attributeGroups,
-                                    attributeCode
+                                    error.attribute
                                 );
                                 this.addToBadge(attributeGroup, 'invalid');
-                            }, this));
+                            }.bind(this));
 
-                            if (0 < valuesErrors.length) {
-                                mediator.trigger('show_attribute', {attribute: _.keys(valuesErrors)[0]});
+                            if (!_.isEmpty(valuesErrors)) {
+                                this.getRoot().trigger(
+                                    'pim_enrich:form:show_attribute',
+                                    _.first(valuesErrors)
+                                );
                             }
-                        }, this));
+                        }.bind(this));
                 }
             },
-            onPostUpdate: function () {
+
+            /**
+             * Triggered on post fetch
+             */
+            onPostFetch: function () {
                 this.removeBadges();
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.empty();
                 this.$el.html(this.template({
-                    current: this.state.get('current'),
-                    attributeGroups: this.state.get('attributeGroups'),
+                    current: this.getCurrent(),
+                    elements: this.getElements(),
                     badges: this.badges,
                     locale: UserContext.get('catalogLocale'),
                     i18n: i18n
@@ -80,68 +87,6 @@ define(
                 this.delegateEvents();
 
                 return this;
-            },
-            updateAttributeGroups: function (product) {
-                return AttributeGroupManager.getAttributeGroupsForProduct(product)
-                    .then(_.bind(function (attributeGroups) {
-                        this.state.set('attributeGroups', attributeGroups);
-
-                        if (undefined === this.state.get('current') || !attributeGroups[this.state.get('current')]) {
-                            this.state.set('current', _.first(_.keys(attributeGroups)));
-                        }
-
-                        return this.state.get('attributeGroups');
-                    }, this));
-            },
-            change: function (event) {
-                if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
-                    this.state.set('current', event.currentTarget.dataset.attributeGroup);
-                    this.trigger('attribute-group:change');
-                }
-            },
-            getCurrent: function () {
-                return this.state.get('current');
-            },
-            getCurrentAttributeGroup: function () {
-                if (!this.state.get('attributeGroups')[this.state.get('current')]) {
-                    this.state.set('current', _.first(_.keys(this.state.get('attributeGroups'))));
-                }
-
-                return this.state.get('attributeGroups')[this.state.get('current')];
-            },
-            setCurrent: function (current) {
-                this.state.set('current', current);
-            },
-            getAttributeGroups: function () {
-                return this.state.get('attributeGroups');
-            },
-            addToBadge: function (attributeGroup, code) {
-                if (!this.badges[attributeGroup]) {
-                    this.badges[attributeGroup] = {};
-                }
-                if (!this.badges[attributeGroup][code]) {
-                    this.badges[attributeGroup][code] = 0;
-                }
-
-                this.badges[attributeGroup][code]++;
-
-                this.render();
-            },
-            removeBadge: function (attributeGroup, code) {
-                delete this.badges[attributeGroup][code];
-
-                this.render();
-            },
-            removeBadges: function (code) {
-                if (!code) {
-                    this.badges = {};
-                } else {
-                    _.each(this.badges, _.bind(function (badge) {
-                        delete badge[code];
-                    }, this));
-                }
-
-                this.render();
             }
         });
     }

@@ -83,8 +83,9 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     protected function checkRawConfiguration(array $rawConfiguration)
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['class', 'type']);
-        $resolver->setAllowedTypes(['class' => 'string', 'type' => 'string' ]);
+        $resolver->setRequired(['class', 'type'])
+            ->setAllowedTypes('class', 'string')
+            ->setAllowedTypes('type', 'string');
 
         $resolver->resolve($rawConfiguration);
     }

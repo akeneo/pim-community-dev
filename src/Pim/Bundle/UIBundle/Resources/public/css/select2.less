@@ -4,10 +4,9 @@
 /* Custom select2 styles */
 .select2-container {
   color: #333;
-  font-size: 13px;
+  font-size: @font-size-13;
   border: 1px solid #ddd;
-  #gradient > .vertical(#ffffff, #f3f3f3);
-  border-radius: 3px;
+  border-radius: 0;
   outline: none;
   .select2-choice {
     border: none;
@@ -21,7 +20,7 @@
       }
       &:before {
         content: "x";
-        font-size: 11px;
+        font-size: @font-size-11;
         font-weight: bold;
         position: absolute;
         right: 0;
@@ -29,20 +28,28 @@
       }
     }
     .select2-arrow {
-      right: 8px;
-      top: 4px;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      background-color: #e7e7eC;
+      text-align: center;
+      border-radius: 0;
       font:normal 16px 'FontAwesome';
       font-style: normal;
       text-decoration: inherit;
       -webkit-font-smoothing: antialiased;
       *margin-right: .3em;
       border: none;
-      background: transparent;
-      width: auto;
+      background-image: none;
+
       &:before {
         content: "\f0d7";
+        color: #67768a;
         text-decoration: inherit;
         display: inline-block;
+        line-height: 30px;
         speak: none;
       }
     }
@@ -68,7 +75,6 @@
 
 .select2-container,
 .select2-search input {
-  .border-radius(3px);
   box-sizing: border-box;
 }
 
@@ -152,8 +158,8 @@ a.select2-choice {
 .select2-allowclear abbr.select2-search-choice-close,
 .select2-container-multi .select2-search-choice-close {
   font-family: FontAwesome;
-  font-size: 12px;
-  color: @textColor + #333;
+  font-size: @font-size-12;
+
   &:before {
     content: "\f00d";
   }
@@ -163,8 +169,96 @@ a.select2-choice {
   margin-top: 2px;
 }
 
+.add-attribute {
+  &.bigdrop {
+    width: 300px !important;
+  }
+
+  .select2-container {
+    margin: 6px 5px;
+    width: 200px;
+
+    a.select2-choice {
+      background: #ffffff;
+    }
+  }
+
+  .select2-search {
+    padding: 6px;
+    background: #f4f4f4;
+    border-top: 1px solid #cecece;
+    border-bottom: 1px solid #cecece;
+
+    .select2-input {
+      background: #ffffff !important;
+    }
+  }
+
+  .select2-results {
+    .select2-result-label {
+      padding: 0;
+
+      .select2-result-label-attribute {
+        padding: 3px 7px 4px;
+
+        .attribute-label {
+          padding-left: 5px;
+        }
+
+        .group-label {
+          float: right;
+          font-style: italic;
+          color: #BBBBBB;
+        }
+
+        input {
+          margin: 0;
+        }
+      }
+    }
+
+    .select2-more-results,
+    .select2-no-results,
+    .select2-searching {
+      text-align: center;
+      padding: 5px;
+      color: @color-form-info;
+    }
+  }
+  .ui-multiselect-footer {
+    padding: 4px;
+    background: #f4f4f4;
+    border-top: 1px solid #cecece;
+    .clearfix();
+
+    .attribute-counter {
+      padding-left: 5px;
+      line-height: 30px;
+      color: @color-form-info;
+    }
+    .btn-primary {
+      padding: 0 10px 0 44px;
+      overflow: hidden;
+
+      i {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 34px;
+        height: 34px;
+        line-height: 34px;
+        margin: 0;
+        background-color: #4d9a59;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+    }
+  }
+}
+
 .form-horizontal .select2-container {
-  width: 290px ;
+  width: 300px ;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.04);
 }
 
 .form-inline {

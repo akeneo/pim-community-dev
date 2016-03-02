@@ -5,8 +5,10 @@ services:
     pim_notification.manager.notification:
         class: %pim_notification.manager.notification.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
             - '@pim_notification.repository.user_notification'
             - '@pim_notification.factory.notification'
             - '@pim_notification.factory.user_notification'
             - '@oro_user.manager'
+            - '@pim_notification.saver.notification'
+            - '@pim_notification.saver.user_notification'
+            - '@pim_notification.remover.user_notification'

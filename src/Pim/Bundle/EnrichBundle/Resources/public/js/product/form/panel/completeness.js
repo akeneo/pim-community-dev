@@ -14,14 +14,12 @@ define(
         'pim/form',
         'text!pim/template/product/panel/completeness',
         'pim/fetcher-registry',
-        'pim/i18n',
-        'oro/mediator'
+        'pim/i18n'
     ],
-    function ($, _, BaseForm, template, FetcherRegistry, i18n, mediator) {
+    function ($, _, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
-            code: 'completeness',
             events: {
                 'click header': 'switchLocale',
                 'click .missing-attributes span': 'showAttribute'
@@ -36,10 +34,8 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                mediator.on('product:action:post_update', _.bind(this.update, this));
-
-                this.stopListening(mediator, 'change-family:change:after');
-                this.listenTo(mediator, 'change-family:change:after', _.bind(this.onChangeFamily, this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -48,27 +44,38 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (this.getRoot().model.get('meta')) {
+                if (this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
+                }
+
+                if (this.getFormData().meta) {
                     $.when(
-                        FetcherRegistry.getFetcher('completeness').fetchForProduct(
-                            this.getRoot().model.get('meta').id,
-                            this.getRoot().model.get('family')
-                        ),
+                        this.fetchCompleteness(),
                         FetcherRegistry.getFetcher('locale').fetchAll()
-                    ).then(_.bind(function (completeness, locales) {
+                    ).then(function (completeness, locales) {
                         this.$el.html(
                             this.template({
-                                hasFamily: this.getRoot().model.get('family') !== null,
+                                hasFamily: this.getFormData().family !== null,
                                 completenesses: completeness.completenesses,
                                 i18n: i18n,
                                 locales: locales
                             })
                         );
                         this.delegateEvents();
-                    }, this));
+                    }.bind(this));
                 }
 
                 return this;
+            },
+
+            /**
+             * @returns {Promise}
+             */
+            fetchCompleteness: function () {
+                return FetcherRegistry.getFetcher('product-completeness').fetchForProduct(
+                    this.getFormData().meta.id,
+                    this.getFormData().family
+                );
             },
 
             /**
@@ -91,8 +98,8 @@ define(
              * @param Event event
              */
             showAttribute: function (event) {
-                mediator.trigger(
-                    'show_attribute',
+                this.getRoot().trigger(
+                    'pim_enrich:form:show_attribute',
                     {
                         attribute: event.currentTarget.dataset.attribute,
                         locale: event.currentTarget.dataset.locale,
@@ -105,8 +112,8 @@ define(
              * Update the completeness by fetching it from the backend
              */
             update: function () {
-                if (this.getRoot().model.get('meta')) {
-                    FetcherRegistry.getFetcher('completeness').clear(this.getRoot().model.get('meta').id);
+                if (this.getFormData().meta) {
+                    FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
                 }
 
                 this.render();

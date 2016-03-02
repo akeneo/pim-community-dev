@@ -97,7 +97,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 $ds,
                 $fieldName,
                 'BETWEEN',
-                array($dateStartValue, $dateEndValue)
+                [$dateStartValue, $dateEndValue]
             );
         }
     }
@@ -120,7 +120,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 $ds,
                 $fieldName,
                 'NOT BETWEEN',
-                array($dateStartValue, $dateEndValue)
+                [$dateStartValue, $dateEndValue]
             );
         }
     }

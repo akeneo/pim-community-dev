@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 /**
  * Variant group update guesser
@@ -29,7 +29,7 @@ class VariantGroupUpdateGuesser implements UpdateGuesserInterface
      */
     public function __construct(SmartManagerRegistry $registry, $groupClass)
     {
-        $this->registry = $registry;
+        $this->registry   = $registry;
         $this->groupClass = $groupClass;
     }
 

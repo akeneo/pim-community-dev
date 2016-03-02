@@ -2,18 +2,20 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +23,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product controller
@@ -60,20 +61,28 @@ class ProductController
     /** @var CollectionFilterInterface */
     protected $productEditDataFilter;
 
+    /** @var RemoverInterface */
+    protected $productRemover;
+
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param PropertySetterInterface      $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param ProductBuilderInterface      $productBuilder
+     * @param ProductRepositoryInterface           $productRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param PropertySetterInterface              $productUpdater
+     * @param SaverInterface                       $productSaver
+     * @param NormalizerInterface                  $normalizer
+     * @param ValidatorInterface                   $validator
+     * @param UserContext                          $userContext
+     * @param ObjectFilterInterface                $objectFilter
+     * @param CollectionFilterInterface            $productEditDataFilter
+     * @param RemoverInterface                     $productRemover
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
+     * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -85,7 +94,9 @@ class ProductController
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
-        ProductBuilderInterface $productBuilder
+        RemoverInterface $productRemover,
+        ProductBuilderInterface $productBuilder,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -96,7 +107,9 @@ class ProductController
         $this->userContext           = $userContext;
         $this->objectFilter          = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
+        $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
+        $this->localizedConverter    = $localizedConverter;
     }
 
     /**
@@ -127,20 +140,17 @@ class ProductController
     {
         $product  = $this->findProductOr404($id);
         $this->productBuilder->addMissingAssociations($product);
-        $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
-        $locales  = $this->userContext->getUserLocaleCodes();
 
-        return new JsonResponse(
-            $this->normalizer->normalize(
-                $product,
-                'internal_api',
-                [
-                    'locales'     => $locales,
-                    'channels'    => $channels,
-                    'filter_type' => 'pim.internal_api.product_value.view'
-                ]
-            )
-        );
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_type'                => 'pim.internal_api.product_value.view',
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $product,
+            'internal_api',
+            $normalizationContext
+        ));
     }
 
     /**
@@ -161,7 +171,7 @@ class ProductController
 
         $data = json_decode($request->getContent(), true);
         try {
-            $data = $this->productEditDataFilter->filterCollection($data, null);
+            $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
@@ -171,19 +181,49 @@ class ProductController
         // passed here, so a product is always removed from it's variant group when saved
         unset($data['groups']);
 
+        $data = $this->convertLocalizedAttributes($data);
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+            $normalizationContext = $this->userContext->toArray() + [
+                'filter_type'                => 'pim.internal_api.product_value.view',
+                'disable_grouping_separator' => true
+            ];
+
+            return new JsonResponse($this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $normalizationContext
+            ));
         } else {
-            $errors = $this->transformViolations($violations, $product);
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+            ];
 
             return new JsonResponse($errors, 400);
         }
+    }
+
+    /**
+     * Remove product
+     *
+     * @param int $id
+     *
+     * @AclAncestor("pim_enrich_product_remove")
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($id)
+    {
+        $product = $this->findProductOr404($id);
+        $this->productRemover->remove($product);
+
+        return new JsonResponse();
     }
 
     /**
@@ -235,7 +275,7 @@ class ProductController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', $id)
             );
         }
 
@@ -262,6 +302,22 @@ class ProductController
         }
 
         return $attribute;
+    }
+
+    /**
+     * Convert localized attributes to the default format
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function convertLocalizedAttributes(array $data)
+    {
+        $locale         = $this->userContext->getUiLocale()->getCode();
+        $data['values'] = $this->localizedConverter
+            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
+
+        return $data;
     }
 
     /**
@@ -295,43 +351,5 @@ class ProductController
                 );
             }
         }
-    }
-
-    /**
-     * Transforms product violations into an array
-     *
-     * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
-     *
-     * @return array
-     */
-    protected function transformViolations(ConstraintViolationListInterface $violations, ProductInterface $product)
-    {
-        $errors = [];
-        foreach ($violations as $violation) {
-            $path = $violation->getPropertyPath();
-            if (0 === strpos($path, 'values')) {
-                $codeStart  = strpos($path, '[') + 1;
-                $codeLength = strpos($path, ']') - $codeStart;
-
-                $valueIndex = substr($path, $codeStart, $codeLength);
-                $value = $product->getValues()[$valueIndex];
-
-                $errors['values'][$value->getAttribute()->getCode()][] = [
-                    'attribute'     => $value->getAttribute()->getCode(),
-                    'locale'        => $value->getLocale(),
-                    'scope'         => $value->getScope(),
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-            } else {
-                $errors[$path] = [
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
-            }
-        }
-
-        return $errors;
     }
 }

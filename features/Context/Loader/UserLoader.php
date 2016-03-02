@@ -30,15 +30,13 @@ class UserLoader extends LoadUserData
     {
         $this->om = $manager;
 
-        $configuration = Yaml::parse(realpath($this->getFilePath()));
+        $configuration = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         if (isset($configuration['users'])) {
             foreach ($configuration['users'] as $username => $data) {
                 $this->createUser($username, $data);
             }
         }
-
-        $this->getUserManager()->getStorageManager()->flush();
     }
 
     /**
@@ -97,13 +95,11 @@ class UserLoader extends LoadUserData
         }
 
         $user->setCatalogLocale($this->getLocale($data['catalogLocale']));
+        $user->setUiLocale($this->getLocale($data['uiLocale']));
         $user->setCatalogScope($this->getChannel($data['catalogScope']));
         $user->setDefaultTree($this->getTree($data['defaultTree']));
 
         $this->getUserManager()->updateUser($user);
-        // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
-        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\User');
-        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
     }
 
     /**
@@ -117,8 +113,7 @@ class UserLoader extends LoadUserData
 
         if (!$role) {
             $role = new Role($code);
-            $this->om->persist($role);
-            $this->om->flush();
+            $this->container->get('pim_user.saver.role')->save($role);
         }
 
         return $role;
@@ -135,8 +130,7 @@ class UserLoader extends LoadUserData
 
         if (!$group) {
             $group = new Group($name);
-            $this->om->persist($group);
-            $this->om->flush();
+            $this->container->get('pim_user.saver.group')->save($group);
         }
 
         return $group;

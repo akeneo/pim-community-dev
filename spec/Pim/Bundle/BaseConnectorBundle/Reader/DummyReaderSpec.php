@@ -8,7 +8,7 @@ class DummyReaderSpec extends ObjectBehavior
 {
     function it_is_an_item_reader()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
     }
 
     function it_does_not_read_anything()

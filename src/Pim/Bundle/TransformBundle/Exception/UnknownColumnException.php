@@ -8,6 +8,8 @@ namespace Pim\Bundle\TransformBundle\Exception;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class UnknownColumnException extends ParametrizedException
 {
@@ -23,7 +25,7 @@ class UnknownColumnException extends ParametrizedException
 
         parent::__construct(
             'Properties [%labels%] do not exist in %class%.',
-            array('%labels%' => implode(', ', $labels), '%class%' => end($class))
+            ['%labels%' => implode(', ', $labels), '%class%' => end($class)]
         );
     }
 }

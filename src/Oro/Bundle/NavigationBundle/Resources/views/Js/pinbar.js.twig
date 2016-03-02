@@ -1,0 +1,14 @@
+<script type="text/html" id="template-no-pins-message">
+    <a class="pin-bar-empty"  href="{{ path('oro_pinbar_help')|raw }}">{{ 'Learn how to use this space'|trans|raw }}</a>
+</script>
+
+<script type="text/html" id="template-list-pin-item">
+    <div class="pin-holder">
+        <a class="btn-close icon-remove" href="#">{{ 'close'|trans|raw }}</a>
+        <div><a href="#" title="<%- title_rendered %>"><%- title_rendered_short %></a></div>
+    </div>
+</script>
+
+<script type="text/html" id="template-tab-pin-item">
+    <button class="close" type="button">&times;</button><span title="<%- title_rendered %>"><%- title_rendered_short %></span>
+</script>

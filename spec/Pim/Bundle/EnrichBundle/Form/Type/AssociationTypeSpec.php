@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationTypeSpec extends ObjectBehavior
 {
@@ -17,10 +17,10 @@ class AssociationTypeSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productRepository,
             $entityManager,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             'Pim\Bundle\CatalogBundle\Entity\AssociationType',
             'Pim\Bundle\CatalogBundle\Entity\Group',
-            'Pim\Bundle\CatalogBundle\Model\AssociationInterface'
+            'Pim\Component\Catalog\Model\AssociationInterface'
         );
     }
 
@@ -103,13 +103,13 @@ class AssociationTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AssociationInterface',
+                'data_class' => 'Pim\Component\Catalog\Model\AssociationInterface',
             ]
         )->shouldHaveBeenCalled();
     }

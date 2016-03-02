@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Step\ItemStep;
+use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
- * Archive job execution files into conventional directories
+ * Archive files written by job execution to provide them through a download button
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -46,7 +47,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                         '%filename%' => basename($writer->getPath()),
                     ]
                 );
-                $this->filesystem->write($key, file_get_contents($writer->getPath()), true);
+                $this->filesystem->put($key, file_get_contents($writer->getPath()));
             }
         }
     }
@@ -62,7 +63,9 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     {
         if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
             return false;
-        } elseif ($writer instanceof FileWriter && is_file($writer->getPath())) {
+        }
+
+        if (($writer instanceof FileWriter || $writer instanceof AbstractFileWriter) && is_file($writer->getPath())) {
             return true;
         }
 

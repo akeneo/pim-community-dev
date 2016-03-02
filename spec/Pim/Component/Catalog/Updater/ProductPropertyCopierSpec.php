@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 use Pim\Component\Catalog\Updater\Copier\FieldCopierInterface;
@@ -38,7 +38,7 @@ class ProductPropertyCopierSpec extends ObjectBehavior
     ) {
         $attributeRepository->findOneByIdentifier('color_one')->willReturn($fromAttribute);
         $attributeRepository->findOneByIdentifier('color_two')->willReturn($toAttribute);
-        $copierRegistry->getAttributeCopier($fromAttribute, $toAttribute)->willReturn($copier);
+        $copierRegistry->getCopier('color_one', 'color_two')->willReturn($copier);
         $copier
             ->copyAttributeData($product, $product, $fromAttribute, $toAttribute, [])
             ->shouldBeCalled();
@@ -54,7 +54,7 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         FieldCopierInterface $copier
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $copierRegistry->getFieldCopier('category', 'category')->willReturn($copier);
+        $copierRegistry->getCopier('category', 'category')->willReturn($copier);
         $copier
             ->copyFieldData($fromProduct, $toProduct, 'category', 'category', [])
             ->shouldBeCalled();

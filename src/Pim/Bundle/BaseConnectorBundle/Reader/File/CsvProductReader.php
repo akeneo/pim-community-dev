@@ -3,10 +3,10 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
@@ -21,7 +21,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtra
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be remove in 1.5, please use Pim\Component\Connector\Reader\File\CsvProductReader, btw the logic
+ * @deprecated will be remove in 1.6, please use Pim\Component\Connector\Reader\File\CsvProductReader, btw the logic
  *             of checkAttributesInHeader is now handled by the AttributeColumnInfoExtractor
  */
 class CsvProductReader extends CsvReader

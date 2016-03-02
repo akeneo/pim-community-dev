@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type related to options property of AttributeInterface
@@ -25,15 +25,15 @@ class OptionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'type'         => 'pim_enrich_attribute_option',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false
-            )
+            ]
         );
     }
 

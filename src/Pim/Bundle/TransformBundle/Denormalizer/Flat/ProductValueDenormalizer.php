@@ -33,7 +33,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         return $this->doDenormalize($data, $format, $context);
     }

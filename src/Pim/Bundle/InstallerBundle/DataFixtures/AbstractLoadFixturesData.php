@@ -3,9 +3,9 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -140,7 +140,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
 
         return $manager
             ->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-            ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+            ->findBy(['type' => FixtureJobLoader::JOB_TYPE]);
     }
 
     /**
@@ -156,6 +156,6 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
 
         return $manager
             ->getRepository($this->container->getParameter('akeneo_batch.entity.job_execution.class'))
-            ->findOneBy(array('jobInstance' => $jobInstance));
+            ->findOneBy(['jobInstance' => $jobInstance]);
     }
 }

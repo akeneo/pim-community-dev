@@ -8,19 +8,20 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/form', 'pim/user-context', 'oro/mediator'],
-    function (BaseForm, UserContext, mediator) {
+    ['pim/form', 'pim/user-context'],
+    function (BaseForm, UserContext) {
         return BaseForm.extend({
-            tagName: 'span',
+            tagName: 'h1',
             className: 'product-label',
             configure: function () {
+                UserContext.off('change:catalogLocale', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(mediator, 'product:action:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                var meta = this.getRoot().model.get('meta');
+                var meta = this.getFormData().meta;
 
                 if (meta && meta.label) {
                     this.$el.text(meta.label[UserContext.get('catalogLocale')]);

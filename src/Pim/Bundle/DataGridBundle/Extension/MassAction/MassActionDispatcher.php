@@ -9,6 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
@@ -26,21 +27,19 @@ class MassActionDispatcher
     /** @staticvar string */
     const FAMILY_GRID_NAME = 'family-grid';
 
-    /** @var MassActionHandlerRegistry $handlerRegistry */
+    /** @var MassActionHandlerRegistry */
     protected $handlerRegistry;
 
-    /** @var Manager $manager */
+    /** @var ManagerInterface */
     protected $manager;
 
-    /** @var RequestParameters $requestParams */
+    /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var MassActionParametersParser $parametersParser */
+    /** @var MassActionParametersParser */
     protected $parametersParser;
 
     /**
-     * Constructor
-     *
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
@@ -100,10 +99,16 @@ class MassActionDispatcher
         }
 
         if (true === $parameters['inset']) {
-            $productIds = $parameters['values'];
-            $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $productIds]];
+            $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
-            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
+            if (empty($parameters['values'])) {
+                $filters = $datasource->getProductQueryBuilder()->getRawFilters();
+            } else {
+                $filters = array_merge(
+                    $datasource->getProductQueryBuilder()->getRawFilters(),
+                    [['field' => 'id', 'operator' => 'NOT IN', 'value' => $parameters['values']]]
+                );
+            }
         }
 
         $datasourceParams = $datasource->getParameters();

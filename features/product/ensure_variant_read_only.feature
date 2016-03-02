@@ -6,6 +6,7 @@ Feature: Disable attribute fields updated by a variant group
   @javascript
   Scenario: Successfully display a readonly form for a product in a variant group
     Given the "default" catalog configuration
+    And I add the "english" locale to the "mobile" channel
     And the following attributes:
       | code        | label       | type         | scopable | localizable | metric_family | default_metric_unit |
       | options     | Options     | multiselect  | yes      | no          |               |                     |

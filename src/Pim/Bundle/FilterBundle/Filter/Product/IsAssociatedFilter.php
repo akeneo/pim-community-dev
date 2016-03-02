@@ -7,11 +7,11 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -29,8 +29,8 @@ class IsAssociatedFilter extends BooleanFilter
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
-    /** @var ProductManager */
-    protected $manager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /**
      * Constructor
@@ -39,19 +39,19 @@ class IsAssociatedFilter extends BooleanFilter
      * @param FilterUtility                       $util
      * @param RequestParametersExtractorInterface $extractor
      * @param AssociationTypeRepositoryInterface  $repo
-     * @param ProductManager                      $manager
+     * @param ProductRepositoryInterface          $productRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         RequestParametersExtractorInterface $extractor,
         AssociationTypeRepositoryInterface $repo,
-        ProductManager $manager
+        ProductRepositoryInterface $productRepository
     ) {
         parent::__construct($factory, $util);
         $this->assocTypeRepository = $repo;
         $this->extractor = $extractor;
-        $this->manager = $manager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -104,7 +104,7 @@ class IsAssociatedFilter extends BooleanFilter
         if (!$productId) {
             throw new \LogicException('The current product type must be configured');
         }
-        $product = $this->manager->find($productId);
+        $product = $this->productRepository->findOneByWithValues($productId);
 
         return $product;
     }

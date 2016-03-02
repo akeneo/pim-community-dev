@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior
@@ -23,7 +23,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         $this->beConstructedWith(
             'Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder',
             $om,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             $attRepository,
             $filterRegistry,
             $sorterRegistry,

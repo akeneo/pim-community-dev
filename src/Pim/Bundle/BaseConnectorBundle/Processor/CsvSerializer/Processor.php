@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -50,19 +50,19 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /**
      * Constructor
      *
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
+     * @param SerializerInterface       $serializer
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(SerializerInterface $serializer, LocaleManager $localeManager)
+    public function __construct(SerializerInterface $serializer, LocaleRepositoryInterface $localeRepository)
     {
-        $this->serializer    = $serializer;
-        $this->localeManager = $localeManager;
+        $this->serializer       = $serializer;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -130,27 +130,27 @@ abstract class Processor extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'delimiter' => array(
-                'options' => array(
+        return [
+            'delimiter' => [
+                'options' => [
                     'label' => 'pim_base_connector.export.delimiter.label',
                     'help'  => 'pim_base_connector.export.delimiter.help'
-                )
-            ),
-            'enclosure' => array(
-                'options' => array(
+                ]
+            ],
+            'enclosure' => [
+                'options' => [
                     'label' => 'pim_base_connector.export.enclosure.label',
                     'help'  => 'pim_base_connector.export.enclosure.help'
-                )
-            ),
-            'withHeader' => array(
+                ]
+            ],
+            'withHeader' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.export.withHeader.label',
                     'help'  => 'pim_base_connector.export.withHeader.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**

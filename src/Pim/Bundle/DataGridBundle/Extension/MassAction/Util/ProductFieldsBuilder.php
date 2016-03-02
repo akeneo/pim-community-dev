@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point
@@ -18,19 +20,22 @@ use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
  */
 class ProductFieldsBuilder
 {
-    /** @var ProductManager $productManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var LocaleManager $localeManager */
-    protected $localeManager;
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
-    /** @var CurrencyManager $currencyManager */
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /** @var CurrencyManager */
     protected $currencyManager;
 
-    /** @var AssociationTypeManager $assocTypeManager */
-    protected $assocTypeManager;
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepo;
 
-    /** @var CatalogContext $catalogContext */
+    /** @var CatalogContext */
     protected $catalogContext;
 
     /** @var integer(] */
@@ -39,23 +44,26 @@ class ProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManager         $productManager
-     * @param LocaleManager          $localeManager
-     * @param CurrencyManager        $currencyManager
-     * @param AssociationTypeManager $assocTypeManager
-     * @param CatalogContext         $catalogContext
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param LocaleRepositoryInterface          $localeRepository
+     * @param CurrencyManager                    $currencyManager
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
+     * @param CatalogContext                     $catalogContext
      */
     public function __construct(
-        ProductManager $productManager,
-        LocaleManager $localeManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
+        AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
-        $this->productManager   = $productManager;
-        $this->localeManager    = $localeManager;
+        $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
         $this->currencyManager  = $currencyManager;
-        $this->assocTypeManager = $assocTypeManager;
+        $this->assocTypeRepo    = $assocTypeRepo;
         $this->catalogContext   = $catalogContext;
     }
 
@@ -69,11 +77,16 @@ class ProductFieldsBuilder
     public function getFieldsList($productIds)
     {
         $this->prepareAvailableAttributeIds($productIds);
-        $attributeRepo  = $this->productManager->getAttributeRepository();
-        $attributesList = $attributeRepo->findBy(array('id' => $this->getAttributeIds()));
-        $fieldsList     = $this->prepareFieldsList($attributesList);
 
-        return $fieldsList;
+        $attributes = $this->getAttributeIds();
+
+        if (empty($attributes)) {
+            return [];
+        }
+
+        $attributes = $this->attributeRepository->findBy(['id' => $this->getAttributeIds()]);
+
+        return $this->prepareFieldsList($attributes);
     }
 
     /**
@@ -93,8 +106,8 @@ class ProductFieldsBuilder
      */
     protected function prepareAvailableAttributeIds($productIds)
     {
-        $productRepo = $this->productManager->getProductRepository();
-        $this->attributeIds = $productRepo->getAvailableAttributeIdsToExport($productIds);
+        $this->attributeIds = $this->productRepository
+            ->getAvailableAttributeIdsToExport($productIds);
     }
 
     /**
@@ -104,14 +117,14 @@ class ProductFieldsBuilder
      *
      * @return array
      */
-    protected function prepareFieldsList(array $attributesList = array())
+    protected function prepareFieldsList(array $attributesList = [])
     {
-        $fieldsList = $this->prepareAttributesList($attributesList);
+        $fieldsList   = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
         $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
 
-        $associationTypes = $this->assocTypeManager->getAssociationTypes();
+        $associationTypes = $this->assocTypeRepo->findAll();
         foreach ($associationTypes as $associationType) {
             $fieldsList[] = sprintf('%s-groups', $associationType->getCode());
             $fieldsList[] = sprintf('%s-products', $associationType->getCode());
@@ -130,8 +143,8 @@ class ProductFieldsBuilder
     protected function prepareAttributesList(array $attributesList)
     {
         $scopeCode   = $this->catalogContext->getScopeCode();
-        $localeCodes = $this->localeManager->getActiveCodes();
-        $fieldsList  = array();
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        $fieldsList  = [];
 
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();
@@ -145,9 +158,9 @@ class ProductFieldsBuilder
                 }
             } elseif ($attribute->isScopable()) {
                 $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
                 array_unshift($fieldsList, $attCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
+            } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
                 foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }

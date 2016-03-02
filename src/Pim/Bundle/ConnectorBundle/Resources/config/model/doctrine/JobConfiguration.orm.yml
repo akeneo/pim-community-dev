@@ -13,7 +13,7 @@ Pim\Component\Connector\Model\JobConfiguration:
             column: configuration
     oneToOne:
         jobExecution:
-            targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
+            targetEntity: Akeneo\Component\Batch\Model\JobExecution
             joinColumn:
                 name: job_execution_id
                 onDelete: CASCADE

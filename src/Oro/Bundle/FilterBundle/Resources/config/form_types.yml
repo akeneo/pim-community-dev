@@ -1,0 +1,54 @@
+services:
+    oro_filter.form.type.filter:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_filter }
+
+    oro_filter.form.type.filter.choice:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_choice_filter }
+
+    oro_filter.form.type.filter.text:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_text_filter }
+
+    oro_filter.form.type.filter.number:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_number_filter }
+
+    oro_filter.form.type.filter.date_range:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_date_range_filter }
+
+    oro_filter.form.type.filter.datetime_range:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_datetime_range_filter }
+
+    oro_filter.form.type.filter.boolean:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_boolean_filter }
+
+    oro_filter.form.type.filter.entity:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_entity_filter }
+
+    oro_filter.form.type.filter.selectrow:
+        class:     Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType
+        arguments: ["@translator"]
+        tags:
+            - { name: form.type, alias: oro_type_selectrow_filter }

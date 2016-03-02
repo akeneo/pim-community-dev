@@ -5,13 +5,16 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -40,6 +43,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var string */
     protected $productClassName;
 
@@ -50,6 +56,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      * @param ProductTemplateApplierInterface $productTplApplier
      * @param VersionContext                  $versionContext
      * @param SavingOptionsResolverInterface  $optionsResolver
+     * @param EventDispatcherInterface        $eventDispatcher
      * @param string                          $productClassName
      */
     public function __construct(
@@ -59,6 +66,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         ProductTemplateApplierInterface $productTplApplier,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher,
         $productClassName
     ) {
         $this->objectManager          = $objectManager;
@@ -67,6 +75,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->productTplApplier      = $productTplApplier;
         $this->versionContext         = $versionContext;
         $this->optionsResolver        = $optionsResolver;
+        $this->eventDispatcher        = $eventDispatcher;
         $this->productClassName       = $productClassName;
     }
 
@@ -75,15 +84,16 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     public function save($group, array $options = [])
     {
-        /* @var GroupInterface */
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
                 )
             );
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -104,17 +114,19 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        if (count($options['add_products']) > 0) {
-            $this->addProducts($options['add_products']);
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
+        } else {
+            if (0 < count($options['add_products'])) {
+                $this->addProducts($options['add_products']);
+            }
         }
 
-        if (count($options['remove_products']) > 0) {
+        if (0 < count($options['remove_products'])) {
             $this->removeProducts($options['remove_products']);
         }
 
-        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
-            $this->copyVariantGroupValues($group);
-        }
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
     }
 
     /**
@@ -125,6 +137,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (empty($groups)) {
             return;
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
@@ -137,6 +151,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups));
     }
 
     /**

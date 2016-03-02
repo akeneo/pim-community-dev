@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
@@ -89,7 +89,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             $this->disableField($form, 'code');
         }
 
-        if (!$this->securityFacade->isGranted('pim_enrich_attribute_group_add_attribute')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_add_attribute')) {
             $form = $event->getForm();
             $this->hideGroupElement($form, $data);
         }

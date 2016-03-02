@@ -2,26 +2,27 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as MongoProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Product repository
@@ -316,22 +317,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder()->eagerCursor(true);
-
-        $qb->field('groupIds')->in([$variantGroup->getId()]);
-
-        foreach ($criteria as $item) {
-            $andExpr = $qb
-                ->expr()
-                ->field('values')
-                ->elemMatch(['attribute' => (int) $item['attribute']->getId(), 'option' => $item['option']->getId()]);
-
-            $qb->addAnd($andExpr);
-        }
-
+        $qb     = $this->findAllForVariantGroupQB($variantGroup, $criteria);
         $cursor = $qb->getQuery()->execute();
+
         $products = [];
         foreach ($cursor as $product) {
             $products[] = $product;
@@ -393,7 +383,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -405,11 +395,9 @@ class ProductRepository extends DocumentRepository implements
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->execute();
+        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
-        if (0 === $result->count() ||
-            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
-        ) {
+        if (null === $result || (null !== $result && $value->getEntity()->getId() === (string) $result['_id'])) {
             return false;
         }
 
@@ -451,7 +439,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createVariantGroupDatagridQueryBuilder(array $params = array())
+    public function createVariantGroupDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -467,7 +455,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createAssociationDatagridQueryBuilder(array $params = array())
+    public function createAssociationDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -540,8 +528,12 @@ class ProductRepository extends DocumentRepository implements
                 ['associationType' => $associationType->getId()],
                 [
                     '$or' => [
-                        [ 'products' => [ '$ne' => [] ] ],
-                        [ 'groups'   => [ '$ne' => [] ] ]
+                        [
+                            'products' => [ '$ne' => [] ]
+                        ],
+                        [
+                            'groups' => [ '$ne' => [] ]
+                        ]
                     ]
                 ]
             ]
@@ -560,21 +552,29 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->field('_id')->in($productIds)
-            ->distinct('values.attribute')
-            ->hydrate(false);
+        $productIds = array_map(function ($id) {
+            return new \MongoId($id);
+        }, $productIds);
 
-        $cursor = $qb->getQuery()->execute();
+        $results = $this->getDocumentManager()
+            ->getDocumentCollection($this->getDocumentName())
+            ->aggregate([
+                ['$match'  => ['_id' => ['$in' => $productIds]]],
+                ['$unwind' => '$values'],
+                ['$group'  => ['_id' => '$values.attribute']]
+            ])->toArray();
 
-        return $cursor->toArray();
+        $ids = array_map(function ($result) {
+            return $result['_id'];
+        }, $results);
+
+        return $ids;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function getFullProducts(array $productIds, array $attributeIds = [])
     {
         $qb = $this->createQueryBuilder('p');
         $qb->field('_id')->in($productIds);
@@ -685,7 +685,7 @@ class ProductRepository extends DocumentRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**
@@ -714,5 +714,64 @@ class ProductRepository extends DocumentRepository implements
         $count = $qb->getQuery()->execute()->count();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('p')->hydrate(false);
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb
+            ->select('_id')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        $products = [];
+        foreach ($cursor as $product) {
+            $product['id'] = (string) $product['_id'];
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder()->eagerCursor(true);
+
+        $qb->field('groupIds')->in([$variantGroup->getId()]);
+
+        foreach ($criteria as $item) {
+            $match = ['attribute' => (int) $item['attribute']->getId()];
+
+            if (isset($item['option'])) {
+                $match['option'] = $item['option']->getId();
+            } elseif (isset($item['referenceData'])) {
+                $match[$item['referenceData']['name']] = $item['referenceData']['data']->getId();
+            }
+
+            $qb->addAnd($qb->expr()->field('values')->elemMatch($match));
+        }
+
+        return $qb;
     }
 }

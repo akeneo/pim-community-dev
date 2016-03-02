@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Filter the product values according to locale codes provided in options.

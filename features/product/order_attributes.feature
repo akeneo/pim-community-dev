@@ -6,30 +6,50 @@ Feature: Order attributes
 
   Background:
     Given the "footwear" catalog configuration
-    And a "Rangers" product
     And I am logged in as "Mary"
 
-  @skip
   Scenario: Successfully update an attribute position
     Given I am on the "info" attribute group page
     And I visit the "Attributes" tab
-    Then the attribute "Length" should be in position 6
-    And I change the attribute "Length" position to 1
+    Then the attribute "SKU" should be in position 1
+    And the attribute "Name" should be in position 2
+    And the attribute "Manufacturer" should be in position 3
+    And the attribute "Weather conditions" should be in position 4
+    And the attribute "Description" should be in position 5
+    And the attribute "Length" should be in position 6
+    And I change the attribute "Description" position to 2
     When I am on the "info" attribute group page
     And I visit the "Attributes" tab
-    Then the attribute "Length" should be in position 1
-    And the attribute "Description" should be in position 3
+    Then the attribute "SKU" should be in position 1
+    And the attribute "Description" should be in position 2
+    And the attribute "Name" should be in position 3
+    And the attribute "Manufacturer" should be in position 4
+    And the attribute "Weather conditions" should be in position 5
+    And the attribute "Length" should be in position 6
 
-  Scenario: Display attribute fields ordered by their position
-    Given the following attributes:
-      | label         | sort order | group |
-      | Sole weight   | 20         | info  |
-      | Provider      | 30         | info  |
-      | File upload   | 10         | info  |
-      | Sole color    | 10         | other |
-      | Sole material | 30         | other |
-      | Height        | 20         | other |
-    And the "Rangers" product has the "soleWeight, Provider, fileUpload, soleColor, soleMaterial and height" attributes
-    When I am on the "Rangers" product page
-    Then attributes in group "info" should be SKU, File upload, Sole weight and Provider
-    And attributes in group "Other" should be Sole color, Height and Sole material
+  Scenario: Update an attribute position in the product view
+    Given the following product:
+      | sku      | description-en_US-mobile | manufacturer | weather_conditions | length        |
+      | boot-001 | Nice dark rangers        | Caterpillar  | Wet                | 50 CENTIMETER |
+    When I am on the "boot-001" product page
+    Then the attribute "SKU" should be in position 1
+    And the attribute "Manufacturer" should be in position 2
+    And the attribute "Weather conditions" should be in position 3
+    And the attribute "Description" should be in position 4
+    And the attribute "Length" should be in position 5
+    When I am on the "info" attribute group page
+    And I visit the "Attributes" tab
+    And I change the attribute "Description" position to 2
+    And I am on the "boot-001" product page
+    Then the attribute "SKU" should be in position 1
+    And the attribute "Description" should be in position 2
+    And the attribute "Manufacturer" should be in position 3
+    And the attribute "Weather conditions" should be in position 4
+    And the attribute "Length" should be in position 5
+    When I display the Name attribute
+    Then the attribute "SKU" should be in position 1
+    And the attribute "Description" should be in position 2
+    And the attribute "Name" should be in position 3
+    And the attribute "Manufacturer" should be in position 4
+    And the attribute "Weather conditions" should be in position 5
+    And the attribute "Length" should be in position 6

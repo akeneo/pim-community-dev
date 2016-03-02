@@ -1,0 +1,388 @@
+<?php
+
+use \Akeneo\CouplingDetector\Configuration\DefaultFinder;
+use \Akeneo\CouplingDetector\Configuration\Configuration;
+use \Akeneo\CouplingDetector\Domain\Rule;
+use \Akeneo\CouplingDetector\Domain\RuleInterface;
+
+$finder = new DefaultFinder();
+$finder->notPath('Oro');
+
+$forbidDoctrineExceptCommon = ['Doctrine\ORM', 'Doctrine\ODM', 'Doctrine\DBAL'];
+$forbidPimAndEnterprise = ['Pim', 'PimEnterprise'];
+$forbidPimEnterprise = ['PimEnterprise'];
+$forbidAnyBundles = ['Bundle'];
+$forbidAnySymfony = ['Symfony'];
+$forbidCatalogModelImplementations = [
+    'Pim\Component\Catalog\Model\AbstractAssociation',
+    'Pim\Component\Catalog\Model\AbstractAttribute',
+    'Pim\Component\Catalog\Model\AbstractCompleteness',
+    'Pim\Component\Catalog\Model\AbstractMetric',
+    'Pim\Component\Catalog\Model\AbstractProduct',
+    'Pim\Component\Catalog\Model\AbstractProductPrice',
+    'Pim\Component\Catalog\Model\AbstractProductValue',
+    'Pim\Bundle\CatalogBundle\Entity',
+];
+$forbidCatalogRepositoryImplementations = [
+    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository',
+    'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository',
+];
+
+$rules = [
+    // ONLY and OK
+    new Rule(
+        'Akeneo\Component\Analytics',
+        ['Akeneo\Component\Analytics'],
+        RuleInterface::TYPE_ONLY,
+        'The component analytics should depends on nothing'
+    ),
+    new Rule(
+        'Akeneo\Component\Batch',
+        ['Akeneo\Component\Batch', 'Symfony\Component\EventDispatcher', 'Symfony\Component\PropertyAccess', 'Doctrine\Common', 'Exception'],
+        RuleInterface::TYPE_ONLY,
+        'The component batch should depends on event dispatcher, property access and doctrine common'
+    ),
+    new Rule(
+        'Akeneo\Component\Buffer',
+        ['Akeneo\Component\Buffer'],
+        RuleInterface::TYPE_ONLY,
+        'The component buffer should depends on nothing'
+    ),
+    new Rule(
+        'Akeneo\Component\Console',
+        ['Akeneo\Component\Console', 'Symfony\Component\Process'],
+        RuleInterface::TYPE_ONLY,
+        'The component console should depends only on symfony process'
+    ),
+    new Rule(
+        'Akeneo\Component\FileStorage',
+        ['Akeneo\Component\FileStorage', 'Akeneo\Component\StorageUtils', 'League\Flysystem', 'Symfony\Component\HttpFoundation', 'Symfony\Component\Filesystem', 'Doctrine\Common'],
+        RuleInterface::TYPE_ONLY,
+        'The component file storage should depends only on akeneo storageutils, flysystem, symfony filesystem, symfony http foundation, doctrine common'
+    ),
+    new Rule(
+        'Akeneo\Component\Localization',
+        ['Akeneo\Component\Localization', 'Doctrine\Common'],
+        RuleInterface::TYPE_ONLY,
+        'The component console should depends only on doctrine common'
+    ),
+    new Rule(
+        'Akeneo\Component\StorageUtils',
+        ['Akeneo\Component\StorageUtils', 'Symfony\Component\EventDispatcher', 'Doctrine\Common'],
+        RuleInterface::TYPE_ONLY,
+        'The component storage utils should depends only on symfony event dispatcher, doctrine common'
+    ),
+    new Rule(
+        'Akeneo\Component\Versioning',
+        ['Akeneo\Component\Versioning'],
+        RuleInterface::TYPE_ONLY,
+        'The component versioning should depends on nothing'
+    ),
+
+    new Rule(
+        'PimEnterprise\Component',
+        array_merge($forbidAnyBundles, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_FORBIDDEN,
+        'PimEnterprise components contain Enterprise Business Logic, they does not depend on Bundle, Doctrine or Symfony'
+    ),
+    new Rule(
+        'Akeneo\Bundle',
+        $forbidPimAndEnterprise,
+        RuleInterface::TYPE_FORBIDDEN,
+        'A Akeneo bundle contain Symfony or Doctine glue for Akeno components, must not depend on Pim'
+    ),
+    new Rule(
+        'Pim\Bundle',
+        $forbidPimEnterprise,
+        RuleInterface::TYPE_FORBIDDEN,
+        'Pim bundles should never use the namespace PimEnterprise'
+    ),
+];
+
+$rulesToFix = [
+    // TODO following is "easy" to fix
+    // TODO fix AttributeValidatorHelper
+    new Rule(
+        'Pim\Component\ReferenceData',
+        ['Pim\Component\ReferenceData', 'Pim\Component\Catalog', 'Doctrine\Common', 'Symfony\Component\PropertyAccess', 'Symfony\Component\OptionsResolver'],
+        RuleInterface::TYPE_ONLY,
+        'The component reference data should depends only on catalog component, symfony property access, symfony options resolver and doctrine common'
+    ),
+
+    // TODO: violations with QB
+    new Rule(
+        'Akeneo\Component',
+        array_merge($forbidAnyBundles, $forbidPimAndEnterprise, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_FORBIDDEN,
+        'A Akeneo component must only contain technical logic re-usable out of the Pim, must not depends on Pim, Bundle, Doctrine'
+    ),
+
+    // TODO: violations with QB
+    new Rule(
+        'Akeneo\Component\Classification',
+        ['Akeneo\Component\Classification', 'Akeneo\Component\Localization', 'Akeneo\Component\StorageUtils', 'Doctrine\Common', 'Symfony\Component\PropertyAccess', 'Gedmo\Tree\RepositoryInterface'],
+        RuleInterface::TYPE_ONLY,
+        'The component classification should only depends on storageutils, doctrine common and symfony property access (gedmo is an implementation detail?)'
+    ),
+
+    // TODO: WIP
+    new Rule(
+        'Pim\Component\Catalog',
+        [
+            'Pim\Component\Catalog',
+            'Akeneo\Component\Versioning',
+            'Akeneo\Component\Comment',
+            'Akeneo\Component\Classification',
+            'Akeneo\Component\Localization',
+            'Akeneo\Component\FileStorage',
+            'Akeneo\Component\StorageUtils',
+            'Doctrine\Common',
+            'League\Flysystem',
+            'Symfony\Component\HttpFoundation',
+            'Symfony\Component\PropertyAccess',
+            'Symfony\Component\OptionsResolver',
+            'Symfony\Component\Serializer',
+            'Exception'
+        ],
+        RuleInterface::TYPE_ONLY,
+        'The component catalog should depends on Akeneo components, Doctrine common, Flysystem, Symfony http foundation, property access, option resolver and serializer'
+    ),
+
+    new Rule(
+        'Pim\Component\Connector',
+        [
+            'Pim\Component\Connector',
+            'Akeneo\Component\Buffer',
+            'Akeneo\Component\Batch',
+            'Akeneo\Component\StorageUtils',
+            'Akeneo\Component\FileStorage',
+            'Akeneo\Component\Classification',
+            'Akeneo\Component\Versioning',
+            'Pim\Component\Catalog',
+            'Pim\Component\Localization', // TODO => move to Akeneo\Component\Localization
+            'Symfony\Component\Filesystem',
+            'Symfony\Component\OptionsResolver',
+            'Symfony\Component\Validator',
+            'Symfony\Component\Yaml',
+            'Symfony\Component\HttpFoundation',
+            'League\Flysystem',
+            'Doctrine\Common'
+        ],
+        RuleInterface::TYPE_ONLY,
+        'The component connector should depends only on ... bunch of stuff :)'
+    ),
+
+    // DISCOURAGED to be fixed to forbidden
+    new Rule(
+        'Pim\Component',
+        array_merge($forbidAnyBundles, $forbidPimEnterprise, $forbidDoctrineExceptCommon),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component must only contain business logic related to the PIM, must not depends on Bundle or Doctrine'
+    ),
+    new Rule(
+        'Pim',
+        array_merge($forbidCatalogModelImplementations),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component or bundle must never depends on model implementations to allow to replace implementation'
+    ),
+    new Rule(
+        'Pim',
+        array_merge($forbidCatalogRepositoryImplementations),
+        RuleInterface::TYPE_DISCOURAGED,
+        'A Pim component or bundle must never depends on repositories implementations to allow to replace implementation'
+    ),
+
+    // Following is ok but really permissive
+    new Rule(
+        'Akeneo\Bundle\BatchBundle',
+        [
+            'Akeneo\Bundle\BatchBundle',
+            'Akeneo\Bundle\StorageUtilsBundle',
+            'Akeneo\Component\Batch',
+            'Monolog',
+            'Psr\Log',
+            'Symfony\Component\Console',
+            'Symfony\Component\Validator',
+            'Symfony\Component\DependencyInjection',
+            'Symfony\Component\Config',
+            'Symfony\Component\Yaml',
+            'Symfony\Component\HttpKernel',
+            'Symfony\Component\EventDispatcher',
+            'Symfony\Component\Translation',
+            'Symfony\Component\Security',
+            'Symfony\Component\PropertyAccess',
+            'Symfony\Component\HttpFoundation',
+            'Symfony\Component\Process',
+            'Symfony\Component\Security',
+            'Symfony\Bundle\FrameworkBundle',
+            'Symfony\Bridge\Doctrine',
+            'Doctrine\Common',
+            'Doctrine\DBAL',
+            'Doctrine\ORM'
+        ],
+        RuleInterface::TYPE_ONLY,
+        'BatchBundle should use only batch component, monolog, symfony console'
+    ),
+
+    // TODO: real stuff to fix
+    new Rule(
+        'Pim\Bundle\CatalogBundle',
+        [
+            // bundles
+            'AnalyticsBundle',
+            'CommentBundle',
+            'DataGridBundle',
+            'ImportExportBundle',
+            'LocalizationBundle',
+            'PdfGeneratorBundle',
+            'TranslationBundle',
+            'VersioningBundle',
+            'BaseConnectorBundle',
+            'ConnectorBundle',
+            'EnrichBundle',
+            'InstallerBundle',
+            'NavigationBundle',
+            'ReferenceDataBundle',
+            'UIBundle',
+            'WebServiceBundle',
+            'DashboardBundle',
+            'FilterBundle',
+            'JsFormValidationBundle',
+            'NotificationBundle',
+            'TransformBundle',
+            'UserBundle',
+            'BatchBundle',
+            // components
+            'Connector',
+        ],
+        RuleInterface::TYPE_FORBIDDEN,
+        'CatalogBundle should never use components or bundles related to UI or Import/Export'
+    ),
+
+    // Following is ok but really permissive
+    new Rule(
+        'Pim\Bundle\ConnectorBundle',
+        [
+            'AnalyticsBundle',
+            'CommentBundle',
+            'DataGridBundle',
+            'ImportExportBundle',
+            'LocalizationBundle',
+            'PdfGeneratorBundle',
+            'TranslationBundle',
+            'VersioningBundle',
+            'BaseConnectorBundle',
+            'CatalogBundle',
+            'EnrichBundle',
+            'InstallerBundle',
+            'NavigationBundle',
+            'ReferenceDataBundle',
+            'UIBundle',
+            'WebServiceBundle',
+            'DashboardBundle',
+            'FilterBundle',
+            'JsFormValidationBundle',
+            'NotificationBundle',
+            'TransformBundle',
+            'UserBundle',
+        ],
+        RuleInterface::TYPE_FORBIDDEN,
+        'ConnectorBundle should never use components or bundles related to UI or to the deprecated Import/Export system'
+    ),
+];
+
+$rules = array_merge($rules, $rulesToFix);
+
+// TODO: list of violations to fix
+$legacyExclusions = [
+    // Repository interfaces should never expose QueryBuilder as parameter
+    'Akeneo\Component\Classification\Repository'                => [
+        'Doctrine\ORM\QueryBuilder',
+    ],
+    'Pim\Component\Catalog'                                     => [
+        // Repository interfaces of CatalogBundle should be extracted in the catalog component
+        'Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface',
+        'Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface',
+        'Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface',
+        // Extract at least an interface of these factories in the catalog component (ideally move implem too)
+        'Pim\Bundle\CatalogBundle\Factory\FamilyFactory',
+        'Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory',
+        'Pim\Bundle\CatalogBundle\Factory\MetricFactory',
+        // What to do with this class?
+        'Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper',
+        // Avoid to use this manager, extract an interface from this or maybe use repository and depreciate it
+        'Pim\Bundle\CatalogBundle\Manager\CurrencyManager',
+        // What to do with this, cannot be extracted due to dependencies to symfony form
+        'Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType',
+        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+    ],
+    'Pim\Component\Connector'                                   => [
+        // Repositories interfaces of CatalogBundle should be extracted in the catalog component
+        'Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface',
+        'Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface',
+        'Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface',
+        // What to do with this, cannot be extracted due to dependencies to symfony form
+        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+        'Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType',
+        // We need to check why we use these classes, interfaces should be extracted in the catalog component
+        'Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver',
+        'Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface',
+        'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
+        // For factories and builders of CatalogBundle, interfaces should be created in the catalog component
+        'Pim\Bundle\CatalogBundle\Factory\AttributeFactory',
+        'Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory',
+        'Pim\Bundle\CatalogBundle\Factory\FamilyFactory',
+        'Pim\Bundle\CatalogBundle\Factory\GroupFactory',
+        // Version manager should be exploded with SRP and introduce different interfaces in a component, here we use it
+        // to switch real time versionning that should be moved in VersioningContext/VersioningState?
+        'Pim\Bundle\VersioningBundle\Manager\VersionManager',
+    ],
+    // Same issues than catalog component updater classes, same fixes expected
+    'Pim\Component\ReferenceData\Updater'                       => [
+        'Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper',
+    ],
+    // Same issues than catalog component updater classes, same fixes expected
+    'Pim\Component\Localization'                                => [
+        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+        'Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface',
+        // Why we use it?
+        'Pim\Component\Localization\Normalizer\MetricNormalizer',
+    ],
+    'Pim\Bundle\CatalogBundle\Model'                            => [
+        // should be extracted in a component in a akeneo component in a BC way (localization?)
+        'Pim\Bundle\TranslationBundle\Entity\TranslatableInterface',
+        'Pim\Bundle\TranslationBundle\Entity\AbstractTranslation',
+        // should be extracted in a akeneo component in a BC way
+        'Pim\Bundle\CommentBundle\Model\CommentSubjectInterface',
+    ],
+    'Pim\Bundle\CatalogBundle\Entity'                           => [
+        // should be extracted in a component in a akeneo component in a BC way (localization?)
+        'Pim\Bundle\TranslationBundle\Entity\TranslatableInterface',
+        'Pim\Bundle\TranslationBundle\Entity\AbstractTranslation',
+    ],
+    'Pim\Bundle\CatalogBundle\Manager\FamilyManager'            => [
+        // FamilyManager should be dropped and not even used
+        'Pim\Bundle\UserBundle\Context\UserContext',
+    ],
+    'Pim\Bundle\CatalogBundle\Helper\LocaleHelper'              => [
+        // LocaleHelper should be simplified and moved to LocalizationBundle
+        'Pim\Bundle\UserBundle\Context\UserContext',
+    ],
+    'Pim\Bundle\CatalogBundle\Repository'                       => [
+        // CatalogBundle repository interfaces should not rely on an EnrichBundle DataTransformer interface,
+        // this enrich interface is not even related to UI and should be moved
+        'Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface',
+        // CatalogBundle repository interfaces should not rely on a UIBundle repository interface, this ui
+        // interface should be moved
+        'Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface',
+    ],
+    // CatalogBundle MongoDB normalizers should not use a TransformBundle normalizer, will be better to
+    // duplicate code or extract
+    'Pim\Bundle\CatalogBundle\MongoDB\Normalizer'               => [
+        'Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer',
+    ],
+];
+
+$config = new Configuration($rules, $finder);
+
+return $config;

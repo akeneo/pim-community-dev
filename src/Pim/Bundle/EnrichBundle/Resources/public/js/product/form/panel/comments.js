@@ -16,13 +16,13 @@ define(
         'pim/user-context',
         'text!pim/template/product/panel/comments',
         'routing',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/dialog'
     ],
-    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger) {
+    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
-            code: 'history',
             comments: [],
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
@@ -45,11 +45,11 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.configured) {
-                    return;
+                if (!this.configured || this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
                 }
 
-                this.loadData().done(_.bind(function (data) {
+                this.loadData().done(function (data) {
                     this.comments = data;
 
                     this.$el.html(
@@ -59,7 +59,7 @@ define(
                         })
                     );
                     this.delegateEvents();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -68,7 +68,7 @@ define(
                     Routing.generate(
                         'pim_enrich_product_comments_rest_get',
                         {
-                            id: this.getData().meta.id
+                            id: this.getFormData().meta.id
                         }
                     )
                 );
@@ -89,26 +89,33 @@ define(
             saveComment: function () {
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getData().meta.id }),
+                    url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getFormData().meta.id }),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
-                }).done(_.bind(function () {
+                }).done(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
                 });
             },
             removeComment: function (event) {
+                Dialog.confirm(
+                    _.__('confirmation.remove.comment'),
+                    _.__('pim_enrich.confirmation.delete_item'),
+                    this.doRemove.bind(this, event)
+                );
+            },
+            doRemove: function (event) {
                 $.ajax({
                     url: Routing.generate('pim_comment_comment_delete', { id: event.currentTarget.dataset.commentId }),
                     type: 'POST',
                     headers: { accept: 'application/json' },
                     data: { _method: 'DELETE' }
-                }).done(_.bind(function () {
+                }).done(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
                 });
             },
@@ -120,17 +127,17 @@ define(
                     url: Routing.generate(
                         'pim_enrich_product_comment_reply_rest_post',
                         {
-                            id: this.getData().meta.id,
+                            id: this.getFormData().meta.id,
                             commentId: $thread.data('comment-id')
                         }
                     ),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': $thread.find('textarea').val()})
-                }).done(_.bind(function () {
+                }).done(function () {
                     $thread.find('textarea').val('');
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
                 });
             }

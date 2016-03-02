@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
 use Prophecy\Argument;
 
@@ -61,12 +61,13 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $mobile->getCode()->willReturn('mobile');
         $ecommercereq->getAttribute()->willReturn($name);
 
-        $result = $this->normalize($family)->shouldReturn(
+        $this->normalize($family)->shouldReturn(
             [
-                'code'             => 'mugs',
-                'attributes'       => ['name', 'price'],
-                'attributeAsLabel' => 'name',
-                'requirements'     => ['ecommerce' => ['name'], 'mobile' => []],
+                'code'                   => 'mugs',
+                'attributes'             => ['name', 'price'],
+                'attribute_as_label'     => 'name',
+                'requirements-ecommerce' => ['name'],
+                'requirements-mobile'    => [],
             ]
         );
     }

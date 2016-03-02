@@ -4,6 +4,7 @@ Feature: Browse imports
   As a product manager
   I need to be able to view a list of them
 
+  @ce
   Scenario: Successfully view, sort and filter import jobs
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"

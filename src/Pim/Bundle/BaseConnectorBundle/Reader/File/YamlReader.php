@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,7 +42,7 @@ class YamlReader extends FileReader implements
      * @var bool
      *
      * @Assert\Type(type="bool")
-     * @Assert\True(groups={"UploadExecution"})
+     * @Assert\IsTrue(groups={"UploadExecution"})
      */
     protected $uploadAllowed = false;
 
@@ -168,14 +168,14 @@ class YamlReader extends FileReader implements
      */
     public function getUploadedFileConstraints()
     {
-        return array(
+        return [
             new Assert\NotBlank(),
             new AssertFile(
-                array(
-                    'allowedExtensions' => array('yml', 'yaml')
-                )
+                [
+                    'allowedExtensions' => ['yml', 'yaml']
+                ]
             )
-        );
+        ];
     }
 
     /**
@@ -204,7 +204,7 @@ class YamlReader extends FileReader implements
             $this->yaml->next();
 
             if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read');
+                $this->stepExecution->incrementSummaryInfo('read_lines');
             }
 
             return $data;
@@ -220,7 +220,7 @@ class YamlReader extends FileReader implements
      */
     protected function getFileData()
     {
-        $fileData = current(Yaml::parse($this->filePath));
+        $fileData = current(Yaml::parse(file_get_contents($this->filePath)));
 
         foreach ($fileData as $key => $row) {
             if ($this->codeField && !isset($row[$this->codeField])) {
@@ -228,7 +228,7 @@ class YamlReader extends FileReader implements
             }
         }
 
-        return $this->multiple ? array($fileData) : $fileData;
+        return $this->multiple ? [$fileData] : $fileData;
     }
 
     /**
@@ -237,19 +237,19 @@ class YamlReader extends FileReader implements
     public function getConfigurationFields()
     {
         return [
-            'filePath' => array(
-                'options' => array(
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_base_connector.import.yamlFilePath.label',
                     'help'  => 'pim_base_connector.import.yamlFilePath.help'
-                )
-            ),
-            'uploadAllowed' => array(
+                ]
+            ],
+            'uploadAllowed' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.uploadAllowed.label',
                     'help'  => 'pim_base_connector.import.uploadAllowed.help'
-                )
-            ),
+                ]
+            ],
         ];
     }
 

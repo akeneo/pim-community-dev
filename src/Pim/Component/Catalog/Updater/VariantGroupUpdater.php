@@ -6,11 +6,11 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Updates and validates a variant group
@@ -92,7 +92,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         if (!$variantGroup instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($variantGroup)
                 )
             );
@@ -211,6 +211,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $originalValues = $template->getValuesData();
         $mergedValuesData = $this->mergeValuesData($originalValues, $newValues);
         $mergedValues = $this->transformArrayToValues($mergedValuesData);
+        $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
 
         $template->setValues($mergedValues);
         $template->setValuesData($mergedValuesData);
@@ -299,5 +300,29 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $originalValues;
+    }
+
+    /**
+     * Replace media local paths by stored paths in the merged values data as
+     * the file has already been stored during the construction of the product values
+     * (in the method transformArrayToValues).
+     *
+     * @param Collection $mergedValues
+     * @param array      $mergedValuesData
+     *
+     * @return array
+     */
+    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
+    {
+        foreach ($mergedValues as $value) {
+            if (null !== $value->getMedia()) {
+                $attributeCode = $value->getAttribute()->getCode();
+                foreach ($mergedValuesData[$attributeCode] as $index => $data) {
+                    $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
+                }
+            }
+        }
+
+        return $mergedValuesData;
     }
 }

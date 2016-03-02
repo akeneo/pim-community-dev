@@ -11,7 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Product edit form type
@@ -83,9 +83,9 @@ class ProductEditType extends AbstractType
             ->add(
                 'associations',
                 'collection',
-                array(
+                [
                     'type' => 'pim_enrich_association'
-                )
+                ]
             )
             ->get('associations')
             ->addEventSubscriber(new BindAssociationTargetsSubscriber());
@@ -106,12 +106,12 @@ class ProductEditType extends AbstractType
             ->add(
                 'categories',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => $this->categoryClass,
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
-                )
+                ]
             );
 
         foreach ($this->subscribers as $subscriber) {
@@ -122,13 +122,13 @@ class ProductEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'enable_family' => true,
                 'enable_state'  => true
-            )
+            ]
         );
     }
 

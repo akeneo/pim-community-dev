@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * User group repository
@@ -23,7 +23,7 @@ class GroupRepository extends BaseGroupRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('name' => $code));
+        return $this->findOneBy(['name' => $code]);
     }
 
     /**
@@ -63,6 +63,6 @@ class GroupRepository extends BaseGroupRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('name');
+        return ['name'];
     }
 }

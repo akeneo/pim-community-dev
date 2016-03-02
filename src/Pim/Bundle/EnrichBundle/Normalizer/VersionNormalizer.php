@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -28,21 +29,31 @@ class VersionNormalizer implements NormalizerInterface
     /** @var array */
     protected $authorCache = [];
 
+    /** @var PresenterInterface */
+    protected $datetimePresenter;
+
     /**
      * @param UserManager         $userManager
      * @param TranslatorInterface $translator
+     * @param PresenterInterface  $datetimePresenter
      */
-    public function __construct(UserManager $userManager, TranslatorInterface $translator)
-    {
-        $this->userManager = $userManager;
-        $this->translator  = $translator;
+    public function __construct(
+        UserManager $userManager,
+        TranslatorInterface $translator,
+        PresenterInterface $datetimePresenter
+    ) {
+        $this->userManager       = $userManager;
+        $this->translator        = $translator;
+        $this->datetimePresenter = $datetimePresenter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = array())
+    public function normalize($version, $format = null, array $context = [])
     {
+        $context = ['locale' => $this->translator->getLocale()];
+
         return [
             'id'           => $version->getId(),
             'author'       => $this->normalizeAuthor($version->getAuthor()),
@@ -51,7 +62,7 @@ class VersionNormalizer implements NormalizerInterface
             'changeset'    => $version->getChangeset(),
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
-            'logged_at'    => $version->getLoggedAt()->format('Y-m-d H:i:s'),
+            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $context),
             'pending'      => $version->isPending()
         ];
     }

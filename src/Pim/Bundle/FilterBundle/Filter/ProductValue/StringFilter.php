@@ -19,7 +19,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 class StringFilter extends OroStringFilter
 {
     /** @var array */
-    protected $operatorTypes = array(
+    protected $operatorTypes = [
         TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
         TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
         TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
@@ -27,7 +27,7 @@ class StringFilter extends OroStringFilter
         TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
         FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
         FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -59,22 +59,24 @@ class StringFilter extends OroStringFilter
      */
     protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
     {
-        if (!is_array($data)
-            || !array_key_exists('value', $data)
-            || !array_key_exists('type', $data)
-            || (!$data['value'] && FilterType::TYPE_EMPTY !== $data['type'])) {
+        if (!is_array($data) || !array_key_exists('value', $data) || !array_key_exists('type', $data)) {
             return false;
         }
-        $data['value'] = preg_quote($data['value']);
 
-        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        if (FilterType::TYPE_EMPTY === $data['type']) {
+            $data['value'] = '';
 
-        if ('in' === $data['type']) {
-            $data['value'] = explode(',', $data['value']);
+            return $data;
         }
 
-        if ('empty' === $data['type']) {
-            $data['value'] = '';
+        $data['value'] = preg_quote($data['value']);
+
+        if (null === $data['value'] || '' === $data['value']) {
+            return false;
+        }
+
+        if (FilterType::TYPE_IN_LIST === $data['type']) {
+            $data['value'] = explode(',', $data['value']);
         }
 
         return $data;
@@ -100,7 +102,7 @@ class StringFilter extends OroStringFilter
     protected function getOperator($type)
     {
         if (!isset($this->operatorTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Operator %s is not supported', $type));
+            throw new \InvalidArgumentException(sprintf('Operator %s is not supported', $type));
         }
 
         return $this->operatorTypes[$type];

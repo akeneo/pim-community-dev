@@ -1,9 +1,9 @@
 define(
-    ['backbone', 'oro/messenger'],
-    function (Backbone, messenger) {
+    ['jquery', 'underscore', 'backbone', 'oro/messenger'],
+    function ($, _, Backbone, messenger) {
         'use strict';
 
-        var ExportWidget = Backbone.View.extend({
+        return Backbone.View.extend({
 
             action: null,
 
@@ -12,11 +12,20 @@ define(
             },
 
             run: function () {
-                $.ajax(this.action.getLinkWithParameters());
-                messenger.notificationFlashMessage('success', _.__('pim.grid.mass_action.quick_export.launched'));
+                $.get(this.action.getLinkWithParameters())
+                    .done(function () {
+                        messenger.notificationFlashMessage(
+                            'success',
+                            _.__('pim.grid.mass_action.quick_export.launched')
+                        );
+                    })
+                    .error(function (jqXHR) {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            _.__(jqXHR.responseText)
+                        );
+                    });
             }
         });
-
-        return ExportWidget;
     }
 );

@@ -10,10 +10,10 @@ Feature: Update family fields
       | tshirt1                          |
       | tshirt2                          |
     And the following families:
-      | code  |
-      | shirt |
-      | mug   |
-      | tv    |
+      | code  | requirements-ecommerce | requirements-mobile |
+      | shirt | sku                    | sku                 |
+      | mug   | sku                    | sku                 |
+      | tv    | sku                    | sku                 |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                                                           | result              |
       | tshirt1 | [{"type": "set_data", "field": "family", "data": "shirt"}]                                                        | {"family": "shirt"} |

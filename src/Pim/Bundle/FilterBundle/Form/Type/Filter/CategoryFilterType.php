@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\FilterBundle\Form\Type\CategoryType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Category filter type
@@ -43,21 +43,21 @@ class CategoryFilterType extends NumberFilterType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = array(
+        $choices = [
             self::EXCLUDE_SUB => 0,
             self::INCLUDE_SUB => 1
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'        => CategoryType::NAME,
                 'operator_choices'  => $choices,
                 'empty_value'       => self::EXCLUDE_SUB,
                 'data_type'         => self::DATA_INTEGER,
-                'formatter_options' => array()
-            )
+                'formatter_options' => []
+            ]
         );
     }
 }

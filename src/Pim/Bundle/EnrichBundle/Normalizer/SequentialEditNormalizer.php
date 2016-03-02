@@ -31,7 +31,7 @@ class SequentialEditNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($sequentialEdit, $format = null, array $context = array())
+    public function normalize($sequentialEdit, $format = null, array $context = [])
     {
         return ['objectSet' => $sequentialEdit->getObjectSet()];
     }

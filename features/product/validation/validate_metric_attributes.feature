@@ -22,59 +22,59 @@ Feature: Validate metric attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the negative allowed constraint of metric attribute
-    Given I change the Area to "-10 HECTARE"
+    Given I change the Area to "-10 Hectare"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the negative allowed constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Length to "-10 METER"
+    And I change the Length to "-10 Meter"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of metric attribute
-    Given I change the Area to "2.7 HECTARE"
+    Given I change the Area to "2.7 Hectare"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Length to "4.9 METER"
+    And I change the Length to "4.9 Meter"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of metric attribute
-    Given I change the Power to "-250 WATT"
+    Given I change the Power to "-250 Watt"
     And I save the product
     Then I should see validation tooltip "This value should be -200 or more."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Speed to "-7.5 YARD_PER_HOUR"
+    And I change the Speed to "-7.5 Yard per hour"
     And I save the product
     Then I should see validation tooltip "This value should be 5.5 or more."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of metric attribute
-    Given I change the Power to "10 WATT"
+    Given I change the Power to "10 Watt"
     And I save the product
     Then I should see validation tooltip "This value should be -100 or less."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
-    And I change the Speed to "111.1 YARD_PER_HOUR"
+    And I change the Speed to "111.1 Yard per hour"
     And I save the product
     Then I should see validation tooltip "This value should be 100 or less."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of metric attribute
-    Given I change the Power to "bar WATT"
+    Given I change the Power to "bar Watt"
     And I save the product
     Then I should see validation tooltip "This value should be a valid number."
     And there should be 1 error in the "Other" tab

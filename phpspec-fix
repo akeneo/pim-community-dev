@@ -2,6 +2,8 @@
 
 # PhpSpec run fix that prevent suite containing skipped example to make travis build fail
 
+touch app/config/parameters_test.yml
+
 bin/phpspec run $@
 
 PHPSPEC_CODE=$?

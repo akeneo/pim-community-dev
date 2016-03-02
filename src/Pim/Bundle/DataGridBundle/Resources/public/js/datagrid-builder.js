@@ -23,12 +23,14 @@ define(function (require) {
             percent:   'number'
         },
 
+        reservedActions = ['export', 'ajax', 'redirect', 'edit', 'delete'],
+
         helpers = {
             cellType: function (type) {
                 return type + 'Cell';
             },
             actionType: function (type) {
-                return type + 'Acton';
+                return type + 'Action';
             }
         },
 
@@ -46,6 +48,7 @@ define(function (require) {
                     options: {},
                     state: {},
                     rowActions: {},
+                    massActionsGroups: [],
                     massActions: {}
                 }, self.$el.data('metadata'));
 
@@ -79,10 +82,16 @@ define(function (require) {
                 _.each(_.values(metadata.rowActions), function (action) {
                     modules[helpers.actionType(action.type)] = moduleName(actionModuleName, action.type);
                 });
-                // mass actions
+                // default mass actions
                 if (!$.isEmptyObject(metadata.massActions)) {
                     modules[helpers.actionType('mass')] = moduleName(actionModuleName, 'mass');
                 }
+                // mass actions
+                _.each(_.values(metadata.massActions), function (massAction) {
+                    if (!_.contains(reservedActions, massAction.type)) {
+                        modules[helpers.actionType(massAction.type)] = moduleName(actionModuleName, massAction.type);
+                    }
+                });
             },
 
             /**
@@ -170,13 +179,15 @@ define(function (require) {
 
                 // mass actions
                 _.each(metadata.massActions, function (options, action) {
-                    massActions[action] = modules[helpers.actionType('mass')].extend(options);
+                    var optionType = _.contains(reservedActions, options.type) ? 'mass' : options.type;
+                    massActions[action] = modules[helpers.actionType(optionType)].extend(options);
                 });
 
                 return {
                     name: metadata.options.gridName,
                     columns: columns,
                     rowActions: rowActions,
+                    massActionsGroups: metadata.massActionsGroups,
                     massActions: massActions,
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,

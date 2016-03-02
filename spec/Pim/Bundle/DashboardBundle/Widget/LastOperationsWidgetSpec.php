@@ -4,14 +4,23 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {
-    function let(JobExecutionManager $manager, TranslatorInterface $translator)
-    {
-        $this->beConstructedWith($manager, $translator);
+    function let(
+        JobExecutionManager $manager,
+        TranslatorInterface $translator,
+        PresenterInterface $presenter,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->beConstructedWith($manager, $translator, $presenter, $tokenStorage);
     }
 
     function it_is_a_widget()
@@ -34,9 +43,16 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn([]);
     }
 
-    function it_exposes_the_last_operations_data($manager, $translator)
-    {
-        $date = new \DateTime();
+    function it_exposes_the_last_operations_data(
+        $manager,
+        $translator,
+        $presenter,
+        $tokenStorage,
+        TokenInterface $token,
+        LocaleInterface $locale,
+        UserInterface $user
+    ) {
+        $date = new \DateTime('2015-12-01');
         $operation = [
             'date'   => $date,
             'type'   => 'import',
@@ -48,9 +64,14 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $manager->getLastOperationsData(Argument::type('array'))->willReturn([$operation]);
 
         $translator->trans('pim_import_export.batch_status.' . $operation['status'])->willReturn('Completed');
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $user->getUiLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('fr_FR');
+        $presenter->present($date, ['locale' => 'fr_FR'])->willReturn('01/12/2015');
 
         $operation['statusLabel'] = 'Completed';
-        $operation['date'] = $date->format('U');
+        $operation['date'] = '01/12/2015';
         $this->getData()->shouldReturn([$operation]);
     }
 }

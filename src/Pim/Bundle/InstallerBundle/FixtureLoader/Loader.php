@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -43,9 +42,6 @@ class Loader implements LoaderInterface
     /** @var bool */
     protected $multiple;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /**
      * Constructor
      *
@@ -55,7 +51,6 @@ class Loader implements LoaderInterface
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
      * @param bool                     $multiple
-     * @param ProductManager           $productManager
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -63,8 +58,7 @@ class Loader implements LoaderInterface
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         EventDispatcherInterface $eventDispatcher,
-        $multiple,
-        MediaManager $mediaManager
+        $multiple
     ) {
         $this->objectManager = $objectManager;
         $this->doctrineCache = $doctrineCache;
@@ -72,7 +66,6 @@ class Loader implements LoaderInterface
         $this->processor = $processor;
         $this->eventDispatcher = $eventDispatcher;
         $this->multiple = $multiple;
-        $this->mediaManager = $mediaManager;
     }
 
     /**
@@ -124,7 +117,9 @@ class Loader implements LoaderInterface
      */
     protected function persistObject($object)
     {
-        if ($object instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+        //TODO: make this work without the media manager
+
+        if ($object instanceof \Pim\Component\Catalog\Model\ProductInterface) {
             $this->mediaManager->handleProductMedias($object);
         }
         $this->objectManager->persist($object);

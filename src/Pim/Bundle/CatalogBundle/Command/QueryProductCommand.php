@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class QueryProductCommand extends ContainerAwareCommand
 {
     /* @var integer */
-    const MAX_ROWS = 10;
+    const DEFAULT_PAGE_SIZE = 10;
 
     /**
      * {@inheritdoc}
@@ -56,6 +56,13 @@ class QueryProductCommand extends ContainerAwareCommand
                 false,
                 InputOption::VALUE_NONE,
                 'If defined, output the result in json format'
+            )
+            ->addOption(
+                'page-size',
+                false,
+                InputOption::VALUE_OPTIONAL,
+                'If defined, display this page',
+                self::DEFAULT_PAGE_SIZE
             );
     }
 
@@ -65,17 +72,25 @@ class QueryProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
-        $products = $this->getProducts($filters);
+        $pageSize = $input->getOption('page-size');
+        $products = $this->getProducts($filters, $pageSize);
         if (!$input->getOption('json-output')) {
-            $table = $this->buildTable($products, self::MAX_ROWS);
+            $table = $this->buildTable($products, $pageSize);
             $table->render($output);
 
             $nbProducts = count($products);
-            if ($nbProducts > self::MAX_ROWS) {
+            if ($nbProducts > $pageSize) {
                 $output->writeln(
                     sprintf(
                         '<info>%d first products on %d matching these criterias</info>',
-                        self::MAX_ROWS,
+                        $pageSize,
+                        $nbProducts
+                    )
+                );
+            } else {
+                $output->writeln(
+                    sprintf(
+                        '<info>%d products are matching these criterias</info>',
                         $nbProducts
                     )
                 );
@@ -126,9 +141,9 @@ class QueryProductCommand extends ContainerAwareCommand
         $productQueryBuilder = $this->getProductQueryBuilder();
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['locale', 'scope']);
-        $resolver->setDefaults(['locale' => null, 'scope' => null]);
+        $resolver->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['locale', 'scope'])
+            ->setDefaults(['locale' => null, 'scope' => null]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);

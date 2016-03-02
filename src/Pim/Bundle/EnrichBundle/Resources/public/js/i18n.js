@@ -1,15 +1,10 @@
 'use strict';
 
 define(
-    ['underscore'],
-    function (_) {
+    ['underscore', 'text!pim/template/i18n/flag'],
+    function (_, template) {
         return {
-            flagTemplate: _.template(
-                '<span class="flag-language">' +
-                    '<i class="flag flag-<%= country %>"></i>' +
-                    '<% if (displayLanguage) { %><span class="language"><%= language %></span><% } %>' +
-                '</span>'
-            ),
+            flagTemplate: _.template(template),
             getFlag: function (locale, displayLanguage) {
                 displayLanguage = (undefined === displayLanguage) ? true : displayLanguage;
                 if (locale) {

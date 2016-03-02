@@ -24,7 +24,7 @@
                 confirmationMessage|trans({'%name%': form.vars.value.label}),
                 removeMessage|trans
             ) }}
-            {{ elements.submitBtn() }}
+            {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
         {% set left %}

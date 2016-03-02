@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Text attribute type
@@ -52,6 +52,6 @@ class TextType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_text';
+        return AttributeTypes::TEXT;
     }
 }

@@ -67,7 +67,7 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
     protected function getFixturePaths($fixturesOption)
     {
         if ($fixturesOption) {
-            $paths = is_array($fixturesOption) ? $fixturesOption : array($fixturesOption);
+            $paths = is_array($fixturesOption) ? $fixturesOption : [$fixturesOption];
         } else {
             $paths = [];
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {

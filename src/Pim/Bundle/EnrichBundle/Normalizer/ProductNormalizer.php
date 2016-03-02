@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -28,22 +30,37 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /** @var StructureVersionProviderInterface */
+    protected $structureVersionProvider;
+
+    /** @var FormProviderInterface */
+    protected $formProvider;
+
     /**
-     * @param NormalizerInterface $productNormalizer
-     * @param NormalizerInterface $versionNormalizer
-     * @param VersionManager      $versionManager
-     * @param LocaleManager       $localeManager
+     * @param NormalizerInterface               $productNormalizer
+     * @param NormalizerInterface               $versionNormalizer
+     * @param VersionManager                    $versionManager
+     * @param LocaleRepositoryInterface         $localeRepository
+     * @param StructureVersionProviderInterface $structureVersionProvider
+     * @param FormProviderInterface             $formProvider
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
-        LocaleManager $localeManager
+        LocaleRepositoryInterface $localeRepository,
+        StructureVersionProviderInterface $structureVersionProvider,
+        FormProviderInterface $formProvider
     ) {
-        $this->productNormalizer = $productNormalizer;
-        $this->versionNormalizer = $versionNormalizer;
-        $this->versionManager    = $versionManager;
-        $this->localeManager     = $localeManager;
+        $this->productNormalizer        = $productNormalizer;
+        $this->versionNormalizer        = $versionNormalizer;
+        $this->versionManager           = $versionManager;
+        $this->localeRepository         = $localeRepository;
+        $this->structureVersionProvider = $structureVersionProvider;
+        $this->formProvider             = $formProvider;
     }
 
     /**
@@ -56,10 +73,16 @@ class ProductNormalizer implements NormalizerInterface
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
+        $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
+        $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
+
         $normalizedProduct['meta'] = [
-            'id'      => $product->getId(),
-            'created' => $oldestLog !== null ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null,
-            'updated' => $newestLog !== null ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null
+            'form'              => $this->formProvider->getForm($product),
+            'id'                => $product->getId(),
+            'created'           => $created,
+            'updated'           => $updated,
+            'model_type'        => 'product',
+            'structure_version' => $this->structureVersionProvider->getStructureVersion()
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
@@ -82,7 +105,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $labels = [];
 
-        foreach ($this->localeManager->getActiveCodes() as $localeCode) {
+        foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
             $labels[$localeCode] = $product->getLabel($localeCode);
         }
 

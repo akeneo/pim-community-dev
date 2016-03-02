@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, mediator) {
         'use strict';
 
-        return function (elementId, hiddenCategoryId) {
+        return function (elementId, hiddenCategoryId, routes) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 return;
@@ -18,7 +18,8 @@ define(
             this.config = {
                 core: {
                     animation: 200,
-                    html_titles: true
+                    html_titles: true,
+                    strings: { loading:  _.__('jstree.loading') }
                 },
                 plugins: [
                     'themes',
@@ -42,39 +43,41 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
-                            if ((!node || (node === -1)) && treeHasProduct) {
+                            if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
+                                var selected = this.parseHiddenCategories();
                                 return Routing.generate(
-                                    'pim_enrich_product_listcategories',
+                                    routes.list_categories,
                                     {
                                         id: id,
                                         categoryId: currentTree,
                                         _format: 'json',
                                         dataLocale: dataLocale,
-                                        context: 'associate'
+                                        context: 'associate',
+                                        selected: selected
                                     }
                                 );
                             }
 
                             return Routing.generate(
-                                'pim_enrich_categorytree_children',
+                                routes.children,
                                 {
                                     _format: 'json',
                                     dataLocale: dataLocale,
                                     context: 'associate'
                                 }
                             );
-                        },
+                        }.bind(this),
                         data: function (node) {
                             var data           = {};
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
                             } else {
-                                if (!treeHasProduct) {
+                                if (!treeHasItem) {
                                     data.id = currentTree;
                                 }
                                 data.include_parent = 'true';
@@ -132,8 +135,7 @@ define(
 
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.length > 0 ? selected.split(',') : [];
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         if ($.inArray(id, selected) < 0) {
                             selected.push(id);
@@ -145,12 +147,11 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
                         }
                     }
-                });
+                }.bind(this));
 
                 $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.split(',');
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         selected.splice($.inArray(id, selected), 1);
                         selected = selected.join(',');
@@ -161,7 +162,7 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
                         }
                     }
-                });
+                }.bind(this));
             };
 
             var setLocked = function () {
@@ -193,6 +194,14 @@ define(
                 });
                 mediator.on('jstree:lock', this.lock);
                 mediator.on('jstree:unlock', this.unlock);
+            };
+
+            /**
+             * @return {Array}
+             */
+            this.parseHiddenCategories = function () {
+                var hiddenValue = $(hiddenCategoryId).val();
+                return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
             };
 
             this.init = function () {

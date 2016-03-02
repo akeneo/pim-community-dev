@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -47,14 +47,14 @@ class ConfigureHistoryGridListener
     {
         $config = $event->getConfig();
 
-        $repositoryParameters = array(
+        $repositoryParameters = [
             'objectClass' => str_replace(
                 '_',
                 '\\',
                 $this->requestParams->get(self::GRID_PARAM_CLASS, '')
             ),
             'objectId' => $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0),
-        );
+        ];
 
         $config->offsetSetByPath(
             sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::REPOSITORY_PARAMETERS_KEY),

@@ -37,11 +37,18 @@ function($, _, mediator) {
         contextSearch: true,
 
         /**
+         * Minimum width of this multiselect
+         *
+         * @property {int}
+         */
+        minimumWidth: null,
+
+        /**
          * Initialize all required properties
          */
         initialize: function(options) {
             if (!options.element) {
-                throw new Error("Select element must be defined");
+                throw new Error('Select element must be defined');
             }
             this.element = options.element;
 
@@ -68,7 +75,7 @@ function($, _, mediator) {
             // destroy DOM garbage after change page via hash-navigation
             mediator.once('hash_navigation_request:start', function() {
                 if (this.element.closest('body').length) {
-                    this.multiselect("destroy");
+                    this.multiselect('destroy');
                     this.element.hide();
                 }
             }, this);
@@ -114,32 +121,21 @@ function($, _, mediator) {
          * @return {Number}
          */
         getMinimumDropdownWidth: function() {
-            var minimumWidth = 0;
-            var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-            _.each(elements, function(element) {
-                var width = this._getTextWidth($(element).find('label'));
-                if (width > minimumWidth) {
-                    minimumWidth = width;
-                }
-            }, this);
+            if (_.isNull(this.minimumWidth)) {
+                var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
+                var margin = 26;
 
-            return minimumWidth;
-        },
+                var longestElement = _.max(elements, function (element) {
+                    var htmlContent = $(element).find('span:first').html();
+                    var length = htmlContent ? htmlContent.length : 0;
 
-        /**
-         * Get element width
-         *
-         * @param {Object} element
-         * @return {Integer}
-         * @protected
-         */
-        _getTextWidth: function(element) {
-            var html_org = element.html();
-            var html_calc = '<span>' + html_org + '</span>';
-            element.html(html_calc);
-            var width = element.find('span:first').width();
-            element.html(html_org);
-            return width;
+                    return length;
+                });
+
+                this.minimumWidth = $(longestElement).find('span:first').width() + margin;
+            }
+
+            return this.minimumWidth;
         },
 
         /**
@@ -148,7 +144,11 @@ function($, _, mediator) {
          * @return {Object}
          */
         getWidget: function() {
-            return this.multiselect('widget');
+            try {
+                return this.multiselect('widget');
+            } catch (error) {
+                return $('.ui-multiselect-menu.pimmultiselect');
+            }
         },
 
         /**
@@ -178,9 +178,10 @@ function($, _, mediator) {
          */
         updateDropdownPosition: function(button) {
             var position = button.offset();
+
             this.getWidget().css({
                 top: position.top + button.outerHeight(),
-                left: position.left
+                right: position.right
             });
         }
     };

@@ -15,7 +15,6 @@ config:
 
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
-        pim/datagrid/export-action:             pimdatagrid/js/datagrid/action/export-action
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
@@ -44,8 +43,6 @@ config:
         oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
         oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
         oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
-        oro/datagrid/datetime-formatter:        pimdatagrid/js/datagrid/formatter/datetime-formatter
-        oro/datagrid/number-formatter:          pimdatagrid/js/datagrid/formatter/number-formatter
         oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
         oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell
         oro/datagrid/select-all-header-cell:    pimdatagrid/js/datagrid/header-cell/select-all-header-cell
@@ -80,6 +77,7 @@ config:
         oro/datafilter/product_completeness-filter: pimdatagrid/js/datafilter/filter/product_completeness-filter
         oro/datafilter/ajax-choice-filter:          pimdatagrid/js/datafilter/filter/ajax-choice-filter
         oro/datafilter/select2-choice-filter:       pimdatagrid/js/datafilter/filter/select2-choice-filter
+        oro/datafilter/select2-rest-choice-filter:  pimdatagrid/js/datafilter/filter/select2-rest-choice-filter
 
         oro/datafilter/abstract-filter:             pimdatagrid/js/datafilter/filter/abstract-filter
         oro/datafilter/none-filter:                 pimdatagrid/js/datafilter/filter/none-filter
@@ -92,7 +90,13 @@ config:
         oro/datafilter/select-row-filter:           pimdatagrid/js/datafilter/filter/select-row-filter
         oro/datafilter/text-filter:                 pimdatagrid/js/datafilter/filter/text-filter
         oro/datafilter/abstract-formatter:          pimdatagrid/js/datafilter/formatter/abstract-formatter
-        oro/datafilter/number-formatter:            pimdatagrid/js/datafilter/formatter/number-formatter
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
+
+        pim/template/datagrid/action-launcher-button:           pimdatagrid/templates/datagrid/action-launcher-button.html
+        pim/template/datagrid/action-launcher-list-item:        pimdatagrid/templates/datagrid/action-launcher-list-item.html
+        pim/template/datagrid/actions-group:                    pimdatagrid/templates/datagrid/actions-group.html
+        pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
+        pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html
+        pim/template/datagrid/filter/date-filter:               pimdatagrid/templates/filter/date-filter.html

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,16 +18,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class JobExecutionArchivist implements EventSubscriberInterface
 {
     /** @var array */
-    protected $archivers = array();
+    protected $archivers = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade',
-        );
+        ];
     }
 
     /**
@@ -77,7 +77,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $result = array();
+        $result = [];
 
         if (!$jobExecution->isRunning()) {
             foreach ($this->archivers as $archiver) {
@@ -99,7 +99,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Gaufrette\Stream
+     * @return resource
      */
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {

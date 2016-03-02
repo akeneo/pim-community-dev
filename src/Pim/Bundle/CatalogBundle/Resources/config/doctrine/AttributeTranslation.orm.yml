@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

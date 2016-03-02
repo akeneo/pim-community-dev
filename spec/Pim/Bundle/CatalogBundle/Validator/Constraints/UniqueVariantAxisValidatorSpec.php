@@ -3,15 +3,16 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 {
@@ -31,9 +32,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         UniqueVariantAxis $uniqueVariantAxisConstraint
     ) {
-        $product->getGroups()->willReturn(null);
+        $product->getVariantGroup()->willReturn(null);
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $uniqueVariantAxisConstraint);
@@ -47,7 +48,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $notVariantGroup->getType()->willReturn($groupTypeInterface);
         $groupTypeInterface->isVariant()->willReturn(false);
-        $context->addViolation(Argument::cetera())
+        $context->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($notVariantGroup, $uniqueVariantAxisConstraint);
@@ -89,7 +90,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $tShirtVariantGroup->getLabel()->willReturn('Groupe TShirt');
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($tShirtVariantGroup, $uniqueVariantAxisConstraint);
@@ -105,7 +106,8 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $colorProductValue,
-        UniqueVariantAxis $uniqueVariantAxisConstraint
+        UniqueVariantAxis $uniqueVariantAxisConstraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $tShirtGroupType->isVariant()->willReturn(true);
 
@@ -126,13 +128,14 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $tShirtVariantGroup->getLabel()->willReturn('Groupe TShirt');
 
-        $context->addViolation(
+        $context->buildViolation(
             'Group "%variant group%" already contains another product with values "%values%"',
             [
                 '%variant group%' => 'Groupe TShirt',
                 '%values%' => 'size: XL, color: Red',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()
+        ->willReturn($violation);
 
         $this->validate($tShirtVariantGroup, $uniqueVariantAxisConstraint);
     }
@@ -142,10 +145,10 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         UniqueVariantAxis $uniqueVariantAxisConstraint
     ) {
-        $product->getGroups()->willReturn(null);
+        $product->getVariantGroup()->willReturn(null);
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $uniqueVariantAxisConstraint);
@@ -156,15 +159,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $productRepository,
         GroupInterface $tShirtVariantGroup,
         GroupTypeInterface $tShirtGroupType,
-        GroupInterface $clothesVariantGroup,
-        GroupTypeInterface $clothesGroupType,
         ProductInterface $redTShirtProduct,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $redColorProductValue,
-        ProductInterface $pinkTShirtProduct,
-        ProductValueInterface $pinkColorProductValue,
         UniqueVariantAxis $uniqueVariantAxisConstraint
     ) {
         $tShirtVariantGroup->getId()->willReturn(1);
@@ -173,27 +172,17 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $tShirtGroupType->isVariant()->willReturn(true);
         $tShirtVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
 
-        $clothesVariantGroup->getId()->willReturn(2);
-        $clothesVariantGroup->getLabel()->willReturn('Clothes');
-        $clothesVariantGroup->getType()->willReturn($clothesGroupType);
-        $clothesGroupType->isVariant()->willReturn(true);
-        $clothesVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
-
         $sizeAttribute->getCode()->willReturn('size');
+        $sizeAttribute->isBackendTypeReferenceData()->willReturn(false);
         $colorAttribute->getCode()->willReturn('color');
+        $colorAttribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $redTShirtProduct->getGroups()->willReturn([$tShirtVariantGroup, $clothesVariantGroup]);
+        $redTShirtProduct->getVariantGroup()->willReturn($tShirtVariantGroup);
         $redTShirtProduct->getId()->willReturn(1);
         $redTShirtProduct->getValue('size')->willReturn($sizeProductValue);
         $redTShirtProduct->getValue('color')->willReturn($redColorProductValue);
         $sizeProductValue->getOption()->willReturn('XL');
         $redColorProductValue->getOption()->willReturn('Red');
-
-        $pinkTShirtProduct->getGroups()->willReturn([$clothesVariantGroup]);
-        $pinkTShirtProduct->getId()->willReturn(2);
-        $pinkTShirtProduct->getValue('size')->willReturn($sizeProductValue);
-        $pinkTShirtProduct->getValue('color')->willReturn($pinkColorProductValue);
-        $pinkColorProductValue->getOption()->willReturn('Pink');
 
         $criteria =
             [
@@ -207,10 +196,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             ];
 
-        $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
-        $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([]);
+        $productRepository->findProductIdsForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
 
-        $context->addViolation()->shouldNotBeCalled(Argument::cetera());
+        $context->buildViolation()->shouldNotBeCalled(Argument::cetera());
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }
@@ -219,68 +207,64 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $context,
         $productRepository,
         GroupInterface $tShirtVariantGroup,
-        GroupTypeInterface $tShirtGroupType,
-        GroupInterface $clothesVariantGroup,
-        GroupTypeInterface $clothesGroupType,
         ProductInterface $redTShirtProduct,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $colorProductValue,
-        ProductInterface $redTShirtProduct2,
-        UniqueVariantAxis $uniqueVariantAxisConstraint
+        UniqueVariantAxis $uniqueVariantAxisConstraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
-        $redTShirtProduct->getGroups()->willReturn([$tShirtVariantGroup, $clothesVariantGroup]);
+        $redTShirtProduct->getVariantGroup()->willReturn($tShirtVariantGroup);
 
         $tShirtVariantGroup->getId()->willReturn(1);
         $tShirtVariantGroup->getLabel()->willReturn('TShirts');
-        $tShirtVariantGroup->getType()->willReturn($tShirtGroupType);
-        $tShirtGroupType->isVariant()->willReturn(true);
         $tShirtVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
 
-        $clothesVariantGroup->getId()->willReturn(2);
-        $clothesVariantGroup->getLabel()->willReturn('Clothes');
-        $clothesVariantGroup->getType()->willReturn($clothesGroupType);
-        $clothesGroupType->isVariant()->willReturn(true);
-        $clothesVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
-
         $sizeAttribute->getCode()->willReturn('size');
+        $sizeAttribute->isBackendTypeReferenceData()->willReturn(true);
+        $sizeAttribute->getReferenceDataName()->willReturn('ref_size');
         $colorAttribute->getCode()->willReturn('color');
+        $colorAttribute->isBackendTypeReferenceData()->willReturn(true);
+        $colorAttribute->getReferenceDataName()->willReturn('ref_color');
 
         $redTShirtProduct->getValue('size')->willReturn($sizeProductValue);
         $redTShirtProduct->getValue('color')->willReturn($colorProductValue);
         $redTShirtProduct->getId()->willReturn(1);
 
-        $sizeProductValue->getOption()->willReturn('XL');
-        $colorProductValue->getOption()->willReturn('Red');
-
-        $redTShirtProduct2->getGroups()->willReturn([$clothesVariantGroup]);
-        $redTShirtProduct2->getValue('size')->willReturn($sizeProductValue);
-        $redTShirtProduct2->getValue('color')->willReturn($colorProductValue);
-        $redTShirtProduct2->getId()->willReturn(2);
+        $sizeProductValue->getData()->willReturn('XL');
+        $sizeProductValue->getOption()->willReturn(null);
+        $colorProductValue->getData()->willReturn('Red');
+        $colorProductValue->getOption()->willReturn(null);
 
         $criteria =
             [
                 [
                     'attribute' => $sizeAttribute,
-                    'option' => 'XL'
+                    'referenceData' => [
+                        'name' => 'ref_size',
+                        'data' => 'XL',
+                    ]
                 ],
                 [
                     'attribute' => $colorAttribute,
-                    'option' => 'Red'
+                    'referenceData' => [
+                        'name' => 'ref_color',
+                        'data' => 'Red',
+                    ]
                 ]
             ];
 
-        $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
-        $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([$redTShirtProduct2]);
+        $productRepository->findProductIdsForVariantGroup($tShirtVariantGroup, $criteria)->shouldBeCalled()->willReturn(['id' => 1]);
 
-        $context->addViolation(
+        $context->buildViolation(
             'Group "%variant group%" already contains another product with values "%values%"',
             [
-                '%variant group%' => 'Clothes',
+                '%variant group%' => 'TShirts',
                 '%values%' => 'size: XL, color: Red',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()
+        ->willReturn($violation);
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }

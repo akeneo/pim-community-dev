@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Represents Column information
@@ -13,6 +13,8 @@ use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class ColumnInfo implements ColumnInfoInterface
 {
@@ -106,7 +108,7 @@ class ColumnInfo implements ColumnInfoInterface
                 } else {
                     throw new ColumnLabelException(
                         'The column "%column%" must contain a locale code',
-                        array('%column%' => $this->label)
+                        ['%column%' => $this->label]
                     );
                 }
             }
@@ -116,7 +118,7 @@ class ColumnInfo implements ColumnInfoInterface
                 } else {
                     throw new ColumnLabelException(
                         'The column "%column%" must contain a scope code',
-                        array('%column%' => $this->label)
+                        ['%column%' => $this->label]
                     );
                 }
             }

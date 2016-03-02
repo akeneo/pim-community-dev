@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
  * Attribute group repository interface
@@ -29,6 +29,8 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
 
     /**
      * Get the attribute group choices
+     *
+     * @deprecated only used in grid, will be removed in 1.5
      *
      * @return array
      */

@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,22 +36,40 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     /** @var string */
     protected $format;
 
+    /** @var string */
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var array */
+    protected $decimalSeparators;
+
+    /** @var string */
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
     /**
      * @param NormalizerInterface   $normalizer
      * @param DenormalizerInterface $denormalizer
+     * @param array                 $decimalSeparators
+     * @param array                 $dateFormats
      * @param string                $uploadDirectory
      * @param string                $format
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
+        array $decimalSeparators,
+        array $dateFormats,
         $uploadDirectory,
         $format
     ) {
-        $this->normalizer      = $normalizer;
-        $this->denormalizer    = $denormalizer;
-        $this->uploadDirectory = $uploadDirectory;
-        $this->format          = $format;
+        $this->normalizer        = $normalizer;
+        $this->denormalizer      = $denormalizer;
+        $this->decimalSeparators = $decimalSeparators;
+        $this->dateFormats       = $dateFormats;
+        $this->uploadDirectory   = $uploadDirectory;
+        $this->format            = $format;
     }
 
     /**
@@ -64,7 +84,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
             $this->format,
             [
                 'with_variant_group_values' => true,
-                'identifier'                => $item->getCode()
+                'identifier'                => $item->getCode(),
+                'decimal_separator'         => $this->decimalSeparator,
+                'date_format'               => $this->dateFormat,
             ]
         );
 
@@ -76,7 +98,68 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      */
     public function getConfigurationFields()
     {
-        return [];
+        return [
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->decimalSeparators,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->dateFormats,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.dateFormat.label',
+                    'help'     => 'pim_base_connector.export.dateFormat.help'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the date format for date fields
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the date format for date fields
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
     }
 
     /**
@@ -119,7 +202,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      *
      * @param ProductTemplateInterface|null $template
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface[]
      */
     protected function getProductTemplateMediaValues(ProductTemplateInterface $template = null)
     {
@@ -131,7 +214,10 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
 
         return $values->filter(
             function ($value) {
-                return in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file']);
+                return in_array(
+                    $value->getAttribute()->getAttributeType(),
+                    [AttributeTypes::IMAGE, AttributeTypes::FILE]
+                );
             }
         )->toArray();
     }

@@ -19,10 +19,25 @@ class Show extends JobShow
     protected $path = '/spread/export/{id}';
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Export now button' => ['css' => '.navbar-buttons .export-btn'],
+            ]
+        );
+    }
+
+    /**
      * Click the job execution link
      */
     public function execute()
     {
-        $this->clickLink('Export now');
+        $this->getElement('Export now button')->click();
     }
 }

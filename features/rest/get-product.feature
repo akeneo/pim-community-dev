@@ -9,18 +9,15 @@ Feature: Expose product data via a REST API
       | sku     | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD | categories      |
       | sandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | 2014_collection |
 
-  @skip
   Scenario: Fail to authenticate an anonymous user
     Given I send a GET request to "api/rest/products/sandals.json"
     Then the response code should be 401
 
-  @skip
   Scenario: Successfully authenticate a user
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I send a GET request to "api/rest/products/sandals.json"
     Then the response code should be 200
 
-  @skip
   Scenario: Successfully retrieve a product
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "sandals"
@@ -31,22 +28,23 @@ Feature: Expose product data via a REST API
     {
       "family":null,
       "groups":[],
+      "variant_group":null,
       "categories":["2014_collection"],
       "enabled":true,
       "associations":[],
       "values": {
         "sku":[
-          {"locale":null,"scope":null,"value":"sandals"}
+          {"locale":null,"scope":null,"data":"sandals"}
         ],
         "name":[
-          {"locale":"en_US","scope":null,"value":"My sandals"}
+          {"locale":"en_US","scope":null,"data":"My sandals"}
         ],
         "description":[
-          {"locale":"en_US","scope":"mobile","value":"My great sandals"},
-          {"locale":"en_US","scope":"tablet","value":"My great new sandals"}
+          {"locale":"en_US","scope":"mobile","data":"My great sandals"},
+          {"locale":"en_US","scope":"tablet","data":"My great new sandals"}
         ],
         "price":[
-          {"locale":null,"scope":null,"value":[
+          {"locale":null,"scope":null,"data":[
             {"data":"20.00","currency":"EUR"},
             {"data":"30.00","currency":"USD"}
           ]}

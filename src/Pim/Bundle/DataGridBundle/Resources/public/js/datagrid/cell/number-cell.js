@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
-    function(_, Backgrid, NumberFormatter) {
+define(['underscore', 'backgrid'],
+    function(_, Backgrid) {
         'use strict';
 
         /**
@@ -11,29 +11,8 @@ define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
          * @extends Backgrid.NumberCell
          */
         return Backgrid.NumberCell.extend({
-            /** @property {oro.datagrid.NumberFormatter} */
-            formatterPrototype: NumberFormatter,
-
             /** @property {String} */
             style: 'decimal',
-
-            /**
-             * @inheritDoc
-             */
-            initialize: function (options) {
-                _.extend(this, options);
-                Backgrid.Cell.prototype.initialize.apply(this, arguments);
-                this.formatter = this.createFormatter();
-            },
-
-            /**
-             * Creates number cell formatter
-             *
-             * @return {oro.datagrid.NumberFormatter}
-             */
-            createFormatter: function() {
-                return new this.formatterPrototype({style: this.style});
-            },
 
             /**
              * @inheritDoc

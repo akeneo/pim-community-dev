@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Resolves expected values for attributes
@@ -45,12 +45,17 @@ class AttributeValuesResolver
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys
      *
-     * @param AttributeInterface[] $attributes
+     * @param AttributeInterface[] $attributes Attributes to resolve
+     * @param ChannelInterface[]   $channels   Context channels (all channels by default)
+     * @param LocaleInterface[]    $locales    Context locales (all locales by default)
      *
      * @return array:array
      */
-    public function resolveEligibleValues(array $attributes)
+    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null)
     {
+        $this->channels = $channels;
+        $this->locales  = $locales;
+
         $values = [];
         foreach ($attributes as $attribute) {
             $requiredValues = [];

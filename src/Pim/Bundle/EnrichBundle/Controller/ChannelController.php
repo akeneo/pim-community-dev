@@ -4,23 +4,19 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Channel controller
@@ -29,8 +25,17 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelController extends AbstractDoctrineController
+class ChannelController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var Form */
     protected $channelForm;
 
@@ -43,69 +48,50 @@ class ChannelController extends AbstractDoctrineController
     /** @var BulkSaverInterface */
     protected $localeSaver;
 
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param HandlerInterface         $channelHandler
-     * @param Form                     $channelForm
-     * @param RemoverInterface         $channelRemover
-     * @param BulkSaverInterface       $localeSaver
+     * @param Request                    $request
+     * @param RouterInterface            $router
+     * @param TranslatorInterface        $translator
+     * @param HandlerInterface           $channelHandler
+     * @param Form                       $channelForm
+     * @param RemoverInterface           $channelRemover
+     * @param BulkSaverInterface         $localeSaver
+     * @param ChannelRepositoryInterface $channelRepository
      */
     public function __construct(
         Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         HandlerInterface $channelHandler,
         Form $channelForm,
         RemoverInterface $channelRemover,
-        BulkSaverInterface $localeSaver
+        BulkSaverInterface $localeSaver,
+        ChannelRepositoryInterface $channelRepository
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->channelForm    = $channelForm;
-        $this->channelHandler = $channelHandler;
-        $this->channelRemover = $channelRemover;
-        $this->localeSaver    = $localeSaver;
+        $this->request           = $request;
+        $this->router            = $router;
+        $this->translator        = $translator;
+        $this->channelForm       = $channelForm;
+        $this->channelHandler    = $channelHandler;
+        $this->channelRemover    = $channelRemover;
+        $this->localeSaver       = $localeSaver;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
      * List channels
-     *
-     * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_channel_index")
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -136,16 +122,14 @@ class ChannelController extends AbstractDoctrineController
     public function editAction(Channel $channel)
     {
         if ($this->channelHandler->process($channel)) {
-            $this->addFlash('success', 'flash.channel.saved');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.channel.saved'));
 
-            return $this->redirect(
-                $this->generateUrl('pim_enrich_channel_edit', array('id' => $channel->getId()))
+            return new RedirectResponse(
+                $this->router->generate('pim_enrich_channel_edit', ['id' => $channel->getId()])
             );
         }
 
-        return array(
-            'form' => $this->channelForm->createView(),
-        );
+        return ['form' => $this->channelForm->createView()];
     }
 
     /**
@@ -160,23 +144,18 @@ class ChannelController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, Channel $channel)
     {
-        $channelCount = $this->getRepository('PimCatalogBundle:Channel')->countAll();
+        // TODO This validation should be moved to a validator and that validation triggered by the remover
+        $channelCount = $this->channelRepository->countAll();
         if ($channelCount <= 1) {
-            throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));
+            throw new DeleteException($this->translator->trans('flash.channel.not removable'));
         }
-
-        foreach ($channel->getLocales() as $locale) {
-            $locale->removeChannel($channel);
-        }
-        $locales = ($channel->getLocales()) ? $channel->getLocales()->toArray() : [];
-        $this->localeSaver->saveAll($locales);
 
         $this->channelRemover->remove($channel);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_enrich_channel_index'));
+            return new RedirectResponse($this->router->generate('pim_enrich_channel_index'));
         }
     }
 }

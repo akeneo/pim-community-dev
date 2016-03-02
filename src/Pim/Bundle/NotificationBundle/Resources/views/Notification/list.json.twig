@@ -1,11 +1,24 @@
 {% set notifications = [] %}
 {% for item in userNotifications %}
+    {% if item.notification.context.gridParameters is defined and item.notification.route is not null %}
+        {% set generatedUrl = path(item.notification.route) ~ '|g/' ~ item.notification.context.gridParameters %}
+    {% elseif item.notification.route is not null %}
+        {% set generatedUrl = path(item.notification.route, item.notification.routeParams) %}
+    {% else %}
+        {% set generatedUrl = null %}
+    {% endif %}
+
     {% set notifications = notifications|merge([{
         id: item.id,
         type: item.notification.type,
         message: item.notification.message|trans(item.notification.messageParams),
         viewed: item.viewed,
-        url: item.notification.route ? path(item.notification.route, item.notification.routeParams) : null
+        url: generatedUrl,
+        createdAt: item.notification.created|date("Y-m-d H:i:s"),
+        actionType: item.notification.context.actionType ? item.notification.context.actionType : null,
+        actionTypeMessage: item.notification.context.actionType ? item.notification.context.actionType|trans : null,
+        showReportButton: item.notification.context.showReportButton is defined ? item.notification.context.showReportButton : true,
+        comment: item.notification.comment ? item.notification.comment : null
     }]) %}
 {% endfor %}
 {% set data = { notifications: notifications, unreadCount: notification_count() } %}

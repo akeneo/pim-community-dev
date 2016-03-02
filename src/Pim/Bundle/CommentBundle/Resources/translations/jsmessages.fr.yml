@@ -1,9 +1,10 @@
 btn:
   post: Ajouter un nouveau commentaire
   reply: Répondre
+  cancel: Annuler
 confirmation:
   remove:
-    comment: Voulez-vous vraiment supprimer ce commentaire ?
+    comment: Voulez-vous vraiment supprimer ce commentaire?
 flash:
   comment:
     create:
@@ -17,9 +18,9 @@ flash:
       error: "Une erreur s'est produite lors de la création de votre réponse."
 comment:
   index:
-    empty: Aucun commentaire trouvé.
+    empty: "Aucun commentaire pour l'instant"
   placeholder:
     new: Ajouter un nouveau commentaire...
     reply: Répondre à ce commentaire...
 pim_comment:
-  product.tab.comment.title: Commentaires
+  product.panel.comment.title: Commentaires

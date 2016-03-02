@@ -79,7 +79,6 @@ class SetProductsSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args,
         ClassMetadata $metadata,
         \ReflectionClass $reflClass,
-        LifecycleEventArgs $args,
         InvalidProductsAware $entity
     ) {
         $args->getEntity()->willReturn($entity);

@@ -5,10 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -53,20 +53,22 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
                 )
             );
         }
 
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_SAVE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute));
+
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($attribute);
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_SAVE, new GenericEvent($attribute));
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
     }
 
     /**
@@ -77,6 +79,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (empty($attributes)) {
             return;
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes));
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
@@ -89,5 +93,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes));
     }
 }

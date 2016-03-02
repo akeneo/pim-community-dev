@@ -8,12 +8,14 @@
     {{ parent() }}
 
     {{ JSFV(form) }}
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operationAlias })) }) }}
+    {{ form_start(form, {'attr': {'class': operationAlias}, 'action': path('pim_enrich_mass_edit_action_perform', queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
         <div class="row">
             <div class="offset1 span12">
                 <h3>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.label')|trans }}</h3>
-                <h4>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}</h4>
+                {% block formDescription %}
+                    <h4>{{ ('pim_enrich.mass_edit_action.' ~ operationAlias ~ '.description')|trans }}</h4>
+                {% endblock %}
                 <div class="pull-right">
                     {% block formTitle %}{% endblock %}
                 </div>
@@ -37,13 +39,13 @@
         </div>
 
         <div class="row offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
-            {{ elements.link('btn.next', null, {'class': ['next', 'btn-primary']}) }}
+            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
         </div>
 
         <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', null, {'class': 'cancel'}) }}
-            {{ elements.submitBtn('btn.confirm') }}
+            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.submitBtn('btn.confirm', 'ok') }}
         </div>
 
     {{ form_end(form) }}
@@ -62,6 +64,8 @@
 
                 $(function () {
                     var disableForm = function() {
+                        $('form').addClass('disabled-fields');
+
                         // Disable common fields
                         $('input, select, textarea').each(function() {
                             $(this).prop('readonly', true);
@@ -89,6 +93,8 @@
                     }
 
                     var enableForm = function() {
+                        $('form').removeClass('disabled-fields');
+
                         // Enable common fields
                         $('input, textarea').each(function() {
                             $(this).prop('readonly', false);

@@ -13,6 +13,9 @@ services:
     # Mass edit action operation registry
     pim_enrich.mass_edit_action.operation.registry:
         class: %pim_enrich.mass_edit_action.operation.registry.class%
+        arguments:
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
 
     pim_enrich.mass_edit_action.form_resolver:
         class: %pim_enrich.mass_edit_action.form_resolver.class%
@@ -39,12 +42,14 @@ services:
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
-            - '@pim_serializer'
-            - '@pim_catalog.manager.media'
-            - '@pim_catalog.manager.product_mass_action'
-            - %upload_dir%
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_localization.localizer.converter'
+            - '@pim_localization.localizer.registry'
+            - '@pim_enrich.filter.product_values_edit_data'
+            - %tmp_storage_dir%
         tags:
             -
                 name: pim_enrich.mass_edit_action

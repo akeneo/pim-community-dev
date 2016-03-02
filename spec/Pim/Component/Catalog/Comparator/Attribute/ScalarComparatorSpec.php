@@ -11,7 +11,6 @@ class ScalarComparatorSpec extends ObjectBehavior
         $this->beConstructedWith([
             'pim_catalog_date',
             'pim_catalog_identifier',
-            'pim_catalog_number',
             'pim_catalog_text',
             'pim_catalog_textarea'
         ]);
@@ -26,7 +25,6 @@ class ScalarComparatorSpec extends ObjectBehavior
     {
         $this->supports('pim_catalog_date')->shouldBe(true);
         $this->supports('pim_catalog_identifier')->shouldBe(true);
-        $this->supports('pim_catalog_number')->shouldBe(true);
         $this->supports('pim_catalog_text')->shouldBe(true);
         $this->supports('pim_catalog_textarea')->shouldBe(true);
         $this->supports('other')->shouldBe(false);

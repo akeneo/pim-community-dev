@@ -1,10 +1,10 @@
 css:
     lib:
-        - bundles/pimui/lib/bootstrap/css/bootstrap.css
+        - bundles/pimui/lib/bootstrap/css/bootstrap.less
         # - bundles/pimui/lib/bootstrap/css/bootstrap-responsive.css
         - bundles/pimui/lib/font-awesome/css/font-awesome.css
         - bundles/pimui/lib/bootstrap-switch/bootstrap.switch.css
-        - bundles/pimui/lib/bootstrap-datepicker/css/bootstrap-datepicker.css
+        - bundles/pimui/lib/bootstrap-datetimepicker/css/bootstrap-datepicker.css
         - bundles/pimui/lib/select2/select2.css
         - bundles/pimui/lib/jstree/themes/default/style.css
         - bundles/pimui/lib/slimbox2/slimbox2.css
@@ -21,7 +21,6 @@ css:
         - bundles/pimui/css/form.less
         - bundles/pimui/css/wizard.less
         - bundles/pimui/css/tree.less
-        - bundles/pimui/css/tinymce.less
         - bundles/pimui/css/dialog.less
         - bundles/pimui/css/modal.less
         - bundles/pimui/css/progress.less
@@ -29,3 +28,8 @@ css:
         - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
         - bundles/pimui/css/style.less
+        - bundles/pimui/css/tabnav.less
+        - bundles/pimui/css/buttons.less
+        - bundles/pimui/css/accordion.less
+        - bundles/pimui/css/filterbox.less
+        - bundles/pimui/css/notifications.less

@@ -6,16 +6,17 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositor
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
@@ -159,27 +160,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder('Product');
-
-        $qb
-            ->where(':variantGroup MEMBER OF Product.groups')
-            ->setParameter('variantGroup', $variantGroup);
-
-        $index = 0;
-        foreach ($criteria as $item) {
-            $code = $item['attribute']->getCode();
-            $qb
-                ->innerJoin(
-                    'Product.values',
-                    sprintf('Value_%s', $code),
-                    'WITH',
-                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$index, $code, ++$index)
-                )
-                ->setParameter($index - 1, $item['attribute'])
-                ->setParameter($index, $item['option']);
-        }
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
 
         return $qb->getQuery()->getResult();
     }
@@ -240,23 +223,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
-    {
-        $qb = $this->getFullProductQB();
-        $qb
-            ->addSelect('c, assoc, g')
-            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
-            ->leftJoin('p.categories', 'c')
-            ->leftJoin('p.associations', 'assoc')
-            ->leftJoin('p.groups', 'g')
-            ->where($qb->expr()->in('p.id', $productIds));
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
      * Get full product query builder
      *
      * @return \Doctrine\ORM\QueryBuilder
@@ -279,7 +245,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -359,7 +325,7 @@ class ProductRepository extends EntityRepository implements
 
         $qb
             ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Association',
+                'Pim\Component\Catalog\Model\Association',
                 'pa',
                 'WITH',
                 'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
@@ -385,10 +351,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $criteria = array(
+        $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
-        );
+        ];
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
 
         return (
@@ -460,6 +426,10 @@ class ProductRepository extends EntityRepository implements
         $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
         $result = $qb->getQuery()->execute();
 
+        if (empty($result)) {
+            return null;
+        }
+
         return reset($result);
     }
 
@@ -473,6 +443,10 @@ class ProductRepository extends EntityRepository implements
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
 
+        if (empty($result)) {
+            return null;
+        }
+
         return reset($result);
     }
 
@@ -485,16 +459,12 @@ class ProductRepository extends EntityRepository implements
         $qb = $productQb->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeTranslations');
         $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
-        $qb->addSelect('AGroupTranslations');
         $qb->andWhere(
             $qb->expr()->eq($rootAlias.'.id', $id)
         );
@@ -531,7 +501,7 @@ class ProductRepository extends EntityRepository implements
             ->groupBy('a.id');
 
         $attributes = $qb->getQuery()->getArrayResult();
-        $attributeIds = array();
+        $attributeIds = [];
         foreach ($attributes as $attribute) {
             $attributeIds[] = $attribute['id'];
         }
@@ -554,7 +524,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**
@@ -586,5 +556,70 @@ class ProductRepository extends EntityRepository implements
             ->getSingleScalarResult();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb->select('Product.id');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return QueryBuilder
+     */
+    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    {
+        $qb = $this->createQueryBuilder('Product');
+
+        $qb
+            ->where(':variantGroup MEMBER OF Product.groups')
+            ->setParameter('variantGroup', $variantGroup);
+
+        $index = 0;
+        foreach ($criteria as $item) {
+            $code = $item['attribute']->getCode();
+            ++$index;
+            $qb
+                ->innerJoin(
+                    'Product.values',
+                    sprintf('Value_%s', $code),
+                    'WITH',
+                    sprintf('Value_%s.attribute = ?%d', $code, $index)
+                )
+                ->setParameter($index, $item['attribute']);
+
+            if (isset($item['option'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
+                    ->setParameter($index, $item['option']);
+            } elseif (isset($item['referenceData'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
+                    ->setParameter($index, $item['referenceData']['data']);
+            }
+        }
+
+        return $qb;
     }
 }

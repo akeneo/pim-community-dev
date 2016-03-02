@@ -1,4 +1,6 @@
 # PIM
+pim_analytics:
+    resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
 
 pim_datagrid:
     resource: "@PimDataGridBundle/Resources/config/routing.yml"
@@ -30,6 +32,9 @@ pim_pdf_generator:
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
 
+pim_localization:
+    resource: "@PimLocalizationBundle/Resources/config/routing.yml"
+
 pim_reference_data:
     resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
@@ -41,9 +46,20 @@ oro_default:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
 
-oro_auto_routing:
-    resource: .
-    type:     oro_auto
+oro_user:
+    resource: "@OroUserBundle/Resources/config/oro/routing.yml"
+
+oro_config:
+    resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
+
+oro_datagrid:
+    resource: "@OroDataGridBundle/Resources/config/oro/routing.yml"
+
+oro_navigation:
+    resource: "@OroNavigationBundle/Resources/config/oro/routing.yml"
+
+oro_translation:
+    resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
 
 # other third party
 
@@ -54,9 +70,8 @@ nelmio_api_doc:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
-_imagine:
-    resource: .
-    type:     imagine
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
 _apy_jsformvalidation:
     resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

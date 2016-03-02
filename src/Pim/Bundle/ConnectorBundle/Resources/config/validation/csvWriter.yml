@@ -1,0 +1,12 @@
+Pim\Component\Connector\Writer\File\CsvWriter:
+    properties:
+        delimiter:
+            - NotBlank: ~
+            - Choice:
+                choices: [",", ";", "|"]
+                message: The value must be one of , or ; or |
+        enclosure:
+            - NotBlank: ~
+            - Choice:
+                choices: ['"', "'"]
+                message: The value must be one of " or '

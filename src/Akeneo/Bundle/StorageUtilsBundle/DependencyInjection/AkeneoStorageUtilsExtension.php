@@ -42,6 +42,7 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
 
@@ -55,7 +56,7 @@ class AkeneoStorageUtilsExtension extends Extension
      */
     public static function getSupportedStorageDrivers()
     {
-        return array(self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM);
+        return [self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM];
     }
 
     /**

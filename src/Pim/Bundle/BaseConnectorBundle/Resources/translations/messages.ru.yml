@@ -10,57 +10,78 @@ pim_base_connector:
       title: Экспорт атрибутов в CSV
       export.title: Экспорт атрибутов
     csv_attribute_option_export:
-      title: Экспорт свойств атрибутов в CSV
-      export.title: Экспорт свойств атрибутов
+      title: Экспорт выборов атрибутов в CSV
+      export.title: Экспорт выборов атрибутов
     csv_association_type_export:
       title: Экспорт типов ассоциаций в CSV
       export.title: Экспорт типов ассоциаций
     csv_group_export:
       title: Экспорт группы в CSV
       export.title: Экспорт группы
+    csv_variant_group_export:
+      title: Экспорт группы вариантов в CSV
+      export.title: Экспорт группы вариантов
+    csv_family_export:
+      title: Экспорт семейств в CSV
+      export.title: Экспорт семейств
     csv_product_import:
       title: Импорт продуктов из CSV
+      validation.title: Проверка файла
       import.title: Импорт продуктов
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
+      validation.title: Проверка файла
       import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
+      validation.title: Проверка файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
-      title: Импорт свойств атрибутов из CSV
-      import.title: Импорт параметров атрибутов
+      title: Импорт выборов атрибутов из CSV
+      validation.title: Проверка файла
+      import.title: Импорт выборов атрибутов
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
+      validation.title: Подтверждение файла
       import.title: Импорт типов ассоциаций
     csv_group_import:
       title: Импорт группы из CSV
+      validation.title: Проверка файла
       import.title: Импорт группы
+    csv_variant_group_import:
+      title: Импорт группы вариантов в CSV
+      validation.title: Проверка файла
+      import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продукта
-    entity_reader.title: Извлечение сущности
+    entity_reader.title: Извлечение объектов
     csv_reader:
       title: CSV
       invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
     csv_product_reader.title: Разбор продуктов CSV
     csv_category_reader.title: Разбор категорий CSV
+    csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
+    variant_group_processor.title: Создание / обновление группы вариантов
     category_processor.title: Создание категории
     association_processor.title: Создание ассоциации
+    product_association_processor.title: Создание ассоциации
     group_processor.title: Создание группы
     attribute_processor.title: Создание атрибутов
-    attribute_option_processor.title: Создание параметров атрибутов
+    attribute_option_processor.title: Создание выборов атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
-    homogeneous_processor.title: Сериализатор сущности в CSV
+    homogeneous_processor.title: Сериализатор объектов в CSV
     transformer_processor.title: Преобразование
     dummy_writer.title: Заглушка
     file_writer.title: Вывод в файл
     product_writer.title: Хранилище продукта
     category_writer.title: Хранилище категории
-    writer.title: Хранилище сущности
+    variant_group_writer.title: Хранилище группы вариантов
+    writer.title: Хранилище объектов
+    csv_writer.title: Записыватель Csv
   export:
     delimiter:
       label: Разделитель
@@ -77,6 +98,12 @@ pim_base_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
+    decimalSeparator:
+      label: Десятичный разделитель
+      help: Введите десятичный разделитель
+    dateFormat:
+      label: Формат даты
+      help: Введите формат даты
   import:
     enabled:
       label: Активировать продукт
@@ -92,6 +119,10 @@ pim_base_connector:
       help: Название колонки групп
     filePath:
       label: Файл
+      help: CSV-файл для импорта
+    yamlFilePath:
+      label: Файл
+      help: YAML-файл для импорта
     uploadAllowed:
       label: Разрешить загрузку файлов
       help: Разрешить загрузку файлов
@@ -110,3 +141,6 @@ pim_base_connector:
     realTimeVersioning:
       label: Обновление истории изменений в реальном времени
       help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+    copyValuesToProducts:
+      label: Копировать значения из группы вариантов в продукты
+      help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов

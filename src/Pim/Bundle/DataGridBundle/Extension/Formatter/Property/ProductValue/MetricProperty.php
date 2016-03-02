@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
 /**
  * Metric field property, able to render metric attribute type
  *
@@ -11,22 +14,32 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
  */
 class MetricProperty extends TwigProperty
 {
+    /** @var PresenterInterface */
+    protected $presenter;
+
+    /**
+     * @param \Twig_Environment   $environment
+     * @param TranslatorInterface $translator
+     * @param PresenterInterface  $presenter
+     */
+    public function __construct(
+        \Twig_Environment $environment,
+        TranslatorInterface $translator,
+        PresenterInterface $presenter
+    ) {
+        parent::__construct($environment);
+
+        $this->translator = $translator;
+        $this->presenter  = $presenter;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        $data   = isset($result['data']) ? $result['data'] : null;
-        $unit   = $result['unit'];
 
-        if ($data && $unit) {
-            return $this->getTemplate()->render(
-                array(
-                    'data' => $data,
-                    'unit' => $unit
-                )
-            );
-        }
+        return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
     }
 }

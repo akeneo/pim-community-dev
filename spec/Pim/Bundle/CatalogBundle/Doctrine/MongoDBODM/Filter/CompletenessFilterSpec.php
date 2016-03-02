@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -72,13 +72,13 @@ class CompletenessFilterSpec extends ObjectBehavior
     function it_throws_an_exception_when_the_locale_and_scope_are_not_provided()
     {
         $this
-            ->shouldThrow('Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException')
+            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
             ->duringAddFieldFilter('completenesses', '=', 100);
         $this
-            ->shouldThrow('Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException')
+            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
             ->duringAddFieldFilter('completenesses', '=', 100, null, 'ecommerce');
         $this
-            ->shouldThrow('Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException')
+            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
             ->duringAddFieldFilter('completenesses', '=', 100, 'fr_FR', null);
     }
 

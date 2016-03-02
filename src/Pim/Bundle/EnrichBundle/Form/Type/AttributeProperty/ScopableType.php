@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type related to scopable property of AttributeInterface
@@ -25,18 +25,18 @@ class ScopableType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'required'   => true,
                 'select2'    => true,
                 'empty_data' => 0,
-                'choices'    => array(
+                'choices'    => [
                     0 => 'Global',
                     1 => 'Channel'
-                )
-            )
+                ]
+            ]
         );
     }
 

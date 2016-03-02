@@ -5,7 +5,8 @@ namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Add current user
@@ -16,15 +17,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class AddUserSubscriber implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $tokenStorage
      */
-    public function __construct(SecurityContextInterface $securityContext = null)
-    {
-        $this->securityContext = $securityContext;
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage = null
+    ) {
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -44,12 +52,12 @@ class AddUserSubscriber implements EventSubscriberInterface
      */
     public function preBuild(BuildVersionEvent $event)
     {
-        if (null === $this->securityContext) {
+        if (null === $this->tokenStorage) {
             return $event;
         }
 
-        $token = $this->securityContext->getToken();
-        if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        $token = $this->tokenStorage->getToken();
+        if (null !== $token && $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $event->setUsername($token->getUser()->getUsername());
         }
 

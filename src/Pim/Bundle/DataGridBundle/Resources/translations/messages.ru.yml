@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": 'Сущность %entityHint% не существует.'
+oro_datagrid.not_found_hint: Ничего не найдено. Попробуйте изменить критерии поиска.
 oro_datagrid.label_add_filter: Управление фильтрами
 oro_datagrid.label_loading_mask: Загрузка . . .
 oro.grid.mass_action.selected_rows: Выбранные строки
@@ -12,3 +13,26 @@ oro.grid.mass_action.delete.confirm_title: Подтверждение массо
 oro.grid.mass_action.delete.confirm_content: Вы уверены, что вы хотите удалить выбранные элементы?
 oro.grid.datagrid.page_size.all: Все
 oro.grid.mass_action.delete.success_message: '{0} Ни одна сущность не была удалена|{1} Одна сущность была удалена|]1,Inf[ %count% сущностей было удалено'
+datagrid_view:
+  views: Представления
+  default: Представление по умолчанию
+  create: Создать представление
+  placeholder: Название нового представления
+  remove: Удалить это представление
+  save_changes: Сохранить представление
+  choose_label: Выберите ярлык для представления
+  columns:
+    min_message: Вы должны выбрать по крайней мере один столбец для отображения
+  label:
+    unique_message: Ярлык должен быть уникальным
+    not_blank_message: Ярлык не должен быть пустым
+confirmation.remove.datagrid view: Вы действительно хотите удалить это представление табличных данных?
+flash.datagrid view:
+  created: Представление табличных данных успешно создано
+  updated: Представление табличных данных успешно обновлено
+  removed: Представление табличных данных успешно удалено
+  not removable: У вас нет прав для удаления этого представления
+quick_export: Быстрый экспорт
+import: Импорт
+export: Экспорт
+mass_edit: Массовое редактирование

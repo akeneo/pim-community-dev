@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concrete implementation
@@ -11,6 +11,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated please use Pim\Component\Connector\Processor\DummyItemProcessor will be removed in 1.6
  */
 class DummyProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
@@ -27,6 +29,6 @@ class DummyProcessor extends AbstractConfigurableStepElement implements ItemProc
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

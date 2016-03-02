@@ -19,30 +19,26 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $reader = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface')
-            ->setMethods(array('setFilePath', 'read'))
+        $reader = $this->getMockBuilder('Akeneo\Component\Batch\Item\ItemReaderInterface')
+            ->setMethods(['setFilePath', 'read'])
             ->getMock();
-        $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $processor = $this->getMock('Akeneo\Component\Batch\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $mediaManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
-            ->disableOriginalConstructor()
-            ->getMock();
         $loader = new Loader(
             $objectManager,
             $doctrineCache,
             $reader,
             $processor,
             $eventSubscriber,
-            false,
-            $mediaManager
+            false
         );
 
         $reader->expects($this->once())
             ->method('setFilePath')
             ->with($this->equalTo('file'));
 
-        $data1 = array('code' => 'data1');
-        $data2 = array('code' => 'data2');
+        $data1 = ['code' => 'data1'];
+        $data2 = ['code' => 'data2'];
         $reader->expects($this->at(1))
             ->method('read')
             ->will($this->returnValue($data1));
@@ -76,7 +72,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockObject($id)
     {
-        $object = $this->getMock('Pim\Bundle\CatalogBundle\Model\ReferableInterface');
+        $object = $this->getMock('Pim\Component\Catalog\Model\ReferableInterface');
         $object->expects($this->any())
             ->method('getReference')
             ->will($this->returnValue($id));

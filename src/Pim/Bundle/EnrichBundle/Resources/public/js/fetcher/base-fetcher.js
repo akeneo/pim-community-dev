@@ -2,30 +2,30 @@
 'use strict';
 
 define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
-    var getObjects = function (promises) {
-        return $.when.apply($, _.toArray(promises)).then(function () {
-            return 0 !== arguments.length ? _.toArray(arguments) : [];
-        });
-    };
-
     return Backbone.Model.extend({
         entityListPromise: null,
         entityPromises: {},
+
         /**
-         * @param Array options
+         * @param {Object} options
          */
         initialize: function (options) {
             this.entityListPromise = null;
-            this.entityPromises = {};
-            this.options = options || {};
+            this.entityPromises    = {};
+            this.options           = options || {};
         },
+
         /**
          * Fetch all elements of the collection
          *
-         * @return Promise
+         * @return {Promise}
          */
         fetchAll: function () {
             if (!this.entityListPromise) {
+                if (!_.has(this.options.urls, 'list')) {
+                    return $.Deferred().reject().promise();
+                }
+
                 this.entityListPromise = $.getJSON(
                     Routing.generate(this.options.urls.list)
                 ).then(_.identity).promise();
@@ -33,20 +33,37 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             return this.entityListPromise;
         },
+
+        /**
+         * Search elements of the collection
+         *
+         * @return {Promise}
+         */
+        search: function (searchOptions) {
+            if (!_.has(this.options.urls, 'list')) {
+                return $.Deferred().reject().promise();
+            }
+
+            return this.getJSON(this.options.urls.list, searchOptions).then(_.identity).promise();
+        },
+
         /**
          * Fetch an element based on its identifier
          *
-         * @param String identifier
+         * @param {string} identifier
+         * @param {Object} options
          *
-         * @return Promise
+         * @return {Promise}
          */
-        fetch: function (identifier) {
+        fetch: function (identifier, options) {
+            options = options || {};
+
             if (!(identifier in this.entityPromises)) {
                 var deferred = $.Deferred();
 
                 if (this.options.urls.get) {
                     $.getJSON(
-                        Routing.generate(this.options.urls.get, { identifier: identifier })
+                        Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
                     }).fail(function () {
@@ -70,56 +87,83 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             return this.entityPromises[identifier];
         },
+
         /**
          * Fetch all entities for the given identifiers
          *
-         * @param Array identifiers
+         * @param {Array} identifiers
          *
-         * @return Promise
+         * @return {Promise}
          */
         fetchByIdentifiers: function (identifiers) {
-            _.each(identifiers, _.bind(function (identifier) {
-                if (identifier in this.entityPromises) {
-                    identifiers = _.without(identifiers, identifier);
-                }
-            }, this));
-
             if (0 === identifiers.length) {
-                return getObjects(this.entityPromises);
+                return $.Deferred().resolve([]).promise();
+            }
+
+            var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
+            if (0 === uncachedIdentifiers.length) {
+                return this.getObjects(_.pick(this.entityPromises, identifiers));
             }
 
             return $.when(
-                    $.getJSON(Routing.generate(this.options.urls.list, { identifiers: identifiers.join(',') }))
+                    this.getJSON(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') })
                         .then(_.identity),
                     this.getIdentifierField()
-                )
-                .then(_.bind(function (entities, identifierCode) {
-                    _.each(entities, _.bind(function (entity) {
+                ).then(function (entities, identifierCode) {
+                    _.each(entities, function (entity) {
                         this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
-                    }, this));
+                    }.bind(this));
 
-                    return getObjects(this.entityPromises);
-                }, this));
+                    return this.getObjects(_.pick(this.entityPromises, identifiers));
+                }.bind(this));
         },
+
+        /**
+         * Get the list of elements in JSON format.
+         *
+         * @param {string} url
+         * @param {Object} parameters
+         *
+         * @returns {Promise}
+         */
+        getJSON: function (url, parameters) {
+            return $.getJSON(Routing.generate(url, parameters));
+        },
+
         /**
          * Get the identifier attribute of the collection
          *
-         * @return Promise
+         * @return {Promise}
          */
         getIdentifierField: function () {
             return $.Deferred().resolve('code');
         },
+
         /**
          * Clear cache of the fetcher
          *
-         * @param String|null identifier
+         * @param {string|null} identifier
          */
         clear: function (identifier) {
             if (identifier) {
                 delete this.entityPromises[identifier];
             } else {
                 this.entityListPromise = null;
+                this.entityPromises    = {};
             }
+        },
+
+        /**
+         * Wait for promises to resolve and return the promises results wrapped in a Promise
+         *
+         * @param {Array|Object} promises
+         *
+         * @return {Promise}
+         */
+        getObjects: function (promises) {
+            return $.when.apply($, _.toArray(promises)).then(function () {
+                return 0 !== arguments.length ? _.toArray(arguments) : [];
+            });
         }
     });
 });

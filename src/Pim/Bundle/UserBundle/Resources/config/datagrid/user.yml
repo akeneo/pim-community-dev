@@ -29,9 +29,11 @@ datagrid:
                 label: oro.user.grid.users.columns.lastName
             createdAt:
                 label: oro.user.grid.users.columns.createdAt
+                type: product_value_datetime
                 frontend_type: datetime
             updatedAt:
                 label: oro.user.grid.users.columns.updatedAt
+                type: product_value_datetime
                 frontend_type: datetime
             enabled:
                 label: oro.user.grid.users.columns.enabled

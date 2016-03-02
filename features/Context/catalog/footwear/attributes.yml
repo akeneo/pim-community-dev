@@ -263,6 +263,14 @@ attributes:
         sortOrder:   10
         metricFamily: Length
         defaultMetricUnit: CENTIMETER
+    volume:
+        labels:
+            en_US: Volume
+        type: pim_catalog_metric
+        group: info
+        sortOrder: 20
+        metricFamily: Volume
+        defaultMetricUnit: CUBIC_MILLIMETER
     number_in_stock:
         labels:
             en_US: Number in stock
@@ -333,3 +341,31 @@ attributes:
             reference_data_name: fabrics
         localizable:         true
         scopable:            true
+    rate_sale:
+        labels:
+            en_US: Rate of sale
+            fr_FR: Taux de vente
+        type:  pim_catalog_number
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder:           1
+        decimalsAllowed:     true
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+        type:  pim_catalog_metric
+        group: info
+        metricFamily:      Weight
+        defaultMetricUnit: GRAM
+        negativeAllowed:   false
+        decimalsAllowed:   true
+        useableAsGridFilter: true
+        sortOrder: 30
+    123:
+        labels:
+            en_US: Attribute 123
+        type:  pim_catalog_text
+        useableAsGridFilter: true
+        group: other
+        maxCharacters: 255

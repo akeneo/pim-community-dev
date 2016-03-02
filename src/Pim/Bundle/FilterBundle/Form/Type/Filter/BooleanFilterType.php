@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Boolean filter type
@@ -41,17 +41,17 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $fieldChoices = array(
+        $fieldChoices = [
             self::TYPE_YES => $this->translator->trans('oro.filter.form.label_type_yes'),
             self::TYPE_NO  => $this->translator->trans('oro.filter.form.label_type_no'),
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
-                'field_options' => array('choices' => $fieldChoices),
-            )
+            [
+                'field_options' => ['choices' => $fieldChoices],
+            ]
         );
     }
 }

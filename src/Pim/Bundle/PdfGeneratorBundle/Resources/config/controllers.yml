@@ -6,5 +6,5 @@ services:
         scope: request
         class: %pim_pdf_generator.controller.product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
             - '@pim_pdf_generator.renderer.registry'

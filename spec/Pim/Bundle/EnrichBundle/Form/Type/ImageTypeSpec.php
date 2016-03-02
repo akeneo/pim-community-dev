@@ -4,13 +4,18 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $this->beConstructedWith('Akeneo\Component\FileStorage\Model\FileInfo');
+    }
+
+    function it_is_a_file_type()
+    {
+        $this->beAnInstanceOf('Akeneo\Bundle\FileStorageBundle\Form\Type\FileType');
     }
 
     function it_is_a_form_type()
@@ -25,7 +30,7 @@ class ImageTypeSpec extends ObjectBehavior
 
     function it_builds_form(FormBuilderInterface $builder)
     {
-        $builder->add('file', 'file', ['required' => false])->willReturn($builder);
+        $builder->add('uploadedFile', 'file', ['required' => false])->willReturn($builder);
         $builder->add(
             'removed',
             'checkbox',
@@ -41,13 +46,13 @@ class ImageTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia',
+                'data_class' => 'Akeneo\Component\FileStorage\Model\FileInfo',
             ]
         )->shouldHaveBeenCalled();
     }

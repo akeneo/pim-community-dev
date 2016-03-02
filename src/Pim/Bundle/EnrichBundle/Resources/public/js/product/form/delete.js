@@ -46,11 +46,11 @@ define(
                 Dialog.confirm(
                     _.__('confirmation.remove.product'),
                     _.__('pim_enrich.confirmation.delete_item'),
-                    _.bind(this.doDelete, this)
+                    this.doDelete.bind(this)
                 );
             },
             doDelete: function () {
-                var productId   = this.getData().meta.id;
+                var productId   = this.getFormData().meta.id;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();

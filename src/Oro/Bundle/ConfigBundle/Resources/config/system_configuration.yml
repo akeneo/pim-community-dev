@@ -1,0 +1,17 @@
+oro_system_configuration:
+    groups:
+        platform:
+            title: 'System configuration'
+            icon:  icon-hdd
+
+        general_setup:
+            title: 'General setup'
+
+    tree:
+        system_configuration:
+            platform:
+                priority: 255
+                children:
+                    general_setup:
+                        priority: 255
+                        children: []

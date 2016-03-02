@@ -15,9 +15,11 @@ datagrid:
                 label: User
             status:
                 label: Status
+                type: translateable
             started_at:
-                label: Started at
+                label: job_tracker.filter.started_at
                 data_name: startTime
+                type: product_value_datetime
                 frontend_type: datetime
         actions:
             view:
@@ -39,7 +41,7 @@ datagrid:
                 started_at:
                     data_name: startTime
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                started_at: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 type:

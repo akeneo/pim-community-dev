@@ -25,7 +25,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
-            code: 'history',
             loading: false,
             versions: [],
             actions: {},
@@ -34,85 +33,131 @@ define(
                 'click .collapse-history': 'collapseHistory',
                 'click .expanded>tbody>tr:not(.changeset)': 'toggleVersion'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('panel:register', {
                     code: this.code,
                     label: _.__('pim_enrich.form.product.panel.history.title')
                 });
 
-                mediator.on('product:action:post_update', _.bind(this.refreshHistory, this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            render: function () {
-                if (0 === this.versions.length) {
-                    this.refreshHistory();
 
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                if (this.code !== this.getParent().state.get('currentPanel')) {
                     return this;
                 }
 
-                if (this.getRoot().model.get('meta')) {
+                if (this.getFormData().meta) {
+                    this.getVersions()
+                        .then(function (versions) {
+                            this.$el.html(
+                                this.template({
+                                    versions: versions,
+                                    expanded: this.getParent().getParent().isFullPanel(),
+                                    hasAction: this.actions
+                                })
+                            );
 
-                    this.$el.html(
-                        this.template({
-                            versions: this.versions,
-                            expanded: this.getParent().getParent().state.get('fullPanel'),
-                            hasAction: this.actions
-                        })
-                    );
+                            if (this.getParent().getParent().isFullPanel() && this.actions) {
+                                _.each(this.$el.find('td.actions'), function (element) {
+                                    _.each(this.actions, function (action) {
+                                        $(element).append(action.clone(true));
+                                    }.bind(this));
+                                }.bind(this));
+                            }
 
-                    mediator.trigger('history:rendered:before');
-                    if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
-                        _.each(this.$el.find('td.actions'), _.bind(function (element) {
-                            _.each(this.actions, _.bind(function (action) {
-                                $(element).append(action.clone(true));
-                            }, this));
-                        }, this));
-                    }
-                    mediator.trigger('history:rendered:after');
+                            this.delegateEvents();
+                            this.renderExtensions();
+                            this.getParent().resize();
 
-                    this.delegateEvents();
-                    this.renderExtensions();
-                    this.getParent().resize();
+                            this.delegateEvents();
+                        }.bind(this));
+
                 }
 
                 return this;
             },
-            refreshHistory: function () {
-                if (this.loading) {
-                    return;
-                }
-                this.loading = true;
-                if (this.getRoot().model.get('meta')) {
-                    $.getJSON(
-                        Routing.generate(
-                            'pim_enrich_product_history_rest_get',
-                            {
-                                entityId: this.getData().meta.id
-                            }
-                        )
-                    ).done(_.bind(function (versions) {
-                        this.prepareVersions(versions).done(_.bind(function (versions) {
-                            this.versions = versions;
-                            this.render();
-                            this.loading = false;
-                        }, this));
-                    }, this));
-                }
-            },
-            prepareVersions: function (versions) {
-                return FetcherRegistry.getFetcher('attribute').fetchAll().then(_.bind(function (attributes) {
-                    _.each(versions, _.bind(function (version) {
-                        _.each(version.changeset, _.bind(function (data, index) {
-                            var code = index.split('-').shift();
-                            var attribute = _.findWhere(attributes, { code: code });
-                            data.label = attribute ? this.getAttributeLabel(attribute, index) : index;
-                        }, this));
-                    }, this));
 
-                    return versions;
-                }, this));
+            /**
+             * Update the history by fetching it from the backend
+             */
+            update: function () {
+                if (this.getFormData().meta) {
+                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+                }
+
+                this.render();
             },
+
+            /**
+             * Get history versions from the backend
+             *
+             * @return {Promise}
+             */
+            getVersions: function () {
+                return FetcherRegistry.getFetcher('product-history').fetch(
+                    this.getFormData().meta.id,
+                    { entityId: this.getFormData().meta.id }
+                ).then(this.addAttributesLabelToVersions.bind(this));
+            },
+
+            /**
+             * Add attributes label to all versions
+             *
+             * @param {Array} versions
+             */
+            addAttributesLabelToVersions: function (versions) {
+                var codes = this.getAttributeCodesInVersions(versions);
+
+                return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
+                    .then(function (attributes) {
+                        _.each(versions, function (version) {
+                            _.each(version.changeset, function (data, index) {
+                                var code      = index.split('-')[0];
+                                var attribute = _.findWhere(attributes, { code: code });
+                                data.label    = attribute ? this.getAttributeLabel(attribute, index) : index;
+                            }.bind(this));
+                        }.bind(this));
+
+                        return versions;
+                    }.bind(this));
+            },
+
+            /**
+             * Return the list of unique attribute codes found in all versions
+             *
+             * @param {Array} versions
+             *
+             * @returns {Array}
+             */
+            getAttributeCodesInVersions: function (versions) {
+                var codes = [];
+                _.each(versions, function (version) {
+                    _.each(version.changeset, function (data, index) {
+                        codes.push(index.split('-')[0]);
+                    });
+                });
+
+                return _.uniq(codes);
+            },
+
+            /**
+             * Get attribute label
+             *
+             * @param {object} attribute
+             * @param {string} key
+             *
+             * @return {string}
+             */
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');
                 var label    = i18n.getLabel(attribute.label, uiLocale, attribute.code);
@@ -136,17 +181,38 @@ define(
 
                 return label + info;
             },
+
+            /**
+             * Add action to the history
+             *
+             * @param {action code} code
+             * @param {DOMElement}  element
+             */
             addAction: function (code, element) {
                 this.actions[code] = element;
             },
+
+            /**
+             * Expand the history
+             */
             expandHistory: function () {
                 this.getParent().openFullPanel();
                 this.render();
             },
+
+            /**
+             * Collapse history
+             */
             collapseHistory: function () {
                 this.getParent().closeFullPanel();
                 this.render();
             },
+
+            /**
+             * Toggle history version line
+             *
+             * @param {Event} event
+             */
             toggleVersion: function (event) {
                 var $row = $(event.currentTarget);
                 var $body = $row.parent();

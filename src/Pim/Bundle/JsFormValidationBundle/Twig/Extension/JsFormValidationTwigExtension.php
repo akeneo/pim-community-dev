@@ -40,7 +40,7 @@ class JsFormValidationTwigExtension extends APYJsFormValidationTwigExtension
         $functions['JSFV'] = new \Twig_Function_Method(
             $this,
             'jsFormValidationFunction',
-            array('is_safe' => array('all'))
+            ['is_safe' => ['all']]
         );
 
         return $functions;

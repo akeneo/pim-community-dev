@@ -72,7 +72,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -80,6 +80,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

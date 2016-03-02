@@ -50,7 +50,9 @@ class ImmutableValidator extends ConstraintValidator
                 $isDifferent       = $originalValue !== $newValue;
                 $isDirtyCollection = ($newValue instanceof PersistentCollection && $newValue->isDirty());
                 if ($isDifferent || $isDirtyCollection) {
-                    $this->context->addViolationAt($property, $constraint->message);
+                    $this->context->buildViolation($constraint->message)
+                        ->atPath($property)
+                        ->addViolation();
                 }
             }
         }

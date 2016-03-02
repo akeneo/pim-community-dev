@@ -1,5 +1,5 @@
 extensions:
-    attribute-option-form:
+    pim-attribute-option-form:
         module: pim/attribute-option-form
         zones:
             form: self

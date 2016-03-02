@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,15 +27,13 @@ class AssociationController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var ProductBuilderInterface */
+    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var EngineInterface */
     protected $templating;
 
     /**
-     * Constructor
-     *
      * @param AssociationTypeRepositoryInterface $assocTypeRepository
      * @param ProductRepositoryInterface         $productRepository
      * @param ProductBuilderInterface            $productBuilder
@@ -70,11 +68,11 @@ class AssociationController
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Association:_associations.html.twig',
-            array(
+            [
                 'product'          => $product,
                 'associationTypes' => $associationTypes,
                 'dataLocale'       => $request->get('dataLocale', null)
-            )
+            ]
         );
     }
 

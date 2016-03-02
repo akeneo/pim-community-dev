@@ -10,7 +10,7 @@ require(['oro/mediator'], function (mediator) {
 });
 
 require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
-    'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'
+    'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui'
     ], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
     'use strict';
 
@@ -55,14 +55,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         $('#main-menu').mouseover(function () {
             $('.open').removeClass('open');
         });
-    });
-
-    /**
-     * Init page layout js and hide progress bar after hash navigation request is completed
-     */
-    mediator.bind('hash_navigation_request:complete', function () {
-        layout.hideProgressBar();
-        layout.init();
     });
 
     /* ============================================================

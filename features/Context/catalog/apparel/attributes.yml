@@ -791,6 +791,19 @@ attributes:
         sortOrder:           3
         decimalsAllowed:     true
         negativeAllowed:     false
+    under_european_law:
+        labels:
+            en_US: Under European law
+            en_GB: Under European law
+            fr_FR: Sous la loi Européenne
+            de_DE: Nach europäischem Recht
+        type:  pim_catalog_boolean
+        group: general
+        localizable:         false
+        availableLocales:
+            - de_DE
+            - fr_FR
+        useableAsGridFilter: true
     datasheet:
         labels:
             en_US: Datasheet

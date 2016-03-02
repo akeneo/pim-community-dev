@@ -2,23 +2,17 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Behat\Event\BaseScenarioEvent;
-use Behat\Behat\Event\StepEvent;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Context\Page\Base\Base;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\Product;
 
 /**
  * Context for navigating the website
@@ -27,105 +21,8 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NavigationContext extends RawMinkContext implements PageObjectAwareInterface
+class NavigationContext extends BaseNavigationContext
 {
-    /**
-     * @var string|null
-     */
-    public $currentPage = null;
-
-    /**
-     * @var string
-     */
-    protected $username = null;
-
-    /**
-     * @var string
-     */
-    protected $password = null;
-
-    /**
-     * @var PageFactory
-     */
-    protected $pageFactory = null;
-
-    /**
-     * @var array
-     */
-    protected $pageMapping = [
-        'association types'        => 'AssociationType index',
-        'attributes'               => 'Attribute index',
-        'categories'               => 'Category tree index',
-        'channels'                 => 'Channel index',
-        'currencies'               => 'Currency index',
-        'exports'                  => 'Export index',
-        'export executions'        => 'ExportExecution index',
-        'families'                 => 'Family index',
-        'home'                     => 'Base index',
-        'imports'                  => 'Import index',
-        'import executions'        => 'ImportExecution index',
-        'locales'                  => 'Locale index',
-        'products'                 => 'Product index',
-        'product groups'           => 'ProductGroup index',
-        'group types'              => 'GroupType index',
-        'users'                    => 'User index',
-        'user roles'               => 'UserRole index',
-        'user roles creation'      => 'UserRole creation',
-        'user groups'              => 'UserGroup index',
-        'user groups creation'     => 'UserGroup creation',
-        'user groups edit'         => 'UserGroup edit',
-        'variant groups'           => 'VariantGroup index',
-        'attribute groups'         => 'AttributeGroup index',
-        'attribute group creation' => 'AttributeGroup creation',
-        'dashboard'                => 'Dashboard index',
-        'search'                   => 'Search index',
-        'job tracker'              => 'JobTracker index',
-    ];
-
-    /**
-     * @param PageFactory $pageFactory
-     */
-    public function setPageFactory(PageFactory $pageFactory)
-    {
-        $this->pageFactory = $pageFactory;
-    }
-
-    /**
-     * @param BaseScenarioEvent $event
-     *
-     * @AfterScenario
-     */
-    public function resetCurrentPage(BaseScenarioEvent $event)
-    {
-        if ($event->getResult() !== StepEvent::UNDEFINED) {
-            $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-            $this->getMainContext()->executeScript($script);
-        }
-
-        $this->currentPage = null;
-    }
-
-    /**
-     * @param string $username
-     *
-     * @Given /^I am logged in as "([^"]*)"$/
-     */
-    public function iAmLoggedInAs($username)
-    {
-        $this->username = $username;
-        $this->password = $username;
-
-        $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
-    }
-
-    /**
-     * @Given /^I logout$/
-     */
-    public function iLogout()
-    {
-        $this->getSession()->visit($this->locatePath('/user/logout'));
-    }
-
     /**
      * @param string $code
      *
@@ -143,90 +40,27 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param string $page
-     *
-     * @Given /^I am on the ([^"]*) page$/
-     * @Given /^I go to the ([^"]*) page$/
+     * @Given /^I edit my profile$/
      */
-    public function iAmOnThePage($page)
+    public function iAmOnMyProfileEditPage()
     {
-        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-        $this->openPage($page);
+        $this->openPage('User profile edit');
     }
 
     /**
-     * @param string $not
-     * @param string $page
-     *
-     * @return null|Step\Then
-     * @Given /^I should( not)? be able to access the ([^"]*) page$/
+     * @Given /^I am on my profile page$/
      */
-    public function iShouldNotBeAbleToAccessThePage($not, $page)
+    public function iAmOnMyProfilePage()
     {
-        if (!$not) {
-            return $this->iAmOnThePage($page);
-        }
-
-        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-
-        $this->currentPage = $page;
-        $this->getCurrentPage()->open();
-
-        return new Step\Then('I should see "403 Forbidden"');
+        $this->openPage('User profile show');
     }
 
     /**
-     * @param string $not
-     * @param string $action
-     * @param string $identifier
-     * @param string $page
-     *
-     * @return null|Then
-     * @Given /^I should( not)? be able to (\w+) the "([^"]*)" (\w+)$/
-     * @Given /^I should( not)? be able to access the (\w+) "([^"]*)" (\w+) page$/
+     * @Given /^I edit the system configuration$/
      */
-    public function iShouldNotBeAbleToAccessTheEntityEditPage($not, $action, $identifier, $page)
+    public function iAmOnTheSystemEditPage()
     {
-        if (null === $action) {
-            $action = 'edit';
-        }
-
-        if (!$not) {
-            if ('edit' === $action) {
-                $this->iAmOnTheEntityEditPage($identifier, $page);
-            } elseif ('show' === $action) {
-                $this->iAmOnTheEntityShowPage($identifier, $page);
-            } else {
-                throw new \Exception('Action "%s" is not handled yet.');
-            }
-
-            return null;
-        }
-
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-
-        $this->currentPage = sprintf('%s %s', $page, $action);
-        $this->getCurrentPage()->open(['id' => $entity->getId()]);
-
-        return new Step\Then('I should see "403 Forbidden"');
-    }
-
-    /**
-     * @param string $identifier
-     * @param string $page
-     *
-     * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) page$/
-     */
-    public function iAmOnTheEntityEditPage($identifier, $page)
-    {
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-        $this->wait();
+        $this->openPage('System index');
     }
 
     /**
@@ -257,35 +91,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param string $identifier
-     * @param string $page
-     *
-     * @Given /^I show the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) show page$/
-     */
-    public function iAmOnTheEntityShowPage($identifier, $page)
-    {
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" attribute group page$/
-     * @Given /^I edit the "([^"]*)" attribute group$/
-     */
-    public function iAmOnTheAttributeGroupEditPage($identifier)
-    {
-        $page   = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
      */
@@ -310,31 +115,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param JobInstance $job
      *
-     * @Given /^I am on the ("([^"]*)" import job) page$/
-     */
-    public function iAmOnTheImportJobPage(JobInstance $job)
-    {
-        $this->openPage('Import show', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
      * @Given /^I am on the ("([^"]*)" export job) page$/
      */
     public function iAmOnTheExportJobPage(JobInstance $job)
     {
         $this->openPage('Export show', ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" import job) edit page$/
-     */
-    public function iAmOnTheImportJobEditPage(JobInstance $job)
-    {
-        $this->openPage('Import edit', ['id' => $job->getId()]);
     }
 
     /**
@@ -362,16 +147,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param string $jobType
-     *
-     * @Given /^I try to create an unknown (import|export)$/
-     */
-    public function iTryToCreateAnUnknownJob($jobType)
-    {
-        $this->openPage(sprintf('%s creation', ucfirst($jobType)));
-    }
-
-    /**
      * @param string $identifier
      *
      * @Given /^I am on the "([^"]*)" product group page$/
@@ -382,19 +157,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'ProductGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" variant group page$/
-     * @Given /^I edit the "([^"]*)" variant group$/
-     */
-    public function iAmOnTheVariantGroupEditPage($identifier)
-    {
-        $page   = 'VariantGroup';
-        $entity = $this->getFixturesContext()->getProductGroup($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
@@ -426,57 +188,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param JobInstance $job
+     * @param string $identifier
      *
-     * @When /^I launch the ("([^"]*)" (import|export) job)$/
+     * @Given /^I am on the "([^"]*)" attribute group page$/
      */
-    public function iLaunchTheExportJob(JobInstance $job)
+    public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $jobType = ucfirst($job->getType());
-        $this->openPage(sprintf('%s launch', $jobType), ['id' => $job->getId()]);
-    }
-
-    /**
-     * @param string      $action
-     * @param JobInstance $job
-     *
-     * @return \Behat\Behat\Context\Step\Then
-     *
-     * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
-     */
-    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
-    {
-        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
-
-        return new Step\Then('I should see "403 Forbidden"');
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function getPage($name)
-    {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
-        }
-
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
-
-        return $this->pageFactory->createPage($name);
-    }
-
-    /**
-     * @param string $page
-     *
-     * @Then /^I should be redirected on the (.*) page$/
-     */
-    public function iShouldBeRedirectedOnThePage($page)
-    {
-        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-        $this->assertAddress($this->getPage($page)->getUrl());
+        $page   = 'AttributeGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -521,17 +242,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheProductGroupPage(GroupInterface $group)
     {
         $expectedAddress = $this->getPage('ProductGroup edit')->getUrl(['id' => $group->getId()]);
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param GroupInterface $group
-     *
-     * @Given /^I should be on the ("([^"]*)" variant group) page$/
-     */
-    public function iShouldBeOnTheVariantGroupPage(GroupInterface $group)
-    {
-        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(['id' => $group->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -593,6 +303,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I should be on the attributes page$/
+     */
+    public function iShouldBeOnTheAttributesPage()
+    {
+        $this->assertAddress($this->getPage('Attribute index')->getUrl());
+    }
+
+    /**
+     * @Given /^I should be on the categories page$/
+     */
+    public function iShouldBeOnTheCategoriesPage()
+    {
+        $this->assertAddress($this->getPage('Category index')->getUrl());
+    }
+
+    /**
      * @param Category $category
      *
      * @Then /^I should be on the (category "([^"]*)") edit page$/
@@ -611,7 +337,12 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category node creation')->getUrl(['id' => $category->getId()]);
-        $this->assertAddress($expectedAddress);
+
+        $this->spin(function () use ($expectedAddress) {
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        }, sprintf('Expected to be on the %s category node creation page. But was not', $category->getCode()));
     }
 
     /**
@@ -631,100 +362,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheProductEditPage(Product $product)
     {
-        $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
-        $this->assertAddress($expectedAddress);
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I refresh current page$/
-     */
-    public function iRefreshCurrentPage()
-    {
-        $this->getMainContext()->reload();
-        $this->wait();
-    }
-
-    /**
-     * @param string $page
-     * @param array  $options
-     *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function openPage($page, array $options = [])
-    {
-        $this->currentPage = $page;
-
-        /** @var Base $page */
-        $page = $this->getCurrentPage()->open($options);
-
-        // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page, $options) {
-            if ($this->loginIfRequired()) {
-                $page = $this->getCurrentPage()->open($options);
-                $this->wait();
-                echo 'login was required' . PHP_EOL;
-            }
-
-            return $page->verifyAfterLogin();
-        }, 30);
-        $this->wait();
-
-        return $page;
-    }
-
-    /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function getCurrentPage()
-    {
-        return $this->getPage($this->currentPage);
-    }
-
-    /**
-     * @return array
-     */
-    public function getPageMapping()
-    {
-        return $this->pageMapping;
-    }
-
-    /**
-     * @param string $expected
-     */
-    protected function assertAddress($expected)
-    {
-        $actual = $this->getSession()->getCurrentUrl();
-        $result = strpos($actual, $expected) !== false;
-        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     *
-     * @return bool true if login was required, false if not
-     */
-    protected function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
+        $this->spin(function () use ($product) {
+            $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
+            $this->assertAddress($expectedAddress);
 
             return true;
-        }
+        });
 
-        return false;
-    }
-
-    /**
-     * @param int    $time
-     * @param string $condition
-     */
-    protected function wait($time = 10000, $condition = null)
-    {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.product-label');
+        });
     }
 
     /**

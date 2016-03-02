@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Date attribute type
@@ -34,14 +34,14 @@ class DateType extends AbstractAttributeType
         $properties = parent::defineCustomAttributeProperties($attribute) + [
             'dateMin' => [
                 'name'      => 'dateMin',
-                'fieldType' => 'oro_date',
+                'fieldType' => 'pim_date',
                 'options'   => [
                     'widget' => 'single_text'
                 ]
             ],
             'dateMax' => [
                 'name'      => 'dateMax',
-                'fieldType' => 'oro_date',
+                'fieldType' => 'pim_date',
                 'options'   => [
                     'widget' => 'single_text'
                 ]
@@ -59,6 +59,6 @@ class DateType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_date';
+        return AttributeTypes::DATE;
     }
 }

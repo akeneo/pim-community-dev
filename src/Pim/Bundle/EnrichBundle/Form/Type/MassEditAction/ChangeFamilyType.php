@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type of the ChangeFamily operation
@@ -18,12 +19,17 @@ class ChangeFamilyType extends AbstractType
     /** @var string */
     protected $dataClass;
 
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
     /**
-     * @param string $dataClass
+     * @param string                    $dataClass
+     * @param FamilyRepositoryInterface $familyRepository
      */
-    public function __construct($dataClass)
+    public function __construct($dataClass, FamilyRepositoryInterface $familyRepository)
     {
-        $this->dataClass = $dataClass;
+        $this->dataClass        = $dataClass;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -33,12 +39,14 @@ class ChangeFamilyType extends AbstractType
     {
         $builder->add(
             'family',
-            'entity',
+            'pim_async_select',
             [
-                'class'       => 'PimCatalogBundle:Family',
-                'empty_value' => 'None',
-                'required'    => false,
-                'select2'     => true
+                'repository' => $this->familyRepository,
+                'route'      => 'pim_enrich_family_rest_index',
+                'required'   => false,
+                'attr'       => [
+                    'data-placeholder' => 'pim_enrich.mass_edit_action.change-family.no_family'
+                ],
             ]
         );
     }
@@ -46,7 +54,7 @@ class ChangeFamilyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -45,20 +46,20 @@ class ConversionUnitsType extends AbstractType
     {
         $metricAttributes = $this->entityManager
             ->getRepository($this->attributeClass)
-            ->findBy(array('attributeType' => 'pim_catalog_metric'));
+            ->findBy(['attributeType' => AttributeTypes::METRIC]);
 
         foreach ($metricAttributes as $attribute) {
             if ($units = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())) {
                 $builder->add(
                     $attribute->getCode(),
                     'choice',
-                    array(
+                    [
                         'choices'     => array_combine(array_keys($units), array_keys($units)),
                         'empty_value' => 'Do not convert',
                         'required'    => false,
                         'select2'     => true,
                         'label'       => $attribute->getLabel()
-                    )
+                    ]
                 );
             }
         }

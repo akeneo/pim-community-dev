@@ -12,7 +12,8 @@ module.exports = function (grunt) {
                 'src/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
-                '!src/**/NavigationBundle/**/*.js'
+                '!src/**/NavigationBundle/**/*.js',
+                '!src/Oro/**/**/*.js'
             ],
             options: {
                 jshintrc: '.jshintrc',
@@ -25,7 +26,8 @@ module.exports = function (grunt) {
                 'src/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
-                '!src/**/NavigationBundle/**/*.js'
+                '!src/**/NavigationBundle/**/*.js',
+                '!src/Oro/**/**/*.js'
             ],
             options: {
                 config: '.jscsrc',
@@ -34,14 +36,14 @@ module.exports = function (grunt) {
         },
         recess: {
             all: [
-                'src/**/*.css',
-                'src/**/*.less',
-                '!src/**/lib/**/*.css',
-                '!src/**/lib/**/*.less',
-                '!src/Pim/Bundle/UIBundle/Resources/public/css/less/oro.less',
-                '!src/Pim/Bundle/UIBundle/Resources/public/css/pim.less',
-                '!src/Pim/Bundle/UIBundle/Resources/public/css/form.less',
-                '!src/Pim/Bundle/UIBundle/Resources/public/css/flags.less'
+                'web/bundles/pim*/**/*.css',
+                'web/bundles/pim*/**/*.less',
+                '!web/bundles/**/lib/**/*.css',
+                '!web/bundles/**/lib/**/*.less',
+                '!web/bundles/pimui/css/flags.less',
+                '!web/bundles/pimui/css/form.less',
+                '!web/bundles/pimui/css/less/oro.less',
+                '!web/bundles/pimui/css/pim.less'
             ],
             options: {
                 strictPropertyOrder: false,
@@ -54,6 +56,7 @@ module.exports = function (grunt) {
                 src: '/bundles/ororequirejs/lib/require.js',
                 options: {
                     specs: 'src/**/spec/**/*Spec.js',
+                    vendor: ['.grunt/grunt-contrib-jasmine/es5-shim.js'],
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         requireConfigFile: 'web/js/require-config.js',

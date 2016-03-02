@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\OroUserEvents;
+use Pim\Bundle\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

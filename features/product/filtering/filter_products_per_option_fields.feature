@@ -7,7 +7,7 @@ Feature: Filter products per option
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label | type         | localizable | scopable | useable as grid filter |
+      | label | type         | localizable | scopable | useable_as_grid_filter |
       | color | multiselect  | no          | no       | yes                    |
       | size  | simpleselect | no          | no       | yes                    |
     And the following "color" attribute options: Black and White

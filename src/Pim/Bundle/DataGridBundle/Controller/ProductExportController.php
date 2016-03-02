@@ -10,7 +10,8 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Products quick export
@@ -33,8 +34,8 @@ class ProductExportController
     /** @var JobInstanceRepository */
     protected $jobInstanceRepo;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var JobLauncherInterface */
     protected $jobLauncher;
@@ -47,7 +48,7 @@ class ProductExportController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param JobInstanceRepository      $jobInstanceRepo
-     * @param SecurityContextInterface   $securityContext
+     * @param TokenStorageInterface      $tokenStorage
      * @param JobLauncherInterface       $jobLauncher
      * @param DataGridManager            $datagridManager
      */
@@ -56,7 +57,7 @@ class ProductExportController
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
         JobInstanceRepository $jobInstanceRepo,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
@@ -64,7 +65,7 @@ class ProductExportController
         $this->massActionDispatcher = $massActionDispatcher;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->jobInstanceRepo      = $jobInstanceRepo;
-        $this->securityContext      = $securityContext;
+        $this->tokenStorage         = $tokenStorage;
         $this->jobLauncher          = $jobLauncher;
         $this->datagridManager      = $datagridManager;
     }
@@ -76,7 +77,13 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobInstance      = $this->jobInstanceRepo->findOneBy(['code' => 'csv_product_quick_export']);
+        $jobCode     = $this->request->get('_jobCode');
+        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+
+        if (null === $jobInstance) {
+            throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
+        }
+
         $filters          = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = addslashes(
             json_encode(
@@ -95,13 +102,13 @@ class ProductExportController
     /**
      * Get a user from the Security Context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      *
-     * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
+     * @see \Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */
     protected function getUser()
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
         if (null === $token || !is_object($user = $token->getUser())) {
             return null;
         }
@@ -126,12 +133,14 @@ class ProductExportController
             throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
         }
 
+        $user = $this->getUser();
         $dataSourceParams = $dataSource->getParameters();
-        $contextParams = [];
+        $contextParams    = [];
         if (is_array($dataSourceParams)) {
             $contextParams = [
-                'locale' => $dataSourceParams['dataLocale'],
-                'scope'  => $dataSourceParams['scopeCode']
+                'locale'    => $dataSourceParams['dataLocale'],
+                'scope'     => $dataSourceParams['scopeCode'],
+                'ui_locale' => null !== $user ? $user->getUiLocale()->getCode() : $this->request->getDefaultLocale()
             ];
         }
 

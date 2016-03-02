@@ -8,6 +8,7 @@ Feature: Display notifications for mass edit jobs
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
+  @ce
   Scenario: Successfully display a notification when a mass-edit job is finished
     Given a disabled "boat" product
     And a disabled "jet-ski" product
@@ -19,5 +20,5 @@ Feature: Display notifications for mass edit jobs
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message            |
-      | success | Mass edit finished |
+      | type    | message                                 |
+      | success | Mass edit Mass update products finished |

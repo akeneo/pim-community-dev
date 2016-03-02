@@ -1,15 +1,27 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    [
+        'backbone',
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'text!pim/template/notification/notification-list'
+    ],
+    function (Backbone, $, _, Routing, Navigation, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
             defaults: {
-                viewed:  false,
-                url:     null,
-                message: '',
-                id:      null,
-                type:    'success'
+                viewed:            false,
+                url:               null,
+                message:           '',
+                id:                null,
+                type:              'success',
+                createdAt:         null,
+                actionType:        null,
+                actionTypeMessage: null,
+                showReportButton:  true,
+                comment:           null
             }
         });
 
@@ -22,17 +34,7 @@ define(
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
             model: Notification,
-
-            template: _.template(
-                [
-                    '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
-                        '<i class="icon-<%= icon %>"></i>',
-                        '<%= message %>',
-                        '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
-                    '</a>'
-                ].join('')
-            ),
-
+            template: _.template(template),
             events: {
                 'click .icon-trash':     'remove',
                 'click .icon-eye-close': 'markAsRead',
@@ -87,7 +89,12 @@ define(
                         viewed: this.model.get('viewed'),
                         message: this.model.get('message'),
                         url: this.model.get('url'),
-                        icon: this.getIcon(this.model.get('type'))
+                        icon: this.getIcon(this.model.get('type')),
+                        createdAt: this.model.get('createdAt'),
+                        actionType: this.model.get('actionType'),
+                        actionTypeMessage: this.model.get('actionTypeMessage'),
+                        showReportButton: this.model.get('showReportButton'),
+                        comment: this.model.get('comment')
                     }
                 ));
 
@@ -95,7 +102,14 @@ define(
             },
 
             getIcon: function (type) {
-                return 'success' === type ? 'ok' : ('warning' === type ? 'warning-sign' : 'remove');
+                var icons = {
+                    'success': 'ok',
+                    'warning': 'warning-sign',
+                    'error':   'remove',
+                    'add':     'plus'
+                };
+
+                return _.result(icons, type, 'remove');
             }
         });
 

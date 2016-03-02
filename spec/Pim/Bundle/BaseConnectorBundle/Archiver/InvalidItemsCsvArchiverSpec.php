@@ -2,12 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Gaufrette\Filesystem;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
+use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\CsvWriter;
 use Prophecy\Argument;
 
 class InvalidItemsCsvArchiverSpec extends ObjectBehavior
@@ -15,8 +16,11 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
     function let(
         InvalidItemsCollector $collector,
         CsvWriter $writer,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        LocalAdapter $adapter
     ) {
+        $filesystem->getAdapter()->willReturn($adapter);
+        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist/');
         $this->beConstructedWith($collector, $writer, $filesystem, '/root');
     }
 
@@ -53,8 +57,8 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
 
-        $filesystem->write('type/alias/id/invalid/invalid_items.csv', '', true)->shouldBeCalled();
-        $writer->setFilePath('/root/type/alias/id/invalid/invalid_items.csv')->shouldBeCalled();
+        $filesystem->put('type/alias/id/invalid/invalid_items.csv', '')->shouldBeCalled();
+        $writer->setFilePath('/tmp/archivist/type/alias/id/invalid/invalid_items.csv')->shouldBeCalled();
         $writer->initialize()->shouldBeCalled();
         $writer->write(['items'])->shouldBeCalled();
         $writer->flush()->shouldBeCalled();

@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Adapter\Local as LocalAdapter;
-use Gaufrette\Filesystem;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Step\AbstractStep;
+use Akeneo\Component\Batch\Step\ItemStep;
+use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
@@ -35,6 +34,9 @@ class FileReaderArchiverSpec extends ObjectBehavior
         ItemStep $step,
         $filesystem
     ) {
+        $pathname = tempnam(sys_get_temp_dir(), 'spec');
+        $filename = basename($pathname);
+
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getJob()->willReturn($job);
@@ -42,16 +44,20 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
-        $reader->getFilePath()->willReturn('/tmp/tmp');
+        $reader->getFilePath()->willReturn($pathname);
 
-        $adapter = new LocalAdapter('/tmp');
-        $fs = new Filesystem($adapter);
-
-        $fs->write('tmp', '', true);
-
-        $filesystem->write("type/alias/12/input/tmp", "", true)->shouldBeCalled();
+        $filesystem->put(
+            'type' . DIRECTORY_SEPARATOR .
+            'alias' . DIRECTORY_SEPARATOR .
+            '12' . DIRECTORY_SEPARATOR .
+            'input' . DIRECTORY_SEPARATOR .
+            $filename,
+            ''
+        )->shouldBeCalled();
 
         $this->archive($jobExecution);
+
+        unlink($pathname);
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
@@ -70,7 +76,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
-        $filesystem->write(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -94,7 +100,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
-        $filesystem->write(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }

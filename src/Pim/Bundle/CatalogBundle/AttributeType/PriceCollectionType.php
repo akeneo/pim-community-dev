@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Price attribute type
@@ -85,6 +85,6 @@ class PriceCollectionType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_price_collection';
+        return AttributeTypes::PRICE_COLLECTION;
     }
 }

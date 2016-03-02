@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Gaufrette\Filesystem;
+use Akeneo\Component\Batch\Model\JobExecution;
+use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\CsvWriter;
 
 /**
  * Archiver of invalid items into a csv file
@@ -22,27 +22,21 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     /** @var CsvWriter */
     protected $writer;
 
-    /** @var string */
-    protected $archiveDir;
-
     /**
      * Constructor
      *
      * @param InvalidItemsCollector $collector
      * @param CsvWriter             $writer
      * @param Filesystem            $filesystem
-     * @param string                $archiveDir
      */
     public function __construct(
         InvalidItemsCollector $collector,
         CsvWriter $writer,
-        Filesystem $filesystem,
-        $archiveDir
+        Filesystem $filesystem
     ) {
         $this->collector  = $collector;
         $this->writer     = $writer;
         $this->filesystem = $filesystem;
-        $this->archiveDir = $archiveDir;
     }
 
     /**
@@ -55,15 +49,12 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         }
         $key =  strtr(
             $this->getRelativeArchivePath($jobExecution),
-            array('%filename%' => 'invalid_items.csv')
+            ['%filename%' => 'invalid_items.csv']
         );
-        $this->filesystem->write($key, '', true);
+        $this->filesystem->put($key, '');
         $this->writer->setFilePath(
-            sprintf(
-                '%s/%s',
-                $this->archiveDir,
-                $key
-            )
+            $this->filesystem->getAdapter()->getPathPrefix() .
+            $key
         );
         $this->writer->initialize();
         $this->writer->write($this->collector->getInvalidItems());
@@ -94,5 +85,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
 
             return true;
         }
+
+        return false;
     }
 }

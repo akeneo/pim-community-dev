@@ -6,15 +6,15 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Type for channel form
@@ -25,8 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ChannelType extends AbstractType
 {
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /** @var LocaleHelper */
     protected $localeHelper;
@@ -43,24 +43,24 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleManager  $localeManager
+     * @param LocaleRepositoryInterface  $localeRepository
      * @param LocaleHelper   $localeHelper
      * @param ColorsProvider $provider
      * @param string         $categoryClass
      * @param string         $dataClass
      */
     public function __construct(
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
         $categoryClass,
         $dataClass
     ) {
-        $this->localeManager = $localeManager;
-        $this->localeHelper  = $localeHelper;
-        $this->provider      = $provider;
-        $this->categoryClass = $categoryClass;
-        $this->dataClass     = $dataClass;
+        $this->localeRepository = $localeRepository;
+        $this->localeHelper     = $localeHelper;
+        $this->provider         = $provider;
+        $this->categoryClass    = $categoryClass;
+        $this->dataClass        = $dataClass;
     }
 
     /**
@@ -192,7 +192,7 @@ class ChannelType extends AbstractType
                 'query_builder'     => function (LocaleRepositoryInterface $repository) {
                     return $repository->getLocalesQB();
                 },
-                'preferred_choices' => $this->localeManager->getActiveLocales()
+                'preferred_choices' => $this->localeRepository->getActivatedLocaleCodes()
             ]
         );
 
@@ -273,7 +273,7 @@ class ChannelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

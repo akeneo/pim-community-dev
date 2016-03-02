@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\ProductValue:
+Pim\Component\Catalog\Model\ProductValue:
     type: entity
     table: pim_catalog_product_value
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -30,7 +30,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             nullable: true
             column: value_integer
         decimal:
-            type: float
+            type: decimal
+            scale: 4
+            precision: 14
             nullable: true
             column: value_decimal
         boolean:
@@ -61,14 +63,14 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
         option:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             cascade:
                 - persist
                 - refresh
@@ -77,15 +79,26 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         entity:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
             inversedBy: values
             joinColumns:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+        media:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfoInterface
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
     manyToMany:
         options:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
             cascade:
                 - refresh
             joinTable:
@@ -101,20 +114,8 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                         nullable: true
                         onDelete: CASCADE
     oneToOne:
-        media:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
-            inversedBy: value
-            joinColumns:
-                media_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
         metric:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\MetricInterface
+            targetEntity: Pim\Component\Catalog\Model\MetricInterface
             cascade:
                 - remove
                 - persist
@@ -127,7 +128,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     onDelete: 'SET NULL'
     oneToMany:
         prices:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductPriceInterface
             cascade:
                 - remove
                 - persist

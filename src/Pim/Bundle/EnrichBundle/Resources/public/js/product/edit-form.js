@@ -9,6 +9,7 @@
  */
 define(
     [
+        'module',
         'underscore',
         'backbone',
         'text!pim/template/product/form',
@@ -18,6 +19,7 @@ define(
         'pim/field-manager'
     ],
     function (
+        module,
         _,
         Backbone,
         template,
@@ -28,26 +30,36 @@ define(
     ) {
         var FormView = BaseForm.extend({
             template: _.template(template),
-            initialize: function () {
-                this.model = new Backbone.Model();
+            configure: function () {
+                mediator.clear('pim_enrich:form');
+                Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                mediator.off(null, null, 'context:product:form:init');
-                mediator.on('entity:error:save', _.bind(this.clearCache, this), 'context:product:form:init');
+                if (_.has(module.config(), 'forwarded-events')) {
+                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                }
 
-                BaseForm.prototype.initialize.apply(this, arguments);
+                this.onExtensions('save-buttons:register-button', function (button) {
+                    this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
+                }.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 if (!this.configured) {
                     return this;
                 }
+                this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
-                    this.template({
-                        product: this.getData()
-                    })
+                    this.template({})
                 );
 
-                return this.renderExtensions();
+                this.renderExtensions();
+
+                this.getRoot().trigger('pim_enrich:form:render:after');
+            },
+            unbindEvents: function () {
+                mediator.clear('pim_enrich:form');
             },
             clearCache: function () {
                 FetcherRegistry.clearAll();

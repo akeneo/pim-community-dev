@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Identifier attribute type
@@ -81,6 +81,6 @@ class IdentifierType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_identifier';
+        return AttributeTypes::IDENTIFIER;
     }
 }

@@ -64,3 +64,17 @@ Feature: Apply a mass action on all entities
     And I wait for the "set-attribute-requirements" mass-edit job to finish
     Then attribute "Length" should be required in family "4_blocks" for channel "Mobile"
     And attribute "Length" should be required in family "2_blocks" for channel "Mobile"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5000
+  Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
+    Given I am on the products page
+    And I select all products
+    And I unselect row mega_boots
+    When I press mass-edit button
+    And I choose the "Change status (enable / disable)" operation
+    And I disable the products
+    And I wait for the "change-status" mass-edit job to finish
+    Then product "super_boots" should be disabled
+    And product "ultra_boots" should be disabled
+    And product "sandals" should be disabled
+    But product "mega_boots" should be enabled

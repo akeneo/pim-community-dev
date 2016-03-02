@@ -10,9 +10,9 @@ Feature: Display the product history
       | sku     |
       | sandals |
     And the following attributes:
-      | code    | type                        | property-reference_data_name |
-      | color   | reference_data_simpleselect | color                        |
-      | fabrics | reference_data_multiselect  | fabrics                      |
+      | code    | type                        | reference_data_name |
+      | color   | reference_data_simpleselect | color               |
+      | fabrics | reference_data_multiselect  | fabrics             |
     And the following "color" attribute reference data: Red, Green, Blue
     And the following "fabrics" attribute reference data: Cashmerewool, Neoprene and Silk
     And I am logged in as "Julia"

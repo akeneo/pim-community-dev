@@ -95,7 +95,7 @@ services:
         class: %pim_catalog.attribute_type.date.class%
         arguments:
             - date
-            - oro_date
+            - pim_date
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: %pim_catalog.entity.product.class% }

@@ -28,15 +28,15 @@ class PathGeneratorSpec extends ObjectBehavior
     {
         return [
             'beValidPathInfo' => function ($subject, $expectedFilename) {
-                $guid     = $subject['guid'];
+                $uuid     = $subject['uuid'];
                 $filename = $subject['file_name'];
                 $path     = $subject['path'];
                 $pathname = $subject['path_name'];
 
-                return 40 === strlen($guid) &&
-                    $guid . '_' . $expectedFilename === $filename &&
-                    $guid[0] . '/' . $guid[1] . '/' . $guid[2] . '/' . $guid[3] . '/' === $path &&
-                    $path . $guid . '_' . $expectedFilename === $pathname;
+                return 40 === strlen($uuid) &&
+                    $uuid . '_' . $expectedFilename === $filename &&
+                    $uuid[0] . '/' . $uuid[1] . '/' . $uuid[2] . '/' . $uuid[3] . '/' === $path &&
+                    $path . $uuid . '_' . $expectedFilename === $pathname;
             },
         ];
     }

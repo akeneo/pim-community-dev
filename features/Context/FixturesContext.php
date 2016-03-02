@@ -4,14 +4,14 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Behat\Gherkin\Node\PyStringNode;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
+use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -22,7 +22,12 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
+use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -32,13 +37,18 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FixturesContext extends RawMinkContext
+class FixturesContext extends BaseFixturesContext
 {
     protected $locales = [
         'english'    => 'en_US',
         'french'     => 'fr_FR',
         'german'     => 'de_DE',
         'english UK' => 'en_GB',
+        'spanish'    => 'es_ES',
+        'italian'    => 'it_IT',
+        'portuguese' => 'pt_PT',
+        'russian'    => 'ru_RU',
+        'japanese'   => 'ja_JP'
     ];
 
     protected $attributeTypes = [
@@ -58,208 +68,12 @@ class FixturesContext extends RawMinkContext
         'reference_data_multiselect'  => 'pim_reference_data_multiselect',
     ];
 
-    protected $entities = [
-        'Attribute'       => 'PimCatalogBundle:Attribute',
-        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
-        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
-        'Channel'         => 'PimCatalogBundle:Channel',
-        'Currency'        => 'PimCatalogBundle:Currency',
-        'Family'          => 'PimCatalogBundle:Family',
-        'Category'        => 'PimCatalogBundle:Category',
-        'AssociationType' => 'PimCatalogBundle:AssociationType',
-        'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
-        'User'            => 'OroUserBundle:User',
-        'Role'            => 'OroUserBundle:Role',
-        'UserGroup'       => 'OroUserBundle:Group',
-        'Locale'          => 'PimCatalogBundle:Locale',
-        'GroupType'       => 'PimCatalogBundle:GroupType',
-        'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
-    ];
-
-    protected $placeholderValues = [];
-
     protected $username;
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetPlaceholderValues()
-    {
-        $this->placeholderValues = [
-            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
-            '%fixtures%' => __DIR__ . '/fixtures'
-        ];
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function removeTmpDir()
-    {
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($this->placeholderValues['%tmp%']);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearUOW()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearPimFilesystem()
-    {
-        // FIXME: Remove gitkeep?
-        $fs = $this->getPimFilesystem();
-        foreach ($fs->keys() as $key) {
-            if (strpos($key, '.') !== 0) {
-                $fs->delete($key);
-            }
-        }
-    }
-
-    /**
-     * Magic methods for getting and creating entities
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \BadMethodCallException
-     *
-     * @return mixed
-     */
-    public function __call($method, $args)
-    {
-        if ('getOrCreate' === $getter = substr($method, 0, 11)) {
-            $entityName = substr($method, 11);
-        } elseif ('create' === $getter = substr($method, 0, 6)) {
-            $entityName = substr($method, 6);
-        } elseif ('find' === $getter = substr($method, 0, 4)) {
-            $entityName = substr($method, 4);
-        } elseif ('get' === $getter = substr($method, 0, 3)) {
-            $entityName = substr($method, 3);
-        } else {
-            $getter     = null;
-            $entityName = null;
-        }
-
-        if ($getter && array_key_exists($entityName, $this->getEntities())) {
-            $method = $getter . 'Entity';
-
-            return $this->$method($entityName, $args[0]);
-        }
-
-        throw new \BadMethodCallException(sprintf('There is no method named %s in FixturesContext', $method));
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
-     * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
-     */
-    public function getEntity($entityName, $data)
-    {
-        $getter = sprintf('get%s', $entityName);
-
-        if (method_exists($this, $getter)) {
-            return $this->$getter($data);
-        }
-
-        return $this->getEntityOrException($entityName, $data);
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $data
-     *
-     * @return object
-     */
-    public function createEntity($entityName, $data)
-    {
-        $method = sprintf('create%s', $entityName);
-
-        return $this->$method($data);
-    }
-
-    /**
-     * @param string $entityName
-     * @param string $data
-     *
-     * @return object
-     */
-    public function getOrCreateEntity($entityName, $data)
-    {
-        try {
-            return $this->getEntity($entityName, $data);
-        } catch (\InvalidArgumentException $e) {
-            return $this->createEntity($entityName, $data);
-        }
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
-     * @throws \Exception
-     *
-     * @return null|object
-     */
-    public function findEntity($entityName, $criteria)
-    {
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        if (gettype($criteria) === 'string' || $criteria === null) {
-            $criteria = ['code' => $criteria];
-        }
-
-        return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
-    }
-
-    /**
-     * @param string $entityName
-     * @param mixed  $criteria
-     *
-     * @throws \InvalidArgumentException If entity is not found
-     *
-     * @return object
-     */
-    public function getEntityOrException($entityName, $criteria)
-    {
-        $entity = $this->findEntity($entityName, $criteria);
-
-        if (!$entity) {
-            if (is_string($criteria)) {
-                $criteria = ['code' => $criteria];
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Could not find "%s" with criteria %s',
-                    $this->getEntities()[$entityName],
-                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
-                )
-            );
-        }
-
-        return $entity;
-    }
 
     /**
      * @param array|string $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -271,6 +85,10 @@ class FixturesContext extends RawMinkContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->replacePlaceholders($value);
+        }
+
         // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
         $this->getProductSaver()->save($product, ['recalculate' => false]);
@@ -280,47 +98,6 @@ class FixturesContext extends RawMinkContext
         $uniqueValueSet->reset();
 
         return $product;
-    }
-
-    /**
-     * @param array|string $data
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
-     *
-     * @Given /^a "([^"]*)" variant group$/
-     */
-    public function createVariantGroup($data)
-    {
-        if (is_string($data)) {
-            $data = ['code' => $data];
-        }
-
-        $variantGroup = $this->loadFixture('variant_groups', $data);
-        $this->saveVariantGroup($variantGroup);
-
-        return $variantGroup;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
-     */
-    protected function getVariantGroup($code)
-    {
-        $repository = $this->getContainer()->get('pim_catalog.repository.group');
-        $group      = $repository->findOneByCode($code);
-
-        return $group;
-    }
-
-    /**
-     * @param Group $group
-     */
-    protected function saveVariantGroup(Group $group)
-    {
-        $saver = $this->getContainer()->get('pim_catalog.saver.group');
-        $saver->save($group);
     }
 
     /**
@@ -351,7 +128,7 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
@@ -378,34 +155,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $entityName
-     *
-     * @Given /^there is no (.*)$/
-     *
-     * @throws \Exception
-     */
-    public function thereIsNoEntity($entityName)
-    {
-        if (strpos($entityName, ' ')) {
-            $entityName = implode('', array_map('ucfirst', explode(' ', $entityName)));
-        }
-
-        $entityName = ucfirst($entityName);
-
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        $namespace = $this->getEntities()[$entityName];
-        $entities  = $this->getRepository($namespace)->findAll();
-
-        foreach ($entities as $entity) {
-            $this->remove($entity, false);
-        }
-        $this->flush();
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute groups?:$/
@@ -427,8 +176,6 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this->createAttribute($data);
         }
-
-        $this->flush();
     }
 
     /**
@@ -441,10 +188,9 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
             $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
-            $this->persist($attribute);
+            $this->validate($attribute);
+            $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
         }
-
-        $this->flush();
     }
 
     /**
@@ -477,35 +223,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following variant group values?:$/
-     */
-    public function theFollowingVariantGroupValues(TableNode $table)
-    {
-        $groups = [];
-
-        foreach ($table->getHash() as $row) {
-            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
-
-            $attributeCode = $row['attribute'];
-            if ($row['locale']) {
-                $attributeCode .= '-' . $row['locale'];
-            }
-            if ($row['scope']) {
-                $attributeCode .= '-' . $row['scope'];
-            }
-            $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
-        }
-
-        foreach ($groups as $code => $data) {
-            $this->createVariantGroup(['code' => $code] + $data);
-        }
-
-        $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Given /^the following product comments:$/
      */
     public function theFollowingProductComments(TableNode $table)
@@ -517,8 +234,6 @@ class FixturesContext extends RawMinkContext
             $row['resource']     = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
-
-        $this->flush();
     }
 
     /**
@@ -534,9 +249,8 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($attributeCodes) as $code) {
             $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
         }
-
-        $this->persist($product);
-        $this->flush();
+        $this->validate($product);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -552,9 +266,9 @@ class FixturesContext extends RawMinkContext
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
-        $this->persist($family);
 
-        $this->flush();
+        $this->validate($family);
+        $this->getFamilySaver()->save($family);
     }
 
     /**
@@ -565,7 +279,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->createCategory([$data]);
+            $this->createCategory($data);
         }
     }
 
@@ -621,19 +335,25 @@ class FixturesContext extends RawMinkContext
             }
         }
 
+        $attributeBulks = [];
         foreach ($attributeData as $index => $data) {
             $attribute = $this->loadFixture('attributes', $data);
-            $this->persist($attribute, $index % 200 === 0);
+            $this->validate($attribute);
+            $attributeBulks[$index % 200][]= $attribute;
+        }
+        foreach ($attributeBulks as $attributes) {
+            $this->getContainer()->get('pim_catalog.saver.attribute')->saveAll($attributes);
         }
 
-        $this->flush();
-
+        $optionsBulks = [];
         foreach ($optionData as $index => $data) {
             $option = $this->loadFixture('attribute_options', $data);
-            $this->persist($option, $index % 200 === 0);
+            $this->validate($option);
+            $optionsBulks[$index % 200][]= $option;
         }
-
-        $this->flush();
+        foreach ($optionsBulks as $options) {
+            $this->getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
+        }
     }
 
     /**
@@ -661,9 +381,62 @@ class FixturesContext extends RawMinkContext
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
 
             if (isset($data['reference_data_name'])) {
-                assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
+                if ('' === $data['reference_data_name']) {
+                    assertNull($attribute->getReferenceDataName());
+                } else {
+                    assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
+                }
             }
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following families:$/
+     */
+    public function thereShouldBeTheFollowingFamilies(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $family = $this->getFamily($data['code']);
+            $this->refresh($family);
+
+            $requirement = $this->normalizeRequirements($family);
+
+            assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
+            assertEquals($data['attribute_as_label'], $family->getAttributeAsLabel()->getCode());
+            assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
+            assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
+            assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+        }
+    }
+
+    /**
+     * Normalize the requirements
+     *
+     * @param FamilyInterface $family
+     *
+     * @return array
+     */
+    protected function normalizeRequirements(FamilyInterface $family)
+    {
+        $required = [];
+        $flat     = [];
+        foreach ($family->getAttributeRequirements() as $requirement) {
+            $channelCode = $requirement->getChannel()->getCode();
+            if (!isset($required['requirements-' . $channelCode])) {
+                $required['requirements-' . $channelCode] = [];
+            }
+            if ($requirement->isRequired()) {
+                $required['requirements-' . $channelCode][] = $requirement->getAttribute()->getCode();
+            }
+        }
+
+        foreach ($required as $key => $attributes) {
+            $flat[$key] = implode(',', $attributes);
+        }
+
+        return $flat;
     }
 
     /**
@@ -775,8 +548,24 @@ class FixturesContext extends RawMinkContext
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
         $locale     = $this->getLocale($localeCode);
         $channel->addLocale($locale);
-        $this->persist($channel);
-        $this->persist($locale);
+        $this->validate($channel);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
+        $this->getContainer()->get('pim_catalog.saver.locale')->save($locale);
+    }
+
+    /**
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
+     */
+    public function iSetTheLocaleToTheChannel($locale, $channel)
+    {
+        return [
+            new Step\Given("I am on the \"$channel\" channel page"),
+            new Step\Given("I fill in \"Locales\" with \"$locale\" on the current page"),
+            new Step\Given("I press \"Save\""),
+        ];
     }
 
     /**
@@ -795,33 +584,8 @@ class FixturesContext extends RawMinkContext
 
             $job = $registry->getJob($jobInstance);
             $jobInstance->setJob($job);
-
-            $this->persist($jobInstance);
+            $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
-    }
-
-    /**
-     * @param string    $code
-     * @param TableNode $table
-     *
-     * @Given /^the following job "([^"]*)" configuration:$/
-     */
-    public function theFollowingJobConfiguration($code, TableNode $table)
-    {
-        $jobInstance   = $this->getJobInstance($code);
-        $configuration = $jobInstance->getRawConfiguration();
-
-        foreach ($table->getRowsHash() as $property => $value) {
-            $value = $this->replacePlaceholders($value);
-            if (in_array($value, ['yes', 'no'])) {
-                $value = 'yes' === $value;
-            }
-
-            $configuration[$property] = $value;
-        }
-
-        $jobInstance->setRawConfiguration($configuration);
-        $this->flush();
     }
 
     /**
@@ -878,20 +642,21 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $attribute
-     * @param string $options
+     * @param string $rawOptions
      *
      * @Given /^the following "([^"]*)" attribute options?: (.*)$/
      */
-    public function theFollowingAttributeOptions($attribute, $options)
+    public function theFollowingAttributeOptions($attribute, $rawOptions)
     {
         $attribute = $this->getAttribute(strtolower($attribute));
-        foreach ($this->listToArray($options) as $option) {
+        $options = [];
+        foreach ($this->listToArray($rawOptions) as $option) {
             $option = $this->createOption($option);
             $attribute->addOption($option);
-            $this->persist($option);
+            $this->validate($option);
+            $options[] = $option;
         }
-
-        $this->flush();
+        $this->getAttributeOptionSaver()->saveAll($options);
     }
 
     /**
@@ -908,8 +673,6 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($referenceData) as $code) {
             $this->createReferenceData($referenceDataType, $code, $code);
         }
-
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -926,8 +689,6 @@ class FixturesContext extends RawMinkContext
 
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
-
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -939,32 +700,9 @@ class FixturesContext extends RawMinkContext
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
         $this->assertDataEquals($productValue->getData(), $value);
-    }
-
-    /**
-     * @param mixed  $data
-     * @param string $value
-     */
-    protected function assertDataEquals($data, $value)
-    {
-        switch ($value) {
-            case 'true':
-                assertTrue($data);
-                break;
-
-            case 'false':
-                assertFalse($data);
-                break;
-
-            default:
-                if ($data instanceof \DateTime) {
-                    $data = $data->format('Y-m-d');
-                }
-                assertEquals($value, $data);
-        }
     }
 
     /**
@@ -977,13 +715,15 @@ class FixturesContext extends RawMinkContext
      */
     public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
 
         $this->assertDataEquals($productValue->getData(), $value);
     }
 
     /**
+     * We use the tag |NL| for \n in gherkin
+     *
      * @param string $lang
      * @param string $scope
      * @param string $attribute
@@ -994,8 +734,10 @@ class FixturesContext extends RawMinkContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
-        $this->clearUOW();
-        $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
+        $locale = 'unlocalized' === $lang ? null : $this->locales[$lang];
+        $value = str_replace('|NL|', "\n", $value);
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $productValue = $this->getProductValue($identifier, strtolower($attribute), $locale, $scope);
 
         $this->assertDataEquals($productValue->getData(), $value);
     }
@@ -1009,14 +751,14 @@ class FixturesContext extends RawMinkContext
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
                 if ('' === trim($price['amount'])) {
-                    assertNull($productPrice->getData());
+                    assertEquals(null, $productPrice ? $productPrice->getData() : $productPrice);
                 } else {
                     assertEquals($price['amount'], $productPrice->getData());
                 }
@@ -1033,7 +775,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theOptionOfProductsShouldBe($attribute, $products, $optionCode)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
             $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
@@ -1051,7 +793,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $options      = $productValue->getOptions();
@@ -1089,7 +831,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media        = $productValue->getMedia();
@@ -1112,7 +854,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($data, $productValue->getMetric()->getData());
@@ -1120,58 +862,23 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string       $extension
-     * @param PyStringNode $string
-     *
-     * @Given /^the following ([^"]*) file to import:$/
+     * @Given /^the following random files:$/
      */
-    public function theFollowingFileToImport($extension, PyStringNode $string)
+    public function theFollowingRandomFiles(TableNode $table)
     {
-        $extension = strtolower($extension);
+        $directory  = realpath(__DIR__ . '/fixtures/');
+        $characters = range('a', 'z');
 
-        $this->placeholderValues['%file to import%'] = $filename =
-            sprintf(
-                '%s/pim-import/behat-import-%s.%s',
-                $this->placeholderValues['%tmp%'],
-                substr(md5(rand()), 0, 7),
-                $extension
-            );
-        @rmdir(dirname($filename));
-        @mkdir(dirname($filename), 0777, true);
-
-        file_put_contents($filename, (string) $string);
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     *
-     * @Given /^the following CSV configuration to import:$/
-     */
-    public function theFollowingCSVToImport(TableNode $table)
-    {
-        $delimiter = ';';
-
-        $data    = $table->getRowsHash();
-        $columns = implode($delimiter, array_keys($data));
-
-        $rows = [];
-        foreach ($data as $values) {
-            foreach ($values as $index => $value) {
-                $value          = in_array($value, ['yes', 'no']) ? (int) $value === 'yes' : $value;
-                $rows[$index][] = $value;
+        foreach ($table->getHash() as $row) {
+            $filepath = $directory . DIRECTORY_SEPARATOR . $row['filename'];
+            $content = '';
+            for ($i = 0; $i < $row['size'] * 1024 * 1024; $i++) {
+                $content .= $characters[rand(0, count($characters) - 1)];
             }
+
+            touch($filepath);
+            file_put_contents($filepath, $content);
         }
-        $rows = array_map(
-            function ($row) use ($delimiter) {
-                return implode($delimiter, $row);
-            },
-            $rows
-        );
-
-        array_unshift($rows, $columns);
-
-        return $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
     }
 
     /**
@@ -1200,7 +907,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductManager()->getProductRepository()->findAll());
+        $total = count($this->getProductRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1212,7 +919,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeAttributes($expectedTotal)
     {
-        $total = count($this->getProductManager()->getAttributeRepository()->findAll());
+        $total = count($this->getAttributeRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1239,7 +946,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->clearUOW();
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
@@ -1321,8 +1028,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
         $channel->setConversionUnits($conversionUnits->getRowsHash());
-
-        $this->flush();
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1387,7 +1093,7 @@ class FixturesContext extends RawMinkContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     public function getProduct($sku)
     {
@@ -1405,13 +1111,23 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $username
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */
     public function getUser($username)
     {
         return $this->getEntityOrException('User', ['username' => $username]);
+    }
+
+    /**
+     * @param string $localeCode
+     *
+     * @return LocaleInterface
+     */
+    public function getLocaleFromCode($localeCode)
+    {
+        return $this->getEntityOrException('Locale', ['code' => $localeCode]);
     }
 
     /**
@@ -1455,15 +1171,36 @@ class FixturesContext extends RawMinkContext
         $this->refresh($user);
         $actualCount = null;
         if ($associationType == 'group') {
-            $actualCount = count($user->getGroupNames());
+            //We remove the "All" group which is not displayed to the user
+            $groupNames = $user->getGroupNames();
+            if (($key = array_search('All', $groupNames)) !== false) {
+                unset($groupNames[$key]);
+            }
+            $actualCount = count($groupNames);
         } elseif ($associationType == 'role') {
             $actualCount = count($user->getRoles());
         }
+
         if ($actualCount != $count) {
             throw new \InvalidArgumentException(
                 sprintf("Expected %d %s(s) for User %s, found %d", $count, $associationType, $username, $actualCount)
             );
         }
+    }
+
+    /**
+     * @param string $username
+     * @param string $locale
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should have "([^"]+)" locale$/
+     */
+    public function checkUserUiLocale($username, $locale)
+    {
+        $user = $this->getUser($username);
+        $this->refresh($user);
+        assertEquals($user->getUiLocale()->getLanguage(), $locale);
     }
 
     /**
@@ -1487,9 +1224,10 @@ class FixturesContext extends RawMinkContext
      *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
-    public function iVeRemovedTheAttribute($attribute)
+    public function iHaveRemovedTheAttribute($attribute)
     {
-        $this->remove($this->getAttribute($attribute));
+        $remover = $this->getContainer()->get('pim_catalog.remover.attribute');
+        $remover->remove($this->getAttribute($attribute));
     }
 
     /**
@@ -1502,8 +1240,9 @@ class FixturesContext extends RawMinkContext
     {
         $product = $this->getProduct($identifier);
         $product->setFamily($this->getFamily($family));
-        $this->persist($product);
-        $this->flush();
+
+        $this->validate($product);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -1516,11 +1255,12 @@ class FixturesContext extends RawMinkContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $mediaManager = $this->getMediaManager();
         $allMedia     = $product->getMedia();
+        $mountManager = $this->getMountManager();
         foreach ($allMedia as $media) {
-            if ($media) {
-                unlink($mediaManager->getFilePath($media));
+            if (null !== $media) {
+                $fs = $mountManager->getFilesystem($media->getStorage());
+                $fs->delete($media->getKey());
             }
         }
     }
@@ -1566,8 +1306,8 @@ class FixturesContext extends RawMinkContext
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
-            $this->persist($version);
-            $this->flush($version);
+            $this->validate($version);
+            $this->getContainer()->get('pim_versioning.saver.version')->save($version);
         }
     }
 
@@ -1615,21 +1355,67 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $value
-     *
-     * @return string
-     */
-    public function replacePlaceholders($value)
-    {
-        return strtr($value, $this->placeholderValues);
-    }
-
-    /**
      * @return array
      */
     public function getEntities()
     {
         return $this->entities;
+    }
+
+    /**
+     * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
+    {
+        $product->setUpdated(new \DateTime($expected));
+
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
+    }
+
+    /**
+     * Asserts that we have less than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * Asserts that we have more than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * @Given /^the following associations for the (product "([^"]+)"):$/
+     */
+    public function theFollowingAssociationsForTheProduct(ProductInterface $owner, $id, TableNode $values)
+    {
+        $rows = $values->getHash();
+
+        foreach ($rows as $row) {
+            $association = $owner->getAssociationForTypeCode($row['type']);
+
+            if (null === $association) {
+                $associationType = $this->getContainer()
+                    ->get('pim_catalog.repository.association_type')
+                    ->findOneBy(['code' => $row['type']]);
+
+                $association = new Association();
+                $association->setAssociationType($associationType);
+                $owner->addAssociation($association);
+            }
+
+            $association->addProduct($this->getProduct($row['product']));
+        }
+
+        $this->getProductSaver()->save($owner, ['recalculate' => false]);
     }
 
     /**
@@ -1640,7 +1426,7 @@ class FixturesContext extends RawMinkContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1667,7 +1453,7 @@ class FixturesContext extends RawMinkContext
      * @param string $label
      * @param bool   $isVariant
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
+     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {
@@ -1676,7 +1462,8 @@ class FixturesContext extends RawMinkContext
         $type->setVariant($isVariant);
         $type->setLocale('en_US')->setLabel($label);
 
-        $this->persist($type);
+        $this->validate($type);
+        $this->getContainer()->get('pim_catalog.saver.group_type')->save($type);
 
         return $type;
     }
@@ -1684,7 +1471,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string|array $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     protected function createAttribute($data)
     {
@@ -1700,6 +1487,7 @@ class FixturesContext extends RawMinkContext
                 'code'     => null,
                 'label'    => null,
                 'families' => null,
+                'locales'  => null,
                 'type'     => 'text',
                 'group'    => 'other',
             ],
@@ -1716,22 +1504,24 @@ class FixturesContext extends RawMinkContext
         $families = $data['families'];
         unset($data['families']);
 
+        $locales = $data['locales'];
+        unset($data['locales']);
+
         $data['type'] = $this->getAttributeType($data['type']);
 
-        $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
-            }
-            if (false !== strpos($key, 'property-')) {
-                $property              = str_replace('property-', '', $key);
-                $properties[$property] = $element;
+            } elseif (in_array(
+                $key,
+                ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']
+            ) &&
+                '' === $element
+            ) {
                 unset($data[$key]);
             }
         }
-
-        $data['properties'] = $properties;
 
         $attribute = $this->loadFixture('attributes', $data);
 
@@ -1744,9 +1534,19 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $this->persist($attribute);
+        $this->validate($attribute);
+
+        if (null !== $locales) {
+            foreach ($this->listToArray($locales) as $localeCode) {
+                $attribute->addAvailableLocale($this->getLocale($localeCode));
+            }
+        }
+
+        $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+
         foreach ($familiesToPersist as $family) {
-            $this->persist($family);
+            $this->validate($family);
+            $this->getContainer()->get('pim_catalog.saver.family')->save($family);
         }
 
         return $attribute;
@@ -1775,7 +1575,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return \Pim\Component\Catalog\Model\CategoryInterface
      */
     protected function createTree($code)
     {
@@ -1785,7 +1585,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return \Pim\Component\Catalog\Model\CategoryInterface
      */
     protected function createCategory($data)
     {
@@ -1793,22 +1593,22 @@ class FixturesContext extends RawMinkContext
             $data = [['code' => $data]];
         }
 
-        $categories = $this->loadFixture('categories', $data);
+        $category = $this->loadFixture('categories', $data);
 
         /*
          * When using ODM, one must persist and flush category without product
          * before adding and persisting products inside it
          */
-        foreach ($categories as $category) {
-            $products = $category->getProducts();
-            $this->persist($category, true);
-            foreach ($products as $product) {
-                $product->addCategory($category);
-                $this->flush($product);
-            }
+        $products = $category->getProducts();
+        $this->validate($category);
+        $this->getContainer()->get('pim_catalog.saver.category')->save($category);
+
+        foreach ($products as $product) {
+            $product->addCategory($category);
+            $this->getProductSaver()->save($product);
         }
 
-        return reset($categories);
+        return $category;
     }
 
     /**
@@ -1854,7 +1654,8 @@ class FixturesContext extends RawMinkContext
             $channel->setCategory($this->getCategory($data['tree']));
         }
 
-        $this->persist($channel);
+        $this->validate($channel);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1877,15 +1678,15 @@ class FixturesContext extends RawMinkContext
             $attribute = $this->getAttribute($attributeCode);
             $group->addAttribute($attribute);
         }
-
-        $this->persist($group);
-        $this->flush($group);
+        $this->validate($group);
+        $this->getContainer()->get('pim_catalog.saver.group')->save($group);
 
         foreach ($products as $sku) {
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
                 $product->addGroup($group);
-                $this->flush($product);
+                $this->validate($product);
+                $this->getProductSaver()->save($product);
             }
         }
     }
@@ -1900,7 +1701,8 @@ class FixturesContext extends RawMinkContext
         $associationType->setCode($code);
         $associationType->setLocale('en_US')->setLabel($label);
 
-        $this->persist($associationType);
+        $this->validate($associationType);
+        $this->getContainer()->get('pim_catalog.saver.association_type')->save($associationType);
     }
 
     /**
@@ -1911,7 +1713,8 @@ class FixturesContext extends RawMinkContext
     protected function createRole($data)
     {
         $role = new Role($data['role']);
-        $this->persist($role);
+        $this->validate($role);
+        $this->getContainer()->get('pim_user.saver.role')->save($role);
 
         return $role;
     }
@@ -1921,7 +1724,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface
+     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1944,16 +1747,17 @@ class FixturesContext extends RawMinkContext
             case 'color':
             case 'colors':
                 $referenceData = $this->createColorReferenceData($code, $label);
+                $this->validate($referenceData);
+                $this->getContainer()->get('acme_app.saver.color')->save($referenceData);
                 break;
             case 'fabric':
             case 'fabrics':
                 $referenceData = $this->createFabricReferenceData($code, $label);
+                $this->getContainer()->get('acme_app.saver.fabric')->save($referenceData);
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
         }
-
-        $this->getEntityManager()->persist($referenceData);
 
         return $referenceData;
     }
@@ -2016,21 +1820,18 @@ class FixturesContext extends RawMinkContext
             $data = ['code' => $data];
         }
 
-        $requirements = [];
+        if (isset($data['attributes'])) {
+            $data['attributes'] = str_replace(' ', '', $data['attributes']);
+        }
+
         foreach ($data as $key => $value) {
             if (false !== strpos($key, 'requirements-')) {
-                $channel                = str_replace('requirements-', '', $key);
-                $attributes             = explode(',', $value);
-                $requirements[$channel] = $attributes;
-                unset($data[$key]);
+                $data[$key] = str_replace(' ', '', $value);
             }
         }
 
-        $data['requirements'] = $requirements;
-
         $family = $this->loadFixture('families', $data);
-
-        $this->persist($family);
+        $this->getFamilySaver()->save($family);
 
         return $family;
     }
@@ -2040,7 +1841,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface
+     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {
@@ -2049,8 +1850,7 @@ class FixturesContext extends RawMinkContext
         }
 
         $attributeGroup = $this->loadFixture('attribute_groups', $data);
-
-        $this->persist($attributeGroup);
+        $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
     }
@@ -2078,10 +1878,11 @@ class FixturesContext extends RawMinkContext
             $parent = $comments[$data['parent']];
             $parent->setRepliedAt($createdAt);
             $comment->setParent($parent);
-            $this->persist($parent);
+            $this->validate($comment);
+            $this->getContainer()->get('pim_comment.saver.comment')->save($parent);
         }
 
-        $this->persist($comment);
+        $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
 
         return $comment;
     }
@@ -2109,70 +1910,10 @@ class FixturesContext extends RawMinkContext
         $view->setColumns($columns);
         $view->setOwner($this->getUser('Peter'));
 
-        $this->persist($view);
+        $this->validate($view);
+        $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
 
         return $view;
-    }
-
-    /**
-     * Load an installer fixture
-     *
-     * @param string $type
-     * @param array  $data
-     * @param string $format
-     *
-     * @return object
-     */
-    protected function loadFixture($type, array $data, $format = 'csv')
-    {
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor($type, $format);
-
-        if ($processor instanceof ProductProcessor) {
-            $processor->setEnabledComparison(false);
-        }
-
-        $entity = $processor->process($data);
-
-        return $entity;
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function camelize($string)
-    {
-        return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getMainContext()->getEntityManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
-    }
-
-    /**
-     * @param string $namespace
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($namespace)
-    {
-        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
     }
 
     /**
@@ -2192,11 +1933,19 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     * @return AttributeRepositoryInterface
      */
-    protected function getMediaManager()
+    protected function getAttributeRepository()
     {
-        return $this->getContainer()->get('pim_catalog.manager.media');
+        return $this->getContainer()->get('pim_catalog.repository.attribute');
+    }
+
+    /**
+     * @return MountManager
+     */
+    protected function getMountManager()
+    {
+        return $this->getContainer()->get('oneup_flysystem.mount_manager');
     }
 
     /**
@@ -2216,19 +1965,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return SaverInterface
+     */
+    protected function getFamilySaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.family');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAttributeOptionSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.attribute_option');
+    }
+
+    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
      */
     protected function getAttributeManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
-     * @return \Gaufrette\Filesystem
-     */
-    protected function getPimFilesystem()
-    {
-        return $this->getContainer()->get('pim_filesystem');
     }
 
     /**
@@ -2271,68 +2028,5 @@ class FixturesContext extends RawMinkContext
     protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
-    }
-
-    /**
-     * @param object $object
-     */
-    protected function refresh($object)
-    {
-        if (is_object($object)) {
-            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     */
-    protected function persist($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->persist($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     */
-    protected function remove($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->remove($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     */
-    protected function flush($object = null)
-    {
-        if (!$object) {
-            $this->flushAll();
-
-            return;
-        }
-
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->flush($object);
-    }
-
-    /**
-     * Flush all managers
-     */
-    protected function flushAll()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
     }
 }

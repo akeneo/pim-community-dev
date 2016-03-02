@@ -47,6 +47,7 @@ parameters:
     pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
     pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
+    pim_enrich.form.type.translatable_field.class:         Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType
 
 services:
     pim_enrich.form.type.product.view:
@@ -82,6 +83,8 @@ services:
 
     pim_enrich.form.type.product_create:
         class: %pim_enrich.form.type.product_create.class%
+        arguments:
+            - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_product_create }
 
@@ -131,7 +134,7 @@ services:
         arguments:
             - %pim_catalog.entity.attribute_group.class%
         tags:
-            - { name: form.type, alias: pim_enrich_attribute_group }
+            - { name: form.type, alias: pim_enrich_attributegroup }
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
 
@@ -180,7 +183,7 @@ services:
     pim_enrich.form.type.media:
         class: %pim_enrich.form.type.product_value_media.class%
         arguments:
-            - %pim_catalog.entity.product_media.class%
+            - %akeneo_file_storage.model.file_info.class%
         tags:
             - { name: form.type, alias: pim_enrich_media }
 
@@ -195,7 +198,7 @@ services:
     pim_enrich.form.type.channel:
         class: %pim_enrich.form.type.channel.class%
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
             - '@pim_catalog.helper.locale'
             - '@pim_enrich.provider.colors'
             - %pim_catalog.entity.category.class%
@@ -232,6 +235,7 @@ services:
             - %pim_catalog.entity.group.class%
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_axes']]
         tags:
             - { name: form.type, alias: pim_enrich_variant_group }
 
@@ -240,14 +244,14 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
         tags:
-            - { name: form.type, alias: pim_enrich_group_type }
+            - { name: form.type, alias: pim_enrich_grouptype }
 
     pim_enrich.form.type.association_type:
         class: %pim_enrich.form.type.association_type.class%
         arguments:
             - %pim_catalog.entity.association_type.class%
         tags:
-            - { name: form.type, alias: pim_enrich_association_type }
+            - { name: form.type, alias: pim_enrich_associationtype }
 
     pim_enrich.form.type.available_attributes:
         class: %pim_enrich.form.type.available_attributes.class%
@@ -256,7 +260,7 @@ services:
             - '@pim_user.context.user'
             - '@translator'
             - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.available_attributes.class%
+            - %pim_enrich.entity.available_attributes.class%
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
@@ -284,7 +288,7 @@ services:
     pim_enrich.form.type.image:
         class: %pim_enrich.form.type.image.class%
         arguments:
-            - %pim_catalog.entity.product_media.class%
+            - %akeneo_file_storage.model.file_info.class%
         tags:
             - { name: form.type, alias: pim_enrich_image }
 
@@ -321,10 +325,6 @@ services:
     pim_enrich.form.type.edit_common_attributes:
         class: %pim_enrich.form.type.edit_common_attributes.class%
         arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.helper.locale'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.locale.class%
             - %pim_enrich.mass_edit_action.edit_common_attributes.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
@@ -352,6 +352,7 @@ services:
         class: %pim_enrich.form.type.change_family.class%
         arguments:
             - %pim_enrich.mass_edit_action.change_family.class%
+            - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_enrich_mass_change_family }
 
@@ -377,3 +378,12 @@ services:
             - %pim_enrich.mass_edit_action.set_attribute_requirements.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }
+
+    pim_enrich.form.type.translatable_field:
+        class: %pim_enrich.form.type.translatable_field.class%
+        arguments:
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: form.type, alias: pim_translatable_field }

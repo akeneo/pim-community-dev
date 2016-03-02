@@ -5,10 +5,10 @@ namespace Acme\Bundle\AppBundle\Model;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValue as PimProductValue;
+use Pim\Component\Catalog\Model\ProductValue as PimProductValue;
 
 /**
- * Acme override of the product value/ In this example:
+ * Acme override of the product value. In this example:
  *      - "fabrics" is a new many to many relationship
  *      - "color" is a new many to one relationship
  *      - "myNewField" is a new field

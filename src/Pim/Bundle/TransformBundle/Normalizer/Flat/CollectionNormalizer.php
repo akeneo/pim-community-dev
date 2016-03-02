@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 class CollectionNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class CollectionNormalizer extends SerializerAwareNormalizer implements Normaliz
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $result = [];
         foreach ($object as $item) {

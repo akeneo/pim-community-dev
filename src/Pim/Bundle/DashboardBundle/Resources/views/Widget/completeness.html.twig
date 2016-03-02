@@ -7,11 +7,13 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/dashboard/completeness-widget'],
-            function ($, CompletenessWidget) {
+            ['jquery', 'pim/dashboard/widget-container', 'pim/dashboard/completeness-widget'],
+            function ($, widgetContainer, CompletenessWidget) {
                 'use strict';
-                $(function() {
-                    CompletenessWidget.init({el: '#completeness-widget', alias: 'completeness'});
+                $(function () {
+                    var options = {el: '#completeness-widget', alias: 'completeness'};
+                    var widget = widgetContainer.getWidget(options, CompletenessWidget);
+                    widget.render().delayedLoad();
                 });
             }
         );

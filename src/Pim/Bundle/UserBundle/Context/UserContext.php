@@ -2,13 +2,18 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -22,20 +27,26 @@ class UserContext
     /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @staticvar string */
+    const USER_PRODUCT_CATEGORY_TYPE = 'product';
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /** @var Request */
-    protected $request;
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var RequestStack */
+    protected $requestStack;
+
+    /** @var ChoicesBuilderInterface */
+    protected $choicesBuilder;
 
     /** @var array */
     protected $userLocales;
@@ -44,34 +55,29 @@ class UserContext
     protected $defaultLocale;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
-     * @param ChannelManager           $channelManager
-     * @param CategoryManager          $categoryManager
-     * @param string                   $defaultLocale
+     * @param TokenStorageInterface       $tokenStorage
+     * @param LocaleRepositoryInterface   $localeRepository
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param RequestStack                $requestStack
+     * @param string                      $defaultLocale
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        TokenStorageInterface $tokenStorage,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        RequestStack $requestStack,
+        ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        $this->securityContext = $securityContext;
-        $this->localeManager   = $localeManager;
-        $this->channelManager  = $channelManager;
-        $this->categoryManager = $categoryManager;
-        $this->defaultLocale   = $defaultLocale;
-    }
-
-    /**
-     * Sets the current request
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
+        $this->tokenStorage      = $tokenStorage;
+        $this->localeRepository  = $localeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->categoryRepository= $categoryRepository;
+        $this->requestStack      = $requestStack;
+        $this->choicesBuilder    = $choicesBuilder;
+        $this->defaultLocale     = $defaultLocale;
     }
 
     /**
@@ -80,7 +86,7 @@ class UserContext
      *
      * @throws \LogicException When there are no activated locales
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getCurrentLocale()
     {
@@ -116,12 +122,12 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getUserLocales()
     {
         if ($this->userLocales === null) {
-            $this->userLocales = $this->localeManager->getActiveLocales();
+            $this->userLocales = $this->localeRepository->getActivatedLocales();
         }
 
         return $this->userLocales;
@@ -145,13 +151,13 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getUserChannel()
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
-        return $catalogScope ?: current($this->channelManager->getChannels());
+        return $catalogScope ?: $this->channelRepository->findOneBy([]);
     }
 
     /**
@@ -171,7 +177,8 @@ class UserContext
      */
     public function getChannelChoicesWithUserChannel()
     {
-        $channelChoices  = $this->channelManager->getChannelChoices();
+        $channels        = $this->channelRepository->findAll();
+        $channelChoices  = $this->choicesBuilder->buildChoices($channels);
         $userChannelCode = $this->getUserChannelCode();
 
         if (array_key_exists($userChannelCode, $channelChoices)) {
@@ -182,28 +189,90 @@ class UserContext
     }
 
     /**
-     * Get user category tree
+     * For the given $relatedEntity of category asked, return the default user category.
+     *
+     * @param string $relatedEntity
+     *
+     * @return CategoryInterface|null
+     */
+    public function getUserCategoryTree($relatedEntity)
+    {
+        if (static::USER_PRODUCT_CATEGORY_TYPE === $relatedEntity) {
+            return $this->getUserProductCategoryTree();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get user product category tree
      *
      * @return CategoryInterface
      */
-    public function getUserTree()
+    public function getUserProductCategoryTree()
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        return $defaultTree ?: current($this->categoryManager->getTrees());
+        return $defaultTree ?: current($this->categoryRepository->getTrees());
+    }
+
+    /**
+     * Returns the UI user locale
+     *
+     * @return LocaleInterface|null
+     */
+    public function getUiLocale()
+    {
+        return $this->getUserOption('uiLocale');
+    }
+
+    /**
+     * Get authenticated user
+     *
+     * @return UserInterface|null
+     */
+    public function getUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * Get the user context as an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $channels = array_keys($this->getChannelChoicesWithUserChannel());
+        $locales  = $this->getUserLocaleCodes();
+
+        return [
+            'locales'  => $locales,
+            'channels' => $channels,
+            'locale'   => $this->getUiLocale()->getCode()
+        ];
     }
 
     /**
      * Returns the request locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getRequestLocale()
     {
-        if ($this->request) {
-            $localeCode = $this->request->get(self::REQUEST_LOCALE_PARAM);
+        $request = $this->getCurrentRequest();
+        if (null !== $request) {
+            $localeCode = $request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
-                $locale = $this->localeManager->getLocaleByCode($localeCode);
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
@@ -214,9 +283,9 @@ class UserContext
     }
 
     /**
-     * Returns the user locale
+     * Returns the catalog user locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -228,11 +297,11 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
-        return $this->localeManager->getLocaleByCode($this->defaultLocale);
+        return $this->localeRepository->findOneByIdentifier($this->defaultLocale);
     }
 
     /**
@@ -256,13 +325,13 @@ class UserContext
      */
     protected function getUserOption($optionName)
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
 
         if ($token !== null) {
             $user   = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
-            if ($user && is_callable(array($user, $method))) {
+            if ($user && is_callable([$user, $method])) {
                 $value = $user->$method();
                 if ($value) {
                     return $value;
@@ -274,20 +343,12 @@ class UserContext
     }
 
     /**
-     * Get authenticated user
+     * Get current request
      *
-     * @return User|null
+     * @return Request|null
      */
-    public function getUser()
+    protected function getCurrentRequest()
     {
-        if (null === $token = $this->securityContext->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
+        return $this->requestStack->getCurrentRequest();
     }
 }

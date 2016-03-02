@@ -4,17 +4,16 @@ define(
     ['jquery', 'underscore', 'pim/form-registry'],
     function ($, _, FormRegistry) {
         var buildForm = function (formName) {
-            var deferred = $.Deferred();
-
-            $.when(
+            return $.when(
                 FormRegistry.getForm(formName),
                 FormRegistry.getFormExtensions(formName)
-            ).done(function (Form, extensionMeta) {
+            ).then(function (Form, extensionMeta) {
                 var form = new Form();
+                form.code = formName;
 
                 var extensionPromises = [];
-                _.each(extensionMeta.extensions, function (extension) {
-                    var extensionPromise = buildForm(extension.module);
+                _.each(extensionMeta, function (extension) {
+                    var extensionPromise = buildForm(extension.code);
                     extensionPromise.done(function (loadedModule) {
                         extension.loadedModule = loadedModule;
                     });
@@ -22,8 +21,8 @@ define(
                     extensionPromises.push(extensionPromise);
                 });
 
-                $.when.apply($, extensionPromises).done(function () {
-                    _.each(extensionMeta.extensions, function (extension) {
+                return $.when.apply($, extensionPromises).then(function () {
+                    _.each(extensionMeta, function (extension) {
                         form.addExtension(
                             extension.code,
                             extension.loadedModule,
@@ -32,24 +31,18 @@ define(
                         );
                     });
 
-                    deferred.resolve(form);
+                    return form;
                 });
             });
-
-            return deferred.promise();
         };
 
         return {
-            build: function buildRootForm(formName) {
-                var deferred = $.Deferred();
-
-                buildForm(formName).done(function (form) {
-                    form.configure().done(function () {
-                        deferred.resolve(form);
+            build: function (formName) {
+                return buildForm(formName).then(function (form) {
+                    return form.configure().then(function () {
+                        return form;
                     });
                 });
-
-                return deferred.promise();
             }
         };
     }

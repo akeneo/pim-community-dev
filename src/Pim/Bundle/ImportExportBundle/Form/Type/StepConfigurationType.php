@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Step configuration form type
@@ -35,10 +35,10 @@ class StepConfigurationType extends AbstractType
                             $property,
                             'pim_import_export_step_element_configuration',
                             $element,
-                            array(
+                            [
                                 'label'           => sprintf('pim_import_export.steps.%s.title', $element->getName()),
                                 'auto_initialize' => false,
-                            )
+                            ]
                         )
                     );
                 }
@@ -49,12 +49,12 @@ class StepConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',
-            )
+            [
+                'data_class' => 'Akeneo\\Component\\Batch\\Step\\AbstractStep',
+            ]
         );
     }
 

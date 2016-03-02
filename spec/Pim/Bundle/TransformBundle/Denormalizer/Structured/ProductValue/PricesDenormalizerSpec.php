@@ -10,7 +10,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             ['pim_catalog_price_collection'],
-            'Pim\Bundle\CatalogBundle\Model\ProductPrice'
+            'Pim\Component\Catalog\Model\ProductPrice'
         );
     }
 
@@ -59,11 +59,11 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $prices->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
         $prices->shouldHaveCount(2);
 
-        $prices[0]->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductPriceInterface');
+        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
         $prices[0]->getData()->shouldReturn(10);
         $prices[0]->getCurrency()->shouldReturn('EUR');
 
-        $prices[0]->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductPriceInterface');
+        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
         $prices[1]->getData()->shouldReturn(15);
         $prices[1]->getCurrency()->shouldReturn('USD');
     }

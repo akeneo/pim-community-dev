@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Prophecy\Argument;
@@ -40,8 +40,8 @@ class CategoryProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor_step_execution_aware()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_provides_configuration_fields()

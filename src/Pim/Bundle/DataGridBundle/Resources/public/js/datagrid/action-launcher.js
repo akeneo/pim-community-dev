@@ -1,6 +1,11 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!pim/template/datagrid/action-launcher-button',
+    'text!pim/template/datagrid/action-launcher-list-item'
+], function($, _, Backbone, buttonTemplate, listItemTemplate) {
     'use strict';
 
     /**
@@ -44,31 +49,14 @@ function($, _, Backbone) {
         /** @property {String} */
         runAction: true,
 
-        /** @property {function(Object, ?Object=): String} */
-        template:_.template(
-            '<<%= tagName %> href="<%= link %>" class="action' +
-                '<%= className ? " " + className : "" %>' +
-                '<%= !enabled ? " disabled" : "" %>' +
-                '"' +
-                ' <%= attributesTemplate({attributes: attributes}) %>' +
-                ' title="<%= label %>"' +
-            '>' +
-                '<% if (icon) { %>' +
-                    '<i class="icon-<%= icon %> hide-text"><%= label %></i>' +
-                '<% } else { %>' +
-                    '<% if (iconClassName) { %>' +
-                        '<i class="<%= iconClassName %>"></i>' +
-                    '<% } %>' +
-                    ' <%= label %>' +
-                '<% } %>' +
-            '</<%= tagName %>>'
-        ),
+        /** @property {String} */
+        group: undefined,
 
-        attributesTemplate: _.template(
-            '<% _.each(attributes, function(attribute, name) { %>' +
-                '<%= name %>="<%= attribute %>" ' +
-            '<% }) %>'
-        ),
+        /** @property {function(Object, ?Object=): String} */
+        buttonTemplate: _.template(buttonTemplate),
+
+        /** @property {function(Object, ?Object=): String} */
+        listItemTemplate: _.template(listItemTemplate),
 
         /** @property */
         events: {
@@ -122,6 +110,10 @@ function($, _, Backbone) {
                 this.runAction = options.runAction;
             }
 
+            if (_.has(options, 'group')) {
+                this.group = options.group;
+            }
+
             if (_.has(options, 'onClickReturnValue')) {
                 this.onClickReturnValue = options.onClickReturnValue;
             }
@@ -131,27 +123,50 @@ function($, _, Backbone) {
         },
 
         /**
-         * Render actions
+         * Render the launcher as a simple button
          *
          * @return {*}
          */
         render: function () {
             this.$el.empty();
 
-            var $el = $(this.template({
+            var $el = $(this.buttonTemplate({
                 label: _.__(this.label || this.action.label),
                 icon: this.icon,
-                className: this.className,
+                className: 'action' + (this.className ? ' ' + this.className : ''),
                 iconClassName: this.iconClassName,
                 link: this.link,
                 action: this.action,
                 attributes: this.attributes,
-                attributesTemplate: this.attributesTemplate,
                 enabled: this.enabled,
                 tagName: this.tagName
             }));
 
             this.setElement($el);
+
+            return this;
+        },
+
+        /**
+         * Render the launcher as a list item
+         *
+         * @return {*}
+         */
+        renderAsListItem: function () {
+            this.$el.empty();
+
+            var $el = $(this.listItemTemplate({
+                label: _.__(this.label || this.action.label),
+                className: 'action' + (this.className ? ' ' + this.className : ''),
+                link: this.link,
+                action: this.action,
+                attributes: this.attributes,
+                enabled: this.enabled,
+                tagName: this.tagName
+            }));
+
+            this.setElement($el);
+
             return this;
         },
 
@@ -172,6 +187,7 @@ function($, _, Backbone) {
                 //  skip launcher functionality, if action was executed
                 return false;
             }
+
             return this.onClickReturnValue;
         },
 
@@ -183,6 +199,7 @@ function($, _, Backbone) {
         disable: function() {
             this.enabled = false;
             this.$el.addClass('disabled');
+
             return this;
         },
 
@@ -194,7 +211,17 @@ function($, _, Backbone) {
         enable: function() {
             this.enabled = true;
             this.$el.removeClass('disabled');
+
             return this;
+        },
+
+        /**
+         * Return the action group
+         *
+         * @return {String}
+         */
+        getGroup: function () {
+            return this.group;
         }
     });
 });

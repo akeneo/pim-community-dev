@@ -3,3 +3,4 @@ config:
         pim/dashboard/abstract-widget:        pimdashboard/js/abstract-widget
         pim/dashboard/completeness-widget:    pimdashboard/js/completeness-widget
         pim/dashboard/last-operations-widget: pimdashboard/js/last-operations-widget
+        pim/dashboard/widget-container:       pimdashboard/js/widget-container

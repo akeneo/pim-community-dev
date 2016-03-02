@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Abstract MongoDB attribute filter
@@ -27,7 +27,7 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
      * @param string             $scope
      * @param string             $type
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {

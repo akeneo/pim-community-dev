@@ -28,12 +28,12 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
                     on: create
     oneToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             mappedBy: group
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+            targetEntity: Pim\Component\Catalog\Model\AttributeGroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

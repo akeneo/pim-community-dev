@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Cache;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**
  * Caches doctrine persisted objects
@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class DoctrineCache
 {
@@ -23,7 +25,7 @@ class DoctrineCache
     protected $referenceRepository;
 
     /** @var array */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * @param ManagerRegistry $doctrine
@@ -80,10 +82,10 @@ class DoctrineCache
      *
      * @param array $unclearableEntities
      */
-    public function clear(array $unclearableEntities = array())
+    public function clear(array $unclearableEntities = [])
     {
         if (empty($unclearableEntities)) {
-            $this->cache = array();
+            $this->cache = [];
         } else {
             foreach (array_keys($this->cache) as $class) {
                 if (!in_array($class, $unclearableEntities)) {

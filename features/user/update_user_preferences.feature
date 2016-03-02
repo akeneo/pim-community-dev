@@ -1,3 +1,4 @@
+@javascript
 Feature: Update user preferences
   In order for users to be able to choose their preferences
   As an administrator
@@ -7,7 +8,6 @@ Feature: Update user preferences
     Given an "apparel" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Successfully delete a tree used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab
@@ -25,7 +25,6 @@ Feature: Update user preferences
     And I should see "2014 collection"
     And I should not see "2013 collection"
 
-  @javascript
   Scenario: Successfully delete a channel used by a user
     Given I edit the "Peter" user
     And I visit the "Additional" tab
@@ -40,7 +39,6 @@ Feature: Update user preferences
     And I should see "Ecommerce"
     And I should not see "Print"
 
-  @javascript
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab

@@ -2,18 +2,19 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Akeneo\Component\FileStorage\Model\FileInfo;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Metric;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ProductValueCompleteValidatorSpec extends ObjectBehavior
 {
@@ -29,10 +30,10 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
 
     function it_validates_simple_string(
         $context,
-        ProductValueComplete $constraint)
-    {
+        ProductValueComplete $constraint
+    ) {
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate('simple value', $constraint);
@@ -40,22 +41,26 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_nullable_value(
         $context,
-        ProductValueComplete $constraint)
-    {
+        ProductValueComplete $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $context
-            ->addViolation($constraint->messageNotNull)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageNotNull)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(null, $constraint);
     }
 
     function it_does_not_validate_false_value(
         $context,
-        ProductValueComplete $constraint)
-    {
+        ProductValueComplete $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $context
-            ->addViolation($constraint->messageNotNull)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageNotNull)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(false, $constraint);
     }
@@ -64,15 +69,16 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $productValue->getData()->willReturn(new ArrayCollection());
 
         $context
-            ->addViolation($constraint->messageComplete)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageComplete)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productValue, $constraint);
     }
@@ -82,19 +88,19 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
         ProductPriceInterface $productPrice,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $productPrice->getCurrency()->willReturn('EUR');
         $productPrice->getData()->willReturn(15);
-        $productValue->getData()->willReturn(array($productPrice));
+        $productValue->getData()->willReturn([$productPrice]);
 
         $attribute->getBackendType()->willReturn('prices');
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);
@@ -105,20 +111,22 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
         ProductPriceInterface $productPrice,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $productPrice->getCurrency()->willReturn('EUR');
         $productPrice->getData()->willReturn(null);
-        $productValue->getData()->willReturn(array($productPrice));
+        $productValue->getData()->willReturn([$productPrice]);
 
         $attribute->getBackendType()->willReturn('prices');
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation($constraint->messageComplete)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageComplete)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productValue, $constraint);
     }
@@ -127,12 +135,12 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
-        $productMedia = new ProductMedia();
-        $productMedia->setFilename('akeneo.jpg');
+        $productMedia = new FileInfo();
+        $productMedia->setOriginalFilename('akeneo.jpg');
         $productValue->getMedia()->willReturn($productMedia);
         $productValue->getData()->willReturn('data');
 
@@ -140,7 +148,7 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);
@@ -150,11 +158,12 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
-        $productMedia = new ProductMedia();
+        $productMedia = new FileInfo();
         $productValue->getMedia()->willReturn($productMedia);
         $productValue->getData()->willReturn('data');
 
@@ -162,8 +171,9 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation($constraint->messageComplete)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageComplete)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productValue, $constraint);
     }
@@ -172,8 +182,8 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $metric = new Metric();
@@ -185,7 +195,7 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);
@@ -195,8 +205,9 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $metric = new Metric();
@@ -207,8 +218,9 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation($constraint->messageComplete)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->messageComplete)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productValue, $constraint);
     }
@@ -217,8 +229,8 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $context,
         ProductValueComplete $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute)
-    {
+        AttributeInterface $attribute
+    ) {
         $constraint->getChannel()->willReturn($this->getChannel());
 
         $metric = new Metric();
@@ -229,7 +241,7 @@ class ProductValueCompleteValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);

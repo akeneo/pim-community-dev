@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 class CachedReaderSpec extends ObjectBehavior
 {
     function it_is_an_item_reader()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
     }
 
     function it_provides_configuration_fields()

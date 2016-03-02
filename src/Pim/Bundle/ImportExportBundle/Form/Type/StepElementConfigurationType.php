@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Step element configuration form type
@@ -60,11 +60,11 @@ class StepElementConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement',
+                'data_class' => 'Akeneo\\Component\\Batch\\Item\\AbstractConfigurableStepElement',
             ]
         );
     }

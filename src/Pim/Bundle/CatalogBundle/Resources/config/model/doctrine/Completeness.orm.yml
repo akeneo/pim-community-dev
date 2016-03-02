@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Completeness:
+Pim\Component\Catalog\Model\Completeness:
     type: entity
     table: pim_catalog_completeness
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -28,21 +28,21 @@ Pim\Bundle\CatalogBundle\Model\Completeness:
             column: required_count
     manyToOne:
         locale:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
         channel:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
         product:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
             inversedBy: completenesses
             joinColumns:
                 product_id:

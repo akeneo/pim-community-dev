@@ -41,11 +41,11 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName) {
+            initialize: function(urlParams, gridName, categoryBaseRoute) {
                 this.$el.remove();
                 this.$el = $(this.container);
 
-                this.value = this.emptyValue;
+                this.value = $.extend(true, {}, this.emptyValue);
 
                 if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
                     this.value.value.treeId = urlParams[gridName + '[_filter][category][value][treeId]'];
@@ -56,7 +56,7 @@ define(
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
 
-                TreeView.init(this.$el, this._getInitialState());
+                TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
 
                 this.listenTo(mediator, 'datagrid_filters:build.post', function(filtersManager) {
                     this.listenTo(filtersManager, 'collection-filters:createState.post', function(filtersState) {
@@ -76,6 +76,10 @@ define(
              * Get the current tree state
              */
             _getTreeState: function () {
+                if (!this.$el.is(':visible')) {
+                    return this.emptyValue;
+                }
+
                 var state = TreeView.getState();
 
                 return {
@@ -85,6 +89,14 @@ define(
                     },
                     type: +state.includeSub
                 };
+            },
+
+            getValue: function() {
+                if (!this.$el.is(':visible')) {
+                    return this.emptyValue;
+                }
+
+                return NumberFilter.prototype.getValue.apply(this, arguments);
             },
 
             /**

@@ -14,7 +14,7 @@ Pim\Bundle\EnrichBundle\Entity\SequentialEdit:
             column: object_set
     oneToOne:
         user:
-            targetEntity: Symfony\Component\Security\Core\User\UserInterface
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
             joinColumn:
                 name: user_id
                 referencedColumnName: id

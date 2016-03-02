@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,19 +19,17 @@ class ExportProfileController extends JobProfileController
     /**
      * List the export profiles
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_importexport_export_profile_index")
      *
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return array(
+        return [
             'jobType'    => $this->getJobType(),
             'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
-        );
+        ];
     }
 
     /**

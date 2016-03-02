@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Twig;
 
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Twig extension to normalize configuration values
@@ -39,13 +41,13 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'getViolations',
-                array($this, 'getViolationsFunction'),
-                array('is_safe' => array('html'))
+                [$this, 'getViolationsFunction'],
+                ['is_safe' => ['html']]
             )
-        );
+        ];
     }
 
     /**
@@ -53,9 +55,10 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('normalizeValue', array($this, 'normalizeValueFilter')),
-        );
+        return [
+            new \Twig_SimpleFilter('normalizeValue', [$this, 'normalizeValueFilter']),
+            new \Twig_SimpleFilter('normalizeFieldValue', [$this, 'normalizeFieldValueFilter']),
+        ];
     }
 
     /**
@@ -79,20 +82,43 @@ class NormalizeConfigurationExtension extends \Twig_Extension
     }
 
     /**
+     * Normalize a complete field to print intelligible data to user.
+     * This method takes account of 'choice' type to display label instead of value.
+     *
+     * @param array $field
+     *
+     * @return string
+     */
+    public function normalizeFieldValueFilter(array $field)
+    {
+        $value = $field['data'];
+
+        if (isset($field['choices'])) {
+            foreach ($field['choices'] as $choiceView) {
+                if ($choiceView instanceof ChoiceView && $choiceView->value === $value) {
+                    return $choiceView->label;
+                }
+            }
+        }
+
+        return $this->normalizeValueFilter($value);
+    }
+
+    /**
      * Get the violations from a collection of violations that concern
      * a given field (e.g: channel) of an element (e.g: reader) of a step (e.g: 0)
      *
-     * @param ConstraintViolationList $violations
-     * @param string                  $element
+     * @param ConstraintViolationListInterface $violations
+     * @param string                           $element
      *
      * @return string The violation messages separated by a space character
      */
     public function getViolationsFunction($violations, $element)
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($violations as $violation) {
-            if (preg_match(sprintf('/[.]%s$/', $element), $violation->getPropertyPath())) {
+            if (preg_match(sprintf('/\[.\]%s$/', $element), $violation->getPropertyPath())) {
                 $messages[] = sprintf(
                     '<span class="label label-important">%s</span>',
                     $this->translator->trans($violation->getMessage())

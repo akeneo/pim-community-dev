@@ -13,12 +13,11 @@ Feature: Product edition clicking on another action
     And I am on the products page
     And I display the columns sku, name, image, description and family
 
-  @unstable-app
   Scenario: Successfully edit a product and back to the grid
     Given I am on the "sandal" product page
     And I fill in the following information:
       | Name | My Sandal |
-    When I press "Save and back" on the "Save" dropdown button
+    When I save and back to the grid
     Then I should be on the products page
     And I should see product sandal
     And the row "sandal" should contain:

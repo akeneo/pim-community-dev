@@ -27,9 +27,19 @@ Feature: Browse currencies
     Then I should see currencies GBP, USD and EUR
 
   Scenario: Successfully deactivate a currency
+    Given I activate the AED currency
+    Given I filter by "Activated" with value "yes"
+    Then the grid should contain 3 elements
+    And I should see currencies USD, AED and EUR
+    When I deactivate the AED currency
+    Then the grid should contain 2 element
+    And I should see currency USD and EUR
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4488
+  Scenario: Cannot deactivate a currency linked to a channel
     Given I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
     And I should see currencies USD and EUR
     When I deactivate the USD currency
-    Then the grid should contain 1 element
-    And I should see currency EUR
+    Then the grid should contain 2 element
+    And I should see currencies USD and EUR

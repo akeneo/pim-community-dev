@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Simple options (select) attribute type
@@ -59,6 +59,6 @@ class OptionSimpleSelectType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_simpleselect';
+        return AttributeTypes::OPTION_SIMPLE_SELECT;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * AttributeValidatorHelper
@@ -81,6 +81,17 @@ class AttributeValidatorHelper
                 sprintf(
                     'Attribute "%s" expects an existing and activated locale, "%s" given.',
                     $attribute->getCode(),
+                    $locale
+                )
+            );
+        }
+
+        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getLocaleSpecificCodes())) {
+            throw new \LogicException(
+                sprintf(
+                    'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
+                    $attribute->getCode(),
+                    implode($attribute->getLocaleSpecificCodes(), ', '),
                     $locale
                 )
             );

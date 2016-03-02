@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class AddAttributeTypesPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const REGISTRY_ID = 'pim_datagrid.datagrid.product.configuration_registry';
+    const REGISTRY_ID = 'pim_datagrid.datagrid.configuration.product.configuration_registry';
 
     /** @staticvar string */
     const PARAM_PREFIX = 'pim_datagrid.product.attribute_type.';
@@ -35,11 +35,11 @@ class AddAttributeTypesPass implements CompilerPassInterface
                 }
             );
             $parameters     = array_intersect_key($allParameters, array_flip($parameterKeys));
-            $configurations = array();
+            $configurations = [];
             foreach ($parameters as $key => $configuration) {
                 $configurations[str_replace(self::PARAM_PREFIX, '', $key)] = $configuration;
             }
-            $registry->addMethodCall('setConfigurations', array($configurations));
+            $registry->addMethodCall('setConfigurations', [$configurations]);
         }
     }
 }

@@ -57,22 +57,22 @@ define(
                     label: _.__('pim_enrich.form.product.tab.attributes.title')
                 });
 
+                UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(mediator, 'entity:action:validation_error', this.render);
-                this.listenTo(mediator, 'change-family:change:after', this.render);
-                this.listenTo(mediator, 'attributes:add-attribute:after', this.render);
-                this.listenTo(mediator, 'product:action:post_update', this.postSave);
-                this.listenTo(mediator, 'show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
 
-                window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
 
-                this.onExtensions('comparison:change', _.bind(this.comparisonChange, this));
-                this.onExtensions('attribute-group:change', _.bind(this.render, this));
-                this.onExtensions('add-attribute:add', _.bind(this.addAttributes, this));
-                this.onExtensions('copy:copy-fields:after', _.bind(this.render, this));
-                this.onExtensions('copy:select:after', _.bind(this.render, this));
-                this.onExtensions('copy:context:change', _.bind(this.render, this));
+                this.onExtensions('comparison:change', this.comparisonChange.bind(this));
+                this.onExtensions('group:change', this.render.bind(this));
+                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
+                this.onExtensions('copy:copy-fields:after', this.render.bind(this));
+                this.onExtensions('copy:select:after', this.render.bind(this));
+                this.onExtensions('copy:context:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -82,44 +82,48 @@ define(
                 }
 
                 this.rendering = true;
-
-                this.getConfig().done(_.bind(function () {
-                    this.$el.html(this.template({}));
-                    this.resize();
-                    var product = this.getData();
+                this.$el.html(this.template({}));
+                this.getConfig().then(function () {
+                    var product = this.getFormData();
                     $.when(
-                        FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).done(_.bind(function (families, values) {
+                    ).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                            this.getExtension('attribute-group-selector').getCurrentElement()
                         );
 
                         var fieldPromises = [];
-                        _.each(productValues, _.bind(function (productValue, attributeCode) {
-                            fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
-                        }, this));
+                        _.each(productValues, function (productValue, attributeCode) {
+                            fieldPromises.push(this.renderField(product, attributeCode, productValue));
+                        }.bind(this));
 
-                        $.when.apply($, fieldPromises).done(_.bind(function () {
-                            var $productValuesPanel = this.$('.product-values');
-                            $productValuesPanel.empty();
+                        this.rendering = false;
 
-                            FieldManager.clearVisibleFields();
-                            _.each(arguments, _.bind(function (field) {
-                                if (field.canBeSeen()) {
-                                    field.render();
-                                    FieldManager.addVisibleField(field.attribute.code);
-                                    $productValuesPanel.append(field.$el);
-                                }
-                            }, this));
-                            this.rendering = false;
-                        }, this));
-                    }, this));
+                        return $.when.apply($, fieldPromises);
+                    }.bind(this)).then(function () {
+                        return _.sortBy(arguments, function (field) {
+                            return field.attribute.sort_order;
+                        });
+                    }).then(function (fields) {
+                        var $productValuesPanel = this.$('.product-values');
+                        $productValuesPanel.empty();
+
+                        FieldManager.clearVisibleFields();
+                        _.each(fields, function (field) {
+                            if (field.canBeSeen()) {
+                                field.render();
+                                FieldManager.addVisibleField(field.attribute.code);
+                                $productValuesPanel.append(field.$el);
+                            }
+                        }.bind(this));
+
+                        this.resize();
+                    }.bind(this));
                     this.delegateEvents();
 
                     this.renderExtensions();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -131,13 +135,22 @@ define(
                     );
                 }
             },
-            renderField: function (product, attributeCode, values, families) {
+            renderField: function (product, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
+                    return $.when(
+                        (new $.Deferred().resolve(field)),
+                        FetcherRegistry.getFetcher('channel').fetchAll(),
+                        AttributeManager.isOptional(field.attribute, product)
+                    );
+                }).then(function (field, channels, isOptional) {
+                    var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
-                        scope: UserContext.get('catalogScope'),
+                        scope: scope.code,
+                        scopeLabel: scope.label,
                         uiLocale: UserContext.get('catalogLocale'),
-                        optional: AttributeManager.isOptional(field.attribute, product, families),
+                        optional: isOptional,
                         removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')
                     });
                     field.setValues(values);
@@ -147,11 +160,15 @@ define(
             },
             getConfig: function () {
                 var promises = [];
-                var product = this.getData();
+                var product = this.getFormData();
 
-                promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-
-                this.triggerExtensions('add-attribute:update:available-attributes');
+                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
+                    .then(function (attributeGroups) {
+                        this.getExtension('attribute-group-selector').setElements(
+                            _.indexBy(_.sortBy(attributeGroups, 'sortOrder'), 'code')
+                        );
+                    }.bind(this))
+                );
 
                 return $.when.apply($, promises).promise();
             },
@@ -159,15 +176,14 @@ define(
                 var attributeCodes = event.codes;
 
                 $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
+                    FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
-                ).then(_.bind(function (attributes, locales, channels, currencies) {
-                    var product = this.getData();
+                ).then(function (attributes, locales, channels, currencies) {
+                    var product = this.getFormData();
 
-                    _.each(attributeCodes, function (attributeCode) {
-                        var attribute = _.findWhere(attributes, {code: attributeCode});
+                    _.each(attributes, function (attribute) {
                         if (!product.values[attribute.code]) {
                             product.values[attribute.code] = AttributeManager.generateMissingValues(
                                 [],
@@ -179,39 +195,39 @@ define(
                         }
                     });
 
-                    this.extensions['attribute-group-selector'].setCurrent(
-                        _.findWhere(attributes, {code: _.first(attributeCodes)}).group
+                    this.getExtension('attribute-group-selector').setCurrent(
+                        _.first(attributes).group_code
                     );
 
                     this.setData(product);
 
-                    mediator.trigger('attributes:add-attribute:after');
-                }, this));
+                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
+                }.bind(this));
             },
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
                     return;
                 }
                 var attributeCode = event.currentTarget.dataset.attribute;
-                var product = this.getData();
+                var product = this.getFormData();
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
                     _.__('pim_enrich.confirmation.delete.product_attribute'),
                     _.__('pim_enrich.confirmation.delete_item'),
-                    _.bind(function () {
-                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(_.bind(function (attribute) {
+                    function () {
+                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(
                                     'pim_enrich_product_remove_attribute_rest',
                                     {
-                                        productId: this.getData().meta.id,
+                                        productId: this.getFormData().meta.id,
                                         attributeId: attribute.id
                                     }
                                 ),
                                 contentType: 'application/json'
-                            }).then(_.bind(function () {
+                            }).then(function () {
                                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                                 delete product.values[attributeCode];
@@ -219,15 +235,17 @@ define(
 
                                 this.setData(product);
 
-                                this.getRoot().model.trigger('change');
-                            }, this)).fail(function () {
+                                this.getRoot().trigger('pim_enrich:form:remove-attribute:after');
+
+                                this.render();
+                            }.bind(this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
                                     _.__('pim_enrich.form.product.flash.attribute_deletion_error')
                                 );
                             });
-                        }, this));
-                    }, this)
+                        }.bind(this));
+                    }.bind(this)
                 );
             },
             setScope: function (scope, options) {
@@ -247,9 +265,9 @@ define(
                 this.render();
             },
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
-                    .done(_.bind(function (attributeGroups) {
-                        mediator.trigger('form-tabs:change:tab', this.code);
+                AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
+                    .then(function (attributeGroups) {
+                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
@@ -270,8 +288,9 @@ define(
                             needRendering = true;
                         }
 
-                        if (attributeGroup !== this.extensions['attribute-group-selector'].getCurrent()) {
-                            this.extensions['attribute-group-selector'].setCurrent(attributeGroup);
+                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
+                        if (attributeGroup !== attributeGroupSelector.getCurrent()) {
+                            attributeGroupSelector.setCurrent(attributeGroup);
                             needRendering = true;
                         }
 
@@ -279,8 +298,12 @@ define(
                             this.render();
                         }
 
-                        FieldManager.getFields()[event.attribute].setFocus();
-                    }, this));
+                        var displayedAttributes = FieldManager.getFields();
+
+                        if (_.has(displayedAttributes, event.attribute)) {
+                            displayedAttributes[event.attribute].setFocus();
+                        }
+                    }.bind(this));
             },
             comparisonChange: function (open) {
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');

@@ -1,10 +1,16 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'pim/notification-list', 'pim/indicator'],
-    function (Backbone, $, _, Routing) {
+    [
+        'backbone',
+        'jquery',
+        'underscore',
+        'routing',
+        'pim/notification-list',
+        'pim/indicator',
+        'text!pim/template/notification/notification',
+        'text!pim/template/notification/notification-footer'
+    ],
+    function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
-
-        var NotificationList = require('pim/notification-list');
-        var Indicator = require('pim/indicator');
 
         var Notifications = Backbone.View.extend({
             el: '#header-notification-widget',
@@ -25,31 +31,9 @@ define(
 
             refreshLocked: false,
 
-            template: _.template(
-                [
-                    '<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">',
-                        '<i class="icon-bell"></i>',
-                        '<span class="indicator"></span>',
-                    '</a>',
-                    '<ul class="dropdown-menu"></ul>'
-                ].join('')
-            ),
+            template: _.template(notificationTpl),
 
-            footerTemplate: _.template(
-                [
-                    '<p class="text-center unspaced">',
-                        '<% if (loading) { %>',
-                            '<img src="<%= options.imgUrl %>" alt="<%= options.loadingText %>" />',
-                        '<% } %>',
-                        '<% if (!loading && !hasNotifications && !hasMore) { %>',
-                            '<span><%= options.noNotificationsMessage %></span>',
-                        '<% } %>',
-                        '<% if (hasNotifications && hasUnread) { %>',
-                            '<button class="btn btn-mini mark-as-read"><%= options.markAsReadMessage %></button>',
-                        '<% } %>',
-                    '</p>'
-                ].join('')
-            ),
+            footerTemplate: _.template(notificationFooterTpl),
 
             events: {
                 'click a.dropdown-toggle':   'onOpen',

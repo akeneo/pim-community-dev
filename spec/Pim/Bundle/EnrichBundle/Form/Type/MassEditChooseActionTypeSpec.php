@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MassEditChooseActionTypeSpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class MassEditChooseActionTypeSpec extends ObjectBehavior
         $this->buildForm($builder, $options);
     }
 
-    function it_sets_the_default_options(OptionsResolverInterface $resolver)
+    function it_sets_the_default_options(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

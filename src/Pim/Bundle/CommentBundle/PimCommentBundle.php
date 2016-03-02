@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CommentBundle;
 
+use Pim\Bundle\CommentBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -14,4 +16,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimCommentBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
+    }
 }

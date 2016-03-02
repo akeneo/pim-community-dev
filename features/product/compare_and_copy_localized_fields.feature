@@ -13,7 +13,7 @@ Feature: Compare and copy localized fields
 
   Scenario: Successfully display available comparison languages
     Given I am on the "tshirt" product page
-    And I start the copy
+    And I open the comparison panel
     Then the copy locale switcher should contain the following items:
       | language | flag    | locale |
       | German   | flag-de | de_DE  |
@@ -23,7 +23,8 @@ Feature: Compare and copy localized fields
 
   Scenario: Successfully copy all compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "fr_FR" translation
+    When I open the comparison panel
+    And I switch the comparison locale to "fr_FR"
     And I select all translations
     And I copy selected translations
     Then the product Name should be "Floup"
@@ -33,7 +34,8 @@ Feature: Compare and copy localized fields
 
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "fr_FR" translation
+    When I open the comparison panel
+    And I switch the comparison locale to "fr_FR"
     And I select all visible translations
     And I copy selected translations
     Then the product Name should be "Floup"
@@ -43,7 +45,8 @@ Feature: Compare and copy localized fields
 
   Scenario: Successfully copy manually selected compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "fr_FR" translation
+    When I open the comparison panel
+    And I switch the comparison locale to "fr_FR"
     And I select translations for "Name"
     And I copy selected translations
     Then the product Name should be "Floup"

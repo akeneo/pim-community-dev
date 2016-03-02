@@ -2,40 +2,28 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Pim\Component\Catalog\Model\GroupTranslationInterface;
 
 /**
- * Variant group translation
+ * Group translation
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ExclusionPolicy("all")
  */
-class GroupTranslation extends AbstractTranslation
+class GroupTranslation extends AbstractTranslation implements GroupTranslationInterface
 {
-    /**
-     * All required columns are mapped through inherited superclass
-     */
+    /** All required columns are mapped through inherited superclass */
 
-    /**
-     * Change foreign key to add constraint and work with basic entity
-     */
+    /** Change foreign key to add constraint and work with basic entity */
     protected $foreignKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $label;
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return GroupTranslation
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -45,9 +33,7 @@ class GroupTranslation extends AbstractTranslation
     }
 
     /**
-     * Get the label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {

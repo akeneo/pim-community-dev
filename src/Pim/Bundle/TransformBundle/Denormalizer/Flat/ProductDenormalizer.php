@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
@@ -157,7 +157,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $product->removeCategory($category);
         }
 
-        $categoryCodes = strlen($data) > 0 ? explode(",", $data) : array();
+        $categoryCodes = strlen($data) > 0 ? explode(",", $data) : [];
         foreach ($categoryCodes as $categoryCode) {
             $product->addCategory(
                 $this->serializer->denormalize($categoryCode, $this->categoryClass, $format, $context)
@@ -179,7 +179,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $product->removeGroup($group);
         }
 
-        $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
+        $groupCodes = strlen($data) > 0 ? explode(",", $data) : [];
         foreach ($groupCodes as $groupCode) {
             $product->addGroup(
                 $this->serializer->denormalize($groupCode, $this->groupClass, $format, $context)

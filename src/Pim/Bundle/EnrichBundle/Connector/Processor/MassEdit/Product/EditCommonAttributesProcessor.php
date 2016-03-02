@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Processor to add product value in a mass edit
@@ -26,31 +25,29 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var PropertySetterInterface */
-    protected $propertySetter;
-
     /** @var array */
     protected $skippedAttributes = [];
 
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
     /**
-     * @param PropertySetterInterface              $propertySetter
-     * @param ValidatorInterface                   $validator
-     * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param ValidatorInterface                  $validator
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param ObjectUpdaterInterface              $productUpdater
      */
     public function __construct(
-        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        ObjectUpdaterInterface $productUpdater
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->propertySetter      = $propertySetter;
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
+        $this->productUpdater      = $productUpdater;
     }
 
     /**
@@ -64,9 +61,13 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             throw new InvalidArgumentException('Missing configuration for \'actions\'.');
         }
 
-        $actions = $configuration['actions'];
+        if (!$this->isProductEditable($product)) {
+            $this->stepExecution->incrementSummaryInfo('skipped_products');
 
-        $product = $this->updateProduct($product, $actions);
+            return null;
+        }
+
+        $product = $this->updateProduct($product, $configuration['actions']);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
@@ -79,20 +80,26 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * Set data from $actions to the given $product
      *
-     * Actions should looks like that
+     * Actions should look like that
      *
      * $actions =
      * [
-     *     [
-     *          'field'   => 'group',
-     *          'value'   => 'summer_clothes',
-     *          'options' => null
-     *      ],
-     *      [
-     *          'field'   => 'category',
-     *          'value'   => 'catalog_2013,catalog_2014',
-     *          'options' => null
-     *      ],
+     *      'normalized_values' => [
+     *          'name' => [
+     *              [
+     *                  'locale' => null,
+     *                  'scope'  => null,
+     *                  'data' => 'The name'
+     *              ]
+     *          ],
+     *          'description' => [
+     *              [
+     *                  'locale' => 'en_US',
+     *                  'scope' => 'ecommerce',
+     *                  'data' => 'The description for en_US ecommerce'
+     *              ],
+     *          ]
+     *      ]
      * ]
      *
      * @param ProductInterface $product
@@ -104,22 +111,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
-        $modifiedAttributesNb = 0;
-        foreach ($actions as $action) {
-            $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
+        $values = $this->prepareProductValues($product, $actions);
 
-            if (null === $attribute) {
-                throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
-            }
-            $family = $product->getFamily();
-
-            if (null !== $family && $family->hasAttribute($attribute)) {
-                $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
-                $modifiedAttributesNb++;
-            }
-        }
-
-        if (0 === $modifiedAttributesNb) {
+        if (empty($values)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),
@@ -131,7 +125,33 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
+        $this->productUpdater->update($product, $values);
+
         return $product;
+    }
+
+    /**
+     * Prepare product values
+     *
+     * @param ProductInterface $product
+     * @param array            $actions
+     *
+     * @return array
+     */
+    protected function prepareProductValues(ProductInterface $product, array $actions)
+    {
+        $normalizedValues = json_decode($actions['normalized_values'], true);
+        $filteredValues = [];
+
+        foreach ($normalizedValues as $attributeCode => $values) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if ($product->isAttributeEditable($attribute)) {
+                $filteredValues[$attributeCode] = $values;
+            }
+        }
+
+        return $filteredValues;
     }
 
     /**
@@ -147,5 +167,15 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $this->addWarningMessage($violations, $product);
 
         return 0 === $violations->count();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isProductEditable(ProductInterface $product)
+    {
+        return true;
     }
 }

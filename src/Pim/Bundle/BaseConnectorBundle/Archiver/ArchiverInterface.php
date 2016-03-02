@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
 
 /**
  * Define an archiver
@@ -46,7 +46,7 @@ interface ArchiverInterface
      * @param JobExecution $jobExecution
      * @param string       $key
      *
-     * @return \Gaufrette\Stream
+     * @return resource
      */
     public function getArchive(JobExecution $jobExecution, $key);
 

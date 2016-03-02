@@ -4,28 +4,30 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * AttributeGroup controller
@@ -34,8 +36,23 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupController extends AbstractDoctrineController
+class AttributeGroupController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -48,109 +65,99 @@ class AttributeGroupController extends AbstractDoctrineController
     /** @var AttributeGroupManager */
     protected $manager;
 
-    /** @var string */
-    protected $attributeClass;
-
     /** @var BulkSaverInterface */
     protected $attributeSaver;
 
     /** @var RemoverInterface */
     protected $attrGroupRemover;
 
+    /** @var AttributeGroupRepositoryInterface */
+    protected $attributeGroupRepo;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepo;
+
     /**
-     * constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param SecurityFacade           $securityFacade
-     * @param HandlerInterface         $formHandler
-     * @param Form                     $form
-     * @param AttributeGroupManager    $manager
-     * @param BulkSaverInterface       $attributeSaver
-     * @param RemoverInterface         $attrGroupRemover
-     * @param string                   $attributeClass
+     * @param Request                           $request
+     * @param RouterInterface                   $router
+     * @param FormFactoryInterface              $formFactory
+     * @param TranslatorInterface               $translator
+     * @param EventDispatcherInterface          $eventDispatcher
+     * @param SecurityFacade                    $securityFacade
+     * @param HandlerInterface                  $formHandler
+     * @param Form                              $form
+     * @param AttributeGroupManager             $manager
+     * @param BulkSaverInterface                $attributeSaver
+     * @param RemoverInterface                  $attrGroupRemover
+     * @param AttributeGroupRepositoryInterface $attributeGroupRepo
+     * @param AttributeRepositoryInterface      $attributeRepo
      */
     public function __construct(
         Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         SecurityFacade $securityFacade,
         HandlerInterface $formHandler,
         Form $form,
         AttributeGroupManager $manager,
         BulkSaverInterface $attributeSaver,
         RemoverInterface $attrGroupRemover,
-        $attributeClass
+        AttributeGroupRepositoryInterface $attributeGroupRepo,
+        AttributeRepositoryInterface $attributeRepo
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->securityFacade   = $securityFacade;
-        $this->formHandler      = $formHandler;
-        $this->form             = $form;
-        $this->manager          = $manager;
-        $this->attributeClass   = $attributeClass;
-        $this->attributeSaver   = $attributeSaver;
-        $this->attrGroupRemover = $attrGroupRemover;
+        $this->request            = $request;
+        $this->router             = $router;
+        $this->formFactory        = $formFactory;
+        $this->translator         = $translator;
+        $this->eventDispatcher    = $eventDispatcher;
+        $this->securityFacade     = $securityFacade;
+        $this->formHandler        = $formHandler;
+        $this->form               = $form;
+        $this->manager            = $manager;
+        $this->attributeSaver     = $attributeSaver;
+        $this->attrGroupRemover   = $attrGroupRemover;
+        $this->attributeGroupRepo = $attributeGroupRepo;
+        $this->attributeRepo      = $attributeRepo;
     }
 
     /**
      * Attribute group index
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_index")
+     * @AclAncestor("pim_enrich_attributegroup_index")
      *
      * @return Response
      */
     public function indexAction()
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
-        return [
-            'groups' => $groups
-        ];
+        return ['groups' => $groups];
     }
 
     /**
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_create")
+     * @AclAncestor("pim_enrich_attributegroup_create")
      *
      * @return array
      */
     public function createAction()
     {
-        if ($this->securityFacade->isGranted('pim_enrich_attribute_group_create')) {
+        if ($this->securityFacade->isGranted('pim_enrich_attributegroup_create')) {
             $group = new AttributeGroup();
 
             if ($this->formHandler->process($group)) {
                 $this->eventDispatcher->dispatch(AttributeGroupEvents::POST_CREATE, new GenericEvent($group));
-                $this->addFlash('success', 'flash.attribute group.created');
+                $this->request->getSession()->getFlashBag()
+                    ->add('success', new Message('flash.attribute group.created'));
 
-                return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+                return new RedirectResponse(
+                    $this->router->generate('pim_enrich_attributegroup_edit', ['id' => $group->getId()])
+                );
             }
 
             $form = $this->form->createView();
@@ -161,7 +168,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $attributesForm = null;
         }
 
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
         return [
             'groups'         => $groups,
@@ -177,18 +184,21 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param AttributeGroup $group
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_edit")
+     * @AclAncestor("pim_enrich_attributegroup_edit")
      *
      * @return array
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
 
         if ($this->formHandler->process($group)) {
-            $this->addFlash('success', 'flash.attribute group.updated');
+            $this->request->getSession()->getFlashBag()
+                ->add('success', new Message('flash.attribute group.updated'));
 
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+            return new RedirectResponse(
+                $this->router->generate('pim_enrich_attributegroup_edit', ['id' => $group->getId()])
+            );
         }
 
         return [
@@ -204,14 +214,14 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_attribute_group_sort")
+     * @AclAncestor("pim_enrich_attributegroup_sort")
      *
      * @return Response
      */
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_attributegroup_create');
+            return new RedirectResponse($this->router->generate('pim_enrich_attributegroup_create'));
         }
 
         $data = $request->request->all();
@@ -219,7 +229,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if (!empty($data)) {
             $groups = [];
             foreach ($data as $id => $sort) {
-                $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
+                $group = $this->attributeGroupRepo->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
                     $groups[] = $group;
@@ -241,7 +251,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @throws DeleteException
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove")
+     * @AclAncestor("pim_enrich_attributegroup_remove")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -252,7 +262,9 @@ class AttributeGroupController extends AbstractDoctrineController
         }
 
         if (0 !== $group->getAttributes()->count()) {
-            $this->addFlash('error', 'flash.attribute group.not removed attributes');
+            $this->request->getSession()->getFlashBag()
+                ->add('error', new Message('flash.attribute group.not removed attributes'));
+
             throw new DeleteException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
@@ -261,19 +273,19 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
             if ($referer) {
-                return $this->redirect($referer);
+                return new RedirectResponse($referer);
             }
         }
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_attributegroup_create');
+            return new RedirectResponse($this->router->generate('pim_enrich_attributegroup_create'));
         }
     }
 
     /**
-     * Get the AvailbleAttributes form
+     * Get the AvailableAttributes form
      *
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
@@ -284,7 +296,7 @@ class AttributeGroupController extends AbstractDoctrineController
         array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
-        return $this->createForm(
+        return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             ['excluded_attributes' => $attributes]
@@ -297,25 +309,28 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param int     $id      The group id to add attributes to
      *
-     * @AclAncestor("pim_enrich_attribute_group_add_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_add_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
     {
-        $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
+        $group               = $this->findAttributeGroupOr404($id);
         $availableAttributes = new AvailableAttributes();
 
         $attributesForm      = $this->getAvailableAttributesForm(
             $this->getGroupedAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
-        $this->addFlash('success', 'flash.attribute group.attributes added');
+        $this->request->getSession()->getFlashBag()
+            ->add('success', new Message('flash.attribute group.attributes added'));
 
-        return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+        return new RedirectResponse(
+            $this->router->generate('pim_enrich_attributegroup_edit', ['id' => $group->getId()])
+        );
     }
 
     /**
@@ -324,17 +339,17 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param int $groupId
      * @param int $attributeId
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_remove_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($groupId, $attributeId)
     {
-        $group     = $this->findOr404('PimCatalogBundle:AttributeGroup', $groupId);
-        $attribute = $this->findOr404($this->attributeClass, $attributeId);
+        $group     = $this->findAttributeGroupOr404($groupId);
+        $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $group->hasAttribute($attribute)) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Attribute "%s" is not attached to "%s"', $attribute, $group)
             );
         }
@@ -345,10 +360,12 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->manager->removeAttribute($group, $attribute);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+            return new RedirectResponse(
+                $this->router->generate('pim_enrich_attributegroup_edit', ['id' => $group->getId()])
+            );
         }
     }
 
@@ -359,7 +376,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository($this->attributeClass)->findAllInDefaultGroup();
+        return $this->attributeRepo->findAllInDefaultGroup();
     }
 
     /**
@@ -367,6 +384,38 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getDefaultGroup()
     {
-        return $this->getRepository('PimCatalogBundle:AttributeGroup')->findDefaultAttributeGroup();
+        return $this->attributeGroupRepo->findDefaultAttributeGroup();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return AttributeGroupInterface
+     */
+    protected function findAttributeGroupOr404($id)
+    {
+        $result = $this->attributeGroupRepo->find($id);
+
+        if (null === $result) {
+            throw new NotFoundHttpException('Attribute group not found');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return AttributeInterface
+     */
+    protected function findAttributeOr404($id)
+    {
+        $result = $this->attributeRepo->find($id);
+
+        if (!$result) {
+            throw new NotFoundHttpException('Attribute not found');
+        }
+
+        return $result;
     }
 }

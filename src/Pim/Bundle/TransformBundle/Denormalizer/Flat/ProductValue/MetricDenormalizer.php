@@ -3,9 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Metric flat denormalizer used for attribute types:
@@ -60,7 +59,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param string                $data
      * @param string                $unit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromSingleField(ProductValueInterface $value, $data, $unit)
     {
@@ -79,7 +78,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param ProductValueInterface $value
      * @param string                $dataOrUnit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromManyFields(ProductValueInterface $value, $dataOrUnit)
     {
@@ -97,14 +96,14 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     /**
      * Define context requirements
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    protected function configContext(OptionsResolverInterface $resolver)
+    protected function configContext(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired(['value'])
-            ->setOptional(
-                ['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path', 'metric_unit']
+            ->setDefined(
+                ['entity', 'locale_code', 'product', 'scope_code', 'metric_unit']
             );
     }
 }

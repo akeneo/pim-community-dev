@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Copies a data from a product's attribute to another product's attribute
@@ -23,7 +24,7 @@ interface AttributeCopierInterface extends CopierInterface
      * @param AttributeInterface $toAttribute
      * @param array              $options
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \RuntimeException
      */
     public function copyAttributeData(

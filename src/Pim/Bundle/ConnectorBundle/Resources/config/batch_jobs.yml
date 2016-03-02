@@ -22,6 +22,8 @@ connector:
                         reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
+                    parameters:
+                        batch_size: 1
         csv_attribute_import:
             title: pim_connector.jobs.csv_attribute_import.title
             type:  import
@@ -116,3 +118,18 @@ connector:
                         reader:    pim_connector.reader.file.csv_association_type
                         processor: pim_connector.processor.denormalization.association_type.flat
                         writer:    pim_connector.writer.doctrine.association_type
+        csv_family_import:
+            title: pim_connector.jobs.csv_family_import.title
+            type: import
+            steps:
+                validation:
+                    title: pim_connector.jobs.csv_family_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:         pim_connector.jobs.csv_family_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv_family
+                        processor: pim_connector.processor.denormalization.family.flat
+                        writer:    pim_connector.writer.doctrine.family

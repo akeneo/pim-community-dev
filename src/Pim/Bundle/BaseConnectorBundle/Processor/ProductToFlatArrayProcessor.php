@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,22 +40,46 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array Normalizer context */
     protected $normalizerContext;
 
+    /** @var array */
+    protected $mediaAttributeTypes;
+
     /** @var string */
-    protected $uploadDirectory;
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var array */
+    protected $decimalSeparators;
+
+    /** @var string */
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
+    /** @var ProductBuilder */
+    protected $productBuilder;
 
     /**
-     * @param Serializer     $serializer
-     * @param ChannelManager $channelManager
-     * @param string         $uploadDirectory
+     * @param Serializer              $serializer
+     * @param ChannelManager          $channelManager
+     * @param string[]                $mediaAttributeTypes
+     * @param array                   $decimalSeparators
+     * @param array                   $dateFormats
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
-        $uploadDirectory
+        ProductBuilderInterface $productBuilder,
+        array $mediaAttributeTypes,
+        array $decimalSeparators,
+        array $dateFormats
     ) {
-        $this->serializer      = $serializer;
-        $this->channelManager  = $channelManager;
-        $this->uploadDirectory = $uploadDirectory;
+        $this->serializer          = $serializer;
+        $this->channelManager      = $channelManager;
+        $this->mediaAttributeTypes = $mediaAttributeTypes;
+        $this->decimalSeparators   = $decimalSeparators;
+        $this->dateFormats         = $dateFormats;
+        $this->productBuilder      = $productBuilder;
     }
 
     /**
@@ -61,24 +87,19 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
+        $contextChannel = $this->channelManager->getChannelByCode($this->channel);
+        $this->productBuilder->addMissingProductValues($product, [$contextChannel],
+            $contextChannel->getLocales()->toArray());
+
         $data['media'] = [];
-        $productMedias = $this->getProductMedias($product);
-        if (count($productMedias) > 0) {
-            try {
-                $data['media'] = $this->serializer->normalize(
-                    $productMedias,
-                    'flat',
-                    ['field_name' => 'media', 'prepare_copy' => true]
-                );
-            } catch (FileNotFoundException $e) {
-                throw new InvalidItemException(
-                    $e->getMessage(),
-                    [
-                        'item'            => $product->getIdentifier()->getData(),
-                        'uploadDirectory' => $this->uploadDirectory,
-                    ]
-                );
-            }
+        $mediaValues   = $this->getMediaProductValues($product);
+
+        foreach ($mediaValues as $mediaValue) {
+            $data['media'][] = $this->serializer->normalize(
+                $mediaValue->getMedia(),
+                'flat',
+                ['field_name' => 'media', 'prepare_copy' => true, 'value' => $mediaValue]
+            );
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
@@ -101,7 +122,27 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                     'label'    => 'pim_base_connector.export.channel.label',
                     'help'     => 'pim_base_connector.export.channel.help'
                 ]
-            ]
+            ],
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->decimalSeparators,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->dateFormats,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.dateFormat.label',
+                    'help'     => 'pim_base_connector.export.dateFormat.help',
+                ]
+            ],
         ];
     }
 
@@ -130,6 +171,46 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the date format
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the date format
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
      * Get normalizer context
      *
      * @return array $normalizerContext
@@ -138,8 +219,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'   => $this->channel,
-                'localeCodes' => $this->getLocaleCodes($this->channel)
+                'scopeCode'         => $this->channel,
+                'localeCodes'       => $this->getLocaleCodes($this->channel),
+                'decimal_separator' => $this->decimalSeparator,
+                'date_format'       => $this->dateFormat,
             ];
         }
 
@@ -161,24 +244,24 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Fetch product medias
+     * Fetch medias product values
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductMediaInterface[]
+     * @return ProductValueInterface[]
      */
-    protected function getProductMedias(ProductInterface $product)
+    protected function getMediaProductValues(ProductInterface $product)
     {
-        $media = array();
+        $values = [];
         foreach ($product->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                $this->mediaAttributeTypes
             )) {
-                $media[] = $value->getData();
+                $values[] = $value;
             }
         }
 
-        return $media;
+        return $values;
     }
 }

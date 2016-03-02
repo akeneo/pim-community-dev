@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 class AttributeValidatorHelperSpec extends ObjectBehavior
@@ -26,6 +26,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         AttributeInterface $name
     ) {
         $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(false);
         $description->getCode()->willReturn('description');
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
@@ -39,6 +40,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         AttributeInterface $name
     ) {
         $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(false);
         $description->getCode()->willReturn('description');
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
@@ -56,6 +58,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
     ) {
         $localeRepository->getActivatedLocaleCodes()->willReturn([]);
         $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(false);
         $description->getCode()->willReturn('description');
 
         $this->shouldThrow(
@@ -68,6 +71,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         AttributeInterface $name
     ) {
         $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(false);
         $description->isScopable()->willReturn(true);
         $description->getCode()->willReturn('description');
         $name->isLocalizable()->willReturn(false);

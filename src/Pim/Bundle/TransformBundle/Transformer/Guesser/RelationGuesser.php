@@ -16,6 +16,8 @@ use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class RelationGuesser implements GuesserInterface
 {
@@ -72,13 +74,13 @@ class RelationGuesser implements GuesserInterface
             return;
         }
 
-        return array(
+        return [
             $this->transformer,
-            array(
+            [
                 'class'    => $mapping['targetEntity'],
                 'multiple' => (ORMClassMetadataInfo::MANY_TO_MANY === $mapping['type'])
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -99,13 +101,13 @@ class RelationGuesser implements GuesserInterface
                 return;
             }
 
-            return array(
+            return [
                 $this->transformer,
-                array(
+                [
                     'class'    => $target,
                     'multiple' => 'entities' === $metadata->getTypeOfField($fieldName)
-                )
-            );
+                ]
+            ];
         }
 
         if (in_array($metadata->getTypeOfField($fieldName), ['one', 'many'])) {
@@ -114,8 +116,8 @@ class RelationGuesser implements GuesserInterface
 
             // TODO Remove this hack
             switch ($target) {
-                case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
-                case 'Pim\Bundle\CatalogBundle\Model\Metric':
+                case 'Pim\Component\Catalog\Model\ProductPrice':
+                case 'Pim\Component\Catalog\Model\Metric':
                     return;
             }
 
@@ -123,13 +125,13 @@ class RelationGuesser implements GuesserInterface
                 return;
             }
 
-            return array(
+            return [
                 $this->transformer,
-                array(
+                [
                     'class'    => $mapping['targetDocument'],
                     'multiple' => 'many' === $metadata->getTypeOfField($fieldName)
-                )
-            );
+                ]
+            ];
         }
     }
 

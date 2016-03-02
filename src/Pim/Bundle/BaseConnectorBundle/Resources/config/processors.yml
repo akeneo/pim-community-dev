@@ -6,11 +6,13 @@ parameters:
     pim_base_connector.processor.transformer.class:                       Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                           Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                          Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.tag.class:                               Pim\Bundle\BaseConnectorBundle\Processor\TagProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
+    pim_base_connector.processor.normalization.family.class:            Pim\Bundle\BaseConnectorBundle\Processor\Normalization\FamilyProcessor
     pim_base_connector.processor.dummy.class:                           Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
@@ -18,7 +20,7 @@ services:
         abstract: true
         arguments:
             - '@pim_serializer'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
 
     pim_base_connector.processor.csv_serializer.homogeneous:
         class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
@@ -39,7 +41,10 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
-            - %upload_dir%
+            - '@pim_catalog.builder.product'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - %pim_localization.decimal_separators%
+            - %pim_localization.date_formats%
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
@@ -87,11 +92,13 @@ services:
             - %pim_catalog.entity.category.class%
             - '@pim_transform.cache.doctrine_cache'
 
+    # @deprecated Will be removed in 1.6
     pim_base_connector.processor.association_type:
         parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.association_type.class%
 
+    # @deprecated Will be removed in 1.6
     pim_base_connector.processor.attribute_group:
         parent: pim_base_connector.processor.transformer
         arguments:
@@ -167,5 +174,14 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
+            - %pim_localization.decimal_separators%
+            - %pim_localization.date_formats%
             - %upload_dir%
             - 'csv'
+
+    pim_base_connector.processor.normalization.family.flat:
+        class: %pim_base_connector.processor.normalization.family.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.repository.locale'
+            - '@pim_serializer.normalizer.flat.family'

@@ -2,17 +2,17 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class VariantGroupProcessorSpec extends ObjectBehavior
 {
@@ -36,7 +36,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
-        $groupClass = 'Pim\Bundle\CatalogBundle\Entity\Group';
+        $groupClass    = 'Pim\Bundle\CatalogBundle\Entity\Group';
         $this->beConstructedWith(
             $groupRepository,
             $denormalizer,
@@ -55,9 +55,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_processor()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_has_no_extra_configuration()
@@ -105,10 +105,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -122,8 +122,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $this->process(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt'
             ]
         );
@@ -148,10 +148,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -160,11 +160,11 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $variantGroup->getProductTemplate()->willReturn($template);
 
-        $values = new ArrayCollection([$value]);
+        $newValues = new ArrayCollection([$value]);
 
         $denormalizer
             ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
-            ->willReturn($values);
+            ->willReturn($newValues);
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
@@ -172,31 +172,29 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList());
 
+        $variantGroup->getProductTemplate()->willReturn($template);
+
+        $template->getValues()->willReturn($newValues);
+
+        $template
+            ->setValues($newValues)
+            ->shouldBeCalled();
+
         $valueNormalizer
-            ->normalize($values, 'json', ['entity' => 'product'])
+            ->normalize($newValues, 'json', ['entity' => 'product'])
             ->willReturn(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             );
-
-        $variantGroup->getProductTemplate()->willReturn($template);
-
-        $template
-            ->setValues($values)
-            ->shouldBeCalled();
-
-        $template
-            ->getValues()
-            ->willReturn($values);
 
         $template
             ->setValuesData(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             )
@@ -206,7 +204,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->getValuesData()->willReturn(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             );
@@ -218,10 +216,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $this->process(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'name' => 'Nice product'
+                'name'        => 'Nice product'
             ]
         );
     }
@@ -245,10 +243,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -266,7 +264,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
+        $violation  = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($value)->shouldBeCalled()->willReturn($violations);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -276,20 +274,20 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 new InvalidItemException(
                     "name: There is a small problem: Nice product\n",
                     [
-                        'code' => 'tshirt',
-                        'axis' => 'color',
+                        'code'        => 'tshirt',
+                        'axis'        => 'color',
                         'label-en_US' => 'Tshirt',
-                        'name' => 'Nice product',
-                        'type' => 'VARIANT'
+                        'name'        => 'Nice product',
+                        'type'        => 'VARIANT'
                     ]
                 )
             )
             ->duringProcess(
                 [
-                    'code' => 'tshirt',
-                    'axis' => 'color',
+                    'code'        => 'tshirt',
+                    'axis'        => 'color',
                     'label-en_US' => 'Tshirt',
-                    'name' => 'Nice product'
+                    'name'        => 'Nice product'
                 ]
             );
     }

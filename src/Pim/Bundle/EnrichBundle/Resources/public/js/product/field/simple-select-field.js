@@ -16,15 +16,20 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
-        'jquery.select2'
+        'pim/initselect2'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
+            choicePromise: null,
             events: {
                 'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
                     templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
@@ -32,25 +37,39 @@ define(
                     return templateContext;
                 });
             },
+
+            /**
+             * Create a new option for this simple select field
+             */
             createOption: function () {
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
                 }
 
-                createOption(this.attribute).done(_.bind(function (option) {
+                createOption(this.attribute).then(function (option) {
                     if (this.isEditable()) {
                         this.setCurrentValue(option.code);
                     }
 
+                    this.choicePromise = null;
                     this.render();
-                }, this));
+                }.bind(this));
             },
+
+            /**
+             * {@inheritdoc}
+             */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             postRender: function () {
-                this.getChoiceUrl().done(_.bind(function (choiceUrl) {
-                    this.$('input.select-field').select2('destroy').select2({
+                this.$('[data-toggle="tooltip"]').tooltip();
+                this.getChoiceUrl().then(function (choiceUrl) {
+                    var options = {
                         ajax: {
                             url: choiceUrl,
                             cache: true,
@@ -64,17 +83,29 @@ define(
                         initSelection: function (element, callback) {
                             var id = $(element).val();
                             if ('' !== id) {
-                                $.ajax(choiceUrl).done(function (response) {
+                                if (null === this.choicePromise) {
+                                    this.choicePromise = $.get(choiceUrl);
+                                }
+
+                                this.choicePromise.then(function (response) {
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
                                 });
                             }
-                        },
+                        }.bind(this),
                         placeholder: ' ',
                         allowClear: true
-                    });
-                }, this));
+                    };
+
+                    initSelect2.init(this.$('input.select-field'), options);
+                }.bind(this));
             },
+
+            /**
+             * Get the URL to retrieve the choice list for this select field
+             *
+             * @returns {Promise}
+             */
             getChoiceUrl: function () {
                 return $.Deferred().resolve(
                     Routing.generate(
@@ -88,9 +119,15 @@ define(
                     )
                 ).promise();
             },
+
+            /**
+             * {@inheritdoc}
+             */
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="hidden"].select-field').val();
                 data = '' === data ? this.attribute.empty_value : data;
+
+                this.choicePromise = null;
 
                 this.setCurrentValue(data);
             }

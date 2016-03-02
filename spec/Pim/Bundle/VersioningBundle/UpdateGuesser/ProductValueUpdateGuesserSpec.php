@@ -5,11 +5,10 @@ namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class ProductValueUpdateGuesserSpec extends ObjectBehavior
@@ -44,20 +43,6 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
         $em->getUnitOfWork()->willReturn($unitOfWork);
         $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
         $this->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
-    }
-
-    function it_marks_product_as_updated_when_a_product_media_is_removed(
-        EntityManager $em,
-        UnitOfWork $unitOfWork,
-        ProductInterface $product,
-        ProductValueInterface $value,
-        ProductMediaInterface $media
-    ) {
-        $media->getValue()->willReturn($value);
-        $value->getEntity()->willReturn($product);
-        $em->getUnitOfWork()->willReturn($unitOfWork);
-        $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
-        $this->guessUpdates($em, $media, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
     }
 
     function it_marks_product_as_updated_when_a_product_metric_is_removed(
@@ -97,19 +82,6 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
         $uow->getEntityChangeSet($price)->willReturn(['data' => ['10', '11']]);
 
         $this->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$product]);
-    }
-
-    function it_marks_product_as_updated_when_a_product_media_is_updated(
-        EntityManager $em,
-        UnitOfWork $uow,
-        ProductInterface $product,
-        ProductValueInterface $value,
-        ProductMediaInterface $media
-    ) {
-        $media->getValue()->willReturn($value);
-        $value->getEntity()->willReturn($product);
-
-        $this->guessUpdates($em, $media, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$product]);
     }
 
     function it_marks_product_as_updated_when_a_product_metric_is_updated(

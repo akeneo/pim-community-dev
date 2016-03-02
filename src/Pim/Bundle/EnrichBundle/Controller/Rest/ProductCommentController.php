@@ -5,18 +5,18 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Controller for product comments
@@ -27,8 +27,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductCommentController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var FormFactoryInterface */
     protected $formFactory;
@@ -52,7 +52,7 @@ class ProductCommentController
     protected $validator;
 
     /**
-     * @param SecurityContextInterface   $securityContext
+     * @param TokenStorageInterface      $tokenStorage
      * @param FormFactoryInterface       $formFactory
      * @param ProductRepositoryInterface $productRepository
      * @param CommentRepositoryInterface $commentRepository
@@ -62,7 +62,7 @@ class ProductCommentController
      * @param ValidatorInterface         $validator
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ProductRepositoryInterface $productRepository,
         CommentRepositoryInterface $commentRepository,
@@ -71,7 +71,7 @@ class ProductCommentController
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
     ) {
-        $this->securityContext   = $securityContext;
+        $this->tokenStorage      = $tokenStorage;
         $this->formFactory       = $formFactory;
         $this->productRepository = $productRepository;
         $this->commentRepository = $commentRepository;
@@ -214,7 +214,7 @@ class ProductCommentController
      */
     protected function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

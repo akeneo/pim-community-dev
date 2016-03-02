@@ -5,8 +5,9 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 
 /**
@@ -49,26 +50,21 @@ class ProductPropertyCopier implements PropertyCopierInterface
         if (!$fromProduct instanceof ProductInterface || !$toProduct instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" and "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" and "%s" provided.',
                     ClassUtils::getClass($fromProduct),
                     ClassUtils::getClass($toProduct)
                 )
             );
         }
 
-        $fromAttribute = $this->getAttribute($fromField);
-        $toAttribute = $this->getAttribute($toField);
-        if (null !== $fromAttribute && null !== $toAttribute) {
-            $copier = $this->copierRegistry->getAttributeCopier($fromAttribute, $toAttribute);
-        } else {
-            $copier = $this->copierRegistry->getFieldCopier($fromField, $toField);
-        }
-
+        $copier = $this->copierRegistry->getCopier($fromField, $toField);
         if (null === $copier) {
             throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
         }
 
-        if (null !== $fromAttribute && null !== $toAttribute) {
+        if ($copier instanceof AttributeCopierInterface) {
+            $fromAttribute = $this->getAttribute($fromField);
+            $toAttribute   = $this->getAttribute($toField);
             $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
         } else {
             $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
@@ -84,8 +80,6 @@ class ProductPropertyCopier implements PropertyCopierInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        return $attribute;
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

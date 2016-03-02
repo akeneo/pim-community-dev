@@ -16,15 +16,15 @@ class Edit extends Creation
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Attribute list' => array('css' => '#attributes-sortable'),
-            )
+            [
+                'Attribute list' => ['css' => '#attributes-sortable'],
+            ]
         );
     }
 
@@ -37,11 +37,7 @@ class Edit extends Creation
     public function dragAttributeToPosition($attribute, $position)
     {
         $list = $this->getElement('Attribute list')->findAll('css', 'tr');
-        $elt  = $this->getElement('Attribute list')->find('css', sprintf('tr:contains("%s")', $attribute));
-
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Attribute %s was not found', $attribute));
-        }
+        $elt  = $this->getElement('Attribute list')->find('css', sprintf('tr:contains("%s") .handle', $attribute));
 
         if ($position > count($list)) {
             throw new \InvalidArgumentException(
@@ -49,10 +45,7 @@ class Edit extends Creation
             );
         }
 
-        $eltHandle = $elt->find('css', '.handle');
-        $target    = $list[$position-1];
-
-        $eltHandle->dragTo($target);
+        $this->dragElementTo($elt, $list[$position-1]);
 
         return $this;
     }

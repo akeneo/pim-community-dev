@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
@@ -16,9 +16,9 @@ class YamlReaderSpec extends ObjectBehavior
 
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
         $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface');
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_provides_configuration_fields()
@@ -78,7 +78,7 @@ class YamlReaderSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(false, false);
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalledTimes(3);
 
         $this->setFilePath(
             realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
@@ -123,7 +123,7 @@ class YamlReaderSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(true, false);
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
         $this->setFilePath(
             realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')

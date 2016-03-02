@@ -8,6 +8,7 @@
 body {
   font-family: @baseFontFamily;
   font-size: @baseFontSize;
+  line-height: 20px;
   color: @bodyColor;
   margin: 0;
   padding: 0 ;
@@ -15,16 +16,19 @@ body {
   background:#fff;
 }
 h2 {
-  font-size: 27px;
+  font-size: @font-size-27;
 }
 h3 {
-  font-size: 21px;
+  font-size: @font-size-19;
 }
 h4 {
-  font-size: 15px;
+  font-size: @font-size-15;
 }
 h5 {
-  font-size: 12px;
+  font-size: @font-size-12;
+}
+h6 {
+  font-size: @font-size-12;
 }
 .btn {
   border: 1px solid #ccc;
@@ -52,16 +56,15 @@ a:focus {
 // Bootstrap - Buttons
 .btn-group {
   > .btn {
-    font-size:13px;
+    font-size:@font-size-14;
   }
 }
-.btn,
-.ui-datepicker .ui-datepicker-buttonpane button {
+.btn {
   .border-radius(@baseBtnBorderRadius);
   padding: 0 12px;
   height: 28px;
   line-height: 26px;
-  font-size: 14px;
+  font-size: @font-size-14;
   font-weight:bold;
   background-repeat: none;
   display: inline-block;
@@ -86,10 +89,10 @@ a:focus {
 .btn-small {
   height: 24px;
   line-height: 24px;
-  font-size: 13px;
+  font-size: @font-size-13;
 }
 .btn-large {
-  font-size: 15px;
+  font-size: @font-size-15;
   min-width: 90px;
   padding: 0 20px;
   height: 34px;
@@ -99,7 +102,7 @@ a:focus {
 .btn-mini {
   height: 22px;
   line-height: 20px;
-  font-size: 11px;
+  font-size: @font-size-11;
   padding: 0 6px;
 }
 .btn .caret {
@@ -110,7 +113,7 @@ a:focus {
 .btn-group > .dropdown-menu li a {
   padding-top:1px;
   padding-bottom:1px;
-  font-size:12px;
+  font-size: @font-size-12;
   color:@bodyColor;
   text-shadow:none !important;
   &:hover {
@@ -119,9 +122,9 @@ a:focus {
 }
 
 // Bootstrap - Form
-label, input, button, select, textarea { font-size:13px;}
+label, input, button, select, textarea { font-size: @font-size-13;}
 .form-horizontal .control-label {
-  font-size:13px;
+  font-size: @font-size-13;
   text-align:left;
   line-height:1.2em;
 }
@@ -136,7 +139,7 @@ label, input, button, select, textarea { font-size:13px;}
       padding-top:5px;
       color: #777;
       font-weight: normal;
-      font-size: 13px;
+      font-size: @font-size-13;
       text-align:right;
       &:after {
         content:":";
@@ -160,23 +163,22 @@ input[type="email"],
 input[type="url"],
 input[type="search"],
 select {
-  .box-sizing(content-box);
   border-color:#ddd;
   color:#333;
-  font-size:13px;
+  font-size: @font-size-13;
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
-  -moz-border-radius-topright: 3px;
-  border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
 }
 .btn-group > .btn:first-child {
-  -moz-border-radius-topleft: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 // Bootstrap - Nav
@@ -206,9 +208,9 @@ select {
 [class^='icon-'].hide-text:before {
   padding:0;
   text-indent:0;
-  font-size:14px;
-  line-height:1.3em;
-  color:#666;
+  font-size: @font-size-14;
+  color: #666;
+
 }
 
 // GLOBAL LAYOUT ELEMENTS
@@ -245,12 +247,11 @@ select {
 
 .label-important,
 .badge-important {
-  background-color: #ea0000;
-  #gradient > .vertical(#ea0000, #ba0000);
+  background-color: @color-new-red;
 }
 /* general style classes */
 .input-large {
-  width: 235px;
+  width: 300px;
 }
 .extra-list {
   margin: 0;
@@ -278,7 +279,7 @@ select {
 }
 .navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
-  color: #fff;
+  color: #444;
 }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
@@ -292,7 +293,7 @@ select {
   border:1px solid #e2e2e2;
   border-width: 1px 0;
   padding: 15px 20px 8px 150px;
-  .icon-remove:before { color:#aaa; font-size:14px; }
+  .icon-remove:before { color:#aaa; font-size: @font-size-14; }
   .filter-list {
     float: left;
     margin: 0 0 0 -120px;
@@ -306,7 +307,7 @@ select {
       padding-top:1px;
       button {
         color:#666;
-        font-size:12px;
+        font-size: @font-size-12;
       }
       .caret { margin-top:11px; }
     }
@@ -319,7 +320,7 @@ select {
       .filter-update {
         .border-radius(0 3px 3px 0);
         position:relative;
-        font-size:14px;
+        font-size: @font-size-14;
         height:29px;
         line-height:28px;
       }
@@ -340,7 +341,7 @@ select {
 .badge-enabled,
 .badge-disabled {
   padding: 3px 10px 3px 5px;
-  font-size: 12px;
+  font-size: @font-size-12;
   font-weight: normal;
 }
 .badge-enabled {
@@ -366,7 +367,7 @@ select {
 .status-disabled,
 .status-enabled {
   [class^='icon-']:before {
-    font-size:12px;
+    font-size: @font-size-12;
   }
 }
 .status-enabled [class^='icon-']:before { color:#4a9938; }
@@ -398,14 +399,15 @@ select {
         .icon-chevron-left:before,
         .icon-chevron-right:before {
           margin:7px 5px;
-          font-size:12px;
+          font-size: @font-size-12;
           color:#eee;
         }
       }
     }
     input[type="text"] {
       width: 23px;
-      height:17px;
+      height:27px;
+      padding: 0;
     }
 
   }
@@ -416,13 +418,13 @@ select {
       padding-left:7px;
       padding-right:9px;
       line-height:26px;
-      font-size:12px;
+      font-size: @font-size-12;
       [class^='icon-'] {
         &:before {
           display:inline-block;
           margin:4px 1px 0 0;
           color:#666;
-          font-size:13px;
+          font-size: @font-size-13;
           line-height:1.3em;
           margin-left:1px;
         }
@@ -432,11 +434,27 @@ select {
   .mass-actions-panel {
     .btn {
       [class^='icon-'] {
-        margin:0 -4px 0 -2px;
+        margin: 0 -4px 0 -2px;
+      }
+      &.dropdown-toggle {
+        [class^='icon-'] {
+          margin: 0 3px;
+        }
+      }
+    }
+    .btn-group:not(:first-child) {
+      padding-left: 20px;
+    }
+    .dropdown-menu {
+      .btn {
+        border: none;
+        text-align: left;
       }
     }
   }
-  .caret { margin-top:11px; }
+  .caret {
+    margin-top: 11px;
+  }
 }
 .grid-container {
   width: 100%;
@@ -444,7 +462,10 @@ select {
   margin-top: 10px;
   overflow: visible;
   .table-bordered {
-    border-left:1px solid #ddd;
+    border-left:1px solid #dfdfdf;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
     td,
     th { border-left:0; }
     .boolean-cell {
@@ -464,27 +485,21 @@ select {
     width: 60px;
   }
   thead th {
-    background-color: #eee;
+    background-color: @color-new-grey;
     padding: 5px 10px;
-    #gradient > .vertical(#f5f5f5, #eeeeee);
     white-space: nowrap;
-    &:first-child {
-      .border-radius(4px 0 0 0);
-    }
-    &:last-child {
-      .border-radius(0 4px 0 0);
-    }
   }
   tbody td {
     padding: 5px 10px;
   }
 }
 .grid thead .caret {
-  margin: 8px 0 0;
+  margin: 14px 0 0;
 }
 .table thead th {
-  padding:4px 10px;
-  font-size:11px;
+  padding:0 10px;
+  font-size: @font-size-11;
+  line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
     text-shadow:0 1px 0 darken(#ffffff,5%);
@@ -492,9 +507,8 @@ select {
 }
 .grid {
   .user-name {
-    font-size: 20px;
     margin: 0 0 0 12px;
-    font-size: 20px;
+    font-size: @font-size-20;
     font-weight: bold;
   }
   dl {
@@ -519,7 +533,7 @@ select {
   z-index: 9999;
   .box {
     background: #fff;
-    font-size: 14px;
+    font-size: @font-size-14;
     font-weight: bold;
     line-height:  24px;
   }
@@ -549,15 +563,12 @@ select {
       margin:0;
       &:before {
         display:inline-block;
-        margin:4px 5px 0 0;
-        font-size:16px;
-        color:#666;
-        line-height:19px;
+        font-size: @font-size-16;
       }
     }
     .icon-chevron-left.hide-text {
       &:before {
-        font-size:11px;
+        font-size: @font-size-11;
         line-size:19px;
       }
     }
@@ -583,7 +594,7 @@ select {
   border-style: solid;
   border-color: #cccccc #cccccc #b3b3b3;
   border-width: 1px 1px 1px 0;
-  font-size: 18px;
+  font-size: @font-size-18;
   display: inline-block;
   vertical-align: top;
   height: 28px;
@@ -610,7 +621,7 @@ select {
   padding-bottom: 0;
   line-height: 18px;
   .sub-title {
-    font-size: 17px;
+    font-size: @font-size-17;
     color: #999;
     float: left;
   }
@@ -618,11 +629,11 @@ select {
     float: left;
     padding: 0 3px;
     color: #999;
-    font-size: 18px;
+    font-size: @font-size-18;
   }
   .user-name {
     margin: 0 10px 5px 0;
-    font-size: 19px;
+    font-size: @font-size-19;
     line-height: 22px;
     float: left;
     font: bold 17px/18px 'HelveticaNeue bold', Arial, Helvetica, sans-serif;
@@ -655,7 +666,7 @@ select {
     li {
       padding: 0 10px;
       border-left: 1px solid #e6e6e6;
-      font-size: 11px;
+      font-size: @font-size-11;
       line-height: 14px;
       &:first-child {
         padding: 0 10px 0 0;
@@ -679,7 +690,7 @@ select {
         > li a {
           padding:5px 15px;
           color:#666;
-          font-size:13px;
+          font-size: @font-size-13;
         }
         > li a:hover {
           border-bottom:3px solid #ddd;
@@ -725,7 +736,7 @@ label.required em,
 .form-horizontal label.required em {
   padding: 0 3px;
   color: #c30b25;
-  font-size: 15px;
+  font-size: @font-size-15;
 }
 
 input, textarea { width:280px; }
@@ -743,7 +754,7 @@ textarea {
   border-width:1px 0;
   margin: 0 0 0 -20px;
   color:lighten(@bodyColor,20%);
-  font-size:13px;
+  font-size: @font-size-13;
   font-weight:normal;
   text-shadow:0 1px 0 #fff;
   line-height:18px;
@@ -848,14 +859,14 @@ textarea {
   }
 }
 .filter-box .filter-select-oro {
-  height: 20px;
+  height: 30px;
   line-height: 20px;
   width: 85px; /* need for flexible width at filter grid */
 }
 .filter-box .filter-item .divider {
   background: none;
   line-height: 40px;
-  font-size: 16px;
+  font-size: @font-size-16;
   padding: 0;
   margin: 0;
   position: relative;
@@ -866,16 +877,16 @@ textarea {
 }
 
 .btn-group > .btn-small {
-  font-size: 11px;
+  font-size: @font-size-11;
 }
 .btn-group > a.btn {
-  height: 28px;
-  line-height: 26px;
+  height: 34px;
+  line-height: 34px;
 }
 .oro-action .btn-group > .btn,
 .oro-action .btn-group > .dropdown-menu,
 .oro-action .btn-group > .popover {
-  font-size: 14px;
+  font-size: @font-size-14;
 }
 .oro-action .btn-group {
   margin-right: 0;
@@ -904,7 +915,7 @@ select {
   .forScreen(@mediumScreen, background, none);
 }
 h5.user-fiedset {
-  font-size:15px;
+  font-size: @font-size-15;
   line-height:18px;
   margin: 0 10px 10px 0;
 }
@@ -952,7 +963,7 @@ select:focus:invalid:focus {
     border:1px solid rgba(241,216,103,.3);
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
     .close {
-      font-size: 18px;
+      font-size: @font-size-18;
       color: @warningClose;
       opacity: 1;
     }
@@ -1042,9 +1053,8 @@ label.radio.error {
 .scrollable-container {
   .oro-subtitle {
     margin:0 5px 0 -25px;
-    font-size: 24px;
     line-height: 28px;
-    font-size: 20px;
+    font-size: @font-size-20;
     padding: 0;
   }
 }
@@ -1064,7 +1074,7 @@ button.filter-update {
   input[type="email"],
   input[type="url"],
   input[type="search"] {
-    height:19px;
+    height: 30px;
   }
 }
 .choicefilter .input-append,
@@ -1073,14 +1083,14 @@ button.filter-update {
 }
 .input-append .add-on,
 .input-prepend .add-on {
-  height:30px;
+  height:32px;
   input[type='checkbox'],
   input[type='radio'] {
     margin-top:-1px;
   }
 }
 .filter-separator {
-  font-size: 16px;
+  font-size: @font-size-16;
   padding: 0 3px;
   position: relative;
   top: -3px;
@@ -1121,7 +1131,7 @@ button.filter-update {
 .btn.favorite-button .icon-star:before,
 .btn.minimize-button .icon-pushpin:before {
   color:#e7e7e7;
-  font-size:19px;
+  font-size: @font-size-19;
 }
 .btn.favorite-button .icon-gold:before,
 .btn.minimize-button .icon-gold:before,
@@ -1150,18 +1160,6 @@ button.filter-update {
 .ui-widget textarea,
 .ui-widget button {
   font-family:@baseFontFamily !important;
-}
-.ui-datepicker .ui-state-default,
-.ui-datepicker.ui-widget-content .ui-state-default,
-.ui-datepicker .ui-widget-header .ui-state-default {
-  background:#f7f7f7 !important;
-}
-.ui-datepicker .ui-widget-header {
-  margin:-.2em -.2em 0 -.2em !important;
-  background:#eee !important;
-  border:none !important;
-  border-bottom:1px solid #ddd !important;
-  border-radius:0 !important;
 }
 
 span.validation-failed {

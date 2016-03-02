@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 
@@ -23,21 +23,21 @@ class RangeValidator extends BaseRangeValidator
     {
         if ($value instanceof \DateTime) {
             if ($constraint->min && $value < $constraint->min) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->minDateMessage,
                     [
                         '{{ limit }}' => $constraint->min->format('Y-m-d')
                     ]
-                );
+                )->addViolation();
             }
 
             if ($constraint->max && $value > $constraint->max) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->maxDateMessage,
                     [
                         '{{ limit }}' => $constraint->max->format('Y-m-d')
                     ]
-                );
+                )->addViolation();
             }
 
             return;
@@ -84,7 +84,9 @@ class RangeValidator extends BaseRangeValidator
         }
 
         if (null !== $message) {
-            $this->context->addViolationAt('data', $message, $params);
+            $this->context->buildViolation($message, $params)
+                ->atPath('data')
+                ->addViolation();
         }
     }
 }

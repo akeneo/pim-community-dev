@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\EventListener;
 
-use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Akeneo\Component\Batch\Event\InvalidItemEvent;
 use PhpSpec\ObjectBehavior;
 
 class InvalidItemsCollectorSpec extends ObjectBehavior

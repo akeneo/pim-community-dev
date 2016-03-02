@@ -29,7 +29,7 @@ class RegisterQueryGeneratorsPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('pim_catalog.mongodb_odm_query_generator');
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('addQueryGenerator', array(new Reference($id)));
+            $service->addMethodCall('addQueryGenerator', [new Reference($id)]);
         }
     }
 }

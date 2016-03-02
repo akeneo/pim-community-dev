@@ -7,7 +7,9 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Prophecy\Argument;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 
@@ -50,7 +52,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => 1
+            'type'  => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
@@ -69,7 +71,7 @@ class DateRangeFilterSpec extends ObjectBehavior
             'value' => [
                 'start' => $start,
             ],
-            'type' => 1
+            'type'  => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => null,
@@ -86,9 +88,9 @@ class DateRangeFilterSpec extends ObjectBehavior
 
         $this->parseData([
             'value' => [
-                'end'   => $end,
+                'end' => $end,
             ],
-            'type' => 1
+            'type'  => 1
         ])->shouldReturn([
             'date_start' => null,
             'date_end'   => '2014-01-23',
@@ -112,7 +114,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => DateRangeFilterType::TYPE_BETWEEN,
+            'type'  => DateRangeFilterType::TYPE_BETWEEN,
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
@@ -136,7 +138,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => DateRangeFilterType::TYPE_NOT_BETWEEN,
+            'type'  => DateRangeFilterType::TYPE_NOT_BETWEEN,
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
@@ -160,7 +162,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => DateRangeFilterType::TYPE_MORE_THAN,
+            'type'  => DateRangeFilterType::TYPE_MORE_THAN,
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => null,
@@ -184,7 +186,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => DateRangeFilterType::TYPE_LESS_THAN,
+            'type'  => DateRangeFilterType::TYPE_LESS_THAN,
         ])->shouldReturn([
             'date_start' => null,
             'date_end'   => '2014-01-23',
@@ -208,7 +210,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                 'start' => $start,
                 'end'   => $end,
             ],
-            'type' => 'unknown',
+            'type'  => 'unknown',
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
@@ -270,7 +272,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $utility
-            ->applyFilter($datasource, 'data_name_key', 'BETWEEN', array('1987-05-14', '2014-01-23'))
+            ->applyFilter($datasource, 'data_name_key', 'BETWEEN', ['1987-05-14', '2014-01-23'])
             ->shouldBeCalled();
 
         $this->apply(
@@ -280,7 +282,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                     'start' => $start,
                     'end'   => $end,
                 ],
-                'type' => DateRangeFilterType::TYPE_BETWEEN,
+                'type'  => DateRangeFilterType::TYPE_BETWEEN,
             ]
         );
     }
@@ -316,7 +318,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                     'start' => $start,
                     'end'   => $end,
                 ],
-                'type' => DateRangeFilterType::TYPE_NOT_BETWEEN,
+                'type'  => DateRangeFilterType::TYPE_NOT_BETWEEN,
             ]
         );
     }
@@ -345,7 +347,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                     'start' => $start,
                     'end'   => $end,
                 ],
-                'type' => DateRangeFilterType::TYPE_LESS_THAN,
+                'type'  => DateRangeFilterType::TYPE_LESS_THAN,
             ]
         );
     }
@@ -374,7 +376,7 @@ class DateRangeFilterSpec extends ObjectBehavior
                     'start' => $start,
                     'end'   => $end,
                 ],
-                'type' => DateRangeFilterType::TYPE_MORE_THAN,
+                'type'  => DateRangeFilterType::TYPE_MORE_THAN,
             ]
         );
     }
@@ -384,30 +386,5 @@ class DateRangeFilterSpec extends ObjectBehavior
         $factory->create(DateRangeFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
-    }
-
-    function it_provides_metadata($factory, $utility, Form $form, FormView $formView, FormView $typeView)
-    {
-        $factory->create(DateRangeFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
-        $form->createView()->willReturn($formView);
-        $formView->vars = [
-            'type_values'    => ['foo', 'bar'],
-            'widget_options' => ['boo' => 'far'],
-        ];
-        $formView->children = ['type' => $typeView];
-        $typeView->vars     = ['choices' => ['a', 'b', 'c']];
-
-        $utility->getParamMap()->willReturn([]);
-        $utility->getExcludeParams()->willReturn([]);
-
-        $this->getMetadata()->shouldReturn([
-            'name'                  => 'date_filter',
-            'label'                 => 'Date_filter',
-            'choices'               => ['a', 'b', 'c'],
-            'enabled'               => true,
-            'data_name'             => 'data_name_key',
-            'typeValues'            => ['foo', 'bar'],
-            'externalWidgetOptions' => ['boo' => 'far'],
-        ]);
     }
 }

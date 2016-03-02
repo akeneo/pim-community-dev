@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Role repository
@@ -23,7 +23,7 @@ class RoleRepository extends BaseRoleRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('label' => $code));
+        return $this->findOneBy(['label' => $code]);
     }
 
     /**
@@ -43,6 +43,6 @@ class RoleRepository extends BaseRoleRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('label');
+        return ['label'];
     }
 }

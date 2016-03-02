@@ -27,14 +27,14 @@
                     'flash.attribute.removed'|trans
                 ) }}
             {% endif %}
-            {{ elements.submitBtn }}
+            {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
         {% set left %}
             {% if form.vars.value.id %}
             <ul class="inline">
-                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d H:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
-                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d H:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|datetime_presenter : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|datetime_presenter : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
             </ul>
             {% endif %}
         {% endset %}

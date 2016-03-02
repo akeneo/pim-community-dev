@@ -1,0 +1,25 @@
+btn:
+  post: Añadir un nuevo comentario
+  reply: Responder
+confirmation:
+  remove:
+    comment: ¿Está seguro de que desea borrar este comentario?
+flash:
+  comment:
+    create:
+      success: Su comentario ha sido creado con éxito.
+      error: Se ha producido un error durante la creación de su comentario.
+    delete:
+      success: Su comentario ha sido eliminado con éxito.
+      error: Se ha producido un error durante la eliminación de su comentario.
+    reply:
+      success: Su respuesta ha sido creada exitosamente.
+      error: Ocurrió un error durante la creación de su respuesta.
+comment:
+  index:
+    empty: No se encontraron comentarios.
+  placeholder:
+    new: Escribir un nuevo comentario...
+    reply: Responder a este comentario...
+pim_comment:
+  product.tab.comment.title: Comentarios

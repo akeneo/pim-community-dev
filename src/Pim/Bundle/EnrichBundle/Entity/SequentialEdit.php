@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

@@ -14,6 +14,7 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
+            decimalSeparator:   .
     ecommerce_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -41,6 +42,15 @@ jobs:
         type:      export
         configuration:
             channel:    print
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+    footwear_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     Footwear family export
+        type:      export
+        configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true

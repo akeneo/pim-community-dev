@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -25,19 +26,25 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
     /** @var ProductStandardConverter */
     protected $productConverter;
 
+    /** @var FieldsRequirementValidator */
+    protected $validator;
+
     /**
      * @param LocaleRepositoryInterface    $localeRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ProductStandardConverter     $productConverter
+     * @param FieldsRequirementValidator   $validator
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductStandardConverter $productConverter
+        ProductStandardConverter $productConverter,
+        FieldsRequirementValidator $validator
     ) {
         $this->localeRepository    = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productConverter    = $productConverter;
+        $this->validator           = $validator;
     }
 
     /**
@@ -96,7 +103,10 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
         }
 
         if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
+            $convertedItem['values'] = $this->productConverter->convert(
+                $convertedItem['values'],
+                ['with_required_identifier' => false]
+            );
             unset($convertedItem['values']['enabled']);
         }
 
@@ -137,39 +147,8 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validateRequiredFields($item, ['code', 'type']);
+        $this->validator->validateFields($item, ['code', 'type']);
         $this->validateAuthorizedFields($item, ['axis', 'type', 'code']);
-    }
-
-    /**
-     * @param array $item
-     * @param array $requiredFields
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateRequiredFields(array $item, array $requiredFields)
-    {
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
     }
 
     /**

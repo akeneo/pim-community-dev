@@ -1,6 +1,14 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/text-filter', 'routing', 'jquery.select2'],
-    function($, _, TextFilter, Routing) {
+    [
+        'jquery',
+        'underscore',
+        'oro/datafilter/text-filter',
+        'routing',
+        'text!pim/template/datagrid/filter/select2-choice-filter',
+        'pim/initselect2',
+        'jquery.select2'
+    ],
+    function($, _, TextFilter, Routing, template, initSelect2) {
         'use strict';
 
         return TextFilter.extend({
@@ -11,31 +19,7 @@ define(
             resultCache: {},
             resultsPerPage: 20,
             choices: [],
-            popupCriteriaTemplate: _.template(
-                '<div class="choicefilter">' +
-                    '<div class="input-prepend">' +
-                        '<div class="btn-group">' +
-                            '<% if (emptyChoice) { %>' +
-                                '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                    '<%= selectedOperatorLabel %>' +
-                                    '<span class="caret"></span>' +
-                                '</button>' +
-                                '<ul class="dropdown-menu">' +
-                                    '<% _.each(operatorChoices, function (label, operator) { %>' +
-                                        '<li<% if (selectedOperator == operator) { %> class="active"<% } %>>' +
-                                            '<a class="operator_choice" href="#" data-value="<%= operator %>"><%= label %></a>' +
-                                        '</li>' +
-                                    '<% }); %>' +
-                                '</ul>' +
-                            '<% } %>' +
-                            '<input type="text" name="value" value=""/>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
-                    '</div>' +
-                '</div>'
-            ),
+            popupCriteriaTemplate: _.template(template),
 
             events: {
                 'click .operator_choice': '_onSelectOperator'
@@ -82,7 +66,7 @@ define(
             },
 
             _enableInput: function() {
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
                 this.$(this.criteriaValueSelectors.value).show();
             },
 
@@ -94,7 +78,6 @@ define(
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
-                    allowClear: false,
                     width: '290px',
                     minimumInputLength: 0
                 };
@@ -167,7 +150,7 @@ define(
                     })
                 );
 
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
             },
 
             _onClickCriteriaSelector: function(e) {
@@ -175,7 +158,7 @@ define(
                 $('body').trigger('click');
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
-                    this.$(this.criteriaValueSelectors.value).select2('open');
+                    initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config()).select2('open');
                 } else {
                     this._hideCriteria();
                 }

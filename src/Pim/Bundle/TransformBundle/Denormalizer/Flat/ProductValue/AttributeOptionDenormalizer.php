@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Attribute option flat denormalizer used for following attribute types:
@@ -35,7 +34,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if ($data === null || $data === '') {
             return null;
@@ -84,12 +83,12 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * Define context requirements
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    protected function configContext(OptionsResolverInterface $resolver)
+    protected function configContext(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired(['value'])
-            ->setOptional(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
+            ->setDefined(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }

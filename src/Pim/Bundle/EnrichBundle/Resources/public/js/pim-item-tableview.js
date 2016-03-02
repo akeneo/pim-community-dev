@@ -31,7 +31,7 @@ define(
 
                 _.each(this.collection.models, function (ruleItem) {
                     this.addItem({item: ruleItem});
-                }, this);
+                }.bind(this));
 
                 if (!this.rendered) {
                     this.$target.html(this.$el);
@@ -49,10 +49,10 @@ define(
                 this.inLoading(true);
                 this.collection
                     .fetch({
-                        success: _.bind(function () {
+                        success: function () {
                             this.inLoading(false);
                             this.render();
-                        }, this)
+                        }.bind(this)
                     });
             },
             addItem: function (opts) {
@@ -81,7 +81,7 @@ define(
                 this.inLoading(true);
 
                 item.model.destroy({
-                    success: _.bind(function () {
+                    success: function () {
                         this.inLoading(false);
 
                         this.collection.remove(item);
@@ -94,8 +94,8 @@ define(
                         } else {
                             item.$el.hide(500);
                         }
-                    }, this),
-                    error: _.bind(function (data, response) {
+                    }.bind(this),
+                    error: function (data, response) {
                         this.inLoading(false);
                         var message;
 
@@ -106,7 +106,7 @@ define(
                         }
 
                         Dialog.alert(message, __('pim_enrich.item.list.delete.error'));
-                    }, this)
+                    }.bind(this)
                 });
             },
             inLoading: function (loading) {

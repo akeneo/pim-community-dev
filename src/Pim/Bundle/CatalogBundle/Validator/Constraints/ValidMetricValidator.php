@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -64,9 +64,13 @@ class ValidMetricValidator extends ConstraintValidator
         $unit   = $this->propertyAccessor->getValue($object, $unitProperty);
 
         if (!array_key_exists($family, $this->measures)) {
-            $this->context->addViolationAt($familyProperty, $constraint->familyMessage);
+            $this->context->buildViolation($constraint->familyMessage)
+                ->atPath($familyProperty)
+                ->addViolation();
         } elseif (!array_key_exists($unit, $this->measures[$family]['units'])) {
-            $this->context->addViolationAt($unitProperty, $constraint->unitMessage);
+            $this->context->buildViolation($constraint->unitMessage)
+                ->atPath($unitProperty)
+                ->addViolation();
         }
     }
 }

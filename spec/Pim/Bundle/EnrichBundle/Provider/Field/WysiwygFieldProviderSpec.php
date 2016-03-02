@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Provider\Field;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class WysiwygFieldProviderSpec extends ObjectBehavior
 {

@@ -11,11 +11,24 @@ namespace Context\Page\Base;
  */
 class Wizard extends Form
 {
-    protected $elements = array(
-        'Available attributes form' => array('css' => '#pim_enrich_mass_edit_action_operation_displayedAttributes'),
-    );
-
     protected $currentStep;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Available attributes form' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'],
+                'Next'                      => ['css' => '.configuration .btn-primary'],
+                'Confirm'                   => ['css' => '.confirmation .btn-primary'],
+            ]
+        );
+    }
 
     /**
      * Go to the next step
@@ -24,7 +37,7 @@ class Wizard extends Form
      */
     public function next()
     {
-        $this->pressButton('Next');
+        $this->getElement('Next')->click();
 
         return $this->currentStep;
     }
@@ -36,7 +49,7 @@ class Wizard extends Form
      */
     public function confirm()
     {
-        $this->pressButton('Confirm');
+        $this->getElement('Confirm')->click();
 
         return $this->currentStep;
     }

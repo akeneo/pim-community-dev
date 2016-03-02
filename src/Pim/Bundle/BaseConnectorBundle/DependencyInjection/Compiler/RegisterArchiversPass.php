@@ -29,7 +29,7 @@ class RegisterArchiversPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('pim_base_connector.archiver');
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('registerArchiver', array(new Reference($id)));
+            $service->addMethodCall('registerArchiver', [new Reference($id)]);
         }
     }
 }

@@ -105,9 +105,9 @@ flash:
     updated: Der Import wurde erfolgreich aktualisiert
 pim_menu:
   item:
-    export_history: Export Historie
+    export_history: Export-Historie
     export_profile: Export-Profile
-    import_history: Import Historie
+    import_history: Import-Historie
     import_profile: Import-Profile
 General properties: Allgemeine Eigenschaften
 History: Historie
@@ -141,3 +141,12 @@ Status: Status
 Summary: Zusammenfassung
 Start: Start
 End: Ende
+set_attribute_requirements: Attribut-Anforderungen festlegen
+COMPLETED: ABGESCHLOSSEN
+STARTING: STARTEN
+STARTED: GESTARTET
+STOPPING: STOPPEN
+STOPPED: GESTOPPT
+FAILED: FEHLGESCHLAGEN
+ABANDONED: AUFGEGEBEN
+UNKNOWN: UNBEKANNT

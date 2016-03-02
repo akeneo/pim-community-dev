@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -88,6 +88,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $context['field_name'] = $fieldName;
                 if ('metric' === $entity->getAttribute()->getBackendType()) {
                     $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
+                } elseif ('media' === $entity->getAttribute()->getBackendType()) {
+                    $context['value'] = $entity;
                 }
 
                 $result = $this->serializer->normalize($data, $format, $context);

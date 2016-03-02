@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Provides util methods to get attributes codes
@@ -143,13 +143,11 @@ class NamingUtility
         $localeCodes  = $this->getLocaleCodes($attribute);
         $channelCodes = $this->getChannelCodes($attribute);
 
-        $normFields = [
-            (
-                null === $prefix ?
-                ProductQueryUtility::NORMALIZED_FIELD . ProductQueryUtility::ELEMENT_TOKEN_SEPARATOR :
-                $prefix
-            ) . $attribute->getCode()
-        ];
+        if (null === $prefix) {
+            $prefix = ProductQueryUtility::NORMALIZED_FIELD . ProductQueryUtility::ELEMENT_TOKEN_SEPARATOR;
+        }
+
+        $normFields = [$prefix . $attribute->getCode()];
 
         $normFields = $this->appendSuffixes($normFields, $localeCodes);
         $normFields = $this->appendSuffixes($normFields, $channelCodes);

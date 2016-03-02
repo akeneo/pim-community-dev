@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
@@ -73,7 +73,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
 
         if (!$this->isExecuted) {
             $this->isExecuted = true;
-            $this->products = $this->getProductsCursor($configuration['filters']);
+            $this->products   = $this->getProductsCursor($configuration['filters']);
         }
 
         $result = $this->products->current();
@@ -107,20 +107,18 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /**
      * @param array $filters
      *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
+     * @return CursorInterface
      */
     protected function getProductsCursor(array $filters)
     {
         $productQueryBuilder = $this->getProductQueryBuilder();
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['context']);
-        $resolver->setDefaults(
-            [
-            'context' => ['locale' => null, 'scope' => null]
-            ]
-        );
+        $resolver->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['context'])
+            ->setDefaults([
+                'context' => ['locale' => null, 'scope' => null]
+            ]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);

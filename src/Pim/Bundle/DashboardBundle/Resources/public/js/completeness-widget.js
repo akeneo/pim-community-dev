@@ -3,7 +3,7 @@ define(
     function ($, _, AbstractWidget) {
         'use strict';
 
-        var CompletenessWidget = AbstractWidget.extend({
+        return AbstractWidget.extend({
             tagName: 'table',
 
             id: 'completeness-widget',
@@ -89,18 +89,5 @@ define(
                 return data;
             }
         });
-
-        var instance = null;
-
-        return {
-            init: function (options) {
-                if (!instance) {
-                    instance = new CompletenessWidget(options);
-                } else if (_.has(options, 'el')) {
-                    instance.setElement(options.el);
-                }
-                instance.render().delayedLoad();
-            }
-        };
     }
 );

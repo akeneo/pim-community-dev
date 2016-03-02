@@ -1,5 +1,5 @@
 @javascript
-Feature: Execute an import
+Feature: Execute an import with invalid data
   In order to update existing product information
   As a product manager
   I need to be be notified when I use invalid values in variant group

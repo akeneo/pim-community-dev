@@ -1,27 +1,27 @@
-pim_enrich_association_type_index:
+pim_enrich_associationtype_index:
     path: /.{_format}
     defaults: { _controller: pim_enrich.controller.association_type:indexAction, _format: html }
     requirements:
         _format: html|json
 
-pim_enrich_association_type_create:
+pim_enrich_associationtype_create:
     path: /create
     defaults: { _controller: pim_enrich.controller.association_type:createAction }
 
-pim_enrich_association_type_edit:
+pim_enrich_associationtype_edit:
     path: /{id}/edit
     defaults: { _controller: pim_enrich.controller.association_type:editAction }
     requirements:
         id: \d+
 
-pim_enrich_association_type_remove:
+pim_enrich_associationtype_remove:
     path: /{id}/remove
     defaults: { _controller: pim_enrich.controller.association_type:removeAction }
     requirements:
         id: \d+
     methods: [DELETE]
 
-pim_enrich_association_type_rest_index:
+pim_enrich_associationtype_rest_index:
     path: /rest.{_format}
     defaults: { _controller: pim_enrich.controller.rest.association_type:indexAction, _format: json }
     methods: [GET]

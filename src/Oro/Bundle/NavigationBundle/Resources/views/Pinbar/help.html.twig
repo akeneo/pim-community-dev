@@ -1,0 +1,20 @@
+{% extends bap.layout %}
+
+{% block title %}{% trans %}How to use Pinbar{% endtrans %}{% endblock %}
+{% block page_container %}
+<div class="container-fluid">
+{% block content %}
+    <div class="clearfix">
+
+        <h3>{% trans %}How To Use Pinbar{% endtrans %}</h3>
+
+        <p>
+            {{ 'oro_navigation.pinbar.pin.help'|trans }}
+            <br />
+            {{ 'oro_navigation.pinbar.restore.help'|trans }}
+        </p>
+
+    </div>
+{% endblock %}
+</div>
+{% endblock %}

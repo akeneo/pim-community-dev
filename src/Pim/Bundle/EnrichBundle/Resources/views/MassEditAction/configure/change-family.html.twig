@@ -1,5 +1,8 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
 {% block formContent %}
-    {{ form_row(form.operation.family) }}
+    <label class="control-label">{{ 'Family'|trans }}</label>
+    {{ form_row(
+        form.operation.family
+    ) }}
 {% endblock %}

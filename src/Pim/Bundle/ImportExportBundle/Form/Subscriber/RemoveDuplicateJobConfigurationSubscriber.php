@@ -21,10 +21,10 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_SET_DATA => 'postSetData',
             FormEvents::SUBMIT        => 'submit'
-        );
+        ];
     }
 
     /**
@@ -43,7 +43,7 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
 
         $steps = $form->get('steps');
 
-        $existingFields = array();
+        $existingFields = [];
         foreach ($steps->all() as $stepForm) {
             foreach ($stepForm->all() as $stepElementForm) {
                 $this->removeDuplicateFields($stepElementForm, $existingFields);
@@ -96,7 +96,7 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
      */
     protected function extractJobConfiguration(Form $form)
     {
-        $configuration = array();
+        $configuration = [];
 
         foreach ($form->all() as $stepForm) {
             foreach ($stepForm->all() as $stepElementForm) {

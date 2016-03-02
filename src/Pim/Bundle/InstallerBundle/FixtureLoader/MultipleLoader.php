@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\InstallerBundle\Exception\FixtureLoaderException;

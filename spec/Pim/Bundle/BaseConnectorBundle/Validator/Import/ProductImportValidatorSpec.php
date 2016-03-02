@@ -3,24 +3,24 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductImportValidatorSpec extends ObjectBehavior
 {
     function let(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->beConstructedWith($validator, $constraintGuesser, $productManager);
+        $this->beConstructedWith($validator, $constraintGuesser, $productRepository);
     }
 
     function it_is_initializable()
@@ -88,6 +88,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $product2->getValue("sku", null, null)->shouldBeCalled()->willReturn($productValue3);
         $product2->getValue("test_unique_attribute", null, null)->shouldBeCalled()->willReturn($productValue4);
 
+        $product1->__toString()->willReturn('product1');
+        $product2->__toString()->willReturn('product2');
+
         $productValue1->getAttribute()->willReturn($attribute1);
         $productValue2->getAttribute()->willReturn($attribute2);
 
@@ -106,9 +109,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $productValue3->__toString()->willReturn("17727158");
         $productValue4->__toString()->willReturn("1200000011a");
 
-        $validator->validateValue('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
 
         $validator->validate($product1, Argument::any())->shouldBeCalled()->willReturn($constraint);
         $validator->validate($product2, Argument::any())->shouldBeCalled()->willReturn($constraint);

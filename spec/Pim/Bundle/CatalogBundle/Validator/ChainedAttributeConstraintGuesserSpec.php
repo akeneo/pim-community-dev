@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
 class ChainedAttributeConstraintGuesserSpec extends ObjectBehavior

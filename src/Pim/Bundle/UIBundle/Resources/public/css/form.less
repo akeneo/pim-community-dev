@@ -26,7 +26,7 @@
   display: inline-block;
   margin-top: 6px;
   margin-left: 5px;
-  font-size: 17px;
+  font-size: @font-size-17;
   color: @textColor + #333;
   vertical-align: top;
   i {
@@ -99,11 +99,11 @@
 }
 
 .navbar-buttons .btn-group>.btn {
-  font-size: 14px;
+  font-size: @font-size-14;
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
-  .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+  background-color: darken(@color-new-green, 10%)
 }
 
 .scrollspy-title {
@@ -126,7 +126,7 @@ a.accordion-toggle {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   label.control-label {
     &:not(.add-on) {
       max-height: 25px;
@@ -155,7 +155,7 @@ a.accordion-toggle {
       border-top: 1px solid #dfdfdf;
       border-bottom: 1px solid #dfdfdf;
       th {
-        font-size: 12px;
+        font-size: @font-size-12;
         line-height: 20px;
         &.channel {
             text-align: center;
@@ -216,15 +216,20 @@ a.add-attribute-option {
 .has-switch {
   margin-right: 3px;
   margin-bottom: -6px;
+  border-radius: 0;
+
   label {
     z-index: 10;
   }
   span {
     padding: 4px 7px;
-    font-size: 12px;
+    font-size: @font-size-12;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+      background-color: @color-new-green;
+      background-image: none;
+      border-radius: 0;
+      text-shadow: none;
     }
   }
   &>div.switch-off,
@@ -330,7 +335,7 @@ div.btn-group > .has-switch {
     height: @uploadZoneHeight - 20;
     min-width: 229px;
     margin: 10px;
-    font-size: 22px;
+    font-size: @font-size-22;
     line-height: @uploadZoneHeight - 20;
     text-align: center;
     .upload-preview, img {
@@ -338,7 +343,7 @@ div.btn-group > .has-switch {
       max-width: (@uploadZoneHeight - 20) * 1.5;
       max-height: @uploadZoneHeight - 20;
       min-width: (@uploadZoneHeight - 20) / 2;
-      font-size: 40px;
+      font-size: @font-size-40;
       line-height: @uploadZoneHeight - 20;
       color: @textColor + #333;
       text-decoration: none;
@@ -363,7 +368,7 @@ div.btn-group > .has-switch {
     padding: 0 9px;
     margin-top: -1px;
     margin-right: -1px;
-    font-size: 26px;
+    font-size: @font-size-26;
     line-height: @uploadZoneHeight;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -419,9 +424,8 @@ div.btn-group > .has-switch {
     -ms-transition: background-color 0.5s;
     transition: background-color 0.5s;  }
   i {
-    padding-top: 10px;
-    line-height: 30px;
-    font-size: 30px;
+    line-height: 34px;
+    font-size: @font-size-20;
   }
 }
 .attribute-type-selector {
@@ -500,13 +504,14 @@ table i {
   .input-large {
     width: 350px;
   }
-  .datepicker.input-large {
-    width: 200px;
+  .datepicker {
+    &.input-large {
+      width: 200px;
+    }
+    &.add-on {
+      background-color: @white;
+    }
   }
-}
-
-.ui-datepicker-today .ui-state-default {
-    font-weight: bold !important;
 }
 
 .attribute-field.currency {
@@ -605,7 +610,7 @@ table.comparison .no-label .attribute-field.scopable {
   }
   label.control-label i.field-toggle {
     padding-left: 5px;
-    font-size: 14px;
+    font-size: @font-size-14;
     .user-select(none);
   }
   label.control-label.add-on {
@@ -625,7 +630,7 @@ table.comparison .no-label .attribute-field.scopable {
       .control-label.add-on {
         position: absolute;
         height: 100%;
-        font-size: 15px;
+        font-size: @font-size-15;
         &[style] {
           text-shadow: none;
         }
@@ -661,7 +666,7 @@ table.comparison .no-label .attribute-field.scopable {
     }
   }
   .input-append, .input-prepend {
-    font-size: 12px;
+    font-size: @font-size-12;
   }
   .upload-zone {
     margin: 0;
@@ -679,7 +684,7 @@ table.comparison .no-label .attribute-field.scopable {
 
 // ORO page titles
 h1 {
-  font-size: 18px;
+  font-size: @font-size-18;
   font-weight: normal;
   line-height: 33px;
   color: @textColor + #555;
@@ -692,20 +697,20 @@ h1 {
   line-height: 18px;
   .sub-title {
     float: left;
-    font-size: 18px;
+    font-size: @font-size-18;
     color: @textColor + #555;
   }
   .separator {
     float: left;
     padding: 0 3px;
-    font-size: 18px;
+    font-size: @font-size-18;
     color: #999;
   }
   ul.inline {
     color: @textColor + #333;
       li {
         padding: 0 10px;
-        font-size: 11px;
+        font-size: @font-size-11;
         line-height: 14px;
         border-left: 1px solid #e6e6e6;
       }
@@ -716,7 +721,7 @@ h1 {
   }
   .product-name {
     float: left;
-    font-size: 14px;
+    font-size: @font-size-14;
     font-weight: bold;
     line-height: 20px;
   }
@@ -752,7 +757,7 @@ h1 {
   margin: 0;
 }
 span.muted.small {
-  font-size: 14px;
+  font-size: @font-size-14;
 }
 
 div.dropdown-menu.channel {
@@ -785,17 +790,33 @@ div.dropdown-menu.channel {
 
 #locale-switcher, #comparison-switcher {
   span.dropdown-toggle {
-    padding: 5px 6px 3px 6px;
+    padding: 0px 44px 0px 10px;
+    height: 34px;
+    line-height: 34px;
     margin-bottom: 0;
     color: @textColor;
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 2px;
     box-shadow: none;
-    > i {
-      font-size: 14px;
-      vertical-align: middle;
+    position: relative;
+    background-color: @color-new-grey;
+    overflow: hidden;
+
+    & > i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      margin: 0;
+      background-color: #CCC;
+      text-align: center;
+      line-height: 34px;
+      background-color: darken(@color-new-grey, 10%);
     }
+
     .flag-language .language {
       width: auto;
       padding-right: 3px;
@@ -813,7 +834,7 @@ div.dropdown-menu.channel {
         display: inline-block;
         width: 25px;
         padding: 0 5px;
-        font-size: 9px;
+        font-size: @font-size-9;
         i {
           color: @textColor + #333;
         }
@@ -839,8 +860,8 @@ div.dropdown-menu.channel {
 .language {
   display: inline-block;
   padding-left: 5px;
-  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-  font-size: 12px;
+  font-family: @sansFontFamily;
+  font-size: @font-size-12;
   color: @textColor + #333;
   vertical-align: bottom;
 }
@@ -862,9 +883,16 @@ div.dropdown-menu.channel {
   cursor: default;
   opacity: 0;
   .label-warning {
-    color: @textColor + #333;
+    color: @color-form-info;
     text-shadow: none;
-    background-color: #fefecb;
+    background-color: #fdd9b6;
+    border-radius: 10px;
+    font-weight: 400;
+    padding: 2px 10px 2px 2px;
+
+    .icon {
+      color: #fa9f47;
+    }
   }
 }
 
@@ -874,7 +902,7 @@ div.dropdown-menu.channel {
 #association-list .nav-list li a i,
 #pim_enrich-product-tab-category .nav-list li a i {
   padding-right: 5px;
-  font-size: 16px;
+  font-size: @font-size-16;
   &.gray {
     color: #ddd;
   }
@@ -897,7 +925,7 @@ form.form-upload {
       .upload-zone {
         width: 100%;
         input[type="file"] {
-          font-size: 200px;
+          font-size: @font-size-200;
         }
       }
       .icons-container {
@@ -913,7 +941,7 @@ button.pimmultiselect {
   padding: 0 10px;
   line-height: @buttonHeight;
   color: @textColor + #222;
-  font-size: 13px;
+  font-size: @font-size-13;
   &:hover {
     color: @textColor + #222;
   }
@@ -930,7 +958,7 @@ button.pimmultiselect {
       input {
         padding: 5px;
         margin: 3px;
-        font-size: 12px;
+        font-size: @font-size-12;
         color: @textColor + #555;
         border-color: #d6d6d6;
       }
@@ -978,7 +1006,7 @@ button.pimmultiselect {
   .required {
     padding: 3px;
     margin: 0;
-    font-size: 1.5em;
+    font-size: @font-size-15em;
     color: #33be00;
   }
   .non-required {
@@ -1098,11 +1126,24 @@ table#progress-table {
 .mass-edit-form {
   padding: 25px;
   background-color: lighten(@color-light_grey, 4%);
+  .product-edit-form {
+    min-height: 300px;
+  }
+  .product-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
+    border-left: 0;
+  }
   hr {
     height: 3px;
     background-color: lighten(@color-light_grey, 2%);
     border-top: 1px solid lighten(@color-light_grey, 5%);
     border-bottom: 1px solid lighten(@color-light_grey, 4%);
+  }
+  .tab-content {
+    padding: 0;
+    border-left: solid 1px #ccc;
+  }
+  header {
+    display: none;
   }
 }
 
@@ -1122,7 +1163,7 @@ table#progress-table {
     border-bottom: 1px solid #e0e7e9;
   }
   i.icon-search {
-    font-size: 18px;
+    font-size: @font-size-18;
   }
   input[type="search"] {
     width: 80%;
@@ -1153,7 +1194,7 @@ table#progress-table {
     margin: 0;
     overflow-y: auto;
     list-style-type: none;
-    font-size: 13px;
+    font-size: @font-size-13;
     border-left: 1px solid #e0e7e9;
     li {
       cursor: pointer;
@@ -1163,10 +1204,14 @@ table#progress-table {
         border-top: none;
       }
       &.filtered {
-        display: none;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+        border: none;
       }
       i {
-        font-size: 15px;
+        font-size: @font-size-15;
         color: #ccc;
         padding-right: 8px;
       }
@@ -1197,7 +1242,7 @@ table#progress-table {
       border: 1px solid #ddd;
       background: transparent;
       color: #999;
-      font-size: 14px;
+      font-size: @font-size-14;
       text-shadow: initial;
     }
     li {
@@ -1221,8 +1266,30 @@ table#progress-table {
 
 button.view-button {
   margin-top: -6px;
-  font-size: 13px;
+  font-size: @font-size-13;
   &.hide {
     display: none;
+  }
+}
+
+/** datetimepicker views *********************************************************************************************/
+.bootstrap-datetimepicker-widget {
+  .has-switch {
+    display: table-cell;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      display: block;
+      list-style: none;
+      &.picker-switch {
+        text-align: center;
+      }
+    }
+  }
+  table {
+    text-align: center;
+    width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 /* jshint nonew:false, boss:true */
 define(
-    ['jquery', 'backbone', 'underscore'],
-    function ($, Backbone, _) {
+    ['jquery', 'backbone', 'underscore', 'oro/translator'],
+    function ($, Backbone, _, __) {
         'use strict';
         var interval;
         var loading = false;
@@ -21,8 +21,8 @@ define(
         });
 
         var JobExecutionView = Backbone.View.extend({
-            showLabel: 'Display item',
-            hideLabel: 'Hide item',
+            showLabel: __('job_execution.summary.display_item'),
+            hideLabel: __('job_execution.summary.hide_item'),
 
             initialize: function (params) {
                 this.showLabel            = params.showLabel || this.showLabel;

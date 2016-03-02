@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -112,24 +114,24 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
             $normalizedValues = [];
             foreach ($values as $value) {
-                $normalizedValues = array_merge(
+                $normalizedValues = array_replace(
                     $normalizedValues,
                     $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
-            $this->results = array_merge($this->results, $normalizedValues);
+            $this->results = array_replace($this->results, $normalizedValues);
         } else {
-            // TODO only used for quick export, find a way to homogeneize this part
+            // TODO only used for quick export, find a way to homogenize this part
             $values = $product->getValues();
             $context['metric_format'] = 'single_field';
 
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
-                if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection'
+                if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()
                     || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                    $this->results = array_merge($this->results, $normalizedValue);
+                    $this->results = array_replace($this->results, $normalizedValue);
                 }
             }
         }
@@ -197,19 +199,19 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      *
      * @param GroupInterface[] $groups
      */
-    protected function normalizeGroups($groups = null)
+    protected function normalizeGroups($groups = [])
     {
-        $this->results[self::FIELD_GROUPS] = $groups;
+        $this->results[self::FIELD_GROUPS] = implode(static::ITEM_SEPARATOR, $groups);
     }
 
     /**
      * Normalizes categories
      *
-     * @param string $categories
+     * @param array $categories
      */
-    protected function normalizeCategories($categories = '')
+    protected function normalizeCategories($categories = [])
     {
-        $this->results[self::FIELD_CATEGORY] = $categories;
+        $this->results[self::FIELD_CATEGORY] = implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**

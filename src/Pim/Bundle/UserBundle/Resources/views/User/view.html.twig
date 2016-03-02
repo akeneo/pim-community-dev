@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% set fullname = entity|oro_format_name|default('N/A') %}
+{% set fullname = entity.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 
 {% macro api_data_block(user) %}
@@ -18,10 +18,10 @@
 
 {% block navButtons %}
     {% if editRoute is defined %}
-        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-pencil ', 'title' : 'Edit profile', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
     {% else %}
         {% if resource_granted('pim_user_user_edit') %}
-            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-pencil ', 'title' : 'Edit user', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
         {% endif %}
     {% endif %}
     {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}
@@ -64,7 +64,7 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|oro_format_datetime : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
@@ -88,7 +88,7 @@
                         entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
                         UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
                         entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
-                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|oro_format_date : 'N/A'),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A'),
                         UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
                     ]
                 },
@@ -104,6 +104,28 @@
     {#
       EntityExtend fields START
     #}
+
+    {% set filters = [] %}
+    {% for filter in entity.productGridFilters %}
+      {% set filters = filters|merge([filter_label(filter)]) %}
+    {% endfor %}
+
+    {% set additionalData = [
+        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
+        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
+        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', '))
+    ] %}
+
+    {% for view in entity.getDefaultGridViews() %}
+        {% set additionalData = additionalData|merge([
+            UI.attibuteRow(
+                'user.default_' ~ view.datagridAlias|replace('-', '_') ~ '_view.label'|trans,
+                view.label|default('user.default_grid_view.none'|trans)
+            )
+        ]) %}
+    {% endfor %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -111,11 +133,7 @@
             'subblocks': [
                 {
                     'title': '',
-                    'data': [
-                        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
-                        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-                        UI.attibuteRow('Default tree'|trans, entity.defaultTree)
-                    ]
+                    'data': additionalData
                 },
                 {
                     'title': '',
@@ -128,7 +146,22 @@
     ]
     %}
 
-    {% set dataBlocks = dataBlocks|merge(additional) %}
+    {% set interfaces = [
+        {
+            'title': 'Interfaces'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        UI.attibuteRow('UI locale'|trans, entity.uiLocale.getName),
+                    ]
+                }
+            ]
+        }
+    ]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(additional)|merge(interfaces) %}
 
     {#
       EntityExtend fields END

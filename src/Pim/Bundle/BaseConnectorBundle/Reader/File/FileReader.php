@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * File reader
@@ -54,6 +54,6 @@ class FileReader extends AbstractConfigurableStepElement implements ItemReaderIn
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

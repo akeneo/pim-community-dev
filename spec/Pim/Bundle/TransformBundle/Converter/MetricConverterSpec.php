@@ -4,11 +4,11 @@ namespace spec\Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class MetricConverterSpec extends ObjectBehavior
 {
@@ -60,6 +60,34 @@ class MetricConverterSpec extends ObjectBehavior
 
         $weightMetric->setData(0.001)->shouldBeCalled();
         $weightMetric->setUnit('GRAM')->shouldBeCalled();
+
+        $this->convert($product, $channel);
+    }
+
+    function it_does_not_convert_null_metric_values_in_the_channel(
+        $converter,
+        ProductValueInterface $weightValue,
+        AttributeInterface $weight,
+        MetricInterface $weightMetric,
+        ProductInterface $product,
+        ChannelInterface $channel
+    ) {
+        $weightValue->getAttribute()->willReturn($weight);
+        $weightValue->getData()->willReturn($weightMetric);
+        $weight->getCode()->willReturn('weight');
+
+        $weightMetric->getFamily()->willReturn('Weight');
+        $weightMetric->getUnit()->willReturn(null);
+        $weightMetric->getData()->willReturn(null);
+
+        $product->getValues()->willReturn(array($weightValue));
+
+        $channel->getConversionUnits()->willReturn(array('weight' => 'GRAM'));
+
+        $converter->setFamily('Weight')->shouldNotBeCalled();
+        $converter->convert('KILOGRAM', 'GRAM', 1)->shouldNotBeCalled();
+        $weightMetric->setData(null)->shouldNotBeCalled();
+        $weightMetric->setUnit('GRAM')->shouldNotBeCalled();
 
         $this->convert($product, $channel);
     }

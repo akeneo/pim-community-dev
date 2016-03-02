@@ -6,6 +6,7 @@ parameters:
     pim_enrich.twig.attribute_extension.class:    Pim\Bundle\EnrichBundle\Twig\AttributeExtension
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
     pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
+    pim_enrich.twig.translations_extension.class: Pim\Bundle\EnrichBundle\Twig\TranslationsExtension
 
 services:
     # Twig extensions
@@ -19,7 +20,7 @@ services:
     pim_enrich.twig.category_extension:
         class: %pim_enrich.twig.category_extension.class%
         arguments:
-            - '@pim_catalog.manager.product_category'
+            - '@pim_enrich.doctrine.counter.category_registry'
             - %pim_enrich_max_products_category_removal%
         tags:
             - { name: twig.extension }
@@ -45,6 +46,7 @@ services:
         class: %pim_enrich.twig.attribute_extension.class%
         arguments:
             - %pim_enrich.attribute_icons%
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }
 
@@ -55,5 +57,14 @@ services:
 
     pim_enrich.twig.version_extension:
         class: %pim_enrich.twig.version_extension.class%
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.translations_extension:
+        class: %pim_enrich.twig.translations_extension.class%
+        arguments:
+            - '@pim_catalog.command_launcher'
+            - '@request_stack'
+            - %assetic.write_to%
         tags:
             - { name: twig.extension }

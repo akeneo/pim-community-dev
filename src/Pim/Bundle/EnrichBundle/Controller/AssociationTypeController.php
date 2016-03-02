@@ -3,24 +3,21 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Association type controller
@@ -29,87 +26,68 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeController extends AbstractDoctrineController
+class AssociationTypeController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /** @var HandlerInterface */
     protected $assocTypeHandler;
 
     /** @var Form */
     protected $assocTypeForm;
 
-    /** @var AssociationTypeManager */
-    protected $assocTypeManager;
-
-    /** @var AssociationManager */
-    protected $assocManager;
+    /** @var AssociationRepositoryInterface */
+    protected $assocRepository;
 
     /** @var RemoverInterface */
     protected $assocTypeRemover;
 
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepo;
+
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param AssociationTypeManager   $assocTypeManager
-     * @param AssociationManager       $assocManager
-     * @param HandlerInterface         $assocTypeHandler
-     * @param Form                     $assocTypeForm
-     * @param RemoverInterface         $assocTypeRemover
+     * @param Request                            $request
+     * @param RouterInterface                    $router
+     * @param TranslatorInterface                $translator
+     * @param AssociationRepositoryInterface     $assocRepository
+     * @param HandlerInterface                   $assocTypeHandler
+     * @param Form                               $assocTypeForm
+     * @param RemoverInterface                   $assocTypeRemover
+     * @param AssociationTypeRepositoryInterface $assocTypeRepo
      */
     public function __construct(
         Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
-        AssociationTypeManager $assocTypeManager,
-        AssociationManager $assocManager,
+        AssociationRepositoryInterface $assocRepository,
         HandlerInterface $assocTypeHandler,
         Form $assocTypeForm,
-        RemoverInterface $assocTypeRemover
+        RemoverInterface $assocTypeRemover,
+        AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->assocTypeManager = $assocTypeManager;
-        $this->assocManager     = $assocManager;
+        $this->request          = $request;
+        $this->router           = $router;
+        $this->translator       = $translator;
+        $this->assocRepository  = $assocRepository;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
+        $this->assocTypeRepo    = $assocTypeRepo;
     }
 
     /**
      * List association types
      *
-     * @param Request $request
-     *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_index")
+     * @AclAncestor("pim_enrich_associationtype_index")
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [];
     }
@@ -120,24 +98,27 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_create")
+     * @AclAncestor("pim_enrich_associationtype_create")
      *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_association_type_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_index'));
         }
 
         $associationType = new AssociationType();
 
         if ($this->assocTypeHandler->process($associationType)) {
-            $this->addFlash('success', 'flash.association type.created');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.created'));
 
             $response = [
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_enrich_association_type_edit', ['id' => $associationType->getId()])
+                'url'    => $this->router->generate(
+                    'pim_enrich_associationtype_edit',
+                    ['id' => $associationType->getId()]
+                )
             ];
 
             return new Response(json_encode($response));
@@ -151,24 +132,27 @@ class AssociationTypeController extends AbstractDoctrineController
     /**
      * Edit an association type
      *
-     * @param Request $request
      * @param int     $id
      *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_edit")
+     * @AclAncestor("pim_enrich_associationtype_edit")
      *
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction($id)
     {
-        $associationType = $this->findOr404('PimCatalogBundle:AssociationType', $id);
+        $associationType = $this->assocTypeRepo->find($id);
+
+        if (!$associationType) {
+            throw new NotFoundHttpException(sprintf('%s entity not found', 'PimCatalogBundle:AssociationType'));
+        }
 
         if ($this->assocTypeHandler->process($associationType)) {
-            $this->addFlash('success', 'flash.association type.updated');
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.updated'));
 
-            return $this->redirectToRoute('pim_enrich_association_type_edit', ['id' => $id]);
+            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_edit', ['id' => $id]));
         }
-        $usageCount = $this->assocManager->countForAssociationType($associationType);
+        $usageCount = $this->assocRepository->countForAssociationType($associationType);
 
         return [
             'form'       => $this->assocTypeForm->createView(),
@@ -181,7 +165,7 @@ class AssociationTypeController extends AbstractDoctrineController
      *
      * @param AssociationType $associationType
      *
-     * @AclAncestor("pim_enrich_association_type_remove")
+     * @AclAncestor("pim_enrich_associationtype_remove")
      *
      * @return Response|RedirectResponse
      */
@@ -189,10 +173,10 @@ class AssociationTypeController extends AbstractDoctrineController
     {
         $this->assocTypeRemover->remove($associationType);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_association_type_index');
+            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_index'));
         }
     }
 }

@@ -16,7 +16,8 @@ function (_, __, Modal) {
         initialize: function (options) {
             options = _.extend({
                 title: __('Delete Confirmation'),
-                okText: __('Yes, Delete')
+                okText: __('Yes, Delete'),
+                cancelText: __('Cancel')
             }, options);
 
             arguments[0] = options;

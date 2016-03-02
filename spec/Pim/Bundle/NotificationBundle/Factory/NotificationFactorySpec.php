@@ -22,7 +22,8 @@ class NotificationFactorySpec extends ObjectBehavior
             'messageParams' => ['foo' => 'bar'],
             'route' => 'index',
             'routeParams' => ['bar' => 'foo'],
-            'context' => ['baz' => 'qux']
+            'context' => ['baz' => 'qux'],
+            'comment' => 'blabla',
         ];
 
         $notification = $this->createNotification('Some message', 'success', $options);
@@ -35,5 +36,22 @@ class NotificationFactorySpec extends ObjectBehavior
         $notification->getRouteParams()->shouldReturn(['bar' => 'foo']);
         $notification->getCreated()->shouldReturnAnInstanceOf('\DateTime');
         $notification->getContext()->shouldReturn(['baz' => 'qux']);
+        $notification->getComment()->shouldReturn('blabla');
+    }
+
+    function it_creates_notification_with_some_null_params()
+    {
+        $options = [];
+        $notification = $this->createNotification('Some message', 'success', $options);
+
+        $notification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $notification->getMessage()->shouldReturn('Some message');
+        $notification->getMessageParams()->shouldReturn([]);
+        $notification->getType()->shouldReturn('success');
+        $notification->getRoute()->shouldReturn(null);
+        $notification->getRouteParams()->shouldReturn([]);
+        $notification->getCreated()->shouldReturnAnInstanceOf('\DateTime');
+        $notification->getContext()->shouldReturn([]);
+        $notification->getComment()->shouldReturn(null);
     }
 }

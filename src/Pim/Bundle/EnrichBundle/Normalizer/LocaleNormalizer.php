@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,7 +29,7 @@ class LocaleNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = array())
+    public function normalize($locale, $format = null, array $context = [])
     {
         return [
             'code'     => $locale->getCode(),

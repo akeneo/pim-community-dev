@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Job instance form type
@@ -24,21 +24,21 @@ class JobConfigurationType extends AbstractType
             ->add(
                 'steps',
                 'collection',
-                array(
+                [
                     'type' => 'pim_import_export_step_configuration'
-                )
+                ]
             );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Job\\Job',
-            )
+            [
+                'data_class' => 'Akeneo\\Component\\Batch\\Job\\Job',
+            ]
         );
     }
 

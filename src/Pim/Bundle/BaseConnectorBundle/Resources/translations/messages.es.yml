@@ -1,0 +1,146 @@
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Exportar productos a CSV
+      export.title: Exportar productos
+    csv_category_export:
+      title: Exportar categorías a CSV
+      export.title: Exportar categorías
+    csv_attribute_export:
+      title: Exportar atributos a CSV
+      export.title: Exportar atributos
+    csv_attribute_option_export:
+      title: Exportar opciones de atributos a CSV
+      export.title: Exportar opciones de atributos
+    csv_association_type_export:
+      title: Exportar tipos de asociaciones a CSV
+      export.title: Exportar tipos de asociaciones
+    csv_group_export:
+      title: Exportar grupos a CSV
+      export.title: Exportar grupos
+    csv_variant_group_export:
+      title: Exportar Grupo de variantes a CSV
+      export.title: Exportación de grupo de variantes
+    csv_family_export:
+      title: Exportar familias en CSV
+      export.title: Exportar familias
+    csv_product_import:
+      title: Importar productos desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar productos
+      import_associations.title: Importar asociaciones
+    csv_category_import:
+      title: Importar categorías desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar categorías
+    csv_attribute_import:
+      title: Importar atributos desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar atributos
+    csv_attribute_option_import:
+      title: Importar opciones de atributos desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar opciones de atributos
+    csv_association_type_import:
+      title: Importar tipos de asociaciones desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar tipos de asociaciones
+    csv_group_import:
+      title: Importar grupos desde CSV
+      validation.title: Validación de archivo
+      import.title: Importar grupos
+    csv_variant_group_import:
+      title: Importar Grupo de variantes de CSV
+      validation.title: Validación de archivo
+      import.title: importación de grupo de variantes
+  steps:
+    dummy_reader.title: Lector de prueba
+    product_reader.title: Extracción de productos
+    entity_reader.title: Extracción de entidades
+    csv_reader:
+      title: Lector de CSV
+      invalid_item_columns_count: 'Se esperan %totalColumnsCount% columna(s), encontradas %itemColumnsCount% en %csvPath%:%lineno%'
+    csv_product_reader.title: Lector de productos desde CSV
+    csv_category_reader.title: Lector de categorías desde CSV
+    csv_variant_group .title: Lector de grupo de variantes CSV
+    dummy_processor.title: Procesador de prueba
+    product_processor.title: Creación de productos
+    variant_group_processor.title: Creación / actualización de grupo de variantes
+    category_processor.title: Creación de categorías
+    association_processor.title: Creación de asociaciones
+    product_association_processor.title: Creación de asociados
+    group_processor.title: Creación de grupos
+    attribute_processor.title: Creación de atributos
+    attribute_option_processor.title: Creación de opciones de atributo
+    heterogeneous_processor.title: Serializar productos a CSV
+    homogeneous_processor.title: Serializar entidades a CSV
+    transformer_processor.title: Transformación
+    dummy_writer.title: Escritor de prueba
+    file_writer.title: Salida
+    product_writer.title: Almacenado de productos
+    category_writer.title: Almacenado de categorías
+    variant_group_writer.title: Almacenamiento de grupo de variantes
+    writer.title: Almacenado de entidades
+    csv_writer.title: Editor CSV
+  export:
+    delimiter:
+      label: Delimitador
+      help: Carácter usado para establecer el delimitador de campo
+    enclosure:
+      label: Contenedor
+      help: Carácter usado para establecer el contenedor de campo
+    withHeader:
+      label: Con cabecera
+      help: Si desea imprimir el nombre de columna o no
+    filePath:
+      label: Ruta del archivo
+      help: Donde guardar el archivo generado en el sistema de archivos
+    channel:
+      label: Canal
+      help: Canal que desea exportar
+    decimalSeparator:
+      label: Separador de decimales
+      help: Determinar el separador de decimales
+    dateFormat:
+      label: Formato de fecha
+      help: Determinar el formato de los campos de fecha
+  import:
+    enabled:
+      label: Activar el producto
+      help: Si el producto importado debe estar habilitado o no
+    categoriesColumn:
+      label: Columna de categorías
+      help: Nombre de la columna de categorías
+    familyColumn:
+      label: Familia de la columna
+      help: Nombre de la familia de la columna
+    groupsColumn:
+      label: Columna de grupos
+      help: Nombre de la columna de grupos
+    filePath:
+      label: Fichero
+      help: El archivo CSV para importar
+    yamlFilePath:
+      label: Fichero
+      help: El archivo YAML para importar
+    uploadAllowed:
+      label: Permite la carga de archivos
+      help: Si desea o no permitir cargar el archivo directamente
+    delimiter:
+      label: Delimitador
+      help: Carácter usado para establecer el delimitador de campo
+    enclosure:
+      label: Contenedor
+      help: Carácter usado para establecer el contenedor de campo
+    escape:
+      label: Escape
+      help: Carácter usado para establecer el escape de campo
+    circularRefsChecked:
+      label: Comprobar referencias circulares
+      help: En caso afirmativo, los datos se procesarán para comprobar que no existen referencias circulares entre las categorías
+    realTimeVersioning:
+      label: Actualización del historial en tiempo real
+      help: Significa que el historial de productos se actualiza automáticamente, puede desactivarse para mejorar el rendimiento
+    copyValuesToProducts:
+      label: Copiar los valores de grupo de variantes a productos
+      help: Significa que los productos se actualizan automáticamente con los valores del grupo de variantes, puede establecerse a sólo actualizar un grupo de variantes

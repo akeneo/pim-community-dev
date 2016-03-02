@@ -29,15 +29,20 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_import_export.repository.job_instance'
-            - '@security.context'
+            - '@security.token_storage'
             - '@pim_connector.launcher.simple_job_launcher'
             - '@oro_datagrid.datagrid.manager'
 
     pim_datagrid.controller.datagrid_view:
         scope: request
         class: %pim_datagrid.controller.datagrid_view.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@request'
+            - '@templating'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@validator'
+            - '@translator'
             - '@pim_datagrid.manager.datagrid_view'
 
     pim_datagrid.controller.mass_action:

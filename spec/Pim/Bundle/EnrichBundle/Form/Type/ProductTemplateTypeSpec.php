@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscr
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductTemplateTypeSpec extends ObjectBehavior
 {
@@ -36,7 +36,7 @@ class ProductTemplateTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_product_template');
     }
 
-    function it_has_a_default_configuration(OptionsResolverInterface $resolver)
+    function it_has_a_default_configuration(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

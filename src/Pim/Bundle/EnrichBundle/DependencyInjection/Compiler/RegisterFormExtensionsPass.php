@@ -36,7 +36,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
         $files = $this->listConfigFiles($container);
 
         foreach ($files as $file) {
-            $config = Yaml::parse($file->getPathName());
+            $config = Yaml::parse(file_get_contents($file->getPathName()));
             if (isset($config['extensions']) && is_array($config['extensions'])) {
                 $extensionConfig = array_replace_recursive($extensionConfig, $config['extensions']);
             }

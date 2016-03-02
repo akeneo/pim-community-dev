@@ -3,10 +3,10 @@
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validates an imported entity
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be remove in 1.5
+ * @deprecated will be remove in 1.6
  */
 class ImportValidator implements ImportValidatorInterface
 {
@@ -27,7 +27,7 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * @var array
      */
-    protected $identifiers = array();
+    protected $identifiers = [];
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
+    public function validate($entity, array $columnsInfo, array $data, array $errors = [])
     {
         $this->checkIdentifier($entity, $columnsInfo, $data);
         if (!count($errors)) {
@@ -70,7 +70,7 @@ class ImportValidator implements ImportValidatorInterface
 
         $class = get_class($entity);
         if (!isset($this->identifiers[$class])) {
-            $this->identifiers[$class] = array();
+            $this->identifiers[$class] = [];
         } elseif (isset($this->identifiers[$class][$identifier])) {
             throw new DuplicateIdentifierException($identifier, $data);
         }
@@ -102,7 +102,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function validateProperties($entity, array $columnsInfo)
     {
-        $errors = array();
+        $errors = [];
         foreach ($columnsInfo as $columnInfo) {
             $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
             if ($violations->count()) {
@@ -122,11 +122,11 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getErrorMap(ConstraintViolationListInterface $violations)
     {
-        $errors = array();
+        $errors = [];
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if (!isset($errors[$path])) {
-                $errors[$path] = array();
+                $errors[$path] = [];
             }
             $errors[$path][] = $this->getViolationError($violation);
         }
@@ -143,7 +143,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getErrorArray(ConstraintViolationListInterface $violations)
     {
-        $errors = array();
+        $errors = [];
         foreach ($violations as $violation) {
             $errors[] = $this->getViolationError($violation);
         }
@@ -160,6 +160,6 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected function getViolationError(ConstraintViolationInterface $violation)
     {
-        return array($violation->getMessageTemplate(), $violation->getMessageParameters());
+        return [$violation->getMessageTemplate(), $violation->getMessageParameters()];
     }
 }

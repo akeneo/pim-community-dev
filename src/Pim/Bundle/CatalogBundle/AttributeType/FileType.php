@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * File attribute type
@@ -42,6 +42,6 @@ class FileType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_file';
+        return AttributeTypes::FILE;
     }
 }

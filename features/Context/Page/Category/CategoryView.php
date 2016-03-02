@@ -2,6 +2,7 @@
 
 namespace Context\Page\Category;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
 
 /**
@@ -18,35 +19,23 @@ abstract class CategoryView extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Category tree'    => array('css' => '#tree'),
-                'Tree select'      => array('css' => '#tree_select'),
-                'Right click menu' => array('css' => '#vakata-contextmenu'),
-            )
+            [
+                'Category tree'    => [
+                    'css'        => '#tree',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
+                ],
+                'Tree select'      => ['css' => '#tree_select'],
+                'Right click menu' => ['css' => '#vakata-contextmenu'],
+            ]
         );
-    }
-
-    /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCategoryInTree($category)
-    {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
-        }
-
-        return $elt;
     }
 
     /**
@@ -80,19 +69,6 @@ abstract class CategoryView extends Form
     }
 
     /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function expandCategory($category)
-    {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
-
-        return $this;
-    }
-
-    /**
      * @param string $category1
      * @param string $category2
      *
@@ -100,10 +76,10 @@ abstract class CategoryView extends Form
      */
     public function dragCategoryTo($category1, $category2)
     {
-        $category1 = $this->findCategoryInTree($category1);
-        $category2 = $this->findCategoryInTree($category2);
+        $category1 = $this->getElement('Category tree')->findNodeInTree($category1);
+        $category2 = $this->getElement('Category tree')->findNodeInTree($category2);
 
-        $category1->dragTo($category2);
+        $this->dragElementTo($category1, $category2);
 
         return $this;
     }

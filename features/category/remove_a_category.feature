@@ -55,8 +55,8 @@ Feature: Remove a category
 
   Scenario: Remove a category tree
     Given the following category:
-      | code            | label-en_US     |
-      | 2013_collection | 2013 collection |
+      | code            | parent | label-en_US     |
+      | 2013_collection |        | 2013 collection |
     And I am on the "2013_collection" category page
     When I press the "Delete" button
     And I confirm the deletion

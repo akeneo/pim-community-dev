@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -13,6 +13,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class AttributeCache
 {
@@ -24,12 +26,12 @@ class AttributeCache
     /**
      * @var array
      */
-    protected $familyAttributeCodes = array();
+    protected $familyAttributeCodes = [];
 
     /***
      * @var array
      */
-    protected $groupAttributeCodes = array();
+    protected $groupAttributeCodes = [];
 
     /**
      * @var string
@@ -58,7 +60,7 @@ class AttributeCache
     public function getAttributes($columnsInfo)
     {
         if (!count($columnsInfo)) {
-            return array();
+            return [];
         }
         $codes = array_unique(
             array_map(
@@ -70,8 +72,8 @@ class AttributeCache
         );
 
         $attributes = $this->doctrine->getRepository($this->attributeClass)
-                ->findBy(array('code' => $codes));
-        $attributeMap = array();
+                ->findBy(['code' => $codes]);
+        $attributeMap = [];
         foreach ($attributes as $attribute) {
             $attributeMap[$attribute->getCode()] = $attribute;
         }
@@ -88,7 +90,7 @@ class AttributeCache
      */
     public function getRequiredAttributeCodes(ProductInterface $product)
     {
-        $codes = array();
+        $codes = [];
 
         if ($product->getFamily()) {
             $codes = $this->getFamilyAttributeCodes($product->getFamily());

@@ -4,13 +4,14 @@
         {% if fieldValue.old|length %}
         {% for collKey, collValue in fieldValue.old %}
     <li>
-        <b>{{ collKey }}:</b> {{ collValue }}
+        <strong>{{ collKey }}:</strong> {{ collValue|attribute_option_presenter(collKey) }}
     </li>
         {% endfor %}
         {% endif %}
     {% else %}
     <li>
-        <b>{{ fieldKey }}:</b> {{ fieldValue.old.timestamp is defined ? fieldValue.old|oro_format_datetime : fieldValue.old }}
+        <strong>{{ fieldKey }}:</strong>
+        {{ fieldValue.old|attribute_option_presenter(fieldKey) }}
     </li>
     {% endif %}
 {% endfor %}

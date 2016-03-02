@@ -26,16 +26,22 @@ class ValidDateRangeValidator extends ConstraintValidator
         $max = $entity->getDateMax();
 
         if (!$this->isDateValid($min)) {
-            $this->context->addViolationAt('dateMin', $constraint->invalidDateMessage);
+            $this->context->buildViolation($constraint->invalidDateMessage)
+                ->atPath('dateMin')
+                ->addViolation();
         }
 
         if (!$this->isDateValid($max)) {
-            $this->context->addViolationAt('dateMax', $constraint->invalidDateMessage);
+            $this->context->buildViolation($constraint->invalidDateMessage)
+                ->atPath('dateMax')
+                ->addViolation();
         }
 
         if ($min instanceof \DateTime && $max instanceof \DateTime) {
             if ($min->getTimestamp() >= $max->getTimestamp()) {
-                $this->context->addViolationAt('dateMax', $constraint->message);
+                $this->context->buildViolation($constraint->message)
+                    ->atPath('dateMax')
+                    ->addViolation();
             }
         }
     }

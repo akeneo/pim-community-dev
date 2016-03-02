@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Repository
@@ -178,7 +178,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
             ->where($qb->expr()->in('f.id', $familyIds));
 
         $results = $qb->getQuery()->getArrayResult();
-        $attrByFamilies = array();
+        $attrByFamilies = [];
         foreach ($results as $result) {
             $attrByFamilies[$result['f_id']][] = $result['a_id'];
         }
@@ -206,7 +206,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -214,6 +214,19 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
     }
 }

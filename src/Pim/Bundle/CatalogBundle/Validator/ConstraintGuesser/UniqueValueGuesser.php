@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Guesser
@@ -21,13 +21,13 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        $availableTypes = array(
+        $availableTypes = [
             AbstractAttributeType::BACKEND_TYPE_VARCHAR,
             AbstractAttributeType::BACKEND_TYPE_DATE,
             AbstractAttributeType::BACKEND_TYPE_DATETIME,
             AbstractAttributeType::BACKEND_TYPE_DECIMAL,
             AbstractAttributeType::BACKEND_TYPE_INTEGER
-        );
+        ];
 
         return in_array($attribute->getBackendType(), $availableTypes);
     }
@@ -37,7 +37,7 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ($attribute->isUnique()) {
             $constraints[] = new UniqueValue();

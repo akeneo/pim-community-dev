@@ -5,9 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Association repository
@@ -61,7 +62,7 @@ class AssociationRepository extends EntityRepository implements
             ->where('at.attributeType=:identifier_type')
             ->andWhere('v.varchar=:product_code')
             ->andWhere('assType.code=:association_code')
-            ->setParameter('identifier_type', 'pim_catalog_identifier')
+            ->setParameter('identifier_type', AttributeTypes::IDENTIFIER)
             ->setParameter('product_code', $productCode)
             ->setParameter('association_code', $associationCode)
             ->getQuery()
@@ -73,7 +74,7 @@ class AssociationRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('owner', 'associationType');
+        return ['owner', 'associationType'];
     }
 
     /**

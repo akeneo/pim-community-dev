@@ -41,29 +41,38 @@ define(
                 }
             ),
             confirmationTitle: _.__('pim_enrich.confirmation.leave'),
-            configure: function () {
-                this.listenTo(this.getRoot().model, 'change', this.render);
-                this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
 
-                mediator.on('product:action:post_update', _.bind(function (data) {
-                    this.state = JSON.stringify(data);
-                    this.render();
-                }, this));
+            /**
+             * @inheritdoc
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation);
+                mediator.on('hash_navigation_click', this.linkClicked.bind(this), 'pim_enrich:form');
+                $(window).on('beforeunload', this.beforeUnload.bind(this));
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            bindEvents: function () {
-                $(window).on('beforeunload', _.bind(this.beforeUnload, this));
-                $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
-            },
+
+            /**
+             * Detach event listeners
+             */
             unbindEvents: function () {
                 $(window).off('beforeunload', this.beforeUnload);
-                $(this.linkSelector).off('click', _.bind(this.linkClicked, this));
             },
+
+            /**
+             * @inheritdoc
+             */
             render: function () {
-                this.collectState();
+                if (null === this.state || undefined === this.state) {
+                    this.collectState();
+                }
+
                 this.$el.html(
                     this.template({
                         message: this.message
@@ -72,41 +81,91 @@ define(
 
                 return this;
             },
+
+            /**
+             * Store a stringified representation of the form model for further comparisons
+             */
             collectState: function () {
-                if (null === this.state || undefined === this.state) {
-                    this.state = JSON.stringify(this.getRoot().model.toJSON());
-                    this.bindEvents();
-                }
+                this.state = JSON.stringify(this.getFormData());
             },
+
+            /**
+             * Force collect state and re-render
+             */
+            collectAndRender: function () {
+                this.collectState();
+                this.render();
+            },
+
+            /**
+             * Callback triggered on beforeunload event
+             */
             beforeUnload: function () {
                 if (this.hasModelChanged()) {
                     return this.confirmationMessage;
                 }
             },
+
+            /**
+             * Callback triggered on any link click event to ask confirmation if there are unsaved changes
+             *
+             * @param {Object} event
+             *
+             * @return {boolean}
+             */
             linkClicked: function (event) {
-                event.stopImmediatePropagation();
-                event.preventDefault();
+                event.stoppedProcess = true;
 
                 var doAction = function () {
-                    Navigation.getInstance().setLocation($(event.currentTarget).attr('href'));
+                    Navigation.getInstance().setLocation(event.link);
                 };
 
-                if (this.hasModelChanged()) {
-                    Dialog.confirm(this.confirmationMessage, this.confirmationTitle, doAction);
-                } else {
-                    doAction();
-                }
+                this.confirmAction(this.confirmationMessage, this.confirmationTitle, doAction);
 
                 return false;
             },
+
+            /**
+             * Check if current form model has changed compared to the stored model state
+             *
+             * @return {boolean}
+             */
             hasModelChanged: function () {
-                if (this.state !== JSON.stringify(this.getRoot().model.toJSON())) {
+                if (this.state !== JSON.stringify(this.getFormData())) {
                     /*global console: true */
                     console.log(this.state);
-                    console.log(JSON.stringify(this.getRoot().model.toJSON()));
+                    console.log(JSON.stringify(this.getFormData()));
                 }
 
-                return this.state !== JSON.stringify(this.getRoot().model.toJSON());
+                return this.state !== JSON.stringify(this.getFormData());
+            },
+
+            /**
+             * Display a dialog modal to ask an action confirmation if model has changed
+             *
+             * @param {string} message
+             * @param {string} title
+             * @param {function} action
+             */
+            confirmAction: function (message, title, action) {
+                if (this.hasModelChanged()) {
+                    Dialog.confirm(message, title, action);
+                } else {
+                    action();
+                }
+            },
+
+            /**
+             * Callback that can be triggered from anywhere to ask an action confirmation
+             *
+             * @param {Object} event
+             */
+            onConfirmation: function (event) {
+                this.confirmAction(
+                    event.message || this.confirmationMessage,
+                    event.title || this.confirmationTitle,
+                    event.action
+                );
             }
         });
     }

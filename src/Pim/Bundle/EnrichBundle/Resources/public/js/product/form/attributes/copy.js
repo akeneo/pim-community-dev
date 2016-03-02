@@ -18,7 +18,8 @@ define(
         'pim/product-edit-form/attributes/copyfield',
         'pim/field-manager',
         'pim/attribute-manager',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         $,
@@ -29,7 +30,8 @@ define(
         CopyField,
         FieldManager,
         AttributeManager,
-        UserContext
+        UserContext,
+        FetcherRegistry
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -38,11 +40,13 @@ define(
             copying: false,
             locale: null,
             scope: null,
+            scopeLabel: null,
             events: {
                 'click .start-copying': 'startCopying',
                 'click .stop-copying': 'stopCopying',
                 'click .select-all': 'selectAll',
                 'click .select-all-visible': 'selectAllVisible',
+                'click .select-none': 'selectNone',
                 'click .copy': 'copy'
             },
 
@@ -54,8 +58,11 @@ define(
             configure: function () {
                 this.locale = UserContext.get('catalogLocale');
                 this.scope  = UserContext.get('catalogScope');
+                this.getScopeLabel(this.scope).then(function (scopeLabel) {
+                    this.scopeLabel = scopeLabel;
+                }.bind(this));
 
-                this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -66,7 +73,7 @@ define(
              * @returns {Object}
              */
             getSourceData: function () {
-                return this.getData().values;
+                return this.getFormData().values;
             },
 
             /**
@@ -94,37 +101,30 @@ define(
              */
             addFieldExtension: function (event) {
                 var field = event.field;
-                event.promises.push(
-                    this.canBeCopied(field)
-                        .then(_.bind(function (canBeCopied) {
-                            if (canBeCopied && this.copying) {
-                                field.addElement('comparison', this.code, this.getCopyField(field));
-                            }
-                        }, this))
-                );
+                if (this.copying && this.canBeCopied(field)) {
+                    field.addElement('comparison', this.code, this.getCopyField(field));
+                }
             },
 
             /**
              * Get or create a copy field object corresponding to the specified field
              *
              * @param {Field} field
+             *
              * @returns {CopyField}
              */
             getCopyField: function (field) {
                 var code = field.attribute.code;
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
-                    var valueToCopy = AttributeManager.getValue(
-                        sourceData[code],
-                        field.attribute,
-                        this.locale,
-                        this.scope
-                    );
+                    var copyField = new CopyField(field.attribute);
 
-                    var copyField = new CopyField();
-                    copyField.setLocale(this.locale);
-                    copyField.setScope(this.scope);
-                    copyField.setValue(valueToCopy);
+                    copyField.setContext({
+                        locale: this.locale,
+                        scope: this.scope,
+                        scopeLabel: this.scopeLabel
+                    });
+                    copyField.setValues(sourceData[code]);
                     copyField.setField(field);
 
                     this.copyFields[code] = copyField;
@@ -137,31 +137,31 @@ define(
              * Indicate if the specified field can be copied
              *
              * @param {Field} field
-             * @returns {Promise}
+             * @returns {boolean}
              */
             canBeCopied: function (field) {
-                return $.Deferred().resolve(field.attribute.localizable || field.attribute.scopable).promise();
+                return field.attribute.localizable || field.attribute.scopable;
             },
 
             /**
              * Launch the copy process for selected fields
              */
             copy: function () {
-                _.each(this.copyFields, _.bind(function (copyField) {
+                _.each(this.copyFields, function (copyField) {
                     if (copyField.selected && copyField.field && copyField.field.isEditable()) {
-                        var sourceData = this.getSourceData();
+                        var formValues = this.getFormModel().get('values');
                         var oldValue = AttributeManager.getValue(
-                            sourceData[copyField.field.attribute.code],
+                            formValues[copyField.field.attribute.code],
                             copyField.field.attribute,
                             UserContext.get('catalogLocale'),
                             UserContext.get('catalogScope')
                         );
 
-                        oldValue.data = copyField.value.data;
-                        mediator.trigger('entity:form:edit:update_state');
+                        oldValue.data = copyField.getCurrentValue().data;
+                        this.getRoot().trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }
-                }, this));
+                }.bind(this));
 
                 this.trigger('copy:copy-fields:after');
             },
@@ -204,11 +204,14 @@ define(
             /**
              * Change the scope for copy context
              *
-             * @param {string} scope
+             * @param {string} scopeCode
              */
-            setScope: function (scope) {
-                this.scope = scope;
-                this.triggerContextChange();
+            setScope: function (scopeCode) {
+                this.getScopeLabel(scopeCode).then(function (scopeLabel) {
+                    this.scopeLabel = scopeLabel;
+                    this.scope = scopeCode;
+                    this.triggerContextChange();
+                }.bind(this));
             },
 
             /**
@@ -233,14 +236,14 @@ define(
              */
             selectAll: function () {
                 var fieldPromises = [];
-                _.each(this.getSourceData(), _.bind(function (value, attributeCode) {
+                _.each(this.getSourceData(), function (value, attributeCode) {
                     fieldPromises.push(FieldManager.getField(attributeCode));
-                }, this));
+                }.bind(this));
 
                 $.when.apply(this, fieldPromises)
-                    .then(_.bind(function () {
+                    .then(function () {
                         this.selectFields(arguments);
-                    }, this));
+                    }.bind(this));
             },
 
             /**
@@ -251,27 +254,51 @@ define(
             },
 
             /**
+             * Mark all fields as unselected
+             */
+            selectNone: function () {
+                this.selectFields([]);
+            },
+
+            /**
+             * Unselect all field
+             */
+            unselectAll: function () {
+                _.each(this.copyFields, function (field) {
+                    field.setSelected(false);
+                });
+            },
+
+            /**
              * Mark specified fields as selected and trigger the select event
              *
              * @param {Field[]} fields
              */
             selectFields: function (fields) {
-                var selectPromises = [];
-                _.each(fields, _.bind(function (field) {
-                    selectPromises.push(
-                        this.canBeCopied(field)
-                            .then(_.bind(function (canBeCopied) {
-                                if (canBeCopied) {
-                                    this.getCopyField(field).setSelected(true);
-                                }
-                            }, this))
-                    );
-                }, this));
+                this.unselectAll();
 
-                $.when.apply(this, selectPromises)
-                    .then(_.bind(function () {
-                        this.trigger('copy:select:after');
-                    }, this));
+                _.each(fields, function (field) {
+                    if (this.canBeCopied(field)) {
+                        this.getCopyField(field).setSelected(true);
+                    }
+                }.bind(this));
+
+                this.trigger('copy:select:after');
+            },
+
+            /**
+             * Get the scope label with the given scope code
+             *
+             * @param {string} scopeCode
+             *
+             * @returns {Promise}
+             */
+            getScopeLabel: function (scopeCode) {
+                return FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
+                    var scope = _.findWhere(channels, { code: scopeCode });
+
+                    return scope.label;
+                });
             }
         });
     }

@@ -3,14 +3,15 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Product repository interface
@@ -19,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductRepositoryInterface
+interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
      * Load a product entity with related attribute values
@@ -79,7 +80,7 @@ interface ProductRepositoryInterface
      *
      * @param int $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     public function getFullProduct($id);
 
@@ -110,16 +111,6 @@ interface ProductRepositoryInterface
     public function getAvailableAttributeIdsToExport(array $productIds);
 
     /**
-     * Get full products from product ids
-     *
-     * @param array $productIds
-     * @param array $attributeIds
-     *
-     * @return array
-     */
-    public function getFullProducts(array $productIds, array $attributeIds = []);
-
-    /**
      * @return ObjectManager
      */
     public function getObjectManager();
@@ -135,6 +126,8 @@ interface ProductRepositoryInterface
      * @param string|int $id
      *
      * @return ProductInterface|null
+     *
+     * @deprecated
      */
     public function findOneById($id);
 
@@ -159,4 +152,19 @@ interface ProductRepositoryInterface
      * @return int
      */
     public function getProductCountByGroup(GroupInterface $group);
+
+    /**
+     * Return the number of existing products
+     *
+     * @return int
+     */
+    public function countAll();
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $criteria
+     *
+     * @return array
+     */
+    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
 }

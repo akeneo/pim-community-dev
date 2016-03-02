@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * A normalizer to transform a group entity into a flat array
@@ -15,12 +15,12 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class GroupNormalizer extends Structured\GroupNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $result = parent::normalize($object, $format, $context);
 
@@ -56,7 +56,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues = array_merge(
+            $normalizedValues = array_replace(
                 $normalizedValues,
                 $this->serializer->normalize($value, $format, ['entity' => 'product'] + $context)
             );

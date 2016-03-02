@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -38,18 +38,18 @@ class BooleanValidator extends ConstraintValidator
         }
 
         if (!is_bool($checkedValue)
-            && $checkedValue !== '0'
-            && $checkedValue !== '1'
-            && $checkedValue !== 0
-            && $checkedValue !== 1
+            && '0' !== $checkedValue
+            && '1' !== $checkedValue
+            && 0 !== $checkedValue
+            && 1 !== $checkedValue
         ) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%attribute%' => $code,
                     '%givenType%' => gettype($checkedValue),
                 ]
-            );
+            )->addViolation();
         }
     }
 }

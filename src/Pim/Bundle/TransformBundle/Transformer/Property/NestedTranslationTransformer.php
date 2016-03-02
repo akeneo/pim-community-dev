@@ -16,6 +16,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class NestedTranslationTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
@@ -37,7 +39,7 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (!is_array($value)) {
             throw new PropertyTransformerException('Data should be an array');
@@ -49,7 +51,7 @@ class NestedTranslationTransformer implements PropertyTransformerInterface, Enti
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         if (!isset($options['propertyPath'])) {
             throw new \InvalidArgumentException('propertyPath option is required');

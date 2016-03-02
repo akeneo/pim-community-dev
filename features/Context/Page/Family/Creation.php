@@ -15,4 +15,19 @@ class Creation extends Form
 {
     /** @var string */
     protected $path = '/configuration/family/create';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Save' => ['css' => '.ui-dialog-buttonset .btn-primary'],
+            ]
+        );
+    }
 }

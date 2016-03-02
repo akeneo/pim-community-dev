@@ -6,10 +6,11 @@ parameters:
     pim_filter.form.type.filter.ajax_choice_class: Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType
     pim_filter.form.type.filter.boolean_class:     Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType
 
-    pim_filter.form.type.category_class:           Pim\Bundle\FilterBundle\Form\Type\CategoryType
+    pim_filter.form.type.category_class:        Pim\Bundle\FilterBundle\Form\Type\CategoryType
+    pim_filter.form.type.date_range.class:      Pim\Bundle\FilterBundle\Form\Type\DateRangeType
+    pim_filter.form.type.date_time_range.class: Pim\Bundle\FilterBundle\Form\Type\DateTimeRangeType
 
 services:
-
     pim_filter.form.type.filter.scope:
         class: %pim_filter.form.type.filter.scope_class%
         arguments:
@@ -44,14 +45,24 @@ services:
         tags:
             - { name: form.type, alias: pim_type_ajax_choice_filter }
 
-    pim_filter.form.type.category:
-        class: %pim_filter.form.type.category_class%
-        tags:
-            - { name: form.type, alias: pim_type_category }
-
     pim_filter.form.type.boolean:
         class: %pim_filter.form.type.filter.boolean_class%
         arguments:
             - '@translator'
         tags:
             - { name: form.type, alias: pim_type_boolean_filter }
+
+    pim_filter.form.type.category:
+        class: %pim_filter.form.type.category_class%
+        tags:
+            - { name: form.type, alias: pim_type_category }
+
+    pim_filter.form.type.date_range:
+        class: %pim_filter.form.type.date_range.class%
+        tags:
+            - { name: form.type, alias: pim_type_date_range }
+
+    pim_filter.form.type.datetime_range:
+        class: %pim_filter.form.type.date_time_range.class%
+        tags:
+            - { name: form.type, alias: pim_type_datetime_range }

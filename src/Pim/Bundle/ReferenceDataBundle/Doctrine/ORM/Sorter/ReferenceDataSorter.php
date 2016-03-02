@@ -4,8 +4,8 @@ namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -80,7 +80,9 @@ class ReferenceDataSorter implements AttributeSorterInterface
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
-        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName);
+        return '' !== $referenceDataName &&
+            null !== $referenceDataName &&
+            null !== $this->registry->get($referenceDataName);
     }
 
     /**

@@ -1,0 +1,32 @@
+parameters:
+    pim_localization.denormalizer.structured.price.class:  Pim\Component\Localization\Denormalizer\Structured\PriceDenormalizer
+    pim_localization.denormalizer.structured.metric.class: Pim\Component\Localization\Denormalizer\Structured\MetricDenormalizer
+    pim_localization.denormalizer.structured.number.class: Pim\Component\Localization\Denormalizer\Structured\NumberDenormalizer
+
+services:
+    pim_localization.denormalizer.structured.price:
+        class: %pim_localization.denormalizer.structured.price.class%
+        arguments:
+            - '@pim_serializer.denormalizer.prices'
+            - '@pim_localization.localizer.price'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }
+
+    pim_localization.denormalizer.structured.metric:
+        class: %pim_localization.denormalizer.structured.metric.class%
+        arguments:
+            - '@pim_serializer.denormalizer.metric'
+            - '@pim_localization.localizer.metric'
+            - ['pim_catalog_metric']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }
+
+    pim_localization.denormalizer.structured.number:
+        class: %pim_localization.denormalizer.structured.number.class%
+        arguments:
+            - '@pim_serializer.denormalizer.base_value'
+            - '@pim_localization.localizer.number'
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }

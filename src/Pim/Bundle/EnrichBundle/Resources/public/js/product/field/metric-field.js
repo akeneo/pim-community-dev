@@ -13,8 +13,8 @@ define([
         'underscore',
         'pim/fetcher-registry',
         'text!pim/template/product/field/metric',
-        'jquery.select2'
-        ], function ($, Field, _, FetcherRegistry, fieldTemplate) {
+        'pim/initselect2'
+        ], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
@@ -22,7 +22,7 @@ define([
         },
         renderInput: function (context) {
             var $element = $(this.fieldTemplate(context));
-            $element.find('.unit').select2('destroy').select2();
+            initSelect2.init($element.find('.unit'));
 
             return $element;
         },
@@ -41,13 +41,7 @@ define([
         },
         updateModel: function () {
             var data = this.$('.field-input:first .data').val();
-            var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
-
-            if (!_.isNaN(numericValue)) {
-                data = numericValue;
-            }
-
-            var unit = this.$('.field-input:first .unit').val();
+            var unit = this.$('.field-input:first .unit').select2('val');
 
             this.setCurrentValue({
                 unit: '' !== unit ? unit : this.attribute.default_metric_unit,

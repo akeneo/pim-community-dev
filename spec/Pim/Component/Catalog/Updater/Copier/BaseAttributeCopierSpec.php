@@ -3,10 +3,11 @@
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -344,5 +345,116 @@ class BaseAttributeCopierSpec extends ObjectBehavior
                 ]
             );
         }
+    }
+
+    function it_throws_an_exception_when_locale_is_expected(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" expects a locale, none given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(true);
+        $attrValidatorHelper->validateLocale($fromAttribute, null)->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute, []]);
+    }
+
+    function it_throws_an_exception_when_locale_is_not_expected(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" does not expect a locale, "en_US" given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(false);
+        $attrValidatorHelper->validateLocale($fromAttribute, 'en_US')->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during(
+            'copyAttributeData',
+            [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'en_US', 'from_scope' => 'ecommerce']]
+        );
+    }
+
+    function it_throws_an_exception_when_locale_is_expected_but_not_activated(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" expects an existing and activated locale, "uz-UZ" given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(true);
+        $attrValidatorHelper->validateLocale($fromAttribute, 'uz-UZ')->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during(
+            'copyAttributeData',
+            [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'uz-UZ', 'from_scope' => 'ecommerce']]
+        );
+    }
+
+    function it_throws_an_exception_when_scope_is_expected(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" expects a scope, none given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(false);
+        $fromAttribute->isScopable()->willReturn(true);
+        $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($fromAttribute, null)->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during(
+            'copyAttributeData',
+            [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => null]]
+        );
+    }
+
+    function it_throws_an_exception_when_scope_is_not_expected(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" does not expect a scope, "ecommerce" given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(false);
+        $fromAttribute->isScopable()->willReturn(false);
+        $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during(
+            'copyAttributeData',
+            [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]
+        );
+    }
+
+    function it_throws_an_exception_when_scope_is_expected_but_not_existing(
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $e = new \LogicException('Attribute "attributeCode" expects an existing scope, "ecommerce" given.');
+        $fromAttribute->getCode()->willReturn('attributeCode');
+        $fromAttribute->isLocalizable()->willReturn(false);
+        $fromAttribute->isScopable()->willReturn(true);
+        $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+        )->during(
+            'copyAttributeData',
+            [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]
+        );
     }
 }

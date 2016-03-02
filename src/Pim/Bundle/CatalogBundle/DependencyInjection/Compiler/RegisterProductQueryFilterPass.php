@@ -61,7 +61,7 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
     {
         $services = $container->findTaggedServiceIds($tagName);
 
-        $sortedServices = array();
+        $sortedServices = [];
         foreach ($services as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = isset($tag['priority']) ? $tag['priority'] : self::DEFAULT_PRIORITY;

@@ -9,7 +9,10 @@
             function($, _, TreeAssociate){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}');
+                    new TreeAssociate('#trees', '#{{ form.operation.categories.vars.id }}', {
+                        list_categories: 'pim_enrich_product_listcategories',
+                        children:        'pim_enrich_categorytree_children'
+                    });
                     var $nextBtn = $('a.next');
                     $nextBtn.hide();
                     $('#{{ form.operation.categories.vars.id }}').on('change', function() {

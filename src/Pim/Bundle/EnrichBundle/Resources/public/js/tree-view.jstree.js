@@ -11,14 +11,15 @@ define(
     function ($, _, __, Routing) {
         'use strict';
 
-        var unclassified  = -1;
-        var all           = -2;
-        var selectedNode  = 0;
-        var selectedTree  = 0;
-        var includeSub    = true;
-        var dataLocale    = null;
-        var relatedEntity = null;
-        var $el           = null;
+        var unclassified      = -1;
+        var all               = -2;
+        var selectedNode      = 0;
+        var selectedTree      = 0;
+        var includeSub        = true;
+        var dataLocale        = null;
+        var relatedEntity     = null;
+        var $el               = null;
+        var categoryBaseRoute = '';
 
         var getActiveNode = function (skipVirtual) {
             if (skipVirtual) {
@@ -34,26 +35,24 @@ define(
 
         var getTreeUrl = function () {
             return Routing.generate(
-                'pim_enrich_categorytree_listtree',
+                getRoute('listtree'),
                 {
                     _format:        'json',
                     dataLocale:     dataLocale,
                     select_node_id: getActiveNode(true),
                     include_sub:    +includeSub,
-                    related_entity: relatedEntity,
-                    context: 'view'
+                    context:        'view'
                 }
             );
         };
 
         var getChildrenUrl = function () {
             return Routing.generate(
-                'pim_enrich_categorytree_children',
+                getRoute('children'),
                 {
                     _format:    'json',
                     dataLocale: dataLocale,
-                    related_entity: relatedEntity,
-                    context: 'view'
+                    context:    'view'
                 }
             );
         };
@@ -86,7 +85,8 @@ define(
         var getTreeConfig = function () {
             return {
                 core: {
-                    animation: 200
+                    animation: 200,
+                    strings: { loading: _.__('jstree.loading') }
                 },
                 plugins: [
                     'tree_selector',
@@ -130,7 +130,7 @@ define(
                             return {
                                 id: getNodeId(node),
                                 select_node_id: getActiveNode(),
-                                with_products_count: 1,
+                                with_items_count: 1,
                                 include_sub: +includeSub
                             };
                         }
@@ -161,6 +161,10 @@ define(
                 .on('select_node.jstree', onSelectNode);
         };
 
+        var getRoute = function (routeName) {
+            return categoryBaseRoute + '_' + routeName;
+        };
+
         var onTreesLoaded = function (event, tree_select_id) {
             $('#' + tree_select_id).select2({ width: '100%' });
         };
@@ -179,7 +183,7 @@ define(
             }
 
             if (!$('#node_' + all).length) {
-                createNode(all, null, 'jstree.all');
+                createNode(all, null, 'jstree.' + relatedEntity + '.all');
             }
         };
 
@@ -187,7 +191,7 @@ define(
             var $node = $(data.args[0]);
 
             if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
-                createNode(unclassified, $node.attr('id'), 'jstree.unclassified');
+                createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified');
             }
         };
 
@@ -210,17 +214,18 @@ define(
         };
 
         return {
-            init: function ($element, state) {
+            init: function ($element, state, baseRoute) {
                 if (!$element || !$element.length || !_.isObject($element)) {
                     return;
                 }
 
-                $el           = $element;
-                dataLocale    = $el.attr('data-datalocale');
-                relatedEntity = $el.attr('data-relatedentity');
-                selectedNode  = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
-                selectedTree  = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
-                includeSub    = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
+                $el               = $element;
+                dataLocale        = $el.attr('data-datalocale');
+                relatedEntity     = $el.attr('data-relatedentity');
+                selectedNode      = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
+                selectedTree      = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
+                includeSub        = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
+                categoryBaseRoute = baseRoute;
 
                 initTree();
             },

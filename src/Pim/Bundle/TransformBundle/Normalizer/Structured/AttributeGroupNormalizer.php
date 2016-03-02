@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,36 +15,39 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeGroupNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
-    protected $supportedFormats = array('json', 'xml');
+    /** @var array */
+    protected $supportedFormats = ['json', 'xml'];
 
-    /**
-     * @var TranslationNormalizer
-     */
+    /** @var NormalizerInterface */
     protected $transNormalizer;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $transNormalizer
+     * @param NormalizerInterface          $transNormalizer
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(TranslationNormalizer $transNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $transNormalizer,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
         $this->transNormalizer = $transNormalizer;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
+        return [
             'code'       => $object->getCode(),
             'sortOrder'  => $object->getSortOrder(),
-            'attributes' => $this->normalizeAttributes($object)
-        ) + $this->transNormalizer->normalize($object, $format, $context);
+            'attributes' => $this->attributeRepository->getAttributeCodesByGroup($object)
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -52,22 +56,5 @@ class AttributeGroupNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the attributes
-     *
-     * @param AttributeGroupInterface $group
-     *
-     * @return array
-     */
-    protected function normalizeAttributes(AttributeGroupInterface $group)
-    {
-        $attributes = array();
-        foreach ($group->getAttributes() as $attribute) {
-            $attributes[] = $attribute->getCode();
-        }
-
-        return $attributes;
     }
 }

@@ -68,3 +68,15 @@ pim.grid.mass_action.mass_edit: Modifica di massa
 jstree.create: Creare
 switch_on: Sì
 switch_off: 'No'
+pim_enrich:
+  entity:
+    product:
+      variant_group:
+        switch:
+          "yes": true
+          "no": false
+  form:
+    product:
+      switch:
+        "no": false
+        "yes": true

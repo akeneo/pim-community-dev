@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,22 +17,22 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($entity, $format = null, array $context = array())
+    public function normalize($entity, $format = null, array $context = [])
     {
         if (isset($context['entity']) && $context['entity'] === 'product') {
             return $entity->getCode();
         }
 
-        return array(
+        return [
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),
             'sort_order' => $entity->getSortOrder(),
-        ) + $this->normalizeLabel($entity, $context);
+        ] + $this->normalizeLabel($entity, $context);
     }
 
     /**
@@ -61,6 +61,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
             }
         }
 
-        return array('label' => $labels);
+        return ['label' => $labels];
     }
 }

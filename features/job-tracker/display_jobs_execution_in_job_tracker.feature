@@ -1,3 +1,4 @@
+@javascript
 Feature: Display jobs execution in job tracker
   In order to have an overview of last job operations
   As a regular user
@@ -7,7 +8,6 @@ Feature: Display jobs execution in job tracker
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Display an export in the job tracker
     And the following job "footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.csv |
@@ -23,7 +23,6 @@ Feature: Display jobs execution in job tracker
     And the grid should contain 1 element
     And I should see entity Footwear category export
 
-  @javascript
   Scenario: Display a mass edit in the job tracker
     And the following products:
       | sku       | family     |
@@ -46,7 +45,6 @@ Feature: Display jobs execution in job tracker
     And the grid should contain 1 element
     And I should see entity Mass edit common product attributes
 
-  @javascript
   Scenario: Display an import in the job tracker
     And the following CSV file to import:
     """

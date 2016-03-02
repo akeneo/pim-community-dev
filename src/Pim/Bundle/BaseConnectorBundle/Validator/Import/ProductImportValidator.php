@@ -3,16 +3,16 @@
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validates an imported product
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be remove in 1.5
+ * @deprecated will be remove in 1.6
  */
 class ProductImportValidator extends ImportValidator
 {
@@ -41,25 +41,25 @@ class ProductImportValidator extends ImportValidator
     protected $uniqueValues = [];
 
     /**
-     * @var ProductManager
+     * @var ProductRepositoryInterface
      */
-    protected $productManager;
+    protected $productRepository;
 
     /**
      * Constructor
      *
      * @param ValidatorInterface         $validator
      * @param ConstraintGuesserInterface $constraintGuesser
-     * @param ProductManager             $productManager
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager
+        ProductRepositoryInterface $productRepository
     ) {
         parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
-        $this->productManager    = $productManager;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -130,7 +130,7 @@ class ProductImportValidator extends ImportValidator
                     $code      = $value->getAttribute()->getCode();
                     $valueData = (string) $value;
                     if ($valueData !== '') {
-                        if ($this->productManager->valueExists($value)) {
+                        if ($this->productRepository->valueExists($value)) {
                             throw new DuplicateProductValueException($code, $valueData, $data);
                         }
                         $this->uniqueValues[$code] =
@@ -162,7 +162,7 @@ class ProductImportValidator extends ImportValidator
             return new \Symfony\Component\Validator\ConstraintViolationList();
         }
 
-        return $this->validator->validateValue(
+        return $this->validator->validate(
             $value->getData(),
             $this->getAttributeConstraints($columnInfo->getAttribute())
         );
@@ -182,7 +182,7 @@ class ProductImportValidator extends ImportValidator
             if ($this->constraintGuesser->supportAttribute($attribute)) {
                 $this->constraints[$code] = $this->constraintGuesser->guessConstraints($attribute);
             } else {
-                $this->constraints[$code] = array();
+                $this->constraints[$code] = [];
             }
         }
 
@@ -214,7 +214,7 @@ class ProductImportValidator extends ImportValidator
         $label = null;
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                ProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                AttributeTypes::IDENTIFIER === $columnInfo->getAttribute()->getAttributeType()) {
                 $label = $columnInfo->getLabel();
                 break;
             }

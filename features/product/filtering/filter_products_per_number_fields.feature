@@ -10,7 +10,7 @@ Feature: Filter products by number field
 
   Scenario: Successfully filter products by empty value for number attributes
     Given the following attributes:
-      | label | type   | localizable | scopable | useable as grid filter | decimals allowed |
+      | label | type   | localizable | scopable | useable_as_grid_filter | decimals_allowed |
       | count | number | no          | no       | yes                    | no               |
       | rate  | number | no          | no       | yes                    | yes              |
     And the following products:

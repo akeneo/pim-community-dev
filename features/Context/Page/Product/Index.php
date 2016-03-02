@@ -31,7 +31,13 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             [
-                'Categories tree'  => ['css' => '#tree'],
+                'Categories tree'       => ['css' => '#tree'],
+                'Main context selector' => [
+                    'css'        => '#container',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ],
                 'Tree select'      => ['css' => '#tree_select'],
                 'Locales dropdown' => ['css' => '#locale-switcher'],
             ]
@@ -81,26 +87,6 @@ class Index extends Grid
         }
 
         return $link;
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($locale)
-    {
-        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $elt->click();
-
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
-        }
-        $elt->click();
     }
 
     /**

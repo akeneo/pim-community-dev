@@ -539,11 +539,40 @@ define(function (require) {
                 var titleSerialized = data.titleSerialized;
                 if (titleSerialized) {
                     titleSerialized = $.parseJSON(titleSerialized);
-                    this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title', titleSerialized);
+                    this.setPinButtonsData('title', titleSerialized);
                 }
-                this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title-rendered-short', data.titleShort);
+                this.setPinButtonsData('title-rendered-short', data.titleShort);
             } else {
                 this.selectorCached.pinButtonsContainer.hide();
+            }
+        },
+
+        /**
+         * Get data linked to pin buttons
+         *
+         * @param {string} key
+         *
+         * @returns {*}
+         */
+        getPinButtonsData: function (key) {
+            var buttons = this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons);
+            if (buttons.length) {
+                return buttons.data(key);
+            }
+
+            return null;
+        },
+
+        /**
+         * Set data linked to pin buttons
+         *
+         * @param {string} key
+         * @param {*}      value
+         */
+        setPinButtonsData: function (key, value) {
+            var buttons = this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons);
+            if (buttons.length) {
+                buttons.data(key, value);
             }
         },
 

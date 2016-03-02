@@ -11,9 +11,10 @@
 
     $.jstree.plugin('nested_switch', {
         __init: function () {
-            this.get_container()
-                // Create the tree toolbar and load trees in tree selector
-                .bind('init.jstree', $.proxy(function () {
+            var container = this.get_container();
+
+            // Create the tree toolbar and load trees in tree selector
+            container.bind('init.jstree', $.proxy(function () {
                     var settings = this._get_settings().nested_switch;
                     this.data.nested_switch.state    = settings.state;
                     this.data.nested_switch.label    = settings.label;
@@ -60,11 +61,10 @@
 
                     nested_switch_bar.html(nested_switch_label);
                     nested_switch_bar.append(switch_wrapper.bootstrapSwitch());
-                    this.get_container().after(nested_switch_bar);
-                    this.get_container().parent().css('padding-bottom', '65px');
+                    container.append(nested_switch_bar);
+                    container.css('padding-bottom', '65px');
 
-                }, this))
-                ;
+                }, this));
         },
         defaults: {
             state:    true,
@@ -77,6 +77,6 @@
             }
         }
     });
-    // include the nested_switchor plugin by default on available plugins list
+    // include the nested_switch plugin by default on available plugins list
     $.jstree.defaults.plugins.push('nested_switch');
 })(jQuery);

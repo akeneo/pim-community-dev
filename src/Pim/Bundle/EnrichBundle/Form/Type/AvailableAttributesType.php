@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -71,8 +71,8 @@ class AvailableAttributesType extends AbstractType
                     'excluded_attribute_ids' => $options['excluded_attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                 ],
-                'multiple' => true,
-                'expanded' => false,
+                'multiple'           => true,
+                'expanded'           => false,
             ]
         );
     }
@@ -80,7 +80,7 @@ class AvailableAttributesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -89,26 +89,22 @@ class AvailableAttributesType extends AbstractType
             ]
         );
 
-        $resolver->setNormalizers(
-            [
-                'excluded_attributes' => function (Options $options, $value) {
-                    foreach ($value as $key => $attribute) {
-                        if (!$attribute instanceof $this->attributeClass) {
-                            throw new \InvalidArgumentException(
-                                sprintf(
-                                    'Option "attributes" must only contains instances of "%s", got "%s"',
-                                    $this->attributeClass,
-                                    get_class($attribute)
-                                )
-                            );
-                        }
-                        $value[$key] = $attribute->getId();
-                    }
-
-                    return $value;
+        $resolver->setNormalizer('excluded_attributes', function (Options $options, $value) {
+            foreach ($value as $key => $attribute) {
+                if (!$attribute instanceof $this->attributeClass) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Option "attributes" must only contains instances of "%s", got "%s"',
+                            $this->attributeClass,
+                            get_class($attribute)
+                        )
+                    );
                 }
-            ]
-        );
+                $value[$key] = $attribute->getId();
+            }
+
+            return $value;
+        });
     }
 
     /**

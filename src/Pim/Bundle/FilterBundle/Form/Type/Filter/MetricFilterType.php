@@ -5,7 +5,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Metric filter type for products
@@ -38,14 +38,14 @@ class MetricFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        parent::configureOptions($resolver);
 
-        $resolver->replaceDefaults(
-            array(
+        $resolver->setDefaults(
+            [
                 'data_type' => NumberFilterType::DATA_DECIMAL
-            )
+            ]
         );
     }
 

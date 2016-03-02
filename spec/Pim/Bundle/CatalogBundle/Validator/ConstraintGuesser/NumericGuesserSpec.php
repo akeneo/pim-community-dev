@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 class NumericGuesserSpec extends ObjectBehavior
 {
@@ -42,6 +42,6 @@ class NumericGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+        $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
     }
 }

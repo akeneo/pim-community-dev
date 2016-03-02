@@ -4,8 +4,8 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option update guesser
@@ -16,22 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
  */
 class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $productClass;
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param string          $productClass
-     */
-    public function __construct(ManagerRegistry $registry, $productClass)
-    {
-        $this->registry     = $registry;
-        $this->productClass = $productClass;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -39,7 +23,7 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
     {
         return in_array(
             $action,
-            array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE)
+            [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]
         );
     }
 

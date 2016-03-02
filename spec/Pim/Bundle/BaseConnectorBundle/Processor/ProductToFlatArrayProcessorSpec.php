@@ -2,23 +2,35 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager)
+    function let(Serializer $serializer, ChannelManager $channelManager, ProductBuilderInterface $productBuilder)
     {
-        $this->beConstructedWith($serializer, $channelManager, 'upload/path/');
+        $this->beConstructedWith(
+            $serializer,
+            $channelManager,
+            $productBuilder,
+            ['pim_catalog_file', 'pim_catalog_image'],
+            ['.', ','],
+            [
+                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
+            ]
+        );
     }
 
     function it_is_initializable()
@@ -28,25 +40,50 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_provides_configuration_fields($channelManager)
     {
         $channelManager->getChannelChoices()->willReturn(['mobile', 'magento']);
 
-        $this->getConfigurationFields()->shouldReturn([
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => ['mobile', 'magento'],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
+        $this->getConfigurationFields()->shouldReturn(
+            [
+                'channel' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['mobile', 'magento'],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.channel.label',
+                        'help'     => 'pim_base_connector.export.channel.help'
+                    ]
+                ],
+                'decimalSeparator' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['.', ','],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                        'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    ]
+                ],
+                'dateFormat' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy']
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.dateFormat.label',
+                        'help'     => 'pim_base_connector.export.dateFormat.help'
+                    ]
                 ]
             ]
-        ]);
+        );
     }
 
     function it_is_configurable()
@@ -59,53 +96,103 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        ChannelInterface $channel,
         $channelManager,
+        Filesystem $filesystem,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
         ProductInterface $product,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         AttributeInterface $attribute,
-        $serializer
+        ProductValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute,
+        $serializer,
+        $productBuilder
     ) {
-        $media1->getFilename()->willReturn('media_name');
-        $media1->getOriginalFilename()->willReturn('media_original_name');
+        $localeCodes = ['en_US'];
 
-        $media2->getFilename()->willReturn('media_name');
-        $media2->getOriginalFilename()->willReturn('media_original_name');
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn($localeCodes);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+
+        $media1->getKey()->willReturn('key/to/media1.jpg');
+        $media2->getKey()->willReturn('key/to/media2.jpg');
 
         $value1->getAttribute()->willReturn($attribute);
-        $value1->getData()->willReturn($media1);
+        $value1->getMedia()->willReturn($media1);
         $value2->getAttribute()->willReturn($attribute);
-        $value2->getData()->willReturn($media2);
+        $value2->getMedia()->willReturn($media2);
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
-        $product->getValues()->willReturn([$value1, $value2]);
+        $product->getValues()->willReturn([$value1, $value2, $identifierValue]);
+
+        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $product->getIdentifier()->willReturn($identifierValue);
+        $identifierValue->getData()->willReturn('data');
+
+        $filesystem->has('key/to/media1.jpg')->willReturn(true);
+        $filesystem->has('key/to/media2.jpg')->willReturn(true);
 
         $serializer
-            ->normalize([$media1, $media2], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
-            ->willReturn(['normalized_media1', 'normalized_media2']);
-
+            ->normalize($media1, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value1])
+            ->willReturn(['normalized_media1']);
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
+            ->willReturn(['normalized_media2']);
+        $serializer
+            ->normalize(
+                $product,
+                'flat',
+                [
+                    'scopeCode'         => 'foobar',
+                    'localeCodes'       => $localeCodes,
+                    'decimal_separator' => '.',
+                    'date_format'       => 'yyyy-MM-dd',
+                ]
+            )
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
-        $this->process($product)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => [['normalized_media1'], ['normalized_media2']],
+                'product' => ['normalized_product']
+            ]
+        );
     }
 
     function it_returns_flat_data_without_media(
+        $productBuilder,
         ChannelInterface $channel,
+        LocaleInterface $locale,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $localeCodes = ['en_US'];
+
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getLocaleCodes()->willReturn($localeCodes);
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+
         $product->getValues()->willReturn([]);
+        $this->setDecimalSeparator(',');
 
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize(
+                $product,
+                'flat',
+                [
+                    'scopeCode' => 'foobar',
+                    'localeCodes' => $localeCodes,
+                    'decimal_separator' => ',',
+                    'date_format'       => 'yyyy-MM-dd',
+                ]
+            )
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
@@ -113,54 +200,4 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
-
-    function it_throws_an_exception_if_something_goes_wrong_with_media_normalization(
-        $serializer,
-        ProductInterface $product,
-        ProductMediaInterface $media,
-        ProductValueInterface $value,
-        ProductValueInterface $value2,
-        AttributeInterface $attribute
-    ) {
-        $product->getValues()->willReturn([$value]);
-        $product->getIdentifier()->willReturn($value2);
-
-        $value->getAttribute()->willReturn($attribute);
-        $value->getData()->willReturn($media);
-        $value2->getData()->willReturn(23);
-
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
-
-        $serializer->normalize([$media], Argument::cetera())->willThrow(new FileNotFoundException('upload/path/img.jpg'));
-
-        $this->shouldThrow(
-            new InvalidItemException(
-                'The file "upload/path/img.jpg" does not exist',
-                [ 'item' => 23, 'uploadDirectory' => 'upload/path/']
-            )
-        )->duringProcess($product);
-    }
-    function it_throws_an_exception_if_no_file_is_found(
-        ChannelInterface $channel,
-        ProductInterface $product,
-        ChannelManager $channelManager,
-        Serializer $serializer,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $product->getValues()->willReturn([$productValue]);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
-        $product->getIdentifier()->willReturn($productValue);
-        $productValue->getData()->willReturn('data');
-        $this->setChannel('foobar');
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
-
-        $serializer
-            ->normalize(['data'], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
-            ->willThrow('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
-
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$product]);
-    }
-
 }

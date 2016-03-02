@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Range;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Guesser
@@ -22,11 +23,11 @@ class RangeGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
-                'pim_catalog_metric',
-                'pim_catalog_number',
-                'pim_catalog_date',
-            )
+            [
+                AttributeTypes::METRIC,
+                AttributeTypes::NUMBER,
+                AttributeTypes::DATE,
+            ]
         );
     }
 
@@ -35,9 +36,9 @@ class RangeGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
-        if ('pim_catalog_date' === $attribute->getAttributeType()) {
+        if (AttributeTypes::DATE === $attribute->getAttributeType()) {
             $min = $attribute->getDateMin();
             $max = $attribute->getDateMax();
         } else {
@@ -49,7 +50,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         }
 
         if (null !== $min || null !== $max) {
-            $constraints[] = new Range(array('min' => $min, 'max' => $max));
+            $constraints[] = new Range(['min' => $min, 'max' => $max]);
         }
 
         return $constraints;

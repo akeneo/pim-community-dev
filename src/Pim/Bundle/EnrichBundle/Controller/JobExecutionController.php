@@ -4,25 +4,21 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Gaufrette\StreamMode;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Job execution controller
@@ -31,13 +27,27 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionController extends AbstractDoctrineController
+class JobExecutionController
 {
+    const BLOCK_SIZE = 8192;
+
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var BatchLogHandler */
     protected $batchLogHandler;
 
     /** @var JobExecutionArchivist */
-    protected $archiver;
+    protected $archivist;
 
     /** @var string */
     protected $jobType;
@@ -48,58 +58,43 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
-    /** @staticvar string */
-    const BLOCK_SIZE = 8192;
+    /** @var JobExecutionRepository */
+    protected $jobExecutionRepo;
 
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
-     * @param string                   $jobType
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
+     * @param JobExecutionRepository   $jobExecutionRepo
+     * @param string                   $jobType
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
-        $jobType,
         SerializerInterface $serializer,
-        JobExecutionManager $jobExecutionManager
+        JobExecutionManager $jobExecutionManager,
+        JobExecutionRepository $jobExecutionRepo,
+        $jobType
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
         $this->batchLogHandler     = $batchLogHandler;
         $this->archivist           = $archivist;
-        $this->jobType             = $jobType;
         $this->serializer          = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
+        $this->templating          = $templating;
+        $this->request             = $request;
+        $this->eventDispatcher     = $eventDispatcher;
+        $this->translator          = $translator;
+        $this->jobExecutionRepo    = $jobExecutionRepo;
+        $this->jobType             = $jobType;
     }
 
     /**
@@ -109,7 +104,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        return $this->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditExecution:index.html.twig', ucfirst($this->getJobType()))
         );
     }
@@ -124,13 +119,18 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function showAction(Request $request, $id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
+
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
             $archives = [];
             foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
-                $label = $this->translator->transchoice(
+                $label = $this->translator->transChoice(
                     sprintf('pim_mass_edit.download_archive.%s', $archiveName),
                     count($files)
                 );
@@ -156,7 +156,7 @@ class JobExecutionController extends AbstractDoctrineController
             );
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             sprintf('PimEnrichBundle:MassEditExecution:show.html.twig', ucfirst($this->getJobType())),
             [
                 'execution' => $jobExecution,
@@ -173,7 +173,11 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
@@ -194,23 +198,17 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadFilesAction($id, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->jobExecutionRepo->find($id);
+
+        if (null === $jobExecution) {
+            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+        }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return new StreamedResponse(
-            function () use ($stream) {
-                $stream->open(new StreamMode('rb'));
-                while (!$stream->eof()) {
-                    echo $stream->read(self::BLOCK_SIZE);
-                }
-                $stream->close();
-            },
-            200,
-            ['Content-Type' => 'application/octet-stream']
-        );
+        return new StreamedFileResponse($stream);
     }
 
     /**

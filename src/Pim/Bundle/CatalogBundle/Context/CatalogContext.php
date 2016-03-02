@@ -13,7 +13,7 @@ namespace Pim\Bundle\CatalogBundle\Context;
 class CatalogContext
 {
     /** @var array configuration */
-    protected $configuration = array();
+    protected $configuration = [];
 
     /**
      * @return string

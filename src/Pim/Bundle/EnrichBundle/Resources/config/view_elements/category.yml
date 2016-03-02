@@ -18,6 +18,6 @@ services:
             - %pim_enrich.view_element.category.tab.history.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
-            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_category_history'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_category_history'}] ]
         tags:
             - { name: pim_enrich.view_element, type: pim_category.form_tab, position: 110 }

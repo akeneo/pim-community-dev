@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
@@ -36,7 +36,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         AttributeSetterInterface $setter
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $setterRegistry->getAttributeSetter($attribute)->willReturn($setter);
+        $setterRegistry->getSetter('name')->willReturn($setter);
         $setter
             ->setAttributeData($product, $attribute, 'my name', [])
             ->shouldBeCalled();
@@ -51,7 +51,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         FieldSetterInterface $setter
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $setterRegistry->getFieldSetter('category')->willReturn($setter);
+        $setterRegistry->getSetter('category')->willReturn($setter);
         $setter
             ->setFieldData($product, 'category', ['tshirt'], [])
             ->shouldBeCalled();

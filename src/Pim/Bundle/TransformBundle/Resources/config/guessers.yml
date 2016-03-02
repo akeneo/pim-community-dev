@@ -10,6 +10,7 @@ parameters:
     pim_transform.transformer.guesser.attribute.class:          Pim\Bundle\TransformBundle\Transformer\Guesser\AttributeGuesser
     pim_transform.transformer.guesser.attribute_option.class:   Pim\Bundle\TransformBundle\Transformer\Guesser\AttributeOptionGuesser
     pim_transform.transformer.guesser.reference_data.class:     Pim\Bundle\TransformBundle\Transformer\Guesser\ReferenceDataGuesser
+    pim_transform.transformer.guesser.media_attribute.class:    Pim\Bundle\TransformBundle\Transformer\Guesser\MediaAttributeGuesser
 
 services:
     pim_transform.transformer.guesser:
@@ -161,6 +162,14 @@ services:
         public: false
         arguments:
             - '@pim_transform.transformer.property.reference_data'
+        tags:
+            - { name: pim_transform.transformer.guesser, priority: 200 }
+
+    pim_transform.transformer.guesser.media_attribute:
+        class: %pim_transform.transformer.guesser.media_attribute.class%
+        public: false
+        arguments:
+            - '@pim_transform.transformer.property.media'
         tags:
             - { name: pim_transform.transformer.guesser, priority: 200 }
 

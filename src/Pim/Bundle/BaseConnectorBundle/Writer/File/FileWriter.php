@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\RuntimeErrorException;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6, please use Pim\Component\Connector\Writer\File\SimpleFileWriter
  */
 class FileWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
@@ -74,13 +76,8 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getPath()
     {
-        if (!isset($this->resolvedFilePath)) {
-            $this->resolvedFilePath = strtr(
-                $this->filePath,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
-                )
-            );
+        if (null === $this->resolvedFilePath) {
+            $this->resolvedFilePath = strtr($this->filePath, ['%datetime%' => date('Y-m-d_H:i:s')]);
         }
 
         return $this->resolvedFilePath;
@@ -123,14 +120,14 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'filePath' => array(
-                'options' => array(
+        return [
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_base_connector.export.filePath.label',
                     'help'  => 'pim_base_connector.export.filePath.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

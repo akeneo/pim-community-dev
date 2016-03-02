@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 

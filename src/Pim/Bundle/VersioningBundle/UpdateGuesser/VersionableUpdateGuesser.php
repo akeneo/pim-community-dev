@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Fields update guesser
@@ -46,9 +46,9 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $pendings = array();
-        if ($entity instanceof VersionableInterface
-            || in_array(ClassUtils::getClass($entity), $this->versionableEntities)
+        $pendings = [];
+        if ($entity instanceof VersionableInterface ||
+            in_array(ClassUtils::getClass($entity), $this->versionableEntities)
         ) {
             $pendings[] = $entity;
         }

@@ -2,13 +2,13 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group import processor, allows to,
@@ -36,6 +36,7 @@ class GroupProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $groupConverter
      * @param IdentifiableObjectRepositoryInterface $repository
+     * @param GroupFactory                          $groupFactory
      * @param ObjectUpdaterInterface                $groupUpdater
      * @param ValidatorInterface                    $validator
      */

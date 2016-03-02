@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Currency;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Guesser for price values
@@ -20,9 +21,9 @@ class CurrencyGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return array(
+        return [
             new Currency()
-        );
+        ];
     }
 
     /**
@@ -30,6 +31,6 @@ class CurrencyGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return 'pim_catalog_price_collection' === $attribute->getAttributeType();
+        return AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType();
     }
 }

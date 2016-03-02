@@ -3,8 +3,8 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Contains product update guesser
@@ -22,7 +22,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
     {
         return in_array(
             $action,
-            array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE)
+            [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]
         );
     }
 
@@ -31,7 +31,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
      */
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
-        $pendings = array();
+        $pendings = [];
 
         if ($entity instanceof GroupInterface) {
             $products = $entity->getProducts();

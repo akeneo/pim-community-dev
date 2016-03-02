@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AvailableAttributesTypeSpec extends ObjectBehavior
@@ -23,7 +23,7 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
             $userContext,
             $translator,
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            'Pim\Bundle\CatalogBundle\Model\AvailableAttributes'
+            'Pim\Component\Enrich\Model\AvailableAttributes'
         );
     }
 
@@ -40,22 +40,22 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
             'attributes',
             'light_entity',
             [
-                'repository' => $attributeRepository,
+                'repository'         => $attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => 'excluded attributes',
                     'locale_code'            => 'en_US',
                 ],
-                'multiple' => true,
-                'expanded' => false,
+                'multiple'           => true,
+                'expanded'           => false,
             ])->shouldHaveBeenCalled();
     }
 
-    function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)
+    function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
-        $resolver->setNormalizers(Argument::any())->shouldBeCalled();
+        $resolver->setNormalizer(Argument::any(), Argument::any())->shouldBeCalled();
         $resolver->setDefaults(
             [
-                'data_class'          => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
+                'data_class'          => 'Pim\Component\Enrich\Model\AvailableAttributes',
                 'excluded_attributes' => [],
             ]
         )->shouldBeCalled();

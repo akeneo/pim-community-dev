@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,49 +18,37 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CompletenessController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var EngineInterface
-     */
+    /**  @var EngineInterface */
     protected $templating;
 
     /**
-     * Constructor
-     *
-     * @param CompletenessManager $completenessManager
-     * @param ProductManager      $productManager
-     * @param ChannelManager      $channelManager
-     * @param UserContext         $userContext
-     * @param EngineInterface     $templating
+     * @param CompletenessManager        $completenessManager
+     * @param ProductRepositoryInterface $productRepository
+     * @param ChannelManager             $channelManager
+     * @param UserContext                $userContext
+     * @param EngineInterface            $templating
      */
     public function __construct(
         CompletenessManager $completenessManager,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         ChannelManager $channelManager,
         UserContext $userContext,
         EngineInterface $templating
     ) {
         $this->completenessManager = $completenessManager;
-        $this->productManager      = $productManager;
+        $this->productRepository   = $productRepository;
         $this->channelManager      = $channelManager;
         $this->userContext         = $userContext;
         $this->templating          = $templating;
@@ -75,7 +63,7 @@ class CompletenessController
      */
     public function completenessAction($id)
     {
-        $product = $this->productManager->getProductRepository()->getFullProduct($id);
+        $product = $this->productRepository->getFullProduct($id);
         $channels = $this->channelManager->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
@@ -88,12 +76,12 @@ class CompletenessController
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Completeness:_completeness.html.twig',
-            array(
+            [
                 'product'        => $product,
                 'channels'       => $channels,
                 'locales'        => $locales,
                 'completenesses' => $completenesses
-            )
+            ]
         );
     }
 }

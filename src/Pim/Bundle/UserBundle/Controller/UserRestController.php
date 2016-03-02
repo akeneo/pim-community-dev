@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -16,20 +16,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class UserRestController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param NormalizerInterface      $normalizer
+     * @param TokenStorageInterface $tokenStorage
+     * @param NormalizerInterface   $normalizer
      */
-    public function __construct(SecurityContextInterface $securityContext, NormalizerInterface $normalizer)
+    public function __construct(TokenStorageInterface $tokenStorage, NormalizerInterface $normalizer)
     {
-        $this->securityContext = $securityContext;
-        $this->normalizer      = $normalizer;
+        $this->tokenStorage = $tokenStorage;
+        $this->normalizer   = $normalizer;
     }
 
     /**
@@ -37,7 +37,7 @@ class UserRestController
      */
     public function getAction()
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
         $user = null !== $token ? $token->getUser() : null;
 
         if (null === $user) {

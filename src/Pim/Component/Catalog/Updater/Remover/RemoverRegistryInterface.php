@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Registry of removers
@@ -21,6 +21,15 @@ interface RemoverRegistryInterface
      * @return RemoverRegistryInterface
      */
     public function register(RemoverInterface $remover);
+
+    /**
+     * Get a remover compatible with the given property
+     *
+     * @param string $property
+     *
+     * @return RemoverInterface
+     */
+    public function getRemover($property);
 
     /**
      * Get the field remover

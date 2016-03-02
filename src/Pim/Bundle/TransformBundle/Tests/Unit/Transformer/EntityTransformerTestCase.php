@@ -50,14 +50,14 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->guesser = $this->getMock('Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface');
         $this->guesser->expects($this->any())
             ->method('getTransformerInfo')
-            ->will($this->returnCallback(array($this, 'getTransformer')));
+            ->will($this->returnCallback([$this, 'getTransformer']));
         $this->columnInfoTransformer = $this
             ->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
         $this->columnInfoTransformer->expects($this->any())
             ->method('transform')
-            ->will($this->returnCallback(array($this, 'getColumnInfo')));
-        $this->transformers = array();
-        $this->columnInfos = array();
+            ->will($this->returnCallback([$this, 'getColumnInfo']));
+        $this->transformers = [];
+        $this->columnInfos = [];
     }
 
     protected function setupRepositories($referable = true)
@@ -67,7 +67,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
                 ->getMock('Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
             $this->repository->expects($this->any())
                 ->method('getIdentifierProperties')
-                ->will($this->returnValue(array('code')));
+                ->will($this->returnValue(['code']));
         } else {
             $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
                 ->disableOriginalConstructor()
@@ -103,7 +103,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
                 ->method('transform')
                 ->will(
                     $this->throwException(
-                        new PropertyTransformerException('error_message', array('error_parameters'))
+                        new PropertyTransformerException('error_message', ['error_parameters'])
                     )
                 );
         } else {
@@ -137,7 +137,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
     public function getTransformer($columnInfo)
     {
         return isset($this->transformers[$columnInfo->getPropertyPath()])
-            ? array($this->transformers[$columnInfo->getPropertyPath()], array())
+            ? [$this->transformers[$columnInfo->getPropertyPath()], []]
             : null;
     }
 
@@ -153,7 +153,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
         $addTransformer = true,
         $skipped = false,
         $withUpdater = false,
-        $suffixes = array()
+        $suffixes = []
     ) {
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())

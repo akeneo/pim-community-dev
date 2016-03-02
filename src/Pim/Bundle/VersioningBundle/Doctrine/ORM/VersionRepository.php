@@ -44,6 +44,14 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
+    public function getNewestLogEntryForRessources($resourceNames)
+    {
+        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPendingVersions($limit = null)
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc'], $limit);
@@ -85,7 +93,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         $qb
             ->addSelect(sprintf('%s as author', $authorExpr))
             ->leftJoin(
-                'OroUserBundle:User',
+                'PimUserBundle:User',
                 'u',
                 'WITH',
                 'u.username = v.author'
@@ -117,7 +125,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return \Pim\Bundle\VersioningBundle\Model\Version|null
+     * @return \Akeneo\Component\Versioning\Model\Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {

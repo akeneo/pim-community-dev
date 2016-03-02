@@ -21,15 +21,15 @@ class LoadLocaleData extends AbstractInstallerFixture
     {
         $bundle = new \ReflectionClass('Pim\Bundle\InstallerBundle\PimInstallerBundle');
         $locales = array_map('trim', file(sprintf('%s/Resources/config/locales', dirname($bundle->getFileName()))));
+        $newLocales = [];
         foreach ($locales as $localeCode) {
             $locale = new Locale();
             $locale->setCode($localeCode);
             $this->setReference(get_class($locale).'.'.$localeCode, $locale);
             $this->validate($locale, $localeCode);
-            $manager->persist($locale);
+            $newLocales[] = $locale;
         }
-
-        $manager->flush();
+        $this->container->get('pim_catalog.saver.locale')->saveAll($newLocales);
     }
 
     /**

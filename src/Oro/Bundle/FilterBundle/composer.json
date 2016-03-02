@@ -1,0 +1,25 @@
+{
+    "name": "oro/filter-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Filter Bundle",
+    "keywords": ["BAP", "UI", "User Interface", "Filter"],
+    "homepage": "https://github.com/laboro/FilterBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.1",
+        "oro/ui-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\FilterBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/FilterBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

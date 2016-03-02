@@ -2,11 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -24,7 +23,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var array */
     protected $supportedToTypes = [];
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var AttributeValidatorHelper */
@@ -34,7 +33,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
+     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
     public function __construct(
@@ -67,7 +66,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
      * @param string             $scope
      * @param string             $type
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {

@@ -4,4 +4,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
             - %pim_enrich.entity.sequential_edit.class%

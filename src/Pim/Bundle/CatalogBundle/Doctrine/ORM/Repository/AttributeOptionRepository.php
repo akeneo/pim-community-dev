@@ -18,7 +18,7 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOption($id, $collectionId = null, array $options = array())
+    public function getOption($id, $collectionId = null, array $options = [])
     {
         if (null === $collectionId) {
             throw new \InvalidArgumentException('Please supply attribute id as collectionId');
@@ -33,7 +33,7 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         if (null === $collectionId) {
             throw new \InvalidArgumentException('Please supply attribute id as collectionId');
@@ -67,7 +67,7 @@ class AttributeOptionRepository extends EntityRepository implements
             }
         }
 
-        $results = array();
+        $results = [];
         $autoSorting = null;
 
         foreach ($qb->getQuery()->getArrayResult() as $row) {
@@ -90,9 +90,9 @@ class AttributeOptionRepository extends EntityRepository implements
             );
         }
 
-        return array(
+        return [
             'results' => $results
-        );
+        ];
     }
 
     /**
@@ -139,6 +139,6 @@ class AttributeOptionRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('attribute', 'code');
+        return ['attribute', 'code'];
     }
 }

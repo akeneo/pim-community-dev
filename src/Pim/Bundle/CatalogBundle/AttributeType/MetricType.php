@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -68,13 +68,13 @@ class MetricType extends AbstractAttributeType
 
         $options = array_merge(
             parent::prepareValueFormOptions($value),
-            array(
+            [
                 'units'        => $units,
                 'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
                 'family'       => $value->getAttribute()->getMetricFamily()
-            )
+            ]
         );
-        $options['default_unit'] = array($options['default_unit']);
+        $options['default_unit'] = [$options['default_unit']];
 
         return $options;
     }
@@ -141,6 +141,6 @@ class MetricType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_metric';
+        return AttributeTypes::METRIC;
     }
 }

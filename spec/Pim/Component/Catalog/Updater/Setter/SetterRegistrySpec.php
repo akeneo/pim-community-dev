@@ -3,12 +3,17 @@
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 
 class SetterRegistrySpec extends ObjectBehavior
 {
+    function let(AttributeRepositoryInterface $attributeRepository) {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_gets_attribute_setter(
         AttributeInterface $color,
         AttributeInterface $description,

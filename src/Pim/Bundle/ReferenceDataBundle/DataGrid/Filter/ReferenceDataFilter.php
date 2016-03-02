@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -44,22 +44,27 @@ class ReferenceDataFilter extends ChoiceFilter
     }
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getChoiceUrlParams(AttributeInterface $attribute)
+    protected function getFormOptions()
     {
+        $attribute         = $this->getAttribute();
         $referenceDataName = $attribute->getReferenceDataName();
-        $referenceData = $this->registry->get($referenceDataName);
+        $referenceData     = $this->registry->get($referenceDataName);
+
         if (null === $referenceData) {
             throw new \InvalidArgumentException(sprintf('Reference data "%s" does not exist', $referenceDataName));
         }
 
-        return [
-            'class'        => $referenceData->getClass(),
-            'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $attribute->getId()
-        ];
+        return array_merge(
+            parent::getFormOptions(),
+            [
+                'choice_url_params' => [
+                    'class'        => $referenceData->getClass(),
+                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'collectionId' => $attribute->getId()
+                ]
+            ]
+        );
     }
 }

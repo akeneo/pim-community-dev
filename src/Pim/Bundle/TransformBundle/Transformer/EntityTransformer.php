@@ -21,6 +21,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class EntityTransformer implements EntityTransformerInterface
 {
@@ -47,17 +49,17 @@ class EntityTransformer implements EntityTransformerInterface
     /**
      * @var array
      */
-    protected $transformers = array();
+    protected $transformers = [];
 
     /**
      * @var array
      */
-    protected $transformedColumns = array();
+    protected $transformedColumns = [];
 
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Constructor
@@ -82,10 +84,10 @@ class EntityTransformer implements EntityTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
-        $this->transformedColumns[$class] = array();
-        $this->errors[$class]             = array();
+        $this->transformedColumns[$class] = [];
+        $this->errors[$class]             = [];
         $entity                           = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
         $this->setProperties($class, $entity, $data);
@@ -123,7 +125,7 @@ class EntityTransformer implements EntityTransformerInterface
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error           = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {
-                $this->errors[$class][$label] = array($error);
+                $this->errors[$class][$label] = [$error];
             }
         }
     }
@@ -153,7 +155,7 @@ class EntityTransformer implements EntityTransformerInterface
                 $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
             }
         } catch (PropertyTransformerException $ex) {
-            return array($ex->getMessageTemplate(), $ex->getMessageParameters());
+            return [$ex->getMessageTemplate(), $ex->getMessageParameters()];
         }
 
         $this->transformedColumns[get_class($entity)][] = $columnInfo;
@@ -172,14 +174,14 @@ class EntityTransformer implements EntityTransformerInterface
         $label = $columnInfo->getLabel();
         if (!isset($this->transformers[$class][$label])) {
             if (!isset($this->transformers[$class])) {
-                $this->transformers[$class] = array();
+                $this->transformers[$class] = [];
             }
             $this->transformers[$class][$label] = $this->guesser->getTransformerInfo(
                 $columnInfo,
                 $this->doctrine->getManagerForClass($class)->getClassMetadata($class)
             );
             if (!$this->transformers[$class][$label]) {
-                throw new UnknownColumnException(array($label), $class);
+                throw new UnknownColumnException([$label], $class);
             }
         }
 

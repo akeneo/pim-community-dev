@@ -21,16 +21,16 @@ class Edit extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Attributes'                 => array('css' => '.tab-pane.tab-attribute table'),
-                'Attribute as label choices' => array('css' => '#pim_enrich_family_form_attributeAsLabel'),
-            )
+            [
+                'Attributes'                 => ['css' => '.tab-pane.tab-attribute table'],
+                'Attribute as label choices' => ['css' => '#pim_enrich_family_form_attributeAsLabel'],
+            ]
         );
     }
 

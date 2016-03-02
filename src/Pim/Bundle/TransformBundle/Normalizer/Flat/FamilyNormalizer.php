@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Flat family normalizer
@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class FamilyNormalizer extends Structured\FamilyNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
@@ -33,11 +33,11 @@ class FamilyNormalizer extends Structured\FamilyNormalizer
     protected function normalizeRequirements(FamilyInterface $family)
     {
         $requirements = parent::normalizeRequirements($family);
-        $flat = array();
-        foreach ($requirements as $channel => $attributes) {
-            $flat[] = $channel.':'.implode(',', $attributes);
+        $flat = [];
+        foreach ($requirements as $key => $attributes) {
+            $flat[$key] = implode(',', $attributes);
         }
 
-        return implode('|', $flat);
+        return $flat;
     }
 }

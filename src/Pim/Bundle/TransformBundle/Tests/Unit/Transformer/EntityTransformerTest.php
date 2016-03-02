@@ -29,10 +29,10 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
     public function getTransformData()
     {
-        return array(
-            'referable'     => array(true),
-            'non_referable' => array(false)
-        );
+        return [
+            'referable'     => [true],
+            'non_referable' => [false]
+        ];
     }
 
     /**
@@ -47,8 +47,8 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code'  => 'code', 'col1' => 'val1', 'col2' => 'val2', 'skipped' => 'skipped'),
-            array('prop3' => 'val3', 'prop4' => 'val4')
+            ['code'  => 'code', 'col1' => 'val1', 'col2' => 'val2', 'skipped' => 'skipped'],
+            ['prop3' => 'val3', 'prop4' => 'val4']
         );
         $this->assertInstanceOf('stdClass', $object);
         $this->assertEmpty($this->transformer->getErrors('stdClass'));
@@ -70,12 +70,12 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
+            ['code' => 'code', 'col1' => 'val1', 'col2' => 'val2']
         );
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
         $this->assertEquals(
-            array('col1' => array(array('error_message', array('error_parameters')))),
+            ['col1' => [['error_message', ['error_parameters']]]],
             $this->transformer->getErrors('stdClass')
         );
         $this->assertCount(2, $this->transformer->getTransformedColumnsInfo('stdClass'));
@@ -93,7 +93,7 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
         $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
+            ['code' => 'code', 'col1' => 'val1', 'col2' => 'val2']
         );
     }
 
@@ -107,7 +107,7 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
         $this->transformer->transform(
             'stdClass',
-            array('col1' => 'val1')
+            ['col1' => 'val1']
         );
     }
 }

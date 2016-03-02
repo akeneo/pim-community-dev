@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
+use Pim\Bundle\UIBundle\Form\Transformer\TransformerFactoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -28,6 +29,8 @@ use Symfony\Component\Routing\RouterInterface;
  *   - minimum_input_length:    The minimum query length before a search is run
  *   - url:                     URL for the list action (optional, resolved from route and route_parameters)
  *   - locale:                  The locale of the results (optional, queried through the UserContext)
+ *   - is_creatable:            If set to true, allows the autocompletion action to return a new option if none is found
+ *                              Useful if you want to create options on the fly
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -35,31 +38,23 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AjaxEntityType extends AbstractType
 {
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @var AjaxEntityTransformerFactory
-     */
+    /** @var TransformerFactoryInterface */
     protected $transformerFactory;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**
-     * Constructor
-     *
-     * @param RouterInterface              $router
-     * @param AjaxEntityTransformerFactory $transformerFactory
-     * @param UserContext                  $userContext
+     * @param RouterInterface             $router
+     * @param TransformerFactoryInterface $transformerFactory
+     * @param UserContext                 $userContext
      */
     public function __construct(
         RouterInterface $router,
-        AjaxEntityTransformerFactory $transformerFactory,
+        TransformerFactoryInterface $transformerFactory,
         UserContext $userContext
     ) {
         $this->router             = $router;
@@ -94,41 +89,41 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('class'));
-        $resolver->setOptional(array('locale', 'url'));
+        $resolver->setRequired(['class']);
+        $resolver->setDefined(['locale', 'url']);
         $resolver->setDefaults(
-            array(
+            [
                 'multiple'              => false,
-                'transformer_options'   => array(),
+                'transformer_options'   => [],
                 'collection_id'         => null,
                 'route'                 => 'pim_ui_ajaxentity_list',
-                'route_parameters'      => array(),
+                'route_parameters'      => [],
                 'data_class'            => null,
                 'error_bubbling'        => false,
-                'minimum_input_length'  => 0
-            )
+                'minimum_input_length'  => 0,
+                'locale'                => null,
+                'url'                   => null,
+                'is_creatable'          => false,
+            ]
         );
-        $resolver->setNormalizers(
-            array(
-                'locale' => function (Options $options, $value) {
-                    if (!$value) {
-                        $value = $this->userContext->getCurrentLocaleCode();
-                    }
-
-                    return $value;
-                },
-                'url' => function (Options $options, $value) {
-                    if (!$value) {
-                        $parameters = $this->getRouteParameters($options);
-                        $value = $this->router->generate($options['route'], $parameters);
-                    }
-
-                    return $value;
+        $resolver
+            ->setNormalizer('locale', function (Options $options, $value) {
+                if (!$value) {
+                    $value = $this->userContext->getCurrentLocaleCode();
                 }
-            )
-        );
+
+                return $value;
+            })
+            ->setNormalizer('url', function (Options $options, $value) {
+                if (!$value) {
+                    $parameters = $this->getRouteParameters($options);
+                    $value = $this->router->generate($options['route'], $parameters);
+                }
+
+                return $value;
+            });
     }
 
     /**
@@ -179,10 +174,11 @@ class AjaxEntityType extends AbstractType
      */
     protected function getRouteParameters(Options $options)
     {
-        $parameters = $options['route_parameters'];
-        $parameters['class'] = $options['class'];
-        $parameters['dataLocale'] = $options['locale'];
+        $parameters                 = $options['route_parameters'];
+        $parameters['class']        = $options['class'];
+        $parameters['dataLocale']   = $options['locale'];
         $parameters['collectionId'] = $options['collection_id'];
+        $parameters['isCreatable']  = $options['is_creatable'];
 
         return $parameters;
     }
@@ -192,7 +188,7 @@ class AjaxEntityType extends AbstractType
      *
      * @param array $options
      *
-     * @return \Symfony\Component\Form\DataTransformerInterface
+     * @return DataTransformerInterface
      */
     protected function getTransformer(array $options)
     {

@@ -99,10 +99,12 @@ flash:
     created: "L'export a été correctement crée"
     removed: "Le profil d'export a été supprimé"
     updated: "L'export a correctement été mis à jour"
+    running: "L'export est en cours d'exécution"
   import:
     created: "L'import a été correctement crée"
     removed: "Le profil d'import a été supprimé"
     updated: "L'import a correctement été mis à jour"
+    running: "L'import est en cours d'exécution"
 pim_menu:
   item:
     export_history: Historique des exports
@@ -141,3 +143,12 @@ Status: Statut
 Summary: Résumé
 Start: Début
 End: Fin
+set_attribute_requirements: "Configurer les exigences d'attributs de familles"
+COMPLETED: TERMINÉ
+STARTING: DÉMARRAGE EN COURS
+STARTED: DÉMARRÉ
+STOPPING: ARRÊT EN COURS
+STOPPED: ARRÊTÉ
+FAILED: EN ÉCHEC
+ABANDONED: ABANDONNÉ
+UNKNOWN: INCONNUN

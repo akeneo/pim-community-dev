@@ -23,6 +23,9 @@ pim_base_connector:
         csv_variant_group_export:
             title: Variant group export in CSV
             export.title: Variant group export
+        csv_family_export:
+            title: Family export in CSV
+            export.title: Family export
         csv_product_import:
             title: Product import in CSV
             validation.title: File validation
@@ -52,6 +55,7 @@ pim_base_connector:
             title: Variant group import in CSV
             validation.title: File validation
             import.title: Variant group import
+
     steps:
 
         dummy_reader.title:                  Dummy reader
@@ -102,6 +106,12 @@ pim_base_connector:
         channel:
             label: Channel
             help: The channel you want to export
+        decimalSeparator:
+            label: Decimal separator
+            help: Determine the decimal separator
+        dateFormat:
+            label: Date format
+            help: Determine the format of date fields
     import:
         enabled:
             label: Enable the product

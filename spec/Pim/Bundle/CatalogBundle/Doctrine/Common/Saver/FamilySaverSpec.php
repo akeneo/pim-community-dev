@@ -2,20 +2,24 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FamilySaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        CompletenessSavingOptionsResolver $optionsResolver
+        CompletenessSavingOptionsResolver $optionsResolver,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver);
+        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -23,7 +27,7 @@ class FamilySaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
-    function it_saves_a_family_and_flushes_by_default($objectManager, $optionsResolver, FamilyInterface $family)
+    function it_saves_a_family_and_flushes_by_default($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
     {
         $family->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions([])
@@ -31,10 +35,13 @@ class FamilySaverSpec extends ObjectBehavior
             ->willReturn(['flush' => true, 'schedule' => true]);
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family);
     }
 
-    function it_saves_a_family_and_does_not_flushe($objectManager, $optionsResolver, FamilyInterface $family)
+    function it_saves_a_family_and_does_not_flushe($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
     {
         $family->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions(['flush' => false])
@@ -42,6 +49,9 @@ class FamilySaverSpec extends ObjectBehavior
             ->willReturn(['flush' => false, 'schedule' => true]);
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family, ['flush' => false]);
     }
 
@@ -49,6 +59,7 @@ class FamilySaverSpec extends ObjectBehavior
         $completenessManager,
         $optionsResolver,
         $objectManager,
+        $eventDispatcher,
         FamilyInterface $family
     ) {
         $family->getCode()->willReturn('my_code');
@@ -58,6 +69,9 @@ class FamilySaverSpec extends ObjectBehavior
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->scheduleForFamily($family)->shouldNotBeCalled($family);
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family, ['schedule' => false]);
     }
 
@@ -68,7 +82,7 @@ class FamilySaverSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
+                        'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )

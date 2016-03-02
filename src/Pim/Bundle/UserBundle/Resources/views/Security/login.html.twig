@@ -16,7 +16,7 @@
     {% if error %}
     <div class="alert alert-error">
         <button data-dismiss="alert" class="close" type="button">&times;</button>
-        <div>{{ error|trans }}</div>
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     </div>
     {% endif %}
 
@@ -51,4 +51,14 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 </div>
+
+<script type="text/javascript">
+    require(['oro/layout'], function (layout) {
+        $(function () {
+            layout.hideProgressBar();
+            layout.init();
+            document.title = '{{ 'Login'|trans }}';
+        });
+    });
+</script>
 {% endblock content %}

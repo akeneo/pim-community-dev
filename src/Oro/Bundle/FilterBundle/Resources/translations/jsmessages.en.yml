@@ -1,0 +1,13 @@
+"Close": "Close"
+"Update": "Update"
+"Now": "Now"
+"Selected Rows": "Selected Rows"
+"more than": "more than"
+"less than": "less than"
+"before": "before"
+"after": "after"
+"from": "from"
+"to": "to"
+"and": "and"
+oro_filter.filters.manage:  Manage filters
+oro_filter.placeholder.all: All

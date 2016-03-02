@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Step;
 
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator;
 
@@ -20,8 +20,8 @@ class ValidatorStepSpec extends ObjectBehavior
 
     function it_is_a_step()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepInterface');
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\AbstractStep');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\AbstractStep');
     }
 
     function it_is_configurable(

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\WebServiceBundle\Handler\Rest;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductHandlerSpec extends ObjectBehavior

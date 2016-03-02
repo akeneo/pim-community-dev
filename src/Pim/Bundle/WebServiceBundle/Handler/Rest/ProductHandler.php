@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\WebServiceBundle\Handler\Rest;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

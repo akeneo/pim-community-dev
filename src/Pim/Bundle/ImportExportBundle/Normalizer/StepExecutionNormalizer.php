@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -19,20 +20,25 @@ class StepExecutionNormalizer implements NormalizerInterface
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var PresenterInterface */
+    protected $presenter;
+
     /**
      * Constructor
      *
      * @param TranslatorInterface $translator
+     * @param PresenterInterface  $presenter
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, PresenterInterface $presenter)
     {
         $this->translator = $translator;
+        $this->presenter  = $presenter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $normalizedWarnings = $this->normalizeWarnings($object->getWarnings(), $context);
 
@@ -44,8 +50,8 @@ class StepExecutionNormalizer implements NormalizerInterface
             'label'     => $this->translator->trans($object->getStepName()),
             'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
             'summary'   => $this->normalizeSummary($object->getSummary()),
-            'startedAt' => $this->normalizeDateTime($object->getStartTime()),
-            'endedAt'   => $this->normalizeDateTime($object->getEndTime()),
+            'startedAt' => $this->presenter->present($object->getStartTime(), $context),
+            'endedAt'   => $this->presenter->present($object->getEndTime(), $context),
             'warnings'  => $normalizedWarnings,
             'failures'  => array_map(
                 function ($failure) {
@@ -62,26 +68,6 @@ class StepExecutionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof StepExecution;
-    }
-
-    /**
-     * Normalizes DateTime object
-     *
-     * @param null|\Datetime $utcDatetime
-     *
-     * @return null|string
-     */
-    protected function normalizeDateTime($utcDatetime)
-    {
-        if (!$utcDatetime instanceof \DateTime) {
-            return;
-        }
-
-        $datetime = new \DateTime();
-
-        $datetime->setTimestamp($utcDatetime->getTimestamp());
-
-        return $datetime->format('Y-m-d g:i:s A');
     }
 
     /**

@@ -1,0 +1,15 @@
+<a href="<%= url ? url : 'javascript: void(0);' %>" <%= viewed ? '' : 'class="new"' %>>
+    <div class="action-icon <%= actionType.replace('_', '-') %>">
+        <i class="status icon-<%= icon %>"></i>
+    </div>
+    <div class="metas">
+        <time><%= createdAt %></time>
+        <span class="title"><%= actionTypeMessage %></span>
+    </div>
+    <div class="message"><%= message %></div>
+    <% if (comment) { %> <div class="comment"><%= comment %></div> <% } %>
+    <i class="icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+    <% if (showReportButton) { %>
+    <button class="btn icons-holder-text"><i class="icon-file-text-alt"></i><%- _.__('pim_notification.report') %></button>
+    <% } %>
+</a>

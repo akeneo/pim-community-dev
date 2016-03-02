@@ -1,5 +1,5 @@
 @javascript
-Feature: Execute an import
+Feature: Execute an import with invalid properties
   In order to update existing product information
   As a product manager
   I need to be able to be notified when I use not valid groups (not know or not variant group)
@@ -9,7 +9,7 @@ Feature: Execute an import
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | size, color | VARIANT |
-      | NOT_VG | Not VG | color, size | RELATED |
+      | NOT_VG | Not VG |             | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Stop the import if variant group code column is not provided

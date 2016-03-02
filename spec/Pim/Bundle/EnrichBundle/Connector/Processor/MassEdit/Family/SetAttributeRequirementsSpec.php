@@ -2,20 +2,20 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
@@ -35,8 +35,8 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_is_a_processor_and_a_step_element()
     {
-        $this->beAnInstanceOf('\Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->beAnInstanceOf('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->beAnInstanceOf('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_a_family(

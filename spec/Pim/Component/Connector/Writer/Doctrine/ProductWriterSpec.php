@@ -2,23 +2,21 @@
 
 namespace spec\Pim\Component\Connector\Writer\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
-        MediaManager $mediaManager,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher
     ) {
-        $this->beConstructedWith($mediaManager, $versionManager, $productSaver, $detacher);
+        $this->beConstructedWith($versionManager, $productSaver, $detacher);
     }
 
     function it_is_initializable()
@@ -28,17 +26,17 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_is_a_configurable_step_element()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
     }
 
     function it_provides_configuration_fields()
@@ -76,23 +74,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
         $productSaver->saveAll($items, ['recalculate' => false])->shouldBeCalled();
-        $this->write($items);
-    }
-
-    function it_handles_media(
-        $mediaManager,
-        StepExecution $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $items = [$product1, $product2];
-
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-
-        $mediaManager->handleAllProductsMedias($items)->shouldBeCalled();
-
-        $this->setStepExecution($stepExecution);
         $this->write($items);
     }
 

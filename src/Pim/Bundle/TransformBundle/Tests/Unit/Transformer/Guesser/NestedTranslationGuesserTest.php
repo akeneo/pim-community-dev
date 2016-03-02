@@ -31,7 +31,7 @@ class NestedTranslationGuesserTest extends GuesserTestCase
             ->with($this->equalTo('translations'))
             ->will($this->returnValue(true));
         $this->assertEquals(
-            array($this->transformer, array('propertyPath' => 'label')),
+            [$this->transformer, ['propertyPath' => 'label']],
             $this->guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }

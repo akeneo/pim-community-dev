@@ -22,7 +22,7 @@ class CursorSpec extends ObjectBehavior
         From $from
     ) {
         $rootIdExpr = 'o.id';
-        $from->getFrom()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
+        $from->getFrom()->willReturn('Pim\Component\Catalog\Model\Product');
         $from->getAlias()->willReturn('o');
 
         $queryBuilder->getRootAliases()->willReturn(['o']);
@@ -78,7 +78,7 @@ class CursorSpec extends ObjectBehavior
         $data = array_merge($page1, $page2);
 
         $rootIdExpr = 'o.id';
-        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $entityClass = 'Pim\Component\Catalog\Model\Product';
 
         $from->getFrom()->shouldBeCalled()->willReturn($entityClass);
         $from->getAlias()->shouldBeCalled()->willReturn('o');
@@ -151,7 +151,7 @@ class CursorSpec extends ObjectBehavior
         $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $entityClass = 'Pim\Component\Catalog\Model\Product';
 
         $ids = [
             5 => 15,
@@ -195,7 +195,7 @@ class CursorSpec extends ObjectBehavior
         $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $entityClass = 'Pim\Component\Catalog\Model\Product';
 
         $ids = [
             5 => 15,

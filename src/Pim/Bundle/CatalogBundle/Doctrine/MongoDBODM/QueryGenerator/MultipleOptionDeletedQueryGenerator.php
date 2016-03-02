@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Option deleted query generator
  *
@@ -37,6 +39,6 @@ class MultipleOptionDeletedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === 'pim_catalog_multiselect';
+            AttributeTypes::OPTION_MULTI_SELECT === $entity->getAttribute()->getAttributeType();
     }
 }

@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -39,10 +40,10 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA  => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
-        );
+        ];
     }
 
     /**
@@ -58,7 +59,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $requirements = array();
+        $requirements = [];
 
         foreach ($family->getAttributes() as $attribute) {
             foreach ($this->channels as $channel) {
@@ -90,7 +91,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         foreach ($family->getAttributeRequirements() as $key => $requirement) {
-            if ('pim_catalog_identifier' === $requirement->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
                 $requirement->setRequired(true);
                 $form->get('attributeRequirements')->remove($key);
             }

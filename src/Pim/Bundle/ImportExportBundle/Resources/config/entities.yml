@@ -1,8 +1,0 @@
-parameters:
-    akeneo_batch.entity.field_mapping.class:  Akeneo\Bundle\BatchBundle\Entity\FieldMapping
-    akeneo_batch.entity.item_mapping.class:   Akeneo\Bundle\BatchBundle\Entity\ItemMapping
-    akeneo_batch.entity.warning.class:        Akeneo\Bundle\BatchBundle\Entity\Warning
-    akeneo_batch.entity.job_instance.class:   Akeneo\Bundle\BatchBundle\Entity\JobInstance
-    akeneo_batch.entity.job_execution.class:  Akeneo\Bundle\BatchBundle\Entity\JobExecution
-    akeneo_batch.entity.step_execution.class: Akeneo\Bundle\BatchBundle\Entity\StepExecution
-    akeneo_batch.job.batch_status.class:      Akeneo\Bundle\BatchBundle\Job\BatchStatus

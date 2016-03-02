@@ -1,0 +1,9 @@
+parameters:
+    pim_catalog.version.class:          Pim\Bundle\CatalogBundle\Version
+    pim_catalog.version_provider.class: Pim\Bundle\CatalogBundle\VersionProvider
+
+services:
+    pim_catalog.version_provider:
+        class: %pim_catalog.version_provider.class%
+        arguments:
+            - '%pim_catalog.version.class%'

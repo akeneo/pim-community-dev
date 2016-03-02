@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Intl\Intl;
 
 /**
  * Locale entity
@@ -16,10 +17,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @UniqueEntity("code")
- *
- * @ExclusionPolicy("all")
  */
-class Locale implements LocaleInterface
+class Locale implements LocaleInterface, VersionableInterface
 {
     /**
      * @var int
@@ -98,9 +97,17 @@ class Locale implements LocaleInterface
     /**
      * {@inheritdoc}
      */
+    public function getLanguage()
+    {
+        return (null === $this->code) ? null : substr($this->code, 0, 2);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isActivated()
     {
-        return $this->channels->count() > 0;
+        return $this->activated;
     }
 
     /**
@@ -114,9 +121,22 @@ class Locale implements LocaleInterface
     /**
      * {@inheritdoc}
      */
+    public function hasChannel(ChannelInterface $channel)
+    {
+        return $this->channels->contains($channel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setChannels($channels)
     {
-        $this->channels = $channels;
+        $this->channels  = new ArrayCollection();
+        $this->activated = false;
+
+        foreach ($channels as $channel) {
+            $this->addChannel($channel);
+        }
 
         return $this;
     }
@@ -153,5 +173,15 @@ class Locale implements LocaleInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        $localeNames = Intl::getLocaleBundle()->getLocaleNames();
+
+        return array_key_exists($this->code, $localeNames) ? $localeNames[$this->code] : null;
     }
 }

@@ -2,12 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -35,19 +39,32 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var string */
     protected $channelCode;
 
+    /** @var string */
+    protected $locale;
+
     /** @var array Normalizer context */
     protected $normalizerContext;
+
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
+    /** @var  ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
+     * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectDetacherInterface             $objectDetacher
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
+        ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $objectDetacher,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
@@ -55,6 +72,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $this->serializer      = $serializer;
         $this->channelManager  = $channelManager;
         $this->uploadDirectory = $uploadDirectory;
+        $this->productBuilder  = $productBuilder;
+        $this->objectDetacher  = $objectDetacher;
     }
 
     /**
@@ -70,6 +89,10 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     public function process($product)
     {
+        if (null !== $this->productBuilder) {
+            $this->productBuilder->addMissingProductValues($product);
+        }
+
         $data['media'] = [];
 
         $productMedias = $this->getProductMedias($product);
@@ -92,6 +115,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+        $this->objectDetacher->detach($product);
 
         return $data;
     }
@@ -113,16 +137,31 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * @param string $uiLocale
+     */
+    public function setLocale($uiLocale)
+    {
+        $this->locale = $uiLocale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
     {
-        if (null === $this->normalizerContext) {
-            $this->normalizerContext = [
-                'scopeCode'   => $this->channelCode,
-                'localeCodes' => $this->getLocaleCodes($this->channelCode)
-            ];
-        }
+        $this->normalizerContext = [
+            'scopeCode'   => $this->channelCode,
+            'localeCodes' => $this->getLocaleCodes($this->channelCode),
+            'locale'      => $this->locale,
+        ];
 
         return $this->normalizerContext;
     }
@@ -146,13 +185,13 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      *
      * @param ProductInterface $product
      *
-     * @return ProductMediaInterface[]
+     * @return FileInfoInterface[]
      */
     protected function getProductMedias(ProductInterface $product)
     {
         $media = [];
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file'])) {
+            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media[] = $value->getData();
             }
         }
@@ -172,6 +211,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');
         }
+
+        if (!isset($configuration['mainContext']['ui_locale'])) {
+            throw new InvalidArgumentException('No UI locale found');
+        }
+
         $this->setChannelCode($configuration['mainContext']['scope']);
+        $this->setLocale($configuration['mainContext']['ui_locale']);
     }
 }

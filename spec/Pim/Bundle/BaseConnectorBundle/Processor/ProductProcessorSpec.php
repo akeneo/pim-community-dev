@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Prophecy\Argument;
@@ -27,7 +27,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $translator,
             $transformer,
             $managerRegistry,
-            'Pim\Bundle\CatalogBundle\Model\Product',
+            'Pim\Component\Catalog\Model\Product',
             false
         );
     }
@@ -39,12 +39,12 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_is_configurable()
@@ -109,10 +109,10 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $transformer
-            ->transform('Pim\Bundle\CatalogBundle\Model\Product', $item, ['enabled' => true])
+            ->transform('Pim\Component\Catalog\Model\Product', $item, ['enabled' => true])
             ->willReturn($product);
-        $transformer->getErrors('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([]);
-        $transformer->getTransformedColumnsInfo('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([]);
+        $transformer->getErrors('Pim\Component\Catalog\Model\Product')->willReturn([]);
+        $transformer->getTransformedColumnsInfo('Pim\Component\Catalog\Model\Product')->willReturn([]);
 
         $validator->validate($product, [], $item, [])->willReturn([]);
 
@@ -143,9 +143,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->addMapping('SUBSTITUTION-products', 'SUBSTITUTION Products');
         $this->addMapping('SUBSTITUTION-groups', 'SUBSTITUTION Groups');
 
-        $transformer->transform('Pim\Bundle\CatalogBundle\Model\Product', $mappedItem, ['enabled' => true])->willReturn($product);
-        $transformer->getErrors('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([]);
-        $transformer->getTransformedColumnsInfo('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([]);
+        $transformer->transform('Pim\Component\Catalog\Model\Product', $mappedItem, ['enabled' => true])->willReturn($product);
+        $transformer->getErrors('Pim\Component\Catalog\Model\Product')->willReturn([]);
+        $transformer->getTransformedColumnsInfo('Pim\Component\Catalog\Model\Product')->willReturn([]);
 
         $validator->validate($product, [], $mappedItem, [])->willReturn([]);
 
@@ -172,9 +172,9 @@ class ProductProcessorSpec extends ObjectBehavior
             'not_empty_attribute' => ''
         ];
 
-        $transformer->transform('Pim\Bundle\CatalogBundle\Model\Product', $item, ['enabled' => true])->willReturn($product);
-        $transformer->getErrors('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([]);
-        $transformer->getTransformedColumnsInfo('Pim\Bundle\CatalogBundle\Model\Product')->willReturn([$columnInfo]);
+        $transformer->transform('Pim\Component\Catalog\Model\Product', $item, ['enabled' => true])->willReturn($product);
+        $transformer->getErrors('Pim\Component\Catalog\Model\Product')->willReturn([]);
+        $transformer->getTransformedColumnsInfo('Pim\Component\Catalog\Model\Product')->willReturn([$columnInfo]);
 
         $validator
             ->validate($product, [$columnInfo], $item, [])

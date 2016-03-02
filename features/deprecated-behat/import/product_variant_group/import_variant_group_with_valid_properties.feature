@@ -9,7 +9,7 @@ Feature: Execute an import
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | color, size | VARIANT |
-      | NOT_VG | Not VG | color, size | RELATED |
+      | NOT_VG | Not VG |             | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of variant group to create a new one

@@ -37,7 +37,5 @@ Action: Azione
 Unit: Unità
 Currency: Valuta
 jstree:
-  all: Tutti i prodotti
-  unclassified: Prodotti non classificati
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie

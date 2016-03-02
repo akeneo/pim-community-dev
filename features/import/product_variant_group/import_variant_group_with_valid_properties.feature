@@ -1,5 +1,5 @@
 @javascript
-Feature: Execute an import
+Feature: Execute an import with valid properties
   In order to update existing product information
   As a product manager
   I need to be able to import variant group to create or update them
@@ -9,7 +9,7 @@ Feature: Execute an import
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | color, size | VARIANT |
-      | NOT_VG | Not VG | color, size | RELATED |
+      | NOT_VG | Not VG |             | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of variant group to create a new one

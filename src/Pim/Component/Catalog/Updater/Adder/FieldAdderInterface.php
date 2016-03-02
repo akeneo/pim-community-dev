@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Adds a data into a product's field

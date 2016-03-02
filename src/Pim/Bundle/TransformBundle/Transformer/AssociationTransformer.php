@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -14,6 +14,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)p
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class AssociationTransformer extends EntityTransformer
 {
@@ -53,7 +55,7 @@ class AssociationTransformer extends EntityTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
         $entity = parent::transform($class, $data, $defaults);
         $objectManager = $this->doctrine->getManagerForClass($this->productClass);

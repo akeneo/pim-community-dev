@@ -1,5 +1,5 @@
 @javascript
-Feature: Execute an import
+Feature: Execute an import with valid data
   In order to update existing product information
   As a product manager
   I need to be able to import variant group values in product values

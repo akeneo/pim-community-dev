@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PriceTypeSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Model\ProductPrice'
+            'Pim\Component\Catalog\Model\ProductPrice'
         );
     }
 
@@ -24,13 +24,13 @@ class PriceTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_price');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
+                'data_class' => 'Pim\Component\Catalog\Model\ProductPrice',
             ]
         )->shouldHaveBeenCalled();
     }

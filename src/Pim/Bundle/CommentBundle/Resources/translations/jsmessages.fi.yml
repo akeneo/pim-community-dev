@@ -1,0 +1,26 @@
+btn:
+  post: Lisää uusi kommentti
+  reply: Vastaa
+  cancel: Peruuta
+confirmation:
+  remove:
+    comment: Oletko varma että haluat poistaa tämän kommentin?
+flash:
+  comment:
+    create:
+      success: Kommentti luotu.
+      error: Kommenttia luotaessa tapahtui virhe.
+    delete:
+      success: Kommenttisi on poistettu onnistuneesti.
+      error: Kommenttia poistaessa tapahtui virhe.
+    reply:
+      success: Vastauksesi on luotu.
+      error: Virhe luotaessa vastausta.
+comment:
+  index:
+    empty: Ei kommentteja tällä hetkellä
+  placeholder:
+    new: Kirjoita uusi kommentti...
+    reply: Vastaa tähän kommenttiin...
+pim_comment:
+  product.panel.comment.title: Kommentit

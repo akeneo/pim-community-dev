@@ -1,6 +1,4 @@
 parameters:
-    pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
-    pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
@@ -10,10 +8,7 @@ parameters:
     pim_catalog.manager.currency.class:            Pim\Bundle\CatalogBundle\Manager\CurrencyManager
     pim_catalog.manager.family.class:              Pim\Bundle\CatalogBundle\Manager\FamilyManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
-    pim_catalog.manager.locale.class:              Pim\Bundle\CatalogBundle\Manager\LocaleManager
-    pim_catalog.manager.media.class:               Pim\Bundle\CatalogBundle\Manager\MediaManager
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
-    pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
@@ -25,24 +20,8 @@ services:
     pim_catalog.manager.product:
         class: %pim_catalog.manager.product.class%
         arguments:
-            -
-                  product_class:                %pim_catalog.entity.product.class%
-                  product_value_class:          %pim_catalog.entity.product_value.class%
-                  attribute_class:              %pim_catalog.entity.attribute.class%
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.saver.product'
-            - '@event_dispatcher'
-            - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.association_type'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
-
-    pim_catalog.manager.product_mass_action:
-        class: %pim_catalog.manager.product_mass_action.class%
-        arguments:
-            - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
 
     pim_catalog.manager.product_category:
@@ -55,15 +34,9 @@ services:
         class: %pim_catalog.manager.category.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.factory.category'
             - %pim_catalog.entity.category.class%
-
-    pim_catalog.manager.media:
-        class: %pim_catalog.manager.media.class%
-        arguments:
-            - '@pim_filesystem'
-            - %upload_dir%
-            - '@pim_catalog.factory.media'
-            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_catalog.manager.attribute:
         class: %pim_catalog.manager.attribute.class%
@@ -88,11 +61,6 @@ services:
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.saver.attribute'
 
-    pim_catalog.manager.locale:
-        class: %pim_catalog.manager.locale.class%
-        arguments:
-            - '@pim_catalog.repository.locale'
-
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%
         arguments:
@@ -108,19 +76,14 @@ services:
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
         arguments:
-            - '@doctrine'
-            - '@pim_catalog.repository.product'
-            - %pim_catalog.entity.group.class%
-            - %pim_catalog.entity.group_type.class%
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.manager.family:
         class: %pim_catalog.manager.family.class%
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
@@ -129,19 +92,13 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.doctrine.completeness_generator'
-            - '@validator'
+            - '@pim_catalog.completeness.checker.chained'
             - %pim_catalog.entity.completeness.class%
-
-    pim_catalog.manager.association_type:
-        class: %pim_catalog.manager.association_type.class%
-        arguments:
-            - '@pim_catalog.repository.association_type'
-            - '@doctrine.orm.entity_manager'
 
     pim_catalog.manager.product_template_media:
         class: %pim_catalog.manager.product_template_media.class%
         arguments:
-            - '@pim_catalog.manager.media'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_serializer'
 
     pim_catalog.applier.product_template:

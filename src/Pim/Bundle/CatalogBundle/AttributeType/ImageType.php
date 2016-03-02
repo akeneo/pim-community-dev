@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Image attribute type
@@ -42,6 +42,6 @@ class ImageType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_image';
+        return AttributeTypes::IMAGE;
     }
 }

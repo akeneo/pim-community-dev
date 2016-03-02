@@ -19,16 +19,24 @@ define(
             tagName: 'span',
             template: _.template(formTemplate),
             configure: function () {
-                mediator.on('product:action:post_update', _.bind(this.render, this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                this.$el.html(
-                    this.template({
-                        product: this.getData()
-                    })
-                );
+                var product = this.getFormData();
+                var html = '';
+
+                if (product.meta.updated) {
+                    html = this.template({
+                        label: _.__('pim_enrich.entity.product.meta.updated'),
+                        labelBy: _.__('pim_enrich.entity.product.meta.updated_by'),
+                        loggedAt: _.result(product.meta.updated, 'logged_at', null),
+                        author: _.result(product.meta.updated, 'author', null)
+                    });
+                }
+
+                this.$el.html(html);
 
                 return this;
             }

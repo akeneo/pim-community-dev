@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
@@ -55,7 +55,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     /**
      * @var array
      */
-    protected $mapping = array();
+    protected $mapping = [];
 
     /**
      * @var StepExecution
@@ -113,7 +113,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -145,7 +145,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
                         ',',
                         array_map(
                             function ($args) {
-                                return call_user_func_array(array($this->translator, 'trans'), $args);
+                                return call_user_func_array([$this->translator, 'trans'], $args);
                             },
                             $fieldErrors
                         )

@@ -9,12 +9,30 @@ config:
         jstree/nested_switch:
             deps:
                 - jquery.jstree
+        translator:
+            exports: Translator
 
     config:
+        # Forwarded events from mediator
+        pim/product-edit-form:
+            forwarded-events:
+                'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
+                'pim_enrich:form:entity:pre_save':     'pim_enrich:form:entity:pre_save'
+                'pim_enrich:form:entity:bad_request':  'pim_enrich:form:entity:bad_request'
+                'pim_enrich:form:entity:update_state': 'pim_enrich:form:entity:update_state'
+                'pim_enrich:form:entity:post_fetch':   'pim_enrich:form:entity:post_fetch'
+        pim/product-edit-form/cache-invalidator:
+            events:
+                - 'pim_enrich:form:entity:post_fetch'
+        pim/product-manager:
+            urls:
+                get:    pim_enrich_product_rest_get
+                post:   pim_enrich_product_rest_post
+                remove: pim_enrich_product_rest_remove
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
-                attributeGroup:
+                attribute-group:
                     module: pim/base-fetcher
                     options:
                         urls:
@@ -22,13 +40,16 @@ config:
                 attribute:
                     module: pim/attribute-fetcher
                     options:
+                        identifier_type: pim_catalog_identifier
                         urls:
                             list: pim_enrich_attribute_rest_index
+                            get: pim_enrich_attribute_rest_get
                 family:
                     module: pim/base-fetcher
                     options:
                         urls:
                             list: pim_enrich_family_rest_index
+                            get: pim_enrich_family_rest_get
                 channel:
                     module: pim/base-fetcher
                     options:
@@ -53,8 +74,8 @@ config:
                     module: pim/base-fetcher
                     options:
                         urls:
-                            list: pim_enrich_association_type_rest_index
-                completeness:
+                            list: pim_enrich_associationtype_rest_index
+                product-completeness:
                     module: pim/completeness-fetcher
                     options:
                         urls:
@@ -76,6 +97,11 @@ config:
                     options:
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
+                product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_history_rest_get
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
@@ -85,6 +111,7 @@ config:
         pim/asynctab:                       pimenrich/js/pim-async-tab
         pim/popinform:                      pimenrich/js/pim-popinform
         pim/optionform:                     pimenrich/js/pim-optionform
+        pim/form-modal:                     pimenrich/js/form/form-modal
         pim/scopable:                       pimenrich/js/pim-scopable
         pim/currencyfield:                  pimenrich/js/pim-currencyfield
         pim/tree/view:                      pimenrich/js/tree-view.jstree
@@ -95,6 +122,10 @@ config:
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/i18n:                           pimenrich/js/i18n
         pim/user-context:                   pimenrich/js/user-context
+        pim/date-context:                   pimenrich/js/date-context
+        pim/error:                          pimenrich/js/error/error
+        translator:                         pimenrich/lib/translator
+        oro/translator:                     pimenrich/js/translator
 
         # Security
         pim/security-context:               pimenrich/js/security-context
@@ -111,10 +142,19 @@ config:
         pim/attribute-fetcher:              pimenrich/js/fetcher/attribute-fetcher
         pim/completeness-fetcher:           pimenrich/js/fetcher/completeness-fetcher
 
+        # Generator
+        pim/media-url-generator:            pimenrich/js/generator/media-url-generator
+
         # Form
-        pim/form-builder:                                          pimenrich/js/form/builder
-        pim/form-registry:                                         pimenrich/js/form/registry
-        pim/form-config-provider:                                  pimenrich/js/form/config-provider
+        pim/form-builder:                   pimenrich/js/form/builder
+        pim/form-registry:                  pimenrich/js/form/registry
+        pim/form-config-provider:           pimenrich/js/form/config-provider
+        pim/form/common/group-selector:     pimenrich/js/form/common/group-selector
+        pim/form/common/save:               pimenrich/js/form/common/save
+
+        pim/form:                           pimenrich/js/product/form
+
+        pim/product-edit-form/cache-invalidator:                   pimenrich/js/form/cache-invalidator
         pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy
@@ -124,11 +164,12 @@ config:
         pim/product-edit-form/attributes/attribute-group-selector: pimenrich/js/product/form/attributes/attribute-group-selector
         pim/product-edit-form/attributes/add-attribute:            pimenrich/js/product/form/attributes/add-attribute
         pim/product-edit-form/attributes/variant-group:            pimenrich/js/product/form/attributes/variant-group
+        pim/product-edit-form/attributes/locale-specific:          pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/localizable:              pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                          pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                        pimenrich/js/product/form/associations
         pim/product-edit-form/panel/panels:                        pimenrich/js/product/form/panel/panels
         pim/product-edit-form/panel/selector:                      pimenrich/js/product/form/panel/selector
-        pim/form:                                                  pimenrich/js/product/form
         pim/product-edit-form/locale-switcher:                     pimenrich/js/product/form/locale-switcher
         pim/product-edit-form/scope-switcher:                      pimenrich/js/product/form/scope-switcher
         pim/product-edit-form/form-tabs:                           pimenrich/js/product/form/form-tabs
@@ -154,9 +195,18 @@ config:
         pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
 
+        # Mass product edit form
+        pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
+        pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
+        pim/mass-product-edit-form/add-attribute:        pimenrich/js/product/form/mass-edit/add-attribute
+
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form
         pim/attribute-option/create:        pimenrich/js/attribute-option/create
+
+        # Add attribute component
+        pim/attribute/add-attribute-line:   pimenrich/js/product/form/attributes/add-attribute-line
+        pim/attribute/add-attribute-footer: pimenrich/js/product/form/attributes/add-attribute-footer
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field
@@ -172,7 +222,13 @@ config:
         pim/textarea-field:                 pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
+        # Formatters
+        pim/formatter/choices/base: pimenrich/js/formatter/choices/base
+
         # Templates
+        pim/template/form/common/group-selector: pimenrich/templates/form/common/group-selector.html
+        pim/template/form/common/save:           pimenrich/templates/form/common/save.html
+
         pim/template/product/form:                                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:                         pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attributes:                         pimenrich/templates/product/tab/attributes.html
@@ -218,3 +274,7 @@ config:
         pim/template/product/field/textarea:                         pimenrich/templates/product/field/textarea.html
         pim/template/attribute-option/form:                          pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:              pimenrich/templates/attribute-option/validation-error.html
+        pim/template/attribute/add-attribute-line:                   pimenrich/templates/attribute/add-attribute-line.html
+        pim/template/attribute/add-attribute-footer:                 pimenrich/templates/attribute/add-attribute-footer.html
+        pim/template/i18n/flag:                                      pimenrich/templates/i18n/flag.html
+        pim/template/error/error:                                    pimenrich/templates/error/error.html

@@ -48,11 +48,12 @@ class MongoObjectsFactory
      *
      * @param string $collection
      * @param string $id
+     * @param string $database
      *
      * @return MongoDBRef
      */
-    public function createMongoDBRef($collection, $id)
+    public function createMongoDBRef($collection, $id, $database = null)
     {
-        return MongoDBRef::create($collection, $id);
+        return MongoDBRef::create($collection, $id, $database);
     }
 }

@@ -4,9 +4,9 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -16,6 +16,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class FamilyTransformer extends NestedEntityTransformer
 {
@@ -104,11 +106,11 @@ class FamilyTransformer extends NestedEntityTransformer
     protected function setChannelRequirements($class, FamilyInterface $family, $channelCode, $attributeCodes)
     {
         foreach ($attributeCodes as $attributeCode) {
-            $data = array(
+            $data = [
                 'attribute' => $attributeCode,
                 'channel'   => $channelCode,
                 'required'  => true
-            );
+            ];
             $requirement = $this->transformNestedEntity($class, 'requirements', $this->requirementClass, $data);
 
             if ($requirement->getAttribute() === null) {

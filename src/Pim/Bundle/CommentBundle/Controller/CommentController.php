@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\CommentBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Comment controller
@@ -21,32 +21,33 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class CommentController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var ManagerRegistry */
     protected $doctrine;
 
-    /** @var CommentManager */
-    protected $commentManager;
+    /** @var RemoverInterface */
+    protected $commentRemover;
 
     /** @var string */
     protected $commentClassName;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param ManagerRegistry          $doctrine
-     * @param CommentManager           $commentManager
+     * @param TokenStorageInterface $tokenStorage
+     * @param ManagerRegistry       $doctrine
+     * @param RemoverInterface      $commentRemover
+     * @param string                $commentClassName
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         ManagerRegistry $doctrine,
-        CommentManager $commentManager,
+        RemoverInterface $commentRemover,
         $commentClassName
     ) {
-        $this->securityContext  = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
         $this->doctrine         = $doctrine;
-        $this->commentManager   = $commentManager;
+        $this->commentRemover  = $commentRemover;
         $this->commentClassName = $commentClassName;
     }
 
@@ -74,7 +75,7 @@ class CommentController
             throw new AccessDeniedException('You are not allowed to delete this comment.');
         }
 
-        $this->commentManager->remove($comment);
+        $this->commentRemover->remove($comment);
 
         return new JsonResponse();
     }
@@ -88,7 +89,7 @@ class CommentController
      */
     public function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

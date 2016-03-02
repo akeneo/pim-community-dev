@@ -44,10 +44,10 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
         foreach ($this->getParametersMapping($container) as $repositoryClass => $objectClass) {
             $definition->addMethodCall(
                 'addResolveTargetRepository',
-                array(
+                [
                     $objectClass,
                     $repositoryClass
-                )
+                ]
             );
         }
     }
@@ -66,7 +66,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
     {
         $repositoryIds = $container->findTaggedServiceIds($this->tag);
 
-        $mapping = array();
+        $mapping = [];
         foreach (array_keys($repositoryIds) as $repositoryId) {
             $repositoryDef   = $container->getDefinition($repositoryId);
             $repositoryClass = $this->resolveParameter($container, $repositoryDef->getClass());

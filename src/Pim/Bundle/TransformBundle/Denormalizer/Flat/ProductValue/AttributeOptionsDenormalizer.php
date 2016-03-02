@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 
 /**
  * Attribute options collection flat denormalizer used for following attribute types:
@@ -40,7 +41,7 @@ class AttributeOptionsDenormalizer extends AbstractValueDenormalizer
         foreach (explode(',', $data) as $optionCode) {
             $option = $this->denormalizer->denormalize(
                 $optionCode,
-                'pim_catalog_simpleselect',
+                AttributeTypes::OPTION_SIMPLE_SELECT,
                 $format,
                 $context
             );

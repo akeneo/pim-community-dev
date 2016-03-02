@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for reference data attributes
@@ -27,6 +27,8 @@ class ReferenceDataEmptyValueProvider implements EmptyValueProviderInterface
      */
     public function supports($element)
     {
-        return $element instanceof AttributeInterface && null !== $element->getReferenceDataName();
+        return $element instanceof AttributeInterface &&
+            null !== $element->getReferenceDataName() &&
+            '' !== $element->getReferenceDataName();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Intl;
 
 /**
@@ -22,31 +22,19 @@ class LocaleHelper
     /** @var UserContext */
     protected $userContext;
 
-    /** @var LocaleManager*/
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface*/
+    protected $localeRepository;
 
     /**
      * Constructor
      *
-     * @param UserContext   $userContext
-     * @param LocaleManager $localeManager
+     * @param UserContext               $userContext
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(UserContext $userContext, LocaleManager $localeManager)
+    public function __construct(UserContext $userContext, LocaleRepositoryInterface $localeRepository)
     {
         $this->userContext   = $userContext;
-        $this->localeManager = $localeManager;
-    }
-
-    /**
-     * Returns the current locale
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
-     *
-     * @deprecated Locale object providing is not necessary. Use getCurrentLocaleCode instead. (will be removed in 1.3)
-     */
-    public function getCurrentLocale()
-    {
-        return $this->userContext->getCurrentLocale();
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -122,28 +110,6 @@ class LocaleHelper
     }
 
     /**
-     * Returns the flag icon for a locale
-     *
-     * @param string $code
-     * @param bool   $fullLabel
-     * @param string $translateIn
-     *
-     * @return string
-     *
-     * @deprecated Use the flag twig filter. Will be removed in 1.3
-     */
-    public function getFlag($code, $fullLabel = false, $translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-
-        return sprintf(
-            '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',
-            strtolower(\Locale::getRegion($code)),
-            $fullLabel ? $this->getLocaleLabel($code, $translateIn) : \Locale::getPrimaryLanguage($code)
-        );
-    }
-
-    /**
      * Get the language from a locale code
      *
      * @param string $code
@@ -199,7 +165,7 @@ class LocaleHelper
     public function getActivatedLocaleChoices()
     {
         $translateIn  = $this->getCurrentLocaleCode();
-        $activeCodes = $this->localeManager->getActiveCodes();
+        $activeCodes = $this->localeRepository->getActivatedLocaleCodes();
 
         $results = [];
         foreach ($activeCodes as $activeCode) {

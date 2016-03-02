@@ -4,13 +4,13 @@ namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
 use Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
  * Abstract form type test
@@ -29,25 +29,25 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     public function createTestEntityManager()
     {
         $config = new \Doctrine\ORM\Configuration();
-        $config->setEntityNamespaces(array('SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures'));
+        $config->setEntityNamespaces(['SymfonyTestsDoctrine' => 'Symfony\Bridge\Doctrine\Tests\Fixtures']);
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(\sys_get_temp_dir());
         $config->setProxyNamespace('SymfonyTests\Doctrine');
         $bundlePath = __DIR__."/../../../../..";
         $yamlDriver = new SimplifiedYamlDriver(
-            array(
+            [
                 $bundlePath."/CatalogBundle/Resources/config/doctrine" => "Pim\\Bundle\\CatalogBundle\\Entity"
-            )
+            ]
         );
 
         $config->setMetadataDriverImpl($yamlDriver);
         $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
         $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
 
-        $params = array(
+        $params = [
             'driver' => 'pdo_sqlite',
             'memory' => true,
-        );
+        ];
 
         return EntityManager::create($params, $config);
     }
@@ -112,7 +112,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      */
     protected function getExtensions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -128,7 +128,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
         $userContext->expects($this->any())
             ->method('getUserLocaleCodes')
-            ->will($this->returnValue(array('en_US', 'fr_FR')));
+            ->will($this->returnValue(['en_US', 'fr_FR']));
 
         return $userContext;
     }

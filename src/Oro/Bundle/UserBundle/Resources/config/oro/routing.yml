@@ -1,0 +1,122 @@
+oro_user_group_create:
+    path: /user/group/create
+    defaults: { _controller: OroUserBundle:Group:create }
+
+oro_user_group_update:
+    path: /user/group/update/{id}
+    defaults: { _controller: OroUserBundle:Group:update, id: 0 }
+    requirements:
+        id: \d+
+
+oro_user_group_index:
+    path: /user/group/{_format}
+    defaults: { _controller: OroUserBundle:Group:index, _format: html }
+    requirements:
+        _format: html|json
+
+oro_user_group_delete:
+    path: /user/group/delete/{id}
+    defaults: { _controller: OroUserBundle:Group:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+oro_user_reset_request:
+    path: /user/reset-request
+    defaults: { _controller: OroUserBundle:Reset:request }
+    methods: [GET]
+
+oro_user_reset_send_email:
+    path: /user/send-email
+    defaults: { _controller: OroUserBundle:Reset:sendEmail }
+    methods: [POST]
+
+oro_user_reset_check_email:
+    path: /user/check-email
+    defaults: { _controller: OroUserBundle:Reset:checkEmail }
+    methods: [GET]
+
+oro_user_reset_reset:
+    path: /user/reset/{token}
+    defaults: { _controller: OroUserBundle:Reset:reset }
+    methods: [GET, POST]
+    requirements:
+        token: \w+
+
+oro_user_role_create:
+    path: /user/role/create
+    defaults: { _controller: OroUserBundle:Role:create }
+
+oro_user_role_update:
+    path: /user/role/update/{id}
+    defaults: { _controller: OroUserBundle:Role:update, id: 0 }
+    requirements:
+        id: \d+
+
+oro_user_role_index:
+    path: /user/role/{_format}
+    defaults: { _controller: OroUserBundle:Role:index, _format: html }
+    requirements:
+        _format: html|json
+
+oro_user_role_delete:
+    path: /user/role/delete/{id}
+    defaults: { _controller: OroUserBundle:Role:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+oro_user_security_login:
+    path: /user/login
+    defaults: { _controller: OroUserBundle:Security:login }
+
+oro_user_security_check:
+    path: /user/login-check
+    defaults: { _controller: OroUserBundle:Security:check }
+
+oro_user_security_logout:
+    path: /user/logout
+    defaults: { _controller: OroUserBundle:Security:logout }
+
+oro_user_view:
+    path: /user/view/{id}
+    defaults: { _controller: OroUserBundle:User:view }
+    requirements:
+        id: \d+
+
+oro_user_profile_view:
+    path: /user/profile/view
+    defaults: { _controller: OroUserBundle:User:viewProfile }
+
+oro_user_profile_update:
+    path: /user/profile/edit
+    defaults: { _controller: OroUserBundle:User:updateProfile }
+
+oro_user_apigen:
+    path: /user/apigen/{id}
+    defaults: { _controller: OroUserBundle:User:apigen }
+    requirements:
+        id: \d+
+
+oro_user_create:
+    path: /user/create
+    defaults: { _controller: OroUserBundle:User:create }
+
+oro_user_update:
+    path: /user/update/{id}
+    defaults: { _controller: OroUserBundle:User:update, id: 0 }
+    requirements:
+        id: \d+
+
+oro_user_index:
+    path: /user/{_format}
+    defaults: { _controller: OroUserBundle:User:index, _format: html }
+    requirements:
+        _format: html|json
+
+oro_user_user_delete:
+    path: /user/delete/{id}
+    defaults: { _controller: OroUserBundle:User:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]

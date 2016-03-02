@@ -1,0 +1,95 @@
+Area: Alue
+ACRE: Eekkeri
+ARE: Aari
+ARPENT: Eekkeri
+CENTIARE: Centiare
+HECTARE: Hehtaari
+SQUARE_CENTIMETER: Neliösenttimetri
+SQUARE_DECIMETER: Neliödesimetri
+SQUARE_DEKAMETER: Neliödekametri
+SQUARE_FOOT: Neliöjalka
+SQUARE_FURLONG: Neliöfurlong
+SQUARE_HECTOMETER: Neliöhektametri
+SQUARE_INCH: Neliötuuma
+SQUARE_KILOMETER: Neliökilometri
+SQUARE_METER: Neliömetri
+SQUARE_MIL: Neliötuhannesosatuuma
+SQUARE_MILE: Neliömaili
+SQUARE_MILLIMETER: Neliömillimetri
+SQUARE_YARD: Neliöjaardi
+Binary: Binääri
+BIT: Bitti
+BYTE: Tavu
+KILOBYTE: Kilotavu
+MEGABYTE: Megatavu
+GIGABYTE: Gigatavu
+TERABYTE: Teratavu
+Frequency: Frekvenssi
+GIGAHERTZ: Gigahertsi
+KILOHERTZ: Kilohertsi
+MEGAHERTZ: Megahertsi
+TERAHERTZ: Terahertsi
+HERTZ: Hertsi
+Length: Pituus
+CENTIMETER: Senttimetri
+CHAIN: Ketju
+DECIMETER: Desimetri
+DEKAMETER: Dekametri
+FEET: Jalka
+FURLONG: Furlong
+INCH: Tuuma
+HECTOMETER: Hektametri
+KILOMETER: Kilometri
+METER: Metri
+MIL: Mil
+MILE: Maili
+MILLIMETER: Millimetri
+YARD: Jaardi
+Power: Voima
+GIGAWATT: Gigawatti
+KILOWATT: Kilowatti
+MEGAWATT: Megawatti
+TERAWATT: Terawatti
+WATT: Watti
+Speed: Nopeus
+FOOT_PER_SECOND: Tuuma per sekunti
+FOOT_PER_HOUR: Tuuma per tunti
+KILOMETER_PER_HOUR: Kilometri per tunti
+METER_PER_HOUR: Metri per tunti
+METER_PER_MINUTE: Metri per minuutti
+METER_PER_SECOND: Metri per sekunti
+MILE_PER_HOUR: Maili per tunti
+YARD_PER_HOUR: Jaardi per tunti
+Temperature: Lämpötila
+CELSIUS: Celsius
+FAHRENHEIT: Fahrenheit
+KELVIN: Kelvin
+RANKINE: Rankine
+REAUMUR: Reaumur
+Volume: Tilavuus
+BARREL: Tynnyri
+CENTILITER: Senttilitra
+CUBIC_CENTIMETER: Kuutiosenttimetri
+CUBIC_DECIMETER: Kuutiodesimetri
+CUBIC_FOOT: Kuutiojalka
+CUBIC_INCH: Kuutiotuuma
+CUBIC_METER: Kuutiometri
+CUBIC_MILLIMETER: Kuutiomillimetri
+CUBIC_YARD: Kuutiojaardi
+DECILITER: Desilitra
+GALLON: Gallona
+LITER: Litra
+MILLILITER: Millilitra
+OUNCE: Unssi
+PINT: Pint
+Weight: Paino
+DENIER: Denier
+GRAIN: Vilja
+GRAM: Gramma
+KILOGRAM: Kilogramma
+LIVRE: Livre
+MARC: Marc
+MILLIGRAM: Milligramma
+ONCE: Unssi
+POUND: Pound
+TON: Tonni

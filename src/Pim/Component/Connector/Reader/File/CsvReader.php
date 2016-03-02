@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -249,6 +249,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
             }
 
             $data = array_combine($this->fieldNames, $data);
+        } elseif ($this->csv->eof()) {
+            $data = null;
         } else {
             throw new \RuntimeException('An error occurred while reading the csv.');
         }
@@ -375,8 +377,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
         $this->csv->setFlags(
             \SplFileObject::READ_CSV   |
             \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
+            \SplFileObject::SKIP_EMPTY
         );
         $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
         $this->fieldNames = $this->csv->fgetcsv();

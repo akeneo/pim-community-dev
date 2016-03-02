@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -18,12 +19,19 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var FieldsRequirementValidator */
+    protected $validator;
+
     /**
-     * @param LocaleRepositoryInterface $localeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param FieldsRequirementValidator $validator
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        FieldsRequirementValidator $validator
+    ) {
         $this->localeRepository = $localeRepository;
+        $this->validator        = $validator;
     }
 
     /**
@@ -83,17 +91,8 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     protected function validate(array $item)
     {
         $requiredFields = ['attribute', 'code'];
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
+
+        $this->validator->validateFields($item, $requiredFields, false);
 
         $authorizedFields = array_merge($requiredFields, ['sort_order']);
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();

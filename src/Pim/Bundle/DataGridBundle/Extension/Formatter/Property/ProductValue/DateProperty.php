@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Pim\Component\Localization\Presenter\PresenterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
 /**
  * Able to render date value
  *
@@ -11,17 +14,27 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
  */
 class DateProperty extends FieldProperty
 {
+    /** @var PresenterInterface */
+    protected $presenter;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param PresenterInterface  $presenter
+     */
+    public function __construct(TranslatorInterface $translator, PresenterInterface $presenter)
+    {
+        parent::__construct($translator);
+
+        $this->presenter = $presenter;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function convertValue($value)
     {
-        $result = $this->getBackendData($value);
+        $result = !$value instanceof \DateTime ? $this->getBackendData($value) : $value;
 
-        if ($result instanceof \DateTime) {
-            $result = $result->format('Y-m-d');
-        }
-
-        return (string) $result;
+        return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
     }
 }

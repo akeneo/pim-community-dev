@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 /**
  * Change family extension
  *
@@ -16,12 +16,25 @@ define(
         'pim/product-manager',
         'text!pim/template/product/meta/change-family-modal',
         'pim/user-context',
-        'oro/mediator',
+        'pim/i18n',
+        'routing',
+        'pim/initselect2',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext, mediator) {
-        var FormView = BaseForm.extend({
+    function (
+        _,
+        Backbone,
+        BaseForm,
+        FetcherRegistry,
+        ProductManager,
+        modalTemplate,
+        UserContext,
+        i18n,
+        Routing,
+        initSelect2
+    ) {
+        return BaseForm.extend({
             tagName: 'i',
             className: 'icon-pencil change-family',
             modalTemplate: _.template(modalTemplate),
@@ -34,37 +47,81 @@ define(
                 return BaseForm.prototype.render.apply(this, arguments);
             },
             showModal: function () {
-                FetcherRegistry.getFetcher('family').fetchAll().done(_.bind(function (families) {
-                    var familyModal = new Backbone.BootstrapModal({
-                        allowCancel: true,
-                        title: _.__('pim_enrich.form.product.change_family.modal.title'),
-                        content: this.modalTemplate({
-                            families: families,
-                            product:  this.getData(),
-                            locale:   UserContext.get('catalogLocale')
-                        })
-                    });
+                var familyModal = new Backbone.BootstrapModal({
+                    allowCancel: true,
+                    cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
+                    title: _.__('pim_enrich.form.product.change_family.modal.title'),
+                    content: this.modalTemplate({
+                        product: this.getFormData()
+                    })
+                });
 
-                    familyModal.on('ok', _.bind(function () {
-                        var selectedFamily = familyModal.$('select').select2('val') || null;
+                familyModal.on('ok', function () {
+                    var selectedFamily = familyModal.$('.family-select2').select2('val') || null;
 
-                        this.getRoot().model.set('family', selectedFamily);
-                        ProductManager.generateMissing(this.getRoot().model.attributes).then(_.bind(function (product) {
-                            this.setData(product);
+                    this.getFormModel().set('family', selectedFamily);
+                    ProductManager.generateMissing(this.getFormData()).then(function (product) {
+                        this.getRoot().trigger('pim_enrich:form:change-family:before');
 
-                            mediator.trigger('change-family:change:after');
-                            familyModal.close();
-                        }, this));
+                        this.setData(product);
 
-                    }, this));
+                        this.getRoot().trigger('pim_enrich:form:change-family:after');
+                        familyModal.close();
+                    }.bind(this));
+                }.bind(this));
 
-                    familyModal.open();
-                    familyModal.$('select').select2({ allowClear: true });
-                    familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
-                }, this));
+                familyModal.open();
+                var self = this;
+
+                var options = {
+                    allowClear: true,
+                    ajax: {
+                        url: Routing.generate('pim_enrich_family_rest_index'),
+                        quietMillis: 250,
+                        cache: true,
+                        data: function (term, page) {
+                            return {
+                                search: term,
+                                options: {
+                                    limit: 20,
+                                    page: page
+                                }
+                            };
+                        },
+                        results: function (families) {
+                            var data = {
+                                more: 20 === _.keys(families).length,
+                                results: []
+                            };
+                            _.each(families, function (value, key) {
+                                data.results.push({
+                                    id: key,
+                                    text: i18n.getLabel(value.label, UserContext.get('catalogLocale'), value.code)
+                                });
+                            });
+
+                            return data;
+                        }
+                    },
+                    initSelection: function (element, callback) {
+                        var productFamily = self.getFormData().family;
+                        if (null !== productFamily) {
+                            FetcherRegistry.getFetcher('family')
+                                .fetch(self.getFormData().family)
+                                .then(function (family) {
+                                    callback({
+                                        id: family.code,
+                                        text: i18n.getLabel(family.label, UserContext.get('catalogLocale'), family.code)
+                                    });
+                                });
+                        }
+
+                    }
+                };
+
+                initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
+                familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
             }
         });
-
-        return FormView;
     }
 );

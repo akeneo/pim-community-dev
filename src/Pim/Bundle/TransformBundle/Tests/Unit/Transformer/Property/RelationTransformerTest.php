@@ -23,14 +23,14 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->entities = array();
+        $this->entities = [];
         $this->doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $this->doctrineCache
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(array($this, 'findObject')));
+            ->will($this->returnCallback([$this, 'findObject']));
         $this->transformer = new RelationTransformer($this->doctrineCache);
     }
 
@@ -52,7 +52,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
     public function addObject($class, $code)
     {
         if (!isset($this->entities[$class])) {
-            $this->entities[$class] = array();
+            $this->entities[$class] = [];
         }
         $this->entities[$class][$code] = new \stdClass();
     }
@@ -67,15 +67,15 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
             $this->findObject('class', 'code'),
             $this->transformer->transform(
                 ' code ',
-                array('class' => 'class')
+                ['class' => 'class']
             )
         );
     }
 
     public function testEmptyTransform()
     {
-        $this->assertNull($this->transformer->transform('', array('class' => 'class')));
-        $this->assertEquals(array(), $this->transformer->transform('', array('class' => 'class', 'multiple' => true)));
+        $this->assertNull($this->transformer->transform('', ['class' => 'class']));
+        $this->assertEquals([], $this->transformer->transform('', ['class' => 'class', 'multiple' => true]));
     }
 
     /**
@@ -86,7 +86,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->transformer->transform(
             'code',
-            array('class' => 'path\objectName', 'objectName' => 'objectName')
+            ['class' => 'path\objectName', 'objectName' => 'objectName']
         );
     }
 
@@ -102,7 +102,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
             array_values($this->entities['class']),
             $this->transformer->transform(
                 ' code1,code2, code3',
-                array('class' => 'class', 'multiple' => true)
+                ['class' => 'class', 'multiple' => true]
             )
         );
     }
@@ -116,7 +116,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
         $this->addObject('path\objectName', 'code1');
         $this->transformer->transform(
             ' code1,code2, code3',
-            array('class' => 'path\objectName', 'multiple' => true)
+            ['class' => 'path\objectName', 'multiple' => true]
         );
     }
 

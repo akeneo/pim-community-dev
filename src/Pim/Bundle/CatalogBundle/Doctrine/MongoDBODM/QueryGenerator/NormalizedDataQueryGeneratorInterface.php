@@ -5,6 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 /**
  * NormalizedData query generator interface
  *
+ * The interface is meant to generate queries to execute in case of modification on other entities.
+ * For example if we remove a channel, we need to remove every product values for this channel in normalized data.
+ * This was formerly done by plain php code and was time and memory consuming.
+ *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

@@ -7,7 +7,7 @@ pim_user:
             password.title:              Password
             business_unit.title:         Business Units
             email_synchronization.title: Email synchronization settings
-
+            interfaces.title:            Interfaces
 # user grids
 oro.user.controller:
     group.message.saved: "Group saved"
@@ -72,14 +72,27 @@ Ssl: Ssl
 Last logged in: Last logged in
 Login count: Login count
 Additional Information: Additional Information
+Interfaces: Interfaces
 Basic Information: Basic Information
 Contact Information: Contact Information
 User name: User name
 Birthday: Birthday
 API key: API key
+Ui locale: UI locale
+UI locale: UI locale
+User salt: User salt
+Current password: Current password
+New password: New password
+Repeat new password: New password (repeat)
 Generate key: Generate key
 Primary: primary
 Removed user: Removed user
+user:
+    product_grid_filters: Product grid filters
+    default_product_grid_view:
+        label: Default product grid view
+    default_grid_view:
+        none: None
 
 # Role
 Role: Role

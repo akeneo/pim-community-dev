@@ -11,8 +11,8 @@
 {% block content %}
     <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
-            {% set editGranted = resource_granted('pim_enrich_attribute_group_edit') %}
-            {% if resource_granted('pim_enrich_attribute_group_sort') %}
+            {% set editGranted = resource_granted('pim_enrich_attributegroup_edit') %}
+            {% if resource_granted('pim_enrich_attributegroup_sort') %}
                 <form id="pim_enrich_attributegroup_sort" action="{{ path('pim_enrich_attributegroup_sort') }}" method="POST">
                     <ul id="entities-sortable">
                         {% for groupId, groupName in groups %}
@@ -48,7 +48,7 @@
             {% block groupTab %}
                 <div class="sub-title buffer-extra-top buffer-left fullwidth text-center">
                     {{ 'attribute group.suggest creation'|trans }}
-                    {% if resource_granted('pim_enrich_attribute_group_create') %}
+                    {% if resource_granted('pim_enrich_attributegroup_create') %}
                         <br/>
                         <br/>
                         {{ 'attribute group.or'|trans }}

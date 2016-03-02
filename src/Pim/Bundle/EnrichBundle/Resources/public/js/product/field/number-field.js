@@ -27,13 +27,7 @@ define([
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="text"]').val();
 
-                if ('' !== data) {
-                    var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
-
-                    if (!isNaN(numericValue)) {
-                        data = numericValue;
-                    }
-                } else {
+                if ('' === data) {
                     data = this.attribute.empty_value;
                 }
 

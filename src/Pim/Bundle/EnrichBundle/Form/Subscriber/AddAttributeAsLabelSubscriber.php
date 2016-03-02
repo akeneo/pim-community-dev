@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -46,7 +46,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'addAttributeAsLabelField');
+        return [FormEvents::PRE_SET_DATA => 'addAttributeAsLabelField'];
     }
 
     /**
@@ -63,7 +63,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                     'attributeAsLabel',
                     'entity',
                     $data->getAttributeAsLabel(),
-                    array(
+                    [
                         'required'        => true,
                         'label'           => 'Attribute used as label',
                         'class'           => $this->attributeClass,
@@ -71,7 +71,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'auto_initialize' => false,
                         'select2'         => true,
                         'disabled'        => !$this->securityFacade->isGranted('pim_enrich_family_edit_properties'),
-                    )
+                    ]
                 )
             );
         }

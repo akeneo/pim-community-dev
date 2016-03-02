@@ -9,7 +9,7 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em)
     {
-        $name = 'Pim\Bundle\CatalogBundle\Model\Product';
+        $name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $name);
     }
 

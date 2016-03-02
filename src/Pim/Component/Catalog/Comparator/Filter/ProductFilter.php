@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -194,7 +194,15 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function mergeValueToResult(array $collection, array $value)
     {
-        return array_merge_recursive($collection, $value);
+        foreach ($value as $code => $data) {
+            if (array_key_exists($code, $collection)) {
+                $collection[$code] = array_merge_recursive($collection[$code], $data);
+            } else {
+                $collection[$code] = $data;
+            }
+        }
+
+        return $collection;
     }
 
     /**

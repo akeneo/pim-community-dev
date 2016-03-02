@@ -44,6 +44,15 @@ interface VersionRepositoryInterface
     public function getNewestLogEntry($resourceName, $resourceId, $pending = false);
 
     /**
+     * Returns newest (last) version for an array of ressources
+     *
+     * @param array $resourceNames
+     *
+     * @return Version|null
+     */
+    public function getNewestLogEntryForRessources($resourceNames);
+
+    /**
      * Returns pending versions
      *
      * @param int $limit

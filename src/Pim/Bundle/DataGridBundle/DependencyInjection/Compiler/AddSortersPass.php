@@ -36,7 +36,7 @@ class AddSortersPass implements CompilerPassInterface
                     sprintf('The service %s must be configured with a type attribute', $serviceId)
                 );
             }
-            $extension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+            $extension->addMethodCall('addSorter', [$tagAttrs['type'], new Reference($serviceId)]);
         }
     }
 }

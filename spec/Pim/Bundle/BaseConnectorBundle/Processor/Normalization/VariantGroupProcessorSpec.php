@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -18,7 +18,17 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
-        $this->beConstructedWith($normalizer, $denormalizer, 'upload/path/', 'csv');
+        $this->beConstructedWith(
+            $normalizer,
+            $denormalizer,
+            ['.', ','],
+            [
+                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
+            ],
+            'upload/path/',
+            'csv'
+        );
     }
 
     function it_is_initializable()
@@ -28,12 +38,38 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_provides_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(
+            [
+                'decimalSeparator' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['.', ','],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                        'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    ]
+                ],
+                'dateFormat' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.dateFormat.label',
+                        'help'     => 'pim_base_connector.export.dateFormat.help'
+                    ]
+                ],
+            ]
+        );
     }
 
     function it_processes_variant_group_without_product_template(
@@ -48,7 +84,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -82,7 +120,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -97,8 +137,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $denormalizer,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue
@@ -131,7 +171,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'csv',
             [
                 'with_variant_group_values' => true,
-                'identifier'                => 'my_variant_group'
+                'identifier'                => 'my_variant_group',
+                'decimal_separator'         => '.',
+                'date_format'                => 'yyyy-MM-dd',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -149,7 +191,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $denormalizer,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
-        ProductMediaInterface $media,
+        FileInfoInterface $media,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue

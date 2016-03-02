@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/mediator',
         'backbone',
         'pim/form',
         'routing',
@@ -26,6 +27,7 @@ define(
     function (
         $,
         _,
+        mediator,
         Backbone,
         BaseForm,
         Routing,
@@ -39,13 +41,14 @@ define(
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
+            className: 'product-groups',
             template: _.template(formTemplate),
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click a[data-group]': 'displayModal'
             },
             configure: function () {
-                this.listenTo(this.getRoot().model, 'change:groups', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -54,30 +57,65 @@ define(
                     return this;
                 }
 
-                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
+                    groups = this.prepareGroupsForTemplate(groups);
+
                     this.$el.html(
                         this.template({
-                            groups: groups,
-                            locale: UserContext.get('catalogLocale')
+                            label: _.__('pim_enrich.entity.product.meta.groups.title'),
+                            groups: groups
                         })
                     );
-                }, this));
+                }.bind(this));
 
                 return this;
             },
+
+            /**
+             * Prepare groups for being displayed in the template
+             *
+             * @param {Array} groups
+             *
+             * @returns {Array}
+             */
+            prepareGroupsForTemplate: function (groups) {
+                var locale = UserContext.get('catalogLocale');
+
+                return _.map(groups, function (group) {
+                    return {
+                        label: group.label[locale] || '[' + group.code + ']',
+                        code: group.code,
+                        isVariant: 'VARIANT' === group.type
+                    };
+                });
+            },
+
+            /**
+             * Get the product list for the given group
+             *
+             * @param {integer} groupCode
+             *
+             * @returns {Array}
+             */
             getProductList: function (groupCode) {
                 return $.getJSON(
                     Routing.generate('pim_enrich_group_rest_list_products', { identifier: groupCode })
                 ).then(_.identity);
             },
+
+            /**
+             * Show the modal which displays infos about produt groups
+             *
+             * @param {Object} event
+             */
             displayModal: function (event) {
-                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
                     $.when(
                         this.getProductList(group.code),
-                        FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                    ).done(_.bind(function (productList, identifier) {
+                        FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
+                    ).done(function (productList, identifierAttribute) {
                         var groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
@@ -89,7 +127,7 @@ define(
                             content: this.modalTemplate({
                                 products:     productList.products,
                                 productCount: productList.productCount,
-                                identifier:   identifier,
+                                identifier:   identifierAttribute,
                                 locale:       UserContext.get('catalogLocale')
                             })
                         });
@@ -116,8 +154,8 @@ define(
                                 )
                             );
                         });
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
             }
         });
 

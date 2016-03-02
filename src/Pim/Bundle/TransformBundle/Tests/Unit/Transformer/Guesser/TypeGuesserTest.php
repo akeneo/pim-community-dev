@@ -30,7 +30,7 @@ class TypeGuesserTest extends GuesserTestCase
             ->will($this->returnValue(true));
         $guesser = new TypeGuesser($this->transformer, 'type');
         $this->assertEquals(
-            array($this->transformer, array()),
+            [$this->transformer, []],
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }

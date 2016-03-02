@@ -44,7 +44,7 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I save the variant group
     And I am on the "boot" product page
     And I visit the "Other" group
-    Then the product Heel color should be "Red"
+    Then the product Heel color should be "ABJP44823"
 
   Scenario: Change a pim_reference_data_multiselect attribute of a variant group
     Given the following reference data:
@@ -58,4 +58,4 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I save the variant group
     And I am on the "boot" product page
     And I visit the "Other" group
-    Then the product Sole fabric should be "Gold, [smooth]"
+    Then the product Sole fabric should be "gold, smooth"

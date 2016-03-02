@@ -3,6 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -14,9 +15,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class LoadUserData extends AbstractInstallerFixture
 {
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $om;
 
     /**
@@ -26,7 +25,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         $this->om = $manager;
 
-        $dataUsers = Yaml::parse(realpath($this->getFilePath()));
+        $dataUsers = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         foreach ($dataUsers['users'] as $dataUser) {
             $user = $this->buildUser($dataUser);
@@ -65,7 +64,9 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return User
+     * @throws \Exception
+     *
+     * @return UserInterface
      */
     protected function buildUser(array $data)
     {
@@ -99,6 +100,9 @@ class LoadUserData extends AbstractInstallerFixture
         $locale = $this->getLocale($data['catalog_locale']);
         $user->setCatalogLocale($locale);
 
+        $uiLocale = $this->getLocale($data['ui_locale']);
+        $user->setUiLocale($uiLocale);
+
         $channel = $this->getChannel($data['catalog_scope']);
         $user->setCatalogScope($channel);
 
@@ -119,7 +123,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => $role));
+            ->findOneBy(['role' => $role]);
     }
 
     /**
@@ -133,7 +137,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Group')
-            ->findOneBy(array('name' => $group));
+            ->findOneBy(['name' => $group]);
     }
 
     /**
@@ -145,10 +149,10 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getLocale($localeCode)
     {
-        $localeManager = $this->container->get('pim_catalog.manager.locale');
-        $locale        = $localeManager->getLocaleByCode($localeCode);
+        $localeRepository = $this->container->get('pim_catalog.repository.locale');
+        $locale           = $localeRepository->findOneByIdentifier($localeCode);
 
-        return $locale ? $locale : current($localeManager->getActiveLocales());
+        return $locale ? $locale : current($localeRepository->getActivatedLocales());
     }
 
     /**
@@ -175,9 +179,9 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getTree($categoryCode)
     {
-        $categoryManager = $this->container->get('pim_catalog.manager.category');
-        $category        = $categoryManager->getTreeByCode($categoryCode);
+        $categoryRepository = $this->container->get('pim_catalog.repository.category');
+        $category           = $categoryRepository->findOneBy(['code' => $categoryCode, 'parent' => null]);
 
-        return $category ? $category : current($categoryManager->getTrees());
+        return $category ? $category : current($categoryRepository->getTrees());
     }
 }

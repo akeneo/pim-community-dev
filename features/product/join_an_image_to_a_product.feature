@@ -17,12 +17,12 @@ Feature: Join an image to a product
   @ce
   Scenario: Successfully leave the image empty
     When I save the product
-    Then I should see "Product successfully updated"
+    Then I should see the text "Product successfully updated"
 
   Scenario: Successfully upload an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
-    Then I should see "akeneo.jpg"
+    Then I should see the text "akeneo.jpg"
 
   Scenario: Successfully display the image in a popin
     When I attach file "akeneo.jpg" to "Visual"
@@ -35,7 +35,7 @@ Feature: Join an image to a product
     And I save the product
     And I remove the "Visual" file
     And I save the product
-    Then I should not see "akeneo.jpg"
+    Then I should not see the text "akeneo.jpg"
 
   Scenario: Successfully remove an image if media not on filesystem
     When I attach file "akeneo.jpg" to "Visual"
@@ -43,7 +43,7 @@ Feature: Join an image to a product
     And I delete "Car" media from filesystem
     And I remove the "Visual" file
     And I save the product
-    Then I should not see "akeneo.jpg"
+    Then I should not see the text "akeneo.jpg"
 
   Scenario: Successfully replace an image
     When I attach file "akeneo.jpg" to "Visual"
@@ -51,8 +51,8 @@ Feature: Join an image to a product
     And I remove the "Visual" file
     And I attach file "akeneo2.jpg" to "Visual"
     And I save the product
-    Then I should not see "akeneo.jpg"
-    But I should see "akeneo2.jpg"
+    Then I should not see the text "akeneo.jpg"
+    But I should see the text "akeneo2.jpg"
 
   Scenario: Successfully replace and remove an image
     When I attach file "akeneo.jpg" to "Visual"
@@ -60,5 +60,5 @@ Feature: Join an image to a product
     And I remove the "Visual" file
     And I attach file "akeneo2.jpg" to "Visual"
     And I save the product
-    Then I should not see "akeneo.jpg"
-    But I should see "akeneo2.jpg"
+    Then I should not see the text "akeneo.jpg"
+    But I should see the text "akeneo2.jpg"

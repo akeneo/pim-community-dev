@@ -3,19 +3,19 @@
 namespace spec\Pim\Bundle\CatalogBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Intl;
 
 class LocaleHelperSpec extends ObjectBehavior
 {
-    function let(UserContext $userContext, LocaleManager $localeManager, LocaleInterface $en)
+    function let(UserContext $userContext, LocaleRepositoryInterface $localeRepository, LocaleInterface $en)
     {
         $en->getCode()->willReturn('en_US');
         $userContext->getCurrentLocale()->willReturn($en);
 
-        $this->beConstructedWith($userContext, $localeManager);
+        $this->beConstructedWith($userContext, $localeRepository);
     }
 
     function it_provides_current_locale($en)
@@ -52,27 +52,9 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->getCurrencyLabels('fr_FR')->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('fr'));
     }
 
-    function it_provides_a_locale_flag()
+    function it_provides_translated_locales_as_choice($localeRepository)
     {
-        $this
-            ->getFlag('en_US')
-            ->shouldReturn(
-                '<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>'
-            );
-
-        $this
-            ->getFlag('en_US', true)
-            ->shouldReturn(
-                sprintf(
-                    '<span class="flag-language"><i class="flag flag-us"></i><span class="language">%s</span></span>',
-                    'English (United States)'
-                )
-            );
-    }
-
-    function it_provides_translated_locales_as_choice($localeManager)
-    {
-        $localeManager->getActiveCodes()->willReturn(['fr_FR', 'en_US']);
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
         $this->getActivatedLocaleChoices()->shouldReturn(
             [
                 'fr_FR' => 'French (France)',

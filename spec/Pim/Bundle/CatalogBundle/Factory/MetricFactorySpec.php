@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class MetricFactorySpec extends ObjectBehavior
 {
-    const METRIC_CLASS = 'Pim\Bundle\CatalogBundle\Model\Metric';
+    const METRIC_CLASS = 'Pim\Component\Catalog\Model\Metric';
 
     function let()
     {

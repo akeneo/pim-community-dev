@@ -65,7 +65,7 @@ class CriteriaCondition
         }
 
         if (!is_array($field)) {
-            $fieldArray = array();
+            $fieldArray = [];
             foreach (array_keys($operator) as $key) {
                 $fieldArray[$key] = $field;
             }
@@ -78,7 +78,7 @@ class CriteriaCondition
             throw new ProductQueryException('Field, operator and value arrays must have the same keys');
         }
 
-        $conditions = array();
+        $conditions = [];
         foreach ($field as $key => $fieldName) {
             $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
         }
@@ -100,7 +100,7 @@ class CriteriaCondition
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {
-        $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
+        $operators = ['=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like'];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
                 throw new \InvalidArgumentException(
@@ -113,14 +113,14 @@ class CriteriaCondition
             return is_object($condition) ? $condition->__toString() : $condition;
         }
 
-        $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');
+        $operators = ['NULL' => 'isNull', 'NOT NULL' => 'isNotNull'];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field);
         }
 
-        $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
+        $operators = ['IN' => 'in', 'NOT IN' => 'notIn'];
         if (array_key_exists($operator, $operators)) {
             if (!is_array($value)) {
                 throw new \InvalidArgumentException(

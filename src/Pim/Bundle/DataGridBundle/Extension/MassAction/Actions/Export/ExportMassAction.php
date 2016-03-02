@@ -36,7 +36,7 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
         }
 
         if (empty($options['context'])) {
-            $options['context'] = array();
+            $options['context'] = [];
         }
 
         return parent::setOptions($options);

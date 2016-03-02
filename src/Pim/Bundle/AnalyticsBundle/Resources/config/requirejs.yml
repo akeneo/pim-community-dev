@@ -1,0 +1,4 @@
+config:
+    paths:
+        pim/data-collector: pimanalytics/js/data-collector
+        pim/patch-fetcher:  pimanalytics/js/patch-fetcher

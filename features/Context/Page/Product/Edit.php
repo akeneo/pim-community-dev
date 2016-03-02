@@ -2,11 +2,12 @@
 
 namespace Context\Page\Product;
 
+use Akeneo\Component\Classification\Model\Category;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Page\Base\Form;
+use Context\Page\Base\ProductEditForm;
 use Context\Page\Category\CategoryView;
 
 /**
@@ -16,12 +17,12 @@ use Context\Page\Category\CategoryView;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Edit extends Form
+class Edit extends ProductEditForm
 {
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}/edit';
+    protected $path = '/enrich/product/{id}';
 
     /**
      * {@inheritdoc}
@@ -33,33 +34,68 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'        => ['css' => '.attribute-edit-actions .locale-switcher'],
                 'Copy locales dropdown'   => ['css' => '.attribute-copy-actions .locale-switcher'],
                 'Locales selector'        => ['css' => '#pim_product_locales'],
-                'Channel dropdown'        => ['css' => '.scope-switcher'],
+                'Copy channel dropdown'   => ['css' => '.attribute-copy-actions .scope-switcher'],
+                'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
                 'Completeness'            => ['css' => '.completeness-block'],
                 'Category pane'           => ['css' => '#product-categories'],
-                'Category tree'           => ['css' => '#trees'],
-                'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
-                'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
-                'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
+                'Category tree'           => [
+                    'css'        => '#trees',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
+                ],
+                'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
+                'Progress bar'            => ['css' => '.progress-bar'],
+                'Save'                    => ['css' => 'button.save-product'],
+                'Attribute tab'           => [
+                    'css'        => '.tab-container .product-attributes',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TabDecorator\ComparableTabDecorator'
+                    ]
+                ],
+                'Comparison panel' => [
+                    'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator',
+                        'Pim\Behat\Decorator\TabElementDecorator\ComparisonPanelDecorator'
+                    ]
+                ],
+                'Main context selector' => [
+                    'css'        => '.tab-container .product-attributes .attribute-edit-actions .context-selectors',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                    ]
+                ]
             ]
         );
     }
 
-    public function verifyAfterLogin()
+    /**
+     * Press the save button
+     */
+    public function save()
     {
-        $formContainer = $this->find('css', 'div.product-edit-form');
-        if (!$formContainer) {
-            return false;
-        }
+        $element = $this->getElement('Save');
 
-        return true;
+        $this->spin(function () use ($element) {
+            return $element->isVisible();
+        }, "Waiting for save button to be visible");
+
+        $element->click();
+
+        $this->spin(function () {
+            return null === $this->find(
+                'css',
+                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
+            );
+        });
     }
 
     /**
@@ -123,64 +159,6 @@ class Edit extends Form
     }
 
     /**
-     * @param string $locale
-     *
-     * @throws \Exception
-     */
-    public function switchLocale($locale)
-    {
-        $elt = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find locale switcher.');
-        }
-        $elt->click();
-
-        $elt = $this->getElement('Locales dropdown')->find('css', sprintf('a[data-locale="%s"]', $locale));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
-        }
-        $elt->click();
-    }
-
-    /**
-     * @param string $scope
-     *
-     * @throws \Exception
-     */
-    public function switchScope($scope)
-    {
-        $elt = $this->getElement('Channel dropdown')->find('css', '.dropdown-toggle');
-        if (!$elt) {
-            throw new \Exception('Could not find channel dropdown.');
-        }
-        $elt->click();
-
-        $elt = $this->getElement('Channel dropdown')->find('css', sprintf('a[data-scope="%s"]', $scope));
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find scope "%s" in switcher.', $scope));
-        }
-        $elt->click();
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $group
-     *
-     * @return NodeElement
-     */
-    public function findAvailableAttributeInGroup($attribute, $group)
-    {
-        return $this->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
-    }
-
-    /**
      * @return array
      */
     public function getHistoryRows()
@@ -205,102 +183,36 @@ class Edit extends Form
     }
 
     /**
-     * This method allows to fill a field by passing the label
+     * @param string $attribute
      *
-     * @param string  $label
-     * @param string  $value
-     * @param Element $element
+     * @return int
      */
-    public function fillField($label, $value, Element $element = null)
+    public function getAttributePosition($attribute)
     {
-        $isLabel = false;
+        $productValues = $this->spin(function () {
+            return $this->find('css', '.tab-pane.active.product-values');
+        }, "Spining on find for product-values tab to get attribute position");
 
-        try {
-            $fieldContainer = $this->findFieldContainer($label);
-        } catch (ElementNotFoundException $e) {
-            $isLabel = true;
-            $fieldContainer = $this->extractLabelElement($label, $element);
+        $rows = $this->spin(function () use ($productValues) {
+            return $productValues->findAll('css', '.field-container');
+        }, "Spining on findAll for rows on product-values to get attribute position");
+
+        $position = $this->spin(function () use ($rows, $attribute) {
+            foreach ($rows as $index => $row) {
+                if ($row->find('css', sprintf(':contains("%s")', $attribute))) {
+                    return $index + 1;
+                }
+            }
+        }, "Spining on scanning rows to get attribute position");
+
+        if (!$position) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                sprintf('Attribute "%s" not found', $attribute)
+            );
         }
 
-        $fieldType = $this->getFieldType($fieldContainer, $isLabel);
-
-        switch ($fieldType) {
-            case 'text':
-            case 'date':
-            case 'number':
-                $this->fillTextField($fieldContainer, $value);
-                break;
-            case 'textArea':
-                $this->fillTextAreaField($fieldContainer, $value);
-                break;
-            case 'metric':
-                $this->fillMetricField($fieldContainer, $value);
-                break;
-            case 'multiSelect':
-                $this->fillMultiSelectField($fieldContainer, $value);
-                break;
-            case 'price':
-                $this->fillCompoundField($fieldContainer, $value);
-                break;
-            case 'select':
-                $this->fillSelectField($fieldContainer, $value);
-                break;
-            default:
-                parent::fillField($fieldContainer->labelContent, $value);
-                break;
-        }
-    }
-
-    /**
-     * @param string $name
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
-     */
-    public function findField($name)
-    {
-        $currency = null;
-        if (1 === preg_match('/in (.{1,3})$/', $name)) {
-            // Price in EUR
-            list($name, $currency) = explode(' in ', $name);
-
-            return $this->findCompoundField($name, 0, $currency);
-        }
-
-        $container = $this->findFieldContainer($name);
-
-        $field = $this->spin(function () use ($container) {
-            return $container->find('css', '.field-input input, .field-input textarea');
-        }, 10);
-
-        return $field;
-    }
-
-    /**
-     * Find field container
-     *
-     * @param string $label
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
-     */
-    public function findFieldContainer($label)
-    {
-        $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-        if (!$labelNode) {
-            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
-        }
-
-        $container = $labelNode->getParent()->getParent()->getParent();
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
-        }
-
-        $container->name = $label;
-
-        return $container;
+        return $position;
     }
 
     /**
@@ -314,7 +226,7 @@ class Edit extends Form
     protected function extractLabelElement($field, $element)
     {
         $subLabelContent = null;
-        $labelContent = $field;
+        $labelContent    = $field;
 
         if (strstr($field, 'USD') || strstr($field, 'EUR')) {
             if (false !== strpos($field, ' ')) {
@@ -323,331 +235,35 @@ class Edit extends Form
         }
 
         if ($element) {
-            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($element, $labelContent) {
+                return $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            }, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($labelContent) {
+                return $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            }, sprintf('unable to find label %s', $labelContent));
         }
 
         if (!$label) {
             $label = new \StdClass();
         }
 
-        $label->labelContent = $labelContent;
+        $label->labelContent    = $labelContent;
         $label->subLabelContent = $subLabelContent;
 
         return $label;
     }
 
     /**
-     * Guesses the type of field identified by $label and returns it.
-     *
-     * Possible identified fields are :
-     * [date, metric, multiSelect, number, price, select, text, textArea]
-     *
-     * @param $fieldContainer
-     *
-     * @return string
-     */
-    protected function getFieldType($fieldContainer, $isLabel = false)
-    {
-        if (null === $fieldContainer || !$fieldContainer instanceof NodeElement) {
-            return null;
-        }
-
-        if ($isLabel) {
-            $formFieldWrapper = $fieldContainer->getParent()->getParent();
-        } else {
-            $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
-        }
-
-        if ($formFieldWrapper->hasClass('akeneo-datepicker-field')) {
-            return 'date';
-        } elseif ($formFieldWrapper->hasClass('akeneo-metric-field')) {
-            return 'metric';
-        } elseif ($formFieldWrapper->hasClass('akeneo-multi-select-field') ||
-            $formFieldWrapper->hasClass('akeneo-multi-select-reference-data-field')
-        ) {
-            return 'multiSelect';
-        } elseif ($formFieldWrapper->hasClass('akeneo-number-field')) {
-            return 'number';
-        } elseif ($formFieldWrapper->hasClass('akeneo-price-collection-field')) {
-            return 'price';
-        } elseif ($formFieldWrapper->hasClass('akeneo-simple-select-field') ||
-            $formFieldWrapper->hasClass('akeneo-simple-select-reference-data-field')
-        ) {
-            return 'select';
-        } elseif ($formFieldWrapper->hasClass('akeneo-text-field')) {
-            return 'text';
-        } elseif ($formFieldWrapper->hasClass('akeneo-textarea-field') ||
-            $formFieldWrapper->hasClass('akeneo-wysiwyg-field')
-        ) {
-            return 'textArea';
-        } else {
-            return parent::getFieldType($fieldContainer);
-        }
-    }
-
-    /**
-     * Find a compound field
-     *
-     * @param string $name
-     * @param        $value
-     * @param        $currency
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
-     */
-    protected function findCompoundField($name, $value, $currency)
-    {
-        $container = $this->findFieldContainer($name);
-
-        $input = $container->find('css', sprintf('input[data-currency=%s]', $currency));
-        if (!$input) {
-            throw new ElementNotFoundException($this->getSession(), 'compound field ', 'id|name|label|value', $name);
-        }
-
-        return $input;
-    }
-
-    /**
-     * Fills a text field element with $value, identified by its container or label.
-     *
-     * @param NodeElement $fieldContainerOrLabel
-     * @param string      $value
-     */
-    protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
-    {
-        $field = $fieldContainerOrLabel->find('css', 'div.field-input input');
-
-        // no field found, we're using a label
-        if (!$field) {
-            $field = $fieldContainerOrLabel->getParent()->getParent()->find('css', 'div.field-input input');
-        }
-
-        if (!$field) {
-            $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
-        }
-
-        $field->setValue($value);
-    }
-
-    /**
-     * Fills a textarea field element with $value, identified by its container or label.
-     *
-     * @param NodeElement $fieldContainer
-     * @param string      $value
-     */
-    protected function fillTextAreaField(NodeElement $fieldContainer, $value)
-    {
-        $this->spin(function () use ($value, $fieldContainer) {
-            $field = $fieldContainer->find('css', 'div.field-input > textarea');
-
-            if (!$field || !$field->isVisible()) {
-                // the textarea can be hidden (display=none) when using WYSIWYG
-                $field = $fieldContainer->find('css', 'div.note-editor > .note-editable');
-            }
-
-            $field->setValue($value);
-
-            return ($field->getValue() === $value || $field->getHTML() === $value);
-        });
-    }
-
-    /**
-     * Fills a simple select2 field with $value, identified by its $label.
-     *
-     * @param NodeElement $fieldContainer
-     * @param string      $value
-     *
-     * @throws ExpectationException
-     */
-    protected function fillSelectField(NodeElement $fieldContainer, $value)
-    {
-        if ('' === $value || null === $value) {
-            $emptyLink = $this->spin(function () use ($fieldContainer) {
-                return $fieldContainer->find('css', '.select2-search-choice-close');
-            });
-
-            return $emptyLink->click();
-        }
-
-        if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
-            $link->click();
-
-            $item = $this->spin(function () use ($value) {
-                return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-            });
-
-            return $item->click();
-        }
-
-        throw new ExpectationException(
-            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()),
-            $this->getSession()
-        );
-    }
-
-    /**
-     * Fills a select2 multi-select field with $values
-     *
-     * @param NodeElement $fieldContainer
-     * @param string      $values
-     */
-    protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
-    {
-        $field = $fieldContainer->find('css', '.form-field');
-
-        // clear multi select first
-        $fieldClasses = $field->getAttribute('class');
-        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
-            $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
-            $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
-            $this->getSession()->executeScript($script);
-        }
-
-        $link = $fieldContainer->find('css', 'ul.select2-choices');
-        if (null === $link) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
-            );
-        }
-
-        foreach ($this->listToArray($values) as $value) {
-            $link->click();
-            $item = $this->spin(function () use ($value) {
-                return $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
-                );
-            }, 5);
-
-            // Select the value in the displayed dropdown
-            if (null !== $item) {
-                $item->click();
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Could not find select2 item with value %s inside %s', $value, $link->getHtml())
-                );
-            }
-        }
-    }
-
-    /**
-     * Transform a list to array
-     *
-     * @param string $list
-     *
-     * @return array
-     */
-    public function listToArray($list)
-    {
-        if (empty($list)) {
-            return [];
-        }
-
-        return explode(', ', str_replace(' and ', ', ', $list));
-    }
-
-    /**
-     * Fills a compound field with $value, by passing the $label
-     *
-     * @param NodeElement $fieldContainer
-     * @param string      $value
-     *
-     * @throws ElementNotFoundException
-     */
-    protected function fillCompoundField(NodeElement $fieldContainer, $value)
-    {
-        $amount = null;
-        $currency = null;
-
-        if (false !== strpos($value, ' ')) {
-            list($amount, $currency) = explode(' ', $value);
-        }
-
-        if (!$currency) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The "%s" field is compound but the sub label was not provided',
-                    $amount
-                )
-            );
-        }
-
-        $field = $this->findCompoundField($fieldContainer->name, $amount, $currency);
-        $field->setValue($amount);
-    }
-
-    /**
-     * Fills a metric field with $value
-     *
-     * @param NodeElement $fieldContainer
-     * @param string      $value
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function fillMetricField(NodeElement $fieldContainer, $value)
-    {
-        if (false !== strpos($value, ' ')) {
-            list($text, $select) = explode(' ', $value);
-        } else {
-            $text   = $value;
-            $select = null;
-        }
-
-        $field = $fieldContainer->find('css', '.field-input');
-        if (null !== $select) {
-            if (null !== $link = $field->find('css', 'a.select2-choice')) {
-                $link->click();
-
-                $item = $this->spin(function () use ($select) {
-                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                }, 5);
-            }
-
-            if (!$item) {
-                throw new \InvalidArgumentException(
-                    sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
-                );
-            }
-
-            $item->click();
-        }
-
-        $this->fillTextField($fieldContainer, $text);
-    }
-
-    /**
-     * Find a validation tooltip containing a text
-     *
-     * @param string $text
-     *
-     * @return null|Element
-     */
-    public function findValidationTooltip($text)
-    {
-        return $this->spin(function () use ($text) {
-            return $this->find(
-                'css',
-                sprintf(
-                    '.validation-errors span:contains("%s")',
-                    $text
-                )
-            );
-        });
-    }
-
-    /**
-     * @param string $name
+     * @param string $label
      *
      * @return NodeElement[]
      */
-    public function findFieldIcons($name)
+    public function findFieldIcons($label)
     {
-        $field = $this->findFieldContainer($name);
+        $field = $this->findFieldContainer($label);
 
-        return $field->getParent()->findAll('css', '.footer-elements-container i');
+        return $field->findAll('css', 'i[class*="icon-"]');
     }
 
     /**
@@ -670,25 +286,49 @@ class Edit extends Form
      */
     public function getRemoveLinkFor($field)
     {
-        $link = $this->find(
-            'css',
-            sprintf(
-                '.control-group:contains("%s") .remove-attribute',
-                $field
-            )
-        );
-
-        if (!$link) {
+        $link = $this->spin(function () use ($field) {
             $link = $this->find(
                 'css',
                 sprintf(
-                    '.field-container:contains("%s") .remove-attribute',
+                    '.control-group:contains("%s") .remove-attribute',
                     $field
                 )
             );
-        }
+
+            if (!$link) {
+                $link = $this->find(
+                    'css',
+                    sprintf(
+                        '.field-container:contains("%s") .remove-attribute',
+                        $field
+                    )
+                );
+            }
+
+            return $link;
+        }, "Spining to get remove link on product edit form for field $field");
 
         return $link;
+    }
+
+    /**
+     * Get the "remove file" button for a media file (trash icon)
+     *
+     * @param $field
+     *
+     * @return NodeElement|null
+     */
+    public function getRemoveFileButtonFor($field)
+    {
+        try {
+            $button = $this->spin(function () use ($field) {
+                return $this->find('css', sprintf('.field-container:contains("%s") .clear-field', $field));
+            });
+        } catch (\Exception $e) {
+            $button = null;
+        }
+
+        return $button;
     }
 
     /**
@@ -711,7 +351,12 @@ class Edit extends Form
     public function disableProduct()
     {
         $el = $this->getElement('Status switcher');
-        $el->find('css', 'a.dropdown-toggle')->click();
+
+        $statusToggle = $this->spin(function () use ($el) {
+            return $el->find('css', 'a.dropdown-toggle');
+        }, "Spining to get the status dropdown toggle to disable product on PEF");
+
+        $statusToggle->click();
         $button = $el->find('css', 'ul a[data-status="disable"]');
         if ($button) {
             $button->click();
@@ -728,13 +373,34 @@ class Edit extends Form
     public function enableProduct()
     {
         $el = $this->getElement('Status switcher');
-        $el->find('css', 'a.dropdown-toggle')->click();
+
+        $statusToggle = $this->spin(function () use ($el) {
+            return $el->find('css', 'a.dropdown-toggle');
+        }, "Spining to get the status dropdown toggle to enable product on PEF");
+
+        $statusToggle->click();
         $button = $el->find('css', 'ul a[data-status="enable"]');
         if ($button) {
             $button->click();
         }
 
         return $this;
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getStatusSwitcher()
+    {
+        try {
+            $switcher = $this->spin(function () {
+                return $this->find('css', '.status-switcher');
+            });
+        } catch (\Exception $e) {
+            $switcher = null;
+        }
+
+        return $switcher;
     }
 
     /**
@@ -760,15 +426,7 @@ class Edit extends Form
      */
     public function findCompletenessContent()
     {
-        $completenessContent = $this->spin(function () {
-            return $this->getElement('Completeness')->getParent();
-        });
-
-        if (!$completenessContent) {
-            throw new \InvalidArgumentException('Completeness content not found !!!');
-        }
-
-        return $completenessContent;
+        return $this->getElement('Completeness', 'Completeness content not found !!!');
     }
 
     /**
@@ -1040,7 +698,7 @@ class Edit extends Form
                 ->find('css', 'div.bar')
                 ->getAttribute('data-ratio');
 
-            if ($actualRatio . '%' !==  $ratio) {
+            if ($actualRatio . '%' !== $ratio) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Expected to find ratio %s for %s:%s, found %s%%',
@@ -1074,12 +732,19 @@ class Edit extends Form
     /**
      * @param string $category
      *
-     * @return CategoryView
+     * @return Edit
      */
     public function selectTree($category)
     {
+        if (null !== $treeSelect = $this->findById('tree_select')) {
+            $treeSelect->selectOption($category);
+
+            return $this;
+        }
+
         $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-        if (!$link) {
+
+        if (null === $link) {
             throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
         }
         $link->click();
@@ -1088,109 +753,37 @@ class Edit extends Form
     }
 
     /**
-     * @param string $category
+     * @param Category $category
      *
-     * @return CategoryView
+     * @throws \Exception
      */
-    public function expandCategory($category)
+    public function clickCategoryFilterLink($category)
     {
-        $category = $this->findCategoryInTree($category)->getParent();
-        if ($category->hasClass('jstree-closed')) {
-            $category->getParent()->find('css', 'ins')->click();
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', sprintf('#node_%s a', $category->getId()));
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
         }
 
-        return $this;
+        $node->click();
     }
 
     /**
-     * @param string $category
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
+     * Filter by unclassified products
      */
-    public function findCategoryInTree($category)
+    public function clickUnclassifiedCategoryFilterLink()
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
-            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', '#node_-1 a');
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find unclassified category filter.'));
         }
 
-        return $elt;
-    }
-
-    /**
-     * Enter in copy mode
-     */
-    public function startCopy()
-    {
-        $this->getElement('Comparison dropdown')->find('css', 'div.start-copying')->click();
-        $this->getSession()->wait(500);
-    }
-
-    /**
-     * @param string $localeCode
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function compareWith($localeCode)
-    {
-        $this->startCopy();
-        try {
-            $link = $this->findLocaleLink($localeCode, null, null, true);
-        } catch (ElementNotFoundException $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Locale "%s" is not available for comparison', $localeCode)
-            );
-        }
-
-        $link->click();
-    }
-
-    /**
-     * Automatically select translations given the specified mode
-     *
-     * @param string $mode
-     */
-    public function autoSelectTranslations($mode)
-    {
-        $dropdown = $this->getElement('Copy selection dropdown');
-        $dropdown->find('css', '.dropdown-toggle')->click();
-
-        $selector = $dropdown->find('css', sprintf('a:contains("%s")', $mode));
-
-        if (!$selector) {
-            throw new \InvalidArgumentException(sprintf('Copy selection mode "%s" not found', $mode));
-        }
-
-        $selector->click();
-    }
-
-    /**
-     * Manually select translation given the specified field label
-     *
-     * @param string $fieldLabel
-     *
-     * @throws ElementNotFoundException
-     */
-    public function manualSelectTranslation($fieldLabel)
-    {
-        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $fieldLabel));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $fieldLabel);
-        }
-
-        $label->getParent()->getParent()->getParent()
-            ->find('css', '.copy-field-selector')
-            ->check();
-    }
-
-    /**
-     * Click the link to copy selected translations
-     */
-    public function copySelectedTranslations()
-    {
-        $this->getElement('Copy translations link')->click();
+        $node->click();
     }
 
     /**
@@ -1201,7 +794,7 @@ class Edit extends Form
     public function changeFamily($family)
     {
         $changeLink = $this->spin(function () {
-            return $this->getElement('Meta zone')->find('css', '.family > .change-family');
+            return $this->getElement('Meta zone')->find('css', '.product-family > .change-family');
         });
 
         $changeLink->click();
@@ -1219,7 +812,19 @@ class Edit extends Form
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
-            return $this->getElement('Meta zone')->find('css', '.family .product-family')->getHTML();
+            return $this->getElement('Meta zone')->find('css', '.product-family .product-family')->getHTML();
+        });
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function waitForProgressionBar()
+    {
+        $this->spin(function () {
+            return $this->getElement('Progress bar');
         });
     }
 
@@ -1233,7 +838,7 @@ class Edit extends Form
      *
      * @return NodeElement
      */
-    protected function findCompletenessCell($channelCode, $localeCode)
+    public function findCompletenessCell($channelCode, $localeCode)
     {
         $completenessTable = $this->findCompletenessContent();
 
@@ -1254,6 +859,26 @@ class Edit extends Form
         }
 
         return $cell->getParent();
+    }
+
+    /**
+     * Find an attribute group in the nav
+     *
+     * @param string $attributeGroupCode
+     *
+     * @throws \Exception
+     *
+     * @return NodeElement
+     */
+    public function getAttributeGroupTab($group)
+    {
+        $groups = $this->getElement('Form Groups');
+
+        $groupNode = $this->spin(function () use ($groups, $group) {
+            return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+        }, sprintf("Can't find attribute group '%s'", $group));
+
+        return $groupNode->getParent()->getParent();
     }
 
     /**
@@ -1281,5 +906,36 @@ class Edit extends Form
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCategoryTree()
+    {
+        $modal = $this->find('css', '.modal');
+        if (null !== $modal && $modal->isVisible() && null !== $tree = $modal->find('css', '#tree')) {
+            return $tree;
+        }
+
+        return $this->getElement('Category tree');
+    }
+
+    /**
+     * @return NodeElement
+     */
+    public function getSaveAndBackButton()
+    {
+        $submit = $this->spin(function () {
+            return $this->find('css', '.submit-form');
+        }, 'Submit button not found');
+
+        $submit->find('css', '.dropdown-toggle')->click();
+
+        $dropdownMenu = $submit->find('css', '.dropdown-menu');
+
+        return $this->spin(function () use ($dropdownMenu) {
+            return $dropdownMenu->find('css', '.save-product-and-back');
+        }, '"Save and back" button not found');
     }
 }

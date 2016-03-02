@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
 use Pim\Component\Catalog\Updater\Adder\FieldAdderInterface;
@@ -35,7 +35,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         AttributeAdderInterface $adder
     ) {
         $attributeRepository->findOneByIdentifier('color')->willReturn($attribute);
-        $adderRegistry->getAttributeAdder($attribute)->willReturn($adder);
+        $adderRegistry->getAdder('color')->willReturn($adder);
         $adder
             ->addAttributeData($product, $attribute, ['red', 'blue'], [])
             ->shouldBeCalled();
@@ -50,7 +50,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         FieldAdderInterface $adder
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $adderRegistry->getFieldAdder('category')->willReturn($adder);
+        $adderRegistry->getAdder('category')->willReturn($adder);
         $adder
             ->addFieldData($product, 'category', 'tshirt', [])
             ->shouldBeCalled();

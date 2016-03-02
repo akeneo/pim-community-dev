@@ -1,0 +1,147 @@
+pim_user:
+  user:
+    tab:
+      general.title: General
+      additional.title: Adicional
+      group_and_role.title: Grupos y Roles
+      password.title: Contraseña
+      business_unit.title: Unidades de negocio
+      email_synchronization.title: Configuraciones de sincronización de e-mail
+      interfaces.title: Interfaces
+oro.user.controller:
+  group.message.saved: Grupo guardado
+  role.message.saved: Rol guardado
+  user.message.saved: Usuario guardado
+  status.message.saved: Estado guardado
+oro.user.grid.users:
+  columns:
+    username: Nombre de usuario
+    email: Correo Electrónico
+    firstName: Primer nombre
+    lastName: Apellidos
+    createdAt: Creado el
+    updatedAt: Actualizado el
+    enabled: Estado
+oro.user.grid.roles:
+  columns:
+    label: Etiqueta
+oro.user.grid.groups:
+  columns:
+    name: Nombre
+pim_title:
+  user.index: Usuarios
+  user_role.index: Roles
+  user_group.index: Grupos
+  system_configuration.index: Configuración
+user.title: Usuario
+user.overview: Usuario
+Users Management: Gestión de Usuarios
+Create user: Crear usuario
+btn.create.user: Crear usuario
+New user: Nuevo usuario
+Additional: Adicional
+Groups and Roles: Grupos y Roles
+Username: Nombre de usuario
+Password: Contraseña
+Re-enter password: Re-ingresar contraseña
+Name prefix: Prefijo del nombre
+First name: Primer nombre
+Middle name: Segundo nombre
+Last name: Apellidos
+Name suffix: Sufijo del nombre
+Date of birth: Fecha de nacimiento
+Avatar: Avatar
+Additional emails: Correos electrónicos adicionales
+Add another email: Añadir otro correo electrónico
+Catalog locale: Locale de catálogo
+Catalog scope: Ambito del Catálogo
+Default tree: Árbol por defecto
+Business Units: Unidades de negocio
+Email synchronization settings: Configuración de sincronización de correo electrónico
+Host: Host
+Port: Puerto
+Ssl: SSL
+Last logged in: Última visita
+Login count: Contador de inicios de sesión
+Additional Information: Información Adicional
+Interfaces: Interfaces
+Basic Information: Información básica
+Contact Information: Información de contacto
+User name: Nombre de Usuario
+Birthday: Cumpleaños
+API key: Clave de API
+Generate key: Generar clave
+Primary: primaria
+Removed user: Usuario eliminado
+user:
+  product_grid_filters: Filtross de grilla de productos
+  default_product_grid_view:
+    label: Vista de grilla de producto automática
+  default_grid_view:
+    none: Ninguna
+Role: Rol
+Owner: Propietario
+General: General
+Entity: Entidad
+Capabilities: Capacidades
+Save and close: Guardar y cerrar
+Has role: Tiene rol
+role:
+  title: rol
+  overview: rol
+  edit: Editar rol
+  create: Crear rol
+btn.create.role: Crear rol
+rights:
+  action: Permisos
+oro_security:
+  acl_group:
+    user: Usuarios
+    role: Roles
+    group: Grupos de Usuario
+  acl:
+    user:
+      view: Lista de usuarios
+      create: Crear un usuario
+      edit: Editar usuarios
+      delete: Quitar un usuario
+    role:
+      view: Lista de roles
+      create: Crear un rol
+      edit: Editar rol
+      delete: Quitar un rol
+    group:
+      view: Lista de Grupos de usuarios
+      create: Crear un grupo de usuarios
+      edit: Editar grupos de usuarios
+      delete: Eliminar un usuario del grupo
+(default): Permisos predeterminados en entidades
+VIEW: Vista
+CREATE: Crear
+EDIT: Editar
+DELETE: Borrar
+ASSIGN: Asignar
+SHARE: Compartir
+oro:
+  security:
+    access-level:
+      BASIC: Usuario
+      LOCAL: Unidad de negocio
+      DEEP: División
+      GLOBAL: Organización
+      SYSTEM: Sistema
+      NONE: Ninguno
+Create group: Crear grupo
+btn.create.user-group: Crear grupo
+Has group: Tiene grupo
+Save and Close: Guardar y cerrar
+user-group.overview: Grupos
+Log in: Iniciar sesion
+Remember me on this computer: Recordarme en esta computadora
+Forgot your password?: ¿Olvidó su contraseña?
+Username or Email: Nombre de usuario o Email
+Forgot Password: Contraseña olvidada
+Request: Petición
+Check Email: Revise su correo electrónico
+password_reset_email_sent: 'Se envió un correo electrónico a %email%. Contiene un enlace que usted debe hacer clic para restablecer su contraseña.'
+Go to homepage: Ir a la página de inicio

@@ -5,7 +5,8 @@ namespace Context\Page\Base;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Context\SpinCapableTrait;
+use Context\FeatureContext;
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -21,21 +22,41 @@ class Base extends Page
     use SpinCapableTrait;
 
     protected $elements = [
-        'Dialog'         => ['css' => 'div.modal'],
-        'Title'          => ['css' => '.navbar-title'],
-        'Product title'  => ['css' => '.product-title'],
-        'HeadTitle'      => ['css' => 'title'],
-        'Flash messages' => ['css' => '.flash-messages-holder'],
-        'Navigation Bar' => ['css' => 'header#oroplatform-header'],
-        'Container'      => ['css' => '#container'],
+        'Body'             => ['css' => 'body'],
+        'Dialog'           => ['css' => 'div.modal'],
+        'Title'            => ['css' => '.navbar-title'],
+        'Product title'    => ['css' => '.product-title'],
+        'HeadTitle'        => ['css' => 'title'],
+        'Flash messages'   => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
+        'Container'        => ['css' => '#container'],
+        'Locales dropdown' => ['css' => '#locale-switcher'],
     ];
 
     /**
-     * Verify that page is loaded after login
+     * {@inheritdoc}
      */
-    public function verifyAfterLogin()
+    public function getElement($name)
     {
-        return true;
+        $element = parent::getElement($name);
+
+        if (isset($this->elements[$name]['decorators'])) {
+            foreach ($this->elements[$name]['decorators'] as $decorator) {
+                $element = new $decorator($element);
+            }
+        }
+
+        return $element;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findField($locator)
+    {
+        return $this->spin(function () use ($locator) {
+            return parent::findField($locator);
+        }, sprintf("Can't find the field with given locator (%s)", $locator));
     }
 
     /**
@@ -68,6 +89,17 @@ class Base extends Page
             );
         } catch (UnsupportedDriverActionException $e) {
         }
+    }
+
+    /**
+     * @param string $locator
+     * @param string $value
+     */
+    public function simpleFillField($locator, $value)
+    {
+        $this->spin(function () use ($locator) {
+            return parent::findField($locator);
+        })->setValue($value);
     }
 
     /**
@@ -124,12 +156,11 @@ class Base extends Page
         $name      = $elt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name) {
-            $title = $this->getElement('Product title')->find('css', '.product-label')->getText();
-            if (!$title) {
-                throw new \Exception('Could not find the page title');
-            }
+            $titleElt = $this->spin(function () {
+                return $this->getElement('Product title')->find('css', '.product-label');
+            }, "Could not find the page title");
 
-            return $title;
+            return $titleElt->getText();
         }
 
         return sprintf(
@@ -199,7 +230,7 @@ class Base extends Page
     {
         $element = $this->getConfirmDialog();
 
-        $button = $element->find('css', 'a.btn.ok');
+        $button = $element->find('css', '.ok');
 
         if (!$button) {
             throw new \Exception('Could not find the confirmation button');
@@ -316,32 +347,55 @@ class Base extends Page
             throw new \Exception('Could not find the flash messages holder');
         }
 
-        return $holder->find('css', sprintf('div.message:contains("%s")', $text));
+        return $holder->find('css', sprintf('.message:contains("%s")', $text));
     }
 
     /**
      * @param string $item
      * @param string $button
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getDropdownButtonItem($item, $button)
     {
-        $dropdown = $this
-            ->find('css', sprintf('div.btn-group:contains("%s")', $button));
+        $dropdownToggle = $this->spin(function () use ($button) {
+            return $this->find('css', sprintf('.dropdown-toggle:contains("%s")', $button));
+        }, sprintf('Dropdown button "%s" not found', $button));
 
-        if (!$dropdown || !$dropdown->find('css', 'button.dropdown-toggle')) {
-            throw new \InvalidArgumentException(sprintf('Dropdown button "%s" not found', $button));
-        }
-        $dropdown->find('css', 'button.dropdown-toggle')->click();
+        $dropdownToggle->click();
 
-        $listItem = $dropdown->find('css', sprintf('li:contains("%s") a', $item));
-        if (!$listItem) {
-            throw new \InvalidArgumentException(sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
-        }
+        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu');
 
-        return $listItem;
+        return $this->spin(function () use ($dropdownMenu, $item) {
+            return $dropdownMenu->find('css', sprintf('li:contains("%s") a', $item));
+        }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
+    }
+
+    /**
+     * @return int timeout in millisecond
+     */
+    protected function getTimeout()
+    {
+        return FeatureContext::getTimeout();
+    }
+
+    /**
+     * Drags an element on another one.
+     * Works better than the standard dragTo.
+     *
+     * @param NodeElement $element
+     * @param NodeElement $dropZone
+     */
+    public function dragElementTo(NodeElement $element, NodeElement $dropZone)
+    {
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+
+        $from = $session->element('xpath', $element->getXpath());
+        $to = $session->element('xpath', $dropZone->getXpath());
+
+        $session->moveto(['element' => $from->getID()]);
+        $session->buttondown('');
+        $session->moveto(['element' => $to->getID()]);
+        $session->buttonup('');
     }
 }

@@ -2,21 +2,22 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductAssociationProcessorSpec extends ObjectBehavior
 {
@@ -26,14 +27,16 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
-        ProductFilterInterface $productAssocFilter
+        ProductFilterInterface $productAssocFilter,
+        ObjectDetacherInterface $productDetacher
     ) {
         $this->beConstructedWith(
             $arrayConverter,
             $productRepository,
             $productUpdater,
             $productValidator,
-            $productAssocFilter
+            $productAssocFilter,
+            $productDetacher
         );
 
         $this->setStepExecution($stepExecution);
@@ -41,9 +44,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_execution_aware_processor()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_has_no_extra_configuration()
@@ -86,7 +89,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
@@ -117,78 +120,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_updates_an_existing_product_without_filter_values(
-        $arrayConverter,
-        $productRepository,
-        $productUpdater,
-        $productValidator,
-        $productAssocFilter,
-        StepExecution $stepExecution,
-        ProductInterface $product,
-        AssociationInterface $association,
-        ConstraintViolationListInterface $violationList
-    ) {
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
-
-        $originalData = [
-            'sku'           => 'tshirt',
-            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
-            'XSELL-product' => ['AKN_TS, ORO_TSH']
-        ];
-        $convertedData =                 [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
-            'associations' => [
-                'XSELL' => [
-                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
-                    'product' => ['AKN_TS', 'ORO_TS']
-                ]
-            ]
-        ];
-        $arrayConverter
-            ->convert($originalData)
-            ->willReturn($convertedData);
-
-        $filteredData = [
-            'associations' => [
-                'XSELL' => [
-                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
-                    'product' => ['AKN_TS', 'ORO_TS']
-                ]
-            ]
-        ];
-
-        $productAssocFilter->filter($product, [])
-            ->shouldNotBeCalled();
-
-        $productUpdater
-            ->update($product, $filteredData)
-            ->shouldBeCalled();
-
-        $product->getAssociations()->willReturn([$association]);
-        $productValidator
-            ->validate($association)
-            ->willReturn($violationList);
-
-        $this->setEnabledComparison(false);
-        $this
-            ->process($originalData)
-            ->shouldReturn($product);
-    }
-
     function it_skips_a_product_when_update_fails(
         $arrayConverter,
         $productRepository,
         $productUpdater,
         $productAssocFilter,
         $stepExecution,
+        $productDetacher,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -216,7 +154,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -237,8 +175,10 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
 
+        $productDetacher->detach($product)->shouldBeCalled();
+
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -252,6 +192,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productValidator,
         $productAssocFilter,
         $stepExecution,
+        $productDetacher,
         AssociationInterface $association,
         ProductInterface $product
     ) {
@@ -280,7 +221,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -308,8 +249,10 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
 
+        $productDetacher->detach($product)->shouldBeCalled();
+
         $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$originalData]
@@ -322,6 +265,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productAssocFilter,
         $stepExecution,
+        $productDetacher,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -349,7 +293,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -369,6 +313,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
+
+        $productDetacher->detach($product)->shouldBeCalled();
 
         $this->process($originalData)
             ->shouldReturn(null);

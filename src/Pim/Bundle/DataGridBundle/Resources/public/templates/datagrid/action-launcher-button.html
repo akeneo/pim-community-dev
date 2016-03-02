@@ -1,0 +1,15 @@
+<<%- tagName %> href="<%= link %>" class="<%- className %><% if (!enabled) { %> disabled<% } %>"
+    <% _.each(attributes, function(attribute, name) { %>
+        <%- name %>="<%- attribute %>"
+    <% }) %>
+    title="<%- label %>"
+>
+    <% if (icon) { %>
+        <i class="icon-<%- icon %> hide-text"><%- label %></i>
+    <% } else { %>
+        <% if (iconClassName) { %>
+            <i class="<%- iconClassName %>"></i>
+        <% } %>
+        <%- label %>
+    <% } %>
+</<%- tagName %>>

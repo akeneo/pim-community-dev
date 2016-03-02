@@ -2,16 +2,18 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -35,6 +37,9 @@ class ProductBuilder implements ProductBuilderInterface
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
+    
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var AttributeValuesResolver */
     protected $valuesResolver;
@@ -111,10 +116,10 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addMissingProductValues(ProductInterface $product)
+    public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null)
     {
         $attributes     = $this->getExpectedAttributes($product);
-        $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes);
+        $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes, $channels, $locales);
         $existingValues = $this->getExistingValues($product);
 
         $missingValues = array_filter(
@@ -270,7 +275,7 @@ class ProductBuilder implements ProductBuilderInterface
     {
         $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
-        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
+        if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()) {
             $prices = $value->getPrices();
 
             foreach ($activeCurrencyCodes as $currencyCode) {
@@ -366,15 +371,15 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getExistingValues(ProductInterface $product)
     {
-        $existingValues = array();
+        $existingValues = [];
         $values = $product->getValues();
         foreach ($values as $value) {
-            $existingValues[] = array(
+            $existingValues[] = [
                 'attribute' => $value->getAttribute()->getCode(),
                 'type'      => $value->getAttribute()->getAttributeType(),
                 'locale'    => $value->getLocale(),
                 'scope'     => $value->getScope()
-            );
+            ];
         }
 
         return $existingValues;

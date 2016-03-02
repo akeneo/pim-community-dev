@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel repository
@@ -20,7 +21,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = array('label' => 'ASC'), $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['label' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -28,7 +29,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('label' => 'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = ['label' => 'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }
@@ -92,13 +93,13 @@ SQL;
 
         $stmt = $this->getEntityManager()->getConnection()->executeQuery(
             $sql,
-            array(
+            [
                 ':channel_id'         => $channel->getId(),
                 ':current_locale_ids' => $currentLocaleIds,
-            ),
-            array(
+            ],
+            [
                 ':current_locale_ids' => Connection::PARAM_INT_ARRAY,
-            )
+            ]
         );
 
         $rows = $stmt->fetchAll();
@@ -148,9 +149,23 @@ SQL;
     /**
      * {@inheritdoc}
      */
+    public function getChannelCountUsingCurrency(CurrencyInterface $currency)
+    {
+        return (int) $this->createQueryBuilder('c')
+                ->select('count(c.id)')
+                ->innerJoin('c.currencies', 'cu')
+                ->where('cu.id = :currencies')
+                ->setParameter('currencies', [$currency])
+                ->getQuery()
+                ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -158,6 +173,6 @@ SQL;
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

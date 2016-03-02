@@ -3,9 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Convert value into channel conversion unit if selected
@@ -42,6 +42,9 @@ class MetricConverter
             $data = $value->getData();
             $attribute = $value->getAttribute();
             if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
+                if (null === $data->getData()) {
+                    return;
+                }
                 $channelUnit = $channelUnits[$attribute->getCode()];
                 $this->converter->setFamily($data->getFamily());
                 $data->setData(

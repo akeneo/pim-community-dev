@@ -46,7 +46,7 @@ class ProductHydrator implements HydratorInterface
         $familyTransformer = new FamilyTransformer();
         $complTransformer  = new CompletenessTransformer();
         $groupsTransformer = new GroupsTransformer();
-        $assocTramsformer  = new AssociationTransformer();
+        $assocTransformer  = new AssociationTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
@@ -54,7 +54,7 @@ class ProductHydrator implements HydratorInterface
             $result = $familyTransformer->transform($result, $locale);
             $result = $complTransformer->transform($result, $locale, $scope);
             $result = $groupsTransformer->transform($result, $locale, $groupId);
-            $result = $assocTramsformer->transform($result, $associationTypeId, $currentProduct);
+            $result = $assocTransformer->transform($result, $associationTypeId, $currentProduct);
 
             $rows[] = new ResultRecord($result);
         }

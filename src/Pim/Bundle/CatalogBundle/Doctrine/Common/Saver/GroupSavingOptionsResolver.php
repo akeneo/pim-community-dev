@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Resolve group saving options
@@ -43,20 +42,16 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'copy_values_to_products', 'add_products', 'remove_products']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'                   => 'bool',
-                'copy_values_to_products' => 'bool',
-                'add_products'            => 'array',
-                'remove_products'         => 'array',
-            ]
-        );
+        $resolver->setDefined(['flush', 'copy_values_to_products', 'add_products', 'remove_products'])
+            ->setAllowedTypes('flush', 'bool')
+            ->setAllowedTypes('copy_values_to_products', 'bool')
+            ->setAllowedTypes('add_products', 'array')
+            ->setAllowedTypes('remove_products', 'array');
 
         return $resolver;
     }

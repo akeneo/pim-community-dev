@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -12,6 +11,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated not used anymore, will be removed in 1.5
  */
 class FamilyManager
 {
@@ -21,28 +22,24 @@ class FamilyManager
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /**
      * Constructor
      *
      * @param FamilyRepositoryInterface $repository
      * @param UserContext               $userContext
-     * @param ObjectManager             $objectManager
      */
     public function __construct(
         FamilyRepositoryInterface $repository,
-        UserContext $userContext,
-        ObjectManager $objectManager
+        UserContext $userContext
     ) {
         $this->repository      = $repository;
         $this->userContext     = $userContext;
-        $this->objectManager   = $objectManager;
     }
 
     /**
-     * Get choices
+     * Get choices, only used by datagrids, should be moved
+     *
+     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.5
      *
      * @return array
      */

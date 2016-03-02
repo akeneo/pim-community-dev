@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 class ChangeFamilySpec extends ObjectBehavior
 {
@@ -21,7 +21,7 @@ class ChangeFamilySpec extends ObjectBehavior
         $this->setFamily($mugs);
 
         $this->getFamily()->shouldReturn($mugs);
-        $this->getFamily()->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
+        $this->getFamily()->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\FamilyInterface');
     }
 
     function it_provides_a_form_type()

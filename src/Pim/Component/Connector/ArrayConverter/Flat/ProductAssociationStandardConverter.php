@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
@@ -18,24 +17,18 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
     /** @var ProductStandardConverter */
     protected $productConverter;
 
-    /** @var AssociationColumnsResolver */
-    protected $assocColumnsResolver;
-
     /** @var AttributeColumnsResolver */
     protected $attrColumnsResolver;
 
     /**
      * @param ProductStandardConverter   $productConverter
-     * @param AssociationColumnsResolver $assocColumnsResolver
      * @param AttributeColumnsResolver   $attrColumnsResolver
      */
     public function __construct(
         ProductStandardConverter $productConverter,
-        AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver
     ) {
         $this->productConverter = $productConverter;
-        $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attrColumnsResolver = $attrColumnsResolver;
     }
 
@@ -75,10 +68,10 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
      */
     public function convert(array $item, array $options = [])
     {
-        $filteredItem = $this->filter($item);
-        $convertedItem = $this->productConverter->convert($filteredItem, $options);
+        $convertedItem = $this->productConverter->convert($item, $options);
+        $filteredItem  = $this->filter($convertedItem);
 
-        return $convertedItem;
+        return $filteredItem;
     }
 
     /**
@@ -90,11 +83,9 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
      */
     protected function filter(array $item)
     {
-        $requiredFields = $this->assocColumnsResolver->resolveAssociationColumns();
-        $requiredFields[] = $this->attrColumnsResolver->resolveIdentifierField();
-
+        $expectedFields = [$this->attrColumnsResolver->resolveIdentifierField(), 'associations'];
         foreach (array_keys($item) as $fieldName) {
-            if (!in_array($fieldName, $requiredFields)) {
+            if (!in_array($fieldName, $expectedFields)) {
                 unset($item[$fieldName]);
             }
         }

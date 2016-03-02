@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.6
  */
 class EntityTransformerRegistry implements EntityTransformerInterface
 {
@@ -26,7 +28,7 @@ class EntityTransformerRegistry implements EntityTransformerInterface
     /**
      * @var array
      */
-    protected $transformerIds = array();
+    protected $transformerIds = [];
 
     /**
      * Constructor
@@ -54,7 +56,7 @@ class EntityTransformerRegistry implements EntityTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
         return $this->getEntityTransformer($class)->transform($class, $data, $defaults);
     }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * Dummy step, can't be used unless you have a concrete implementation
@@ -11,6 +11,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated please use Pim\Component\Connector\Reader\DummyItemReader will be removed in 1.6
  */
 class DummyReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
@@ -27,6 +29,6 @@ class DummyReader extends AbstractConfigurableStepElement implements ItemReaderI
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

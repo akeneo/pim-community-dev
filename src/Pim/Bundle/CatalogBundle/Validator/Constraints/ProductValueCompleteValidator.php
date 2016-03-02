@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -22,7 +22,8 @@ class ProductValueCompleteValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if ($value === null || $value === false) {
-            $this->context->addViolation($constraint->messageNotNull);
+            $this->context->buildViolation($constraint->messageNotNull)
+                ->addViolation();
         }
 
         if (!$value instanceof ProductValueInterface) {
@@ -42,15 +43,17 @@ class ProductValueCompleteValidator extends ConstraintValidator
     {
         $data = $value->getData();
 
-        if ($data === null) {
-            $this->context->addViolation($constraint->messageNotNull);
+        if (null === $data) {
+            $this->context->buildViolation($constraint->messageNotNull)
+                ->addViolation();
 
             return;
         }
 
-        if ($data === ''
-            || ($data instanceof Collection && count($data) === 0)) {
-            $this->context->addViolation($constraint->messageComplete);
+        if ('' === $data
+            || ($data instanceof Collection && 0 === count($data))) {
+            $this->context->buildViolation($constraint->messageComplete)
+                ->addViolation();
 
             return;
         }
@@ -69,11 +72,11 @@ class ProductValueCompleteValidator extends ConstraintValidator
         if ($value->getAttribute()) {
             $backendType = $value->getAttribute()->getBackendType();
 
-            if ($backendType === 'prices') {
+            if ('prices' === $backendType) {
                 $this->validatePrices($value, $constraint);
-            } elseif ($backendType === 'media') {
+            } elseif ('media' === $backendType) {
                 $this->validateMedia($value, $constraint);
-            } elseif ($backendType === 'metric') {
+            } elseif ('metric' === $backendType) {
                 $this->validateMetric($value, $constraint);
             }
         }
@@ -98,8 +101,9 @@ class ProductValueCompleteValidator extends ConstraintValidator
         foreach ($expectedCurrencies as $currency) {
             foreach ($value->getData() as $price) {
                 if ($price->getCurrency() === $currency) {
-                    if ($price->getData() === null) {
-                        $this->context->addViolation($constraint->messageComplete);
+                    if (null === $price->getData()) {
+                        $this->context->buildViolation($constraint->messageComplete)
+                            ->addViolation();
                     }
                 }
             }
@@ -115,8 +119,9 @@ class ProductValueCompleteValidator extends ConstraintValidator
     protected function validateMedia(ProductValueInterface $value, Constraint $constraint)
     {
         $media = $value->getMedia();
-        if (!$media || $media->__toString() === '') {
-            $this->context->addViolation($constraint->messageComplete);
+        if (!$media || $media->__toString() === '' || $media->__toString() === null) {
+            $this->context->buildViolation($constraint->messageComplete)
+                ->addViolation();
         }
     }
 
@@ -130,7 +135,8 @@ class ProductValueCompleteValidator extends ConstraintValidator
     {
         $metric = $value->getMetric();
         if (!$metric || $metric->getData() === null) {
-            $this->context->addViolation($constraint->messageComplete);
+            $this->context->buildViolation($constraint->messageComplete)
+                ->addViolation();
         }
     }
 }

@@ -3,7 +3,6 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
@@ -33,9 +32,11 @@ datagrid:
                 selector:      product_completeness
             created:
                 label:         Created At
+                type:          product_value_date
                 frontend_type: date
             updated:
                 label:         Updated At
+                type:          product_value_date
                 frontend_type: date
             groups:
                 label:         Groups
@@ -51,7 +52,7 @@ datagrid:
                     - dataLocale
             delete_link:
                 type: url
-                route: pim_enrich_product_remove
+                route: pim_enrich_product_rest_remove
                 params:
                     - id
             toggle_status_link:
@@ -61,16 +62,21 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      tab-redirect
-                label:     Edit attributes of the product
-                tab:       pim_enrich-product-tab-attribute
-                icon:      edit
+                type:      navigate
+                label:
+                icon:
                 link:      edit_link
                 rowAction: true
+            edit_attributes:
+                type:      tab-redirect
+                label:     Edit attributes of the product
+                tab:       pim-product-edit-form-attributes
+                icon:      edit
+                link:      edit_link
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
-                tab:   pim_enrich-product-tab-category
+                tab:   pim-product-edit-form-categories
                 icon:  folder-close
                 link:  edit_link
             delete:
@@ -84,6 +90,10 @@ datagrid:
                 label: Toggle status
                 icon:  retweet
                 link:  toggle_status_link
+        mass_actions_groups:
+            quick_export:
+                label: pim_datagrid.mass_action_group.quick_export.label
+                icon: download-alt
         mass_actions:
             delete:
                 type: delete
@@ -100,7 +110,6 @@ datagrid:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     icon: trash
-
             quick_export_csv:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_all
@@ -110,11 +119,13 @@ datagrid:
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
+                    _jobCode: csv_product_quick_export
                 context:
                     withHeader: true
                 messages:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
-
+                launcherOptions:
+                    group: quick_export
             mass_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
@@ -157,10 +168,9 @@ datagrid:
                     data_name: family
                     options:
                         field_options:
+                            multiple: true
                             attr:
                                 empty_choice: true
-                            multiple: true
-                            choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
                     type:      product_groups
                     label:     Groups

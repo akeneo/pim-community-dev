@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\InstallerBundle\Exception;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Entity\Warning;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Model\Warning;
 use Symfony\Component\Yaml\Yaml;
 
 /**

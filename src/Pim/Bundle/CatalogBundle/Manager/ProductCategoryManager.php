@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product category manager
@@ -30,7 +30,7 @@ class ProductCategoryManager
      * Constructor
      *
      * @param ProductCategoryRepositoryInterface $productRepo  Product repository
-     * @param CategoryRepositoryInterface        $categoryRepo Category repository
+     * @param CategoryRepositoryInterface        $categoryRepo Product category repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,

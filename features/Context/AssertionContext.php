@@ -8,7 +8,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -29,8 +31,25 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageContainsText($text)
     {
-        $this->getMainContext()->spin(function () use ($text) {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\"', '"', $text);
+        $text = strip_tags($text);
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
+
+            return true;
+        });
+    }
+
+    /**
+     * Checks, that page does not contain specified text.
+     *
+     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageNotContainsText($text)
+    {
+        $this->spin(function () use ($text) {
+            $this->assertSession()->pageTextNotContains($text);
 
             return true;
         });
@@ -61,8 +80,9 @@ class AssertionContext extends RawMinkContext
     public function iShouldSeeValidationError($error)
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $protectedError = addslashes($error);
             $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
-            $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
+            $found  = $this->getSession()->evaluateScript(sprintf($script, $protectedError));
             if ($found) {
                 return;
             }
@@ -140,6 +160,32 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $currencies
+     * @param string $field
+     *
+     * @Then /^I should see "(.+)" currencies on the (.*) price field$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeCurrenciesOnThePriceField($currencies, $field)
+    {
+        if (null === $priceLabelField = $this->getCurrentPage()->findField($field)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the price field "%s".', $field));
+        }
+        $currencies = explode(',', $currencies);
+        $currencies = array_map('trim', $currencies);
+        $priceField = $priceLabelField->getParent();
+
+        foreach ($currencies as $currency) {
+            if (null === $priceField->find('css', sprintf('.controls input[value="%s"]', $currency))) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field)
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should not see the (.*) fields?$/
@@ -156,6 +202,10 @@ class AssertionContext extends RawMinkContext
                     throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
                 }
             } catch (ElementNotFoundException $e) {
+            } catch (\Exception $e) {
+                if ($e instanceof ExpectationException) {
+                    throw $e;
+                }
             }
         }
     }
@@ -192,9 +242,8 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeFlashMessage($text)
     {
-        // TODO Flash messages tests temporarily disabled because unstable on CI
         return true;
-//        $this->getMainContext()->wait(10000, '$(".flash-messages-holder").length > 0');
+//        $this->getMainContext()->wait('$(".flash-messages-holder").length > 0');
 //        if (!$this->getCurrentPage()->findFlashMessage($text)) {
 //            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
 //        }
@@ -203,6 +252,7 @@ class AssertionContext extends RawMinkContext
     /**
      * @param TableNode $tableNode
      *
+     * @Then /^I should see a dialog with the following content:$/
      * @Then /^I should see a confirm dialog with the following content:$/
      *
      * @throws ExpectationException
@@ -284,7 +334,7 @@ class AssertionContext extends RawMinkContext
             ];
         }
 
-        $valuePattern = '/(.)*<b>%s:<\/b>\s*%s\s*(.)*/';
+        $valuePattern = '/(.)*<strong>%s:<\/strong>\s*%s\s*(.)*/';
 
         $expectedUpdates = $table->getHash();
         foreach ($expectedUpdates as $data) {
@@ -335,14 +385,14 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $block = $this->getMainContext()->spin(function () {
+        $block = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.history-block');
-        });
+        }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
-            $row = $this->getMainContext()->spin(function () use ($block, $data) {
+            $row = $this->spin(function () use ($block, $data) {
                 return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
-            });
+            }, sprintf('Cannot find the row %s', $data['version']));
 
             if (!$row) {
                 throw $this->createExpectationException(
@@ -381,9 +431,14 @@ class AssertionContext extends RawMinkContext
 
             $matchingRow = null;
             $parsedText = '';
+            $parsedTexts = [];
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
+
                 $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
+                $parsedText = preg_replace('/\s+/', ' ', $parsedText);
+                $parsedTexts[] = $parsedText;
+
                 if ($parsedText === $data['property']) {
                     $matchingRow = $row;
                     break;
@@ -392,7 +447,7 @@ class AssertionContext extends RawMinkContext
 
             if (!$matchingRow) {
                 throw $this->createExpectationException(
-                    sprintf('No row found for property %s, found %s', $data['property'], $parsedText)
+                    sprintf('No row found for property %s, found %s', $data['property'], implode(', ', $parsedTexts))
                 );
             }
 
@@ -405,12 +460,10 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            if (
-                !preg_match(
-                    sprintf('/^%s$/', $newValue),
-                    $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
-                )
-            ) {
+            if (!preg_match(
+                sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $newValue)),
+                $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
+            )) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Wrong new value in row %s, expected %s, got %s',
@@ -420,28 +473,6 @@ class AssertionContext extends RawMinkContext
                     )
                 );
             }
-        }
-    }
-
-    /**
-     * @param $version
-     *
-     * @Then /^the version (\d+) should be marked as published$/
-     *
-     * @throws ExpectationException
-     */
-    public function versionShouldBeMarkedAsPublished($version)
-    {
-        $row = $this->getCurrentPage()->find('css', '.history-block tr[data-version="' . $version . '"]');
-        if (!$row) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see history row for version %s, not found', $version)
-            );
-        }
-        if (!$row->find('css', '.label-published')) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see version %d marked as published, but is not', $version)
-            );
         }
     }
 
@@ -563,16 +594,57 @@ class AssertionContext extends RawMinkContext
     /**
      * @param int $count
      *
-     * @Then /^I should have (\d+) new notification$/
+     * @Then /^I should have (\d+) new notifications?$/
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+
         assertEquals(
             $actualCount,
             $count,
             sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
         );
+    }
+
+    /**
+     * @When /^I open the notification panel$/
+     */
+    public function iOpenTheNotificationPanel()
+    {
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
+
+        if ($notificationWidget->hasClass('open')) {
+            return;
+        }
+
+        $notificationWidget->find('css', '.dropdown-toggle')->click();
+
+        // Wait for the footer of the notification panel dropdown to be loaded
+        $this->spin(function () {
+            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $content = trim($footer->getText());
+
+            return !empty($content);
+        });
+    }
+
+    /**
+     * @When /^I click on the notification "([^"]+)"$/
+     */
+    public function iClickOnTheNotification($message)
+    {
+        $this->iOpenTheNotificationPanel();
+        $page = $this->getCurrentPage();
+        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+
+        $link = $this->spin(function () use ($page, $selector) {
+            return $page->find('css', $selector);
+        });
+
+        $link->click();
     }
 
     /**
@@ -584,24 +656,40 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
-        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
-        $element->find('css', '.dropdown-toggle')->click();
-        $this->getMainContext()->wait();
+        $this->iOpenTheNotificationPanel();
+
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
 
         $icons = [
             'success' => 'icon-ok',
             'warning' => 'icon-warning-sign',
             'error'   => 'icon-remove',
+            'add'     => 'icon-plus',
         ];
 
         foreach ($table->getHash() as $data) {
-            $notification = $element->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+            $notifications = $notificationWidget->findAll('css', '#header-notification-widget .dropdown-menu li>a');
 
-            if (!$notification) {
+            $matchingNotification = null;
+
+            foreach ($notifications as $notification) {
+                if (null === $matchingNotification && false !== strpos($notification->getText(), $data['message'])) {
+                    $matchingNotification = $notification;
+                }
+            }
+
+            if (null === $matchingNotification) {
+                $notificationTexts = array_map(function ($notification) {
+                    return sprintf("'%s'", $notification->getText());
+                }, $notifications);
+
                 throw $this->createExpectationException(
                     sprintf(
-                        'Expecting to see notification "%s", not found.',
-                        $data['message']
+                        "Notification '%s' not found.\nAvailable notifications: %s",
+                        $data['message'],
+                        implode(', ', $notificationTexts)
                     )
                 );
             }
@@ -616,7 +704,7 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            if (!$notification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
+            if (!$matchingNotification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting the type of notification "%s" to be "%s"',
@@ -625,48 +713,30 @@ class AssertionContext extends RawMinkContext
                     )
                 );
             }
-        }
-    }
 
-    /**
-     * @param string $attribute
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     * @Then /^I should see that (.*) is inherited from variant group attribute$/
-     */
-    public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
-    {
-        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
-        $error = $footer->find('css', '*:contains("Updated by variant group")');
+            if (isset($data['comment']) && '' !== $data['comment']) {
+                $commentNode = $matchingNotification->find('css', 'div.comment');
 
-        if (!$error) {
-            throw $this->createExpectationException(
-                'Affected by a variant group error was not found'
-            );
-        }
-    }
+                if (!$commentNode) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have a comment.',
+                            $data['message']
+                        )
+                    );
+                }
 
-    /**
-     * @param string $attribute
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     * @Then /^I should see that (.*) is not inherited from variant group attribute$/
-     */
-    public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
-    {
-        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
-        $error = $footer->find('css', '*:contains("Updated by variant group")');
-
-        if ($error) {
-            throw $this->createExpectationException(
-                'Affected by a variant group error was found'
-            );
+                if ($data['comment'] !== $commentNode->getText()) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have the comment "%s", got "%s"',
+                            $data['message'],
+                            $data['comment'],
+                            $commentNode->getText()
+                        )
+                    );
+                }
+            }
         }
     }
 
@@ -718,6 +788,35 @@ class AssertionContext extends RawMinkContext
                 implode(', ', $string->getLines())
             )
         );
+    }
+
+    /**
+     * @param PyStringNode $text
+     *
+     * @throws ResponseTextException
+     * @throws \Exception
+     *
+     * @Then /^I should see the sequential edit progression:$/
+     */
+    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
+    {
+        $this->getCurrentPage()->waitForProgressionBar();
+
+        $this->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains((string) $text);
+
+            return true;
+        });
+    }
+
+    /**
+     * Checks that avatar was not the default one
+     *
+     * @Then /^I should not see the default avatar$/
+     */
+    public function iShouldNotSeeDefaultAvatar()
+    {
+        $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
     }
 
     /**

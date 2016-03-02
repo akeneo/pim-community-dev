@@ -21,25 +21,19 @@ define(
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
-                mediator.off(null, null, 'context:product:form:attribute:variant-group');
-                mediator.on(
-                    'field:extension:add',
-                    _.bind(this.addExtension, this),
-                    'context:product:form:attribute:variant-group'
-                );
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addExtension: function (event) {
-                var product = this.getData();
+            addFieldExtension: function (event) {
+                var product = this.getFormData();
                 if (!product.variant_group) {
                     return;
                 }
 
                 event.promises.push(
                     FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group)
-                        .done(_.bind(function (variantGroup) {
-                            var deferred = $.Deferred();
+                        .then(function (variantGroup) {
                             var field = event.field;
                             if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
                                 var $element = this.template({
@@ -49,10 +43,7 @@ define(
                                 field.setEditable(false);
                                 field.addElement('footer', 'updated_by', $element);
                             }
-                            deferred.resolve();
-
-                            return deferred.promise();
-                        }, this))
+                        }.bind(this))
                 );
 
                 return this;

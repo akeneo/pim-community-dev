@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
@@ -19,7 +19,7 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Writer\Doctrine\VariantGroupWriter
+ * @deprecated will be removed in 1.6, please use to \Pim\Component\Connector\Writer\Doctrine\VariantGroupWriter
  */
 class VariantGroupWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
@@ -50,8 +50,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         CacheClearer $cacheClearer,
         ProductTemplateApplierInterface $productTplApplier
     ) {
-        $this->groupSaver   = $groupSaver;
-        $this->cacheClearer = $cacheClearer;
+        $this->groupSaver        = $groupSaver;
+        $this->cacheClearer      = $cacheClearer;
         $this->productTplApplier = $productTplApplier;
     }
 
@@ -75,15 +75,15 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'copyValues' => array(
+        return [
+            'copyValues' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.copyValuesToProducts.label',
                     'help'  => 'pim_base_connector.import.copyValuesToProducts.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -136,8 +136,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         $products = $variantGroup->getProducts();
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
             $skippedMessages = $this->productTplApplier->apply($template, $products->toArray());
-            $nbSkipped = count($skippedMessages);
-            $nbUpdated = count($products) - $nbSkipped;
+            $nbSkipped       = count($skippedMessages);
+            $nbUpdated       = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);
             if ($nbSkipped > 0) {
                 $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);

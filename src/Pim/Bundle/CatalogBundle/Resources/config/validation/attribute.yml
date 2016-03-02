@@ -32,16 +32,16 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|(.)*_(products|groups))$)/
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
                 message: This code is not available
         localizable:
             - Type: bool
-            - 'False':
+            - 'IsFalse':
                 message: An unique attribute can not be localizable
                 groups: [unique]
         scopable:
             - NotNull: ~
-            - 'False':
+            - 'IsFalse':
                 message: An unique attribute can not be scopable
                 groups: [unique]
         useableAsGridFilter:
@@ -69,11 +69,11 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 value: 0
         required:
             - Type: bool
-            - 'True':
+            - 'IsTrue':
                 message: This attribute type must be required
                 groups:
                     - pim_catalog_identifier
-            - 'False':
+            - 'IsFalse':
                 message: This attribute type can't be required
                 groups:
                     - pim_catalog_text
@@ -82,6 +82,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_price_collection
                     - pim_catalog_multiselect
                     - pim_catalog_simpleselect
+
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_boolean
@@ -89,7 +90,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_metric
         unique:
             - Type: bool
-            - 'False':
+            - 'IsFalse':
                 message: This attribute type can't have unique value
                 groups:
                     - pim_catalog_textarea
@@ -143,6 +144,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Valid: ~
         group:
             - NotBlank: ~
+
+    getters:
+        group:
             - Valid: ~
 
 Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
@@ -156,6 +160,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
             - attribute
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOption : ~
     properties:
         code:
             - NotBlank: ~

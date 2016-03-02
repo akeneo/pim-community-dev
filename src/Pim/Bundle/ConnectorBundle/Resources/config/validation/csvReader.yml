@@ -20,5 +20,5 @@ Pim\Component\Connector\Reader\File\CsvReader:
             - NotBlank: ~
         uploadAllowed:
             - Type: bool
-            - 'True':
+            - 'IsTrue':
                 groups: [UploadExecution]

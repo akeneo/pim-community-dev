@@ -5,16 +5,16 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -48,7 +48,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
     {
-        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "stdClass" provided.'))->during(
+        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Component\Catalog\Model\GroupInterface", "stdClass" provided.'))->during(
             'update', [new \stdClass(), []]
         );
     }
@@ -62,7 +62,6 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         GroupTypeInterface $type,
         GroupTranslation $translatable,
         ProductInterface $product,
-        ProductValueInterface $productValue,
         ProductTemplateInterface $productTemplate
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
@@ -84,9 +83,12 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
-        $product->getValues()->willReturn(new ArrayCollection([$productValue]));
-        $product->getIdentifier()->willReturn($productValue);
+        $productValue = new ProductValue();
+        $identifierValue = new ProductValue();
+
         $productBuilder->createProduct()->willReturn($product);
+        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getIdentifier()->willReturn($identifierValue);
 
         $values = [
             'code'         => 'mycode',

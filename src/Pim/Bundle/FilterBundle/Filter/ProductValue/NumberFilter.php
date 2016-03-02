@@ -6,8 +6,8 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -66,14 +66,14 @@ class NumberFilter extends OroNumberFilter
      */
     public function getOperator($type)
     {
-        $operatorTypes = array(
+        $operatorTypes = [
             NumberFilterType::TYPE_EQUAL         => '=',
             NumberFilterType::TYPE_GREATER_EQUAL => '>=',
             NumberFilterType::TYPE_GREATER_THAN  => '>',
             NumberFilterType::TYPE_LESS_EQUAL    => '<=',
             NumberFilterType::TYPE_LESS_THAN     => '<',
             FilterType::TYPE_EMPTY               => 'EMPTY',
-        );
+        ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
     }

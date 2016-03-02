@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Number attribute type
@@ -66,6 +66,6 @@ class NumberType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_number';
+        return AttributeTypes::NUMBER;
     }
 }

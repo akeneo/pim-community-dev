@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Akeneo\Component\Batch\Item\InvalidItemException;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Variant group import processor, allows to,

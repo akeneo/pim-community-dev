@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
 
 class ColumnInfoSpec extends ObjectBehavior

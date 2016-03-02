@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
@@ -73,7 +73,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
             }
         }
 
-        $type = $jobExecution->getJobInstance()->getType();
+        $jobInstance = $jobExecution->getJobInstance();
+        $type        = $jobInstance->getType();
 
         // TODO: maybe create a registry or something similar to load routes ?
         $this->generateNotification($jobExecution, $user, $type, $status);
@@ -129,6 +130,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 ],
                 'messageParams' => [
                     '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
                 ]
             ]
         );
@@ -153,6 +157,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 ],
                 'messageParams' => [
                     '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
                 ]
             ]
         );

@@ -3,12 +3,17 @@
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\FieldCopierInterface;
 
 class CopierRegistrySpec extends ObjectBehavior
 {
+    function let(AttributeRepositoryInterface $attributeRepository) {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_gets_attribute_copier(
         AttributeInterface $fromAttribute1,
         AttributeInterface $fromAttribute2,

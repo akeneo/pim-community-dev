@@ -39,5 +39,9 @@ Currency: Währung
 jstree:
   all: Alle Produkte
   unclassified: Nicht klassifizierte Produkte
+  product:
+    all: Alle Produkte
+    unclassified: Nicht klassifizierte Produkte
   no_tree: Kein Strukturbaum verfügbar
   include_sub: Unterkategorien einschließen
+  loading: Lädt ...

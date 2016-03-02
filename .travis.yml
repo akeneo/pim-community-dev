@@ -3,27 +3,32 @@ php:
     - "5.4"
     - "5.5"
     - "5.6"
+    - "7.0"
     - "hhvm"
 
 # Allow to use container infrastructure
 sudo: false
 
-matrix:
-    allow_failures:
-        - php: "hhvm"
-
 cache:
   directories:
     - $HOME/.composer/cache
 
-before_script:
+before_install:
+    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then
+        phpenv config-rm xdebug.ini;
+      fi
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
+
+install:
+    - if [ "$TRAVIS_PHP_VERSION" = "hhvm" ] || [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
+        composer remove --dev --no-update doctrine/mongodb-odm-bundle;
+      else
+        echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+      fi;
+    - composer update --prefer-dist --no-interaction
+    - ./app/console oro:requirejs:generate-config
+    - ./app/console assets:install
     - npm install -g grunt-cli
     - npm install
     - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
@@ -31,9 +36,8 @@ before_script:
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
-    - php php-cs-fixer fix --level=psr2 --dry-run -v --diff --config-file=.php_cs.php
-    - ./app/Resources/jenkins/interface_check.sh src/
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then grunt travis; else grunt codestyle; fi;'
+    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
+    - grunt travis
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo

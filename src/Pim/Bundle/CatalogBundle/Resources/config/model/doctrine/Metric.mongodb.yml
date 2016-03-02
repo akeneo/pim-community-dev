@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Model\Metric:
+Pim\Component\Catalog\Model\Metric:
     type: embeddedDocument
     fields:
         id:

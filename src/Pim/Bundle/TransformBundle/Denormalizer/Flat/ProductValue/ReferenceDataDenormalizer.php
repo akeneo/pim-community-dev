@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
@@ -32,7 +32,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $referenceDataClass, $format = null, array $context = array())
+    public function denormalize($data, $referenceDataClass, $format = null, array $context = [])
     {
         if (null === $this->repositoryResolver || empty($data)) {
             return null;
@@ -40,7 +40,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
 
         if (!$context['value'] instanceof ProductValueInterface) {
             throw new InvalidParameterException(
-                'Value is not an instance of Pim\Bundle\CatalogBundle\Model\ProductValueInterface.'
+                'Value is not an instance of Pim\Component\Catalog\Model\ProductValueInterface.'
             );
         }
 

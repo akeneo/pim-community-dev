@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Exception;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Symfony\Component\Yaml\Yaml;
 
 /**

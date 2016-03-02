@@ -6,11 +6,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Enrich\Model\AvailableAttributes;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -166,7 +166,7 @@ class VariantGroupAttributeController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     protected function findAttributeOr404($id)
     {
@@ -207,7 +207,7 @@ class VariantGroupAttributeController
      *
      * @return RedirectResponse
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
@@ -236,7 +236,7 @@ class VariantGroupAttributeController
      *
      * @see UrlGeneratorInterface
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }
@@ -249,7 +249,7 @@ class VariantGroupAttributeController
      * @param string  $message    the flash message
      * @param array   $parameters the flash message parameters
      */
-    protected function addFlash(Request $request, $type, $message, array $parameters = array())
+    protected function addFlash(Request $request, $type, $message, array $parameters = [])
     {
         $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }

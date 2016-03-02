@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Subscriber;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 
 /**
@@ -20,7 +20,7 @@ class JobAliasSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array('form.bind' => 'submit'),
+            ['form.bind' => 'submit'],
             JobAliasSubscriber::getSubscribedEvents()
         );
     }
@@ -37,10 +37,10 @@ class JobAliasSubscriberTest extends \PHPUnit_Framework_TestCase
         // Form mock
         $formConnector = $this->getFormMock();
         $formAlias = $this->getFormMock();
-        $formMap = array(
-            array('connector', $formConnector),
-            array('alias', $formAlias)
-        );
+        $formMap = [
+            ['connector', $formConnector],
+            ['alias', $formAlias]
+        ];
         $form
             ->expects($this->any())
             ->method('get')

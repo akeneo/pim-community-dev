@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Normalizer;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -48,6 +48,6 @@ class UserNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof User && in_array($format, $this->supportedFormats);
+        return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
     }
 }

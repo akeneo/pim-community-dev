@@ -1,0 +1,10 @@
+parameters:
+    pim_localization.provider.ui_locale.class:          Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider
+    pim_localization.provider.ui_locale.min_percentage: 0.8
+
+services:
+    pim_localization.provider.ui_locale:
+        class: %pim_localization.provider.ui_locale.class%
+        arguments:
+            - '@translator'
+            - %pim_localization.provider.ui_locale.min_percentage%

@@ -8,4 +8,4 @@ services:
             - 'pim_enrich.group_type.tab.property'
             - %pim_enrich.view_element.group_type.tab.property.template%
         tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_group_type_form.form_tab, position: 90 }
+            - { name: pim_enrich.view_element, type: pim_enrich_grouptype_form.form_tab, position: 90 }
