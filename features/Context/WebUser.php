@@ -932,7 +932,9 @@ class WebUser extends RawMinkContext
     {
         if ($language) {
             try {
-                $field = $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                $field = $this->spin(function () use ($field, $language) {
+                    return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                }, 30);
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
@@ -1614,8 +1616,7 @@ class WebUser extends RawMinkContext
      */
     public function iCheckTheSwitch($status, $locator)
     {
-        $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
+        return $this->getCurrentPage()->toggleSwitch($locator, $status === '');
     }
 
     /**

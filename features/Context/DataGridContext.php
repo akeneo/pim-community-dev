@@ -759,7 +759,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            $checkbox = $this->spin(function () use ($gridRow) {
+                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            });
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
@@ -1074,15 +1076,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
 
-        $script = <<<'JS'
-        require(['jquery', 'jquery-ui'], function ($) {
-            $inputs = $('input.hasDatepicker:visible, input.date-visual-element:visible');
-            $inputs.first().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
-            $inputs.last().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
-        });
-JS;
-
-        $this->getSession()->getDriver()->executeScript(vsprintf($script, $values));
+        $datepickers = $filter->findAll('css', '.date-visual-element');
+        foreach ($datepickers as $i => $datepicker) {
+            if ($datepicker->isVisible()) {
+                $datepicker->setValue($values[$i]);
+            }
+        }
 
         $filter->find('css', 'button.filter-update')->click();
     }
