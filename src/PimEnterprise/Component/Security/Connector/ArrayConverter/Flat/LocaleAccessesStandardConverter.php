@@ -57,7 +57,7 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
      *         'view_products' => true,
      *         'edit_products' => false,
      *     ]
-     * }
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
