@@ -1,3 +1,9 @@
+# 1.3.x
+
+## Bug fixes
+
+- PIM-5610: Fix boolean filter on product grid
+
 # 1.3.38 (2016-02-10)
 
 ## Bug fixes
