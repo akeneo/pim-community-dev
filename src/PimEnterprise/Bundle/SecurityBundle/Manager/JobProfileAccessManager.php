@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
+use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access manager

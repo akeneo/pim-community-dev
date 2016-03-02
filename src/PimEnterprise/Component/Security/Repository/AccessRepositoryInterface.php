@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
+namespace PimEnterprise\Component\Security\Repository;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 

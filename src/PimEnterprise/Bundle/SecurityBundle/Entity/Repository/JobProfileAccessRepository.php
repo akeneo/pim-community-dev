@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
 
 /**
  * Job profile access repository

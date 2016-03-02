@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Model;
+namespace PimEnterprise\Component\Security\Model;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 

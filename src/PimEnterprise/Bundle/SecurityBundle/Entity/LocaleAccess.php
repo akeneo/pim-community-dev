@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
+use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 /**
  * Locale Access entity

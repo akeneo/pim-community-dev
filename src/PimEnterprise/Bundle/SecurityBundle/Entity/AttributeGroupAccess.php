@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
+use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 /**
  * Attribute Group Access entity

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
+use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 /**
  * AttributeGroup access update guesser
