@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -40,6 +41,9 @@ class CompletenessManager
     /** @var ProductValueCompleteCheckerInterface */
     protected $valueCompleteChecker;
 
+    /** @var CommandLauncher */
+    protected $commandLauncher;
+
     /** @var string */
     protected $class;
 
@@ -49,6 +53,7 @@ class CompletenessManager
      * @param LocaleRepositoryInterface            $localeRepository
      * @param CompletenessGeneratorInterface       $generator
      * @param ProductValueCompleteCheckerInterface $valueCompleteChecker
+     * @param CommandLauncher                      $commandLauncher
      * @param string                               $class
      */
     public function __construct(
@@ -57,6 +62,7 @@ class CompletenessManager
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         ProductValueCompleteCheckerInterface $valueCompleteChecker,
+        CommandLauncher $commandLauncher,
         $class
     ) {
         $this->familyRepository     = $familyRepository;
@@ -64,6 +70,7 @@ class CompletenessManager
         $this->localeRepository     = $localeRepository;
         $this->generator            = $generator;
         $this->valueCompleteChecker = $valueCompleteChecker;
+        $this->commandLauncher      = $commandLauncher;
         $this->class                = $class;
     }
 
@@ -110,13 +117,16 @@ class CompletenessManager
     /**
      * Schedule recalculation of completenesses for all product
      * of a family
+     * It could be long so it's launched as a backend task
      *
      * @param FamilyInterface $family
      */
     public function scheduleForFamily(FamilyInterface $family)
     {
         if ($family->getId()) {
-            $this->generator->scheduleForFamily($family);
+            $cmd = sprintf('pim:completeness:schedule-family %s', $family->getCode());
+            $logfile = $this->commandLauncher->buildLogfilePath('completeness.log');
+            $this->commandLauncher->executeBackground($cmd, $logfile);
         }
     }
 

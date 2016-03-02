@@ -40,6 +40,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    /** @const int */
+    const PAGE_SIZE = 1000;
+
     /**
      * Constructor
      *
@@ -437,19 +440,57 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Query is paginated to avoid too long response time
+     * As we can't use skip and limit in MongoDB query when multiple is set to true,
+     * we paginate with a first select query to iterate on a list of product ids
      */
     public function scheduleForFamily(FamilyInterface $family)
     {
-        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+        $productQb = $this->documentManager
+            ->getDocumentCollection($this->productClass)
+            ->createQueryBuilder();
 
         $productQb
-            ->update()
+            ->field('family')
+            ->equals($family->getId());
+
+        $totalCount = $productQb->count()->getQuery()->execute();
+
+        $updateQb = $this->prepareUpdateCompletenessFamilyQb($family);
+        for ($currentCount = 0; $currentCount < $totalCount ; $currentCount += static::PAGE_SIZE) {
+            $productsList = $productQb
+                ->select('_id')
+                ->find()
+                ->skip($currentCount)
+                ->limit(static::PAGE_SIZE)
+                ->getQuery()
+                ->toArray();
+
+            $productIds = array_keys($productsList);
+
+            $updateQb->field('_id')->in($productIds);
+            $updateQb->getQuery()->execute();
+        }
+    }
+
+    /**
+     * Prepare update completeness family query builder
+     *
+     * @param FamilyInterface $family
+     *
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    protected function prepareUpdateCompletenessFamilyQb(FamilyInterface $family)
+    {
+        $updateQb = $this->documentManager->createQueryBuilder($this->productClass);
+        $updateQb->update()
             ->multiple(true)
             ->field('family')->equals($family->getId())
             ->field('completenesses')->unsetField()
-            ->field('normalizedData.completenesses')->unsetField()
-            ->getQuery()
-            ->execute();
+            ->field('normalizedData.completenesses')->unsetField();
+
+        return $updateQb;
     }
 
     /**
