@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use PimEnterprise\Component\Security\Factory\LocaleAccessFactory;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
@@ -30,10 +29,18 @@ class LocaleAccessProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_a_configurable_step_execution_aware_processor()
+    function it_is_a_configurable_step()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
+    }
+
+    function it_is_an_item_processor()
+    {
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+    }
+
+    function it_is_a_step_execution_aware_processor()
+    {
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 

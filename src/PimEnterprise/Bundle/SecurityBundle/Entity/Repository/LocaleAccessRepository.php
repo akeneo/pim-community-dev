@@ -87,15 +87,23 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
     {
         list($localeCode, $userGroupName) = explode('.', $identifier);
 
-        return $this->createQueryBuilder('a')
+        /**
+         * We need to get the Locale class to create a join between locale accesses and locales. We can not easily
+         * inject it because of circular references and EntityRepository extension.
+         * The least worst solution is to use the association mapping, to get the target entity.
+         */
+        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
+        $localeClass = $associationMappings['locale']['targetEntity'];
+
+        $qb = $this->createQueryBuilder('a')
             ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
-            ->innerJoin('Pim\Bundle\CatalogBundle\Entity\Locale', 'l', 'WITH', 'a.locale = l.id')
+            ->innerJoin($localeClass, 'l', 'WITH', 'a.locale = l.id')
             ->where('l.code = :localeCode')
             ->andWhere('g.name = :userGroupName')
             ->setParameter('localeCode', $localeCode)
-            ->setParameter('userGroupName', $userGroupName)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->setParameter('userGroupName', $userGroupName);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

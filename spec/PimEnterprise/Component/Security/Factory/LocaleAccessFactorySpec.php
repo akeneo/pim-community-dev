@@ -6,15 +6,13 @@ use PhpSpec\ObjectBehavior;
 
 class LocaleAccessFactorySpec extends ObjectBehavior
 {
-    const LOCALE_ACCESS_CLASS = 'PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess';
-
     function let()
     {
-        $this->beConstructedWith(self::LOCALE_ACCESS_CLASS);
+        $this->beConstructedWith('PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess');
     }
 
     function it_creates_a_locale_access()
     {
-        $this->create()->shouldReturnAnInstanceOf(self::LOCALE_ACCESS_CLASS);
+        $this->create()->shouldReturnAnInstanceOf('PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess');
     }
 }

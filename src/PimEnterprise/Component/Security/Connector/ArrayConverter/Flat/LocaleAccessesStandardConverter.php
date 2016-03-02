@@ -15,7 +15,7 @@ use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Locale Access Flat to Standard format converter
+ * Locale Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -103,10 +103,11 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
      */
     protected function getGroupNames(array $item, $permission)
     {
+        $names = [];
         if (isset($item[$permission])) {
-            return explode(',', $item[$permission]);
+            $names = explode(',', $item[$permission]);
         }
 
-        return [];
+        return $names;
     }
 }

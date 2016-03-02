@@ -27,10 +27,10 @@ use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
  */
 class LocaleAccessUpdater implements ObjectUpdaterInterface
 {
-    /** @var GroupRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var LocaleRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
     /**

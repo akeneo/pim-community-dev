@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Component\Security\Factory;
+
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 /**
