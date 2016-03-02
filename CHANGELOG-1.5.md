@@ -8,6 +8,7 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Update argument `Akeneo\Component\StorageUtils\Updater\PropertySetterInterface` to `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer`. Add `Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface`.
 - Change constructor of `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
 - Change constructor of `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer`. Add `Akeneo\Component\Localization\Localizer\LocalizerInterface`.
