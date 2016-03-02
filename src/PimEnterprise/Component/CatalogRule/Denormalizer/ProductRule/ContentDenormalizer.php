@@ -32,9 +32,6 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
 
     /**
      * @param string $ruleClass
-     */
-    /**
-     * @param string $ruleClass
      * @param string $conditionClass
      */
     public function __construct($ruleClass, $conditionClass)
