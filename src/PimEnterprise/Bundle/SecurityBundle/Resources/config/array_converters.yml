@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.array_converter.flat.locale_access.class: PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\LocaleAccessStandardConverter
+
+services:
+    pimee_security.array_converter.flat.locale_access:
+        class: %pimee_security.array_converter.flat.locale_access.class%
+        arguments:
+            - '@pim_connector.array_convertor.validator.fields_requirement'
