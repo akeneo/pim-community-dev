@@ -51,8 +51,9 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * [
      *      'locale'        => 'en_US',
-     *      'view_products' => ['All'],
-     *      'edit_products' => ['IT support', 'Manager'],
+     *      'userGroup'     => 'IT Manager'
+     *      'view_products' => true,
+     *      'edit_products' => false,
      * ]
      */
     public function update($localeAccess, array $data, array $options = [])

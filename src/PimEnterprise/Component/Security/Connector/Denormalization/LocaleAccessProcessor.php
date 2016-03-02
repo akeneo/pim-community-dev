@@ -63,21 +63,17 @@ class LocaleAccessProcessor extends AbstractProcessor
 
     /**
      * {@inheritdoc}
-     *
-     * Warning, this process method only updates existing locale accesses or create new ones. It does not delete
-     * existing locale accesses.
      */
     public function process($item)
     {
-        $convertedItem = $this->accessConverter->convert($item);
-
-
         $localeAccesses = [];
-        foreach ($this->flatItem($convertedItem) as $flattenItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($flattenItem);
+        $convertedItems = $this->accessConverter->convert($item);
+        foreach ($convertedItems as $convertedItem) {
+            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
+            $localeAccesses[] = $localeAccess;
 
             try {
-                $this->updater->update($localeAccess, $flattenItem);
+                $this->updater->update($localeAccess, $convertedItem);
             } catch (\InvalidArgumentException $exception) {
                 $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
             }
@@ -86,67 +82,9 @@ class LocaleAccessProcessor extends AbstractProcessor
             if ($violations->count() > 0) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
-
-            $localeAccesses[] = $localeAccess;
         }
 
         return $localeAccesses;
-    }
-
-    /**
-     * Convert a single item containing information about access into a set of locale accesses by locale and user group.
-     * The result can be send to an updater.
-     *
-     * Transforms
-     * [
-     *     'locale'        => 'en_US',
-     *     'view_products' => ['Manager', 'Redactor'],
-     *     'edit_products' => ['Manager'],
-     * ]
-     * into
-     * [
-     *     [
-     *         'locale'        => 'en_US',
-     *         'userGroup'     => 'Manager',
-     *         'view_products' => true,
-     *         'edit_products' => true,
-     *     ], [
-     *         'locale'        => 'en_US',
-     *         'userGroup'     => 'Redactor',
-     *         'view_products' => true,
-     *         'edit_products' => false,
-     *     ]
-     * }
-     *
-     * @param $item
-     *
-     * @return array
-     */
-    protected function flatItem($item)
-    {
-        $permissions = ['view_products', 'edit_products'];
-        $userGroupNames = [];
-        foreach ($permissions as $permission) {
-            foreach ($item[$permission] as $userGroupName) {
-                if (!in_array($userGroupName, $userGroupNames)){
-                    $userGroupNames[] = $userGroupName;
-                }
-            }
-        }
-
-        $items = [];
-        foreach ($userGroupNames as $userGroupName) {
-            $newItem = [
-                'locale'    => $item['locale'],
-                'userGroup' => $userGroupName
-            ];
-            foreach ($permissions as $permission) {
-                $newItem[$permission] = in_array($userGroupName, $item[$permission]);
-            }
-            $items[] = $newItem;
-        }
-
-        return $items;
     }
 
     /**

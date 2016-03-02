@@ -6,7 +6,7 @@ services:
         class: %pimee_security.processor.denormalization.locale_access.class%
         arguments:
             - '@pimee_security.repository.locale_access'
-            - '@pimee_security.array_converter.flat.locale_access'
+            - '@pimee_security.array_converter.flat.locale_accesses'
             - '@pimee_security.factory.locale_access'
             - '@pimee_security.updater.locale_access'
             - '@pim_catalog.validator.product'

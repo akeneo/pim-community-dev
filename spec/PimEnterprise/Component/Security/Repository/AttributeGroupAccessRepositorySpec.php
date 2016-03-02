@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
+namespace spec\PimEnterprise\Component\Security\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
