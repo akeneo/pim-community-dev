@@ -10,7 +10,7 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 /**
  * Move a raw file to the storage destination filesystem
@@ -32,20 +32,20 @@ class FileStorer implements FileStorerInterface
     /** @var FileInfoFactoryInterface */
     protected $factory;
 
-    /** @var  FileInfoRepository */
+    /** @var FileInfoRepositoryInterface */
     protected $repository;
 
     /**
-     * @param MountManager             $mountManager
-     * @param SaverInterface           $saver
-     * @param FileInfoFactoryInterface $factory
-     * @param FileInfoRepository       $repository
+     * @param MountManager                $mountManager
+     * @param SaverInterface              $saver
+     * @param FileInfoFactoryInterface    $factory
+     * @param FileInfoRepositoryInterface $repository
      */
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory,
-        FileInfoRepository $repository
+        FileInfoRepositoryInterface $repository
     ) {
         $this->mountManager = $mountManager;
         $this->saver        = $saver;
@@ -54,7 +54,13 @@ class FileStorer implements FileStorerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Find previously saved file copy. If copy not found, save new file.
+     *
+     * @param \SplFileInfo $rawFile       file to store
+     * @param string       $destFsAlias   alias of the destination filesystem
+     * @param bool         $deleteRawFile should the raw file be deleted once stored in the VFS or not ?
+     *
+     * @return FileInfoInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
@@ -72,19 +78,32 @@ class FileStorer implements FileStorerInterface
     }
 
     /**
-     * @param \SplFileInfo $file
+     * Calculate hash and finds file copy in database.
+     *
+     * @param \SplFileInfo $localFile
+     *
+     * @return FileInfoInterface|null
      */
-    public function findCopy(\SplFileInfo $localFile)
+    protected function findCopy(\SplFileInfo $localFile)
     {
         $hash = sha1_file($localFile->getPathname());
+
         return $this->repository->findOneByHash($hash);
     }
 
     /**
+     * Move a file to the storage destination filesystem
+     * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
+     * and save it to the database.
+     *
      * @param \SplFileInfo $file
      * @param string $destFsAlias
+     *
+     * @throws FileTransferException
+     *
+     * @return FileInfoInterface
      */
-    public function saveFile(\SplFileInfo $localFile, $destFsAlias)
+    protected function saveFile(\SplFileInfo $localFile, $destFsAlias)
     {
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
@@ -118,7 +137,6 @@ class FileStorer implements FileStorerInterface
 
         return $file;
     }
-
 
     /**
      * @param \SplFileInfo $file

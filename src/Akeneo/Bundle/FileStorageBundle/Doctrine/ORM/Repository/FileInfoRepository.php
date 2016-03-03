@@ -30,7 +30,9 @@ class FileInfoRepository extends EntityRepository implements FileInfoRepositoryI
         return $this->findOneBy(['key' => $identifier]);
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByHash($hash)
     {
         return $this->findOneBy(['hash' => $hash]);
