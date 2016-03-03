@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ContextConfigurator implements ConfiguratorInterface
 {
     /** @staticvar string */
-    const SOURCE_PATH = '[source][%s]';
-
-    /** @staticvar string */
     const PRODUCT_STORAGE_KEY = 'product_storage';
 
     /** @staticvar string */
