@@ -26,7 +26,6 @@ Feature: Delete an attribute
     When I am on the products page
     Then the grid should contain 1 elements
     And I should see products caterpillar_1
-    And I show the filter "name"
     Then I should be able to use the following filters:
       | filter      | value          | result        |
       | name        | My caterpillar | caterpillar_1 |

@@ -29,34 +29,28 @@ Feature: Filter products with multiples multiselect filters
       | POST-3 | furniture | black   |       |
     And I am logged in as "Mary"
     And I am on the products page
-    And I show the filter "Company"
-    And I show the filter "Color"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I filter by "Company" with value "Red"
-    And I should be able to use the following filters:
+    Given I show the filter "Company"
+    And I filter by "Company" with value "Red"
+    Then I should be able to use the following filters:
       | filter | value    | result                 |
       | Color  | green    | MUG-2, MUG-3 and MUG-4 |
       | Color  | is empty | POST-1 and POST-2      |
-    And I hide the filter "Company"
-    And I hide the filter "Color"
 
   Scenario: Successfully filter product without commons attributes
-    Given I filter by "Color" with value "Green"
-    And I should be able to use the following filters:
+    Given I show the filter "Color"
+    And I filter by "Color" with value "Green"
+    Then I should be able to use the following filters:
       | filter  | value    | result |
       | Company | White    | MUG-1  |
       | Company | is empty | MUG-5  |
-    And I hide the filter "Company"
-    And I hide the filter "Color"
 
   Scenario: Successfully filter only one product
     Given I am on the products page
-    And I show the filter "Company"
+    When I show the filter "Company"
     And I filter by "Company" with value "White"
     And I show the filter "Color"
     And I filter by "Color" with value "Green"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
-    And I hide the filter "Company"
-    And I hide the filter "Color"
