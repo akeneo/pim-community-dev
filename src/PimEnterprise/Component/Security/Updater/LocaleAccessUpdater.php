@@ -14,8 +14,8 @@ namespace PimEnterprise\Component\Security\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
@@ -107,7 +107,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return GroupInterface|null
+     * @return Group|null
      */
     protected function findGroup($code)
     {

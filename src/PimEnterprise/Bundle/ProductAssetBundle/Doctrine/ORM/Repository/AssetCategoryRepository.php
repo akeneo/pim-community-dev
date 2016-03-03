@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\DBAL\Types\Type;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -22,7 +23,9 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInter
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class AssetCategoryRepository extends AbstractItemCategoryRepository implements AssetCategoryRepositoryInterface
+class AssetCategoryRepository extends AbstractItemCategoryRepository implements
+    AssetCategoryRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -53,5 +56,30 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements 
         $trees = $stmt->fetchAll();
 
         return $this->buildItemCountByTree($trees, $config['categoryClass']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        $fakeItem = new $this->entityName();
+        $mapping = $this->getMappingConfig($fakeItem);
+
+        $qb = $this->em->createQueryBuilder('c')
+            ->select('c')
+            ->from($mapping['categoryClass'], 'c', 'c.id')
+            ->where('c.code = :code')
+            ->setParameter('code', $identifier);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

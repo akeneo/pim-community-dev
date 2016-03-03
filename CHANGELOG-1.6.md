@@ -2,7 +2,7 @@
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups, group types, currencies and locale accesses import using the new import system introduced in v1.4
+- PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses and asset category accesses import using the new import system introduced in v1.4
 
 ## BC breaks
 
@@ -12,6 +12,7 @@
 - Installer fixtures now support csv format for group types setup and not anymore the yml format
 - Installer fixtures now support csv format for currencies setup and not anymore the yml format
 - Installer fixtures does not support anymore the yml format for locale accesses
+- Installer fixtures does not support anymore the yml format for asset category accesses
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,
@@ -35,3 +36,6 @@
 - Move `PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface` to `PimEnterprise\Component\Security\Model\JobProfileAccessInterface`
 - Move `PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface` to `PimEnterprise\Component\Security\Model\LocaleAccessInterface`
 - Move `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface` to `PimEnterprise\Component\Security\Repository\AccessRepositoryInterface`
+- `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`

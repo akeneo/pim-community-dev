@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -28,7 +29,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  *
  * TODO: It must be entity agnostic for PIM-4292.
  */
-class CategoryAccessRepository extends EntityRepository
+class CategoryAccessRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /** @var TableNameBuilder */
     protected $tableNameBuilder;
@@ -451,5 +452,34 @@ class CategoryAccessRepository extends EntityRepository
     protected function getTableName($classParam, $targetEntity = null)
     {
         return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['category', 'userGroup'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        list($categoryCode, $userGroupName) = explode('.', $identifier);
+
+        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
+        $categoryClass = $associationMappings['category']['targetEntity'];
+
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin($categoryClass, 'c', 'WITH', 'a.category = c.id')
+            ->where('c.code = :categoryCode')
+            ->andWhere('g.name = :userGroupName')
+            ->setParameter('categoryCode', $categoryCode)
+            ->setParameter('userGroupName', $userGroupName);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
