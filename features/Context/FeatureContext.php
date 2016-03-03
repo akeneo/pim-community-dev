@@ -11,6 +11,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
@@ -65,6 +66,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-panel', new PanelContext());
+        $this->useContext('domain-pagination-grid', new GridPaginationContext());
 
         $this->setTimeout($parameters);
     }
@@ -264,6 +266,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /**
      * Fills in form field with specified id|name|label|value.
+     *
+     * @param string $field
+     * @param string $value
      *
      * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
      * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/

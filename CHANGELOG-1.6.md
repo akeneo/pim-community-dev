@@ -1,5 +1,9 @@
 # 1.6.x
 
+## Functional improvements
+
+- PIM-5592: the product grid keeps the page number when you go back to it
+
 ## Technical improvements
 
 - PIM-5589: introduce a channels, attribute groups, group types and currencies import using the new import system introduced in v1.4

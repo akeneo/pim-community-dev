@@ -62,9 +62,10 @@ class Grid extends Index
      */
     public function getGrid()
     {
+        $body = $this->getElement('Body');
         return $this->spin(
-            function () {
-                $modal = $this->getElement('Body')->find('css', $this->elements['Dialog']['css']);
+            function () use ($body) {
+                $modal = $body->find('css', $this->elements['Dialog']['css']);
                 if (null !== $modal && $modal->isVisible()) {
                     return $modal->find('css', $this->elements['Grid']['css']);
                 }
@@ -306,39 +307,6 @@ class Grid extends Index
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
         }
-    }
-
-    /**
-     * @param int $num
-     */
-    public function changePageSize($num)
-    {
-        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-
-        $element = $this->spin(function () {
-            return $this->getGrid()
-                ->getParent()
-                ->getParent()
-                ->getParent()
-                ->find('css', $this->elements['Grid toolbar']['css']);
-        }, 'Cannot find the grid toolbar');
-
-        $dropdownButton = $this->spin(function () use ($element) {
-            return $element->find('css', '.page-size button.dropdown-toggle');
-        }, 'Cannot find the change page size button');
-        $dropdownButton->click();
-
-        $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
-    }
-
-    /**
-     * @param int $num
-     */
-    public function pageSizeIs($num)
-    {
-        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
-        assertNotNull($element->find('css', sprintf('button:contains("%d")', $num)));
     }
 
     /**

@@ -75,9 +75,9 @@ Feature: Datagrid views
     Given I am on the attributes page
     And I change the page size to 50
     When I am on the products page
-    Then page size should be 25
+    Then the page size should be 25
     When I am on the attributes page
-    Then page size should be 50
+    Then the page size should be 50
 
   Scenario: Successfully choose my default view
     Given I filter by "Family" with value "Sneakers"
