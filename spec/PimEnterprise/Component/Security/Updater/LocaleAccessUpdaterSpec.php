@@ -31,7 +31,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Component\Security\Updater\LocaleAccessUpdater", "stdClass" provided.'
+                'Expects a "PimEnterprise\Component\Security\Model\LocaleAccessInterface", "stdClass" provided.'
             )
         )->during('update', [new \stdClass(), []]);
     }

@@ -16,9 +16,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 
 /**
  * Updates an Asset Category Access
@@ -27,10 +25,10 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInter
  */
 class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
 {
-    /** @var GroupRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var AssetCategoryRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $categoryRepository;
 
     /**
@@ -50,8 +48,8 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
      *
      * Expected input format :
      * [
-     *      'category'   => 'videos'
-     *      'userGroup'  => 'IT Manager'
+     *      'category'   => 'videos',
+     *      'userGroup'  => 'IT Manager',
      *      'view_items' => true,
      *      'edit_items' => false,
      *      'own_items'  => false,

@@ -108,10 +108,11 @@ class AssetCategoryAccessesStandardConverter implements StandardArrayConverterIn
      */
     protected function getGroupNames(array $item, $permission)
     {
-        if (isset($item[$permission])) {
-            return explode(',', $item[$permission]);
+        $names = [];
+        if (isset($item[$permission]) && '' !== $item[$permission]) {
+            $names = explode(',', $item[$permission]);
         }
 
-        return [];
+        return $names;
     }
 }

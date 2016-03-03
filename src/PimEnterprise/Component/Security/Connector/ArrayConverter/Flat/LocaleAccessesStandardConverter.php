@@ -104,7 +104,7 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
     protected function getGroupNames(array $item, $permission)
     {
         $names = [];
-        if (isset($item[$permission])) {
+        if (isset($item[$permission]) && '' !== $item[$permission]) {
             $names = explode(',', $item[$permission]);
         }
 
