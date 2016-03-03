@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 

@@ -1,14 +1,14 @@
 Pim\Bundle\CatalogBundle\Entity\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis: ~
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
                 - type
                 - attributes
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValues: ~
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxis: ~
+        - Pim\Component\Catalog\Validator\Constraints\VariantGroupValues: ~
+        - Pim\Component\Catalog\Validator\Constraints\VariantGroupAxis: ~
     properties:
         code:
             - NotBlank: ~

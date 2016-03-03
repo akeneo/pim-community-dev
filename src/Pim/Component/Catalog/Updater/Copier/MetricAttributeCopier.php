@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a metric value attribute in other metric value attribute

@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
