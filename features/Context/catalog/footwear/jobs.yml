@@ -1,6 +1,6 @@
 jobs:
     footwear_product_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_product_import
         label:     Footwear product import
         type:      import
@@ -16,7 +16,7 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
     footwear_product_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_product_export
         label:     Footwear product export
         type:      export
@@ -25,8 +25,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/products.csv
     footwear_category_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_category_import
         label:     Footwear category import
         type:      import
@@ -37,7 +38,7 @@ jobs:
             escape:              '\'
             circularRefsChecked: true
     footwear_category_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_category_export
         label:     Footwear category export
         type:      export
@@ -45,8 +46,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/category.csv
     footwear_association_type_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_association_type_import
         label:     Footwear association type import
         type:      import
@@ -56,7 +58,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     footwear_association_type_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_association_type_export
         label:     Footwear association type export
         type:      export
@@ -64,8 +66,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/association_type.csv
     footwear_group_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_group_import
         label:     Footwear group import
         type:      import
@@ -75,7 +78,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     footwear_group_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_group_export
         label:     Footwear group export
         type:      export
@@ -83,8 +86,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/group.csv
     footwear_variant_group_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_variant_group_export
         label:     Footwear variant group export
         type:      export
@@ -92,8 +96,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/variant_group.csv
     footwear_attribute_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_attribute_import
         label:     Footwear attribute import
         type:      import
@@ -103,7 +108,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     footwear_attribute_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_attribute_export
         label:     Footwear attribute export
         type:      export
@@ -111,8 +116,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/attribute.csv
     footwear_option_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_attribute_option_import
         label:     Footwear option import
         type:      import
@@ -122,7 +128,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     footwear_option_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_attribute_option_export
         label:     Footwear option export
         type:      export
@@ -130,8 +136,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/option.csv
     footwear_family_export:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_family_export
         label:     Footwear family export
         type:      export
@@ -139,8 +146,9 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/family.csv
     footwear_variant_group_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_variant_group_import
         label:     Footwear variant group import
         type:      import
@@ -151,7 +159,7 @@ jobs:
             escape:        '\'
             copyValues: true
     footwear_family_import:
-        connector: Akeneo Connector
+        connector: Akeneo Native Connector
         alias:     csv_family_import
         label:     Footwear family import
         type:      import

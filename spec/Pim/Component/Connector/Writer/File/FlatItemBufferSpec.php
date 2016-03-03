@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File\Product;
+namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class FlatRowBufferSpec extends ObjectBehavior
+class FlatItemBufferSpec extends ObjectBehavior
 {
     function let(BufferFactory $bufferFactory, BufferInterface $buffer)
     {
@@ -18,7 +18,7 @@ class FlatRowBufferSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Product\FlatRowBuffer');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\FlatItemBuffer');
     }
 
     function it_writes_item_to_the_buffer($buffer)
@@ -35,26 +35,12 @@ class FlatRowBufferSpec extends ObjectBehavior
 
         $this->write([
             [
-                'product' => [
-                    'id' => 123,
-                    'family' => 12,
-                ],
-                'media' => [
-                    'filePath' => 'img/product1.jpg',
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
+                'id' => 123,
+                'family' => 12,
             ],
             [
-                'product' => [
-                    'id' => 165,
-                    'family' => 45,
-                ],
-                'media' => [
-                    'filePath' => null,
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
+                'id' => 165,
+                'family' => 45,
             ],
         ], true);
 

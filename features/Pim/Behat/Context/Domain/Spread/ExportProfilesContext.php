@@ -171,16 +171,17 @@ class ExportProfilesContext extends PimContext
         unset($actualLines[0]);
         unset($expectedLines[0]);
 
-        array_map(function ($needle) use ($path, $expectedLines) {
-            $rows = array_filter($expectedLines, function ($item) use ($needle){
-                return 0 === count(array_diff($item, $needle));
+        foreach ($actualLines as $actualLine) {
+            $rows = array_filter($expectedLines, function ($item) use ($actualLine) {
+                return 0 === count(array_diff($item, $actualLine));
             });
+
 
             if (1 !== count($rows)) {
                 throw new \Exception(
-                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $needle), $path)
+                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $actualLine), $path)
                 );
             }
-        }, $actualLines);
+        }
     }
 }

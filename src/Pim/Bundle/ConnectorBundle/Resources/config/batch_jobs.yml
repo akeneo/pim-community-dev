@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo Connector
+    name: Akeneo Native Connector
     jobs:
         csv_product_import:
             title: pim_connector.jobs.csv_product_import.title

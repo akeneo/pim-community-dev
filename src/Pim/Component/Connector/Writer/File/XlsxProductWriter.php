@@ -2,12 +2,9 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
-use Pim\Component\Connector\Writer\File\Product\FlatRowBuffer;
-use Pim\Component\Connector\Writer\File\Product\MediaCopier;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -19,16 +16,16 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var bool */
     protected $withHeader;
 
-    /** @var FlatRowBuffer */
-    private $flatRowBuffer;
+    /** @var FlatItemBuffer */
+    protected $flatRowBuffer;
 
-    /** @var MediaCopier */
-    private $mediaCopier;
+    /** @var BulkFileExporter */
+    protected $mediaCopier;
 
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        FlatRowBuffer $flatRowBuffer,
-        MediaCopier $mediaCopier
+        FlatItemBuffer $flatRowBuffer,
+        BulkFileExporter $mediaCopier
     ) {
         parent::__construct($filePathResolver);
 
@@ -46,8 +43,14 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
             $this->localFs->mkdir($exportDirectory);
         }
 
-        $this->flatRowBuffer->write($items, $this->isWithHeader());
-        $this->mediaCopier->copy($items, $exportDirectory);
+        $products = $media = [];
+        foreach ($items as $item) {
+            $products[] = $item['product'];
+            $media[] = $item['media'];
+        }
+
+        $this->flatRowBuffer->write($products, $this->isWithHeader());
+        $this->mediaCopier->exportAll($media, $exportDirectory);
 
         foreach ($this->mediaCopier->getErrors() as $error) {
             $this->stepExecution->addWarning(
@@ -67,9 +70,9 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $writer = WriterFactory::create(Type::XLSX);
         $writer->openToFile($this->getPath());
 
-        $header = $this->flatRowBuffer->getHeaders();
-        $hollowItem = array_fill_keys($header, '');
-        $writer->addRow($header);
+        $headers = $this->flatRowBuffer->getHeaders();
+        $hollowItem = array_fill_keys($headers, '');
+        $writer->addRow($headers);
         foreach ($this->flatRowBuffer->getBuffer() as $incompleteItem) {
             $item = array_replace($hollowItem, $incompleteItem);
             $writer->addRow($item);

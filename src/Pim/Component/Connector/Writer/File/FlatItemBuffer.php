@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File\Product;
+namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
@@ -10,37 +10,35 @@ use Akeneo\Component\Buffer\BufferInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatRowBuffer
+class FlatItemBuffer
 {
     /** @var BufferInterface */
-    private $buffer;
+    protected $buffer;
+
     /** @var array */
-    private $headers;
+    protected $headers = [];
 
     public function __construct(BufferFactory $bufferFactory)
     {
-        $this->headers = [];
         $this->buffer = $bufferFactory->create();
     }
 
     /**
-     * @param array $items
-     * @param bool  $addHeader
+     * {@inheritdoc}
      */
     public function write(array $items, $addHeader)
     {
         foreach ($items as $item) {
-            $product = $item['product'];
             if ($addHeader) {
-                $this->addToHeaders(array_keys($product));
+                $this->addToHeaders(array_keys($item));
             }
 
-            $this->buffer->write($product);
+            $this->buffer->write($item);
         }
     }
 
     /**
-     * @return BufferInterface
+     * {@inheritdoc}
      */
     public function getBuffer()
     {
@@ -48,7 +46,7 @@ class FlatRowBuffer
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getHeaders()
     {

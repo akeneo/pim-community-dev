@@ -6,13 +6,13 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
-use Pim\Component\Connector\Writer\File\Product\FlatRowBuffer;
-use Pim\Component\Connector\Writer\File\Product\MediaCopier;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Prophecy\Argument;
 
 class XlsxProductWriterSpec extends ObjectBehavior
 {
-    function let(FilePathResolverInterface $filePathResolver, FlatRowBuffer $flatRowBuffer, MediaCopier $mediaCopier)
+    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, BulkFileExporter $mediaCopier)
     {
         $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier);
 
@@ -61,8 +61,30 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $this->setWithHeader(true);
         $items = $this->getItemToExport();
 
-        $flatRowBuffer->write($items, true)->shouldBeCalled();
-        $mediaCopier->copy($items, '/tmp/export')->shouldBeCalled();
+        $flatRowBuffer->write([
+            [
+                'id' => 123,
+                'family' => 12,
+            ],
+            [
+                'id' => 165,
+                'family' => 45,
+            ],
+        ], true)->shouldBeCalled();
+
+        $mediaCopier->exportAll([
+            [
+                'filePath' => null,
+                'exportPath' => 'export',
+                'storageAlias' => 'storageAlias',
+            ],
+            [
+                'filePath' => 'img/product1.jpg',
+                'exportPath' => 'export',
+                'storageAlias' => 'storageAlias',
+            ],
+        ], '/tmp/export')->shouldBeCalled();
+
         $mediaCopier->getErrors()->willReturn([
             [
                 'medium' => ['...'],
@@ -79,7 +101,6 @@ class XlsxProductWriterSpec extends ObjectBehavior
     {
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
-
 
         $this->flush();
     }

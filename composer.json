@@ -61,7 +61,7 @@
         "symfony/swiftmailer-bundle": "2.3.8",
         "symfony/symfony": "2.7.2",
         "twig/extensions": "1.2.0",
-        "box/spout": "^2.4"
+        "box/spout": "2.4.2"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
