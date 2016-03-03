@@ -9,6 +9,16 @@ jobs:
             filePath: currencies.csv
             multiple: false
 
+    fixtures_locale_csv:
+        order: 10
+        connector: Data fixtures
+        alias:     fixtures_locale_csv
+        label:     Locales data fixtures
+        type:      fixtures
+        configuration:
+            filePath: locales.csv
+            multiple: false
+
     fixtures_category_csv:
         order: 30
         connector: Data fixtures

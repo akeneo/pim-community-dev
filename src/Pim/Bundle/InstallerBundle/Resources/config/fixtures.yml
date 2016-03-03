@@ -16,6 +16,11 @@ currencies:
     csv:
         processor:         pim_connector.processor.denormalization.currency.flat
 
+locales:
+    order: 10
+    csv:
+        processor:         pim_connector.processor.denormalization.locale.flat
+
 categories:
     order: 30
     multiple: true

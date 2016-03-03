@@ -12,6 +12,7 @@ parameters:
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
     pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
+    pim_catalog.updater.locale.class:                         Pim\Component\Catalog\Updater\LocaleUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
     pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater
     pim_catalog.updater.currency.class:                       Pim\Component\Catalog\Updater\CurrencyUpdater
@@ -131,6 +132,9 @@ services:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.currency'
+
+    pim_catalog.updater.locale:
+        class: %pim_catalog.updater.locale.class%
 
     pim_catalog.updater.attribute_group:
         class: %pim_catalog.updater.attribute_group.class%

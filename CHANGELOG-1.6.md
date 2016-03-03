@@ -2,8 +2,7 @@
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups, group types and currencies import using the new import system introduced in v1.4
-- PIM-5589: introduce a channels and attribute groups import using the new import system introduced in v1.4
+- PIM-5589: introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
 - PIM-5589: introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
 
@@ -32,6 +31,7 @@
 - Installer fixtures does not support anymore the yml format for association types
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
 - Installer fixtures now support csv format for group types setup and not anymore the yml format
+- Installer fixtures now support csv format for locales setup and not anymore the yml format
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,
