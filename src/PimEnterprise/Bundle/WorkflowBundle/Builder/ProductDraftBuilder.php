@@ -19,7 +19,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -64,12 +63,12 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo
     ) {
-        $this->objectManager          = $objectManager;
-        $this->normalizer             = $normalizer;
-        $this->comparatorRegistry     = $comparatorRegistry;
-        $this->attributeRepository    = $attributeRepository;
-        $this->factory                = $factory;
-        $this->productDraftRepository = $productDraftRepo;
+        $this->objectManager       = $objectManager;
+        $this->normalizer          = $normalizer;
+        $this->comparatorRegistry  = $comparatorRegistry;
+        $this->attributeRepository = $attributeRepository;
+        $this->factory             = $factory;
+        $this->productDraftRepo    = $productDraftRepo;
     }
 
     /**
@@ -119,7 +118,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {
-        if (null === $productDraft = $this->productDraftRepository->findUserProductDraft($product, $username)) {
+        if (null === $productDraft = $this->productDraftRepo->findUserProductDraft($product, $username)) {
             $productDraft = $this->factory->createProductDraft($product, $username);
         }
 
