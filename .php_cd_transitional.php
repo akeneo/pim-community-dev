@@ -58,7 +58,19 @@ $cAkeneoRules = [
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
-$cPimRules = [];
+$cPimRules = [
+    new Rule(
+        'Pim\Component\Catalog',
+        array_merge($cDeps, [
+            'Akeneo\Component\Localization',
+            'Akeneo\Component\FileStorage',
+            'Akeneo\Component\Classification',
+            'Akeneo\Component\Versioning',
+            'Pim\Component\ReferenceData', //maybe should be merged inside catalog
+        ]),
+        RuleInterface::TYPE_ONLY
+    )
+];
 
 $rules  = array_merge($cAkeneoRules, $cPimRules);
 $config = new Configuration($rules, $finder);
