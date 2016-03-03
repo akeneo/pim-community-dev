@@ -210,4 +210,16 @@ abstract class AbstractItemCategoryRepository implements
             'relation'           => key($categoryAssoc['relationToSourceKeyColumns']),
         ];
     }
+
+    /**
+     * Get category mapping information to build SQL query.
+     *
+     * @return array
+     */
+    protected function getCategoryMappingConfig()
+    {
+        $fakeItem = new $this->entityName();
+
+        return $this->getMappingConfig($fakeItem);
+    }
 }
