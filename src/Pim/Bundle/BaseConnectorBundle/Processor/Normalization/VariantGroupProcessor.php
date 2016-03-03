@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;

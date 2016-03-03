@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;

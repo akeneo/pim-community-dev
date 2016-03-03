@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;

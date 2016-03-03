@@ -4,9 +4,8 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
-use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 
 /**
  * Abstract product

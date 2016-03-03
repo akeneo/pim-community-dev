@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints as Assert;

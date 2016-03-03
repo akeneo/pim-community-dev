@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Field;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
