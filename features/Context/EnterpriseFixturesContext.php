@@ -49,43 +49,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     ];
 
     /**
-     * {@inheritdoc}
-     */
-    public function createProduct($data)
-    {
-        if (!is_array($data)) {
-            $data = ['sku' => $data];
-        }
-
-        return parent::createProduct($data);
-    }
-
-    /**
-     * @param TableNode $table
-     */
-    public function theFollowingProductValues(TableNode $table)
-    {
-        foreach ($table->getHash() as $row) {
-            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
-
-            $attributeCode = $row['attribute'];
-            if ($row['locale']) {
-                $attributeCode .= '-' . $row['locale'];
-            }
-            if ($row['scope']) {
-                $attributeCode .= '-' . $row['scope'];
-            }
-
-            $data = [
-                'sku'          => $row['product'],
-                $attributeCode => $this->replacePlaceholders($row['value'])
-            ];
-
-            $this->createProduct($data);
-        }
-    }
-
-    /**
      * @param string $userGroup
      * @param string $accessLevel
      * @param string $attributeGroup
