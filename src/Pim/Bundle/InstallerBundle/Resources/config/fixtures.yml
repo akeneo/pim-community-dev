@@ -11,6 +11,11 @@ default:
         reader_options:    {}
         processor_options: {}
 
+currencies:
+    order: 10
+    csv:
+        processor:         pim_connector.processor.denormalization.currency.flat
+
 categories:
     order: 30
     multiple: true
