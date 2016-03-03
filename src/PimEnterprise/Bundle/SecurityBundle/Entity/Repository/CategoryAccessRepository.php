@@ -467,7 +467,9 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function findOneByIdentifier($identifier)
     {
-        list($categoryCode, $userGroupName) = explode('.', $identifier);
+        $identifiers = explode('.', $identifier);
+        $categoryCode = array_shift($identifiers);
+        $userGroupName = implode('.', $identifiers);
 
         $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
         $categoryClass = $associationMappings['category']['targetEntity'];

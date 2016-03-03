@@ -74,7 +74,7 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements
         $fakeItem = new $this->entityName();
         $mapping = $this->getMappingConfig($fakeItem);
 
-        $qb = $this->em->createQueryBuilder('c')
+        $qb = $this->em->createQueryBuilder()
             ->select('c')
             ->from($mapping['categoryClass'], 'c', 'c.id')
             ->where('c.code = :code')

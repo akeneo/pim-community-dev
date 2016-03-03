@@ -41,10 +41,10 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface $accessConverter
-     * @param AssetCategoryAccessFactory $accessFactory
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface $validator
+     * @param StandardArrayConverterInterface       $accessConverter
+     * @param AssetCategoryAccessFactory            $accessFactory
+     * @param ObjectUpdaterInterface                $updater
+     * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -90,17 +90,18 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
+     * @throws MissingIdentifierException
+     *
      * @return AssetCategoryAccess
      *
-     * @throws MissingIdentifierException
      */
     protected function findOrCreateAssetCategoryAccess(array $convertedItem)
     {
-        $localeAccess = $this->findObject($this->repository, $convertedItem);
-        if (null === $localeAccess) {
+        $categoryAccess = $this->findObject($this->repository, $convertedItem);
+        if (null === $categoryAccess) {
             return $this->accessFactory->create();
         }
 
-        return $localeAccess;
+        return $categoryAccess;
     }
 }

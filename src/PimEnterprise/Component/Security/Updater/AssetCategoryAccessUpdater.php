@@ -82,25 +82,25 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
      */
     protected function setData(AssetCategoryAccess $categoryAccess, $field, $data)
     {
-        if ('category' == $field) {
+        if ('category' === $field) {
             $category = $this->findAssetCategory($data);
             if (null !== $category) {
                 $categoryAccess->setCategory($category);
             } else {
                 throw new \InvalidArgumentException(sprintf('Asset category with "%s" code does not exist', $data));
             }
-        } elseif ('userGroup' == $field) {
+        } elseif ('userGroup' === $field) {
             $group = $this->findGroup($data);
             if (null !== $group) {
                 $categoryAccess->setUserGroup($group);
             } else {
                 throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
             }
-        } elseif ('view_items' == $field) {
+        } elseif ('view_items' === $field) {
             $categoryAccess->setViewItems($data);
-        } elseif ('edit_items' == $field) {
+        } elseif ('edit_items' === $field) {
             $categoryAccess->setEditItems($data);
-        } elseif ('own_items' == $field) {
+        } elseif ('own_items' === $field) {
             $categoryAccess->setOwnItems($data);
         }
     }

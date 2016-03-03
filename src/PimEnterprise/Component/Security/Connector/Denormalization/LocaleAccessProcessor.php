@@ -41,10 +41,10 @@ class LocaleAccessProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface $accessConverter
-     * @param LocaleAccessFactory $accessFactory
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface $validator
+     * @param StandardArrayConverterInterface       $accessConverter
+     * @param LocaleAccessFactory                   $accessFactory
+     * @param ObjectUpdaterInterface                $updater
+     * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -90,9 +90,9 @@ class LocaleAccessProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @return LocaleAccessInterface
-     *
      * @throws MissingIdentifierException
+     *
+     * @return LocaleAccessInterface
      */
     protected function findOrCreateLocaleAccess(array $convertedItem)
     {
