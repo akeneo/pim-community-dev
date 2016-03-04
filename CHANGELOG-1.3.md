@@ -1,4 +1,6 @@
-# 1.3.x
+# 1.3.39 (2016-03-03)
+
+# 1.3.38 (2016-02-10)
 
 ## Bug fixes
 - PIM-5529: Fix glitch in permissions edition
