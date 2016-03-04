@@ -39,6 +39,10 @@ pim_enrich:
     tab:
       property.title: Propiedades
       history.title: Historial
+  locale:
+    tab:
+      property.title: Propiedades
+      permission.title: Permisos
   group:
     axis.help: Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.
     type:
@@ -567,6 +571,10 @@ Drop a file or click here: Suelta un fichero o haga clic aquí
 Drop an image or click here: Suelta una imagen o haga clic aquí
 Automatic option sorting: Opción automática de ordenamiento
 save_attribute_before_manage_option: Para administrar las opciones, por favor, guarde el atributo primero
+Please select: Seleccionar
+Active: Activo
+Inactive: Inactivo
+Do not convert: No convertir
 Create: Crear
 Cancel: Cancelar
 Choose a family: Elija una familia
@@ -856,3 +864,5 @@ mass_edit report:
 job_tracker:
   tab:
     title: Seguimiento de procesos
+  filter:
+    started_at: Ejecutado el
