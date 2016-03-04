@@ -2,7 +2,7 @@
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups and group types import using the new import system introduced in v1.4
+- PIM-5589: introduce a channels, attribute groups, group types and currencies import using the new import system introduced in v1.4
 
 ## BC breaks
 

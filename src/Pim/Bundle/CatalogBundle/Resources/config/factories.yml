@@ -8,6 +8,7 @@ parameters:
     pim_catalog.factory.channel.class:               Pim\Component\Catalog\Factory\ChannelFactory
     pim_catalog.factory.attribute_group.class:       Pim\Component\Catalog\Factory\AttributeGroupFactory
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
+    pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
 
 services:
     pim_catalog.factory.family:
@@ -32,6 +33,11 @@ services:
         class: %pim_catalog.factory.group_type.class%
         arguments:
             - %pim_catalog.entity.group_type.class%
+
+    pim_catalog.factory.currency:
+        class: %pim_catalog.factory.currency.class%
+        arguments:
+            - %pim_catalog.entity.currency.class%
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%

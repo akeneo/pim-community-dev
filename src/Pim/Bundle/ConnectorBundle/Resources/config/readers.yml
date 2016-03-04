@@ -46,6 +46,9 @@ services:
     pim_connector.reader.file.csv_group_type:
         alias: pim_connector.reader.file.csv
 
+    pim_connector.reader.file.csv_currency:
+        alias: pim_connector.reader.file.csv
+
     pim_connector.reader.file.csv_product:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:

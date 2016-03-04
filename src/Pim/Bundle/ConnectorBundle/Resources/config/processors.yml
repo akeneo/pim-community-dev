@@ -12,6 +12,7 @@ parameters:
     pim_connector.processor.denormalization.channel.class:             Pim\Component\Connector\Processor\Denormalization\ChannelProcessor
     pim_connector.processor.denormalization.attribute_group.class:     Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor
     pim_connector.processor.denormalization.group_type.class:          Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor
+    pim_connector.processor.denormalization.currency.class:            Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor
 
 services:
     # Dummy processor
@@ -139,4 +140,13 @@ services:
             - '@pim_connector.array_converter.flat.group_type'
             - '@pim_catalog.factory.group_type'
             - '@pim_catalog.updater.group_type'
+            - '@pim_catalog.validator.product'
+
+    pim_connector.processor.denormalization.currency.flat:
+        class: %pim_connector.processor.denormalization.currency.class%
+        arguments:
+            - '@pim_catalog.repository.currency'
+            - '@pim_connector.array_converter.flat.currency'
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
             - '@pim_catalog.validator.product'

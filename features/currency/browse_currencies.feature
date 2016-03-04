@@ -15,7 +15,7 @@ Feature: Browse currencies
     And I should be able to sort the rows by Code and Activated
     And I should be able to use the following filters:
       | filter    | value | result      |
-      | Code      | EU    | EUR         |
+      | Code      | EU    | EUR and XEU |
       | Activated | yes   | USD and EUR |
 
   Scenario: Successfully activate a currency
