@@ -1,5 +1,9 @@
 # 1.5.x
 
+## Bug fixes
+
+- PIM-5509: Fix grid date filters initialization
+
 # 1.5.0-RC1 (2016-03-02)
 
 ## BC breaks
