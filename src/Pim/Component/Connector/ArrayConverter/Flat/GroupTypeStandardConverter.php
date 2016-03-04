@@ -6,13 +6,13 @@ use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Attribute Group Flat to Standard format Converter
+ * Group Type Flat to Standard format Converter
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupStandardConverter implements StandardArrayConverterInterface
+class GroupTypeStandardConverter implements StandardArrayConverterInterface
 {
     /** @var FieldsRequirementValidator */
     protected $validator;
@@ -32,21 +32,19 @@ class AttributeGroupStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *     'code'        => 'sizes',
-     *     'sort_order'  => 1,
-     *     'attributes'  => 'size,main_color',
-     *     'label-en_US' => 'Sizes',
-     *     'label-fr_FR' => 'Tailles'
+     *     'code'        => 'VARIANT',
+     *     'is_variant'  => 1,
+     *     'label-en_US' => 'variant',
+     *     'label-fr_FR' => 'variantes',
      * ]
      *
      * After:
      * [
-     *     'code'       => 'sizes',
-     *     'sort_order' => 1,
-     *     'attributes' => ['size', 'main_color'],
-     *     'label'      => [
-     *         'en_US' => 'Sizes',
-     *         'fr_FR' => 'Tailles'
+     *     'code'        => 'VARIANT',
+     *     'is_variant'  => true,
+     *     'label'       => [
+     *         'en_US' => 'variant',
+     *         'fr_FR' => 'variantes',
      *     ]
      * ]
      */
@@ -71,15 +69,15 @@ class AttributeGroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        if (in_array($field, ['code', 'sort_order'])) {
+        if ('code' === $field) {
             $convertedItem[$field] = $data;
+        } elseif ('is_variant' === $field) {
+            $convertedItem['is_variant'] = (bool) $data;
         } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
             if (!isset($convertedItem['label'])) {
                 $convertedItem['label'] = [];
             }
             $convertedItem['label'][$matches['locale']] = $data;
-        } else {
-            $convertedItem[$field] = explode(',', $data);
         }
 
         return $convertedItem;

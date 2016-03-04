@@ -52,21 +52,21 @@ connector:
                         processor: pim_connector.processor.denormalization.channel.flat
                         writer:    pim_connector.writer.doctrine.channel
 
-        fixtures_group_type_yml:
-            title: pim_installer.jobs.fixtures_group_type_yml.title
+        fixtures_group_type_csv:
+            title: pim_installer.jobs.fixtures_group_type_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_group_type_yml.validation.title
+                    title: pim_connector.jobs.fixtures_group_type_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_group_type_yml.import.title
+                    title:     pim_installer.jobs.fixtures_group_type_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.group_type
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_group_type
+                        processor: pim_connector.processor.denormalization.group_type.flat
+                        writer:    pim_connector.writer.doctrine.group_type
 
         fixtures_association_type_csv:
             title: pim_installer.jobs.fixtures_association_type_csv.title
