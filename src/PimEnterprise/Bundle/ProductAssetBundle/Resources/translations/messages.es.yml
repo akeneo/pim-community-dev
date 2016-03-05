@@ -120,6 +120,7 @@ pimee_product_asset:
     yml_asset_configuration_export.title: Exportar configuraciones de recursos por canal en YAML
     csv_asset_category_export.title: Exportar categoría de recursos en CSV
     yml_asset_channel_configuration_import.title: Importar configuraciones de recursos por canal en Yaml
+    assets_mass_upload.title: Carga masiva de recursos
   steps:
     channel_configuration.processor.title: Configuración de procesos de canal
   notAvailable:
