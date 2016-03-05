@@ -27,7 +27,6 @@ class ProductStandardConverterSpec extends ObjectBehavior
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        LocalizerRegistryInterface $localizerRegistry,
         FieldsRequirementValidator $validator
     ) {
         $this->beConstructedWith(
@@ -38,7 +37,6 @@ class ProductStandardConverterSpec extends ObjectBehavior
             $fieldConverter,
             $columnsMerger,
             $columnsMapper,
-            $localizerRegistry,
             $validator
         );
     }
