@@ -70,6 +70,12 @@ Contact Information: Kontaktinformationen
 User name: Benutzername
 Birthday: Geburtstag
 API key: API-Schlüssel
+Ui locale: UI-Gebietsschema
+UI locale: UI-Gebietsschema
+User salt: Benutzer-Streuung
+Current password: Aktuelles Passwort
+New password: Neues Passwort
+Repeat new password: Neues Passwort (Wiederholung)
 Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
