@@ -27,6 +27,10 @@ pimee_workflow:
       partial_approve: 'Änderungen des Attributs %attribute% von Produkt %product% genehmigen'
       partial_reject: 'Ablehnen der Änderung vom Attribut %attribute% am Produkt-%product%'
     notification:
+      partial_approve: '%owner% hat Wert(e) für %attributes% für das Produkt %product% akzeptiert'
+      partial_approve_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% akzeptiert'
+      partial_reject: '%owner% hat Wert(e) für %attributes% für das Produkt %product% abgelehnt'
+      partial_reject_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% abgelehnt'
       approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
@@ -69,6 +73,8 @@ pimee_workflow:
       perform.title: Vorschläge verweigern
   steps:
     product_draft_processor.title: Vorschlag-Prozessor
+    approve.title: Vorschlag freigeben
+    refuse.title: Vorschlag ablehnen
 pimee_workflow_product_draft_notification_new_proposal: Neuer Vorschlag
 pimee_workflow_import_notification_new_proposals: Neue Vorschläge aus Import
 btn.publish: Veröffentlichen

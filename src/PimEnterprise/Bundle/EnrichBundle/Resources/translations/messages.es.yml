@@ -101,6 +101,9 @@ pimee_enrich:
   category:
     tab:
       permission.title: Permisiones
+  locale:
+    tab:
+      permission.title: Permisiones
   channel:
     tab:
       asset_transformation.title: Transformaciones de recursos
