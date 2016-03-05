@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -21,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class LocaleAccessRepository extends EntityRepository
+class LocaleAccessRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * Get group that have the specified access to a locale
@@ -69,6 +70,40 @@ class LocaleAccessRepository extends EntityRepository
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['locale', 'userGroup'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        list($localeCode, $userGroupName) = explode('.', $identifier);
+
+        /**
+         * We need to get the Locale class to create a join between locale accesses and locales. We can not easily
+         * inject it because of circular references and EntityRepository extension.
+         * The least worst solution is to use the association mapping, to get the target entity.
+         */
+        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
+        $localeClass = $associationMappings['locale']['targetEntity'];
+
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin($localeClass, 'l', 'WITH', 'a.locale = l.id')
+            ->where('l.code = :localeCode')
+            ->andWhere('g.name = :userGroupName')
+            ->setParameter('localeCode', $localeCode)
+            ->setParameter('userGroupName', $userGroupName);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

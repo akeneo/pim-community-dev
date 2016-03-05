@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.factory.locale_access.class: PimEnterprise\Component\Security\Factory\LocaleAccessFactory
+
+services:
+    pimee_security.factory.locale_access:
+        class: %pimee_security.factory.locale_access.class%
+        arguments:
+            - %pimee_security.entity.locale_access.class%

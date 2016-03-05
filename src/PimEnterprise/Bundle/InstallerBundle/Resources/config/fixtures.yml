@@ -22,9 +22,7 @@ job_profile_accesses:
 locale_accesses:
     order: 150
     csv:
-        processor: pimee_base_connector.processor.locale_access
-    yml:
-        processor: pimee_base_connector.processor.locale_access
+        processor: pimee_security.processor.denormalization.locale_access.flat
 
 asset_channel_configurations:
     order: 110
