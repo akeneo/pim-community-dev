@@ -2,7 +2,7 @@ Pim\Bundle\CatalogBundle\Model\Association:
     type: entity
     table: pim_catalog_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
     fields:
         id:
             type: integer
