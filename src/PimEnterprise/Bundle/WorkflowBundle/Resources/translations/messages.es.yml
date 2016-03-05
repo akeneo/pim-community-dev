@@ -21,10 +21,16 @@ pimee_workflow:
       can_not_be_approved: No puede revisar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
       can_not_be_deleted: No puede eliminar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
     action:
+      approve: Aprobar todos
+      refuse: Rechazar todos
       remove: Eliminar
       partial_approve: 'Aprobar cambios en atributo %attribute% de el producto %product%'
       partial_reject: 'Rechazar cambios en atributo %attribute% del producto %product%'
     notification:
+      partial_approve: '%owner% ha aceptado el(los) valor(es) para el(los) %attributes% para el producto %product%'
+      partial_approve_number: '%owner% ha aceptado %attributes_count% valores para los atributos para el producto %product%'
+      partial_reject: '%owner% ha rechazado el(los) valor(es) de %attributes% para el producto %product%'
+      partial_reject_number: '%owner% ha rechazado %attributes_count% valores de atributos para el producto %product%'
       approve: '%owner% ha aceptado su propuesta por el producto %product%'
       refuse: '%owner% ha rechazado su propuesta por el producto %product%'
       remove: '%owner% ha eliminado su propuesta por el producto %product%'
@@ -67,6 +73,8 @@ pimee_workflow:
       perform.title: Rechazar propuestas
   steps:
     product_draft_processor.title: Procesador de propuesta
+    approve.title: Aprobar la proposición
+    refuse.title: Rechazar la proposición
 pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
 pimee_workflow_import_notification_new_proposals: Nuevas propuestas provenientes de una importación
 btn.publish: Publicar
