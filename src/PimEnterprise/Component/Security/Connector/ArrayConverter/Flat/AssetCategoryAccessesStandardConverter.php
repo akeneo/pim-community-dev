@@ -15,11 +15,11 @@ use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Locale Accesses Flat to Standard format converter
+ * Asset Category Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
+class AssetCategoryAccessesStandardConverter implements StandardArrayConverterInterface
 {
     /** @var FieldsRequirementValidator */
     protected $validator;
@@ -39,37 +39,41 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'locale'        => 'en_US',
-     *      'view_products' => 'IT support,Manager',
-     *      'edit_products' => 'IT support',
+     *      'category'   => 'videos',
+     *      'view_items' => 'IT support,Manager',
+     *      'edit_items' => 'IT support',
+     *      'own_items'  => '',
      * ]
      *
      * After:
      * [
      *     [
-     *         'locale'        => 'en_US',
-     *         'userGroup'     => 'IT support',
-     *         'view_products' => true,
-     *         'edit_products' => true,
+     *         'category'   => 'videos',
+     *         'userGroup'  => 'IT support',
+     *         'view_items' => true,
+     *         'edit_items' => true,
+     *         'own_items'  => false,
      *     ], [
-     *         'locale'        => 'en_US',
-     *         'userGroup'     => 'Manager',
-     *         'view_products' => true,
-     *         'edit_products' => false,
+     *         'category'   => 'videos',
+     *         'userGroup'  => 'Manager',
+     *         'view_items' => true,
+     *         'edit_items' => false,
+     *         'own_items'  => false,
      *     ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['locale']);
+        $this->validator->validateFields($item, ['category']);
 
         $convertedItems = [];
         foreach ($this->getConcernedGroupNames($item) as $groupName) {
             $convertedItems[] = [
-                'locale'        => $item['locale'],
-                'userGroup'     => $groupName,
-                'view_products' => in_array($groupName, $this->getGroupNames($item, 'view_products')),
-                'edit_products' => in_array($groupName, $this->getGroupNames($item, 'edit_products')),
+                'category'   => $item['category'],
+                'userGroup'  => $groupName,
+                'view_items' => in_array($groupName, $this->getGroupNames($item, 'view_items')),
+                'edit_items' => in_array($groupName, $this->getGroupNames($item, 'edit_items')),
+                'own_items'  => in_array($groupName, $this->getGroupNames($item, 'own_items')),
             ];
         }
 
@@ -77,7 +81,7 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * Return all the group concerned by the locale access.
+     * Return all the group concerned by the asset category access.
      *
      * @param array $item
      *
@@ -87,8 +91,9 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
     {
         return array_unique(
             array_merge(
-                $this->getGroupNames($item, 'view_products'),
-                $this->getGroupNames($item, 'edit_products')
+                $this->getGroupNames($item, 'view_items'),
+                $this->getGroupNames($item, 'edit_items'),
+                $this->getGroupNames($item, 'own_items')
             )
         );
     }

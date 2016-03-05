@@ -16,21 +16,21 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\Security\Factory\LocaleAccessFactory;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
+use PimEnterprise\Component\Security\Factory\AssetCategoryAccessFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Locale Access processor
+ * Asset Category Access processor
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessProcessor extends AbstractProcessor
+class AssetCategoryAccessProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
     protected $accessConverter;
 
-    /** @var LocaleAccessFactory */
+    /** @var AssetCategoryAccessFactory */
     protected $accessFactory;
 
     /** @var ObjectUpdaterInterface */
@@ -42,14 +42,14 @@ class LocaleAccessProcessor extends AbstractProcessor
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param StandardArrayConverterInterface       $accessConverter
-     * @param LocaleAccessFactory                   $accessFactory
+     * @param AssetCategoryAccessFactory            $accessFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $accessConverter,
-        LocaleAccessFactory $accessFactory,
+        AssetCategoryAccessFactory $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
@@ -66,25 +66,25 @@ class LocaleAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $localeAccesses = [];
+        $categoryAccesses = [];
         $convertedItems = $this->accessConverter->convert($item);
         foreach ($convertedItems as $convertedItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
-            $localeAccesses[] = $localeAccess;
+            $categoryAccess = $this->findOrCreateAssetCategoryAccess($convertedItem);
+            $categoryAccesses[] = $categoryAccess;
 
             try {
-                $this->updater->update($localeAccess, $convertedItem);
+                $this->updater->update($categoryAccess, $convertedItem);
             } catch (\InvalidArgumentException $exception) {
                 $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
             }
 
-            $violations = $this->validator->validate($localeAccess);
+            $violations = $this->validator->validate($categoryAccess);
             if ($violations->count() > 0) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
 
-        return $localeAccesses;
+        return $categoryAccesses;
     }
 
     /**
@@ -92,15 +92,16 @@ class LocaleAccessProcessor extends AbstractProcessor
      *
      * @throws MissingIdentifierException
      *
-     * @return LocaleAccessInterface
+     * @return AssetCategoryAccess
+     *
      */
-    protected function findOrCreateLocaleAccess(array $convertedItem)
+    protected function findOrCreateAssetCategoryAccess(array $convertedItem)
     {
-        $localeAccess = $this->findObject($this->repository, $convertedItem);
-        if (null === $localeAccess) {
+        $categoryAccess = $this->findObject($this->repository, $convertedItem);
+        if (null === $categoryAccess) {
             return $this->accessFactory->create();
         }
 
-        return $localeAccess;
+        return $categoryAccess;
     }
 }

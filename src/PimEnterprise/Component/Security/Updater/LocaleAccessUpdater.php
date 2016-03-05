@@ -14,8 +14,8 @@ namespace PimEnterprise\Component\Security\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
@@ -83,23 +83,23 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
      */
     protected function setData(LocaleAccessInterface $localeAccess, $field, $data)
     {
-        if ('locale' == $field) {
+        if ('locale' === $field) {
             $locale = $this->findLocale($data);
             if (null !== $locale) {
                 $localeAccess->setLocale($locale);
             } else {
                 throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $data));
             }
-        } elseif ('userGroup' == $field) {
+        } elseif ('userGroup' === $field) {
             $group = $this->findGroup($data);
             if (null !== $group) {
                 $localeAccess->setUserGroup($group);
             } else {
                 throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
             }
-        } elseif ('view_products' == $field) {
+        } elseif ('view_products' === $field) {
             $localeAccess->setViewProducts($data);
-        } elseif ('edit_products' == $field) {
+        } elseif ('edit_products' === $field) {
             $localeAccess->setEditProducts($data);
         }
     }
@@ -107,7 +107,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
     /**
      * @param string $code
      *
-     * @return GroupInterface|null
+     * @return Group|null
      */
     protected function findGroup($code)
     {
