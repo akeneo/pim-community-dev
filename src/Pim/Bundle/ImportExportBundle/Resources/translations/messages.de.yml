@@ -99,10 +99,12 @@ flash:
     created: Der Export wurde erfolgreich erstellt
     removed: Der Export wurde entfernt
     updated: Der Export wurde erfolgreich aktualisiert
+    running: Der Export läuft
   import:
     created: Der Import wurde erfolgreich erstellt
     removed: Der Import wurde entfernt
     updated: Der Import wurde erfolgreich aktualisiert
+    running: Der Import läuft
 pim_menu:
   item:
     export_history: Export-Historie
