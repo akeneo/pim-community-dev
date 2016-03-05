@@ -4,8 +4,8 @@ pim_base_connector:
       title: Экспорт продуктов в CSV
       export.title: Экспорт продуктов
     csv_category_export:
-      title: Экспорт категории в CSV
-      export.title: Экспорт категории
+      title: Экспорт категорий в CSV
+      export.title: Экспорт категорий
     csv_attribute_export:
       title: Экспорт атрибутов в CSV
       export.title: Экспорт атрибутов
@@ -16,17 +16,17 @@ pim_base_connector:
       title: Экспорт типов ассоциаций в CSV
       export.title: Экспорт типов ассоциаций
     csv_group_export:
-      title: Экспорт группы в CSV
-      export.title: Экспорт группы
+      title: Экспорт групп в CSV
+      export.title: Экспорт групп
     csv_variant_group_export:
-      title: Экспорт группы вариантов в CSV
-      export.title: Экспорт группы вариантов
+      title: Экспорт групп вариантов в CSV
+      export.title: Экспорт групп вариантов
     csv_family_export:
       title: Экспорт семейств в CSV
       export.title: Экспорт семейств
     csv_product_import:
       title: Импорт продуктов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт продуктов
       import_associations.title: Импорт ассоциаций
     csv_category_import:
