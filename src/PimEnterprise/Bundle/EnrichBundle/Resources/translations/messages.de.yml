@@ -101,6 +101,9 @@ pimee_enrich:
   category:
     tab:
       permission.title: Berechtigungen
+  locale:
+    tab:
+      permission.title: Berechtigungen
   channel:
     tab:
       asset_transformation.title: Assetumwandlungen
