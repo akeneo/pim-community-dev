@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,24 +30,24 @@ class GroupHandler implements HandlerInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
     /**
      * Constructor for handler
      *
-     * @param FormInterface                        $form
-     * @param Request                              $request
-     * @param SaverInterface                       $groupSaver
-     * @param ProductRepositoryInterface           $productRepository
-     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param FormInterface               $form
+     * @param Request                     $request
+     * @param SaverInterface              $groupSaver
+     * @param ProductRepositoryInterface  $productRepository
+     * @param AttributeConverterInterface $localizedConverter
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         SaverInterface $groupSaver,
         ProductRepositoryInterface $productRepository,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->form               = $form;
         $this->request            = $request;
@@ -119,7 +119,7 @@ class GroupHandler implements HandlerInterface
         }
 
         $options    = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
-        $valuesData = $this->localizedConverter->convertLocalizedToDefaultValues($template->getValuesData(), $options);
+        $valuesData = $this->localizedConverter->convertToDefaultFormats($template->getValuesData(), $options);
 
         $template->setValuesData($valuesData);
     }

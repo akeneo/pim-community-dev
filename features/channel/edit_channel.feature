@@ -5,10 +5,10 @@ Feature: Edit a channel
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Peter"
 
   Scenario: Successfully edit a channel
-    Given I am on the "tablet" channel page
+    Given I am logged in as "Peter"
+    And I am on the "tablet" channel page
     Then I should see the Code field
     And the field Code should be disabled
     When I fill in the following information:
@@ -17,7 +17,8 @@ Feature: Edit a channel
     Then I should see "My tablet"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I am on the "mobile" channel page
+    Given I am logged in as "Peter"
+    And  I am on the "mobile" channel page
     When I fill in the following information:
       | Default label | My mobile |
     And I click on the Akeneo logo
@@ -27,14 +28,16 @@ Feature: Edit a channel
 
   @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "mobile" channel page
+    Given I am logged in as "Peter"
+    And  I am on the "mobile" channel page
     When I fill in the following information:
       | Default label | My mobile |
     Then I should see "There are unsaved changes."
 
   @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
-    Given I am on the "tablet" channel page
+    Given I am logged in as "Peter"
+    And  I am on the "tablet" channel page
     And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
@@ -47,3 +50,9 @@ Feature: Edit a channel
     And I am on the locales page
     Then the grid should contain 1 element
     And I should see locale "en_US"
+
+  Scenario: Successfully display the translation of the unit of metrics
+    Given I am logged in as "Julien"
+    And  I am on the "tablet" channel page
+    And I fill in the following information:
+      | Length | Kilomètre |

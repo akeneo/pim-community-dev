@@ -53,5 +53,5 @@ services:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
             - '@pim_catalog.repository.attribute'
-            - %pim_localization.decimal_separators%
-            - %pim_localization.date_formats%
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%

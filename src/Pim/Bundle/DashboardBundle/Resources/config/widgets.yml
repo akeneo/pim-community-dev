@@ -29,7 +29,7 @@ services:
         arguments:
             - '@pim_import_export.manager.job_execution'
             - '@translator'
-            - '@pim_localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.datetime'
             - '@security.token_storage'
         tags:
             - { name: pim_dashboard.widget, position: 30 }

@@ -129,14 +129,14 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $tabLocator = sprintf('$("a:contains(\'%s\')").length > 0;', $tab);
-        $this->wait($tabLocator);
         $this->getCurrentPage()->visitTab($tab);
         $this->wait();
     }
 
     /**
      * @param string $tab
+     *
+     * @throws ExpectationException
      *
      * @Then /^I should be on the "([^"]*)" tab$/
      */
@@ -441,10 +441,6 @@ class WebUser extends RawMinkContext
     public function iSave()
     {
         $this->getCurrentPage()->save();
-
-        if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
-            $this->wait();
-        }
     }
 
     /**
@@ -1956,7 +1952,10 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
-        $this->wait();
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.completeness-block');
+        }, sprintf('Can\'t find completeness block in panel'));
+
         $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .btn');
 
         foreach ($collapseSwitchers as $switcher) {

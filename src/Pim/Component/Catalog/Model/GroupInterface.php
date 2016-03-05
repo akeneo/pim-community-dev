@@ -112,7 +112,7 @@ interface GroupInterface extends
     /**
      * Add attribute
      *
-     * @deprecated will be removed in 1.4, use addAxisAttribute()
+     * @deprecated will be removed in 1.6, use addAxisAttribute()
      *
      * @param AttributeInterface $attribute
      *
@@ -123,7 +123,7 @@ interface GroupInterface extends
     /**
      * Remove attribute
      *
-     * @deprecated will be removed in 1.4, use removeAxisAttribute()
+     * @deprecated will be removed in 1.6, use removeAxisAttribute()
      *
      * @param AttributeInterface $attribute
      *
@@ -136,7 +136,7 @@ interface GroupInterface extends
     /**
      * Get attributes
      *
-     * @deprecated will be removed in 1.4, use getAxisAttributes()
+     * @deprecated will be removed in 1.6, use getAxisAttributes()
      *
      * @return ArrayCollection
      */
@@ -145,7 +145,7 @@ interface GroupInterface extends
     /**
      * Setter for attributes property
      *
-     * @deprecated will be removed in 1.4, use setAxisAttributes()
+     * @deprecated will be removed in 1.6, use setAxisAttributes()
      *
      * @param AttributeInterface[] $attributes
      *
@@ -156,7 +156,7 @@ interface GroupInterface extends
     /**
      * Get attribute ids
      *
-     * @deprecated will be removed in 1.4
+     * @deprecated will be removed in 1.6
      *
      * @return integer[]
      */

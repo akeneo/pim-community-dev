@@ -6,9 +6,9 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -42,7 +42,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var NormalizerInterface */
     protected $internalNormalizer;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
     /** @var LocalizerRegistryInterface */
@@ -67,16 +67,16 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $errors;
 
     /**
-     * @param ProductBuilderInterface              $productBuilder
-     * @param UserContext                          $userContext
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param ObjectUpdaterInterface               $productUpdater
-     * @param ValidatorInterface                   $productValidator
-     * @param NormalizerInterface                  $internalNormalizer
-     * @param LocalizedAttributeConverterInterface $localizedConverter
-     * @param LocalizerRegistryInterface           $localizerRegistry
-     * @param CollectionFilterInterface            $productValuesFilter
-     * @param string                               $tmpStorageDir
+     * @param ProductBuilderInterface      $productBuilder
+     * @param UserContext                  $userContext
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param ValidatorInterface           $productValidator
+     * @param NormalizerInterface          $internalNormalizer
+     * @param AttributeConverterInterface   $localizedConverter
+     * @param LocalizerRegistryInterface   $localizerRegistry
+     * @param CollectionFilterInterface    $productValuesFilter
+     * @param string                       $tmpStorageDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -85,7 +85,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         NormalizerInterface $internalNormalizer,
-        LocalizedAttributeConverterInterface $localizedConverter,
+        AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
         $tmpStorageDir
@@ -238,7 +238,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $data = json_decode($this->values, true);
 
         $locale = $this->userContext->getUiLocale()->getCode();
-        $data = $this->localizedConverter->convertLocalizedToDefaultValues($data, ['locale' => $locale]);
+        $data = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
         $this->productUpdater->update($product, $data);

@@ -26,6 +26,7 @@ parameters:
     pim_serializer.denormalizer.attribute_options.class:         Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\AttributeOptionsDenormalizer
     pim_serializer.denormalizer.prices.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer
     pim_serializer.denormalizer.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.number.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\NumberDenormalizer
     pim_serializer.denormalizer.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
     pim_serializer.denormalizer.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\FileDenormalizer
     pim_serializer.denormalizer.boolean.class:                   Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer
@@ -48,6 +49,8 @@ services:
 
     pim_serializer.normalizer.product_value:
         class: %pim_serializer.normalizer.product_value.class%
+        arguments:
+            - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -166,7 +169,7 @@ services:
     pim_serializer.denormalizer.base_value:
         class: %pim_serializer.denormalizer.base_value.class%
         arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number']
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -189,6 +192,7 @@ services:
         class: %pim_serializer.denormalizer.prices.class%
         arguments:
             - ['pim_catalog_price_collection']
+            - '@pim_catalog.localization.localizer.metric'
             - %pim_catalog.entity.product_price.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -198,6 +202,15 @@ services:
         arguments:
             - ['pim_catalog_metric']
             - '@pim_catalog.factory.metric'
+            - '@pim_catalog.localization.localizer.metric'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.number:
+        class: %pim_serializer.denormalizer.number.class%
+        arguments:
+            - ['pim_catalog_number']
+            - '@pim_catalog.localization.localizer.number'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

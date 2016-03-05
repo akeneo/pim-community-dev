@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Form\DataTransformer;
 
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

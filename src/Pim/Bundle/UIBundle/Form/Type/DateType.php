@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Validator\Constraints\DateFormat;
+use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -22,12 +23,17 @@ class DateType extends AbstractType
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var DateFactory */
+    protected $dateFactory;
+
     /**
      * @param LocaleResolver $localeResolver
+     * @param DateFactory $dateFactory
      */
-    public function __construct(LocaleResolver $localeResolver)
+    public function __construct(LocaleResolver $localeResolver, DateFactory $dateFactory)
     {
         $this->localeResolver = $localeResolver;
+        $this->dateFactory    = $dateFactory;
     }
 
     /**
@@ -40,17 +46,15 @@ class DateType extends AbstractType
         };
 
         $constraint = new DateFormat();
-
-        $localeOptions = $this->localeResolver->getFormats();
+        $dateFormat = $this->dateFactory->create(['locale' => $this->localeResolver->getCurrentLocale()])->getPattern();
 
         $resolver->setDefaults(
             [
                 'widget'                     => 'single_text',
                 'placeholder'                => 'oro.form.click_here_to_select',
                 'invalid_message'            => $constraint->message,
-                'invalid_message_parameters' => ['{{ date_format }}' => $localeOptions['date_format']],
-                'locale_options'             => $localeOptions,
-                'format'                     => $localeOptions['date_format']
+                'invalid_message_parameters' => ['{{ date_format }}' => $dateFormat],
+                'format'                     => $dateFormat
             ]
         )->setNormalizer('placeholder', function (Options $options, $placeholder) use ($placeholderDefault) {
             if (is_string($placeholder)) {

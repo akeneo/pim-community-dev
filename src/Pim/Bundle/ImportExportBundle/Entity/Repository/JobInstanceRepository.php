@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.5
+ * @deprecated will be removed in 1.6. Class will move to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository.
  */
 class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {

@@ -132,6 +132,7 @@ services:
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.factory.attribute'
             - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
@@ -154,6 +155,7 @@ services:
             - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.remover.attribute_option'
+            - '@pim_catalog.repository.attribute'
 
     pim_enrich.controller.product:
         scope: request
@@ -408,7 +410,7 @@ services:
             - '@pim_enrich.filter.product_edit_data'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
-            - '@pim_localization.localizer.converter'
+            - '@pim_catalog.localization.localizer.converter'
 
     pim_enrich.controller.rest.product_category:
         class: %pim_enrich.controller.rest.product_category.class%

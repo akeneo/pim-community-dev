@@ -50,7 +50,6 @@ Feature: Filter products by text field
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
-    When I show the filter "name"
     And I should be able to use the following filters:
       | filter      | value | result          |
       | name        | empty | book and mug    |
@@ -68,7 +67,6 @@ Feature: Filter products by text field
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
-    When I show the filter "name"
     And I should be able to use the following filters:
       | filter | value | result       |
       | name   | empty | book and mug |
@@ -85,7 +83,6 @@ Feature: Filter products by text field
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
-    When I show the filter "name"
     And I should be able to use the following filters:
       | filter | value | result       |
       | name   | empty | book and mug |
@@ -103,7 +100,6 @@ Feature: Filter products by text field
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
-    When I show the filter "name"
     And I should be able to use the following filters:
       | filter | value | result       |
       | name   | empty | book and mug |

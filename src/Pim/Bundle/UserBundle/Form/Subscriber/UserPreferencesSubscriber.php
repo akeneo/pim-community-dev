@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
+use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

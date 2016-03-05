@@ -14,6 +14,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
 
 class ProductStandardConverterSpec extends ObjectBehavior
@@ -26,6 +27,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
+        LocalizerRegistryInterface $localizerRegistry,
         FieldsRequirementValidator $validator
     ) {
         $this->beConstructedWith(
@@ -36,6 +38,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
             $fieldConverter,
             $columnsMerger,
             $columnsMapper,
+            $localizerRegistry,
             $validator
         );
     }

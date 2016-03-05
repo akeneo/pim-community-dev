@@ -40,7 +40,12 @@ class Edit extends ProductEditForm
                 'Copy source dropdown'    => ['css' => '.attribute-copy-actions .source-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
-                'Completeness'            => ['css' => '.completeness-block'],
+                'Completeness'            => [
+                    'css'        => '.completeness-block',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Completeness\PanelDecorator'
+                    ]
+                ],
                 'Category pane'           => ['css' => '#product-categories'],
                 'Category tree'           => [
                     'css'        => '#trees',

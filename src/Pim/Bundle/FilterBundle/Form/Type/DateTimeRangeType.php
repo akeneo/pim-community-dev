@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type;
 
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
