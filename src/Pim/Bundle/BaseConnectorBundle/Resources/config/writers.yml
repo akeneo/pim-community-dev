@@ -5,7 +5,6 @@ parameters:
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
 
-    pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
     pim_base_connector.writer.file.csv.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
     pim_base_connector.writer.file.csv_product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter
     pim_base_connector.writer.file.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter
@@ -14,10 +13,6 @@ services:
     # deprecated will be removed in 1.6
     pim_base_connector.writer.file:
         class: %pim_base_connector.writer.file.class%
-
-    # deprecated will be removed in 1.6
-    pim_base_connector.writer.dummy:
-        class: %pim_base_connector.writer.dummy.class%
 
     # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv:
@@ -35,7 +30,7 @@ services:
             - '@pim_connector.writer.file.file_exporter'
 
     # Doctrine Writer
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.product:
         class: %pim_base_connector.writer.doctrine.product.class%
         arguments:
@@ -43,7 +38,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
 
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.variant_group:
         class: %pim_base_connector.writer.doctrine.variant_group.class%
         arguments:
@@ -51,7 +46,7 @@ services:
             - '@pim_transform.cache.product_cache_clearer'
             - '@pim_catalog.applier.product_template'
 
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%
         arguments:
@@ -60,14 +55,14 @@ services:
 
     pim_base_connector.writer.doctrine.association_type: '@pim_base_connector.writer.doctrine'
 
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.group: '@pim_base_connector.writer.doctrine'
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.attribute: '@pim_base_connector.writer.doctrine'
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.association: '@pim_connector.writer.doctrine.product_association'
 
     pim_base_connector.writer.doctrine.category: '@pim_base_connector.writer.doctrine'
 
-    # deprecated will be removed in 1.5
+    # deprecated will be removed in 1.6
     pim_base_connector.writer.doctrine.attribute_option: '@pim_base_connector.writer.doctrine'

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -17,14 +18,19 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     /** @var string */
     protected $productPriceClass;
 
+    /** @var LocalizerInterface */
+    protected $localizer;
+
     /**
-     * @param string[] $supportedTypes
-     * @param string   $productPriceClass
+     * @param string[]           $supportedTypes
+     * @param LocalizerInterface $localizer
+     * @param string             $productPriceClass
      */
-    public function __construct(array $supportedTypes, $productPriceClass)
+    public function __construct(array $supportedTypes, LocalizerInterface $localizer, $productPriceClass)
     {
         parent::__construct($supportedTypes);
 
+        $this->localizer         = $localizer;
         $this->productPriceClass = $productPriceClass;
     }
 
@@ -40,7 +46,8 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $prices = new ArrayCollection();
 
         foreach ($data as $priceData) {
-            $prices->add(new $this->productPriceClass($priceData['data'], $priceData['currency']));
+            $data = $this->localizer->localize($priceData['data'], $context);
+            $prices->add(new $this->productPriceClass($data, $priceData['currency']));
         }
 
         return $prices;

@@ -29,17 +29,6 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_instantiates_an_attribute($factory, AttributeInterface $attribute)
-    {
-        $factory->createAttribute(null)->willReturn($attribute);
-        $this->createAttribute()->shouldReturn($attribute);
-    }
-
-    function it_provides_the_attribute_class_used()
-    {
-        $this->getAttributeClass()->shouldReturn(self::ATTRIBUTE_CLASS);
-    }
-
     function it_provides_the_list_of_attribute_types($registry)
     {
         $registry->getAliases()->willReturn(['foo', 'bar']);

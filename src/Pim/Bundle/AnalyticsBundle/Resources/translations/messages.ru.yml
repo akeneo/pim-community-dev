@@ -7,19 +7,3 @@ pim_analytics:
     form:
       version_update.label: Уведомления о новых версиях
       version_update.tooltip: Отправить запрос на отдаленный сервер для извлечения уведомлений о выпуске новых патчей
-  system_info:
-    title: Информация о системе
-    download: TXT
-  info_type:
-    pim_edition: Издание
-    pim_version: Версия
-    pim_storage_driver: Диск. пространство
-    pim_environment: Среда
-    pim_install_time: Время установки
-    registered_bundles: Зарегистрированные связки
-  acl:
-    system_info:
-      index: Информация о системе
-pim_menu:
-  item:
-    system_info: Информация о системе

@@ -30,7 +30,7 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
     /**
      * Get the attribute group choices
      *
-     * @deprecated only used in grid, will be removed in 1.5
+     * @deprecated only used in grid, will be removed in 1.6
      *
      * @return array
      */

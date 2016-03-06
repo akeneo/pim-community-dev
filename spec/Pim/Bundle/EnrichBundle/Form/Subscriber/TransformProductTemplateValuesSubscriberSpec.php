@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Localization\LocaleResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

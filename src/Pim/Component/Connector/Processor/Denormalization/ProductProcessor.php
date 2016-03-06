@@ -2,16 +2,15 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -71,18 +70,18 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductFilterInterface */
     protected $productFilter;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
     /**
      * @param StandardArrayConverterInterface       $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface               $builder            product builder
+     * @param ProductBuilderInterface               $builder            product builder
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          product validator
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      * @param ProductFilterInterface                $productFilter      product filter
-     * @param LocalizedAttributeConverterInterface  $localizedConverter attributes localized converter
+     * @param AttributeConverterInterface           $localizedConverter attributes localized converter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -92,7 +91,7 @@ class ProductProcessor extends AbstractProcessor
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         ProductFilterInterface $productFilter,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         parent::__construct($repository);
 
@@ -366,7 +365,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertLocalizedAttributes(array $convertedItem)
     {
-        return $this->localizedConverter->convertLocalizedToDefaultValues($convertedItem, [
+        return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
             'decimal_separator' => $this->decimalSeparator,
             'date_format'       => $this->dateFormat
         ]);

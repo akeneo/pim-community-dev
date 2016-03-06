@@ -11,9 +11,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
-use Pim\Component\Localization\Localizer\ConverterInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -31,7 +29,7 @@ class ProductProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
         ProductFilterInterface $productFilter,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
@@ -140,7 +138,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -219,7 +217,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -323,7 +321,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -429,7 +427,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -505,7 +503,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -580,7 +578,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -687,7 +685,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -797,7 +795,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -910,7 +908,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $postConverterData['number'][0]['data'] = '10.45';
         $postConverterData['date'][0]['data'] = '2015-10-20';
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy'
         ])->willReturn($postConverterData);
@@ -972,7 +970,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $data = $convertedData;
         $data['number'][0]['data'] = '10.45';
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($data);
@@ -1037,7 +1035,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($convertedData);
 
         $postConvertedData['number'][0]['data'] = '10.45';
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => ',',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($postConvertedData);
@@ -1146,7 +1144,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
         ];
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -1212,7 +1210,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => true
         ];
 
-        $localizedConverter->convertLocalizedToDefaultValues($convertedData, [
+        $localizedConverter->convertToDefaultFormats($convertedData, [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);

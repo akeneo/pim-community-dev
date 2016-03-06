@@ -52,6 +52,26 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.6 please use SaverInterface::save
+     */
+    public function save($object, array $options = [])
+    {
+        $this->saver->save($object, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.6 please use RemoverInterface::remove
+     */
+    public function remove($object, array $options = [])
+    {
+        $this->remover->remove($object, $options);
+    }
+
+    /**
      * Returns all public views
      *
      * @param string $alias
@@ -66,26 +86,6 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
                 'type'          => DatagridView::TYPE_PUBLIC
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5 please use SaverInterface::save
-     */
-    public function save($object, array $options = [])
-    {
-        $this->saver->save($object, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
-     */
-    public function remove($object, array $options = [])
-    {
-        $this->remover->remove($object, $options);
     }
 
     /**

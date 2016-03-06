@@ -26,15 +26,26 @@ Feature: Display the completeness of a product
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness summary
+    And I should see the "en_US" completeness in position 1
+    And The completeness "fr_FR" should be closed
+    And The completeness "en_US" should be opened
     And I should see the completeness:
       | channel | locale | state   | missing_values        | ratio |
       | mobile  | en_US  | success |                       | 100%  |
       | mobile  | fr_FR  | success |                       | 100%  |
       | tablet  | en_US  | warning | side_view             | 89%   |
       | tablet  | fr_FR  | warning | description side_view | 78%   |
-    When I am on the "sandals" product page
+    When I am on the products page
+    Then I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
+    And I should see the "en_US" completeness in position 1
+    And The completeness "fr_FR" should be closed
+    And The completeness "en_US" should be opened
+    When I switch the locale to "fr_FR"
+    Then I should see the "fr_FR" completeness in position 1
+    And The completeness "en_US" should be closed
+    And The completeness "fr_FR" should be opened
     And I should see the completeness:
       | channel | locale | state   | missing_values                               | ratio |
       | mobile  | en_US  | warning | name price size                              | 40%   |
@@ -48,6 +59,9 @@ Feature: Display the completeness of a product
     And I save the product
     When I open the "Completeness" panel
     Then I should see the completeness summary
+    And I should see the "en_US" completeness in position 1
+    And The completeness "fr_FR" should be closed
+    And The completeness "en_US" should be opened
     And I should see the completeness:
       | channel | locale | state   | missing_values        | ratio |
       | mobile  | en_US  | success |                       | 100%  |
@@ -58,6 +72,9 @@ Feature: Display the completeness of a product
     And I save the product
     And I open the "Completeness" panel
     Then I should see the completeness summary
+    And I should see the "en_US" completeness in position 1
+    And The completeness "fr_FR" should be closed
+    And The completeness "en_US" should be opened
     And I should see the completeness:
       | channel | locale | state   | missing_values                               | ratio |
       | mobile  | en_US  | warning | name price size                              | 40%   |

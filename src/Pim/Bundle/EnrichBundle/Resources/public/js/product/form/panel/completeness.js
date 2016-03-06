@@ -14,9 +14,10 @@ define(
         'pim/form',
         'text!pim/template/product/panel/completeness',
         'pim/fetcher-registry',
-        'pim/i18n'
+        'pim/i18n',
+        'pim/user-context'
     ],
-    function ($, _, BaseForm, template, FetcherRegistry, i18n) {
+    function ($, _, BaseForm, template, FetcherRegistry, i18n, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -34,6 +35,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
+                this.listenTo(UserContext, 'change:catalogLocale', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
@@ -56,9 +58,10 @@ define(
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
-                                completenesses: completeness.completenesses,
+                                completenesses: this.sortCompleteness(completeness.completenesses),
                                 i18n: i18n,
-                                locales: locales
+                                locales: locales,
+                                catalogLocale: UserContext.get('catalogLocale')
                             })
                         );
                         this.delegateEvents();
@@ -76,6 +79,22 @@ define(
                     this.getFormData().meta.id,
                     this.getFormData().family
                 );
+            },
+
+            /**
+             * Sort completenesses. Put the user current catalog locale first.
+             *
+             * @param completenesses
+             *
+             * @returns {Array}
+             */
+            sortCompleteness: function (completenesses) {
+                if (_.isEmpty(completenesses)) {
+                    return [];
+                }
+                var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})];
+
+                return _.union(sortedCompleteness, completenesses);
             },
 
             /**

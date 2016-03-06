@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

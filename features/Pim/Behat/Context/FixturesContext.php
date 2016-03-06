@@ -3,6 +3,8 @@
 namespace Pim\Behat\Context;
 
 use Behat\Behat\Context\Step;
+use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -17,6 +19,8 @@ use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
  */
 class FixturesContext extends PimContext
 {
+    use SpinCapableTrait;
+
     protected $entities = [
         'Attribute'        => 'PimCatalogBundle:Attribute',
         'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
@@ -137,7 +141,13 @@ class FixturesContext extends PimContext
             $criteria = ['code' => $criteria];
         }
 
-        return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
+        try {
+            return $this->spin(function () use ($entityName, $criteria) {
+                return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
+            });
+        } catch (TimeoutException $exception) {
+            return null;
+        }
     }
 
     /**

@@ -57,32 +57,6 @@ class AttributeManager
     }
 
     /**
-     * Create an attribute
-     *
-     * @param string $type
-     *
-     * @return AttributeInterface
-     *
-     * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
-     */
-    public function createAttribute($type = null)
-    {
-        return $this->factory->createAttribute($type);
-    }
-
-    /**
-     * Get the attribute FQCN
-     *
-     * @return string
-     *
-     * @deprecated will be removed in 1.5 please use %pim_catalog.entity.attribute.class%
-     */
-    public function getAttributeClass()
-    {
-        return $this->attributeClass;
-    }
-
-    /**
      * Get a list of available attribute types
      *
      * @return string[]
@@ -115,27 +89,5 @@ class AttributeManager
             }
         }
         $this->optionSaver->saveAll($attribute->getOptions()->toArray());
-    }
-
-    /**
-     * Get an attribute or throw an exception
-     *
-     * @param int $id
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return AttributeInterface
-     *
-     * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
-     */
-    public function getAttribute($id)
-    {
-        $attribute = $this->repository->find($id);
-
-        if (null === $attribute) {
-            throw new EntityNotFoundException();
-        }
-
-        return $attribute;
     }
 }

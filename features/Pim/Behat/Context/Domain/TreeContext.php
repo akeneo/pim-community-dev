@@ -88,6 +88,9 @@ class TreeContext extends PimContext
     }
 
     /**
+     * TODO This method should be refactored because we have a spin checking if "checkbox" is present. If not, we wait
+     *      X seconds for nothing.
+     *
      * @param string $right
      * @param string $node
      *
@@ -105,7 +108,6 @@ class TreeContext extends PimContext
             try {
                 $checkbox = $this->spin(function () use ($node) {
                     return $node->find('css', '.jstree-checkbox');
-
                 });
             } catch (\Exception $e) {
                 $checkbox = null;

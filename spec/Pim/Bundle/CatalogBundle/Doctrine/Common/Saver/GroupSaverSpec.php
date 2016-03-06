@@ -11,11 +11,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -29,7 +29,7 @@ class GroupSaverSpec extends ObjectBehavior
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $objectManager,

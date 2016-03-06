@@ -54,11 +54,12 @@ class ConversionUnitsType extends AbstractType
                     $attribute->getCode(),
                     'choice',
                     [
-                        'choices'     => array_combine(array_keys($units), array_keys($units)),
-                        'empty_value' => 'Do not convert',
-                        'required'    => false,
-                        'select2'     => true,
-                        'label'       => $attribute->getLabel()
+                        'choices'                   => array_combine(array_keys($units), array_keys($units)),
+                        'empty_value'               => 'Do not convert',
+                        'required'                  => false,
+                        'select2'                   => true,
+                        'label'                     => $attribute->getLabel(),
+                        'choice_translation_domain' => 'measures'
                     ]
                 );
             }

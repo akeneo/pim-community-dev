@@ -76,7 +76,6 @@ class Form extends Base
     public function visitTab($tab)
     {
         $tabs = $this->spin(function () {
-
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -86,10 +85,13 @@ class Form extends Base
             }
 
             return $tabs;
+        }, 'Could not find any tabs container element');
 
-        }, "Findind $tab tab");
+        $tabDom = $this->spin(function () use ($tabs, $tab) {
+            return $tabs->findLink($tab);
+        }, sprintf('Could not find a tab named "%s"', $tab));
 
-        $tabs->clickLink($tab);
+        $tabDom->click();
     }
 
     /**
@@ -188,9 +190,8 @@ class Form extends Base
         if (!$groups) {
             $groups = $this->getElement('Form Groups');
 
-            $groupsContainer = $this->spin(function () use ($groups, $group) {
-                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, "Finding the group $group");
+            $groupsContainer = $groups
+                ->find('css', sprintf('.group-label:contains("%s")', $group));
 
             $button = null;
 

@@ -11,7 +11,7 @@ define(
                 pickTime: false
             },
             init: function ($target, options) {
-                options = $.extend(true, this.options, options);
+                options = $.extend(true, {}, this.options, options);
 
                 if (('en' !== options.language) && (undefined === $.fn.datetimepicker.dates[options.language])) {
                     var languageOptions = {};

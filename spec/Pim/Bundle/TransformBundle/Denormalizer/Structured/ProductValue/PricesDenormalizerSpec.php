@@ -2,14 +2,16 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
 
 class PricesDenormalizerSpec extends ObjectBehavior
 {
-    function let()
+    function let(LocalizerInterface $localizer)
     {
         $this->beConstructedWith(
             ['pim_catalog_price_collection'],
+            $localizer,
             'Pim\Component\Catalog\Model\ProductPrice'
         );
     }
@@ -38,8 +40,13 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->denormalize([], 'pim_catalog_price_collection', 'json')->shouldReturn(null);
     }
 
-    function it_denormalizes_data_into_price_collection()
+    function it_denormalizes_data_into_price_collection_with_en_US_locale($localizer)
     {
+        $context = ['locale' => 'en_US'];
+
+        $localizer->localize(10, $context)->willReturn(10);
+        $localizer->localize(15.45, $context)->willReturn(15.45);
+
         $prices = $this
             ->denormalize(
                 [
@@ -48,12 +55,13 @@ class PricesDenormalizerSpec extends ObjectBehavior
                         'currency' => 'EUR'
                     ],
                     [
-                        'data' => 15,
+                        'data' => 15.45,
                         'currency' => 'USD'
                     ]
                 ],
                 'pim_catalog_price_collection',
-                'json'
+                'json',
+                $context
             );
 
         $prices->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
@@ -64,7 +72,43 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $prices[0]->getCurrency()->shouldReturn('EUR');
 
         $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
-        $prices[1]->getData()->shouldReturn(15);
+        $prices[1]->getData()->shouldReturn(15.45);
+        $prices[1]->getCurrency()->shouldReturn('USD');
+    }
+
+    function it_denormalizes_data_into_price_collection_with_fr_FR_locale($localizer)
+    {
+        $context = ['locale' => 'fr_FR'];
+
+        $localizer->localize(10, $context)->willReturn(10);
+        $localizer->localize(15.45, $context)->willReturn('15,45');
+
+        $prices = $this
+            ->denormalize(
+                [
+                    [
+                        'data' => 10,
+                        'currency' => 'EUR'
+                    ],
+                    [
+                        'data' => 15.45,
+                        'currency' => 'USD'
+                    ]
+                ],
+                'pim_catalog_price_collection',
+                'json',
+                $context
+            );
+
+        $prices->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
+        $prices->shouldHaveCount(2);
+
+        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
+        $prices[0]->getData()->shouldReturn(10);
+        $prices[0]->getCurrency()->shouldReturn('EUR');
+
+        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
+        $prices[1]->getData()->shouldReturn('15,45');
         $prices[1]->getCurrency()->shouldReturn('USD');
     }
 }

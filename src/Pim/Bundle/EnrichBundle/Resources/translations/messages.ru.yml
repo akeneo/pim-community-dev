@@ -1,118 +1,5 @@
 pim_enrich:
-  product:
-    tab:
-      attribute.title: Атрибуты
-      category.title: Категории
-      association.title: Ассоциации
-      completeness.title: Завершенность
-      history.title: Журнал
-    no_comparison_locale_available: Нет другой локали для сравнения
-    no_compared_media: Нет медиа доступной для сравнения
-  attribute:
-    tab:
-      parameter.title: Параметры
-      value.title: Значения
-      history.title: Журнал
-  attribute_group:
-    tab:
-      property.title: Свойства
-      attribute.title: Атрибуты
-      history.title: Журнал
-  family:
-    tab:
-      property.title: Свойства
-      attribute.title: Атрибуты
-      history.title: Журнал
-  association_type:
-    tab:
-      property.title: Свойства
-      history.title: Журнал
-  group_type:
-    tab:
-      property.title: Свойства
-  channel:
-    pick_conversion_unit: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
-    tab:
-      property.title: Свойства
-      history.title: Журнал
-  category:
-    tab:
-      property.title: Свойства
-      history.title: Журнал
-  locale:
-    tab:
-      property.title: Свойства
-      permission.title: Права доступа
-  group:
-    type:
-      VARIANT: Вариант
-    tab:
-      product.title: Продукты
-      property.title: Свойства
-      history.title: Журнал
-  variant_group:
-    type:
-      VARIANT: Вариант
-    tab:
-      product.title: Продукты
-      property.title: Свойства
-      history.title: Журнал
-      attribute.title: Атрибуты
-    info:
-      no_attributes: Это группа вариантов пока не имеет атрибутов
-      no_attributes_in_selected_locale: Эта группа вариантов не имеет атрибутов в этой локали
-  completeness:
-    missing_attributes: Отсутствующее значение|Отсутствующие значения
-    legend:
-      locale_not_associated: Локаль не назначена для этого канала
-  mass_edit_action:
-    limit_exceeded: 'Пожалуйста, выберите менее %limit% элементов для редактирования'
-    product:
-      page_title: Продукты
-      page_subtitle: 'Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)'
-      title: Выберите действие
-      subtitle: 'Выберите действие, которoe вы хотите выполнить над выбранным продуктом|Выберите действие, которoe вы хотите выполнить над %count% выбранныx продуктаx'
-      confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
-      steps:
-        first: Выберите продукты
-        second: Выберите действие
-        third: Настроить
-        fourth: Подтвердить
-    family:
-      page_title: Семейства
-      page_subtitle: 'Массовое редактирование (1 семейство)|Массовое редактирование (%count% семейств)'
-      title: Выберите действие
-      subtitle: 'Выберите действие, которoe вы хотите выполнить над выбранным семейством|Выберите действие, которoe вы хотите выполнить над %count% выбранными семействами'
-      confirm: 'Вы собираетесь обновить семейство со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейств со следующей информацией, пожалуйста, подтвердите.'
-      steps:
-        first: Выберите семейства
-        second: Выберите действие
-        third: Настроить
-        fourth: Подтвердить
-    change-status:
-      label: 'Изменить статус (активировать /  дезактивировать)'
-      description: Выбранные продукты будут активированы или дезактивированы.
-      success_flash: Статус продукта(ов) был изменен
-      launched_flash: Было начато массовое действие «изменить статус». Вы будете уведомлены, когда оно будет завершено.
-    edit-common-attributes:
-      label: Редактировать атрибуты
-      description: Выбранные атрибуты продуктов будут изменены следующими данными для выбранной локали.
-      empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
-      success_flash: Выполняется работа обновления статуса продукта(ов)
-      launched_flash: Было начато массовое действие «редактировать общие атрибуты». Вы будете уведомлены, когда оно будет завершено.
-      message:
-        warning: Для выбранных продуктов нет общих атрибутов. Пожалуйста измените свой выбор.
-        invalid_attribute: Атрибут с кодом «attribute_code» не является общим для выбранных продуктов, атрибут пропущен.
-        no_valid_attribute: Ни один из выбранных атрибутов не относиться к этому продукту.
-    add-to-variant-group:
-      label: Добавить в группу вариантов
-      description: Выберите группу вариантов для добавления выбранных продуктов
-      success_flash: Продукты были успешно добавлены в выбранную группу вариантов
-      already_in_variant_group_or_not_valid: Продукт нельзя добавить в группу, так как он уже относится к группе вариантов или не имеет оси группы.
-      no_variant_group: Сейчас нет групп вариантов. Начните с создания группы вариантов.
   acl:
-    locale:
-      index: Просмотр локалей
     currency:
       index: Список валют
       toggle: Переключение валют
@@ -142,7 +29,6 @@ pim_enrich:
       edit: Редактировать канал
       remove: Удалить канал
     family:
-      index: Просмотр семейств
       create: Создать семейство
       remove: Удалить семейство
     attribute_group:
@@ -173,93 +59,54 @@ pim_enrich:
       create: Создать тип ассоциации
       edit: Редактировать тип ассоциации
       remove: Удалить тип ассоциации
-  acl_group:
-    attribute: Атрибуты
-    category: Категории
-    channel: Каналы
-    currency: Валюты
-    family: Семейства
-    group: Группы
-    variant_group: Группы вариантов
-    group_type: Типы групп
-    locale: Локали
-    product: Продукты
-  product_value:
-    tooltip:
-      from_variant:
-        title: Обновлено группой вариантов
-        content: Это поле обновляется следующей группой вариантов
-  reference_data:
-    empty_value:
-      reference_data_type:
-        label: Выберите ссылочный тип данных
 attribute:
-  title: атрибут
   overview: обзор атрибутов
   create: создать атрибут
   edit: редактировать атрибут
 attribute group:
-  title: группа атрибутов
   overview: Обзор групп атрибутов
   create: создать группу атрибутов
   edit: редактировать группу атриубтов
-  suggest creation: Пожалуйста, выберите группу атрибутов слева
-  or: или
-  create new: Создайте новую группу атрибутов
 category:
-  title: категория
   overview: обзор категории
   create: создать категорию
   edit: изменить категорию
-  suggest selection: Пожалуйста, выберите категорию слева
-  or: или
-  create new: Создайте новую категорию
 tree:
-  title: дерево
   create: создать дерево категорий
   edit: редактировать дерево категорий
 channel:
-  title: канал
   overview: обзор канала
   create: создать канал
   edit: редактировать канал
 currency:
-  title: валюта
   overview: обзор валют
   create: создать валюту
   edit: редактировать валюту
 family:
-  title: семейство
   overview: обзор семейства
   create: создать семейство
   edit: редактировать семейство
 locale:
-  title: локаль
   overview: обзор локалей
   create: создать локаль
   edit: редактировать локаль
 product:
-  title: продукт
   overview: обзор продукта
   create: создать продукт
   edit: редактировать продукт
 group:
-  title: группа
   overview: обзор групп
   create: создать группу
   edit: редактировать группу
 group type:
-  title: тип группы
   overview: обзор типов группы
   create: создать тип группы
   edit: редактировать тип группы
 variant group:
-  title: группа вариантов
   overview: обзор вариативных групп
   create: создать вариатвную группу
   edit: редактировать вариативную группу
 association type:
-  title: тип ассоциации
   overview: обзор типов ассоциации
   create: создать тип ассоциации
   edit: редактировать тип ассоциации
@@ -279,13 +126,10 @@ btn:
     variant group: создать вариативную группу
     association type: создать тип асоциации
     group type: создать тип группы
-    drag_or_upload: Перетащите чтобы загрузить, или нажмите здесь
   edit: редактировать
   save: сохранить
   save and back: сохранить и вернуться к списку
   save and create: сохранить и создать новый
-  save and next: cохранить и далее
-  save and finish: сохранить и закончить
   remove: удалить
   delete: удалить
   cancel: отмена
@@ -294,10 +138,7 @@ btn:
   confirm: Подтвердить
   to grid: вернуться к списку
   to parent: вернуться к родительскому объекту
-  download_pdf: PDF
-  download: скачать
 confirmation:
-  confirm: Подтверждение
   delete: Подтверждение удаления
   leave: Вы уверены, что хотите покинуть эту страницу?
   discard changes: 'Если вы покините страницу, изменения будут потеряны в %entity%.'
@@ -320,8 +161,6 @@ confirmation:
     remove attribute: 'Вы уверены, что хотите удалить  из этого семейства атрибут %name%?'
   product:
     remove attribute: 'Вы уверены, что хотите удалить из этого продукта атрибут %name%?'
-  variant_group:
-    remove_attribute: 'Вы действительно хотите удалить атрибут %name% из этой группы вариантов?'
 flash:
   entity:
     removed: Элемент был удален
@@ -330,16 +169,12 @@ flash:
     updated: Атрибут успешно обновлен
     removed: Атрибут успешно удален
     identifier not removable: Идентификатор атрибута не может быть удален
-    used by groups: 'Этот атрибут не может быть удален, поскольку он используется %count% группами вариантов'
   attribute group:
     created: Группа атрибутов успешно создана
     updated: Группа атрибутов успешно обновлена
     removed: Группа атрибутов успешно удалена
     attributes added: Атрибуты успешно добавлены в группу
     attribute removed: Атрибуты успешно удалены из группы
-    not removed attributes: Группа атрибутов не может быть удалена, поскольку она содержит атрибуты
-    not removed default: Группа атрибутов по умолчанию не можеть быть удалена
-    not removed default attributes: Атрибут не может быть удален из группы атрибутов по умолчанию
   category:
     created: Категория успешно создана
     updated: Категория успешно обновлена
@@ -355,7 +190,6 @@ flash:
     not removable: Нельзя удалить последний канал
   currency:
     updated: Валюта успешно обновлена
-    error.linked_to_channel: Нельзя дезактивировать валюты, связанныe с каналом.
   family:
     created: Семейство успешно создано
     updated: Семейство успешно обновлено
@@ -373,8 +207,6 @@ flash:
     attributes added: Атрибуты успешно добавлены в продукт
     attribute removed: Атрибут успешно удален из продукта
     attribute not removable: Атрибут не может быть удален из этого продукта
-    enabled: Продукт был активирован
-    disabled: Продукт был дезактивирован
   group:
     created: Группа успешно создана
     updated: Группа успешно обновлена
@@ -383,8 +215,6 @@ flash:
     created: Вариативная группа успешно создана
     updated: Вариативная группа успешно обновлена
     removed: Вариативная группа успешно удалена
-    attributes_added: Атрибуты успешно добавлены в группу вариантов
-    attribute_removed: Атрибуты успешно удалены из группы вариантов
   group type:
     created: Тип группы успешно создан
     updated: Тип группы успешно обновлен
@@ -403,10 +233,8 @@ info:
   category:
     remove children: Все подкатегории будут удалены.
     keep products: Товары в этих категориях не будут удалены.
-    products limit exceeded: 'Эта категория содержит больше продуктов, чем разрешено для этого действия (максимум %limit% продуктов)'
   product:
     no available attributes: Нет больше атрибутов для добавления
-    no family defined: Семейство не определено
     change family: Изменить семейство продуктов
     change family to: Изменить семейство на
     merge attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
@@ -421,19 +249,13 @@ info:
     select products: Пожалуйста, выберите продукты, которые должны принадлежать этой группе.
     selectable products: Следующие выбираемые продукты имеют определенное значение для каждой оси.
     no group types: Типы групп отсутствуют, нажмите здесь, чтобы создать
-    more products: 'Ещё %count% продуктов...'
   association type:
     show products: Показать продукты
     show groups: Показать группы
     remove from products: 'Удаление типа ассоциация удалит его из %count% продуктов.'
     none exist: Титпы ассоциаций отсутствуют.
     create one: Нажмите здесь, чтобы создать
-  attribute:
-    auto option sorting: Если активирован, параметры будут автоматически отсортированы по их локализованным ярлыкaм
-  completeness:
-    not calculated: не подсчитана
 color:
-  title: Цвет
   gray: Серый
   white: Белый
   yellow: Желтый
@@ -470,7 +292,6 @@ Edit: Редактировать
 Remove: Удалить
 Delete: Удалить
 Parameters: Параметры
-System: Система
 Values: Значения
 General parameters: Общие параметры
 Backend parameters: Параметры базы данных
@@ -482,7 +303,6 @@ Attribute type: Тип атрибута
 Defaultvalue: Значение по умолчанию
 Variant: Вариант
 Smart: Smart
-Useable as grid column: Может использоваться как столбец таблицы
 Family: Семейство
 Available locales: Доступные локали
 Locale specific: Специфично для локали
@@ -490,21 +310,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-switch_on: Да
-switch_off: Нет
 Close: Закрыть
 Choose a color: Выбрать цвет
-Search: Поиск
-Choose the attribute type: Выберите тип атрибута
-Choose the attribute group: Выберите группу атрибутов
-Drop a file or click here: Перетащите файл или нажмите здесь
-Drop an image or click here: Перетащите изображения или нажмите здесь
-Automatic option sorting: Автоматическая сортировка
-save_attribute_before_manage_option: Для управления параметрами, пожалуйста, сохраните сначала этот атрибут
-Please select: Пожалуйста, выберите
-Active: Активен
-Inactive: Неактивен
-Do not convert: Не преобразовывать
 Create: Создать
 Cancel: Отмена
 Choose a family: Выберите семейство
@@ -515,8 +322,6 @@ Completeness: Завершенность
 Attribute used as label: Атрибут используется в качестве метки
 Global: Глобальный
 Channel: Канал
-Expand all channels: Развернуть все каналы
-Collapse all channels: Свернуть все каналы
 Always override: Всегда переопределять
 Ask: Спросить
 General Properties: Общие свойства
@@ -546,46 +351,6 @@ Minimum input length: Минимальная длина ввода
 Default: По умолчанию
 Attributes: Атрибуты
 Title: Название
-pim_title.attribute_group:
-  index: Группы атрибутов
-  create: Группы атрибутов | Создать
-  edit: 'Группы атрибутов %group.label% | Редактировать'
-pim_title.category:
-  index: Деревья категории
-  create: Деревья категорий | Создать
-  edit: 'Дерево категорий %category.label% | Редактировать'
-pim_title.attribute:
-  index: Атрибуты
-  create: Атрибуты | Создать
-  edit: 'Атрибуты %attribute.label% | Редактировать'
-pim_title.product:
-  index: Продукты
-pim_title.family:
-  index: Семейства
-pim_title.channel:
-  index: Каналы
-  create: Каналы | Создать
-  edit: 'Каналы %channel.label% | Редактировать'
-pim_title.currency:
-  index: Валюты
-pim_title.locale:
-  index: Локали
-pim_title.group:
-  index: Группы
-  edit: 'Группа %group.label% | Редактировать'
-pim_title.variant_group:
-  index: Группы вариантов
-  edit: 'Группы вариантов %group.label% | Редактировать'
-pim_title.association_type:
-  index: Типы ассоциаций
-  edit: 'Типы ассоциаций %association type.label% | Редактировать'
-pim_title.group_type:
-  index: Типы групп
-  edit: 'Типы групп %group type.label% | Редактировать'
-pim_title.mass_edit_action:
-  choose: Массовое редактирование | Выбрать
-  configure: Массовое редактирование | Настройка
-pim_title.dashboard: Панель управления
 pim_catalog_identifier: Идентификатор
 pim_catalog_text: Текст
 pim_catalog_textarea: Текст
@@ -606,7 +371,6 @@ pim_enrich.mass_edit_action:
     description: Выбранные продукты будут активированы или деактивированы.
     success_flash: Статус продукта(ов) был изменен
   edit-common-attributes:
-    description: Выбранные атрибуты продуктов будут изменены следующими данными для выбранной локали.
     empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
     success_flash: Атрибуты товаров были обновлены
   classify:
@@ -617,7 +381,6 @@ pim_enrich.mass_edit_action:
     label: Изменить семейство продуктов
     description: Семейство для выбранных продуктов будет изменено на выбранное семейство
     success_flash: Семейство для выбранных продуктов успешно изменено
-    no_family: Нет семейства
   add-to-groups:
     label: Добавить в группы
     description: Выберите группы, в которые нужно добавить выбранные продукты
@@ -672,57 +435,3 @@ popin.create:
 In group: В группе
 Attribute as label: Атрибут как метка
 Is associated: Связанный
-Complete: Завершено
-Created At: Дата создания
-Updated At: Дата обновления
-Enabled: Активирован
-Disabled: Дезактивирован
-Status: Статус
-Change History: История изменений
-Data Audit: Аудит данных
-Data Audit - System: 'Аудит данных - Система'
-Action: Действие
-Version: Версия
-Entity type: Тип раздела
-Entity name: Имя раздела
-Entity id: Идентификатор раздела
-Data: Дата
-Author: Автор
-Deleted: Удален
-Old values: Старые значения
-New values: Новые значения
-System configuration: Конфигурация системы
-General setup: Общие установки
-Localization: Локализация
-Localization options: Параметры локализации
-Locale: Локаль
-Location: Местоположение
-Format address by address country: Формат адреса по стандартам страны
-Language: Язык
-Timezone: Часовой пояс
-Currency: Валюта
-oro.locale:
-  address_format:
-    region_name_type:
-      parish: округ
-      state: область
-      island: остров
-      county: страна
-      area: район
-      prefecture: префектура
-      district: дистрикт
-      province: провинция
-  form:
-    tooltip:
-      locale: Выберите параметр локалиы, используемoй для форматирования чисел, адресов, имен и даты
-      language: Выберите язык системы, который вы хотите использовать
-      timezone: Выберите часовой пояс для отображения даты и времени
-      currency: Выберите валюту по умолчанию
-Selected products successfully deleted: Выбранные продукты успешно удалены
-edit_common_attributes: Редактировать общие атрибуты
-edit_common_attributes_clean: Редактировать файлы общих атрибутов
-mass_edit report:
-  overview: Отчеты массового редактирования
-job_tracker:
-  filter:
-    started_at: Запущеннo в

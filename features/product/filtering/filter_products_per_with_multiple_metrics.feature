@@ -27,12 +27,11 @@ Feature: Filter products with multiples metrics filters
       | POST-3 | furniture | 20 GRAM   |          |
     And I am logged in as "Mary"
     And I am on the products page
-    And I show the filter "Packaging"
-    And I show the filter "Weight"
 
   Scenario: Successfully filter products with the sames attributes
+    Given I show the filter "Packaging"
     And I filter by "Packaging" with value "> 30 Gram"
-    And I should be able to use the following filters:
+    Then I should be able to use the following filters:
       | filter | value        | result                 |
       | Weight | = 200 Gram   | MUG-2, MUG-3 and MUG-4 |
       | Weight | >= 200 Gram  | MUG-2, MUG-3 and MUG-4 |
@@ -41,12 +40,11 @@ Feature: Filter products with multiples metrics filters
       | Weight | <= 200 Gram  | MUG-2, MUG-3 and MUG-4 |
       | Weight | < 201 Gram   | MUG-2, MUG-3 and MUG-4 |
       | Weight | empty        | POST-1 and POST-2      |
-    And I hide the filter "Packaging"
-    And I hide the filter "Weight"
 
   Scenario: Successfully filter product without commons attributes
-    Given I filter by "Weight" with value "> 100 Gram"
-    And I should be able to use the following filters:
+    Given I show the filter "Weight"
+    And I filter by "Weight" with value "> 100 Gram"
+    Then I should be able to use the following filters:
       | filter    | value      | result                        |
       | Packaging | = 10 Gram  | MUG-1                         |
       | Packaging | >= 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
@@ -55,10 +53,6 @@ Feature: Filter products with multiples metrics filters
       | Packaging | <= 10 Gram | MUG-1                         |
       | Packaging | < 11 Gram  | MUG-1                         |
       | Packaging | empty      | MUG-5                         |
-    And I hide the filter "Packaging"
-    And I hide the filter "Weight"
-    And I hide the filter "Packaging"
-    And I hide the filter "Weight"
 
   @unstable
   Scenario: Successfully filter only one product
