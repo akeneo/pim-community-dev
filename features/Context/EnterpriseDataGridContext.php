@@ -67,7 +67,8 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      */
     public function iShouldSeeAsset($elements)
     {
-        $this->iChangePageSize(100);
+        $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
+        $this->wait();
         parent::iShouldSeeEntities($elements);
     }
 

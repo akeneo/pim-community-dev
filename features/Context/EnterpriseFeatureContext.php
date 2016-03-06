@@ -9,6 +9,7 @@ use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
@@ -49,6 +50,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('job', new JobContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
+        $this->useContext('domain-pagination-grid', new GridPaginationContext());
 
         $this->useContext('dashboard', new DashboardContext());
 
