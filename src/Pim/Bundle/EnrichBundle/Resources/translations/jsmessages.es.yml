@@ -171,9 +171,6 @@ pim_enrich:
         copy: Copiar
       variant_group:
         updated_by: Actualizado por grupo de variantes
-        switch:
-          "yes": Sí
-          "no": 'No'
       optional_attribute:
         remove: Suprimir este atributo
       locale_specific_attribute:
@@ -216,11 +213,8 @@ pim_enrich:
             add: Agregar
             add_attributes: Agregar atributos
           info:
-            search_attributes: Buscar...
             no_available_attributes: No hay más atributos a agregar
             attributes_selected: '{{ attributeCount }} atributo(s) seleccionado(s)'
-            no_match: No se encontraron coincidencias
-            load_more: Cargando más resultados...
         categories:
           title: Categorías
       panel:
@@ -232,9 +226,6 @@ pim_enrich:
           missing_values: Valores faltantes
         history:
           title: Historial
-      switch:
-        "no": 'No'
-        "yes": Sí
       sequential_edit:
         info:
           products: productos
@@ -263,10 +254,6 @@ pim_enrich:
         title: Agregar opción de atributo
         confirm: Agregar
         cancel: Cancelar
-    entity:
-      switch:
-        "no": 'No'
-        "yes": Sí
   mass_edit_action:
     edit_common_attributes:
       description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'
