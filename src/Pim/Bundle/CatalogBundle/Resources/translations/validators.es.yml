@@ -16,3 +16,5 @@ This value should not be a decimal.: Este valor no debe ser un decimal.
 "The value %value% is already set on another product for the unique attribute %attribute%": 'El valor %value% ya es usado en otro producto por el atributo único %attribute%'
 regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
 file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'Se espera el uso de {{ decimal_separator }} para separar los decimales.'
+"This type of value expects the use of the format {{ date_format }} for dates.": 'Se espera el uso del formato {{ date_format }} para las fechas.'
