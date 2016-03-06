@@ -7,19 +7,3 @@ pim_analytics:
     form:
       version_update.label: Notificaciones de nuevas versiones
       version_update.tooltip: Enviar una solicitud al servidor remoto para recuperar la información sobre la liberación de nuevos parches
-  system_info:
-    title: Información del sistema
-    download: TXT
-  info_type:
-    pim_edition: Edición
-    pim_version: Versión
-    pim_storage_driver: Almacenamiento
-    pim_environment: Ambiente
-    pim_install_time: Fecha de instalación
-    registered_bundles: Paquetes registrados
-  acl:
-    system_info:
-      index: Información del sistema
-pim_menu:
-  item:
-    system_info: Información del sistema
