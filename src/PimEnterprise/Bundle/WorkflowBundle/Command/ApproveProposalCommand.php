@@ -87,7 +87,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
