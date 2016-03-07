@@ -1,7 +1,7 @@
 PimEnterprise\Component\ProductAsset\Model\Tag:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
     properties:

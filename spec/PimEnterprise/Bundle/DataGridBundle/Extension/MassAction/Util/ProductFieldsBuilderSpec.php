@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
@@ -24,7 +25,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
@@ -41,7 +42,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $productRepository,
             $attributeRepository,
             $localeRepository,
-            $currencyManager,
+            $currencyRepository,
             $assocTypeRepo,
             $catalogContext,
             $accessRepository,

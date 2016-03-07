@@ -6,6 +6,7 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder`. Replace `Pim\Bundle\CatalogBundle\Manager\CurrencyManager` argument by `Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface`.
 - Installer fixtures now support csv format for channels setup and not anymore the yml format
 - Installer fixtures does not support anymore the yml format for association types
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
