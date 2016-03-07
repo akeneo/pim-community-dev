@@ -39,7 +39,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.product'
             - '@pimee_workflow.saver.product_delegating'
             - '@pim_internal_api_serializer'
             - '@pim_validator'
@@ -49,6 +49,7 @@ services:
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
 
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%

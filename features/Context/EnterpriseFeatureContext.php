@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Context\Storage\ProductStorage;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
@@ -49,6 +50,8 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
 
         $this->useContext('dashboard', new DashboardContext());
+
+        $this->useContext('storage-product', new ProductStorage());
 
         $this->setTimeout($parameters);
     }

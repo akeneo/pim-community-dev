@@ -96,13 +96,15 @@ Feature: Assign assets to a product
     Given I am logged in as "Peter"
     And I am on the "shirt" product page
     And I add available attributes Front view
-    And I save the product
     And I start to manage assets for "Front view"
     Then I should see the text "Asset main catalog"
+    And I save the product
     When I am on the "Administrator" role page
     And I remove rights to List asset categories in the asset picker
     And I save the role
     When I am on the "shirt" product page
+    And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
+    And I save the product
     And I reset the "Administrator" rights
