@@ -116,6 +116,13 @@ services:
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_date']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.datetime:
+        class: %pim_catalog.doctrine.query.filter.datetime.class%
+        arguments:
             - ['created', 'updated']
             - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
         tags:

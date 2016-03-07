@@ -27,11 +27,9 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             return false;
         }
 
-        /** @var $dateStartValue \DateTime */
         $dateStartValue = $data['date_start'];
-        /** @var $dateEndValue \DateTime */
-        $dateEndValue = $data['date_end'];
-        $type         = $data['type'];
+        $dateEndValue   = $data['date_end'];
+        $type           = $data['type'];
 
         $this->applyFilterByAttributeDependingOnType(
             $type,

@@ -37,10 +37,11 @@ Feature: Filter products by date field
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen
     And I should be able to use the following filters:
-      | filter  | value                             | result               |
-      | release | more than 05/02/2014              | mug, tshirt and pen  |
-      | release | less than 05/03/2014              | postit and book      |
-      | release | between 05/02/2014 and 05/03/2014 | book, mug and tshirt |
+      | filter  | value                                 | result               |
+      | release | more than 05/02/2014                  | mug, tshirt and pen  |
+      | release | less than 05/03/2014                  | postit and book      |
+      | release | between 05/02/2014 and 05/03/2014     | book, mug and tshirt |
+      | release | not between 05/02/2014 and 05/03/2014 | postit and pen       |
 
   Scenario: Filter products by date attributes and keep the appropriate default filter values
     Given the following products:
