@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.21 (2016-03-07)
 
 ## Bug fixes
 - PIM-5598: Fix flash message translation when no asset category permission
