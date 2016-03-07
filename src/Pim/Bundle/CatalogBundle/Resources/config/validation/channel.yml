@@ -5,7 +5,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             fields:
                 - color
             message: This color is already used by another channel
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
     properties:

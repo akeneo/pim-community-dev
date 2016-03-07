@@ -69,7 +69,7 @@ services:
             - prices
             - pim_enrich_price_collection
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: %pim_catalog.entity.product.class% }
 

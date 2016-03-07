@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Price collection attribute adder
@@ -18,25 +18,25 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class PriceCollectionAttributeAdder extends AbstractAttributeAdder
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
-     * @param array                    $supportedTypes
+     * @param ProductBuilderInterface     $productBuilder
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
-        $this->currencyManager = $currencyManager;
-        $this->supportedTypes  = $supportedTypes;
+        $this->currencyRepository = $currencyRepository;
+        $this->supportedTypes     = $supportedTypes;
     }
 
     /**
@@ -126,7 +126,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 );
             }
 
-            if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
+            if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'currency',

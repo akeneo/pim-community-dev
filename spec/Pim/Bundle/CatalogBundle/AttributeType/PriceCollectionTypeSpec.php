@@ -4,10 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
@@ -15,7 +14,6 @@ class PriceCollectionTypeSpec extends ObjectBehavior
 {
     function let(
         ConstraintGuesserInterface $guesser,
-        CurrencyManager $currencyManager,
         AttributeInterface $attribute,
         ProductValueInterface $value
     ) {
@@ -24,8 +22,7 @@ class PriceCollectionTypeSpec extends ObjectBehavior
         $this->beConstructedWith(
             AbstractAttributeType::BACKEND_TYPE_PRICE,
             'pim_enrich_price_collection',
-            $guesser,
-            $currencyManager
+            $guesser
         );
     }
 

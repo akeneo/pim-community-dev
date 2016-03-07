@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use RuntimeException;
-
 /**
  * Exception that stops the job execution
  * Its message will be translated

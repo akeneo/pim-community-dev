@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\Metric;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Translation\TranslatorInterface;

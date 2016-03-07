@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
@@ -29,8 +29,8 @@ class ProductFieldsBuilder
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepo;
@@ -47,7 +47,7 @@ class ProductFieldsBuilder
      * @param ProductRepositoryInterface         $productRepository
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param LocaleRepositoryInterface          $localeRepository
-     * @param CurrencyManager                    $currencyManager
+     * @param CurrencyRepositoryInterface        $currencyRepository
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      * @param CatalogContext                     $catalogContext
      */
@@ -55,16 +55,16 @@ class ProductFieldsBuilder
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
-        $this->productRepository = $productRepository;
+        $this->productRepository   = $productRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository = $localeRepository;
-        $this->currencyManager  = $currencyManager;
-        $this->assocTypeRepo    = $assocTypeRepo;
-        $this->catalogContext   = $catalogContext;
+        $this->localeRepository    = $localeRepository;
+        $this->currencyRepository  = $currencyRepository;
+        $this->assocTypeRepo       = $assocTypeRepo;
+        $this->catalogContext      = $catalogContext;
     }
 
     /**
@@ -161,7 +161,7 @@ class ProductFieldsBuilder
             } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
                 array_unshift($fieldsList, $attCode);
             } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
-                foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
+                foreach ($this->currencyRepository->getActivatedCurrencyCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }
             } else {

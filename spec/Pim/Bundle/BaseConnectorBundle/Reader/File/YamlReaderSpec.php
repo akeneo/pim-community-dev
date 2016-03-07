@@ -69,7 +69,7 @@ class YamlReaderSpec extends ObjectBehavior
         $constraints = $this->getUploadedFileConstraints();
 
         $constraints[0]->shouldBeAnInstanceOf('\Symfony\Component\Validator\Constraints\NotBlank');
-        $constraints[1]->shouldBeAnInstanceOf('\Pim\Bundle\CatalogBundle\Validator\Constraints\File');
+        $constraints[1]->shouldBeAnInstanceOf('\Pim\Component\Catalog\Validator\Constraints\File');
         $constraints[1]->allowedExtensions->shouldBe(['yml', 'yaml']);
     }
 

@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 

@@ -8,7 +8,7 @@ Pim\Component\Connector\Reader\File\CsvReader:
         filePath:
             - NotBlank:
                 groups: [Execution]
-            - Pim\Bundle\CatalogBundle\Validator\Constraints\File:
+            - Pim\Component\Catalog\Validator\Constraints\File:
                 allowedExtensions: ["csv", "zip"]
                 groups: [Execution]
         enclosure:

@@ -5,11 +5,11 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use League\Flysystem\MountManager;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a media value attribute in other media value attribute

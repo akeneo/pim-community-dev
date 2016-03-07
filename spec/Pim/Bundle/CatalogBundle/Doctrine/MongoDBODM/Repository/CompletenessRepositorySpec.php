@@ -2,10 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ORM\AbstractQuery as OrmQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository;
@@ -13,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 
 /**
@@ -34,6 +35,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
         QueryBuilder $ormQb,
         Builder $odmQb,
         Query $odmQuery,
+        OrmQuery $ormQuery,
         Cursor $cursor
     ) {
         $enUs->getCode()->willReturn('en_US');
@@ -60,7 +62,10 @@ class CompletenessRepositorySpec extends ObjectBehavior
         $odmQb->getQuery()->willReturn($odmQuery);
 
         $categoryRepository->getAllChildrenQueryBuilder($category, true)->willReturn($ormQb);
-        $categoryRepository->getCategoryIds($category, $ormQb)->willReturn(array(1, 2, 3));
+        $ormQb->select(Argument::any())->willReturn($ormQb);
+        $ormQb->getRootAlias()->willReturn('a');
+        $ormQb->getQuery()->willReturn($ormQuery);
+        $ormQuery->getArrayResult()->willReturn([1, 2, 3]);
 
         $channelManager->getFullChannels()->willReturn(array($ecommerce, $mobile));
         $manager->getRepository('pim_product_class')->willReturn($productRepository);

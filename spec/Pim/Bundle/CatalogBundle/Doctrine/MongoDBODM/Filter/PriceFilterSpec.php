@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -15,11 +15,11 @@ use Prophecy\Argument;
  */
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CurrencyManager $currencyManager, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $queryBuilder, CurrencyRepositoryInterface $currencyRepository, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $currencyManager,
+            $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY']
         );
@@ -40,7 +40,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_equals_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -48,7 +48,7 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => 22.5, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -61,7 +61,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -69,7 +69,7 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => 22.5, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -81,7 +81,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         $attrValidatorHelper,
         Builder $queryBuilder,
         AttributeInterface $price
@@ -90,7 +90,7 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => 22.5, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -103,7 +103,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -111,7 +111,7 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => 22.5, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -124,7 +124,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -132,7 +132,7 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => 22.5, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -178,9 +178,9 @@ class PriceFilterSpec extends ObjectBehavior
             ->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
-    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyManager, AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyRepository, AttributeInterface $attribute)
     {
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price_code');
         $value = ['data' => 132, 'currency' => 'FOO'];

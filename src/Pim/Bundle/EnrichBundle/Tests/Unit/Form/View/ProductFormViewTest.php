@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\View;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
