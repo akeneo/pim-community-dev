@@ -31,7 +31,7 @@ services:
             - %pimee_product_asset.model.tag.class%
 
     pimee_product_asset.factory.category:
-        class: %akeneo_classification.factory.category.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pimee_product_asset.model.category.class%
 

@@ -28,7 +28,7 @@ parameters:
     # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/enterprise/small/fixtures
     # or you can use one of the provided catalogs
     # use PimEnterpriseInstallerBundle:minimal for minimal data set
-    installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
+    installer_data:       PimEnterpriseInstallerBundle:minimal
 
     uservoice_key:                 ~
     mass_edit_limit:               1000

@@ -1,0 +1,2 @@
+username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled;api_key
+Pamela;Pamela;Rose;Pamela@example.com;Pamela;en_US;en_US;mobile;default;ROLE_ASSET_MANAGER;Manager;1;Pamela_api_key

@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -20,7 +21,7 @@ class CategoryManagerSpec extends ObjectBehavior
     function let(
         ObjectManager $om,
         CategoryRepositoryInterface $productCategoryRepo,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
