@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.21 (2016-03-07)
 
 ## Bug fixes
 - PIM-5587: fix associations checks persisting between two products
