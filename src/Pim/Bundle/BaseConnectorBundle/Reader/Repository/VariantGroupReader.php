@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * The variant group repository reader

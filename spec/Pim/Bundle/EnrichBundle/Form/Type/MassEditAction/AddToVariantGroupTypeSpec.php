@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddToVariantGroupTypeSpec extends ObjectBehavior

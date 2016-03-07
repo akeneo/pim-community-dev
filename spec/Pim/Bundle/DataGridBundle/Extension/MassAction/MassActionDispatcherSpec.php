@@ -12,10 +12,10 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry;
+use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class MassActionDispatcherSpec extends ObjectBehavior

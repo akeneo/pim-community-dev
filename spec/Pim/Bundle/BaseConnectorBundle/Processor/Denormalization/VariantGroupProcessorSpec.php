@@ -2,20 +2,20 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
-use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

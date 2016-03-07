@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Repository;
+namespace Pim\Component\Catalog\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\CategoryInterface;
