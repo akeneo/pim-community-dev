@@ -401,7 +401,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
             - '@pim_validator'
@@ -411,6 +411,7 @@ services:
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
 
     pim_enrich.controller.rest.product_category:
         class: %pim_enrich.controller.rest.product_category.class%

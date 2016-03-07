@@ -9,7 +9,7 @@ Feature: Join an image to a product
     And a "Car" product
     And the following attribute:
       | label  | type  | allowed extensions |
-      | Visual | image | jpg                |
+      | Visual | image | jpg,gif            |
     And the "Car" product has the "visual" attribute
     And I am logged in as "Mary"
     And I am on the "Car" product page
@@ -49,16 +49,7 @@ Feature: Join an image to a product
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
     And I remove the "Visual" file
-    And I attach file "akeneo2.jpg" to "Visual"
+    And I attach file "bic-core-148.gif" to "Visual"
     And I save the product
     Then I should not see the text "akeneo.jpg"
-    But I should see the text "akeneo2.jpg"
-
-  Scenario: Successfully replace and remove an image
-    When I attach file "akeneo.jpg" to "Visual"
-    And I save the product
-    And I remove the "Visual" file
-    And I attach file "akeneo2.jpg" to "Visual"
-    And I save the product
-    Then I should not see the text "akeneo.jpg"
-    But I should see the text "akeneo2.jpg"
+    But I should see the text "bic-core-148.gif"
