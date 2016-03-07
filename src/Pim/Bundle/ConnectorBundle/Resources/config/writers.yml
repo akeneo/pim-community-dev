@@ -12,6 +12,7 @@ parameters:
     pim_connector.writer.file.simple_file.class:                   Pim\Component\Connector\Writer\File\SimpleFileWriter
     pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\YamlWriter
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
+    pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\XlsxProductWriter
 
 services:
     # Dummy writer
@@ -135,3 +136,9 @@ services:
     pim_connector.writer.file.media_exporter_path_generator:
         class: %pim_connector.writer.file.media_exporter_path_generator.class%
 
+    pim_connector.writer.file.xlsx_product:
+        class: %pim_connector.writer.file.xlsx_product.class%
+        arguments:
+            - '@pim_connector.writer.file.file_path_resolver'
+            - '@akeneo_buffer.factory.json_file_buffer'
+            - '@pim_connector.writer.file.file_exporter'
