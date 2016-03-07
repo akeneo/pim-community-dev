@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
