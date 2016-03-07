@@ -107,6 +107,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.context.catalog'

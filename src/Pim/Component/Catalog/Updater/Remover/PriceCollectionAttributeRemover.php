@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -17,23 +17,23 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class PriceCollectionAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
-     * @param array                    $supportedTypes
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->currencyManager = $currencyManager;
-        $this->supportedTypes  = $supportedTypes;
+        $this->currencyRepository = $currencyRepository;
+        $this->supportedTypes     = $supportedTypes;
     }
 
     /**
@@ -136,7 +136,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 );
             }
 
-            if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
+            if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'currency',

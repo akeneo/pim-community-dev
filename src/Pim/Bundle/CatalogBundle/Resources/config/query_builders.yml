@@ -144,7 +144,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.price.class%
         arguments:
             - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.manager.currency
+            - @pim_catalog.repository.currency
             - ['pim_catalog_price_collection']
             - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:

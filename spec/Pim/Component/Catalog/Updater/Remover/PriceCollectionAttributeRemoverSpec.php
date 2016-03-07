@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -15,12 +15,12 @@ use Prophecy\Argument;
 class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $currencyManager,
+            $currencyRepository,
             ['pim_catalog_price_collection']
         );
     }
@@ -43,7 +43,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_removing_an_attribute_data(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $priceValue,
@@ -51,7 +51,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn(null);
@@ -61,7 +61,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     }
 
     function it_removes_an_attribute_data_price_collection_value_to_a_product_value(
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $penProduct,
         ProductInterface $bookProduct,
@@ -73,7 +73,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = [['data' => 123.2, 'currency' => 'EUR'], ['data' => null, 'currency' => 'USD']];
 
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -160,13 +160,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $data = [['data' => 123, 'currency' => 'invalid currency']];
 

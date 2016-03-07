@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -16,12 +16,12 @@ class PriceFilterSpec extends ObjectBehavior
 {
     function let(
         QueryBuilder $queryBuilder,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $currencyManager,
+            $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY']
         );
@@ -42,7 +42,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_equals_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -59,7 +59,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => 12, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -69,7 +69,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
@@ -87,7 +87,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => 12, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -97,7 +97,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
@@ -115,7 +115,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => 12, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -125,7 +125,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_less_than_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
@@ -143,7 +143,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => 12, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -153,7 +153,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
@@ -171,7 +171,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => 12, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -187,7 +187,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         QueryBuilder $queryBuilder,
         AttributeInterface $price,
         Expr $expr,
@@ -203,7 +203,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => null, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -255,9 +255,9 @@ class PriceFilterSpec extends ObjectBehavior
             ->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
-    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyManager, AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyRepository, AttributeInterface $attribute)
     {
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price_code');
         $value = ['data' => 132, 'currency' => 'FOO'];

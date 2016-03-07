@@ -468,7 +468,7 @@ services:
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -491,7 +491,7 @@ services:
         class: %pim_catalog.updater.remover.price_collection_value.class%
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.remover' }

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Validator\Constraints\Currency;
 use Prophecy\Argument;
@@ -12,34 +12,34 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class CurrencyValidatorSpec extends ObjectBehavior
 {
-    function let(CurrencyManager $currencyManager, ExecutionContextInterface $context)
+    function let(CurrencyRepositoryInterface $currencyRepository, ExecutionContextInterface $context)
     {
-        $this->beConstructedWith($currencyManager);
+        $this->beConstructedWith($currencyRepository);
         $this->initialize($context);
     }
 
     function it_validates_price_attribute(
-        $currencyManager,
+        $currencyRepository,
         $context,
         Currency $constraint,
         ProductPriceInterface $price
     ) {
         $price->getCurrency()->willReturn('EUR');
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($price, $constraint)->shouldReturn(null);
     }
 
     function it_adds_violation_when_currency_does_not_exists(
-        $currencyManager,
+        $currencyRepository,
         $context,
         Currency $constraint,
         ProductPriceInterface $price,
         ConstraintViolationBuilderInterface $violation
     ) {
         $price->getCurrency()->willReturn('CHF');
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $context->buildViolation(Argument::any())
             ->shouldBeCalled()
             ->willReturn($violation);

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -18,13 +18,13 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $currencyManager,
+            $currencyRepository,
             ['pim_catalog_price_collection']
         );
     }
@@ -47,7 +47,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_adding_an_attribute_data(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $priceValue,
@@ -55,7 +55,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
@@ -154,13 +154,13 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $data = [['data' => 123, 'currency' => 'invalid currency']];
 
@@ -178,7 +178,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
     function it_adds_an_attribute_data_price_collection_value_to_a_product_value(
         $builder,
-        $currencyManager,
+        $currencyRepository,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -189,7 +189,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $scope  = 'mobile';
         $data   = [['data' => 123.2, 'currency' => 'EUR']];
 
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('attributeCode');
 

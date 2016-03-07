@@ -2,16 +2,15 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {
@@ -19,7 +18,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext
     ) {
@@ -27,7 +26,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $productRepository,
             $attributeRepository,
             $localeRepository,
-            $currencyManager,
+            $currencyRepository,
             $assocTypeRepo,
             $catalogContext
         );

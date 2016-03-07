@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
@@ -19,19 +19,19 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class CurrencyValidator extends ConstraintValidator
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var array */
     protected $currencyCodes;
 
     /**
-     * @param CurrencyManager $currencyManager
+     * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(CurrencyManager $currencyManager)
+    public function __construct(CurrencyRepositoryInterface $currencyRepository)
     {
-        $this->currencyManager = $currencyManager;
-        $this->currencyCodes = [];
+        $this->currencyRepository = $currencyRepository;
+        $this->currencyCodes      = [];
     }
 
     /**
@@ -57,7 +57,7 @@ class CurrencyValidator extends ConstraintValidator
     protected function getCurrencyCodes()
     {
         if (empty($this->currencyCodes)) {
-            $this->currencyCodes = $this->currencyManager->getActiveCodes();
+            $this->currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
         }
 
         return $this->currencyCodes;

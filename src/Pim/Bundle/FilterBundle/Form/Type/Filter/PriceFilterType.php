@@ -3,7 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -23,16 +23,16 @@ class PriceFilterType extends AbstractType
     const NAME = 'pim_type_price_filter';
 
     /**
-     * @var CurrencyManager
+     * @var CurrencyRepositoryInterface
      */
-    protected $currencyManager;
+    protected $currencyRepository;
 
     /**
-     * @param CurrencyManager $currencyManager
+     * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(CurrencyManager $currencyManager)
+    public function __construct(CurrencyRepositoryInterface $currencyRepository)
     {
-        $this->currencyManager = $currencyManager;
+        $this->currencyRepository = $currencyRepository;
     }
 
     /**
@@ -86,7 +86,7 @@ class PriceFilterType extends AbstractType
     {
         parent::configureOptions($resolver);
 
-        $currencyChoices = $this->currencyManager->getActiveCodes();
+        $currencyChoices = $this->currencyRepository->getActivatedCurrencyCodes();
 
         $resolver->setDefaults(
             [

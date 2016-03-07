@@ -2,11 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 
 /**
  * Price attribute type
@@ -17,30 +15,6 @@ use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
  */
 class PriceCollectionType extends AbstractAttributeType
 {
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
-     * Constructor
-     *
-     * @param string                     $backendType       the backend type
-     * @param string                     $formType          the form type
-     * @param ConstraintGuesserInterface $constraintGuesser the constraint guesser
-     * @param CurrencyManager            $manager           the currency manager
-     */
-    public function __construct(
-        $backendType,
-        $formType,
-        ConstraintGuesserInterface $constraintGuesser,
-        CurrencyManager $manager
-    ) {
-        parent::__construct($backendType, $formType, $constraintGuesser);
-
-        $this->currencyManager = $manager;
-    }
-
     /**
      * {@inheritdoc}
      */

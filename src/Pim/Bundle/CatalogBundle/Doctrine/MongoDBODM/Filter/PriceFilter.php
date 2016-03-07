@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -19,8 +19,8 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var array */
     protected $supportedAttributes;
@@ -28,19 +28,19 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * Instanciate the base filter
      *
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
-     * @param array                    $supportedAttributes
-     * @param array                    $supportedOperators
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedAttributes
+     * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyManager     = $currencyManager;
+        $this->currencyRepository  = $currencyRepository;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -160,7 +160,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!in_array($data['currency'], $this->currencyManager->getActiveCodes())) {
+        if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'currency',
