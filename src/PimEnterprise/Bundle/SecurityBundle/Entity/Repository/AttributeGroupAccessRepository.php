@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -24,7 +25,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
-class AttributeGroupAccessRepository extends EntityRepository
+class AttributeGroupAccessRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * @var TableNameBuilder
@@ -294,5 +295,34 @@ class AttributeGroupAccessRepository extends EntityRepository
     protected function getTableName($classParam, $targetEntity = null)
     {
         return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['attributeGroup', 'userGroup'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        list($attributeGroupCode, $userGroupName) = explode('.', $identifier, 2);
+
+        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
+        $attributeGroupClass = $associationMappings['attributeGroup']['targetEntity'];
+
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin($attributeGroupClass, 'c', 'WITH', 'a.attributeGroup = c.id')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->where('c.code = :attributeGroupCode')
+            ->andWhere('g.name = :userGroupName')
+            ->setParameter('attributeGroupCode', $attributeGroupCode)
+            ->setParameter('userGroupName', $userGroupName);
+
+         return $qb->getQuery()->getOneOrNullResult();
     }
 }

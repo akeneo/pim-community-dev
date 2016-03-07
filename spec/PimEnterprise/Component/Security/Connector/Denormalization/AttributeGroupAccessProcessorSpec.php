@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class LocaleAccessProcessorSpec extends ObjectBehavior
+class AttributeGroupAccessProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
@@ -55,17 +55,17 @@ class LocaleAccessProcessorSpec extends ObjectBehavior
         $accessFactory,
         $updater,
         $validator,
-        LocaleAccessInterface $localeAccessSupport,
-        LocaleAccessInterface $localeAccessManager,
+        AttributeGroupAccessInterface $accessSupport,
+        AttributeGroupAccessInterface $accessManager,
         ConstraintViolationListInterface $violationListSupport,
         ConstraintViolationListInterface $violationListManager
     ) {
-        $repository->getIdentifierProperties()->willReturn(['locale', 'user_group']);
-        $repository->findOneByIdentifier('en_US.Manager')->willReturn(null);
-        $repository->findOneByIdentifier('en_US.IT support')->willReturn($localeAccessSupport);
+        $repository->getIdentifierProperties()->willReturn(['attribute_group', 'user_group']);
+        $repository->findOneByIdentifier('other.Manager')->willReturn(null);
+        $repository->findOneByIdentifier('other.IT support')->willReturn($accessSupport);
 
-        $localeAccessSupport->getId()->willReturn(42);
-        $accessFactory->create()->willReturn($localeAccessManager);
+        $accessSupport->getId()->willReturn(42);
+        $accessFactory->create()->willReturn($accessManager);
 
         $values = $this->getValues();
 
@@ -74,44 +74,44 @@ class LocaleAccessProcessorSpec extends ObjectBehavior
             ->willReturn($values['converted_values']);
 
         $updater
-            ->update($localeAccessSupport, $values['converted_values'][0])
+            ->update($accessSupport, $values['converted_values'][0])
             ->shouldBeCalled();
         $updater
-            ->update($localeAccessManager, $values['converted_values'][1])
+            ->update($accessManager, $values['converted_values'][1])
             ->shouldBeCalled();
 
         $validator
-            ->validate($localeAccessManager)
+            ->validate($accessManager)
             ->willReturn($violationListManager);
 
         $validator
-            ->validate($localeAccessSupport)
+            ->validate($accessSupport)
             ->willReturn($violationListSupport);
 
         $this
             ->process($values['original_values'])
-            ->shouldReturn([$localeAccessSupport, $localeAccessManager]);
+            ->shouldReturn([$accessSupport, $accessManager]);
     }
 
     protected function getValues()
     {
         return [
             'original_values' => [
-                'locale'        => 'en_US',
-                'view_products' => 'IT support,Manager',
-                'edit_products' => 'IT support',
+                'attribute_group' => 'other',
+                'view_attributes' => 'IT support,Manager',
+                'edit_attributes' => 'IT support',
             ],
             'converted_values' => [
                 [
-                    'locale'        => 'en_US',
-                    'user_group'     => 'IT support',
-                    'view_products' => true,
-                    'edit_products' => true,
+                    'attribute_group'  => 'other',
+                    'user_group'       => 'IT support',
+                    'view_attributes' => true,
+                    'edit_attributes' => true,
                 ], [
-                    'locale'        => 'en_US',
-                    'user_group'     => 'Manager',
-                    'view_products' => true,
-                    'edit_products' => false,
+                    'attribute_group'  => 'other',
+                    'user_group'       => 'Manager',
+                    'view_attributes' => true,
+                    'edit_attributes' => false,
                 ]
             ]
         ];

@@ -14,31 +14,31 @@ namespace PimEnterprise\Component\Security\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 /**
- * Updates a Locale Access
+ * Updates a Job Profile Access
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessUpdater implements ObjectUpdaterInterface
+class JobProfileAccessUpdater implements ObjectUpdaterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
+    protected $jobRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param IdentifiableObjectRepositoryInterface $jobRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $groupRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $jobRepository
     ) {
-        $this->groupRepository  = $groupRepository;
-        $this->localeRepository = $localeRepository;
+        $this->groupRepository = $groupRepository;
+        $this->jobRepository   = $jobRepository;
     }
 
     /**
@@ -46,59 +46,59 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
      *
      * Expected input format :
      * [
-     *      'locale'        => 'en_US',
-     *      'user_group'     => 'IT Manager'
+     *      'job_profile'   => 'product_import',
+     *      'user_group'    => 'IT Manager'
      *      'view_products' => true,
      *      'edit_products' => false,
      * ]
      */
-    public function update($localeAccess, array $data, array $options = [])
+    public function update($jobProfileAccess, array $data, array $options = [])
     {
-        if (!$localeAccess instanceof LocaleAccessInterface) {
+        if (!$jobProfileAccess instanceof JobProfileAccessInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\Security\Model\LocaleAccessInterface", "%s" provided.',
-                    ClassUtils::getClass($localeAccess)
+                    'Expects a "PimEnterprise\Component\Security\Model\JobProfileAccessInterface", "%s" provided.',
+                    ClassUtils::getClass($jobProfileAccess)
                 )
             );
         }
 
         foreach ($data as $field => $value) {
-            $this->setData($localeAccess, $field, $value);
+            $this->setData($jobProfileAccess, $field, $value);
         }
 
         return $this;
     }
 
     /**
-     * @param LocaleAccessInterface $localeAccess
-     * @param string                $field
-     * @param mixed                 $data
+     * @param JobProfileAccessInterface $jobProfileAccess
+     * @param string                    $field
+     * @param mixed                     $data
      *
      * @throws \InvalidArgumentException
      */
-    protected function setData(LocaleAccessInterface $localeAccess, $field, $data)
+    protected function setData(JobProfileAccessInterface $jobProfileAccess, $field, $data)
     {
         switch ($field) {
-            case 'locale':
-                $locale = $this->localeRepository->findOneByIdentifier($data);
-                if (null === $locale) {
-                    throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $data));
+            case 'job_profile':
+                $jobProfile = $this->jobRepository->findOneByIdentifier($data);
+                if (null === $jobProfile) {
+                    throw new \InvalidArgumentException(sprintf('Job Profile with "%s" code does not exist', $data));
                 }
-                $localeAccess->setLocale($locale);
+                $jobProfileAccess->setJobProfile($jobProfile);
                 break;
             case 'user_group':
                 $group = $this->groupRepository->findOneByIdentifier($data);
                 if (null === $group) {
                     throw new \InvalidArgumentException(sprintf('Group with "%s" code does not exist', $data));
                 }
-                $localeAccess->setUserGroup($group);
+                $jobProfileAccess->setUserGroup($group);
                 break;
-            case 'view_products':
-                $localeAccess->setViewProducts($data);
+            case 'execute_job_profile':
+                $jobProfileAccess->setExecuteJobProfile($data);
                 break;
-            case 'edit_products':
-                $localeAccess->setEditProducts($data);
+            case 'edit_job_profile':
+                $jobProfileAccess->setEditJobProfile($data);
                 break;
         }
     }

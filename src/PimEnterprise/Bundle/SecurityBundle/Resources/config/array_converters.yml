@@ -1,14 +1,32 @@
 parameters:
-    pimee_security.array_converter.flat.locale_accesses.class:         PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\LocaleAccessesStandardConverter
-    pimee_security.array_converter.flat.asset_category_accesses.class: PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AssetCategoryAccessesStandardConverter
+    pimee_security.array_converter.flat.locale_accesses.class:           PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\LocaleAccessesStandardConverter
+    pimee_security.array_converter.flat.asset_category_accesses.class:   PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AssetCategoryAccessesStandardConverter
+    pimee_security.array_converter.flat.product_category_accesses.class: PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\ProductCategoryAccessesStandardConverter
+    pimee_security.array_converter.flat.attribute_group_accesses.class:  PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AttributeGroupAccessesStandardConverter
+    pimee_security.array_converter.flat.job_profile_accesses.class:      PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\JobProfileAccessesStandardConverter
 
 services:
     pimee_security.array_converter.flat.locale_accesses:
         class: %pimee_security.array_converter.flat.locale_accesses.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pimee_security.array_converter.flat.asset_category_accesses:
         class: %pimee_security.array_converter.flat.asset_category_accesses.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pimee_security.array_converter.flat.product_category_accesses:
+        class: %pimee_security.array_converter.flat.product_category_accesses.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pimee_security.array_converter.flat.attribute_group_accesses:
+        class: %pimee_security.array_converter.flat.attribute_group_accesses.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pimee_security.array_converter.flat.job_profile_accesses:
+        class: %pimee_security.array_converter.flat.job_profile_accesses.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'

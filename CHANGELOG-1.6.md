@@ -6,7 +6,7 @@
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses and asset category accesses import using the new import system introduced in v1.4
+- PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
 
 ## BC breaks
 
@@ -16,8 +16,11 @@
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
 - Installer fixtures now support csv format for group types setup and not anymore the yml format
 - Installer fixtures now support csv format for currencies setup and not anymore the yml format
-- Installer fixtures does not support anymore the yml format for locale accesses
-- Installer fixtures does not support anymore the yml format for asset category accesses
+- Installer fixtures now support csv format for locale accesses setup and not anymore the yml format
+- Installer fixtures now support csv format for asset category accesses setup and not anymore the yml format
+- Installer fixtures now support csv format for product category accesses setup and not anymore the yml format
+- Installer fixtures now support csv format for attribute group accesses setup and not anymore the yml format
+- Installer fixtures now support csv format for job profile accesses setup and not anymore the yml format
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,

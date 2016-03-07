@@ -3,13 +3,12 @@
 namespace spec\PimEnterprise\Component\Security\Connector\Denormalization;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
-use PimEnterprise\Component\Security\Factory\AssetCategoryAccessFactory;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,7 +20,7 @@ class AssetCategoryAccessProcessorSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $accessConverter,
-        AssetCategoryAccessFactory $accessFactory,
+        SimpleFactoryInterface $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
@@ -61,7 +60,7 @@ class AssetCategoryAccessProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationListSupport,
         ConstraintViolationListInterface $violationListManager
     ) {
-        $repository->getIdentifierProperties()->willReturn(['category', 'userGroup']);
+        $repository->getIdentifierProperties()->willReturn(['category', 'user_group']);
         $repository->findOneByIdentifier('videos.Manager')->willReturn(null);
         $repository->findOneByIdentifier('videos.IT support')->willReturn($accessSupport);
 
@@ -106,13 +105,13 @@ class AssetCategoryAccessProcessorSpec extends ObjectBehavior
             'converted_values' => [
                 [
                     'category'   => 'videos',
-                    'userGroup'  => 'IT support',
+                    'user_group'  => 'IT support',
                     'view_items' => true,
                     'edit_items' => true,
                     'own_items'  => false,
                 ], [
                     'category'   => 'videos',
-                    'userGroup'  => 'Manager',
+                    'user_group'  => 'Manager',
                     'view_items' => true,
                     'edit_items' => false,
                     'own_items'  => false,

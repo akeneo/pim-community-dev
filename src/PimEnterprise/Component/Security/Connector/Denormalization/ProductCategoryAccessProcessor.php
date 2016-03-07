@@ -16,15 +16,15 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Locale Access processor
+ * Product Category Access processor
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessProcessor extends AbstractProcessor
+class ProductCategoryAccessProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
     protected $accessConverter;
@@ -65,41 +65,41 @@ class LocaleAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $localeAccesses = [];
+        $categoryAccesses = [];
         $convertedItems = $this->accessConverter->convert($item);
         foreach ($convertedItems as $convertedItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
-            $localeAccesses[] = $localeAccess;
+            $categoryAccess = $this->findOrCreateProductCategoryAccess($convertedItem);
+            $categoryAccesses[] = $categoryAccess;
 
             try {
-                $this->updater->update($localeAccess, $convertedItem);
+                $this->updater->update($categoryAccess, $convertedItem);
             } catch (\InvalidArgumentException $exception) {
                 $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
             }
 
-            $violations = $this->validator->validate($localeAccess);
+            $violations = $this->validator->validate($categoryAccess);
             if (0 < $violations->count()) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
 
-        return $localeAccesses;
+        return $categoryAccesses;
     }
 
     /**
      * @param array $convertedItem
      *
-     * @return LocaleAccessInterface
+     * @return ProductCategoryAccess
      */
-    protected function findOrCreateLocaleAccess(array $convertedItem)
+    protected function findOrCreateProductCategoryAccess(array $convertedItem)
     {
-        $localeAccess = $this->repository->findOneByIdentifier(
-            sprintf('%s.%s', $convertedItem['locale'], $convertedItem['user_group'])
+        $categoryAccess = $this->repository->findOneByIdentifier(
+            sprintf('%s.%s', $convertedItem['category'], $convertedItem['user_group'])
         );
-        if (null === $localeAccess) {
-            $localeAccess = $this->accessFactory->create();
+        if (null === $categoryAccess) {
+            $categoryAccess = $this->accessFactory->create();
         }
 
-        return $localeAccess;
+        return $categoryAccess;
     }
 }

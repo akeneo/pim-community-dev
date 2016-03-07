@@ -166,7 +166,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      *
      * @return \Doctrine\DBAL\Query\QueryBuilder
      */
-    public function getRevokedCategoryQB(User $user, $accessLevel)
+    public function getRevokedCategoryQB(UserInterface $user, $accessLevel)
     {
         // get group ids
         $groupIds = array_map(
@@ -467,9 +467,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function findOneByIdentifier($identifier)
     {
-        $identifiers = explode('.', $identifier);
-        $categoryCode = array_shift($identifiers);
-        $userGroupName = implode('.', $identifiers);
+        list($categoryCode, $userGroupName) = explode('.', $identifier, 2);
 
         $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
         $categoryClass = $associationMappings['category']['targetEntity'];

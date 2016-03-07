@@ -14,31 +14,31 @@ namespace PimEnterprise\Component\Security\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 
 /**
- * Updates an Asset Category Access
+ * Updates a Product Category Access
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
+class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
+    protected $productRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $productRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $groupRepository,
-        IdentifiableObjectRepositoryInterface $categoryRepository
+        IdentifiableObjectRepositoryInterface $productRepository
     ) {
-        $this->groupRepository    = $groupRepository;
-        $this->categoryRepository = $categoryRepository;
+        $this->groupRepository   = $groupRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -46,8 +46,8 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
      *
      * Expected input format :
      * [
-     *      'category'   => 'videos',
-     *      'user_group'  => 'IT Manager',
+     *      'category'   => '2013_collection',
+     *      'user_group' => 'IT Manager',
      *      'view_items' => true,
      *      'edit_items' => false,
      *      'own_items'  => false,
@@ -55,10 +55,10 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
      */
     public function update($categoryAccess, array $data, array $options = [])
     {
-        if (!$categoryAccess instanceof AssetCategoryAccess) {
+        if (!$categoryAccess instanceof ProductCategoryAccess) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess", "%s" provided.',
+                    'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess", "%s" provided.',
                     ClassUtils::getClass($categoryAccess)
                 )
             );
@@ -72,19 +72,19 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AssetCategoryAccess $categoryAccess
-     * @param string              $field
-     * @param mixed               $data
+     * @param ProductCategoryAccess $categoryAccess
+     * @param string                $field
+     * @param mixed                 $data
      *
      * @throws \InvalidArgumentException
      */
-    protected function setData(AssetCategoryAccess $categoryAccess, $field, $data)
+    protected function setData(ProductCategoryAccess $categoryAccess, $field, $data)
     {
         switch ($field) {
             case 'category':
-                $category = $this->categoryRepository->findOneByIdentifier($data);
+                $category = $this->productRepository->findOneByIdentifier($data);
                 if (null === $category) {
-                    throw new \InvalidArgumentException(sprintf('Asset category with "%s" code does not exist', $data));
+                    throw new \InvalidArgumentException(sprintf('Product category with "%s" code does not exist', $data));
                 }
                 $categoryAccess->setCategory($category);
                 break;
