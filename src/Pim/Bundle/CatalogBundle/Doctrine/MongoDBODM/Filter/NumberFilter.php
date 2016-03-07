@@ -85,8 +85,8 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);
                 break;
-            case Operators::NOT_IN_LIST:
-                $this->qb->field($field)->in($value);
+            case Operators::NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
                 break;
             case Operators::EQUALS:
                 $this->qb->field($field)->equals($value);

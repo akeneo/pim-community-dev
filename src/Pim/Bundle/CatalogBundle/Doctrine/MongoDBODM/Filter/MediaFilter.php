@@ -62,12 +62,14 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::NOT_EMPTY === $operator) {
+            $this->qb->field($field)->exists(true);
+        } elseif (Operators::IS_EMPTY === $operator) {
+            $this->qb->field($field)->exists(false);
+        } else {
             $this->checkValue($attribute, $value);
             $value = $this->prepareValue($operator, $value);
             $this->qb->field($field)->equals($value);
-        } else {
-            $this->qb->field($field)->exists(false);
         }
 
         return $this;

@@ -27,7 +27,7 @@ class MetricFilterSpec extends ObjectBehavior
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($queryBuilder);
     }
@@ -39,7 +39,7 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -76,6 +76,46 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->equals(0.225)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($metric, '=', $value, 'en_US', 'mobile');
+    }
+
+    function it_adds_an_empty_filter_in_the_query(
+        $attrValidatorHelper,
+        Builder $queryBuilder,
+        AttributeInterface $metric
+    ) {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
+        $value = ['data' => null, 'unit' => 'CENTIMETER'];
+
+        $metric->getCode()->willReturn('weight');
+        $metric->isLocalizable()->willReturn(true);
+        $metric->isScopable()->willReturn(true);
+
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
+        $queryBuilder->equals(null)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($metric, 'EMPTY', $value, 'en_US', 'mobile');
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query(
+        $attrValidatorHelper,
+        Builder $queryBuilder,
+        AttributeInterface $metric
+    ) {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
+        $value = ['data' => null, 'unit' => 'CENTIMETER'];
+
+        $metric->getCode()->willReturn('weight');
+        $metric->isLocalizable()->willReturn(true);
+        $metric->isScopable()->willReturn(true);
+
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
+        $queryBuilder->notEqual(null)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($metric, 'NOT EMPTY', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_filter_in_the_query(

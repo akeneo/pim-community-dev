@@ -21,7 +21,7 @@ class PriceFilterSpec extends ObjectBehavior
             $attrValidatorHelper,
             $currencyRepository,
             ['pim_catalog_price_collection'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($queryBuilder);
     }
@@ -33,7 +33,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -143,6 +143,49 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<=', $value, 'en_US', 'mobile');
     }
 
+    function it_adds_an_empty_filter_in_the_query(
+        $attrValidatorHelper,
+        $currencyManager,
+        Builder $queryBuilder,
+        AttributeInterface $price
+    ) {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
+        $value = ['data' => null, 'currency' => 'EUR'];
+        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+
+        $price->getCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(true);
+        $price->isScopable()->willReturn(true);
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+        $queryBuilder->equals(null)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($price, 'EMPTY', $value, 'en_US', 'mobile');
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query(
+        $attrValidatorHelper,
+        $currencyManager,
+        Builder $queryBuilder,
+        AttributeInterface $price
+    ) {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
+        $value = ['data' => null, 'currency' => 'EUR'];
+        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+
+        $price->getCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(true);
+        $price->isScopable()->willReturn(true);
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+        $queryBuilder->notEqual(null)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($price, 'NOT EMPTY', $value, 'en_US', 'mobile');
+    }
+
     function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('price_code');
@@ -162,8 +205,7 @@ class PriceFilterSpec extends ObjectBehavior
                 'price',
                 print_r($value, true)
             )
-        )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
+        )->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['data' => 'foo', 'currency' => 'foo'];
         $this->shouldThrow(
@@ -174,8 +216,7 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 132, 'currency' => 42];
         $this->shouldThrow(
             InvalidArgumentException::arrayStringKeyExpected('price_code', 'currency', 'filter', 'price', 'integer')
-        )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
+        )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
     function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyRepository, AttributeInterface $attribute)

@@ -19,7 +19,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'IS EMPTY']
         );
         $this->setQueryBuilder($qb);
 
@@ -41,7 +41,7 @@ class MediaFilterSpec extends ObjectBehavior
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'IS EMPTY']
         );
 
         $this->supportsOperator('=')->shouldReturn(true);
@@ -137,7 +137,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($image, '=', 'foo');
     }
 
-    function it_adds_a_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
+    function it_adds_an_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
     {
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
@@ -150,6 +150,21 @@ class MediaFilterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
+    {
+        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
+
+        $qb->field('normalizedData.picture.originalFilename')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+
+        $qb->exists(true)
+            ->shouldBeCalled();
+
+        $this->addAttributeFilter($image, 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_valid($image)

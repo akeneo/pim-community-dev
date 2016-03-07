@@ -85,7 +85,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'option');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
 
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
@@ -99,7 +99,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
         );
 
-        $this->applyFilter($operator, $value, $mongoField, $options);
+        $this->applyFilter($operator, $value, $mongoField);
 
         return $this;
     }
@@ -130,6 +130,9 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
     {
         if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);
+            $this->qb->addAnd($expr);
+        } elseif (Operators::NOT_EMPTY === $operator) {
+            $expr = $this->qb->expr()->field($field)->exists(true);
             $this->qb->addAnd($expr);
         } else {
             $value = array_map('intval', $value);
