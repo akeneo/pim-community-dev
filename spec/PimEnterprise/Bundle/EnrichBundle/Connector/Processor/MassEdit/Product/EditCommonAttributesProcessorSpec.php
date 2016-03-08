@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Pr
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -11,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -27,10 +28,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function let(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -38,10 +39,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $propertySetter,
             $validator,
-            $massActionRepository,
-            $attributeRepository,
+            $productRepository,
             $jobConfigurationRepo,
             $productUpdater,
+            $productDetacher,
             $userManager,
             $tokenStorage,
             $authorizationChecker
@@ -53,6 +54,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $productRepository,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
@@ -69,6 +71,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
 
         $values = [
             'categories' => [
@@ -108,6 +111,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $productRepository,
         AttributeInterface $attribute,
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
@@ -125,6 +129,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
 
         $values = [
             'categories' => [
