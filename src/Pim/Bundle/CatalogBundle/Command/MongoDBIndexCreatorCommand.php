@@ -43,6 +43,9 @@ class MongoDBIndexCreatorCommand extends ContainerAwareCommand
             return -1;
         }
 
+        $command = $this->getApplication()->find('doctrine:mongodb:schema:update');
+        $command->run($input, $output);
+
         $indexCreator = $this->getIndexCreator();
         $indexCreator->ensureUniqueAttributesIndexes();
         $indexCreator->ensureCompletenessesIndexes();

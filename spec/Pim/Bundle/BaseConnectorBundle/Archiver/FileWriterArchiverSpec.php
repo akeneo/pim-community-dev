@@ -15,14 +15,7 @@ use Prophecy\Argument;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
-    function let(
-        Filesystem $filesystem,
-        CsvWriter $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
+    function let(Filesystem $filesystem) {
         $this->beConstructedWith($filesystem);
     }
 
@@ -31,8 +24,14 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver');
     }
 
-    function it_creates_a_file_when_writer_is_valid($filesystem, $writer, $jobExecution, $jobInstance, $job, $step)
-    {
+    function it_creates_a_file_when_writer_is_valid(
+        $filesystem,
+        CsvWriter $writer,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
+    ) {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $filename = basename($pathname);
 
@@ -60,13 +59,13 @@ class FileWriterArchiverSpec extends ObjectBehavior
         unlink($pathname);
     }
 
-    function it_doesnt_create_a_file_when_written_files_is_greater_than_two(
+    function it_creates_a_file_even_when_written_files_is_greater_than_two(
         $filesystem,
-        $writer,
-        $jobExecution,
-        $jobInstance,
-        $job,
-        $step
+        CsvWriter $writer,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
@@ -75,21 +74,36 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn(['path_one', 'path_two']);
-        $writer->getPath()->willReturn('/tmp/tmp');
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $pathname1 = tempnam(sys_get_temp_dir(), 'spec1');
+        $filename1 = basename($pathname1);
+        $pathname2 = tempnam(sys_get_temp_dir(), 'spec2');
+        $filename2 = basename($pathname2);
+        $pathname3 = tempnam(sys_get_temp_dir(), 'spec3');
+        $writer->getWrittenFiles()->willReturn(
+            [
+                $pathname1 => $filename1,
+                $pathname2 => $filename2
+            ]
+        );
+        $writer->getPath()->willReturn($pathname3);
+
+        $filesystem->put(Argument::cetera())->shouldBeCalled();
 
         $this->archive($jobExecution);
+
+        unlink($pathname1);
+        unlink($pathname2);
+        unlink($pathname3);
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $filesystem,
         ItemWriterInterface $writer,
-        $jobExecution,
-        $jobInstance,
-        $job,
-        $step
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
@@ -98,10 +112,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn(['path_one']);
-        $writer->getPath()->willReturn('/tmp/invalidwriter');
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::cetera())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -113,9 +125,9 @@ class FileWriterArchiverSpec extends ObjectBehavior
 
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
         $filesystem,
-        $jobExecution,
-        $jobInstance,
-        $job,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
         AbstractStep $step
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -125,17 +137,17 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::cetera())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
 
-    function it_returns_true_for_the_supported_job(
-        $writer,
-        $jobExecution,
-        $jobInstance,
-        $job,
-        $step
+    function it_supports_a_compatible_job(
+        CsvWriter $writer,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
     ) {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
 
@@ -154,12 +166,12 @@ class FileWriterArchiverSpec extends ObjectBehavior
         unlink($pathname);
     }
 
-    function it_returns_false_for_the_unsupported_job(
+    function it_does_not_support_a_incompatible_job(
         ItemWriterInterface $writer,
-        $jobExecution,
-        $jobInstance,
-        $job,
-        $step
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
@@ -168,8 +180,6 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn(['path_one']);
-        $writer->getPath()->willReturn('/tmp/unsupported_job_file_writer_archiver');
 
         $this->supports($jobExecution)->shouldReturn(false);
     }

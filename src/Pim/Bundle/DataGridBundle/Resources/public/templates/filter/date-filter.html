@@ -2,7 +2,7 @@
     <div class="horizontal clearfix type">
         <select name="<%= name %>" class="filter-select-oro">
             <% _.each(choices, function (option) { %>
-            <option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>
+                <option value="<%= option.value %>"<% if (option.value == selectedChoice) { %> selected="selected"<% } %>><%= option.label %></option>
             <% }); %>
         </select>
     </div>

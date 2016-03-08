@@ -14,34 +14,54 @@ class BytesFormater
      *
      * @param int  $bytes    The file size in bytes/octets
      * @param int  $decimals The number of decimals
-     * @param bool $si       International System of Units or not
+     * @param bool $isSi     International System of Units or not
      *
      * @return string
      */
-    public function formatBytes($bytes, $decimals = 2, $si = false)
+    public function formatBytes($bytes, $decimals = 2, $isSi = false)
     {
-        $unit = $si ? 1000 : 1024;
-        $kilobyte = $unit;
-        $megabyte = $kilobyte * $unit;
-        $gigabyte = $megabyte * $unit;
-        $terabyte = $gigabyte * $unit;
+        $factor = $isSi ? 1000 : 1024;
+        $kilobyte = $factor;
+        $megabyte = $kilobyte * $factor;
+        $gigabyte = $megabyte * $factor;
+        $terabyte = $gigabyte * $factor;
 
-        if (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-            return round($bytes / $kilobyte, $decimals) . ($si ? ' K' : ' KB');
+        $value = $bytes;
+        $unit  = '';
+
+        if ($bytes >= $kilobyte) {
+            $value = $bytes / $kilobyte;
+            $unit  = 'K';
         }
-
-        if (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-            return round($bytes / $megabyte, $decimals) . ($si ? ' M' : ' MB');
+        if ($bytes >= $megabyte) {
+            $value = $bytes / $megabyte;
+            $unit  = 'M';
         }
-
-        if (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-            return round($bytes / $gigabyte, $decimals) . ($si ? ' G' : ' GB');
+        if ($bytes >= $gigabyte) {
+            $value = $bytes / $gigabyte;
+            $unit  = 'G';
         }
-
         if ($bytes >= $terabyte) {
-            return round($bytes / $terabyte, $decimals) . ($si ? ' T' : ' TB');
+            $value = $bytes / $terabyte;
+            $unit  = 'T';
         }
 
-        return $bytes . ' B';
+        if (!$isSi || $bytes < $kilobyte) {
+            $unit .= 'B';
+        }
+
+        return $this->format($value, $decimals, $unit);
+    }
+
+    /**
+     * @param float  $value
+     * @param int    $decimals
+     * @param string $unit
+     *
+     * @return string
+     */
+    protected function format($value, $decimals, $unit)
+    {
+        return sprintf('%s %s', round($value, $decimals), $unit);
     }
 }

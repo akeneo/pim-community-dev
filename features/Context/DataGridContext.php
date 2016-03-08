@@ -832,7 +832,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            $checkbox = $this->spin(function () use ($gridRow) {
+                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            });
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));

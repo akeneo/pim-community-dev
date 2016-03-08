@@ -65,11 +65,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             return false;
         }
 
-        if (($writer instanceof FileWriter || $writer instanceof AbstractFileWriter) && is_file($writer->getPath())) {
-            return true;
-        }
-
-        return false;
+        return ($writer instanceof FileWriter || $writer instanceof AbstractFileWriter) && is_file($writer->getPath());
     }
 
     /**
