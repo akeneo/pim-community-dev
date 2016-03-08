@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;

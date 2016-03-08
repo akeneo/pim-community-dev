@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Event;
+namespace Pim\Component\Catalog;
 
 /**
  * Catalog product events

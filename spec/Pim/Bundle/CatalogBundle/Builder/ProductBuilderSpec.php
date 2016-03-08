@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;

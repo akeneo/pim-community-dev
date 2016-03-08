@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
