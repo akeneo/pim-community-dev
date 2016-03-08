@@ -85,8 +85,7 @@ class CompletenessController
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
-            $filteredLocales,
-            $this->userContext->getCurrentLocale()->getCode()
+            $filteredLocales
         );
 
         return new JsonResponse($this->completenessNormalizer->normalize($completenesses, 'internal_api'));
