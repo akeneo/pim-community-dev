@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -360,26 +361,22 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     protected function hasAttributeInAxisAttributes(array $ids, $attributeCode)
     {
-        $queryBuilder = $this->createQueryBuilder('g');
-        $query = $queryBuilder->leftJoin('g.attributes', 'a')
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->leftJoin('g.attributes', 'a')
             ->leftJoin('g.type', 't')
-            ->where($queryBuilder->expr()->in('g.id', $ids))
+            ->where('g.id IN (:ids)')
             ->andWhere('t.variant = :variant')
             ->andWhere('a.code = :code')
             ->setMaxResults(1)
             ->setParameters([
                 'variant' => true,
                 'code'    => $attributeCode,
-            ])
-            ->getQuery();
+                'ids'     => $ids,
+            ]);
 
-        try {
-            $result = $query->getSingleResult();
-        } catch (NoResultException $e) {
-            return false;
-        }
+        $result = $queryBuilder->getQuery()->getArrayResult();
 
-        return 0 < count($result);
+        return count($result) > 0;
     }
 
     /**
@@ -390,21 +387,21 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     protected function hasAttributeInProductTemplate(array $ids, $attributeCode)
     {
-        $queryBuilder = $this->createQueryBuilder('g');
-        $query = $queryBuilder->select('pt.valuesData')
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->select('pt.valuesData')
             ->leftJoin('g.type', 't')
             ->leftJoin('g.productTemplate', 'pt')
-            ->where($queryBuilder->expr()->in('g.id', $ids))
+            ->where('g.id IN (:ids)')
             ->andWhere('t.variant = :variant')
             ->setParameters([
                 'variant' => true,
-            ])
-            ->getQuery();
+                'ids'     => $ids,
+            ]);
 
-        $productTemplates = $query->getArrayResult();
+        $productTemplates = $queryBuilder->getQuery()->getArrayResult();
 
         foreach ($productTemplates as $productTemplate) {
-            if (isset($productTemplate[$attributeCode])) {
+            if (isset($productTemplate['valuesData'][$attributeCode])) {
                 return true;
             }
         }

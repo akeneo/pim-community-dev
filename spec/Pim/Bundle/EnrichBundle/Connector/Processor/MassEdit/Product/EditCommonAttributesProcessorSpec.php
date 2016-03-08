@@ -105,8 +105,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(false);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(false);
+        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(true);
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
@@ -153,8 +153,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(false);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
 
@@ -205,7 +205,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
 
         $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldNotBeCalled();
+        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
         $this->setStepExecution($stepExecution);

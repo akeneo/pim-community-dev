@@ -78,7 +78,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
         if (!$this->isProductEditable($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-            $this->detachProduct($product);
+            $this->productDetacher->detach($product);
 
             return null;
         }
@@ -88,7 +88,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         if (null !== $product) {
             if (!$this->isProductValid($product)) {
                 $this->stepExecution->incrementSummaryInfo('skipped_products');
-                $this->detachProduct($product);
+                $this->productDetacher->detach($product);
 
                 return null;
             }
@@ -157,7 +157,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         if (empty($filteredValues)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->addWarning($product);
-            $this->detachProduct($product);
+            $this->productDetacher->detach($product);
 
             return null;
         }
@@ -175,15 +175,15 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function isAttributeEditable(ProductInterface $product, $attributeCode)
     {
-        if ($this->productRepository->hasAttributeInFamily($product, $attributeCode)) {
-            return true;
+        if (!$this->productRepository->hasAttributeInFamily($product, $attributeCode)) {
+            return false;
         }
 
         if ($this->productRepository->hasAttributeInVariantGroup($product, $attributeCode)) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -209,14 +209,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function isProductEditable(ProductInterface $product)
     {
         return true;
-    }
-
-    /**
-     * @param ProductInterface $product
-     */
-    protected function detachProduct(ProductInterface $product)
-    {
-        $this->productDetacher->detach($product);
     }
 
     /**

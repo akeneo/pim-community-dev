@@ -244,7 +244,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function hasAttribute($id, $attributeCode)
     {
-        $query = $this->createQueryBuilder('f')
+        $queryBuilder = $this->createQueryBuilder('f')
             ->leftJoin('f.attributes', 'a')
             ->where('f.id = :id')
             ->andWhere('a.code = :code')
@@ -253,12 +253,10 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
                 'id'   => $id,
                 'code' => $attributeCode,
             ])
-            ->getQuery();
+            ->addGroupBy('a.id');
 
-        try {
-            return $query->getSingleResult();
-        } catch (NoResultException $e) {
-            return false;
-        }
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return count($result) > 0;
     }
 }

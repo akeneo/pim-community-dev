@@ -117,8 +117,9 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     /**
      * Check if a group has the attribute with specified code
      *
-     * @param array|int $id
+     * @param int[]  $id
      * @param string $attributeCode
+     *
      * @return bool
      */
     public function hasAttribute(array $id, $attributeCode);

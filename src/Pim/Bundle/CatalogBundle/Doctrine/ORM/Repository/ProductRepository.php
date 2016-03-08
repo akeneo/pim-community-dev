@@ -618,7 +618,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function hasAttributeInFamily(ProductInterface $product, $attributeCode)
     {
-        $query = $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')
             ->leftJoin('f.attributes', 'a')
             ->where('p.id = :id')
@@ -627,10 +627,9 @@ class ProductRepository extends EntityRepository implements
                 'id'   => $product->getId(),
                 'code' => $attributeCode,
             ])
-            ->setMaxResults(1)
-            ->getQuery();
+            ->setMaxResults(1);
 
-        return 0 < count($query->getScalarResult());
+        return count($queryBuilder->getQuery()->getArrayResult()) > 0;
     }
 
     /**
@@ -638,18 +637,17 @@ class ProductRepository extends EntityRepository implements
      */
     public function hasAttributeInVariantGroup(ProductInterface $product, $attributeCode)
     {
-        $query = $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
             ->select('g.id')
             ->leftJoin('p.groups', 'g')
             ->where('p.id = :id')
             ->setParameters([
                 'id' => $product->getId(),
-            ])
-            ->getQuery();
+            ]);
 
-        $groupIds = $query->getScalarResult();
+        $groupIds = $queryBuilder->getQuery()->getScalarResult();
 
-        $groupIds = array_reduce($groupIds,function($carry, $item) {
+        $groupIds = array_reduce($groupIds, function ($carry, $item) {
             if (isset($item['id'])) {
                 $carry[] = $item['id'];
             }

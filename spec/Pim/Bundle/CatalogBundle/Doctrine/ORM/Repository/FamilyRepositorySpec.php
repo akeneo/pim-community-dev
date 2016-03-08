@@ -32,7 +32,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface');
     }
 
-    function it_count_all_familys($em, QueryBuilder $queryBuilder, AbstractQuery $query)
+    function it_count_all_families($em, QueryBuilder $queryBuilder, AbstractQuery $query)
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('f')->willReturn($queryBuilder);
@@ -54,6 +54,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $queryBuilder->leftJoin('f.attributes', 'a')->willReturn($queryBuilder);
         $queryBuilder->where('f.id = :id')->willReturn($queryBuilder);
         $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);
+        $queryBuilder->addGroupBy('a.id')->willReturn($queryBuilder);
         $queryBuilder->setMaxResults(1)->willReturn($queryBuilder);
         $queryBuilder->setParameters([
             'id' => 10,
@@ -62,11 +63,10 @@ class FamilyRepositorySpec extends ObjectBehavior
 
         $queryBuilder->getQuery()->willReturn($query);
 
-        $query->getSingleScalarResult()->willReturn(['id' => 12]);
+        $query->getArrayResult()->willReturn(['id' => 12]);
         $this->hasAttribute(10, 'attribute_code')->shouldReturn(true);
 
-        $query->getSingleScalarResult()->willReturn(null);
+        $query->getArrayResult()->willReturn([]);
         $this->hasAttribute(10, 'attribute_code')->shouldReturn(false);
     }
 }
-
