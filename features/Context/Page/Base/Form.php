@@ -32,8 +32,6 @@ class Form extends Base
                 'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
                 'Associations list'               => ['css' => '#associations-list'],
                 'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
-                'Panel selector'                  => ['css' => '.panel-selector'],
-                'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -43,7 +41,11 @@ class Form extends Base
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
                 'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
-                'Save'                            => ['css' => 'button.btn-submit']
+                'Save'                            => ['css' => 'button.btn-submit'],
+                'Panel sidebar'                   => [
+                    'css'        => '.edit-form > .content',
+                    'decorators' => ['Pim\Behat\Decorator\PageDecorator\PanelableDecorator']
+                ]
             ],
             $this->elements
         );
@@ -90,40 +92,6 @@ class Form extends Base
         }, "Findind $tab tab");
 
         $tabs->clickLink($tab);
-    }
-
-    /**
-     * Open the specified panel
-     *
-     * @param string $panel
-     */
-    public function openPanel($panel)
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel selector');
-        }, 'Can not find the Panel selector');
-
-        $panel = strtolower($panel);
-        if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
-            $button = $this->spin(function () use ($elt, $panel) {
-                return $elt->find('css', sprintf('button[data-panel$="%s"]', $panel));
-            }, 'Cannot find the data-panel button in the panel');
-            $button->click();
-        }
-    }
-
-    /**
-     * Close the specified panel
-     *
-     * @throws \Context\Spin\TimeoutException
-     */
-    public function closePanel()
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel container')->find('css', 'header .close');
-        });
-
-        $elt->click();
     }
 
     /**

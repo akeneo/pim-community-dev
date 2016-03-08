@@ -3,6 +3,8 @@
 ## Technical improvements
 
 - PIM-5589: introduce a channels, attribute groups, group types and currencies import using the new import system introduced in v1.4
+- PIM-5589: introduce a channels and attribute groups import using the new import system introduced in v1.4
+- PIM-5594: Panel state is now stored in the session storage
 
 ## BC breaks
 
