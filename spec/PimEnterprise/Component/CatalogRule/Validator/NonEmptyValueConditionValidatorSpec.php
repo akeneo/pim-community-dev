@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule;
+namespace spec\PimEnterprise\Component\CatalogRule\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition;
 use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
-use PimEnterprise\Component\CatalogRule\Validator\Constraints\ProductRule\NonEmptyValueCondition;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -19,7 +19,7 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Validator\NonEmptyValueConditionValidator');
+        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator');
     }
 
     function it_is_a_constraint_validator()
@@ -47,6 +47,16 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
         NonEmptyValueCondition $constraint
     ) {
         $condition->getOperator()->willReturn(Operators::IS_EMPTY);
+        $condition->getValue()->willReturn(null);
+
+        $this->validate($condition, $constraint);
+    }
+
+    function it_does_not_add_a_violation_if_the_operator_is_not_empty_and_the_value_is_empty(
+        ProductConditionInterface $condition,
+        NonEmptyValueCondition $constraint
+    ) {
+        $condition->getOperator()->willReturn(Operators::IS_NOT_EMPTY);
         $condition->getValue()->willReturn(null);
 
         $this->validate($condition, $constraint);
