@@ -87,17 +87,31 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->iChangePageSize(100);
         }
 
-        assertEquals(
-            $count,
-            $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
-        );
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->getToolbarCount()
+            );
 
-        assertEquals(
+            return true;
+        }, sprintf(
+            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
             $count,
-            $actualCount = $this->datagrid->countRows(),
-            sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
-        );
+            $this->datagrid->countRows()
+        ));
+
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->countRows()
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d row(s) in the datagrid, actually saw %d.',
+            $count,
+            $this->datagrid->countRows()
+        ));
     }
 
     /**

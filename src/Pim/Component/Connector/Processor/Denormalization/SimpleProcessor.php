@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -20,14 +21,17 @@ class SimpleProcessor extends AbstractProcessor
     /** @var StandardArrayConverterInterface */
     protected $converter;
 
+    /** @var SimpleFactoryInterface */
+    protected $factory;
+
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var SimpleFactoryInterface */
-    protected $factory;
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
@@ -35,20 +39,23 @@ class SimpleProcessor extends AbstractProcessor
      * @param SimpleFactoryInterface                $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $objectDetacher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $converter,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $objectDetacher
     ) {
         parent::__construct($repository);
 
-        $this->converter = $converter;
-        $this->factory   = $factory;
-        $this->updater   = $updater;
-        $this->validator = $validator;
+        $this->converter      = $converter;
+        $this->factory        = $factory;
+        $this->updater        = $updater;
+        $this->validator      = $validator;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -67,6 +74,7 @@ class SimpleProcessor extends AbstractProcessor
 
         $violations = $this->validator->validate($entity);
         if ($violations->count() > 0) {
+            $this->objectDetacher->detach($entity);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 

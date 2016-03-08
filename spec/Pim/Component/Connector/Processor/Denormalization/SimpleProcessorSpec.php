@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -26,9 +27,10 @@ class SimpleProcessorSpec extends ObjectBehavior
         SimpleFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $converter, $factory, $updater, $validator);
+        $this->beConstructedWith($repository, $converter, $factory, $updater, $validator, $objectDetacher);
         $this->setStepExecution($stepExecution);
     }
 
@@ -81,6 +83,7 @@ class SimpleProcessorSpec extends ObjectBehavior
         $repository,
         $updater,
         $validator,
+
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
@@ -124,6 +127,7 @@ class SimpleProcessorSpec extends ObjectBehavior
         $repository,
         $updater,
         $validator,
+        $objectDetacher,
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
@@ -142,23 +146,12 @@ class SimpleProcessorSpec extends ObjectBehavior
             ->update($channel, $values['converted_values'])
             ->shouldBeCalled();
 
-        $validator
-            ->validate($channel)
-            ->willReturn($violationList);
-
-        $this
-            ->process($values['original_values'])
-            ->shouldReturn($channel);
-
-        $updater
-            ->update($channel, $values['converted_values'])
-            ->willThrow(new \InvalidArgumentException());
-
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($channel)
             ->willReturn($violations);
 
+        $objectDetacher->detach($channel)->shouldBeCalled();
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
