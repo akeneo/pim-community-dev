@@ -7,6 +7,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
+ * Copy every media to the specific target during an export
+ *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,7 +28,10 @@ class BulkFileExporter
     }
 
     /**
-     * {@inheritdoc}
+     * Export the media of the items to the target
+     *
+     * @param array  $items
+     * @param string $target
      */
     public function exportAll(array $items, $target)
     {
@@ -38,7 +43,9 @@ class BulkFileExporter
     }
 
     /**
-     * {@inheritdoc}
+     * Get an array of errors
+     *
+     * @return array
      */
     public function getErrors()
     {
@@ -46,10 +53,13 @@ class BulkFileExporter
     }
 
     /**
+     * Copy a medium to the target
+     *
      * @param array|mixed $medium
      * @param string      $target
      *
-     * @throws IOException|\LogicException
+     * @throws IOException
+     * @throws \LogicException
      */
     protected function doCopy($medium, $target)
     {

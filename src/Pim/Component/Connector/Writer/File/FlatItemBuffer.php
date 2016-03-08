@@ -6,6 +6,8 @@ use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
 
 /**
+ * Write items into a buffer and calculate headers during a flat file export
+ *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -24,7 +26,10 @@ class FlatItemBuffer
     }
 
     /**
-     * {@inheritdoc}
+     * Write an item into the buffer
+     *
+     * @param array $items
+     * @param $addHeader
      */
     public function write(array $items, $addHeader)
     {
@@ -38,7 +43,9 @@ class FlatItemBuffer
     }
 
     /**
-     * {@inheritdoc}
+     * Return the buffer
+     *
+     * @return BufferInterface
      */
     public function getBuffer()
     {
@@ -46,7 +53,9 @@ class FlatItemBuffer
     }
 
     /**
-     * {@inheritdoc}
+     * Return the headers of every columns
+     *
+     * @return array
      */
     public function getHeaders()
     {

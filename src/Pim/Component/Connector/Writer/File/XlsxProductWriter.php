@@ -7,6 +7,8 @@ use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 
 /**
+ * Write product data into a XLSX file on the local filesystem
+ *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
