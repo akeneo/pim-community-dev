@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Query\Filter;
+namespace spec\Pim\Component\Catalog\Query\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -23,7 +23,7 @@ class FilterRegistrySpec extends ObjectBehavior
 
     function it_is_a_filter_registry()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FilterRegistryInterface');
     }
 
     function it_returns_a_supported_field_filter($fieldFilter)

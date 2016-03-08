@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query;
+namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

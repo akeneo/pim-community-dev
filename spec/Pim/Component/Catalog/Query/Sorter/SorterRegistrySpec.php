@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Query\Sorter;
+namespace spec\Pim\Component\Catalog\Query\Sorter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 
 class SorterRegistrySpec extends ObjectBehavior
 {
@@ -17,7 +17,7 @@ class SorterRegistrySpec extends ObjectBehavior
 
     function it_is_a_sorter_registry()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface');
     }
 
     function it_returns_a_supported_field_sorter($fieldSorter)

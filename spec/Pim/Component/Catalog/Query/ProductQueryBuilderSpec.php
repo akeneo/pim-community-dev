@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Query;
+namespace spec\Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -8,12 +8,12 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -38,7 +38,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_is_a_product_query_builder()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\ProductQueryBuilderInterface');
     }
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)

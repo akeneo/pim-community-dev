@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query\Filter;
+namespace Pim\Component\Catalog\Query\Filter;
 
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 

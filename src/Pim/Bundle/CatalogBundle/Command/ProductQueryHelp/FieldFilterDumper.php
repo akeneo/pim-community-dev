@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;
 

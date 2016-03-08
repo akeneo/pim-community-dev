@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query;
+namespace Pim\Component\Catalog\Query;
 
 /**
  * Aims to create a product query builder

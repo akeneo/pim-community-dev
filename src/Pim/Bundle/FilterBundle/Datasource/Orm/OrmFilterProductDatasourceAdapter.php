@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Datasource\Orm;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 
 /**

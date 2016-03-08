@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query\Sorter;
+namespace Pim\Component\Catalog\Query\Sorter;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 
