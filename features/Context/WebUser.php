@@ -1784,11 +1784,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I wait for the quick export to finish$/
+     * @Given /^I wait for the "([^"]*)" quick export to finish$/
      */
-    public function iWaitForTheQuickExportToFinish()
+    public function iWaitForTheQuickExportToFinish($code)
     {
-        $this->waitForMassEditJobToFinish('csv_product_quick_export');
+        $this->waitForMassEditJobToFinish($code);
     }
 
     /**

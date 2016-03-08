@@ -124,4 +124,20 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     {
         $this->withHeader = $withHeader;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConfiguration(array $config)
+    {
+        parent::setConfiguration($config);
+
+        if (!isset($config['mainContext'])) {
+            return;
+        }
+
+        foreach ($config['mainContext'] as $key => $value) {
+            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
+        }
+    }
 }
