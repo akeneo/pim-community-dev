@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;
 use Pim\Behat\Context\PimContext;
+use Symfony\Component\Yaml\Yaml;
 
 class ExportProfilesContext extends PimContext
 {
@@ -65,6 +66,39 @@ class ExportProfilesContext extends PimContext
             }
         }
         $this->compareFile($expectedLines, $actualLines, $path);
+    }
+
+    /**
+     * @param string       $code
+     * @param PyStringNode $yaml
+     *
+     * @Then /^exported yaml file of "([^"]*)" should contain:$/
+     *
+     * @throws \Exception
+     */
+    public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
+    {
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+
+        $actualLines = Yaml::parse(file_get_contents($path));
+        $expectedLines = Yaml::parse($yaml->getRaw());
+
+        $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
+            foreach ($expectedLines as $key => $line) {
+                $actualLine = $actualLines[$key];
+                if (is_array($line)) {
+                    $isValidYamlFile($line, $actualLine);
+                }
+
+                if ($line !== $actualLine) {
+                    throw new \Exception(
+                        sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
+                    );
+                }
+            }
+        };
+
+        $isValidYamlFile($expectedLines, $actualLines);
     }
 
     /**
