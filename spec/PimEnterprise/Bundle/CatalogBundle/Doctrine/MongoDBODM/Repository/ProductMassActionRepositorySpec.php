@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository;
 use Prophecy\Argument;
 

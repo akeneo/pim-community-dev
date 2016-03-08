@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;

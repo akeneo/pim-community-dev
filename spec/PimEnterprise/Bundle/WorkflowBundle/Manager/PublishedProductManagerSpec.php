@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;

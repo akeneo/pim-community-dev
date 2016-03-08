@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;

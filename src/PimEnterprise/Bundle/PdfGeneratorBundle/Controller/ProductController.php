@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;

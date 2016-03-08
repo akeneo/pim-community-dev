@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;

@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

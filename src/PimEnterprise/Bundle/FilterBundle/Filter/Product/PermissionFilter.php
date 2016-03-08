@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;

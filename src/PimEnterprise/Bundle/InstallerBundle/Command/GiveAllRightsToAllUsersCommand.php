@@ -12,11 +12,9 @@
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;

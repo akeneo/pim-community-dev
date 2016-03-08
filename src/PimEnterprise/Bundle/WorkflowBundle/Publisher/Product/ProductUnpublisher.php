@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;

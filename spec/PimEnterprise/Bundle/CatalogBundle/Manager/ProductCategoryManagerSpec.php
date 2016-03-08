@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
