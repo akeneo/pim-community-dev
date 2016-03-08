@@ -64,7 +64,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
             $this->addFilter($attribute, $operator, $value, $locale, $scope);

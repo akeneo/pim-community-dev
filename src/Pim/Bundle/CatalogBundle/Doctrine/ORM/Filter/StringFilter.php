@@ -68,7 +68,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
@@ -84,7 +84,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            if (Operators::NOT_EMPTY === $operator) {
+            if (Operators::IS_NOT_EMPTY === $operator) {
                 $condition .= sprintf(
                     'AND (%s AND %s)',
                     $this->qb->expr()->isNotNull($backendField),

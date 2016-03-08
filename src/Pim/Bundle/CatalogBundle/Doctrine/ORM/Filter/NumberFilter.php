@@ -57,7 +57,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if (Operators::IS_EMPTY === $operator || Operators::NOT_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,

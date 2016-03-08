@@ -85,7 +85,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
 
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
 
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
@@ -136,7 +136,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             if (Operators::IS_EMPTY === $operator) {
                 $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addAnd($expr);
-            } elseif (Operators::NOT_EMPTY === $operator) {
+            } elseif (Operators::IS_NOT_EMPTY === $operator) {
                 $expr = $this->qb->expr()->field($field)->exists(true);
                 $this->qb->addAnd($expr);
             } else {

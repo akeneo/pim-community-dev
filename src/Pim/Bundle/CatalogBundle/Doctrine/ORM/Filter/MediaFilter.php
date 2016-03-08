@@ -50,7 +50,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
 
-        if ($operator !== Operators::IS_EMPTY && $operator !== Operators::NOT_EMPTY) {
+        if ($operator !== Operators::IS_EMPTY && $operator !== Operators::IS_NOT_EMPTY) {
             $this->checkValue($attribute, $value);
             $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
         } else {

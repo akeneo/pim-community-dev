@@ -73,14 +73,14 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
 
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === Operators::IS_EMPTY || $operator === Operators::NOT_EMPTY) {
+        if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -120,7 +120,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($field, $value);
         }
 
@@ -166,7 +166,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
                 break;
 
-            case Operators::NOT_EMPTY:
+            case Operators::IS_NOT_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNotNull($field));
                 break;
         }

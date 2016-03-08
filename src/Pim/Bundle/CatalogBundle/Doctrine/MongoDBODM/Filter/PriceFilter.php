@@ -67,7 +67,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
         $this->checkValue($attribute, $value);
 
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value['data'] = (float) $value['data'];
         }
 
@@ -105,7 +105,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             case Operators::IS_EMPTY:
                 $this->qb->field($fieldData)->equals(null);
                 break;
-            case Operators::NOT_EMPTY:
+            case Operators::IS_NOT_EMPTY:
                 $this->qb->field($fieldData)->exists(true);
                 $this->qb->field($fieldData)->notEqual(null);
                 break;

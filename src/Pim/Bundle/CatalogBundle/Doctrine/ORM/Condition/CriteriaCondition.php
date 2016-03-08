@@ -122,10 +122,10 @@ class CriteriaCondition
         }
 
         $operators = [
-            Operators::IS_NULL   => 'isNull',
-            Operators::NOT_NULL  => 'isNotNull',
-            Operators::IS_EMPTY  => 'isNull',
-            Operators::NOT_EMPTY => 'isNotNull'
+            Operators::IS_NULL      => 'isNull',
+            Operators::IS_NOT_NULL  => 'isNotNull',
+            Operators::IS_EMPTY     => 'isNull',
+            Operators::IS_NOT_EMPTY => 'isNotNull'
         ];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];

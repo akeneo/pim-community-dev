@@ -74,7 +74,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
 
-        if (Operators::IS_EMPTY === $operator || Operators::NOT_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $value = null;
         } else {
             $value = $this->formatValues($attribute->getCode(), $value);
@@ -91,7 +91,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($field, $value);
         }
 
@@ -236,7 +236,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);
                 break;
-            case Operators::NOT_EMPTY:
+            case Operators::IS_NOT_EMPTY:
                 $this->qb->field($field)->exists(true);
                 break;
         }

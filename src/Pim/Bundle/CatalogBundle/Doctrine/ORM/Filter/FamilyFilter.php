@@ -44,7 +44,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator && Operators::NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
@@ -78,7 +78,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                 );
                 break;
 
-            case Operators::NOT_EMPTY:
+            case Operators::IS_NOT_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNotNull($entityAlias . '.id'));
                 break;
         }
