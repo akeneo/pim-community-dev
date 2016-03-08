@@ -15,7 +15,7 @@ class Version
     const VERSION = '1.5.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Fresh Hare';
 
     /** @staticvar string */
     const EDITION = 'CE';
