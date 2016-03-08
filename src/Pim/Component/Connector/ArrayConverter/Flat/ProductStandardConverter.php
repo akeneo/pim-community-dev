@@ -43,7 +43,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected $columnsMapper;
 
     /** @var array */
-    protected $optionalAssociationFields;
+    protected $optionalAssocFields;
 
     /**
      * @param AttributeColumnInfoExtractor    $attrFieldExtractor
@@ -70,7 +70,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         $this->fieldConverter       = $fieldConverter;
         $this->columnsMerger        = $columnsMerger;
         $this->columnsMapper        = $columnsMapper;
-        $this->optionalAssociationFields = [];
+        $this->optionalAssocFields  = [];
     }
 
     /**
@@ -407,10 +407,10 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function getOptionalAssociationFields()
     {
-        if (empty($this->optionalAssociationFields)) {
-            $this->optionalAssociationFields = $this->assocColumnsResolver->resolveAssociationColumns();
+        if (empty($this->optionalAssocFields)) {
+            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
         }
 
-        return $this->optionalAssociationFields;
+        return $this->optionalAssocFields;
     }
 }

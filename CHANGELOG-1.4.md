@@ -1,4 +1,15 @@
-# 1.4.x
+# 1.4.21 (2016-03-07)
+
+## Bug fixes
+- PIM-5587: fix associations checks persisting between two products
+
+# 1.4.20 (2016-02-24)
+
+## Improvements
+- PIM-5579: Enable `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` even for exports with several files
+
+## Scalability improvements
+- PIM-5575: Remove families JS fetchers warmup
 
 # 1.4.19 (2016-02-11)
 
@@ -6,6 +17,9 @@
 - PIM-5476: Fix issue with native csv product import, new products are created with extra optional values for media, metric, price
 - PIM-5470: Fix Doctrine memory leak
 - PIM-5354: Fix select/boolean filter value display after navigation
+
+## Technical improvements
+- PIM-5460 Several datepickers: remove jQuery UI datepickers, keep Bootstrap's
 
 # 1.4.18 (2016-01-28)
 
