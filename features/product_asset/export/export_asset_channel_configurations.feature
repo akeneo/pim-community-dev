@@ -14,7 +14,7 @@ Feature: Export asset channel configurations
     And I wait for the "clothing_asset_channel_configuration_export" job to finish
     And I should see "read 2"
     And I should see "written 2"
-    Then exported file of "clothing_asset_channel_configuration_export" should contain:
+    Then exported yaml file of "clothing_asset_channel_configuration_export" should contain:
     """
     asset_channel_configurations:
         mobile:

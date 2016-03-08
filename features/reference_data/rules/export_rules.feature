@@ -51,7 +51,7 @@ Feature: Export rules
     And I am on the "clothing_rule_export" export job page
     When I launch the export job
     And I wait for the "clothing_rule_export" job to finish
-    Then exported file of "clothing_rule_export" should contain:
+    Then exported yaml file of "clothing_rule_export" should contain:
     """
     rules:
         set_reference_data:
@@ -86,8 +86,8 @@ Feature: Export rules
                     type: copy_value
                     from_field: zip_color
                     to_field: zip_color
-                    from_scope: mobile
-                    to_scope: tablet
                     from_locale: en_US
                     to_locale: en_US
+                    from_scope: mobile
+                    to_scope: tablet
     """
