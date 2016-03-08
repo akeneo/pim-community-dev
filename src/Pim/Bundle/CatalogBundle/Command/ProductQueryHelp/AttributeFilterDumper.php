@@ -1,7 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query\Filter;
+namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
+use Pim\Bundle\CatalogBundle\Command\DumperInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;

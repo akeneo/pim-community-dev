@@ -3,8 +3,8 @@ parameters:
     pim_catalog.query.product_query_builder.class:              Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder
     pim_catalog.query.filter.registry.class:                    Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistry
     pim_catalog.query.sorter.registry.class:                    Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistry
-    pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper
-    pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
+    pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Command\QueryHelp\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Command\QueryHelp\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.category.class:           Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
     pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
 

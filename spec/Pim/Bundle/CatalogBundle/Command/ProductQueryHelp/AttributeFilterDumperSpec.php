@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Query\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -19,7 +19,7 @@ class AttributeFilterDumperSpec extends ObjectBehavior
 
     function it_is_a_dumper()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\DumperInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Command\DumperInterface');
     }
 
     function it_dumps_field_filters(OutputInterface $output, HelperSet $helperSet, TableHelper $table, $repository)

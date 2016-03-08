@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
