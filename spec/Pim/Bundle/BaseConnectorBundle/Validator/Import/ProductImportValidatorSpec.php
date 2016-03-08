@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

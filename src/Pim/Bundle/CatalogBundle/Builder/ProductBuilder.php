@@ -4,16 +4,16 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 
 class FamilyRepositorySpec extends ObjectBehavior
 {
@@ -29,7 +29,7 @@ class FamilyRepositorySpec extends ObjectBehavior
 
     function it_is_a_family_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\FamilyRepositoryInterface');
     }
 
     function it_count_all_familys($em, QueryBuilder $queryBuilder, AbstractQuery $query)

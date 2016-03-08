@@ -6,7 +6,7 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Completeness Repository for ODM

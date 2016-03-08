@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 

@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;

@@ -7,8 +7,8 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 
 class DatasourceSpec extends ObjectBehavior
 {

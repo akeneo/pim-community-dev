@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 class GroupFieldSetterSpec extends ObjectBehavior
 {

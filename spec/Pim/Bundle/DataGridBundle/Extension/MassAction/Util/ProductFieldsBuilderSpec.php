@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**

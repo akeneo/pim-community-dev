@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

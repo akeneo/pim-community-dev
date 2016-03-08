@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\PersistentCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

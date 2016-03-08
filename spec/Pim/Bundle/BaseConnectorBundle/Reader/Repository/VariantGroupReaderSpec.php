@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 class VariantGroupReaderSpec extends ObjectBehavior
 {

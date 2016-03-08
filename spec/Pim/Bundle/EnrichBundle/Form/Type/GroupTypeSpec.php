@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupTypeSpec extends ObjectBehavior

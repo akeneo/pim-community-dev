@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductTemplateRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductTemplateAttributeSubscriberSpec extends ObjectBehavior

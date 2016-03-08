@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
 

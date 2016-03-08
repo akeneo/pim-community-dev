@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 class BaseValueDenormalizerSpec extends ObjectBehavior
 {

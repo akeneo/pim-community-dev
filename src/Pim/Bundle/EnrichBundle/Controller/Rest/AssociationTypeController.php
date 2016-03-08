@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

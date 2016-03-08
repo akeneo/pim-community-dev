@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Attribute option denormalizer used for following attribute types:

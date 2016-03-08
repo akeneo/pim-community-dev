@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales

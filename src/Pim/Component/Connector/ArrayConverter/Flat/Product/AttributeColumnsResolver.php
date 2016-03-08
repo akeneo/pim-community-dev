@@ -3,9 +3,9 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 /**
  * Resolve attribute field information

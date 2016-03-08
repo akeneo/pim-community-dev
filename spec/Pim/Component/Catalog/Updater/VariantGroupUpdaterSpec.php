@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
 class VariantGroupUpdaterSpec extends ObjectBehavior

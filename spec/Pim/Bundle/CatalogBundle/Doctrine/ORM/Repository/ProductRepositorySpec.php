@@ -4,16 +4,16 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 
 class ProductRepositorySpec extends ObjectBehavior
 {
@@ -27,7 +27,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_a_product_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\ProductRepositoryInterface');
     }
 
     function it_is_an_object_repository()
