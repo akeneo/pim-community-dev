@@ -9,6 +9,7 @@ use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
@@ -42,6 +43,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('domain-variant-group', new VariantGroupContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-tree', new TreeContext());
+        $this->useContext('domain-panel', new PanelContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
 
         $this->useContext('job', new JobContext());
