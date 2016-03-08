@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface as BaseCompletenessGeneratorInterface;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface as BaseCompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
