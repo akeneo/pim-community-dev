@@ -93,7 +93,7 @@ class ReferenceDataSorter implements AttributeSorterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Exception;
+namespace Pim\Component\Catalog\Exception;
 
 /**
  * Query exception

@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;

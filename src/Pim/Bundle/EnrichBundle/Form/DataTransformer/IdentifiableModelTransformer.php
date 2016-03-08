@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
+use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

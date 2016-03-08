@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Component\Catalog\Exception\ProductQueryException;
 
 /**
  * Criteria condition utils
@@ -93,7 +93,7 @@ class CriteriaCondition
      * @param string       $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
      * @throws \InvalidArgumentException
      *
      * @return string

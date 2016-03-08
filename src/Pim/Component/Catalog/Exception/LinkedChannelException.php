@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Exception;
+namespace Pim\Component\Catalog\Exception;
 
 /**
  * Exception occurs during currency update if the currency is linked to a channel
