@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators as BaseOperators;
+use Pim\Component\Catalog\Query\Filter\Operators as BaseOperators;
 
 /**
  * Filter operators

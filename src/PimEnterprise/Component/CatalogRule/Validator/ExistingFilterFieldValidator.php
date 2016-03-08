@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
