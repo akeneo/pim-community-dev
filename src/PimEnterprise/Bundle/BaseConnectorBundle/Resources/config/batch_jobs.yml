@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo CSV Connector
+    name: Akeneo Native Connector
     jobs:
         csv_published_product_export:
             title: pimee_base_connector.jobs.csv_published_product_export.title
