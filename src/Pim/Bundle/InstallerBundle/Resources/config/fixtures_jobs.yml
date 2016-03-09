@@ -116,7 +116,7 @@ jobs:
             multiple: false
 
     fixtures_user_group_csv:
-        order: 75
+        order: 25
         connector: Data fixtures
         alias:     fixtures_user_group_csv
         label:     User groups data fixtures

@@ -137,7 +137,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $this->userManager->updatePassword($user);
                 break;
             case 'birthday':
-                $user->setBirthday(new \DateTime($data, DateTime::ISO8601));
+                $user->setBirthday(new \DateTime($data, \DateTime::ISO8601));
                 break;
             case 'email_notifications':
                 $user->setEmailNotifications($data);
