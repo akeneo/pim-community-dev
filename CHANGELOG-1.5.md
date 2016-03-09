@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5545: Fix flash message when a proposal is approved/rejected in the proposal grid
+
 # 1.5.1 (2016-03-09)
 
 # 1.5.0 (2016-03-08)
