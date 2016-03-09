@@ -44,7 +44,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.attribute->getAttributeTypes'
+                            choices:  '@pim_catalog.registry.attribute_type->getSortedAliases'
                 scopable:
                     type:      boolean
                     data_name: a.scopable

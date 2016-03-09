@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -90,6 +91,9 @@ class AttributeController
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
+    /** @var AttributeTypeRegistry */
+    protected $registry;
+
     /**
      * @param Request                      $request
      * @param RouterInterface              $router
@@ -106,6 +110,7 @@ class AttributeController
      * @param SaverInterface               $optionSaver
      * @param AttributeRepositoryInterface $attributeRepository
      * @param GroupRepositoryInterface     $groupRepository
+     * @param AttributeTypeRegistry        $registry
      * @param array                        $measuresConfig
      */
     public function __construct(
@@ -124,6 +129,7 @@ class AttributeController
         SaverInterface $optionSaver,
         AttributeRepositoryInterface $attributeRepository,
         GroupRepositoryInterface $groupRepository,
+        AttributeTypeRegistry $registry,
         $measuresConfig
     ) {
         $this->request             = $request;
@@ -142,6 +148,7 @@ class AttributeController
         $this->optionSaver         = $optionSaver;
         $this->attributeRepository = $attributeRepository;
         $this->groupRepository     = $groupRepository;
+        $this->registry            = $registry;
     }
 
     /**
@@ -154,7 +161,7 @@ class AttributeController
      */
     public function indexAction()
     {
-        return ['attributeTypes' => $this->attributeManager->getAttributeTypes()];
+        return ['attributeTypes' => $this->registry->getSortedAliases()];
     }
 
     /**
@@ -170,9 +177,9 @@ class AttributeController
     public function createAction(Request $request)
     {
         $attributeType = $request->get('attribute_type');
-        $attributeTypes = $this->attributeManager->getAttributeTypes();
+        $attributeTypes = $this->registry->getAliases();
 
-        if (!$attributeType || !is_string($attributeType) || !array_key_exists($attributeType, $attributeTypes)) {
+        if (!$attributeType || !is_string($attributeType) || !in_array($attributeType, $attributeTypes)) {
             return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
         }
 
@@ -356,7 +363,7 @@ class AttributeController
 
         if (null === $attribute) {
             throw new NotFoundHttpException(
-                sprintf('%s entity not found', $this->attributeManager->getAttributeClass())
+                sprintf('Attribute %s not found', $id)
             );
         }
 

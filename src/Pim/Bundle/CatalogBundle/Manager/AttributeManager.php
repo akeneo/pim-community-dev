@@ -83,23 +83,6 @@ class AttributeManager
     }
 
     /**
-     * Get a list of available attribute types
-     *
-     * @return string[]
-     */
-    public function getAttributeTypes()
-    {
-        $types = $this->registry->getAliases();
-        $choices = [];
-        foreach ($types as $type) {
-            $choices[$type] = $type;
-        }
-        asort($choices);
-
-        return $choices;
-    }
-
-    /**
      * Update attribute option sorting
      *
      * @param AttributeInterface $attribute

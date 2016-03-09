@@ -56,4 +56,17 @@ class AttributeTypeRegistry
     {
         return array_keys($this->types);
     }
+
+    /**
+     * Return the attribute types aliases sorted
+     *
+     * @return array
+     */
+    public function getSortedAliases()
+    {
+        $types = array_combine(array_keys($this->types), array_keys($this->types));
+        asort($types);
+
+        return $types;
+    }
 }

@@ -39,11 +39,4 @@ class AttributeManagerSpec extends ObjectBehavior
     {
         $this->getAttributeClass()->shouldReturn(self::ATTRIBUTE_CLASS);
     }
-
-    function it_provides_the_list_of_attribute_types($registry)
-    {
-        $registry->getAliases()->willReturn(['foo', 'bar']);
-
-        $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
-    }
 }
