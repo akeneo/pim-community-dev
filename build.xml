@@ -3,7 +3,7 @@
 >
     <property name="symfony.catalog.storage.dir" value="catalog" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
@@ -15,7 +15,7 @@
 
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,php-cs-fixer,phpcpd,phpdoc"/>
 
     <target name="prepare-deprecated-behat" description="Build deprecated behats">
         <!--
@@ -147,22 +147,6 @@
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
             <arg value="--ignore=Tests" />
             <arg path="${basedir}/src" />
-        </exec>
-    </target>
-
-    <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src,${basedir}/features" />
-            <arg value="text" />
-        </exec>
-    </target>
-
-    <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-        <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src" />
-            <arg value="xml" />
-            <arg value="--reportfile" />
-            <arg value="${basedir}/app/build/logs/pmd.xml" />
         </exec>
     </target>
 

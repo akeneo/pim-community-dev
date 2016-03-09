@@ -35,6 +35,7 @@ install:
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
+    - travis_wait bin/phpmd --exclude "*/spec/*,*/Tests/*" src text phpmd.xml
     - ./phpspec-fix
     - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - grunt travis
