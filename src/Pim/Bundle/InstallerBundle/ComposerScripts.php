@@ -57,6 +57,7 @@ class ComposerScripts
 
         $finder
             ->files()
+            ->name('UPGRADE-*.md')
             ->depth(0);
         foreach ($finder->in($ceDepPath) as $file) {
             static::copyFiles($event, $file->getPathname(), $ceRoot . $file->getFilename());
