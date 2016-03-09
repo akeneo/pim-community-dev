@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -125,8 +126,12 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'EMPTY', null, null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_not_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
-    {
+    function it_adds_a_not_empty_attribute_filter_in_the_query(
+        $attrValidatorHelper,
+        $qb,
+        AttributeInterface $sku,
+        Expr $expr
+    ) {
         $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
 
@@ -134,9 +139,14 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->exists(true)->shouldBeCalled()->willReturn($qb);
-        $qb->notEqual('')->shouldBeCalled()->willReturn($qb);
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.sku')->shouldBeCalled()->willReturn($expr);
+        $expr->exists(true)->shouldBeCalled()->willReturn($expr);
+        $expr->notEqual('')->shouldBeCalled()->willReturn($expr);
+        $qb->addAnd(
+            Argument::type('Doctrine\ODM\MongoDB\Query\Expr'),
+            Argument::type('Doctrine\ODM\MongoDB\Query\Expr')
+        )->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'NOT EMPTY', null, null, null, ['field' => 'sku']);
     }

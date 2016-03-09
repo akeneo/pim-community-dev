@@ -93,7 +93,7 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->isScopable()->willReturn(true);
 
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
-        $queryBuilder->equals(null)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, 'EMPTY', $value, 'en_US', 'mobile');
     }
@@ -113,7 +113,7 @@ class MetricFilterSpec extends ObjectBehavior
         $metric->isScopable()->willReturn(true);
 
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
-        $queryBuilder->notEqual(null)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, 'NOT EMPTY', $value, 'en_US', 'mobile');
     }

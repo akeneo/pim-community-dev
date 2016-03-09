@@ -110,10 +110,10 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->qb->field($fieldData)->gte($data);
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->equals(null);
+                $this->qb->field($fieldData)->exists(false);
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($fieldData)->notEqual(null);
+                $this->qb->field($fieldData)->exists(true);
                 break;
             default:
                 $this->qb->field($fieldData)->equals($data);

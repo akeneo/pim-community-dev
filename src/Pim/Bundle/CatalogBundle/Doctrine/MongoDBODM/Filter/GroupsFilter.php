@@ -23,8 +23,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -89,10 +87,19 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     protected function applyFilter(array $value, $field, $operator)
     {
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            $this->qb->field($field)->in($value);
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
         }
     }
 }

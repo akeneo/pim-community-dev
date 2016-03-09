@@ -24,8 +24,6 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators

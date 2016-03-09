@@ -29,8 +29,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $supportedAttributes;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
      * @param MeasureConverter         $measureConverter
@@ -64,12 +62,12 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
+            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
+        } else {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
             $this->addFilter($attribute, $operator, $value, $locale, $scope);
-        } else {
-            $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         }
 
         return $this;
@@ -97,9 +95,9 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $locale = null,
         $scope = null
     ) {
-        $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
-        $joinCondition   = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
+        $backendType   = $attribute->getBackendType();
+        $joinAlias     = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
             $this->qb->getRootAlias() . '.values',

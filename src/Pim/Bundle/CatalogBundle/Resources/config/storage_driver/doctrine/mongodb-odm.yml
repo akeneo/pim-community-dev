@@ -462,25 +462,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    # PQB filters
-    pim_catalog.doctrine.query.filter.family:
-        class: %pim_catalog.doctrine.query.filter.family.class%
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['family.id', 'family.code']
-            - ['IN', 'NOT IN' ,'EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.groups:
-        class: %pim_catalog.doctrine.query.filter.groups.class%
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['groups.id', 'groups.code']
-            - ['IN', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.factory.product_cursor:
         class: %pim_catalog.doctrine.cursor_factory.product.class%
         arguments:

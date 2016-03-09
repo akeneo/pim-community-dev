@@ -26,8 +26,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedOperators
@@ -100,8 +98,10 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);
         } elseif (Operators::IS_NOT_EMPTY === $operator) {
-            $this->qb->field($field)->exists(true);
-            $this->qb->field($field)->notEqual('');
+            $this->qb->addAnd(
+                $this->qb->expr()->field($field)->exists(true),
+                $this->qb->expr()->field($field)->notEqual('')
+            );
         } elseif (Operators::IN_LIST === $operator) {
             $this->qb->field($field)->in($value);
         } else {

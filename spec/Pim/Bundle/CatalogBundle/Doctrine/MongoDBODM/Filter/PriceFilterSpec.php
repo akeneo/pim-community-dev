@@ -145,7 +145,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_an_empty_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -153,20 +153,20 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => null, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
-        $queryBuilder->equals(null)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'EMPTY', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_not_empty_filter_in_the_query(
         $attrValidatorHelper,
-        $currencyManager,
+        $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
@@ -174,14 +174,13 @@ class PriceFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
 
         $value = ['data' => null, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
-        $queryBuilder->notEqual(null)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->exists(true)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'NOT EMPTY', $value, 'en_US', 'mobile');
     }

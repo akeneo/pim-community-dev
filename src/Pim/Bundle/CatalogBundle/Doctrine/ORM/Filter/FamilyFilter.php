@@ -23,8 +23,6 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -62,7 +60,6 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                     $this->qb->expr()->in($entityAlias . '.id', $value)
                 );
                 break;
-
             case Operators::NOT_IN_LIST:
                 $this->qb->andWhere(
                     $this->qb->expr()->orX(
@@ -71,13 +68,11 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                     )
                 );
                 break;
-
             case Operators::IS_EMPTY:
                 $this->qb->andWhere(
                     $this->qb->expr()->isNull($entityAlias . '.id')
                 );
                 break;
-
             case Operators::IS_NOT_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNotNull($entityAlias . '.id'));
                 break;

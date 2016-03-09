@@ -30,8 +30,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected $resolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributes

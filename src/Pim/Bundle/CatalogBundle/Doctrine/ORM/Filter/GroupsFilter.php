@@ -23,8 +23,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -70,7 +68,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
                     )
                 );
                 break;
-
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
                 $this->qb->andWhere(

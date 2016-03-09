@@ -221,7 +221,7 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_empty_filter_in_the_query(
-        $currencyManager,
+        $currencyRepository,
         QueryBuilder $queryBuilder,
         AttributeInterface $price,
         Expr $expr,
@@ -237,7 +237,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $value = ['data' => null, 'currency' => 'EUR'];
-        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
