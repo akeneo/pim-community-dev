@@ -41,7 +41,9 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         warmUp: function () {
             if (!this.warm) {
                 _.each(this.fetchers, function (fetcher, code) {
-                    this.getFetcher(code).fetchAll();
+                    if (undefined === fetcher.options.warmup || fetcher.options.warmup) {
+                        this.getFetcher(code).fetchAll();
+                    }
                 }.bind(this));
 
                 this.warm = true;

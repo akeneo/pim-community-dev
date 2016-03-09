@@ -21,10 +21,16 @@ parameters:
 
     installed:            ~
 
-    # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
-    # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/community/small/fixtures
-    # or you can use one of the provided catalogs
-    # use PimInstallerBundle:minimal for minimal data set
+    # Installer data can be either a path to the catalog directory...
+    #       installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/community/small/fixtures
+    #       installer_data: /absolute/path/to/your/very/own/catalog
+    #
+    # ...or a Symfony resource directory that contains the catalog (TheBundle/Resources/fixtures/the_catalog)
+    #       installer_data: PimInstallerBundle:icecat_demo_dev
+    #       installer_data: PimInstallerBundle:minimal
+    #       installer_data: AcmeAppBundle:your_very_own_catalog
+    #
+    # For a minimal dataset, use PimInstallerBundle:minimal
     installer_data:       PimInstallerBundle:icecat_demo_dev
 
     uservoice_key:                 ~

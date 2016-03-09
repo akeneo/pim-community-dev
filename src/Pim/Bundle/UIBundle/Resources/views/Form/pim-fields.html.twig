@@ -456,6 +456,7 @@
     {{ block('form_row_field') }}
 {% endblock %}
 
+
 {% block pim_date_widget %}
     {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker add-on', 'placeholder': placeholder|trans }) %}
     {% if form.vars.disabled %}

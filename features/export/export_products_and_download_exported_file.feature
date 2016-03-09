@@ -4,14 +4,14 @@ Feature: Export products
   As a product manager
   I need to be able to export the products
 
-  Scenario: Successfully export products and be able to download exported file
+  Scenario: Successfully export products and be able to download exported files
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
-      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture | thumbnail                 |
+      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    | %fixtures%/SNKRS-1C-s.png |
+      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    | %fixtures%/SNKRS-1C-t.png |
     And the following product values:
       | product      | attribute   | value                                | locale | scope     |
       | tshirt-white | name        | White t-shirt                        | en_US  |           |
@@ -46,3 +46,4 @@ Feature: Export products
     tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;0;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;10.00;9.00;15.00;;size_L;;;
     """
     Then I should see "Download generated file"
+    And I should see "Download generated archive"
