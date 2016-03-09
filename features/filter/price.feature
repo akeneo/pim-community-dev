@@ -23,4 +23,5 @@ Feature: Filter on price attributes
       | [{"field":"price", "operator":">",         "value": {"data": 30, "currency": "USD"}}]    | ["BOOTBS"]                                            |
       | [{"field":"price", "operator":"EMPTY",     "value": {"data": null, "currency": "EUR"} }] | ["BOOTYXS", "BOOTYXL"]                                |
       | [{"field":"price", "operator":"NOT EMPTY", "value": {"data": null, "currency": "EUR"} }] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTBXS", "BOOTRXS"] |
+      | [{"field":"price", "operator":"!=",        "value": {"data": 10, "currency": "EUR"} }]   | ["BOOTWXS", "BOOTBS", "BOOTBXS"]                      |
       | [{"field":"price", "operator":">", "value": {"data": 10, "currency": "USD"}}, {"field":"price", "operator":"<=", "value": {"data": 35, "currency": "EUR"}}] | ["BOOTWXS", "BOOTBL"] |

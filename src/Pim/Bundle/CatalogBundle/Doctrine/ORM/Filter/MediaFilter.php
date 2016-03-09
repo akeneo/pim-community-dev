@@ -164,24 +164,26 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     {
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = $value . '%';
                 break;
             case Operators::ENDS_WITH:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = '%' . $value;
                 break;
             case Operators::CONTAINS:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = 'NOT LIKE';
+                $operator = Operators::NOT_LIKE;
                 $value    = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
-                $operator = 'LIKE';
-                $value    = $value;
+                $operator = Operators::IS_LIKE;
+                break;
+            case Operators::NOT_EQUAL:
+                $operator = Operators::NOT_LIKE;
                 break;
             default:
                 break;

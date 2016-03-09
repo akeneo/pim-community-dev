@@ -103,11 +103,13 @@ class CriteriaCondition
     {
         $operators = [
             Operators::EQUALS                => 'eq',
+            Operators::NOT_EQUAL             => 'neq',
             Operators::LOWER_THAN            => 'lt',
             Operators::LOWER_OR_EQUAL_THAN   => 'lte',
             Operators::GREATER_THAN          => 'gt',
             Operators::GREATER_OR_EQUAL_THAN => 'gte',
-            Operators::IS_LIKE               => 'like'
+            Operators::IS_LIKE               => 'like',
+            Operators::NOT_LIKE              => 'notLike'
         ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
@@ -137,21 +139,13 @@ class CriteriaCondition
         if (array_key_exists($operator, $operators)) {
             if (!is_array($value)) {
                 throw new \InvalidArgumentException(
-                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators))
+                    sprintf('Only array values are allowed for operators %s.', implode(', ', $operators))
                 );
             }
 
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field, $value)->__toString();
-        }
-
-        if (Operators::NOT_LIKE === $operator) {
-            if (!is_scalar($value)) {
-                throw new \InvalidArgumentException(sprintf('Only scalar values are allowed for operator NOT LIKE'));
-            }
-
-            return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
         }
 
         if (Operators::BETWEEN === $operator) {

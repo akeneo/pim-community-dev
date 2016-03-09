@@ -21,3 +21,4 @@ Feature: Filter on date
       | [{"field":"destocking_date", "operator":"NOT BETWEEN", "value": ["2015-01-20", "2015-03-25"]}]                                           | ["BOOTBL", "BOOTBS"]                       |
       | [{"field":"destocking_date", "operator":"=", "value": "2015-01-25"}, {"field":"destocking_date", "operator":">", "value": "2015-01-19"}] | ["BOOTBXS"]                                |
       | [{"field":"destocking_date", "operator":"NOT EMPTY", "value": null}]                                                                     | ["BOOTBXS", "BOOTWXS", "BOOTBS", "BOOTBL"] |
+      | [{"field":"destocking_date", "operator":"!=", "value": "2015-01-20"}]                                                                    | ["BOOTBXS", "BOOTWXS", "BOOTBL"]           |

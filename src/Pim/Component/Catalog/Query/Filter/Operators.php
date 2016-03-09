@@ -34,4 +34,5 @@ class Operators
     const LOWER_THAN              = '<';
     const LOWER_OR_EQUAL_THAN     = '<=';
     const EQUALS                  = '=';
+    const NOT_EQUAL               = '!=';
 }

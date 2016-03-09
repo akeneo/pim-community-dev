@@ -14,7 +14,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $queryBuilder)
     {
-        $this->beConstructedWith(['completeness'], ['=', '<']);
+        $this->beConstructedWith(['completeness'], ['<', '<=', '=', '>=', '>', '!=']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -25,7 +25,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

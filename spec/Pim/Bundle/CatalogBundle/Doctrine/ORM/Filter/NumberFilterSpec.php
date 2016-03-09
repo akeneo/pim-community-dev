@@ -17,7 +17,7 @@ class NumberFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_number'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($queryBuilder);
     }
@@ -29,7 +29,7 @@ class NumberFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -96,8 +96,41 @@ class NumberFilterSpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
         $queryBuilder->andWhere('filternumber IS NOT NULL')->shouldBeCalled();
 
-
         $this->addAttributeFilter($number, 'NOT EMPTY', 12);
+    }
+
+    function it_adds_not_equal_filter_in_the_query(
+        $attrValidatorHelper,
+        QueryBuilder $queryBuilder,
+        AttributeInterface $number,
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $literal
+    ) {
+        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
+
+        $number->getId()->willReturn(42);
+        $number->getCode()->willReturn('number');
+        $number->getBackendType()->willReturn('varchar');
+        $number->isLocalizable()->willReturn(false);
+        $number->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $expr->literal(12)->willReturn($literal);
+        $expr->neq(Argument::any(), $literal)->shouldBeCalled()->willReturn($comp);
+        $literal->__toString()->willReturn('12');
+        $comp->__toString()->willReturn('filtercode.backend_type <> 12');
+
+        $queryBuilder->innerJoin(
+            'p.values',
+            Argument::any(),
+            'WITH',
+            Argument::containingString('.attribute = 42 AND filtercode.backend_type <> 12')
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($number, '!=', 12);
     }
 
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)

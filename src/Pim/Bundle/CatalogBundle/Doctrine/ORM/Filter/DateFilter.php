@@ -162,6 +162,15 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 );
                 break;
 
+            case Operators::NOT_EQUAL:
+                $this->qb->andWhere(
+                    $this->qb->expr()->orX(
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value)),
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true))
+                    )
+                );
+                break;
+
             case Operators::IS_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
                 break;
@@ -219,7 +228,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
         if (is_array($value) && 2 !== count($value)) {
             throw InvalidArgumentException::expected(
                 $type,
-                'array with 2 elements, string or \Datetime',
+                'array with 2 elements, string or \DateTime',
                 'filter',
                 'date',
                 print_r($value, true)
@@ -254,7 +263,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
         } elseif (null !== $value) {
             throw InvalidArgumentException::expected(
                 $type,
-                'array with 2 elements, string or \Datetime',
+                'array with 2 elements, string or \DateTime',
                 'filter',
                 'date',
                 print_r($value, true)

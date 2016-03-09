@@ -13,13 +13,16 @@ use Prophecy\Argument;
 
 class OptionFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, ObjectIdResolverInterface $objectIdResolver)
-    {
+    function let(
+        QueryBuilder $qb,
+        AttributeValidatorHelper $attrValidatorHelper,
+        ObjectIdResolverInterface $objectIdResolver
+    ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
             $objectIdResolver,
             ['pim_catalog_simpleselect'],
-            ['IN', 'EMPTY', 'NOT EMPTY']
+            ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         );
         $this->setQueryBuilder($qb);
     }
@@ -31,7 +34,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator(Argument::any())->shouldReturn(false);
     }
@@ -96,8 +99,12 @@ class OptionFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.id']);
     }
 
-    function it_adds_a_not_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
-    {
+    function it_adds_a_not_empty_filter_to_the_query(
+        $qb,
+        $attrValidatorHelper,
+        AttributeInterface $attribute,
+        Expr $expr
+    ) {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
@@ -121,6 +128,39 @@ class OptionFilterSpec extends ObjectBehavior
         $qb->andWhere('filteroption_code.option IS NOT NULL')->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_in_filter_to_the_query(
+        $qb,
+        $attrValidatorHelper,
+        AttributeInterface $attribute,
+        Expr $expr,
+        Expr\Func $func
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('option');
+        $attribute->getCode()->willReturn('option_code');
+
+        $qb->expr()->willReturn($expr);
+        $qb->getRootAlias()->willReturn('r');
+        $expr->notIn(Argument::any(), [10, 12])
+            ->shouldBeCalled()
+            ->willReturn($func);
+        $func->__toString()->willReturn('filtercode.option NOT IN (10, 12)');
+
+        $qb->innerJoin(
+            'r.values',
+            Argument::any(),
+            'WITH',
+            Argument::containingString('.attribute = 42 AND filtercode.option NOT IN (10, 12)')
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT IN', [10, 12], null, null, ['field' => 'options_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)

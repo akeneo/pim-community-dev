@@ -97,7 +97,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
-
             $this->qb
                 ->innerJoin(
                     $this->qb->getRootAlias() . '.values',
@@ -109,8 +108,15 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
                     $joinAlias . '.' . $attribute->getBackendType(),
                     $joinAliasOpt,
                     'WITH',
-                    $this->qb->expr()->in($backendField, $value)
+                    $this->prepareCriteriaCondition($backendField, $operator, $value)
                 );
+
+            if (Operators::NOT_IN_LIST === $operator) {
+                $this->qb->andWhere($this->qb->expr()->notIn(
+                    $this->qb->getRootAlias() . '.id',
+                    $this->getNotInSubquery($attribute, $locale, $scope, $value)
+                ));
+            }
         }
 
         return $this;
@@ -122,6 +128,41 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+    }
+
+    /**
+     * Subrequest matching all products that actually have $value options as product values.
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     * @param array              $value
+     *
+     * @return string
+     */
+    protected function getNotInSubquery(AttributeInterface $attribute, $locale, $scope, $value)
+    {
+        $notInQb      = $this->qb->getEntityManager()->createQueryBuilder();
+        $rootEntity   = current($this->qb->getRootEntities());
+        $notInAlias   = $this->getUniqueAlias('productsNotIn');
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAliasOpt = $this->getUniqueAlias('filterO' . $attribute->getCode());
+
+        $notInQb->select($notInAlias . '.id')
+            ->from($rootEntity, $notInAlias, $notInAlias . '.id')
+            ->innerJoin(
+                $notInQb->getRootAlias() . '.values',
+                $joinAlias,
+                'WITH',
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
+            )
+            ->innerJoin(
+                $joinAlias . '.' . $attribute->getBackendType(),
+                $joinAliasOpt
+            )
+            ->where($notInQb->expr()->in($joinAliasOpt . '.id', $value));
+
+        return $notInQb->getDQL();
     }
 
     /**

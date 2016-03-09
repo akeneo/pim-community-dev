@@ -14,9 +14,10 @@ Feature: Filter on completeness
       | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
     And I launched the completeness calculator
     Then I should get the following results for the given filters:
-      | filter                                                                                         | result                                     |
-      | [{"field":"completeness", "operator":"=", "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTBXS"]                                |
-      | [{"field":"completeness", "operator":"<", "value": 25, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBL"]                                 |
-      | [{"field":"completeness", "operator":"<=", "value": 80, "locale": "en_US", "scope": "mobile"}] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
-      | [{"field":"completeness", "operator":">=", "value": 50, "locale": "en_US", "scope": "mobile"}] | ["BOOTBS", "BOOTWXS", "BOOTBXS"]           |
-      | [{"field":"completeness", "operator":">", "value": 80, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBXS"]                                |
+      | filter                                                                                          | result                                     |
+      | [{"field":"completeness", "operator":"=",  "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTBXS"]                                |
+      | [{"field":"completeness", "operator":"<",  "value": 25, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBL"]                                 |
+      | [{"field":"completeness", "operator":"<=", "value": 80, "locale": "en_US", "scope": "mobile"}]  | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
+      | [{"field":"completeness", "operator":">=", "value": 50, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBS", "BOOTWXS", "BOOTBXS"]           |
+      | [{"field":"completeness", "operator":">",  "value": 80, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBXS"]                                |
+      | [{"field":"completeness", "operator":"!=", "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |

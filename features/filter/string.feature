@@ -23,3 +23,4 @@ Feature: Filter on string
       | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "Boot",         "locale": "en_US"}] | ["BOOTBL"]                                 |
       | [{"field":"name", "operator":"=",                "value": "Boot black s", "locale": "en_US"}] | ["BOOTBS"]                                 |
       | [{"field":"name", "operator":"=",                "value": "Mug ",         "locale": "en_US"}] | []                                         |
+      | [{"field":"name", "operator":"!=",               "value": "Mug",          "locale": "en_US"}] | ["BOOTBXS", "BOOTBS", "BOOTWXS"]           |
