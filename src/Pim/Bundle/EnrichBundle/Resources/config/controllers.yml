@@ -131,7 +131,6 @@ services:
             - '@translator'
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
-            - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
@@ -141,6 +140,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.registry.attribute_type'
+            - '@pim_catalog.factory.attribute'
             - %akeneo_measure.measures_config%
 
     pim_enrich.controller.attribute_option:

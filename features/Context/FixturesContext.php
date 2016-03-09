@@ -1981,14 +1981,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
-     */
-    protected function getAttributeManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
      * @return \Pim\Bundle\VersioningBundle\Manager\VersionManager
      */
     protected function getVersionManager()

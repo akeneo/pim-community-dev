@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

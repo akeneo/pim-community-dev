@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;

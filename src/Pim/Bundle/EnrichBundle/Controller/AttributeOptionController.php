@@ -9,10 +9,10 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Attribute option controller
- *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -53,6 +52,9 @@ class AttributeOptionController
     /** @var SaverInterface */
     protected $optionSaver;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * Constructor
      *
@@ -64,6 +66,7 @@ class AttributeOptionController
      * @param AttributeOptionManager $optionManager
      * @param SaverInterface         $optionSaver
      * @param RemoverInterface       $optionRemover
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -73,7 +76,8 @@ class AttributeOptionController
         AttributeManager $attributeManager,
         AttributeOptionManager $optionManager,
         SaverInterface $optionSaver,
-        RemoverInterface $optionRemover
+        RemoverInterface $optionRemover,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->normalizer       = $normalizer;
         $this->entityManager    = $entityManager;
@@ -83,6 +87,7 @@ class AttributeOptionController
         $this->optionManager    = $optionManager;
         $this->optionRemover    = $optionRemover;
         $this->optionSaver      = $optionSaver;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -228,7 +233,7 @@ class AttributeOptionController
     protected function findAttributeOr404($id)
     {
         try {
-            $result = $this->attributeManager->getAttribute($id);
+            $result = $this->attributeRepository->find($id);
         } catch (EntityNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

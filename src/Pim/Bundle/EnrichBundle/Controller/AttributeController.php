@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
@@ -55,9 +55,6 @@ class AttributeController
     /** @var Form */
     protected $attributeForm;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
-
     /** @var AttributeOptionManager */
     protected $optionManager;
 
@@ -94,6 +91,9 @@ class AttributeController
     /** @var AttributeTypeRegistry */
     protected $registry;
 
+    /** @var AttributeFactory */
+    protected $factory;
+
     /**
      * @param Request                      $request
      * @param RouterInterface              $router
@@ -101,7 +101,6 @@ class AttributeController
      * @param TranslatorInterface                   $translator
      * @param HandlerInterface             $attributeHandler
      * @param Form                         $attributeForm
-     * @param AttributeManager             $attributeManager
      * @param AttributeOptionManager       $optionManager
      * @param LocaleRepositoryInterface    $localeRepository
      * @param VersionManager               $versionManager
@@ -111,6 +110,7 @@ class AttributeController
      * @param AttributeRepositoryInterface $attributeRepository
      * @param GroupRepositoryInterface     $groupRepository
      * @param AttributeTypeRegistry        $registry
+     * @param AttributeFactory             $factory
      * @param array                        $measuresConfig
      */
     public function __construct(
@@ -120,7 +120,6 @@ class AttributeController
         TranslatorInterface $translator,
         HandlerInterface $attributeHandler,
         Form $attributeForm,
-        AttributeManager $attributeManager,
         AttributeOptionManager $optionManager,
         LocaleRepositoryInterface $localeRepository,
         VersionManager $versionManager,
@@ -130,6 +129,7 @@ class AttributeController
         AttributeRepositoryInterface $attributeRepository,
         GroupRepositoryInterface $groupRepository,
         AttributeTypeRegistry $registry,
+        AttributeFactory $factory,
         $measuresConfig
     ) {
         $this->request             = $request;
@@ -138,7 +138,6 @@ class AttributeController
         $this->translator          = $translator;
         $this->attributeHandler    = $attributeHandler;
         $this->attributeForm       = $attributeForm;
-        $this->attributeManager    = $attributeManager;
         $this->optionManager       = $optionManager;
         $this->localeRepository    = $localeRepository;
         $this->versionManager      = $versionManager;
@@ -149,6 +148,7 @@ class AttributeController
         $this->attributeRepository = $attributeRepository;
         $this->groupRepository     = $groupRepository;
         $this->registry            = $registry;
+        $this->factory             = $factory;
     }
 
     /**
@@ -183,7 +183,7 @@ class AttributeController
             return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
         }
 
-        $attribute = $this->attributeManager->createAttribute($attributeType);
+        $attribute = $this->factory->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
             $this->request->getSession()->getFlashBag()
