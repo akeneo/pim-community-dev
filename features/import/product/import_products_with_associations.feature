@@ -19,11 +19,11 @@ Feature: Execute a job
       SKU-002;sneakers;;winter_boots;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       SKU-003;sneakers;;sandals;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
@@ -37,11 +37,11 @@ Feature: Execute a job
       sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
       SKU-001;boots;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 0 product
     And I should see "No product with identifier \"SKU-001\" has been found"
 
@@ -51,11 +51,11 @@ Feature: Execute a job
       sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
       SKU-001;boots;CROSS;;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"SKU-002\" given"
 
@@ -72,11 +72,11 @@ Feature: Execute a job
       SKU-002;sneakers;;unknown;;;After
       SKU-003;sneakers;;unknown;;;After
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
@@ -99,11 +99,11 @@ Feature: Execute a job
       sku;X_SELL-products
       SKU-001;SKU-002
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
     And I should see "skipped product (no differences) 1"
 
@@ -122,11 +122,11 @@ Feature: Execute a job
       sku;X_SELL-products
       SKU-001;
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     When I edit the "SKU-001" product
     And I visit the "Associations" tab
     And I visit the "Cross sell" group

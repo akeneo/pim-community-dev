@@ -16,7 +16,7 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator: .
-            dateFormat: Y-m-d
+            dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo Native Connector
         alias:     csv_product_export
@@ -229,3 +229,18 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+    xlsx_product_import:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_import
+        label:     XLSX Demo product import
+        type:      import
+        configuration:
+            filePath:           /tmp/product.xlsx
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd

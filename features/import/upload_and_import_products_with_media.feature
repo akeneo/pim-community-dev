@@ -7,9 +7,9 @@ Feature: Upload and import products with media
   Scenario: Successfully upload and import an archive
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     When I upload and import the file "caterpillar_import.zip"
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     And product "CAT-001" should be enabled
     And product "CAT-002" should be enabled
@@ -37,7 +37,7 @@ Feature: Upload and import products with media
   Scenario: Fail to launch an import through file upload when no file was selected
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     When I follow "Upload and import"
     And I execute javascript:
       """

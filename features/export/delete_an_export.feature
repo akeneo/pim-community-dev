@@ -10,15 +10,15 @@ Feature: Delete export
     And I am logged in as "Peter"
     And I am on the exports page
     Then the grid should contain 8 elements
-    When I delete the "footwear_product_export" job
+    When I delete the "csv_footwear_product_import" job
 
   Scenario: Successfully delete an export job
     Given I confirm the deletion
     Then I should see flash message "Export profile successfully removed"
     And the grid should contain 7 elements
-    And I should not see export profile "footwear_product_export"
+    And I should not see import profile "csv_footwear_product_import"
 
   Scenario: Successfully cancel the deletion of an export job
     Given I cancel the deletion
     Then the grid should contain 8 elements
-    And I should see export profile "footwear_product_export"
+    And I should see import profile "csv_footwear_product_import"
