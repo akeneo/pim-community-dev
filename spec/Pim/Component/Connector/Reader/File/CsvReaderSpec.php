@@ -3,9 +3,15 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 
 class CsvReaderSpec extends ObjectBehavior
 {
+    function let(FileIteratorInterface $fileIterator)
+    {
+        $this->beConstructedWith($fileIterator);
+    }
+
     function it_is_configurable()
     {
         $this->setFilePath('/path/to/file/');
@@ -56,5 +62,31 @@ class CsvReaderSpec extends ObjectBehavior
                 ]
             ],
         ]);
+    }
+
+    function it_reads_csv_file($fileIterator)
+    {
+        $data = [
+            'sku'  => 'SKU-001',
+            'name' => 'door',
+        ];
+
+        $fileIterator->setReaderOptions(
+            [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
+        )->willReturn($fileIterator);
+        $fileIterator->reset()->shouldBeCalled();
+        $fileIterator->isInitialized()->willReturn(false);
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
+        $fileIterator->current()->willReturn($data);
+
+        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
+        $this->setFilePath($filePath);
+        $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
+
+        $this->read()->shouldReturn($data);
     }
 }

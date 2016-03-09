@@ -4,7 +4,14 @@ parameters:
     pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\CsvProductReader
     pim_connector.reader.doctrine.base.class:    Pim\Component\Connector\Reader\Doctrine\BaseReader
 
+    pim_connector.reader.file.file_iterator.class: Pim\Component\Connector\Reader\File\FileIterator
+
 services:
+    pim_connector.reader.file.csv_iterator:
+        class: %pim_connector.reader.file.file_iterator.class%
+        arguments:
+            - 'csv'
+
     # Dummy Reader
     pim_connector.reader.dummy_item:
         class: %pim_connector.reader.dummy_item.class%
@@ -12,6 +19,8 @@ services:
     # CSV File Readers
     pim_connector.reader.file.csv:
         class: %pim_connector.reader.file.csv.class%
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator'
 
     pim_connector.reader.file.csv_association_type:
         alias: pim_connector.reader.file.csv
@@ -55,6 +64,7 @@ services:
     pim_connector.reader.file.csv_product:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
+            - '@pim_connector.reader.file.csv_iterator'
             - '@pim_catalog.repository.attribute'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%

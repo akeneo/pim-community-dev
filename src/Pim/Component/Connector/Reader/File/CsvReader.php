@@ -4,12 +4,10 @@ namespace Pim\Component\Connector\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Validator\Constraints\File as AssertFile;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,6 +23,9 @@ class CsvReader extends AbstractConfigurableStepElement implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
+    /** @var FileIteratorInterface */
+    protected $fileIterator;
+
     /** @var string */
     protected $filePath;
 
@@ -43,24 +44,38 @@ class CsvReader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var string */
-    protected $extractedPath;
-
-    /** @var \SplFileObject */
-    protected $csv;
-
-    /** @var array */
-    protected $fieldNames = [];
+    /**
+     * @param FileIteratorInterface $fileIterator
+     */
+    public function __construct(FileIteratorInterface $fileIterator)
+    {
+        $this->fileIterator = $fileIterator;
+    }
 
     /**
-     * Remove the extracted directory
+     * {@inheritdoc}
      */
-    public function __destruct()
+    public function read()
     {
-        if ($this->extractedPath) {
-            $fileSystem = new Filesystem();
-            $fileSystem->remove($this->extractedPath);
+        if (!$this->fileIterator->isInitialized()) {
+            $this->fileIterator
+                ->setReaderOptions([
+                    'fieldDelimiter' => $this->delimiter,
+                    'fieldEnclosure' => $this->enclosure
+                ])
+                ->setFilePath($this->filePath)
+                ->rewind();
         }
+
+        $this->fileIterator->next();
+
+        $data = $this->fileIterator->current();
+
+        if (null !== $data && null !== $this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('read_lines');
+        }
+
+        return $data;
     }
 
     /**
@@ -90,7 +105,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
-        $this->csv = null;
+        $this->fileIterator->reset();
 
         return $this;
     }
@@ -105,7 +120,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
-        $this->csv = null;
+        $this->fileIterator->reset();
 
         return $this;
     }
@@ -219,48 +234,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function read()
-    {
-        if (null === $this->csv) {
-            $this->initializeRead();
-        }
-
-        $data = $this->csv->fgetcsv();
-
-        if (false !== $data) {
-            if ([null] === $data || null === $data) {
-                return null;
-            }
-            if ($this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read_lines');
-            }
-
-            if (count($this->fieldNames) !== count($data)) {
-                throw new InvalidItemException(
-                    'pim_connector.steps.csv_reader.invalid_item_columns_count',
-                    $data,
-                    [
-                        '%totalColumnsCount%' => count($this->fieldNames),
-                        '%itemColumnsCount%'  => count($data),
-                        '%csvPath%'           => $this->csv->getRealPath(),
-                        '%lineno%'            => $this->csv->key()
-                    ]
-                );
-            }
-
-            $data = array_combine($this->fieldNames, $data);
-        } elseif ($this->csv->eof()) {
-            $data = null;
-        } else {
-            throw new \RuntimeException('An error occurred while reading the csv.');
-        }
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurationFields()
     {
         return [
@@ -304,82 +277,5 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * Extract the zip archive to be imported
-     *
-     * @throws \RuntimeException When archive cannot be opened or extracted
-     *                           or does not contain exactly one csv file
-     */
-    protected function extractZipArchive()
-    {
-        $archive = new \ZipArchive();
-
-        $status = $archive->open($this->filePath);
-
-        if (true !== $status) {
-            throw new \RuntimeException(sprintf('Error "%d" occurred while opening the zip archive.', $status));
-        } else {
-            $targetDir = sprintf(
-                '%s/%s_%d_%s',
-                pathinfo($this->filePath, PATHINFO_DIRNAME),
-                pathinfo($this->filePath, PATHINFO_FILENAME),
-                $this->stepExecution->getId(),
-                md5(microtime() . $this->stepExecution->getId())
-            );
-
-            if ($archive->extractTo($targetDir) !== true) {
-                throw new \RuntimeException('Error occurred while extracting the zip archive.');
-            }
-
-            $archive->close();
-            $this->extractedPath = $targetDir;
-
-            $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
-
-            $csvCount = count($csvFiles);
-            if (1 !== $csvCount) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Expecting the root directory of the archive to contain exactly 1 csv file, found %d',
-                        $csvCount
-                    )
-                );
-            }
-
-            $this->filePath = current($csvFiles);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-        if (null !== $this->csv) {
-            $this->csv->rewind();
-        }
-    }
-
-    /**
-     * Initialize read process by extracting zip if needed, setting CSV options
-     * and settings field names.
-     */
-    protected function initializeRead()
-    {
-        // TODO mime_content_type is deprecated, use Symfony\Component\HttpFoundation\File\MimeTypeMimeTypeGuesser?
-        if ('application/zip' === mime_content_type($this->filePath)) {
-            $this->extractZipArchive();
-        }
-
-        $this->csv = new \SplFileObject($this->filePath);
-        $this->csv->setFlags(
-            \SplFileObject::READ_CSV   |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY
-        );
-        $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
-        $this->fieldNames = $this->csv->fgetcsv();
     }
 }

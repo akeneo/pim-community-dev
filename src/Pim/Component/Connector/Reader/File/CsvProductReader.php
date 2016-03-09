@@ -36,15 +36,19 @@ class CsvProductReader extends CsvReader
     protected $attributeRepository;
 
     /**
+     * @param FileIteratorInterface        $fileIterator
      * @param AttributeRepositoryInterface $attributeRepository attribute repository
-     * @param array                        $decimalSeparators   decimal separators defined in config
-     * @param array                        $dateFormats         format dates defined in config
+     * @param array                        $decimalSeparators
+     * @param array                        $dateFormats
      */
     public function __construct(
+        FileIteratorInterface $fileIterator,
         AttributeRepositoryInterface $attributeRepository,
         array $decimalSeparators,
         array $dateFormats
     ) {
+        parent::__construct($fileIterator);
+
         $this->attributeRepository = $attributeRepository;
         $this->decimalSeparators   = $decimalSeparators;
         $this->dateFormats         = $dateFormats;
