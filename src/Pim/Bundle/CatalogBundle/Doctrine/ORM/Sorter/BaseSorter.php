@@ -5,10 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Exception\ProductQueryException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Base sorter
@@ -141,7 +142,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */

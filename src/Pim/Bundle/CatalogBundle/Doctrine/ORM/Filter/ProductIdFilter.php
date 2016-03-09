@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 
 /**
  * Product id filter

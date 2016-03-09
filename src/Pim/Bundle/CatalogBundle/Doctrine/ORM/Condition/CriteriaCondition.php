@@ -93,7 +93,7 @@ class CriteriaCondition
      * @param string       $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
+     * @throws ProductQueryException
      * @throws \InvalidArgumentException
      *
      * @return string
