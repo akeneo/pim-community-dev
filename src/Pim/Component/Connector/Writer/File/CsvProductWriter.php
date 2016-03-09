@@ -4,6 +4,8 @@ namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 
 /**
  * Write product data into a csv file on the local filesystem
@@ -14,22 +16,17 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
  */
 class CsvProductWriter extends CsvWriter
 {
-    /** @var FileExporterInterface */
-    protected $fileExporter;
+    /** @var BulkFileExporter */
+    protected $mediaCopier;
 
-    /**
-     * @param FilePathResolverInterface $filePathResolver
-     * @param BufferFactory             $bufferFactory
-     * @param FileExporterInterface     $fileExporter
-     */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        BufferFactory $bufferFactory,
-        FileExporterInterface $fileExporter
+        FlatItemBuffer $flatRowBuffer,
+        BulkFileExporter $mediaCopier
     ) {
-        parent::__construct($filePathResolver, $bufferFactory);
+        parent::__construct($filePathResolver, $flatRowBuffer);
 
-        $this->fileExporter = $fileExporter;
+        $this->mediaCopier = $mediaCopier;
     }
 
     /**
@@ -37,23 +34,28 @@ class CsvProductWriter extends CsvWriter
      */
     public function write(array $items)
     {
-        $products = [];
-        foreach ($items as $item) {
-            $products[] = $item['product'];
-        }
-        parent::write($products);
-
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
         }
 
+        $products = $media = [];
         foreach ($items as $item) {
-            foreach ($item['media'] as $media) {
-                if ($media && isset($media['filePath']) && $media['filePath']) {
-                    $this->copyMedia($media);
-                }
-            }
+            $products[] = $item['product'];
+            $media[] = $item['media'];
+        }
+
+        parent::write($products);
+
+        $this->mediaCopier->exportAll($media, $exportDirectory);
+
+        foreach ($this->mediaCopier->getErrors() as $error) {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                $error['message'],
+                [],
+                $error['medium']
+            );
         }
     }
 
@@ -70,37 +72,6 @@ class CsvProductWriter extends CsvWriter
 
         foreach ($config['mainContext'] as $key => $value) {
             $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
-    }
-
-    /**
-     * @param array $media
-     */
-    protected function copyMedia(array $media)
-    {
-        $target = dirname($this->getPath()) . DIRECTORY_SEPARATOR . $media['exportPath'];
-
-        if (!is_dir(dirname($target))) {
-            $this->localFs->mkdir(dirname($target));
-        }
-
-        try {
-            $this->fileExporter->export($media['filePath'], $target, $media['storageAlias']);
-            $this->writtenFiles[$target] = $media['exportPath'];
-        } catch (FileTransferException $e) {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'The media has not been found or is not currently available',
-                [],
-                $media
-            );
-        } catch (\LogicException $e) {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                sprintf('The media has not been copied. %s', $e->getMessage()),
-                [],
-                $media
-            );
         }
     }
 }

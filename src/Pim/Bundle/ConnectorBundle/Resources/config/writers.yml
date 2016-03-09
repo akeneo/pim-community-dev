@@ -12,6 +12,9 @@ parameters:
     pim_connector.writer.file.simple_file.class:                   Pim\Component\Connector\Writer\File\SimpleFileWriter
     pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\YamlWriter
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
+    pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\XlsxProductWriter
+    pim_connector.writer.file.product.flat_item_buffer.class:      Pim\Component\Connector\Writer\File\FlatItemBuffer
+    pim_connector.writer.file.product.bulk_file_exporter.class:    Pim\Component\Connector\Writer\File\BulkFileExporter
 
 services:
     # Dummy writer
@@ -114,14 +117,14 @@ services:
         class: %pim_connector.writer.file.csv.class%
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@akeneo_buffer.factory.array_buffer'
+            - '@pim_connector.writer.file.product.flat_item_buffer'
 
     pim_connector.writer.file.csv_product:
         class: %pim_connector.writer.file.csv_product.class%
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@akeneo_buffer.factory.json_file_buffer'
-            - '@pim_connector.writer.file.file_exporter'
+            - '@pim_connector.writer.file.product.flat_item_buffer'
+            - '@pim_connector.writer.file.product.bulk_file_exporter'
 
     pim_connector.writer.file.file_path_resolver:
         class: %pim_connector.writer.file.file_path_resolver.class%
@@ -135,3 +138,19 @@ services:
     pim_connector.writer.file.media_exporter_path_generator:
         class: %pim_connector.writer.file.media_exporter_path_generator.class%
 
+    pim_connector.writer.file.product.flat_item_buffer:
+        class: %pim_connector.writer.file.product.flat_item_buffer.class%
+        arguments:
+            - '@akeneo_buffer.factory.json_file_buffer'
+
+    pim_connector.writer.file.product.bulk_file_exporter:
+        class: %pim_connector.writer.file.product.bulk_file_exporter.class%
+        arguments:
+            - '@pim_connector.writer.file.file_exporter'
+
+    pim_connector.writer.file.xlsx_product:
+        class: %pim_connector.writer.file.xlsx_product.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+             - '@pim_connector.writer.file.product.bulk_file_exporter'
