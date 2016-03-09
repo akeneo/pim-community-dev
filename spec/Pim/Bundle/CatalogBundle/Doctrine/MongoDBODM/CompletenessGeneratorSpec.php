@@ -24,7 +24,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
     function it_is_a_completeness_generator()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface');
     }
 
     function it_schedules_product_completeness(

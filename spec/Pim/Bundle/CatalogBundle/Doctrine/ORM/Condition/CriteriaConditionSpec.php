@@ -41,7 +41,7 @@ class CriteriaConditionSpec extends ObjectBehavior
     function it_throws_an_exception_when_the_operator_is_not_supported()
     {
         $this
-            ->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ProductQueryException')
+            ->shouldThrow('\Pim\Component\Catalog\Exception\ProductQueryException')
             ->duringPrepareCriteriaCondition('my_field', 'NOT SUPPORTED', Argument::any())
         ;
     }

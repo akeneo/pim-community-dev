@@ -4,8 +4,8 @@ namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -93,7 +93,7 @@ class ReferenceDataSorter implements AttributeSorterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
      *
      * @return string
      */

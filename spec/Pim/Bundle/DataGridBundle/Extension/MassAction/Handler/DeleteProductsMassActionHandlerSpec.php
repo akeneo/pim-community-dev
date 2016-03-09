@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;

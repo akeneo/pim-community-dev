@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
+use Pim\Component\Catalog\Query\ProductQueryBuilder;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
