@@ -10,6 +10,7 @@ use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -40,8 +41,8 @@ class AttributeOptionController
     /** @var ViewHandlerInterface */
     protected $viewHandler;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeOptionsSorter */
+    protected $sorter;
 
     /** @var AttributeOptionManager */
     protected $optionManager;
@@ -58,14 +59,14 @@ class AttributeOptionController
     /**
      * Constructor
      *
-     * @param NormalizerInterface    $normalizer
-     * @param EntityManager          $entityManager
-     * @param FormFactoryInterface   $formFactory
-     * @param ViewHandlerInterface   $viewHandler
-     * @param AttributeManager       $attributeManager
-     * @param AttributeOptionManager $optionManager
-     * @param SaverInterface         $optionSaver
-     * @param RemoverInterface       $optionRemover
+     * @param NormalizerInterface          $normalizer
+     * @param EntityManager                $entityManager
+     * @param FormFactoryInterface         $formFactory
+     * @param ViewHandlerInterface         $viewHandler
+     * @param AttributeOptionsSorter       $sorter
+     * @param AttributeOptionManager       $optionManager
+     * @param SaverInterface               $optionSaver
+     * @param RemoverInterface             $optionRemover
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
@@ -73,20 +74,20 @@ class AttributeOptionController
         EntityManager $entityManager,
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
-        AttributeManager $attributeManager,
+        AttributeOptionsSorter $sorter,
         AttributeOptionManager $optionManager,
         SaverInterface $optionSaver,
         RemoverInterface $optionRemover,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->normalizer       = $normalizer;
-        $this->entityManager    = $entityManager;
-        $this->formFactory      = $formFactory;
-        $this->viewHandler      = $viewHandler;
-        $this->attributeManager = $attributeManager;
-        $this->optionManager    = $optionManager;
-        $this->optionRemover    = $optionRemover;
-        $this->optionSaver      = $optionSaver;
+        $this->normalizer          = $normalizer;
+        $this->entityManager       = $entityManager;
+        $this->formFactory         = $formFactory;
+        $this->viewHandler         = $viewHandler;
+        $this->sorter              = $sorter;
+        $this->optionManager       = $optionManager;
+        $this->optionRemover       = $optionRemover;
+        $this->optionSaver         = $optionSaver;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -191,7 +192,7 @@ class AttributeOptionController
 
         $sorting = array_flip($data);
 
-        $this->attributeManager->updateSorting($attribute, $sorting);
+        $this->sorter->updateSorting($attribute, $sorting);
 
         return new JsonResponse();
     }
