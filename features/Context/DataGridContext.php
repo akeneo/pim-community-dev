@@ -75,10 +75,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theGridShouldContainElement($count)
     {
         $count = (int) $count;
-        $this->wait();
 
         if (0 === $count) {
-            assertTrue($this->datagrid->isGridEmpty());
+            $this->spin(function () {
+                assertTrue($this->datagrid->isGridEmpty());
+
+                return true;
+            }, 'Fail to assert that the grid is empty');
 
             return;
         }
@@ -87,17 +90,31 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->iChangePageSize(100);
         }
 
-        assertEquals(
-            $count,
-            $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
-        );
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->getToolbarCount()
+            );
 
-        assertEquals(
+            return true;
+        }, sprintf(
+            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
             $count,
-            $actualCount = $this->datagrid->countRows(),
-            sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
-        );
+            $this->datagrid->getToolbarCount()
+        ));
+
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->countRows()
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d row(s) in the datagrid, actually saw %d.',
+            $count,
+            $this->datagrid->getToolbarCount()
+        ));
     }
 
     /**
@@ -373,7 +390,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         if (false === strpos(strtolower($filterName), 'category')) {
             $this->datagrid->showFilter($filterName);
-            $this->wait();
             $this->datagrid->assertFilterVisible($filterName);
         }
     }
@@ -458,11 +474,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $columnName = strtoupper($columnName);
 
-        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
-            throw $this->createExpectationException(
-                sprintf('The rows are not sorted %s by column %s', $order, $columnName)
-            );
-        }
+        $this->spin(function () use ($columnName, $order) {
+            return $this->datagrid->isSortedAndOrdered($columnName, $order);
+        }, sprintf('The rows are not sorted %s by column %s', $order, $columnName));
     }
 
     /**
@@ -583,14 +597,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iSortByValue($columnName, $order = 'ascending')
     {
         $this->datagrid->sortBy($columnName, $order);
-
-        $loadlingMask = $this->datagrid
-            ->getElement('Grid container')
-            ->find('css', '.loading-mask .loading-mask');
-
-        $this->spin(function () use ($loadlingMask) {
-            return !$loadlingMask->isVisible();
-        });
     }
 
     /**
@@ -662,11 +668,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            if ($this->datagrid->hasRow($entity)) {
-                throw $this->createExpectationException(
-                    sprintf('Entity "%s" should not be seen', $entity)
-                );
-            }
+            $this->spin(function () use ($entity) {
+                return !$this->datagrid->hasRow($entity);
+            }, sprintf('Entity "%s" should not be seen', $entity));
         }
     }
 
@@ -746,14 +750,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $rows = $this->getMainContext()->listToArray($rows);
 
         foreach ($rows as $row) {
-            $gridRow  = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            $this->spin(function () use ($row) {
+                $gridRow  = $this->datagrid->getRow($row);
+                $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
-            if (!$checkbox) {
-                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
-            }
+                $checkbox->check();
 
-            $checkbox->check();
+                return true;
+            }, sprintf('Unable to find a checkbox for row %s', $row));
         }
     }
 

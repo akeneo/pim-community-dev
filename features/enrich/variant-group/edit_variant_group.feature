@@ -16,8 +16,9 @@ Feature: Edit a variant group
     When I fill in the following information:
       | English (United States) | My boots |
     And I press the "Save" button
-    Then I should see "My boots"
+    Then I should see the text "My boots"
 
+  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I fill in the following information:
       | English (United States) | My boots |
@@ -30,4 +31,4 @@ Feature: Edit a variant group
   Scenario: Successfully display a message when there are unsaved changes
     Given I fill in the following information:
       | English (United States) | My boots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

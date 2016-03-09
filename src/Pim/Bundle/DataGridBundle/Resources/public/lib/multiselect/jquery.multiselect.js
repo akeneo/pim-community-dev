@@ -18,8 +18,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-(function($, undefined) {
-
+define(['jquery'], function ($) {
   var multiselectID = 0;
   var $doc = $(document);
 
@@ -233,7 +232,7 @@
       return value;
     },
 
-    // this exists as a separate method so that the developer 
+    // this exists as a separate method so that the developer
     // can easily override it.
     _setButtonValue: function(value) {
       this.buttonlabel.text(value);
@@ -730,5 +729,4 @@
       $.Widget.prototype._setOption.apply(this, arguments);
     }
   });
-
-})(jQuery);
+});

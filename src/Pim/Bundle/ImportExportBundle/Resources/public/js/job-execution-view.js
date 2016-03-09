@@ -1,7 +1,27 @@
 /* jshint nonew:false, boss:true */
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/translator'],
-    function ($, Backbone, _, __) {
+    [
+        'jquery',
+        'backbone',
+        'underscore',
+        'oro/translator',
+        'pim/router',
+        'text!pim/template/job-execution-summary',
+        'text!pim/template/job-execution-status',
+        'text!pim/template/job-execution-buttons',
+        'text!pim/template/job-execution-log-button'
+    ],
+    function (
+        $,
+        Backbone,
+        _,
+        __,
+        router,
+        summaryTemplate,
+        statusTemplate,
+        buttonTemplate,
+        logButtonTemplate
+    ) {
         'use strict';
         var interval;
         var loading = false;
@@ -33,6 +53,7 @@ define(
                 this.model.bind('request', this.ajaxStart, this);
                 this.model.bind('sync', this.ajaxComplete, this);
                 this.model.bind('error', this.ajaxError, this);
+                this.listenTo(router, 'route_start', this.stopRefresh);
             },
 
             ajaxStart: function () {
@@ -43,22 +64,25 @@ define(
             ajaxComplete: function (model, resp) {
                 $(this.loadingImageSelector).addClass('transparent');
                 if (!resp.jobExecution.isRunning) {
-                    clearInterval(interval);
-                    interval = null;
+                    this.stopRefresh();
                 }
                 loading = false;
             },
 
             ajaxError: function (model, resp, options) {
                 $(this.loadingImageSelector).addClass('transparent');
-                clearInterval(interval);
-                interval = null;
+                this.stopRefresh();
                 this.$el.html(
                     '<tr><td colspan="5"><span class="label label-important">' +
                         options.xhr.statusText +
                     '</span></td></tr>'
                 );
                 loading = false;
+            },
+
+            stopRefresh: function () {
+                clearInterval(interval);
+                interval = null;
             },
 
             events: {
@@ -76,7 +100,7 @@ define(
                 $link.text($link.text().trim() === displayLabel ? hideLabel : displayLabel);
             },
 
-            template: _.template($('#job-execution-summary').html()),
+            template: _.template(summaryTemplate),
 
             render: function () {
                 this.$el.html(
@@ -102,7 +126,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-status').html()),
+            template: _.template(statusTemplate),
 
             render: function () {
                 this.$el.html(
@@ -137,7 +161,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-buttons').html()),
+            template: _.template(buttonTemplate),
 
             render: function () {
                 this.$el.html(
@@ -175,7 +199,7 @@ define(
                 this.listenTo(this.model, 'change', this.render);
             },
 
-            template: _.template($('#job-execution-log-button').html()),
+            template: _.template(logButtonTemplate),
 
             render: function () {
                 this.$el.html(
@@ -205,7 +229,7 @@ define(
 
                 var jobExecution = new JobExecution(params);
                 loading = true;
-                jobExecution.fetch();
+                jobExecution.fetch({data: {_format: 'json'}});
 
                 params.model = jobExecution;
 
@@ -221,7 +245,7 @@ define(
 
                 interval = setInterval(function () {
                     if (!loading) {
-                        jobExecution.fetch();
+                        jobExecution.fetch({data: {_format: 'json'}});
                     }
                 }, 1000);
 

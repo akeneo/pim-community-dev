@@ -1,0 +1,5 @@
+<div class="tab-pane{{ viewElement.loop.first ? ' active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ dataGrid.renderGrid('pim-group-user-grid', { 'group_id': entityId }) }}
+    {{ form_widget(form.appendUsers, { 'id': 'groupAppendUsers' }) }}
+    {{ form_widget(form.removeUsers, { 'id': 'groupRemoveUsers' }) }}
+</div>

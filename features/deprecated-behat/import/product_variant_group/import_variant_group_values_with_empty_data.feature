@@ -33,9 +33,9 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And I should see "read lines 2"
-    And I should see "Processed 2"
-    And I should see "Updated products 3"
+    And I should see the text "read lines 2"
+    And I should see the text "Processed 2"
+    And I should see the text "Updated products 3"
     And the product "sandal-white-37" should have the following value:
       | name-en_US | My new name |
     And the product "sandal-red-37" should have the following value:

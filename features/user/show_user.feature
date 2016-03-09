@@ -1,3 +1,4 @@
+@javascript
 Feature: Show a user
   In order to manage the users
   As an administrator
@@ -10,11 +11,11 @@ Feature: Show a user
   Scenario: Successfully show user locale
     Given I show the "Mary" user
     And I visit the "Interfaces" tab
-    Then I should see "Ui locale"
-    And I should see "en_US"
+    Then I should see the text "Ui locale"
+    And I should see the text "en_US"
 
   Scenario: Successfully show my locale
     Given I am on my profile page
     And I visit the "Interfaces" tab
-    Then I should see "Ui locale"
-    And I should see "en_US"
+    Then I should see the text "Ui locale"
+    And I should see the text "en_US"

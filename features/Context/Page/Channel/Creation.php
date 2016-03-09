@@ -13,5 +13,5 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/configuration/channel/create';
+    protected $path = '#/configuration/channel/create';
 }

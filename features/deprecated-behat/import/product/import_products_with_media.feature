@@ -80,9 +80,9 @@ Feature: Import media with products
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 0 products
-    And I should see "skipped 2"
-    And I should see "frontView: The file extension is not allowed (allowed extensions: gif, jpg)"
-    And I should see "userManual: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
+    And I should see the text "skipped 2"
+    And I should see the text "frontView: The file extension is not allowed (allowed extensions: gif, jpg)"
+    And I should see the text "userManual: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
 
   Scenario: Import several times the same media
     Given the following CSV file to import:

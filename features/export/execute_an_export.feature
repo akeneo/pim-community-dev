@@ -1,3 +1,4 @@
+@javascript
 Feature: Execute a job
   In order to launch an export
   As a product manager
@@ -20,7 +21,6 @@ Feature: Execute a job
     Then I should not see "The export is running."
     And I should not see "An error occured during the export execution."
 
-  @javascript
   Scenario: Successfully launch a valid job
     Given the following product:
       | sku       | family | categories        | name-en_US | price          | size | color |
@@ -31,6 +31,6 @@ Feature: Execute a job
     And I am on the "footwear_product_export" export job page
     When I launch the "footwear_product_export" export job
     And I wait for the "footwear_product_export" job to finish
-    Then I should see "Execution details"
+    Then I should see the text "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
     And an email to "Julia@example.com" should have been sent

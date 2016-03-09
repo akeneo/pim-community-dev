@@ -1,8 +1,6 @@
 pim_enrich_channel_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.channel:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.channel:indexAction }
 
 pim_enrich_channel_create:
     path: /create
@@ -23,5 +21,5 @@ pim_enrich_channel_remove:
 
 pim_enrich_channel_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.channel:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.channel:indexAction }
     methods: [GET]

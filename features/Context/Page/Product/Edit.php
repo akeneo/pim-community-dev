@@ -22,7 +22,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}';
+    protected $path = '#/enrich/product/{id}';
 
     /**
      * {@inheritdoc}
@@ -46,6 +46,12 @@ class Edit extends ProductEditForm
                     'css'        => '#trees',
                     'decorators' => [
                         'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
+                ],
+                'Category tree selector'           => [
+                    'css'        => '#trees-list',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeSelectorDecorator\ListDecorator'
                     ]
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
@@ -89,13 +95,6 @@ class Edit extends ProductEditForm
         }, "Waiting for save button to be visible");
 
         $element->click();
-
-        $this->spin(function () {
-            return null === $this->find(
-                'css',
-                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
-            );
-        });
     }
 
     /**
@@ -727,29 +726,6 @@ class Edit extends ProductEditForm
         }
 
         return $legend;
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Edit
-     */
-    public function selectTree($category)
-    {
-        if (null !== $treeSelect = $this->findById('tree_select')) {
-            $treeSelect->selectOption($category);
-
-            return $this;
-        }
-
-        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-
-        if (null === $link) {
-            throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
-        }
-        $link->click();
-
-        return $this;
     }
 
     /**

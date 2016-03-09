@@ -14,7 +14,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see "Collecter"
+    Then I should see the text "Collecter"
 
   Scenario: Successfully change Mary's locale
     Given I edit the "mary" user
@@ -22,7 +22,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see "Collect"
+    Then I should see the text "Collect"
 
   Scenario: Should only see translated locales
     Given I edit my profile

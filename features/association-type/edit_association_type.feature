@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an association type
   In order to manage existing association types in the catalog
   As a product manager
@@ -14,7 +15,7 @@ Feature: Edit an association type
     When I fill in the following information:
       | English (United States) | My substitution |
     And I press the "Save" button
-    Then I should see "My substitution"
+    Then I should see the text "My substitution"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "PACK" association type page
@@ -25,9 +26,23 @@ Feature: Edit an association type
       | title   | Are you sure you want to leave this page?                             |
       | content | You will lose changes to the association type if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "PACK" association type page
     When I fill in the following information:
       | English (United States) | My pack |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
+
+  Scenario: Successfully retrieve the last visited tab
+    Given I am on the "PACK" association type page
+    And I visit the "History" tab
+    And I am on the products page
+    Then I am on the "PACK" association type page
+    And I should see the text "version"
+    And I should see the text "author"
+
+  Scenario: Successfully retrieve the last visited tab after a save
+    Given I am on the "PACK" association type page
+    And I visit the "History" tab
+    And I save the "association type"
+    And I should see the text "version"
+    And I should see the text "author"

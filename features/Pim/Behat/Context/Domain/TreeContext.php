@@ -17,8 +17,9 @@ class TreeContext extends PimContext
      */
     public function iSelectTheTree($tree)
     {
-        $this->getCurrentPage()->selectTree($tree);
-        $this->wait(); //TODO remove this wait
+        $this->getCurrentPage()
+            ->getElement('Category tree selector')
+            ->selectTree($tree);
     }
 
     /**

@@ -52,4 +52,4 @@ Feature: Browse families
     And I sort by "family" value ascending
     And the rows should be sorted ascending by family
     Then I mass-edit products caterpillar and dr-martens
-    And I should see "Mass Edit (2 products)"
+    And I should see the text "Mass Edit (2 products)"

@@ -3,15 +3,12 @@
 {% set channels = form.productTemplate.vars.channels %}
 {% set dataLocale = form.productTemplate.vars.currentLocale %}
 
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({ params: { '%group.label%': form.vars.data.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include 'PimEnrichBundle:VariantGroup:_js-handler.html.twig' %}
-{% endblock %}
+<script type="text/javascript">
+    require('pim/page-title').set({'group.label': '{{ form.vars.data.label }}'});
+</script>
 
 {% block content %}
 

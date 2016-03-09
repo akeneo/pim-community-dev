@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an import
   In order to manage existing import jobs
   As an administrator
@@ -14,9 +15,8 @@ Feature: Edit an import
     When I fill in the following information:
       | Label | My import |
     And I press the "Save" button
-    Then I should see "My import"
+    Then I should see the text "My import"
 
-  @javascript
   Scenario: Successfully update import job configuration
     Given I am on the "footwear_product_import" import job edit page
     Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator and Date format fields
@@ -35,17 +35,17 @@ Feature: Edit an import
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
     Then I should see the text "File file.csv"
-    And I should see "Allow file upload No"
-    And I should see "Delimiter |"
-    And I should see "Enclosure '"
-    And I should see "Escape \\"
-    And I should see "Real time history update No"
-    And I should see "Enable the product No"
-    And I should see "Categories column cat"
-    And I should see "Family column fam"
-    And I should see "Groups column grp"
-    And I should see "Decimal separator dot (.)"
-    And I should see "Date format yyyy-mm-dd"
+    And I should see the text "Allow file upload No"
+    And I should see the text "Delimiter |"
+    And I should see the text "Enclosure '"
+    And I should see the text "Escape \\"
+    And I should see the text "Real time history update No"
+    And I should see the text "Enable the product No"
+    And I should see the text "Categories column cat"
+    And I should see the text "Family column fam"
+    And I should see the text "Groups column grp"
+    And I should see the text "Decimal separator dot (.)"
+    And I should see the text "Date format yyyy-mm-dd"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "footwear_product_import" import job edit page
@@ -56,9 +56,8 @@ Feature: Edit an import
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the import profile if you leave this page. |
 
-  @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

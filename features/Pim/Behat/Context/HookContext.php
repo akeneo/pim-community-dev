@@ -130,19 +130,23 @@ class HookContext extends PimContext
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path     = sprintf('%s/%s', $dir, $filename);
 
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
-                $fs->dumpFile($path, $driver->getScreenshot());
+                try {
+                    $fs = new \Symfony\Component\Filesystem\Filesystem();
+                    $fs->dumpFile($path, $driver->getScreenshot());
+                    if (false !== $dir) {
+                        $path = sprintf(
+                            '%s/artifact/app/build/screenshots/%s',
+                            $buildUrl,
+                            $filename
+                        );
+                    }
 
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
+                    $stepStats['screenshot'] = $path;
+                    $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
+                } catch (\Exception $e) {
+                    echo sprintf("Cannot take a screenshot: %s", $e->getMessage());
                 }
 
-                $stepStats['screenshot'] = $path;
-                $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
             }
 
             if ('JENKINS' === getenv('BEHAT_CONTEXT')) {

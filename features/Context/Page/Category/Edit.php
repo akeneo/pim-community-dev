@@ -14,5 +14,5 @@ class Edit extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/product-category-tree/{id}/edit';
+    protected $path = '#/enrich/product-category-tree/{id}/edit';
 }

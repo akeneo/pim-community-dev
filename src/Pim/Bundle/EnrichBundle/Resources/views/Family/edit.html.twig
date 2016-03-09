@@ -1,9 +1,10 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% oro_title_set({ params: { "%family.label%": form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'family.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% block content %}
-
     {% if resource_granted('pim_enrich_family_edit_attributes') %}
         {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
@@ -48,10 +49,6 @@
 
         </div>
     {{ form_end(form) }}
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
 
     <script type="text/javascript">
         require(
@@ -75,8 +72,12 @@
                         $input.prop('checked', !checked).trigger('change');
                     });
                     {% endif %}
+
                 });
+
             }
         );
+
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
     </script>
 {% endblock %}

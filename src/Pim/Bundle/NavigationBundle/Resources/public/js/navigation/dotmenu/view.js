@@ -28,8 +28,8 @@ function($, _, Backbone, mediator, DotmenuItemView) {
             this.$tabsContent = this.$('.pin-menus .tab-content');
             this.init();
             mediator.bind(
-                "hash_navigation_request:complete",
-                function() {
+                'route_complete',
+                function () {
                     this.init();
                 },
                 this

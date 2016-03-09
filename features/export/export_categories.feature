@@ -131,5 +131,5 @@ Feature: Export categories
     And I am on the "footwear_category_export" export job page
     When I launch the export job
     And I wait for the "footwear_category_export" job to finish
-    Then I should see "read 105"
-    Then I should see "written 105"
+    Then I should see the text "read 105"
+    Then I should see the text "written 105"

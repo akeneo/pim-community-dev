@@ -7,11 +7,11 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
@@ -92,15 +92,13 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['oro/navigation'], function (Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+                sprintf("require(['backbone'], function (Backbone) { Backbone.history.navigate('#%s'); } );", $url)
             );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
-            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = explode('#', $currentUrl);
             $currentUrl = end($currentUrl);
-            $currentUrl = explode('|g/', $currentUrl);
-            $currentUrl = reset($currentUrl);
 
             assertTrue(
                 $url === $currentUrl || $url . '/' === $currentUrl || $url === $currentUrl . '/',
@@ -869,7 +867,12 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+            try {
+                $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+            } catch (TimeoutException $e) {
+                $element = null;
+            }
+
             if (!$not) {
                 if (!$element) {
                     throw $this->createExpectationException(
@@ -939,15 +942,13 @@ class WebUser extends RawMinkContext
     {
         $attributes = $this->listToArray($attributes);
         foreach ($attributes as $attribute) {
-            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see attribute %s under group %s, but was not present.',
-                        $attribute,
-                        $group
-                    )
-                );
-            }
+            $this->spin(function () use ($attribute, $group) {
+                return $this->getCurrentPage()->getAttribute($attribute, $group);
+            }, sprintf(
+                'Expecting to see attribute %s under group %s, but was not present.',
+                $attribute,
+                $group
+            ));
         }
     }
 
@@ -1146,9 +1147,17 @@ class WebUser extends RawMinkContext
      */
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
-        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
-        if ($popin && !$element) {
-            $element = $this->getCurrentPage()->find('css', '.modal');
+        if ($popin) {
+            $element = $this->spin(function () {
+                $element = $this->getCurrentPage()->find('css', '.ui-dialog');
+                if (!$element) {
+                    $element = $this->getCurrentPage()->find('css', '.modal');
+                }
+
+                return $element;
+            }, 'Cannot find the popin in the current page');
+        } else {
+            $element = null;
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
@@ -1240,6 +1249,7 @@ class WebUser extends RawMinkContext
     {
         return [
             new Step\Then(sprintf('I am on the "%s" role page', $role)),
+            new Step\Then('I visit the "Permission" tab'),
             new Step\Then('I grant all rights'),
             new Step\Then('I save the role')
         ];
@@ -1256,6 +1266,7 @@ class WebUser extends RawMinkContext
     {
         $steps = [];
 
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
@@ -1282,14 +1293,15 @@ class WebUser extends RawMinkContext
     {
         $steps = [];
 
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
+            $steps[] = new Step\Then(sprintf('I should see the text "%s"', $data['section']));
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
+            $steps[] = new Step\Then(sprintf('I should not see the text "%s"', $data['section']));
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
@@ -1736,7 +1748,7 @@ class WebUser extends RawMinkContext
             // Get and print the normalized jobexecution to ease debugging
             $this->getSession()->executeScript(
                 sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    '$.get("/%s/%s_execution/%d?_format=json", function (resp) { window.executionLog = resp; });',
                     $jobInstance->getType() === 'import' ? 'collect' : 'spread',
                     $jobInstance->getType(),
                     $jobExecution->getId()
@@ -2137,13 +2149,14 @@ class WebUser extends RawMinkContext
     public function iShouldSeeLocaleOption($not, $locale)
     {
         $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
-        $field = null;
-        foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
-        }
-        if (null === $field) {
-            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
-        }
+        $field = $this->spin(function () use ($selectNames) {
+            $field = null;
+            foreach ($selectNames as $selectName) {
+                $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            }
+
+            return $field;
+        }, sprintf('Could not find field with name %s', json_encode($selectNames)));
 
         $options = $field->findAll('css', 'option');
 
