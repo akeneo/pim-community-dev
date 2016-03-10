@@ -138,7 +138,7 @@ connector:
              type:  export
              steps:
                  export:
-                     title: pim_connector.jobs.xslx_product_export.export.title
+                     title: pim_connector.jobs.xlsx_product_export.export.title
                      services:
                          reader:    pim_base_connector.reader.doctrine.product
                          processor: pim_base_connector.processor.product_to_flat_array
