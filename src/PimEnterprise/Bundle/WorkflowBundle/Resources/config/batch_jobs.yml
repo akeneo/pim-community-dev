@@ -36,7 +36,7 @@ connector:
             type:  export
             steps:
                 export:
-                    title: pimee_workflow.jobs.xlsx_product_export.export.title
+                    title: pimee_workflow.jobs.xlsx_published_product_export.export.title
                     services:
                         reader:    pimee_base_connector.reader.doctrine.published_product
                         processor: pim_base_connector.processor.product_to_flat_array
