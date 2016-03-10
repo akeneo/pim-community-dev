@@ -330,7 +330,6 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
         // For factories and builders of CatalogBundle, interfaces should be created in the catalog component
         'Pim\Bundle\CatalogBundle\Factory\AttributeFactory',
-        'Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory',
         'Pim\Bundle\CatalogBundle\Factory\FamilyFactory',
         'Pim\Bundle\CatalogBundle\Factory\GroupFactory',
         // Version manager should be exploded with SRP and introduce different interfaces in a component, here we use it

@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Component\Classification\Factory\CategoryFactory;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -16,7 +16,7 @@ class CategoryManagerSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         Category $category
     ) {
         $this->beConstructedWith($objectManager, $categoryRepository, $categoryFactory, self::CATEGORY_CLASS);
@@ -28,21 +28,6 @@ class CategoryManagerSpec extends ObjectBehavior
     function it_provides_object_manager($objectManager)
     {
         $this->getObjectManager()->shouldReturn($objectManager);
-    }
-
-    function it_instantiates_a_category()
-    {
-        $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
-    }
-
-    function it_instantiates_a_tree(CategoryInterface $tree)
-    {
-        $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
-    }
-
-    function it_provides_the_category_class_name()
-    {
-        $this->getCategoryClass()->shouldReturn(self::CATEGORY_CLASS);
     }
 
     function it_provides_the_category_repository($objectManager, $categoryRepository)

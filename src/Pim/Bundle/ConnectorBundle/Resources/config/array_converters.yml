@@ -10,9 +10,13 @@ parameters:
     pim_connector.array_converter.flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter
     pim_connector.array_converter.flat.family.class:                                  Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter
     pim_connector.array_converter.flat.channel.class:                                 Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter
+    pim_connector.array_converter.flat.locale.class:                                  Pim\Component\Connector\ArrayConverter\Flat\LocaleStandardConverter
     pim_connector.array_converter.flat.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter
     pim_connector.array_converter.flat.group_type.class:                              Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter
     pim_connector.array_converter.flat.currency.class:                                Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter
+    pim_connector.array_converter.flat.user.class:                                    Pim\Component\Connector\ArrayConverter\Flat\UserStandardConverter
+    pim_connector.array_converter.flat.user_role.class:                               Pim\Component\Connector\ArrayConverter\Flat\UserRoleStandardConverter
+    pim_connector.array_converter.flat.user_group.class:                              Pim\Component\Connector\ArrayConverter\Flat\UserGroupStandardConverter
 
     pim_connector.array_converter.flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter
@@ -59,6 +63,11 @@ services:
 
     pim_connector.array_converter.flat.channel:
         class: %pim_connector.array_converter.flat.channel.class%
+        arguments:
+            - '@pim_connector.array_convertor.validator.fields_requirement'
+
+    pim_connector.array_converter.flat.locale:
+        class: %pim_connector.array_converter.flat.locale.class%
         arguments:
             - '@pim_connector.array_convertor.validator.fields_requirement'
 
@@ -117,6 +126,21 @@ services:
         class: %pim_connector.array_converter.flat.group.class%
         arguments:
             - '@pim_catalog.repository.locale'
+            - '@pim_connector.array_convertor.validator.fields_requirement'
+
+    pim_connector.array_converter.flat.user:
+        class: %pim_connector.array_converter.flat.user.class%
+        arguments:
+            - '@pim_connector.array_convertor.validator.fields_requirement'
+
+    pim_connector.array_converter.flat.user_group:
+        class: %pim_connector.array_converter.flat.user_group.class%
+        arguments:
+            - '@pim_connector.array_convertor.validator.fields_requirement'
+
+    pim_connector.array_converter.flat.user_role:
+        class: %pim_connector.array_converter.flat.user_role.class%
+        arguments:
             - '@pim_connector.array_convertor.validator.fields_requirement'
 
     # extractors

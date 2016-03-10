@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,19 +29,19 @@ class CategoryManager
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var CategoryFactory */
+    /** @var SimpleFactoryInterface */
     protected $categoryFactory;
 
     /**
      * @param ObjectManager               $om
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param CategoryFactory             $categoryFactory
+     * @param SimpleFactoryInterface      $categoryFactory
      * @param string                      $categoryClass
      */
     public function __construct(
         ObjectManager $om,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         $categoryClass
     ) {
         $this->om                  = $om;
@@ -63,32 +63,6 @@ class CategoryManager
     }
 
     /**
-     * Get a new category instance
-     *
-     * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryFactory::create() instead, will be removed in 1.5
-     */
-    public function getCategoryInstance()
-    {
-        return $this->categoryFactory->create();
-    }
-
-    /**
-     * Return category class name (mainly used in Doctrine context)
-     *
-     * @deprecated not used anymore, will be removed in 1.5
-     *
-     * @return string category class name
-     *
-     * @deprecated
-     */
-    public function getCategoryClass()
-    {
-        return $this->categoryClass;
-    }
-
-    /**
      * Return the entity repository reponsible for the category
      *
      * @return CategoryRepositoryInterface
@@ -98,20 +72,6 @@ class CategoryManager
     public function getEntityRepository()
     {
         return $this->categoryRepository;
-    }
-
-    /**
-     * Get a new tree instance
-     *
-     * @deprecated not used anymore, will be removed in 1.5
-     *
-     * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryFactory::create() instead
-     */
-    public function getTreeInstance()
-    {
-        return $this->categoryFactory->create();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -23,6 +24,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
      * @var UserManager
      */
     protected $userManager;
+
+    /**
+     * @var SimpleFactory
+     */
+    protected $userFactory;
 
     protected $om;
     protected $repository;
@@ -56,6 +62,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(static::USER_CLASS));
 
         $this->userManager = new UserManager(static::USER_CLASS, $this->om, $ef);
+        $this->userFactory = new SimpleFactory(static::USER_CLASS);
     }
 
     public function testGetClass()
@@ -205,6 +212,6 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function getUser()
     {
-        return $this->userManager->createUser();
+        return $this->userFactory->create();
     }
 }

@@ -86,7 +86,7 @@ class UserController extends Controller
      */
     public function createAction()
     {
-        $user = $this->get('oro_user.manager')->createUser();
+        $user = $this->get('pim_user.factory.user')->create();
 
         return $this->update($user);
     }

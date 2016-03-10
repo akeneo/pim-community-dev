@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -14,7 +15,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyFactory
+class FamilyFactory implements SimpleFactoryInterface
 {
     /** @var ChannelManager */
     protected $channelManager;
@@ -47,9 +48,19 @@ class FamilyFactory
     }
 
     /**
+     * @deprecated Will be removed in 1.6 use create instead
+     *
      * @return FamilyInterface
      */
     public function createFamily()
+    {
+        return $this->create();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create()
     {
         $family     = new $this->familyClass();
         $identifier = $this->attributeRepository->getIdentifier();

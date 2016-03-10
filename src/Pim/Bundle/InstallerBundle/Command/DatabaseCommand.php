@@ -188,7 +188,6 @@ class DatabaseCommand extends ContainerAwareCommand
     {
         if ($fixtureOpt === self::LOAD_BASE) {
             $fixtures = $this->getOroFixturesList();
-            $fixtures[] = realpath(__DIR__ . '/../DataFixtures/ORM/Base');
 
             return ['--fixtures' => $fixtures];
         }
