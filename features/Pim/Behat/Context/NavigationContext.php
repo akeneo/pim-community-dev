@@ -61,6 +61,11 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         'my account'               => 'User profile',
     ];
 
+    /** @var array */
+    protected $pageDecorators = [
+        'Pim\Behat\Decorator\PageDecorator\GridCapableDecorator',
+    ];
+
     /**
      * @param string $baseUrl
      */
@@ -86,7 +91,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string  $username
+     * @param string $username
      *
      * @Given /^I am logged in as "([^"]*)"$/
      */
@@ -349,7 +354,13 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function getCurrentPage()
     {
-        return $this->getPage($this->currentPage);
+        $page = $this->getPage($this->currentPage);
+
+        foreach ($this->pageDecorators as $decorator) {
+            $page = new $decorator($page);
+        }
+
+        return $page;
     }
 
     /**

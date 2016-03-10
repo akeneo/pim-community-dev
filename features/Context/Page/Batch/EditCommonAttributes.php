@@ -32,8 +32,14 @@ class EditCommonAttributes extends ProductEditForm
                 'Next'                      => ['css' => '.configuration .btn-primary'],
                 'Confirm'                   => ['css' => '.confirmation .btn-primary'],
                 'Available attributes form' => [
-                    'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
-                ]
+                    'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes',
+                ],
+                'Grid toolbar'              => [
+                    'css'        => '.grid-toolbar',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+                    ],
+                ],
             ]
         );
     }
