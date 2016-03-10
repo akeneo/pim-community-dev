@@ -5,14 +5,10 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Pim\Component\Catalog\ProductEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Mass delete products action handler
@@ -23,26 +19,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DeleteProductsMassActionHandler extends DeleteMassActionHandler
 {
-    /** @var ProductManager */
-    protected $productManager;
-
-    /**
-     * @param HydratorInterface        $hydrator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ProductManager           $productManager
-     */
-    public function __construct(
-        HydratorInterface $hydrator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ProductManager $productManager
-    ) {
-        parent::__construct($hydrator, $translator, $eventDispatcher);
-
-        $this->productManager = $productManager;
-    }
-
     /**
      * {@inheritdoc}
      *

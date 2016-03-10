@@ -1917,14 +1917,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
-    }
-
-    /**
      * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
