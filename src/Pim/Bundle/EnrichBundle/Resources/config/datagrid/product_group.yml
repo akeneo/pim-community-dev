@@ -95,7 +95,8 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.family->getChoices'
+                            attr:
+                                empty_choice: true
                 enabled:
                     type:      product_enabled
                     ftype:     choice

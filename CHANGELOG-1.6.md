@@ -14,8 +14,13 @@
 
 ## BC breaks
 
+- Remove deprecated `Pim\Bundle\CatalogBundle\Manager\FamilyManager`.
 - Remove deprecated `Pim\Bundle\CatalogBundle\Manager\ProductManager`.
 - Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler`. Remove `Pim\Bundle\CatalogBundle\Manager\ProductManager`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`. Replace `Pim\Bundle\CatalogBundle\Manager\AttributeManager` by `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeManager`. Add `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` and `Pim\Bundle\CatalogBundle\Factory\AttributeFactory`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeOptionController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeManager`. Add `Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter` and `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
+- Remove deprecated `Pim\Bundle\CatalogBundle\Manager\AttributeManager`.
 - Move `Pim\Bundle\CatalogBundle\Query\Filter\DumperInterface` to `Pim\Bundle\CatalogBundle\Command\DumperInterface`
 - Move `Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper` to `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper`
 - Move `Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper` to `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper`
