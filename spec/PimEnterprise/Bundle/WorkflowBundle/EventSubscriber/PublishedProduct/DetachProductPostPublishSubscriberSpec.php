@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
@@ -16,7 +15,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductManager $productManager, EntityManager $entityManager)
+    function let(ObjectManager $productManager, EntityManager $entityManager)
     {
         $this->beConstructedWith($productManager, $entityManager);
     }
@@ -31,12 +30,9 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     function it_detachs_products_with_metric_value(
         $productManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $metric = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
@@ -56,10 +52,10 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
         $event->getPublishedProduct()->willReturn($publishedProduct);
 
-        $objectManager->detach($publishedMetric)->shouldBeCalled();
-        $objectManager->detach($publishedProduct)->shouldBeCalled();
-        $objectManager->detach($metric)->shouldBeCalled();
-        $objectManager->detach($product)->shouldBeCalled();
+        $productManager->detach($publishedMetric)->shouldBeCalled();
+        $productManager->detach($publishedProduct)->shouldBeCalled();
+        $productManager->detach($metric)->shouldBeCalled();
+        $productManager->detach($product)->shouldBeCalled();
 
         $this->detachProductPostPublish($event);
     }
@@ -67,12 +63,9 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     function it_detachs_products_with_media_value(
         $productManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $media = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_MEDIA);
@@ -92,10 +85,10 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
         $event->getPublishedProduct()->willReturn($publishedProduct);
 
-        $objectManager->detach($publishedMedia)->shouldBeCalled();
-        $objectManager->detach($publishedProduct)->shouldBeCalled();
-        $objectManager->detach($media)->shouldBeCalled();
-        $objectManager->detach($product)->shouldBeCalled();
+        $productManager->detach($publishedMedia)->shouldBeCalled();
+        $productManager->detach($publishedProduct)->shouldBeCalled();
+        $productManager->detach($media)->shouldBeCalled();
+        $productManager->detach($product)->shouldBeCalled();
 
         $this->detachProductPostPublish($event);
     }
@@ -103,12 +96,9 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     function it_detachs_products_with_prices_values(
         $productManager,
         PublishedProductEvent $event,
-        ObjectManager $objectManager,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $productManager->getObjectManager()->willReturn($objectManager);
-
         $price = new ProductValue();
         $attribute = new Attribute();
         $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
@@ -128,10 +118,10 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
         $event->getPublishedProduct()->willReturn($publishedProduct);
 
-        $objectManager->detach($publishedPrice)->shouldBeCalled();
-        $objectManager->detach($publishedProduct)->shouldBeCalled();
-        $objectManager->detach($price)->shouldBeCalled();
-        $objectManager->detach($product)->shouldBeCalled();
+        $productManager->detach($publishedPrice)->shouldBeCalled();
+        $productManager->detach($publishedProduct)->shouldBeCalled();
+        $productManager->detach($price)->shouldBeCalled();
+        $productManager->detach($product)->shouldBeCalled();
 
         $this->detachProductPostPublish($event);
     }
