@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -20,20 +21,14 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
-    /** @var ObjectIdResolverInterface */
-    protected $objectIdResolver;
-
     /**
-     * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedFields
-     * @param array                     $supportedOperators
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -51,35 +46,20 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
-
-            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
-            }
         }
 
-        $fieldCode = FieldFilterHelper::getCode($field);
-        switch ($operator) {
-            case Operators::IN_LIST:
-                $expr = new Expr();
-                $this->qb->addAnd(
-                    $expr->field($fieldCode)->in($value)
-                );
-                break;
-            case Operators::NOT_IN_LIST:
-                $this->qb->field($fieldCode)->notIn($value);
-                break;
-            case Operators::IS_EMPTY:
-                $exists = new Expr();
-                $equals = new Expr();
-                $expr = new Expr();
-                $exists->field($fieldCode)->exists(false);
-                $equals->field($fieldCode)->equals(null);
-                $expr->addOr($exists)->addOr($equals);
-                $this->qb->addAnd($expr);
-                break;
+
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($field, $value);
         }
+
+        $field = FieldFilterHelper::ID_PROPERTY === FieldFilterHelper::getProperty($field) ?
+            'family' :
+            sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -96,6 +76,31 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, 'family');
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param string     $field
+     * @param string     $operator
+     * @param array|null $value
+     */
+    protected function applyFilter($field, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
         }
     }
 }

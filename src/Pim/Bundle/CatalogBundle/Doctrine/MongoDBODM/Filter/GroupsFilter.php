@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -19,20 +19,14 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
-    /** @var ObjectIdResolverInterface */
-    protected $objectIdResolver;
-
     /**
-     * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedFields
-     * @param array                     $supportedOperators
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -50,15 +44,19 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        $this->checkValue($field, $value);
-
-        $value = is_array($value) ? $value : [$value];
-        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->objectIdResolver->getIdsFromCodes('group', $value);
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($field, $value);
         }
-        $value = array_map('intval', $value);
 
-        $this->applyFilter($value, 'groupIds', $operator);
+        if (FieldFilterHelper::ID_PROPERTY === FieldFilterHelper::getProperty($field)) {
+            if (null !== $value) {
+                $value = array_map('intval', $value);
+            }
+            $this->applyIdFilter('groupIds', $operator, $value);
+        } else {
+            $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+            $this->applyCodeFilter($field, $operator, $value);
+        }
 
         return $this;
     }
@@ -79,13 +77,38 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Apply the filter to the query with the given operator for group ids
      *
-     * @param array  $value
-     * @param string $field
-     * @param string $operator
+     * @param string     $field
+     * @param string     $operator
+     * @param array|null $value
      */
-    protected function applyFilter(array $value, $field, $operator)
+    protected function applyIdFilter($field, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->size(0);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->where(sprintf('%s.length > 0', $field));
+                break;
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator for group codes
+     *
+     * @param string     $field
+     * @param string     $operator
+     * @param array|null $value
+     */
+    protected function applyCodeFilter($field, $operator, $value)
     {
         switch ($operator) {
             case Operators::IN_LIST:

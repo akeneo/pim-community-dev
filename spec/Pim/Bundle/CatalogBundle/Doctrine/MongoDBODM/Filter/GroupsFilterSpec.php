@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
@@ -12,10 +11,13 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
  */
 class GroupsFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, ObjectIdResolverInterface $objectIdResolver)
+    function let(Builder $qb)
     {
-        $this->beConstructedWith($objectIdResolver, ['groups'], ['IN', 'NOT IN']);
-        $this->setQueryBuilder($queryBuilder);
+        $this->beConstructedWith(
+            ['groups.id', 'groups.code'],
+            ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        );
+        $this->setQueryBuilder($qb);
     }
 
     function it_is_a_field_filter()
@@ -23,12 +25,84 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
-    function it_adds_a_in_filter_on_the_groups_field_in_the_query(Builder $queryBuilder)
+    function it_adds_a_in_filter_on_an_id_field_in_the_query($qb)
     {
-        $queryBuilder->field('groupIds')->willReturn($queryBuilder);
-        $queryBuilder->in([1, 2])->willReturn($queryBuilder);
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->in([12, 13])->shouldBeCalled();
 
-        $this->addFieldFilter('groups.id', 'IN', [1, 2]);
+        $this->addFieldFilter('groups.id', 'IN', [12, 13]);
+    }
+
+    function it_adds_a_in_filter_on_a_code_field_in_the_query($qb)
+    {
+        $qb->field('normalizedData.groups.code')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->in(['upsell', 'related'])->shouldBeCalled();
+
+        $this->addFieldFilter('groups.code', 'IN', ['upsell', 'related']);
+    }
+
+    function it_adds_a_not_in_filter_on_an_id_field_in_the_query($qb)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->notIn([12, 13])->shouldBeCalled();
+
+        $this->addFieldFilter('groups.id', 'NOT IN', [12, 13]);
+    }
+
+    function it_adds_a_not_in_filter_on_a_code_field_in_the_query($qb)
+    {
+        $qb->field('normalizedData.groups.code')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->notIn(['upsell', 'related'])->shouldBeCalled();
+
+        $this->addFieldFilter('groups.code', 'NOT IN', ['upsell', 'related']);
+    }
+
+    function it_adds_an_empty_filter_on_an_id_field_in_the_query($qb)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->size(0)->shouldBeCalled();
+
+        $this->addFieldFilter('groups.id', 'EMPTY', null);
+    }
+
+    function it_adds_an_empty_filter_on_a_code_field_in_the_query($qb)
+    {
+        $qb->field('normalizedData.groups.code')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->exists(false)->shouldBeCalled();
+
+        $this->addFieldFilter('groups.code', 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_id_field_in_the_query($qb)
+    {
+        $qb->field('groupIds')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->where('groupIds.length > 0')->shouldBeCalled();
+
+        $this->addFieldFilter('groups.id', 'NOT EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_a_code_field_in_the_query($qb)
+    {
+        $qb->field('normalizedData.groups.code')
+            ->shouldBeCalled()
+            ->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+
+        $this->addFieldFilter('groups.code', 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array()

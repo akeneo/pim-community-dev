@@ -17,4 +17,3 @@ Feature: Filter on groups
       | [{"field":"groups.code", "operator":"IN",        "value": ["substitute", "upsell"]}] | ["TSHIRT", "JACKET", "SWEAT"]         |
       | [{"field":"groups.code", "operator":"EMPTY",     "value": null}]                     | ["BOOT"]                              |
       | [{"field":"groups.code", "operator":"NOT EMPTY", "value": null}]                     | ["TSHIRT", "JACKET", "SWEAT", "PANT"] |
-# TODO: PIM-5622 | [{"field":"groups.code", "operator":"NOT IN",    "value": ["related", "upsell"]}]    | ["JACKET", "BOOT"]                    |
