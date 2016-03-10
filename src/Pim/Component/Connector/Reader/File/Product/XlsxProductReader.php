@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Product;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
+use Pim\Component\Connector\Reader\File\XlsxReader;
 
 /**
  * Product XLSX reader
@@ -17,11 +18,8 @@ use Pim\Component\Localization\Localizer\LocalizerInterface;
  */
 class XlsxProductReader extends XlsxReader
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var string[] Media attribute codes */
-    protected $mediaAttributes;
+    /** @var MediaPathTransformer */
+    protected $mediaPathTransformer;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -36,48 +34,22 @@ class XlsxProductReader extends XlsxReader
     protected $dateFormats;
 
     /**
-     * @param FileIteratorInterface        $fileIterator
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param array                        $decimalSeparators
-     * @param array                        $dateFormats
+     * @param FileIteratorInterface $fileIterator
+     * @param MediaPathTransformer  $mediaPathTransformer
+     * @param array                 $decimalSeparators
+     * @param array                 $dateFormats
      */
     public function __construct(
         FileIteratorInterface $fileIterator,
-        AttributeRepositoryInterface $attributeRepository,
+        MediaPathTransformer $mediaPathTransformer,
         array $decimalSeparators,
         array $dateFormats
     ) {
         parent::__construct($fileIterator);
 
-        $this->attributeRepository = $attributeRepository;
-        $this->decimalSeparators   = $decimalSeparators;
-        $this->dateFormats         = $dateFormats;
-    }
-
-    /**
-     * Set the media attributes
-     *
-     * @param array|null $mediaAttributes
-     *
-     * @return string[]
-     */
-    public function setMediaAttributes($mediaAttributes)
-    {
-        if (null === $this->mediaAttributes) {
-            $this->mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-        }
-
-        return $this->mediaAttributes;
-    }
-
-    /**
-     * Get the media attributes
-     *
-     * @return string[]
-     */
-    public function getMediaAttributes()
-    {
-        return $this->mediaAttributes;
+        $this->mediaPathTransformer         = $mediaPathTransformer;
+        $this->decimalSeparators = $decimalSeparators;
+        $this->dateFormats       = $dateFormats;
     }
 
     /**
@@ -128,9 +100,6 @@ class XlsxProductReader extends XlsxReader
         return array_merge(
             parent::getConfigurationFields(),
             [
-                'mediaAttributes' => [
-                    'system' => true
-                ],
                 'decimalSeparator' => [
                     'type'    => 'choice',
                     'options' => [
@@ -165,26 +134,6 @@ class XlsxProductReader extends XlsxReader
             return $data;
         }
 
-        return $this->transformMediaPathToAbsolute($data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function transformMediaPathToAbsolute(array $data)
-    {
-        foreach ($data as $code => $value) {
-            $pos = strpos($code, '-');
-            $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
-            $value = trim($value);
-
-            if (in_array($attributeCode, $this->getMediaAttributes()) && !empty($value)) {
-                $data[$code] = dirname($this->filePath) . DIRECTORY_SEPARATOR . $value;
-            }
-        }
-
-        return $data;
+        return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
     }
 }

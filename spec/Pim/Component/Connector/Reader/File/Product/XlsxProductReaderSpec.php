@@ -1,30 +1,31 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File\Product;
 
+use Box\Spout\Reader\ReaderInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\Reader\File\FileIterator;
+use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
 use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository)
+    function let(FileIterator $fileIterator, MediaPathTransformer $mediaPath)
     {
-        $attributeRepository->findMediaAttributeCodes()->willReturn(['view', 'manual']);
-        $this->beConstructedWith($attributeRepository, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIterator, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\CsvProductReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Product\XlsxProductReader');
     }
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\CsvReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\XlsxReader');
     }
 
-    function it_transforms_media_paths_to_absolute_paths($fileIterator)
+    function it_transforms_media_paths_to_absolute_paths($fileIterator, $mediaPath, ReaderInterface $reader)
     {
         $data = [
             'sku'          => 'SKU-001',
@@ -33,17 +34,11 @@ class CsvProductReaderSpec extends ObjectBehavior
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
-        $fileIterator->setReaderOptions(
-            [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        )->willReturn($fileIterator);
+        $fileIterator->getReader()->willReturn($reader);
         $fileIterator->reset()->shouldBeCalled();
         $fileIterator->isInitialized()->willReturn(false);
         $fileIterator->rewind()->shouldBeCalled();
-        $fileIterator->next()->shouldBeCalled();
-        $fileIterator->current()->willReturn($data);
+        $fileIterator->next()->willReturn($data);
 
         $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
         $this->setFilePath($filePath);
@@ -55,6 +50,8 @@ class CsvProductReaderSpec extends ObjectBehavior
             'view'         => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
             'manual-fr_FR' => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
         ];
+
+        $mediaPath->transform($data, $filePath)->willReturn($absolutePath);
 
         $this->read()->shouldReturn($absolutePath);
     }

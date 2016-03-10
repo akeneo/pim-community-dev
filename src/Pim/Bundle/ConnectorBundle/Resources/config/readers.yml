@@ -3,12 +3,13 @@ parameters:
     pim_connector.reader.doctrine.base.class: Pim\Component\Connector\Reader\Doctrine\BaseReader
 
     pim_connector.reader.file.csv.class:         Pim\Component\Connector\Reader\File\CsvReader
-    pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\CsvProductReader
+    pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\Product\CsvProductReader
 
     pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\XlsxReader
-    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\XlsxProductReader
+    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Product\XlsxProductReader
 
-    pim_connector.reader.file.file_iterator.class: Pim\Component\Connector\Reader\File\FileIterator
+    pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
+    pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\Product\MediaPathTransformer
 
 services:
     pim_connector.reader.file.csv_iterator:
@@ -20,6 +21,11 @@ services:
         class: %pim_connector.reader.file.file_iterator.class%
         arguments:
             - 'xlsx'
+
+    pim_connector.reader.file.media_path_transformer:
+        class: %pim_connector.reader.file.media_path_transformer.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
 
     # Dummy Reader
     pim_connector.reader.dummy_item:
@@ -74,7 +80,7 @@ services:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
             - '@pim_connector.reader.file.csv_iterator'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.reader.file.media_path_transformer'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
 
@@ -88,9 +94,9 @@ services:
        class: %pim_connector.reader.file.xlsx_product.class%
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator'
-           - '@pim_catalog.repository.attribute'
-           - %pim_localization.decimal_separators%
-           - %pim_localization.date_formats%
+           - '@pim_connector.reader.file.media_path_transformer'
+           - %pim_catalog.localization.decimal_separators%
+           - %pim_catalog.localization.date_formats%
 
     pim_connector.reader.file.xlsx_association:
         alias: pim_connector.reader.file.xlsx

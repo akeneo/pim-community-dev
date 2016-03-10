@@ -53,7 +53,16 @@ class XlsxReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($data);
 
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
+        $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . 'features' .
+                    DIRECTORY_SEPARATOR . 'Context' .
+                    DIRECTORY_SEPARATOR . 'fixtures' .
+                    DIRECTORY_SEPARATOR . 'with_media.csv';
         $this->setFilePath($filePath);
         $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
 
