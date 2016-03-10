@@ -13,14 +13,22 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     /**
-     * {@inheritdoc}
+     * Registers your custom bundles
      */
-    public function registerBundles()
+    protected function registerProjectBundles()
     {
         $bundles = [
             // your app bundles should be registered here
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
         ];
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function registerBundles()
+    {
+        $bundles = $this->registerProjectBundles();
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
