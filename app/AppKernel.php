@@ -14,6 +14,8 @@ class AppKernel extends Kernel
 {
     /**
      * Registers your custom bundles
+     * 
+     * @return array
      */
     protected function registerProjectBundles()
     {
