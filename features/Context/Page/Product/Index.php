@@ -31,14 +31,24 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             [
-                'Categories tree'       => ['css' => '#tree'],
+                'Category tree'    => [
+                    'css'        => '#tree',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                    ]
+                ],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
                 ],
-                'Tree select'      => ['css' => '#tree_select'],
+                'Category tree selector'           => [
+                    'css'        => '#tree_select',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\TreeSelectorDecorator\SelectDecorator'
+                    ]
+                ],
                 'Locales dropdown' => ['css' => '#locale-switcher'],
             ]
         );
@@ -90,31 +100,17 @@ class Index extends Grid
     }
 
     /**
-     * @param string $category
-     *
-     * @return Index
-     */
-    public function selectTree($category)
-    {
-        $this->getElement('Tree select')->selectOption($category);
-
-        return $this;
-    }
-
-    /**
      * @param Category $category
      *
      * @throws \Exception
      */
     public function clickCategoryFilterLink($category)
     {
-        $elt = $this
-            ->getElement('Categories tree')
-            ->find('css', sprintf('#node_%s a', $category->getId()));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
-        }
+        $elt = $this->spin(function () use ($category) {
+            return $this
+                ->getElement('Category tree')
+                ->find('css', sprintf('#node_%s a', $category->getId()));
+        }, sprintf('Could not find category filter "%s".', $category->getId()));
 
         $elt->click();
     }
@@ -125,7 +121,7 @@ class Index extends Grid
     public function clickUnclassifiedCategoryFilterLink()
     {
         $elt = $this
-            ->getElement('Categories tree')
+            ->getElement('Category tree')
             ->find('css', sprintf('#node_-1 a'));
 
         if (!$elt) {

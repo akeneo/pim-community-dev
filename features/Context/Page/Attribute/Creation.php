@@ -55,16 +55,29 @@ class Creation extends Form
      */
     public function addOption($name)
     {
-        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
-            $this->getElement('add_option_button')->click();
-            $this->getSession()->wait($this->getTimeout());
-        }
+        $this->spin(function () use ($name) {
+            if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
+                $this->getElement('add_option_button')->click();
+            }
 
-        $rows = $this->getOptionsElement();
-        $row  = end($rows);
+            $rows = $this->getOptionsElement();
+            $row  = end($rows);
 
-        $row->find('css', '.attribute_option_code')->setValue($name);
-        $row->find('css', '.btn.update-row')->click();
+            $codeField = $row->find('css', '.attribute_option_code');
+            if (!$codeField || $codeField->getValue() !== '') {
+                return false;
+            }
+            $codeField->setValue($name);
+
+            $updateRow = $row->find('css', '.btn.update-row');
+            if (!$updateRow) {
+                return false;
+            }
+
+            $updateRow->click();
+
+            return true;
+        });
     }
 
     /**
@@ -126,14 +139,11 @@ class Creation extends Form
      */
     public function removeOption($optionName)
     {
-        $optionRow = $this->getOptionElement($optionName);
-        $deleteBtn = $optionRow->find('css', '.btn.delete-row');
+        $deleteBtn = $this->spin(function () use ($optionName) {
+            $optionRow = $this->getOptionElement($optionName);
 
-        if ($deleteBtn === null) {
-            throw new \InvalidArgumentException(
-                sprintf('Remove bouton not found or disabled for %s option', $optionName)
-            );
-        }
+            return $optionRow->find('css', '.btn.delete-row');
+        }, sprintf('Remove bouton not found or disabled for %s option', $optionName));
 
         $deleteBtn->click();
     }

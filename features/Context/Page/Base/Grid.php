@@ -98,17 +98,9 @@ class Grid extends Index
     {
         $value   = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function () use ($value) {
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();
     }
@@ -544,7 +536,7 @@ class Grid extends Index
      */
     public function isFilterAvailable($filterName)
     {
-        $this->clickFiltersList();
+        $this->showFiltersList();
 
         $filterElement = $this
             ->getElement('Manage filters')
@@ -560,9 +552,9 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        $this->clickFiltersList();
+        $this->showFiltersList();
         $this->activateFilter($filterName);
-        $this->clickFiltersList();
+        $this->hideFiltersList();
     }
 
     /**
@@ -572,11 +564,9 @@ class Grid extends Index
      */
     public function assertFilterVisible($filterName)
     {
-        if (!$this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is not visible', $filterName)
-            );
-        }
+        return $this->spin(function () use ($filterName) {
+            return $this->getFilter($filterName)->isVisible();
+        }, sprintf('Filter "%s" is not visible', $filterName));
     }
 
     /**
@@ -586,9 +576,9 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        $this->clickFiltersList();
+        $this->showFiltersList();
         $this->deactivateFilter($filterName);
-        $this->clickFiltersList();
+        $this->hideFiltersList();
     }
 
     /**
@@ -656,18 +646,30 @@ class Grid extends Index
     }
 
     /**
+     * Get a filter element
+     *
+     * @param string $filterName
+     */
+    protected function getFilterElement($filterName)
+    {
+        return $this->spin(function () use ($filterName) {
+            return $this
+                ->getElement('Manage filters')
+                ->find('css', sprintf('label:contains("%s")', $filterName));
+        }, sprintf('Impossible to activate filter "%s"', $filterName));
+    }
+
+    /**
      * Activate a filter
      *
      * @param string $filterName
      */
     protected function activateFilter($filterName)
     {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
-            $this->clickOnFilterToManage($filterName);
+        $filterElement = $this->getFilterElement($filterName);
+
+        if (!$filterElement->find('css', 'input[type="checkbox"]')->isChecked()) {
+            $filterElement->find('css', 'input[type="checkbox"]')->click();
         }
     }
 
@@ -680,45 +682,46 @@ class Grid extends Index
      */
     protected function deactivateFilter($filterName)
     {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
-
-        if ($this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is visible', $filterName)
-            );
+        $filterElement = $this->getFilterElement($filterName);
+        if ($filterElement->find('css', 'input[type="checkbox"]')->isChecked()) {
+            $filterElement->find('css', 'input[type="checkbox"]')->click();
         }
     }
 
     /**
-     * Click on a filter in filter management list
-     *
-     * @param string $filterName
+     * Open filters list
      */
-    protected function clickOnFilterToManage($filterName)
+    protected function getFiltersListButton()
     {
-        $filterElement = $this->spin(function () use ($filterName) {
-            return $this
-                ->getElement('Manage filters')
-                ->find('css', sprintf('label:contains("%s")', $filterName));
-        }, sprintf('Impossible to activate filter "%s"', $filterName));
-
-        $filterElement->click();
-    }
-
-    /**
-     * Open/close filters list
-     */
-    protected function clickFiltersList()
-    {
-        $filterList = $this->spin(function () {
+        return $this->spin(function () {
             return $this
                 ->getElement('Filters')
                 ->find('css', '#add-filter-button');
         }, 'Impossible to find filter list');
+    }
 
-        $filterList->click();
+    /**
+     * Open filters list
+     */
+    protected function showFiltersList()
+    {
+        $filterList = $this->getElement('Body')->find('css', 'div.filter-list');
+
+        if (!$filterList || !$filterList->isVisible()) {
+            $this->getFiltersListButton()->click();
+        }
+    }
+
+    /**
+     * Close filters list
+     */
+    protected function hideFiltersList()
+    {
+        $filterList = $this->getElement('Body')->find('css', 'div.filter-list');
+
+        if ($filterList && $filterList->isVisible()) {
+            $this->getFiltersListButton()->click();
+        }
     }
 
     /**
