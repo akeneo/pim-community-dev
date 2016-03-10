@@ -17,7 +17,7 @@ class AppKernel extends Kernel
      */
     protected function registerProjectBundles()
     {
-        $bundles = [
+        return [
             // your app bundles should be registered here
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
         ];
