@@ -1,5 +1,9 @@
 # 1.6.x
 
+## Functional improvements
+
+- PIM-5096: Adds XLSX quick export to the product grid and published product grid
+
 ## Technical improvements
 
 - PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses and asset category accesses import using the new import system introduced in v1.4

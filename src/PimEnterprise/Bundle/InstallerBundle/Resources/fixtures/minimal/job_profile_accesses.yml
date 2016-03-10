@@ -29,3 +29,7 @@ job_profile_accesses:
         executeJobProfile: [All]
     csv_published_product_quick_export:
         executeJobProfile: [All]
+    xlsx_product_quick_export:
+        executeJobProfile: [All]
+    xlsx_published_product_quick_export:
+        executeJobProfile: [All]

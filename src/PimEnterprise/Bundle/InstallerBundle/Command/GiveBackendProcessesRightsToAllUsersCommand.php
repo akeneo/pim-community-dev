@@ -75,7 +75,9 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'refuse_product_draft',
             'apply_assets_mass_upload',
             'csv_product_quick_export',
-            'csv_published_product_quick_export'
+            'csv_published_product_quick_export',
+            'xlsx_product_quick_export',
+            'xlsx_published_product_quick_export'
         ];
     }
 
