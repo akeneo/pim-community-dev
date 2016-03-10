@@ -163,7 +163,7 @@ services:
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_text', 'pim_catalog_textarea']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
