@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -20,22 +19,20 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    /** @var CommandLauncher */
+    protected $launcher;
 
-    /** @var AssociationTypeRepositoryInterface */
-    protected $assocTypeRepository;
+    /** @var string */
+    protected $logFile;
 
     /**
-     * @param ProductRepositoryInterface         $productRepository
-     * @param AssociationTypeRepositoryInterface $assocTypeRepository
+     * @param CommandLauncher $launcher
+     * @param string          $logFile
      */
-    public function __construct(
-        ProductRepositoryInterface $productRepository,
-        AssociationTypeRepositoryInterface $assocTypeRepository
-    ) {
-        $this->productRepository = $productRepository;
-        $this->assocTypeRepository = $assocTypeRepository;
+    public function __construct(CommandLauncher $launcher, $logFile)
+    {
+        $this->launcher = $launcher;
+        $this->logFile = $logFile;
     }
 
     /**
@@ -50,9 +47,14 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
     }
 
     /**
-     * Remove associated product from a single product
+     * Removes product associations for a single deleted product.
+     *
+     * Both the deleted product entity and its ID are provided through
+     * the event.
      *
      * @param RemoveEvent $event
+     *
+     * @return null
      */
     public function removeAssociatedProduct(RemoveEvent $event)
     {
@@ -62,23 +64,30 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
             return;
         }
 
-        $assocTypeCount = $this->assocTypeRepository->countAll();
+        $command = sprintf(
+            'pim:product:remove-from-associations %s',
+            $event->getSubjectId()
+        );
 
-        $this->productRepository->removeAssociatedProduct($event->getSubjectId(), $assocTypeCount);
+        $this->launcher->executeBackground($command, $this->logFile);
     }
 
     /**
-     * Remove associated products from a list of product ids
+     * Removes product associations for a list of deleted products.
+     *
+     * Only the list of the deleted IDs is provided through the event.
      *
      * @param GenericEvent $event
      */
     public function removeAssociatedProducts(GenericEvent $event)
     {
-        $productIds = $event->getSubject();
-        $assocTypeCount = $this->assocTypeRepository->countAll();
+        $productIds = implode(',', $event->getSubject());
 
-        foreach ($productIds as $productId) {
-            $this->productRepository->removeAssociatedProduct($productId, $assocTypeCount);
-        }
+        $command = sprintf(
+            'pim:product:remove-from-associations %s',
+            $productIds
+        );
+
+        $this->launcher->executeBackground($command, $this->logFile);
     }
 }

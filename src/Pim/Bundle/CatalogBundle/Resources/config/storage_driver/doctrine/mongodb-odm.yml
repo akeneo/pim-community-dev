@@ -454,8 +454,8 @@ services:
     pim_catalog.event_subscriber.remove_outdated_products_from_associations:
         class: '%pim_catalog.event_subscriber.remove_outdated_products_from_associations.class%'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.command_launcher'
+            - '%kernel.root_dir%/logs/product-from-association-removal.log'
         tags:
             - { name: kernel.event_subscriber }
 
