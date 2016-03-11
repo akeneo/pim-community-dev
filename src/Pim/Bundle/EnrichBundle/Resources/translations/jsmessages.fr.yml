@@ -269,6 +269,6 @@ pim_enrich:
         "yes": Oui
   mass_edit_action:
     edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités pour les paramètres régionaux <span class="bold-purple">{{ locale }}</span> et le canal <span class="bold-purple">{{ channel }}</span>, choisis dans la grille des produits.'
+      description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
 pim_enrich.error:
   exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
