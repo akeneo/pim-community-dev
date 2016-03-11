@@ -126,6 +126,22 @@ datagrid:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     group: quick_export
+            quick_export_xlsx:
+                type: export
+                label: pim.grid.mass_action.quick_export.xlsx_all
+                icon: download
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_quick_export
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
             mass_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit

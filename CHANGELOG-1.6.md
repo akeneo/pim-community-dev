@@ -3,6 +3,7 @@
 ## Functional improvements
 
 - PIM-5592: the product grid keeps the page number when you go back to it
+- PIM-5096: introduces the XLSX quick export
 
 ## Technical improvements
 

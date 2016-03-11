@@ -221,3 +221,11 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/product.xlsx
+    xlsx_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_product_quick_export
+        label: XLSX product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
