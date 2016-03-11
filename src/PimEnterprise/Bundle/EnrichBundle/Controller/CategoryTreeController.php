@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +55,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param UserContext                 $userContext
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
-     * @param CategoryFactory             $categoryFactory
+     * @param SimpleFactoryInterface      $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param SecurityFacade              $securityFacade
      * @param array                       $rawConfiguration
@@ -67,7 +67,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         UserContext $userContext,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         array $rawConfiguration,

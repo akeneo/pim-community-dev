@@ -1,9 +1,0 @@
-user_roles:
-    ROLE_ADMINISTRATOR:
-        label: Administrator
-    ROLE_CATALOG_MANAGER:
-        label: Catalog manager
-    ROLE_ASSET_MANAGER:
-        label: Asset manager
-    ROLE_USER:
-        label: User

@@ -34,6 +34,7 @@ class PimEnterpriseUserExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('subscribers.yml');
         $loader->load('twig_extensions.yml');
+        $loader->load('updaters.yml');
         $loader->load('view_elements/user.yml');
     }
 }

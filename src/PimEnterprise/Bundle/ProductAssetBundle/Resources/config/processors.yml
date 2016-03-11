@@ -1,9 +1,10 @@
 services:
     pimee_product_asset.processor.denormalization.category.flat:
-        class: %pim_connector.processor.denormalization.category.class%
+        class: %pim_connector.processor.denormalization.simple.class%
         arguments:
-            - '@pim_connector.array_converter.flat.category'
             - '@pimee_product_asset.repository.category'
-            - '@pimee_product_asset.updater.category'
+            - '@pim_connector.array_converter.flat.category'
             - '@pimee_product_asset.factory.category'
+            - '@pimee_product_asset.updater.category'
             - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
