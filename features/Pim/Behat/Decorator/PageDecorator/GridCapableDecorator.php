@@ -7,7 +7,7 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Decorator to handle the grid of a page
+ * Page decorator to handle the grid of a page and it's filters
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -21,17 +21,25 @@ class GridCapableDecorator extends ElementDecorator
     protected $selectors = [
         'Dialog grid' => '.modal',
         'Grid'        => 'table.grid',
+        'Filters'     => '.filter-box',
     ];
 
     /** @var array */
     protected $decorators = [
-        'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+        'Grid decorators'   => [
+            'Pim\Behat\Decorator\GridDecorator\DataDecorator',
+            'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+            'Pim\Behat\Decorator\GridDecorator\ActionDecorator',
+        ],
+        'Filter decorators' => [
+            'Pim\Behat\Decorator\GridDecorator\FilterDecorator',
+        ],
     ];
 
     /**
      * Returns the currently visible grid, if there is one
      *
-     * @return NodeElement
+     * @return NodeElement|null
      */
     public function getCurrentGrid()
     {
@@ -47,6 +55,21 @@ class GridCapableDecorator extends ElementDecorator
             'No visible grid found'
         );
 
-        return $this->decorate($grid->getParent()->getParent()->getParent(), $this->decorators);
+        return $this->decorate(
+            $grid->getParent()->getParent()->getParent()->getParent(),
+            $this->decorators['Grid decorators']
+        );
+    }
+
+    /**
+     * Return the filters within the grid toolbar
+     *
+     * @return ElementDecorator
+     */
+    public function getGridFilters()
+    {
+        $filters = $this->getCurrentGrid()->find('css', $this->selectors['Filters']);
+
+        return $this->decorate($filters, $this->decorators['Filter decorators']);
     }
 }

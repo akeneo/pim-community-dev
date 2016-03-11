@@ -290,7 +290,7 @@ class WebUser extends RawMinkContext
     public function iToggleTheCurrencies($currencies)
     {
         foreach ($this->listToArray($currencies) as $currency) {
-            $this->getCurrentPage()->clickOnAction($currency, 'Change status');
+            $this->getCurrentPage()->getCurrentGrid()->clickOnAction($currency, 'Change status');
             $this->wait();
         }
     }
