@@ -54,14 +54,14 @@ jobs:
             filePath: job_profile_accesses.yml
             multiple: false
 
-    fixtures_locale_access_yml:
+    fixtures_locale_access_csv:
         order:     150
         connector: Data fixtures
-        alias:     fixtures_locale_access_yml
+        alias:     fixtures_locale_access_csv
         label:     Locale accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: locale_accesses.yml
+            filePath: locale_accesses.csv
             multiple: false
 
     fixtures_rule_yml:
