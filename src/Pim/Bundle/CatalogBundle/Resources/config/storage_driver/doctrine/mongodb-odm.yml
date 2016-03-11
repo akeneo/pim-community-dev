@@ -317,8 +317,9 @@ services:
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data:
         class: '%pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pim_catalog.command_launcher'
             - '%pim_catalog.entity.product.class%'
+            - '%kernel.root_dir%/logs/product-update-normalized-data.log'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
