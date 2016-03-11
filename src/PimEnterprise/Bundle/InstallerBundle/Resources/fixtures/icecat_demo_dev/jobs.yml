@@ -20,7 +20,7 @@ jobs:
     csv_product_export:
         connector: Akeneo Native Connector
         alias:     csv_product_export
-        label:     Demo product export
+        label:     Demo CSV product export
         type:      export
         configuration:
             channel:    mobile
@@ -31,7 +31,7 @@ jobs:
     csv_published_product_export:
         connector: Akeneo Native Connector
         alias:     csv_published_product_export
-        label:     Demo published product export
+        label:     Demo published CSV product export
         type:      export
         configuration:
             channel:    mobile
@@ -372,11 +372,35 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    xlsx_product_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_export
+        label:     Demo XLSX product export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/product.xlsx
     xlsx_published_product_export:
         connector: Akeneo Native Connector
         alias:     xlsx_published_product_export
-        label:     Demo xlsx published product export
+        label:     Demo XLSX published product export
         type:      export
         configuration:
             withHeader: true
             filePath:   /tmp/published-product.xlsx
+    xlsx_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias:     xlsx_product_quick_export
+        label:     XLSX product quick export
+        type:      quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+    xlsx_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias:     xlsx_published_product_quick_export
+        label:     XLSX published product quick export
+        type:      quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/published-products_export_%locale%_%scope%_%datetime%.xlsx

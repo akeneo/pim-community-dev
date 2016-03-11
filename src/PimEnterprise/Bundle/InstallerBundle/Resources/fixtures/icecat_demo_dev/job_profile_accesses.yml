@@ -110,3 +110,13 @@ job_profile_accesses:
     csv_family_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    xlsx_product_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    xlsx_published_product_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    xlsx_product_quick_export:
+        executeJobProfile: [All]
+    xlsx_published_product_quick_export:
+        executeJobProfile: [All]

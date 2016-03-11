@@ -14,11 +14,11 @@ Feature: Quick export many published products from datagrid
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  |
     And I am logged in as "Julia"
 
-  Scenario: Successfully quick export published products
+  Scenario: Successfully quick export published products in CSV
     Given I am on the published page
     And I select rows boots, sneakers, sandals, pump
     Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
-    And I wait for the published product quick export to finish
+    And I wait for the "csv_published_product_quick_export" quick export to finish
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
@@ -35,3 +35,23 @@ Feature: Quick export many published products from datagrid
     sandals;summer_collection;red;;1;sandals;;;;Sandals;5;5;;;40;;
     pump;summer_collection;blue;;1;;;;;Pump;15;20;;;41;;
     """
+
+  Scenario: Successfully quick export published products in XLSX
+    Given I am on the published page
+    And I select rows boots, sneakers, sandals, pump
+    Then I press "XLSX (All attributes)" on the "Quick Export" dropdown button
+    And I wait for the "xlsx_published_product_quick_export" quick export to finish
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message                                     |
+      | success | XLSX published product quick export finished |
+    Then I go on the last executed job resume of "xlsx_published_product_quick_export"
+    And I should see "COMPLETED"
+    And the path of the exported file of "xlsx_published_product_quick_export" should be "/tmp/published_products_export_en_US_tablet.xlsx"
+    And exported xlsx file of "xlsx_published_product_quick_export" should contain:
+      | sku      | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |
+      | boots    | winter_collection | black |                          | 1       | boots    |        |            |              | Amazing boots | 20        | 25        |        |           | 40   |          |                    |
+      | sneakers | summer_collection | white |                          | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        |        |           | 42   |          |                    |
+      | sandals  | summer_collection | red   |                          | 1       | sandals  |        |            |              | Sandals       | 5         | 5         |        |           | 40   |          |                    |
+      | pump     | summer_collection | blue  |                          | 1       |          |        |            |              | Pump          | 15        | 20        |        |           | 41   |          |                    |

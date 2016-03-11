@@ -233,14 +233,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @Given /^I wait for the published product quick export to finish$/
-     */
-    public function iWaitForThePublishedProductQuickExportToFinish()
-    {
-        $this->waitForMassEditJobToFinish('csv_published_product_quick_export');
-    }
-
-    /**
      * @param string $button
      *
      * @Given /^I press the Send for approval button$/
