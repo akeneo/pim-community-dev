@@ -20,7 +20,6 @@ class LoadFixturesData extends AbstractLoadFixturesData
     protected function getLaunchableJobs()
     {
         $jobs = $this->getAllJobs();
-
         foreach ($jobs as $key => $job) {
             // Do not load products and associations with the ORM fixtures when MongoDB support is activated
             $storageDriver = $this->container->getParameter('pim_catalog_product_storage_driver');

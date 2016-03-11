@@ -65,6 +65,24 @@ services:
             - '@pim_catalog.saver.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.writer.doctrine.user:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pim_user.saver.user'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.doctrine.user_role:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pim_user.saver.role'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.doctrine.user_group:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pim_user.saver.group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     pim_connector.writer.doctrine.association_type:
         class: %pim_connector.writer.doctrine.base.class%
         arguments:
