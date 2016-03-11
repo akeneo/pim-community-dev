@@ -326,8 +326,8 @@ services:
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal:
         class: '%pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.command_launcher'
+            - '%kernel.root_dir%/logs/product-related-entity-removal.log'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
 

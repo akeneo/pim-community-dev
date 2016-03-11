@@ -2,10 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Console\CommandLauncher;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Events;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Updates product document when an entity related to product is removed
@@ -16,38 +23,20 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
  */
 class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var CommandLauncher */
+    protected $launcher;
 
     /** @var string */
-    protected $productClass;
-
-    /** @var string[] */
-    protected $entityMapping = [
-        'Pim\Bundle\CatalogBundle\Entity\AssociationType'   => 'AssociationType',
-        'Pim\Component\Catalog\Model\AttributeInterface'    => 'Attribute',
-        'Pim\Bundle\CatalogBundle\Entity\AttributeOption'   => 'AttributeOption',
-        'Pim\Component\Catalog\Model\CategoryInterface'     => 'Category',
-        'Pim\Bundle\CatalogBundle\Entity\Family'            => 'Family',
-        'Pim\Bundle\CatalogBundle\Entity\Group'             => 'Group',
-        'Pim\Bundle\CatalogBundle\Entity\Channel'           => 'Channel',
-    ];
+    protected $logFile;
 
     /**
-     * Pending batch product document updates
-     *
-     * @var array
+     * @param CommandLauncher $launcher
+     * @param string          $logFile
      */
-    protected $pendingUpdates = [];
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param string          $productClass
-     */
-    public function __construct(ManagerRegistry $registry, $productClass)
+    public function __construct(CommandLauncher $launcher, $logFile)
     {
-        $this->registry = $registry;
-        $this->productClass = $productClass;
+        $this->launcher = $launcher;
+        $this->logFile = $logFile;
     }
 
     /**
@@ -55,59 +44,117 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['onFlush', 'postFlush'];
+        return [Events::onFlush];
     }
 
     /**
+     * Launches a command to update all products by giving the entity type and ID.
+     *
      * @param OnFlushEventArgs $args
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $uow = $args->getEntityManager()->getUnitOfWork();
+        $unitOfWork     = $args->getEntityManager()->getUnitOfWork();
+        $entities       = $unitOfWork->getScheduledEntityDeletions();
+        $pendingUpdates = $this->getPendingUpdates($entities);
 
-        foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->addPendingUpdates($entity);
+        if (null !== $pendingUpdates && $pendingUpdates['entityName'] && !empty($pendingUpdates['ids'])) {
+            $command = sprintf(
+                'pim:product:remove-related-entity %s %s',
+                $pendingUpdates['entityName'],
+                implode(',', $pendingUpdates['ids'])
+            );
+
+            $this->launcher->executeBackground($command, $this->logFile);
         }
     }
 
     /**
-     * @param PostFlushEventArgs $args
-     */
-    public function postFlush(PostFlushEventArgs $args)
-    {
-        $this->executePendingUpdates();
-    }
-
-    /**
-     * Store pending batch updates
+     * Returns the list of entity IDs that need to be removed from
+     * products and the type of the entity.
+     * Returned array is organized as follow:
      *
-     * @param object $entity
+     * [
+     *     'entityName' => 'EntityName',
+     *     'ids'        => [1, 4, 27, 31, 42]
+     * ]
+     *
+     * @param object[] $entities
+     *
+     * @return null|array
      */
-    protected function addPendingUpdates($entity)
+    protected function getPendingUpdates(array $entities)
     {
-        foreach ($this->entityMapping as $class => $name) {
-            if ($entity instanceof $class) {
-                $method = sprintf('cascade%sRemoval', $name);
-                $this->pendingUpdates[$method][] = $entity->getId();
+        if (empty($entities)) {
+            return null;
+        }
+
+        $pendingUpdates = [
+            'entityName' => '',
+            'ids'        => [],
+        ];
+
+        foreach ($entities as $entity) {
+            $entityName = $this->getEntityName($entity);
+
+            if (null !== $entityName) {
+                if ('' === $pendingUpdates['entityName']) {
+                    $pendingUpdates['entityName'] = $entityName;
+                }
+
+                if ($pendingUpdates['entityName'] !== $entityName) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'You can delete only one type of entity at a time, but you tried to delete both %s and %s',
+                        $pendingUpdates['entityName'],
+                        $entityName
+                    ));
+                }
+
+                $pendingUpdates['ids'] = array_merge(
+                    $pendingUpdates['ids'],
+                    [$entity->getId()]
+                );
             }
         }
+
+        return $pendingUpdates;
     }
 
     /**
-     * Execute pending batch updates
+     * @param object $entity
+     *
+     * @return null|string
      */
-    protected function executePendingUpdates()
+    protected function getEntityName($entity)
     {
-        $repository = $this->registry->getRepository($this->productClass);
-
-        foreach ($this->pendingUpdates as $method => $ids) {
-            if (method_exists($repository, $method)) {
-                foreach ($ids as $id) {
-                    $repository->$method($id);
-                }
-            }
+        if ($entity instanceof AssociationTypeInterface) {
+            return 'AssociationType';
         }
 
-        $this->pendingUpdates = [];
+        if ($entity instanceof AttributeInterface) {
+            return 'Attribute';
+        }
+
+        if ($entity instanceof AttributeOptionInterface) {
+            return 'AttributeOption';
+        }
+
+        if ($entity instanceof CategoryInterface) {
+            return 'Category';
+        }
+
+        if ($entity instanceof FamilyInterface) {
+            return 'Family';
+        }
+
+        if ($entity instanceof GroupInterface) {
+            return 'Group';
+        }
+
+        if ($entity instanceof ChannelInterface) {
+            return 'Channel';
+        }
+
+        return null;
     }
 }
