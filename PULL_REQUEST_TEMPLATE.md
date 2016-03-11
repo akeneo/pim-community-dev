@@ -1,4 +1,4 @@
-:heart_eyes: Thanks for taking the time to contribute! You're awesome! :heart_eyes:
+<3 Thanks for taking the time to contribute! You're awesome! <3
 
 If you've never contributed to this repository before, please read https://github.com/akeneo/pim-community-dev/blob/master/CONTRIBUTING.md 
 
@@ -8,7 +8,7 @@ What does this Pull Request do? reference the related issue?
 
 **Definition Of Done (for Core Developer only)**
 
-```
+
 | Q                                 | A
 | --------------------------------- | ---
 | Added Specs                       |
@@ -18,4 +18,3 @@ What does this Pull Request do? reference the related issue?
 | Micro Demo to the PO (Story only) |
 | Migration script                  |
 | Tech Doc                          |
-```
