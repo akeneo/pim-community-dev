@@ -3,7 +3,13 @@
     "type": "symfony-bundle",
     "description": "Akeneo Batch Bundle",
     "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
-    "license": "MIT",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
     "require": {
         "php": ">=5.4.4",
         "symfony/symfony": "^2.1",
@@ -15,7 +21,7 @@
       "phpspec/phpspec": "2.1.*"
     },
     "autoload": {
-        "psr-0": { "Akeneo\\Bundle\\BatchBundle": "" }
+        "psr-4": { "Akeneo\\Bundle\\BatchBundle": "" }
     },
     "target-dir": "Akeneo/Bundle/BatchBundle",
     "config": {
