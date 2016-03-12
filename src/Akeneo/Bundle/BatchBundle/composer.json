@@ -1,7 +1,7 @@
 {
     "name": "akeneo/batch-bundle",
     "type": "symfony-bundle",
-    "description": "Akeneo Batch Bundle",
+    "description": "Akeneo Symfony Batch Bundle",
     "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
     "license": "OSL-3.0",
     "authors": [
@@ -12,25 +12,29 @@
     ],
     "require": {
         "php": ">=5.4.4",
-        "symfony/symfony": "^2.1",
-        "symfony/swiftmailer-bundle": "^2.3.5",
+        "akeneo/batch": "0.6.x-dev",
+        "symfony/config": "^2.3",
+        "symfony/console": "^2.3",
+        "symfony/dependency-injection": "^2.3",
+        "symfony/event-dispatcher": "^2.3",
+        "symfony/http-foundation": "^2.3",
+        "symfony/http-kernel": "^2.3",
+        "symfony/translation": "^2.3",
+        "symfony/process": "^2.3",
+        "symfony/security": "^2.3",
+        "symfony/validator": "^2.3",
+        "symfony/yaml": "^2.3",
+        "symfony/framework-bundle": "^2.3",
         "doctrine/orm": "^2.1.3",
         "monolog/monolog": "^1.1.0"
-    },
-    "require-dev": {
-      "phpspec/phpspec": "2.1.*"
     },
     "autoload": {
         "psr-4": { "Akeneo\\Bundle\\BatchBundle": "" }
     },
-    "target-dir": "Akeneo/Bundle/BatchBundle",
-    "config": {
-      "bin-dir": "bin"
-    },
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.6.x-dev"
         }
     }
 }

@@ -12,6 +12,14 @@ Akeneo PIM
 
 Originally written to be used in [Akeneo PIM](https://www.akeneo.com/).
 
+This extraction aims to make it usable outside of the Akeneo PIM project.
+
+Please consider that this process is still in a very experimental stage.
+
+We don't have all the tests and automation which could ensure that this component will work smoothly outside of the Akeneo PIM full stack.
+
+TODO: this Bundle now depends on Akeneo/StorageUtils component and related bundle and can't be extracted without those two.
+
 Documentation
 -------------
 
