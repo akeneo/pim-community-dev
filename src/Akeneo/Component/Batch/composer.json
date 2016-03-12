@@ -19,7 +19,6 @@
     "autoload": {
         "psr-4": { "Akeneo\\Component\\Batch\\": "" }
     },
-    "target-dir": "Akeneo/Component/Batch",
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
