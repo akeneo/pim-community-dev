@@ -6,9 +6,10 @@ define(
         var buildForm = function (formName) {
             return $.when(
                 FormRegistry.getForm(formName),
+                FormRegistry.getFormMeta(formName),
                 FormRegistry.getFormExtensions(formName)
-            ).then(function (Form, extensionMeta) {
-                var form = new Form();
+            ).then(function (Form, formMeta, extensionMeta) {
+                var form = new Form(formMeta);
                 form.code = formName;
 
                 var extensionPromises = [];

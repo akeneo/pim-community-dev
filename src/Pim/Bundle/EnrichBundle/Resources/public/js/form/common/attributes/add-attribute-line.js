@@ -13,7 +13,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/attribute/add-attribute-line'
+        'text!pim/template/form/attribute/add-attribute-line'
     ],
     function (
         $,

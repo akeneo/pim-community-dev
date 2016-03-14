@@ -24,9 +24,17 @@ define(
             });
         };
 
+        var getFormMeta = function (formName) {
+            return ConfigProvider.getExtensionMap().then(function (extensionMap) {
+                var test = _.first(_.where(extensionMap, { code: formName }));
+                return _.first(_.where(extensionMap, { code: formName }));
+            });
+        };
+
         return {
             getForm: getForm,
-            getFormExtensions: getExtensionMeta
+            getFormExtensions: getExtensionMeta,
+            getFormMeta: getFormMeta
         };
     }
 );

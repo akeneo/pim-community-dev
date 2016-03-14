@@ -24,9 +24,10 @@ class ProductViolationNormalizer implements NormalizerInterface
         $path = $violation->getPropertyPath();
 
         if (0 === strpos($path, 'values')) {
-            if (!isset($context['product']) || !$context['product'] instanceof ProductInterface) {
-                throw new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface');
-            }
+            // TODO rework
+            // if (!isset($context['product']) || !$context['product'] instanceof ProductInterface) {
+            //     throw new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface');
+            // }
 
             $codeStart     = strpos($path, '[') + 1;
             $codeLength    = strpos($path, ']') - $codeStart;

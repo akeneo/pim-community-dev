@@ -13,7 +13,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/attribute/add-attribute-footer'
+        'text!pim/template/form/attribute/add-attribute-footer'
     ],
     function (
         $,

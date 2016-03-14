@@ -3,7 +3,7 @@ extensions:
         module: oro/form/system/config
 
     oro-system-config-tabs:
-        module: pim/product-edit-form/form-tabs
+        module: pim/form/common/form-tabs
         parent: oro-system-config-form
         targetZone: content
         position: 100
