@@ -35,7 +35,7 @@ parameters:
     pim_connector.array_converter.flat.product.attribute_column_info_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
     pim_connector.array_converter.flat.product.field_splitter.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter
 
-    pim_connector.array_convertor.validator.fields_requirement.class:                 Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator
+    pim_connector.array_convertor.checker.fields_requirement.class:                 Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker
 
 services:
     # array converters
@@ -43,52 +43,52 @@ services:
         class: %pim_connector.array_converter.flat.attribute_option.class%
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.attribute:
         class: %pim_connector.array_converter.flat.attribute.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.category:
         class: %pim_connector.array_converter.flat.category.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.family:
         class: %pim_connector.array_converter.flat.family.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.channel:
         class: %pim_connector.array_converter.flat.channel.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.attribute_group:
         class: %pim_connector.array_converter.flat.attribute_group.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.group_type:
         class: %pim_connector.array_converter.flat.group_type.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.currency:
         class: %pim_connector.array_converter.flat.currency.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.association_type:
         class: %pim_connector.array_converter.flat.association_type.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.structured.attribute_option:
         class: %pim_connector.array_converter.structured.attribute_option.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.product:
         class: %pim_connector.array_converter.flat.product.class%
@@ -100,7 +100,7 @@ services:
             - '@pim_connector.array_converter.flat.product.field_converter'
             - '@pim_connector.array_converter.flat.product.columns_merger'
             - '@pim_connector.array_converter.flat.product.columns_mapper'
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.product_association:
         class: %pim_connector.array_converter.flat.product_association.class%
@@ -114,28 +114,28 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat.product'
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.group:
         class: %pim_connector.array_converter.flat.group.class%
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.user:
         class: %pim_connector.array_converter.flat.user.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.user_group:
         class: %pim_connector.array_converter.flat.user_group.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.user_role:
         class: %pim_connector.array_converter.flat.user_role.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     # extractors
     pim_connector.array_converter.flat.product.attribute_column_info_extractor:
@@ -237,6 +237,6 @@ services:
     pim_connector.array_converter.flat.product.columns_mapper:
         class: %pim_connector.array_converter.flat.product.columns_mapper.class%
 
-    # validators
-    pim_connector.array_convertor.validator.fields_requirement:
-        class: %pim_connector.array_convertor.validator.fields_requirement.class%
+    # checkers
+    pim_connector.array_convertor.checker.fields_requirement:
+        class: %pim_connector.array_convertor.checker.fields_requirement.class%

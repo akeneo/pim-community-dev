@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Structured;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -15,13 +15,13 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class AttributeOptionStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
+    /** @var FieldsRequirementChecker */
     protected $validator;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $validator
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $validator)
     {
         $this->validator = $validator;
     }
@@ -72,7 +72,7 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     protected function validate(array $item)
     {
         $requiredFields = ['attribute', 'code'];
-        $this->validator->validateFields($item, $requiredFields, false);
+        $this->validator->checkFieldsPresence($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['sortOrder', 'labels']);
         foreach ($item as $field => $data) {

@@ -3,13 +3,13 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AssociationTypeStandardConverterSpec extends ObjectBehavior
 {
-    function let(FieldsRequirementValidator $validator)
+    function let(FieldsRequirementChecker $fieldChecker)
     {
-        $this->beConstructedWith($validator);
+        $this->beConstructedWith($fieldChecker);
     }
 
     function it_converts()
@@ -31,12 +31,12 @@ class AssociationTypeStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_required_fields_are_not_in_array($validator)
+    function it_throws_an_exception_if_required_fields_are_not_in_array($fieldChecker)
     {
         $item = ['not_a_code' => ''];
 
-        $validator
-            ->validateFields($item, ['code'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code'])
             ->willThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'));
 
         $this
@@ -44,12 +44,12 @@ class AssociationTypeStandardConverterSpec extends ObjectBehavior
             ->during('convert', [$item]);
     }
 
-    function it_throws_an_exception_if_required_field_code_is_empty($validator)
+    function it_throws_an_exception_if_required_field_code_is_empty($fieldChecker)
     {
         $item = ['code' => ''];
 
-        $validator
-            ->validateFields($item, ['code'])
+        $fieldChecker
+            ->checkFieldsPresence($item, ['code'])
             ->willThrow(new \LogicException('Field "code" must be filled'));
 
         $this

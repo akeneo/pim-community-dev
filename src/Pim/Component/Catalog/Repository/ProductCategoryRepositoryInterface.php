@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -16,7 +17,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductCategoryRepositoryInterface
+interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositoryInterface
 {
     /**
      * Return the number of times the product is present in each tree

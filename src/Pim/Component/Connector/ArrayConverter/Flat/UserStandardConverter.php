@@ -2,9 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * User Flat to Standard format Converter
@@ -15,15 +14,15 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class UserStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldsChecker;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $fieldsChecker
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $fieldsChecker)
     {
-        $this->validator = $validator;
+        $this->fieldsChecker = $fieldsChecker;
     }
 
     /**
@@ -65,14 +64,13 @@ class UserStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields(
+        $this->fieldsChecker->checkFieldsPresence(
             $item,
-            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name'],
-            true
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name', 'groups']
         );
-        $this->validator->validateFields(
+        $this->fieldsChecker->checkFieldsFilling(
             $item,
-            ['groups']
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name']
         );
 
         $convertedItem = [];

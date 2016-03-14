@@ -4,13 +4,13 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeOptionStandardConverterSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $localeRepository, FieldsRequirementValidator $validator)
+    function let(LocaleRepositoryInterface $localeRepository, FieldsRequirementChecker $fieldChecker)
     {
-        $this->beConstructedWith($localeRepository, $validator);
+        $this->beConstructedWith($localeRepository, $fieldChecker);
     }
 
     function it_is_a_standard_array_converter()
@@ -47,7 +47,7 @@ class AttributeOptionStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_exception_when_the_attribute_field_is_missing($validator)
+    function it_throws_exception_when_the_attribute_field_is_missing($fieldChecker)
     {
         $item = [
             'code'         => '210_x_1219_mm',
@@ -57,8 +57,8 @@ class AttributeOptionStandardConverterSpec extends ObjectBehavior
             'label-fr_FR'  => '210 x 1219 mm',
         ];
 
-        $validator
-            ->validateFields($item, ['attribute', 'code'], false)
+        $fieldChecker
+            ->checkFieldsPresence($item, ['attribute', 'code'])
             ->willThrow('Pim\Component\Connector\Exception\ArrayConversionException');
 
         $this

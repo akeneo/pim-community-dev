@@ -3,16 +3,16 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class UserStandardConverterSpec extends ObjectBehavior
 {
-    function let(FieldsRequirementValidator $validator)
+    function let(FieldsRequirementChecker $checker)
     {
-        $this->beConstructedWith($validator);
+        $this->beConstructedWith($checker);
     }
 
-    function it_converts($validator)
+    function it_converts($checker)
     {
         $fields = [
             'username'       => 'julia',
@@ -29,15 +29,14 @@ class UserStandardConverterSpec extends ObjectBehavior
             'enabled'        => '1',
         ];
 
-        $validator->validateFields(
+        $checker->checkFieldsPresence(
             $fields,
-            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name'],
-            true
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name', 'groups']
         )->shouldBeCalled();
 
-        $validator->validateFields(
+        $checker->checkFieldsFilling(
             $fields,
-            ['groups']
+            ['username', 'email', 'password', 'enabled', 'roles', 'first_name', 'last_name']
         )->shouldBeCalled();
 
         $this->convert($fields)->shouldReturn([

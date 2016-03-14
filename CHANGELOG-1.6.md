@@ -62,6 +62,7 @@
 - Removed `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Removed `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Inverted the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
+- `Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface` now extends `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Connector\Connector`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Entity\FieldMapping`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Entity\ItemMapping`
