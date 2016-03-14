@@ -158,18 +158,8 @@ class VariantGroupController extends GroupController
      */
     public function editAction(Group $group)
     {
-        if (!$group->getType()->isVariant()) {
-            throw new NotFoundHttpException(sprintf('Variant group with id %d not found.', $group->getId()));
-        }
-
-        if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.updated'));
-        }
-
         return [
-            'form'           => $this->groupForm->createView(),
-            'currentGroup'   => $group->getId(),
-            'attributesForm' => $this->getAvailableAttributesForm($group)->createView(),
+            'id' => $group->getId()
         ];
     }
 

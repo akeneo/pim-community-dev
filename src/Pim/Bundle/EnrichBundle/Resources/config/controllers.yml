@@ -440,6 +440,11 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.variant_group'
+            - '@pim_catalog.saver.group'
+            - '@pim_user.context.user'
+            - '@pim_localization.localizer.converter'
+            - '@pim_catalog.validator.product'
 
     pim_enrich.controller.rest.versioning:
         class: %pim_enrich.controller.rest.versioning.class%

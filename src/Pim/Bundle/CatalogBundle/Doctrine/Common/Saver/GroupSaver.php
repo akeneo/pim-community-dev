@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -49,15 +50,19 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var string */
     protected $productClassName;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
     /**
-     * @param ObjectManager                   $objectManager
-     * @param BulkSaverInterface              $productSaver
-     * @param ProductTemplateMediaManager     $templateMediaManager
-     * @param ProductTemplateApplierInterface $productTplApplier
-     * @param VersionContext                  $versionContext
-     * @param SavingOptionsResolverInterface  $optionsResolver
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param string                          $productClassName
+     * @param ObjectManager                       $objectManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductTemplateMediaManager         $templateMediaManager
+     * @param ProductTemplateApplierInterface     $productTplApplier
+     * @param VersionContext                      $versionContext
+     * @param SavingOptionsResolverInterface      $optionsResolver
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param string                              $productClassName
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -67,16 +72,18 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
-        $productClassName
+        $productClassName,
+        ProductQueryBuilderFactoryInterface$productQueryBuilderFactory
     ) {
-        $this->objectManager          = $objectManager;
-        $this->productSaver           = $productSaver;
-        $this->templateMediaManager   = $templateMediaManager;
-        $this->productTplApplier      = $productTplApplier;
-        $this->versionContext         = $versionContext;
-        $this->optionsResolver        = $optionsResolver;
-        $this->eventDispatcher        = $eventDispatcher;
-        $this->productClassName       = $productClassName;
+        $this->objectManager              = $objectManager;
+        $this->productSaver               = $productSaver;
+        $this->templateMediaManager       = $templateMediaManager;
+        $this->productTplApplier          = $productTplApplier;
+        $this->versionContext             = $versionContext;
+        $this->optionsResolver            = $optionsResolver;
+        $this->eventDispatcher            = $eventDispatcher;
+        $this->productClassName           = $productClassName;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**
@@ -110,20 +117,15 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->objectManager->persist($group);
+
+        $this->saveAssociatedProducts($group);
+
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
-        } else {
-            if (0 < count($options['add_products'])) {
-                $this->addProducts($options['add_products']);
-            }
-        }
-
-        if (0 < count($options['remove_products'])) {
-            $this->removeProducts($options['remove_products']);
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
@@ -156,22 +158,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param ProductInterface[] $products
-     */
-    protected function addProducts(array $products)
-    {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function removeProducts(array $products)
-    {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
-    }
-
-    /**
      * Copy the variant group values on any products belonging in the variant group
      *
      * @param GroupInterface $group
@@ -181,5 +167,36 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTplApplier->apply($template, $products);
+    }
+
+    /**
+     * Save associated products
+     *
+     * @param  GroupInterface $group
+     */
+    protected function saveAssociatedProducts(GroupInterface $group)
+    {
+        $newProducts = $group->getProducts();
+        $pqb         = $this->productQueryBuilderFactory->create();
+        $oldProducts = $pqb->addFilter('groups.id', 'IN', [$group->getId()])->execute();
+        foreach ($oldProducts as $oldProduct) {
+            if ($newProducts->contains($oldProduct)) {
+                $oldProduct->addGroup($group);
+            } else {
+                $oldProduct->removeGroup($group);
+            }
+
+            $this->productSaver->save(
+                $oldProduct,
+                ['recalculate' => false, 'schedule' => false]
+            );
+        }
+
+        foreach ($newProducts as $newProduct) {
+            $this->productSaver->save(
+                $newProduct,
+                ['recalculate' => false, 'schedule' => false]
+            );
+        }
     }
 }

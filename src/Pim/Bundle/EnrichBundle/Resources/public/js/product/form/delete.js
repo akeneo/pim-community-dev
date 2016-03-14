@@ -36,6 +36,15 @@ define(
             events: {
                 'click .delete-product': 'delete'
             },
+            initialize: function (meta) {
+                this.config = _.extend({}, {
+                    trans : {
+                        deleteTitle: 'pim_enrich.confirmation.delete_title',
+                        deleteContent: 'pim_enrich.confirmation.delete_content',
+                        deleteSuccessFul: 'pim_enrich.entity.product.info.deletion_successful'
+                    }
+                }, meta.config);
+            },
             render: function () {
                 this.$el.html(this.template());
                 this.delegateEvents();
@@ -44,8 +53,8 @@ define(
             },
             delete: function () {
                 Dialog.confirm(
-                    _.__('confirmation.remove.product'),
-                    _.__('pim_enrich.confirmation.delete_item'),
+                    _.__(this.config.trans.deleteTitle),
+                    _.__(this.config.trans.deleteContent),
                     this.doDelete.bind(this)
                 );
             },
@@ -59,7 +68,7 @@ define(
                     .done(function () {
                         navigation.addFlashMessage(
                             'success',
-                            _.__('pim_enrich.entity.product.info.deletion_successful')
+                            _.__(this.config.trans.deleteSuccessFul)
                         );
                         navigation.setLocation(Routing.generate('pim_enrich_product_index'));
                     })

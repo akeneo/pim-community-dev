@@ -13,11 +13,11 @@ define([
             /**
              * Get the attributes of the given product
              *
-             * @param  {Object} product
+             * @param {Object} product
              *
              * @return {Array}
              */
-            getAttributesForProduct: function (product) {
+            getAttributes: function (product) {
                 if (!product.family) {
                     return $.Deferred().resolve(_.keys(product.values));
                 } else {
@@ -39,7 +39,7 @@ define([
             getAvailableOptionalAttributes: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    this.getAttributesForProduct(product)
+                    this.getAttributes(product)
                 ).then(function (attributes, productAttributes) {
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
