@@ -11,13 +11,12 @@
 
 namespace PimEnterprise\Component\Security\Connector\Denormalization;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
-use PimEnterprise\Component\Security\Factory\AssetCategoryAccessFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -30,7 +29,7 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
     /** @var StandardArrayConverterInterface */
     protected $accessConverter;
 
-    /** @var AssetCategoryAccessFactory */
+    /** @var SimpleFactoryInterface */
     protected $accessFactory;
 
     /** @var ObjectUpdaterInterface */
@@ -42,14 +41,14 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param StandardArrayConverterInterface       $accessConverter
-     * @param AssetCategoryAccessFactory            $accessFactory
+     * @param SimpleFactoryInterface                $accessFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $accessConverter,
-        AssetCategoryAccessFactory $accessFactory,
+        SimpleFactoryInterface $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
@@ -79,7 +78,7 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
             }
 
             $violations = $this->validator->validate($categoryAccess);
-            if ($violations->count() > 0) {
+            if (0 < $violations->count()) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
@@ -90,16 +89,15 @@ class AssetCategoryAccessProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @throws MissingIdentifierException
-     *
      * @return AssetCategoryAccess
-     *
      */
     protected function findOrCreateAssetCategoryAccess(array $convertedItem)
     {
-        $categoryAccess = $this->findObject($this->repository, $convertedItem);
+        $categoryAccess = $this->repository->findOneByIdentifier(
+            sprintf('%s.%s', $convertedItem['category'], $convertedItem['user_group'])
+        );
         if (null === $categoryAccess) {
-            return $this->accessFactory->create();
+            $categoryAccess = $this->accessFactory->create();
         }
 
         return $categoryAccess;

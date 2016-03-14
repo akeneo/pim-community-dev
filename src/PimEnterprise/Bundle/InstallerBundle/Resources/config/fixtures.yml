@@ -1,23 +1,17 @@
-attribute_groups_accesses:
+attribute_group_accesses:
     order: 150
     csv:
-        processor: pimee_base_connector.processor.attribute_group_access
-    yml:
-        processor: pimee_base_connector.processor.attribute_group_access
+        processor: pimee_security.processor.denormalization.attribute_group_access.flat
 
 product_category_accesses:
     order: 150
     csv:
-        processor: pimee_base_connector.processor.category_access
-    yml:
-        processor: pimee_base_connector.processor.category_access
+        processor: pimee_security.processor.denormalization.product_category_access.flat
 
 job_profile_accesses:
     order: 150
     csv:
-        processor: pimee_base_connector.processor.job_profile_access
-    yml:
-        processor: pimee_base_connector.processor.job_profile_access
+        processor: pimee_security.processor.denormalization.job_profile_access.flat
 
 locale_accesses:
     order: 150

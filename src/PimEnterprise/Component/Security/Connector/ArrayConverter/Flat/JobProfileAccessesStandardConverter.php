@@ -15,11 +15,11 @@ use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Locale Accesses Flat to Standard format converter
+ * Job Profile Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
+class JobProfileAccessesStandardConverter implements StandardArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
@@ -39,38 +39,38 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'locale'        => 'en_US',
-     *      'view_products' => 'IT support,Manager',
-     *      'edit_products' => 'IT support',
+     *      'job_profile'         => 'product_import',
+     *      'execute_job_profile' => 'IT support,Manager',
+     *      'edit_job_profile'    => 'IT support',
      * ]
      *
      * After:
      * [
      *     [
-     *         'locale'        => 'en_US',
-     *         'user_group'     => 'IT support',
-     *         'view_products' => true,
-     *         'edit_products' => true,
+     *         'job_profile'         => 'product_import',
+     *         'user_group'          => 'IT support',
+     *         'execute_job_profile' => true,
+     *         'edit_job_profile'    => true,
      *     ], [
-     *         'locale'        => 'en_US',
-     *         'user_group'     => 'Manager',
-     *         'view_products' => true,
-     *         'edit_products' => false,
+     *         'job_profile'         => 'product_import',
+     *         'user_group'          => 'Manager',
+     *         'execute_job_profile' => true,
+     *         'edit_job_profile'    => false,
      *     ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->fieldChecker->checkFieldsPresence($item, ['locale']);
-        $this->fieldChecker->checkFieldsFilling($item, ['locale']);
+        $this->fieldChecker->checkFieldsPresence($item, ['job_profile']);
+        $this->fieldChecker->checkFieldsFilling($item, ['job_profile']);
 
         $convertedItems = [];
         foreach ($this->getConcernedGroupNames($item) as $groupName) {
             $convertedItems[] = [
-                'locale'        => $item['locale'],
-                'user_group'    => $groupName,
-                'view_products' => in_array($groupName, $this->getGroupNames($item, 'view_products')),
-                'edit_products' => in_array($groupName, $this->getGroupNames($item, 'edit_products')),
+                'job_profile'         => $item['job_profile'],
+                'user_group'          => $groupName,
+                'execute_job_profile' => in_array($groupName, $this->getGroupNames($item, 'execute_job_profile')),
+                'edit_job_profile'    => in_array($groupName, $this->getGroupNames($item, 'edit_job_profile')),
             ];
         }
 
@@ -78,7 +78,7 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * Return all the group concerned by the locale access.
+     * Return all the group concerned by the job profile access.
      *
      * @param array $item
      *
@@ -88,8 +88,8 @@ class LocaleAccessesStandardConverter implements StandardArrayConverterInterface
     {
         return array_unique(
             array_merge(
-                $this->getGroupNames($item, 'view_products'),
-                $this->getGroupNames($item, 'edit_products')
+                $this->getGroupNames($item, 'execute_job_profile'),
+                $this->getGroupNames($item, 'edit_job_profile')
             )
         );
     }

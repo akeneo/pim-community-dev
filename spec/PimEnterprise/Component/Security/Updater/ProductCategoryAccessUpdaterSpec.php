@@ -6,9 +6,9 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 
-class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
+class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $groupRepository,
@@ -19,7 +19,7 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Security\Updater\AssetCategoryAccessUpdater');
+        $this->shouldHaveType('PimEnterprise\Component\Security\Updater\ProductCategoryAccessUpdater');
     }
 
     function it_is_an_updater()
@@ -27,25 +27,25 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
-    function it_throw_an_exception_when_trying_to_update_anything_else_than_an_asset_category_access()
+    function it_throw_an_exception_when_trying_to_update_anything_else_than_a_product_category_access()
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
-                'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess", "stdClass" provided.'
+                'Expects a "PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess", "stdClass" provided.'
             )
         )->during('update', [new \stdClass(), []]);
     }
 
-    function it_updates_a_asset_category_access(
+    function it_updates_a_product_category_access(
         $groupRepository,
         $categoryRepository,
-        AssetCategoryAccess $categoryAccess,
+        ProductCategoryAccess $categoryAccess,
         Group $userGroup,
         CategoryInterface $category
     ) {
         $values = [
-            'category'   => 'videos',
-            'user_group'  => 'IT Manager',
+            'category'   => '2013_collection',
+            'user_group' => 'IT Manager',
             'view_items' => true,
             'edit_items' => false,
             'own_items'  => false,
@@ -58,14 +58,14 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
         $categoryAccess->setOwnItems(false)->shouldBeCalled();
 
         $groupRepository->findOneByIdentifier('IT Manager')->willReturn($userGroup);
-        $categoryRepository->findOneByIdentifier('videos')->willReturn($category);
+        $categoryRepository->findOneByIdentifier('2013_collection')->willReturn($category);
 
         $this->update($categoryAccess, $values, []);
     }
 
     function it_throws_an_exception_if_group_not_found(
         $groupRepository,
-        AssetCategoryAccess $categoryAccess
+        ProductCategoryAccess $categoryAccess
     ) {
         $groupRepository->findOneByIdentifier('foo')->willReturn(null);
 
@@ -75,11 +75,11 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_locale_not_found(
         $categoryRepository,
-        AssetCategoryAccess $categoryAccess
+        ProductCategoryAccess $categoryAccess
     ) {
         $categoryRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('Asset category with "foo" code does not exist'))
+        $this->shouldThrow(new \InvalidArgumentException('Product category with "foo" code does not exist'))
             ->during('update', [$categoryAccess, ['category' => 'foo']]);
     }
 }

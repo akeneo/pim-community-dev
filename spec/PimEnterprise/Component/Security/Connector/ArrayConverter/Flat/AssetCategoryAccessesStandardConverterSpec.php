@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AssetCategoryAccessesStandardConverterSpec extends ObjectBehavior
 {
-    function let(FieldsRequirementValidator $validator)
+    function let(FieldsRequirementChecker $fieldChecker)
     {
-        $this->beConstructedWith($validator);
+        $this->beConstructedWith($fieldChecker);
     }
 
     function it_is_a_standard_array_converter()
@@ -21,7 +21,6 @@ class AssetCategoryAccessesStandardConverterSpec extends ObjectBehavior
 
     function it_converts_an_item_to_standard_format()
     {
-
         $item = [
             'category'   => 'videos',
             'view_items' => 'IT support,Manager',
@@ -32,13 +31,13 @@ class AssetCategoryAccessesStandardConverterSpec extends ObjectBehavior
         $result = [
             [
                 'category'   => 'videos',
-                'userGroup'  => 'IT support',
+                'user_group' => 'IT support',
                 'view_items' => true,
                 'edit_items' => true,
                 'own_items'  => false,
             ], [
                 'category'   => 'videos',
-                'userGroup'  => 'Manager',
+                'user_group' => 'Manager',
                 'view_items' => true,
                 'edit_items' => false,
                 'own_items'  => false,

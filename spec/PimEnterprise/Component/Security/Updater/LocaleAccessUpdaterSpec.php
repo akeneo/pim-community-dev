@@ -45,7 +45,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'locale'        => 'en_US',
-            'userGroup'     => 'IT Manager',
+            'user_group'    => 'IT Manager',
             'view_products' => true,
             'edit_products' => false,
         ];
@@ -68,7 +68,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->shouldThrow(new \InvalidArgumentException('Group with "foo" code does not exist'))
-            ->during('update', [$localeAccess, ['userGroup' => 'foo']]);
+            ->during('update', [$localeAccess, ['user_group' => 'foo']]);
     }
 
     function it_throws_an_exception_if_locale_not_found(

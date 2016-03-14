@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
@@ -21,15 +21,15 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  */
 class AssetCategoryAccessesStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $fieldChecker
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $fieldChecker)
     {
-        $this->validator = $validator;
+        $this->fieldChecker = $fieldChecker;
     }
 
     /**
@@ -49,13 +49,13 @@ class AssetCategoryAccessesStandardConverter implements StandardArrayConverterIn
      * [
      *     [
      *         'category'   => 'videos',
-     *         'userGroup'  => 'IT support',
+     *         'user_group'  => 'IT support',
      *         'view_items' => true,
      *         'edit_items' => true,
      *         'own_items'  => false,
      *     ], [
      *         'category'   => 'videos',
-     *         'userGroup'  => 'Manager',
+     *         'user_group'  => 'Manager',
      *         'view_items' => true,
      *         'edit_items' => false,
      *         'own_items'  => false,
@@ -64,13 +64,14 @@ class AssetCategoryAccessesStandardConverter implements StandardArrayConverterIn
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['category']);
+        $this->fieldChecker->checkFieldsPresence($item, ['category']);
+        $this->fieldChecker->checkFieldsFilling($item, ['category']);
 
         $convertedItems = [];
         foreach ($this->getConcernedGroupNames($item) as $groupName) {
             $convertedItems[] = [
                 'category'   => $item['category'],
-                'userGroup'  => $groupName,
+                'user_group' => $groupName,
                 'view_items' => in_array($groupName, $this->getGroupNames($item, 'view_items')),
                 'edit_items' => in_array($groupName, $this->getGroupNames($item, 'edit_items')),
                 'own_items'  => in_array($groupName, $this->getGroupNames($item, 'own_items')),

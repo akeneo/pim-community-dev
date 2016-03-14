@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
-class LocaleAccessesStandardConverterSpec extends ObjectBehavior
+class AttributeGroupAccessesStandardConverterSpec extends ObjectBehavior
 {
     function let(FieldsRequirementChecker $fieldChecker)
     {
@@ -21,24 +21,23 @@ class LocaleAccessesStandardConverterSpec extends ObjectBehavior
 
     function it_converts_an_item_to_standard_format()
     {
-
         $item = [
-            'locale'        => 'en_US',
-            'view_products' => 'IT support,Manager',
-            'edit_products' => 'IT support',
+             'attribute_group' => 'other',
+             'view_attributes' => 'IT support,Manager',
+             'edit_attributes' => 'IT support',
         ];
 
         $result = [
             [
-                'locale'        => 'en_US',
-                'user_group'    => 'IT support',
-                'view_products' => true,
-                'edit_products' => true,
+                'attribute_group' => 'other',
+                'user_group'      => 'IT support',
+                'view_attributes' => true,
+                'edit_attributes' => true,
             ], [
-                'locale'        => 'en_US',
-                'user_group'    => 'Manager',
-                'view_products' => true,
-                'edit_products' => false,
+                'attribute_group' => 'other',
+                'user_group'      => 'Manager',
+                'view_attributes' => true,
+                'edit_attributes' => false,
             ]
         ];
 

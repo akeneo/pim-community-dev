@@ -14,17 +14,18 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Locale Access processor
+ * Attribute Group Access processor
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessProcessor extends AbstractProcessor
+class AttributeGroupAccessProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
     protected $accessConverter;
@@ -65,41 +66,41 @@ class LocaleAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $localeAccesses = [];
+        $groupAccesses = [];
         $convertedItems = $this->accessConverter->convert($item);
         foreach ($convertedItems as $convertedItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
-            $localeAccesses[] = $localeAccess;
+            $groupAccess = $this->findOrCreateAttributeGroupAccess($convertedItem);
+            $groupAccesses[] = $groupAccess;
 
             try {
-                $this->updater->update($localeAccess, $convertedItem);
+                $this->updater->update($groupAccess, $convertedItem);
             } catch (\InvalidArgumentException $exception) {
                 $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
             }
 
-            $violations = $this->validator->validate($localeAccess);
+            $violations = $this->validator->validate($groupAccess);
             if (0 < $violations->count()) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
 
-        return $localeAccesses;
+        return $groupAccesses;
     }
 
     /**
      * @param array $convertedItem
      *
-     * @return LocaleAccessInterface
+     * @return AttributeGroupAccessInterface
      */
-    protected function findOrCreateLocaleAccess(array $convertedItem)
+    protected function findOrCreateAttributeGroupAccess(array $convertedItem)
     {
-        $localeAccess = $this->repository->findOneByIdentifier(
-            sprintf('%s.%s', $convertedItem['locale'], $convertedItem['user_group'])
+        $groupAccess = $this->repository->findOneByIdentifier(
+            sprintf('%s.%s', $convertedItem['attribute_group'], $convertedItem['user_group'])
         );
-        if (null === $localeAccess) {
-            $localeAccess = $this->accessFactory->create();
+        if (null === $groupAccess) {
+            $groupAccess = $this->accessFactory->create();
         }
 
-        return $localeAccess;
+        return $groupAccess;
     }
 }

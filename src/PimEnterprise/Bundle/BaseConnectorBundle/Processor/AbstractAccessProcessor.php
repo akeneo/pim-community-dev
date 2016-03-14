@@ -47,13 +47,13 @@ abstract class AbstractAccessProcessor extends TransformerProcessor
      * OUT :
      * [
      *      'code': 'general',
-     *      'userGroup': 'group A',
+     *      'user_group': 'group A',
      *      'permission1': true,
      *      'permission2': true,
      * ],
      * [
      *      'code': 'general',
-     *      'userGroup': 'group B',
+     *      'user_group': 'group B',
      *      'permission1': true,
      * ]
      *
@@ -75,7 +75,7 @@ abstract class AbstractAccessProcessor extends TransformerProcessor
 
         foreach ($items as $group => $accesses) {
             $accesses = array_merge($this->getPermissions(), $accesses);
-            $accesses['userGroup'] = $group;
+            $accesses['user_group'] = $group;
             if (isset($data['code'])) {
                 $accesses['code'] = $data['code'];
             }

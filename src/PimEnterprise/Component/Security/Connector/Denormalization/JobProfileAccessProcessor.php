@@ -14,17 +14,18 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Locale Access processor
+ * Job Profile Access processor
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessProcessor extends AbstractProcessor
+class JobProfileAccessProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
     protected $accessConverter;
@@ -65,41 +66,41 @@ class LocaleAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $localeAccesses = [];
+        $jobAccesses = [];
         $convertedItems = $this->accessConverter->convert($item);
         foreach ($convertedItems as $convertedItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
-            $localeAccesses[] = $localeAccess;
+            $jobAccess = $this->findOrCreateJobProfileAccess($convertedItem);
+            $jobAccesses[] = $jobAccess;
 
             try {
-                $this->updater->update($localeAccess, $convertedItem);
+                $this->updater->update($jobAccess, $convertedItem);
             } catch (\InvalidArgumentException $exception) {
                 $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
             }
 
-            $violations = $this->validator->validate($localeAccess);
+            $violations = $this->validator->validate($jobAccess);
             if (0 < $violations->count()) {
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
 
-        return $localeAccesses;
+        return $jobAccesses;
     }
 
     /**
      * @param array $convertedItem
      *
-     * @return LocaleAccessInterface
+     * @return JobProfileAccessInterface
      */
-    protected function findOrCreateLocaleAccess(array $convertedItem)
+    protected function findOrCreateJobProfileAccess(array $convertedItem)
     {
-        $localeAccess = $this->repository->findOneByIdentifier(
-            sprintf('%s.%s', $convertedItem['locale'], $convertedItem['user_group'])
+        $jobAccess = $this->repository->findOneByIdentifier(
+            sprintf('%s.%s', $convertedItem['job_profile'], $convertedItem['user_group'])
         );
-        if (null === $localeAccess) {
-            $localeAccess = $this->accessFactory->create();
+        if (null === $jobAccess) {
+            $jobAccess = $this->accessFactory->create();
         }
 
-        return $localeAccess;
+        return $jobAccess;
     }
 }
