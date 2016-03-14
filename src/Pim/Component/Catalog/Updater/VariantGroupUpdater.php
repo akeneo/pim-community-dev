@@ -9,6 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
@@ -36,25 +37,31 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var string */
     protected $productTemplateClass;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param GroupTypeRepositoryInterface $groupTypeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param string                       $productTemplateClass
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param GroupTypeRepositoryInterface        $groupTypeRepository
+     * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectUpdaterInterface              $productUpdater
+     * @param string                              $productTemplateClass
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
-        $productTemplateClass
+        $productTemplateClass,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
-        $this->attributeRepository  = $attributeRepository;
-        $this->groupTypeRepository  = $groupTypeRepository;
-        $this->productBuilder       = $productBuilder;
-        $this->productUpdater       = $productUpdater;
-        $this->productTemplateClass = $productTemplateClass;
+        $this->attributeRepository        = $attributeRepository;
+        $this->groupTypeRepository        = $groupTypeRepository;
+        $this->productBuilder             = $productBuilder;
+        $this->productUpdater             = $productUpdater;
+        $this->productTemplateClass       = $productTemplateClass;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**
@@ -133,6 +140,10 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
             case 'values':
                 $this->setValues($variantGroup, $data);
+                break;
+
+            case 'products':
+                $this->setProducts($variantGroup, $data);
                 break;
         }
     }
@@ -297,6 +308,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                     $originalValues[$code][] = $newValue;
                 }
             }
+
+            $originalValues[$code] = array_values($originalValues[$code]);
         }
 
         return $originalValues;
@@ -324,5 +337,23 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $mergedValuesData;
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @param array          $labels
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function setProducts(GroupInterface $variantGroup, array $productIds)
+    {
+        foreach ($variantGroup->getProducts() as $product) {
+            $variantGroup->removeProduct($product);
+        }
+        $productQueryBuilder = $this->productQueryBuilderFactory->create();
+        $products = $productQueryBuilder->addFilter('id', 'IN', $productIds)->execute();
+        foreach ($products as $product) {
+            $variantGroup->addProduct($product);
+        }
     }
 }

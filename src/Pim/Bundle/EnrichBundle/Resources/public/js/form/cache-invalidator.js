@@ -61,7 +61,6 @@ define([
              * Clear the cache for all fetchers
              */
             clearCache: function () {
-                console.log('Clear cache !');
                 FetcherRegistry.clearAll();
             }
         });

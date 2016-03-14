@@ -36,6 +36,7 @@ services:
             - '@pim_catalog.saver.group_options_resolver'
             - '@event_dispatcher'
             - %pim_catalog.entity.product.class%
+            - '@pim_catalog.query.product_query_builder_factory'
 
     pim_catalog.saver.family:
         class: %pim_catalog.saver.family.class%

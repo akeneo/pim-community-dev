@@ -14,7 +14,7 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/save-buttons'
+        'text!pim/template/form/save-buttons'
     ],
     function ($, _, Backbone, mediator, BaseForm, template) {
         return BaseForm.extend({
@@ -25,6 +25,10 @@ define(
                 events: {}
             },
             events: {},
+
+            /**
+             * {@inheritdoc}
+             */
             initialize: function () {
                 this.model = new Backbone.Model({
                     buttons: []
@@ -34,9 +38,10 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            configure: function () {
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var buttons = this.model.get('buttons');
                 this.$el.html(this.template({
@@ -47,6 +52,12 @@ define(
 
                 return this;
             },
+
+            /**
+             * Add a button to the
+             *
+             * @param {Object} options
+             */
             addButton: function (options) {
                 var button = _.extend({}, this.buttonDefaults, options);
                 this.events = _.extend(this.events, button.events);

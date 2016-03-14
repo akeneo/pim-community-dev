@@ -110,6 +110,9 @@ services:
         class: %pim_enrich.normalizer.group.class%
         arguments:
             - '@pim_serializer.normalizer.group'
+            - '@pim_enrich.provider.structure_version.variant_group'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

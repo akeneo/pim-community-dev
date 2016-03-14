@@ -15,7 +15,7 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'oro/messenger',
-        'text!pim/template/form/common/save'
+        'text!pim/template/form/save'
     ],
     function (
         $,

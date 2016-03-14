@@ -1,0 +1,32 @@
+<div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse">
+        <i class="icon-chevron-down"></i>
+        <%- _.__('pim_enrich.form.variant_group.tab.properties.label_translations') %>
+    </a>
+</div>
+<div class="accordion-body in">
+    <div class="accordion-inner">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <% _.each(locales, function (locale) { %>
+                        <th>
+                            <label for="pim_enrich_variant_group_form_label_<%- locale.code %>">
+                                <%- locale.label %>
+                            </label>
+                        </th>
+                    <% }) %>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <% _.each(locales, function (locale) { %>
+                        <td>
+                            <input type="text" id="pim_enrich_variant_group_form_label_<%- locale.code %>" class="input-large label-field" data-locale="<%- locale.code %>" value="<%- model.labels[locale.code] %>">
+                        </td>
+                    <% }) %>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

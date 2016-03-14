@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/back-to-grid',
+        'text!pim/template/form/back-to-grid',
         'routing',
         'pim/user-context',
         'oro/navigation'
@@ -20,16 +20,32 @@ define(
         return BaseForm.extend({
             className: 'btn-group',
             template: _.template(template),
+            config: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 UserContext.off('change:catalogLocale', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.html(this.template({
                     path: Routing.generate(
-                        'pim_enrich_product_index',
+                        this.config.backUrl,
                         {
                             dataLocale: UserContext.get('catalogLocale')
                         }
