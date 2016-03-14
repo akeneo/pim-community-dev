@@ -3,12 +3,16 @@
 namespace Pim\Behat\Context\Domain\Enrich;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 class VariantGroupContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param array|string $data
      *
@@ -127,6 +131,70 @@ class VariantGroupContext extends PimContext
     public function iSelectVariantGroup($variant)
     {
         $this->getCurrentPage()->fillField('Group', $variant);
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Then /^the variant group property "([^"Axis]*)" should be disabled$/
+     *
+     * @throws ExpectationException
+     */
+    public function theVariantGroupPropertyShouldBeDisabled($field)
+    {
+        assertTrue(
+            $this->findPropertyFieldByLabel($field)->hasAttribute('disabled'),
+            sprintf('Expecting field "%s" to be disabled.', $field)
+        );
+    }
+
+    /**
+     * Same function as above but specific to the Axis field which differ
+     *
+     * @Then /^the variant group property "Axis" should be disabled$/
+     *
+     * @throws ExpectationException
+     */
+    public function theVariantGroupPropertyAxisShouldBeDisabled()
+    {
+        $node = $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', 'label:contains("Axis")');
+        }, 'Unable to find a label containing "Axis"');
+
+        $field = $this->spin(function () use ($node) {
+            return $node->getParent()->find('css', 'input');
+        }, 'Unable to find an input in the parent of the label "Axis"');
+
+        assertTrue($field->hasAttribute('disabled'), 'Expecting field "Axis" to be disabled.');
+    }
+
+    /**
+     * @param string $label
+     * @param string $value
+     *
+     * @Given /^I fill in the variant group property "([^"]*)" with "([^"]*)"$/
+     */
+    public function iFillInTheVariantGroupPropertyWith($label, $value)
+    {
+        $this->findPropertyFieldByLabel($label)->setValue($value);
+    }
+
+    /**
+     * @param string $label
+     *
+     * @return NodeElement
+     */
+    protected function findPropertyFieldByLabel($label)
+    {
+        $node = $this->spin(function () use ($label) {
+            return $this->getSession()->getPage()->find('css', sprintf('label:contains("%s")', $label));
+        }, sprintf('Unable to find a label containing "%s"', $label));
+
+        assertTrue($node->hasAttribute('for'));
+
+        return $this->spin(function () use ($node) {
+            return $this->getSession()->getPage()->find('css', sprintf('#%s', $node->getAttribute('for')));
+        }, sprintf('Unable to find element with id "%s"', $node->getAttribute('for')));
     }
 
     /**

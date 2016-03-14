@@ -84,7 +84,7 @@ Feature: Editing attribute values of a variant group also updates products
 
   Scenario: Change a pim_catalog_price_collection attribute of a variant group
     When I visit the "Marketing" group
-    And I change the "€ Price" to "89"
+    And I change the "Price" to "89 EUR"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
@@ -106,7 +106,7 @@ Feature: Editing attribute values of a variant group also updates products
       | name-en_US | In a galaxy far far away |
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
-    When I change the "tablet Description" to "The best boots!"
+    When I change the "Description" to "The best boots!"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:

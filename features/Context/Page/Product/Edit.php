@@ -4,11 +4,13 @@ namespace Context\Page\Product;
 
 use Akeneo\Component\Classification\Model\Category;
 use Behat\Mink\Element\Element;
+use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\ProductEditForm;
 use Context\Page\Category\CategoryView;
+use Context\Spin\TimeoutException;
 
 /**
  * Product edit page
@@ -58,7 +60,7 @@ class Edit extends ProductEditForm
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
                 'Progress bar'            => ['css' => '.progress-bar'],
-                'Save'                    => ['css' => 'button.save-product'],
+                'Save'                    => ['css' => '.save'],
                 'Attribute tab'           => [
                     'css'        => '.tab-container .product-attributes',
                     'decorators' => [
@@ -80,27 +82,6 @@ class Edit extends ProductEditForm
                 ]
             ]
         );
-    }
-
-    /**
-     * Press the save button
-     */
-    public function save()
-    {
-        $element = $this->getElement('Save');
-
-        $this->spin(function () use ($element) {
-            return $element->isVisible();
-        }, "Waiting for save button to be visible");
-
-        $element->click();
-
-        $this->spin(function () {
-            return null === $this->find(
-                'css',
-                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
-            );
-        });
     }
 
     /**
@@ -164,7 +145,7 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getHistoryRows()
     {
@@ -221,14 +202,9 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * Extracts and returns the label NodeElement, identified by $field content and $element
-     *
-     * @param string  $field
-     * @param Element $element
-     *
-     * @return NodeElement
+     * {@inheritdoc}
      */
-    protected function extractLabelElement($field, $element)
+    protected function extractLabelElement($field, ElementInterface $element)
     {
         $subLabelContent = null;
         $labelContent    = $field;
@@ -239,18 +215,14 @@ class Edit extends ProductEditForm
             }
         }
 
-        if ($element) {
+        if (null !== $element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
+            }, sprintf('Unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, sprintf('unable to find label %s', $labelContent));
-        }
-
-        if (!$label) {
-            $label = new \StdClass();
+            }, sprintf('Unable to find label %s', $labelContent));
         }
 
         $label->labelContent    = $labelContent;
@@ -282,38 +254,6 @@ class Edit extends ProductEditForm
 
         return $field->getParent()->getParent()
             ->find('css', 'footer')->find('css', '.footer-elements-container');
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return NodeElement
-     */
-    public function getRemoveLinkFor($field)
-    {
-        $link = $this->spin(function () use ($field) {
-            $link = $this->find(
-                'css',
-                sprintf(
-                    '.control-group:contains("%s") .remove-attribute',
-                    $field
-                )
-            );
-
-            if (!$link) {
-                $link = $this->find(
-                    'css',
-                    sprintf(
-                        '.field-container:contains("%s") .remove-attribute',
-                        $field
-                    )
-                );
-            }
-
-            return $link;
-        }, "Spining to get remove link on product edit form for field $field");
-
-        return $link;
     }
 
     /**
@@ -889,9 +829,7 @@ class Edit extends ProductEditForm
     /**
      * Find an attribute group in the nav
      *
-     * @param string $attributeGroupCode
-     *
-     * @throws \Exception
+     * @param string $group
      *
      * @return NodeElement
      */
@@ -904,33 +842,6 @@ class Edit extends ProductEditForm
         }, sprintf("Can't find attribute group '%s'", $group));
 
         return $groupNode->getParent()->getParent();
-    }
-
-    /**
-     * @param string $name
-     * @param string $scope
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
-     */
-    protected function findScopedField($name, $scope)
-    {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $scopeLabel = $label
-            ->getParent()
-            ->find('css', sprintf('label[title="%s"]', $scope));
-
-        if (!$scopeLabel) {
-            throw new ElementNotFoundException($this->getSession(), 'form label', 'title', $name);
-        }
-
-        return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
     }
 
     /**

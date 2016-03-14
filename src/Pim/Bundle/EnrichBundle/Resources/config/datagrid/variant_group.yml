@@ -26,7 +26,7 @@ datagrid:
                     - id
             delete_link:
                 type: url
-                route: pim_enrich_variant_group_remove
+                route: pim_enrich_variant_group_rest_remove
                 params:
                     - id
         actions:

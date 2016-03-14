@@ -57,6 +57,7 @@ services:
         arguments:
             - '@pim_serializer.normalizer.flat.label_translation'
             - '@pim_serializer.denormalizer.product_values'
+            - '@pim_serializer.normalizer.product_values'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

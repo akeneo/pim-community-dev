@@ -8,16 +8,18 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GroupNormalizerSpec extends ObjectBehavior
 {
     function let(
         TranslationNormalizer $transNormalizer,
         DenormalizerInterface $valuesDenormalizer,
-        GroupInterface $group
+        NormalizerInterface $valuesNormalizer
     ) {
-        $this->beConstructedWith($transNormalizer, $valuesDenormalizer);
+        $this->beConstructedWith($transNormalizer, $valuesDenormalizer, $valuesNormalizer);
     }
 
     function it_is_a_serializer_aware_normalizer()
@@ -26,7 +28,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_json_and_xml_normalization_of_group($group)
+    function it_supports_json_and_xml_normalization_of_group(GroupInterface $group)
     {
         $this->supportsNormalization($group, 'json')->shouldReturn(true);
         $this->supportsNormalization($group, 'xml')->shouldReturn(true);
@@ -40,7 +42,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_group_without_axis_attribute(
         $transNormalizer,
-        $group,
+        GroupInterface $group,
         GroupTypeInterface $groupType
     ) {
         $groupType->getCode()->willReturn('RELATED');
@@ -59,7 +61,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_group_with_axis_attributes(
         $transNormalizer,
-        $group,
+        GroupInterface $group,
         GroupTypeInterface $groupType,
         AttributeInterface $attr1,
         AttributeInterface $attr2
@@ -84,7 +86,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_variant_group_and_sorts_axis_attributes(
         $transNormalizer,
-        $group,
+        GroupInterface $group,
         GroupTypeInterface $groupType,
         AttributeInterface $attr1,
         AttributeInterface $attr2,
@@ -112,7 +114,8 @@ class GroupNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_variant_group_with_its_values(
         $transNormalizer,
         $valuesDenormalizer,
-        $group,
+        $valuesNormalizer,
+        GroupInterface $group,
         GroupTypeInterface $groupType,
         AttributeInterface $attr,
         ProductTemplateInterface $productTemplate
@@ -130,6 +133,9 @@ class GroupNormalizerSpec extends ObjectBehavior
         $format = 'csv';
 
         $productTemplate->getValuesData()->willReturn($valuesData);
+        $valuesDenormalizer->denormalize($valuesData, Argument::any(), Argument::any())->willReturn('denormalized_values');
+        $valuesNormalizer->normalize('denormalized_values', Argument::any(), Argument::any())->willReturn('normalized_values');
+
         $group->getProductTemplate()->willReturn($productTemplate);
         $group->getType()->willReturn($groupType);
 
@@ -143,10 +149,7 @@ class GroupNormalizerSpec extends ObjectBehavior
             'code' => 'laser_sabers',
             'type' => 'VARIANT',
             'axis' => ['light_color'],
-            'values' => [
-                'name' => 'Light saber model',
-                'size' => '120'
-            ]
+            'values' => 'normalized_values'
         ]);
     }
 }

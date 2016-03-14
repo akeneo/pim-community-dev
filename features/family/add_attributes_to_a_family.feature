@@ -8,6 +8,7 @@ Feature: Add attribute to a family
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
+  @javascript
   Scenario: Successfully list available grouped attributes
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab

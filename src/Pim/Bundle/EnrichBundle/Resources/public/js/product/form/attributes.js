@@ -51,6 +51,21 @@ define(
                 'click .remove-attribute': 'removeAttribute'
             },
             rendering: false,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, {
+                    deleteUrl: 'pim_enrich_product_remove_attribute_rest'
+                }, meta.config);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
@@ -76,6 +91,10 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured || this.rendering) {
                     return this;
@@ -181,11 +200,11 @@ define(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locales, channels, currencies) {
-                    var product = this.getFormData();
+                    var formData = this.getFormData();
 
                     _.each(attributes, function (attribute) {
-                        if (!product.values[attribute.code]) {
-                            product.values[attribute.code] = AttributeManager.generateMissingValues(
+                        if (!formData.values[attribute.code]) {
+                            formData.values[attribute.code] = AttributeManager.generateMissingValues(
                                 [],
                                 attribute,
                                 locales,
@@ -199,7 +218,7 @@ define(
                         _.first(attributes).group_code
                     );
 
-                    this.setData(product);
+                    this.setData(formData);
 
                     this.getRoot().trigger('pim_enrich:form:add-attribute:after');
                 }.bind(this));
@@ -209,7 +228,7 @@ define(
                     return;
                 }
                 var attributeCode = event.currentTarget.dataset.attribute;
-                var product = this.getFormData();
+                var formData = this.getFormData();
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
@@ -220,9 +239,9 @@ define(
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(
-                                    'pim_enrich_product_remove_attribute_rest',
+                                    this.config.deleteUrl,
                                     {
-                                        productId: this.getFormData().meta.id,
+                                        id: this.getFormData().meta.id,
                                         attributeId: attribute.id
                                     }
                                 ),
@@ -230,10 +249,10 @@ define(
                             }).then(function () {
                                 this.triggerExtensions('add-attribute:update:available-attributes');
 
-                                delete product.values[attributeCode];
+                                delete formData.values[attributeCode];
                                 delete fields[attributeCode];
 
-                                this.setData(product);
+                                this.setData(formData);
 
                                 this.getRoot().trigger('pim_enrich:form:remove-attribute:after');
 

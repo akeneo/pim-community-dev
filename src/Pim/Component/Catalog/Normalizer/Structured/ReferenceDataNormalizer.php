@@ -24,7 +24,7 @@ class ReferenceDataNormalizer implements NormalizerInterface
             'code' => $object->getCode(),
         ];
 
-        if (isset($context['entity']) && 'product' === $context['entity']) {
+        if (isset($context['entity']) && in_array($context['entity'], ['product', 'variant-group'])) {
             return $normalizedData['code'];
         }
 

@@ -235,7 +235,7 @@ class ProductController
     /**
      * Remove an optional attribute form a product
      *
-     * @param int $productId   The product id
+     * @param int $id          The product id
      * @param int $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
@@ -246,9 +246,9 @@ class ProductController
      *
      * @return JsonResponse
      */
-    public function removeAttributeAction($productId, $attributeId)
+    public function removeAttributeAction($id, $attributeId)
     {
-        $product = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($id);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }

@@ -11,6 +11,7 @@ define(
     [
         'module',
         'underscore',
+        'oro/translator',
         'backbone',
         'text!pim/template/product/form',
         'pim/form',
@@ -21,6 +22,7 @@ define(
     function (
         module,
         _,
+        __,
         Backbone,
         template,
         BaseForm,
@@ -51,7 +53,7 @@ define(
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
-                    this.template({})
+                    this.template({'__': __})
                 );
 
                 this.renderExtensions();

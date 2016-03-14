@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -151,19 +152,25 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^I should (not )?see the "([^"]*)" tab$/
+     * @Then /^I should see the "([^"]*)" tab$/
      */
-    public function iShouldSeeTheTab($not, $tab)
+    public function iShouldSeeTheTab($tab)
     {
-        $tabElement = $this->getCurrentPage()->getFormTab($tab);
+        assertNotNull($this->getCurrentPage()->getFormTab($tab));
+    }
 
-        if ($not && $tabElement) {
-            throw $this->createExpectationException(sprintf('Expecting not to see tab "%s"', $tab));
+    /**
+     * @Then /^I should not see the "([^"]*)" tab$/
+     */
+    public function iShouldNotSeeTheTab($tab)
+    {
+        try {
+            $this->getCurrentPage()->getFormTab($tab);
+        } catch (TimeoutException $e) {
+            return;
         }
 
-        if (!$not && !$tabElement) {
-            throw $this->createExpectationException(sprintf('Expecting to see tab "%s", not found', $tab));
-        }
+        throw $this->createExpectationException(sprintf('Expecting not to see tab "%s"', $tab));
     }
 
     /**
@@ -622,22 +629,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $fieldName
-     * @param string $expected
+     * @param string $inputLabel
+     * @param string $expectedValue
      *
      * @Then /^the product ([^"]*) should be empty$/
      * @Then /^the product ([^"]*) should be "([^"]*)"$/
+     * @Then /^the variant group ([^"]*) should be empty$/
+     * @Then /^the variant group ([^"]*) should be "([^"]*)"$/
      *
      * @throws \LogicException
      * @throws ExpectationException
      */
-    public function theProductFieldValueShouldBe($fieldName, $expected = '')
+    public function theProductFieldValueShouldBe($inputLabel, $expectedValue = '')
     {
-        $this->spin(function () use ($fieldName, $expected) {
-            $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
-
-            return true;
-        });
+        $this->getCurrentPage()->compareFieldValue($inputLabel, $expectedValue);
     }
 
     /**
@@ -805,29 +810,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $field
      * @param string $value
-     * @param string $language
-     *
      *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
-     * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
-    public function iChangeTheTo($field, $value = null, $language = null)
+    public function iChangeTheTo($field, $value = null)
     {
-        if (null !== $language) {
-            try {
-                $field = $this->spin(function () use ($field, $language) {
-                    return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                });
-            } catch (\BadMethodCallException $e) {
-                // Use default $field if current page does not provide a getFieldLocator method
-            }
+        if (null === $value) {
+            $value = $this->getInvalidValueFor(sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field));
         }
-
-        $value = $value !== null ? $value : $this->getInvalidValueFor(
-            sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
-        );
 
         $this->getCurrentPage()->fillField($field, $value);
         $this->wait();
@@ -846,38 +838,43 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $not
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should see available attributes? (.*) in group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
             $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-            if (!$not) {
-                if (!$element) {
-                    throw $this->createExpectationException(
-                        sprintf(
-                            'Expecting to see attribute %s under group %s, but was not present.',
-                            $attribute,
-                            $group
-                        )
-                    );
-                }
-            } else {
-                if ($element) {
-                    throw $this->createExpectationException(
-                        sprintf(
-                            'Expecting not to see attribute %s under group %s, but was present.',
-                            $attribute,
-                            $group
-                        )
-                    );
-                }
+
+            if (null === $element) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $attributes
+     * @param string $group
+     *
+     * @Then /^I should not see available attributes? (.*) in group "([^"]*)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeAvailableAttributesInGroup($attributes, $group)
+    {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+
+            if (null !== $element) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting not to see attribute "%s" under group "%s"', $attribute, $group)
+                );
             }
         }
     }
@@ -926,8 +923,9 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAttributesInGroup($attributes, $group)
     {
         $attributes = $this->listToArray($attributes);
+
         foreach ($attributes as $attribute) {
-            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
+            if (null === $this->getCurrentPage()->getAttribute($attribute, $group)) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting to see attribute %s under group %s, but was not present.',
@@ -950,7 +948,9 @@ class WebUser extends RawMinkContext
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
         try {
-            $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+            $removeLink = $this->getCurrentPage()
+                ->getElement('Attribute inputs')
+                ->getRemoveLinkFor($field);
         } catch (TimeoutException $te) {
             $removeLink = null;
         }
@@ -1004,7 +1004,9 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheAttribute($field)
     {
-        if (null === $link = $this->getCurrentPage()->getRemoveLinkFor($field)) {
+        $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
+
+        if (null === $removeLink) {
             throw $this->createExpectationException(
                 sprintf(
                     'Remove link on field "%s" should be displayed.',
@@ -1013,7 +1015,7 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $link->click();
+        $removeLink->click();
         $this->wait();
     }
 

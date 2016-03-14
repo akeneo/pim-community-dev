@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/dialog',
         'pim/form',
@@ -21,6 +22,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         Dialog,
         BaseForm,
@@ -33,14 +35,14 @@ define(
             template: _.template(template),
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',
-            message: _.__('pim_enrich.info.entity.updated'),
-            confirmationMessage: _.__(
+            message: __('pim_enrich.info.entity.updated'),
+            confirmationMessage: __(
                 'pim_enrich.confirmation.discard_changes',
                 {
-                    'entity': _.__('pim_enrich.entity.product.title')
+                    'entity': __('pim_enrich.entity.product.title')
                 }
             ),
-            confirmationTitle: _.__('pim_enrich.confirmation.leave'),
+            confirmationTitle: __('pim_enrich.confirmation.leave'),
 
             /**
              * @inheritdoc

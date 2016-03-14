@@ -11,22 +11,39 @@ define([
     ) {
         return {
             /**
-             * Get the attributes of the given product
+             * Get the attributes of the given entity
              *
-             * @param  {Object} product
+             * @param {Object} entity
              *
              * @return {Array}
              */
-            getAttributesForProduct: function (product) {
-                if (!product.family) {
-                    return $.Deferred().resolve(_.keys(product.values));
+            getAttributes: function (entity) {
+                if (!entity.family) {
+                    return $.Deferred().resolve(_.keys(entity.values));
                 } else {
                     return FetcherRegistry.getFetcher('family')
-                        .fetch(product.family)
+                        .fetch(entity.family)
                         .then(function (family) {
-                            return _.union(_.keys(product.values), family.attributes);
+                            return _.union(_.keys(entity.values), family.attributes);
                         });
                 }
+            },
+
+            /**
+             * Get the axis attributes of the given entity
+             *
+             * @param {Object} entity
+             *
+             * @return {Array}
+             */
+            getAxisAttributes: function (entity) {
+                var axis = [];
+
+                if (_.isArray(entity.axis)) {
+                    axis = entity.axis;
+                }
+
+                return $.Deferred().resolve(axis);
             },
 
             /**
@@ -39,7 +56,7 @@ define([
             getAvailableOptionalAttributes: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    this.getAttributesForProduct(product)
+                    this.getAttributes(product)
                 ).then(function (attributes, productAttributes) {
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),

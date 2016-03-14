@@ -41,7 +41,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $french->getLabel()->willReturn('bar');
 
         $this->normalize($translatable, 'xml', ['locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']])->shouldReturn([
-            'label' => [
+            'labels' => [
                 'en_US' => 'foo',
                 'de_DE' => '',
                 'fr_FR' => 'bar',
@@ -63,7 +63,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
             'property' => 'label',
             'locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']
         ])->shouldReturn([
-            'label' => [
+            'labels' => [
                 'en_US' => '',
                 'de_DE' => '',
                 'fr_FR' => '',
@@ -86,7 +86,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
             'locales'  => ['en_US', 'fr_FR'],
             'property' => 'label'
         ])->shouldReturn([
-            'label' => ['en_US' => '', 'fr_FR' => ''],
+            'labels' => ['en_US' => '', 'fr_FR' => ''],
         ]);
     }
 
@@ -113,7 +113,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
             'locales'  => [],
             'property' => 'label'
         ])->shouldReturn([
-            'label' => ['en_US' => 'foo', 'fr_FR' => 'bar', 'de_DE' => 'baz'],
+            'labels' => ['en_US' => 'foo', 'fr_FR' => 'bar', 'de_DE' => 'baz'],
         ]);
     }
 

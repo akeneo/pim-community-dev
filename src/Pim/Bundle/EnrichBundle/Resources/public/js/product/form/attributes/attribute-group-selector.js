@@ -46,7 +46,12 @@ define(
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
                         .then(function (attributeGroups) {
+                            var globalErrors = [];
                             _.each(valuesErrors, function (error) {
+                                if (error.global) {
+                                    globalErrors.push(error);
+                                }
+
                                 var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                                     attributeGroups,
                                     error.attribute
@@ -54,11 +59,9 @@ define(
                                 this.addToBadge(attributeGroup, 'invalid');
                             }.bind(this));
 
-                            if (!_.isEmpty(valuesErrors)) {
-                                this.getRoot().trigger(
-                                    'pim_enrich:form:show_attribute',
-                                    _.first(valuesErrors)
-                                );
+                            // Don't force attributes tab if only global errors
+                            if (!_.isEmpty(valuesErrors) && valuesErrors.length > globalErrors.length) {
+                                this.getRoot().trigger('pim_enrich:form:show_attribute', _.first(valuesErrors));
                             }
                         }.bind(this));
                 }

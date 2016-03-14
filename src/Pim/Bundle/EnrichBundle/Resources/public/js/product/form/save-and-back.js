@@ -34,13 +34,13 @@ define(
                     priority: 150,
                     label: _.__('pim_enrich.entity.product.btn.save_and_back'),
                     events: {
-                        'click .save-product-and-back': this.saveAndCreate.bind(this)
+                        'click .save-product-and-back': this.saveAndBack.bind(this)
                     }
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            saveAndCreate: function () {
+            saveAndBack: function () {
                 this.parent.getExtension('save')
                     .save({silent: true})
                     .done(function () {
