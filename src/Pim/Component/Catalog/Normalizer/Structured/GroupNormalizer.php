@@ -25,16 +25,24 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
     /** @var DenormalizerInterface */
     protected $valuesDenormalizer;
 
+    /** @var NormalizerInterface */
+    protected $valuesNormalizer;
+
     /**
      * Constructor
      *
      * @param TranslationNormalizer $transNormalizer
      * @param DenormalizerInterface $valuesDenormalizer
+     * @param NormalizerInterface   $valuesNormalizer
      */
-    public function __construct(TranslationNormalizer $transNormalizer, DenormalizerInterface $valuesDenormalizer)
-    {
-        $this->transNormalizer = $transNormalizer;
+    public function __construct(
+        TranslationNormalizer $transNormalizer,
+        DenormalizerInterface $valuesDenormalizer,
+        NormalizerInterface $valuesNormalizer
+    ) {
+        $this->transNormalizer  = $transNormalizer;
         $this->valuesDenormalizer = $valuesDenormalizer;
+        $this->valuesNormalizer = $valuesNormalizer;
     }
 
     /**
@@ -61,10 +69,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
         }
 
         if (isset($context['with_variant_group_values']) && true === $context['with_variant_group_values']) {
-            $variantGroupValues = $this->normalizeVariantGroupValues($object, $format, $context);
-            if (!empty($variantGroupValues)) {
-                $results['values'] = $variantGroupValues;
-            }
+            $results['values'] = $this->normalizeVariantGroupValues($object, $format, $context);
         }
 
         return $results;
@@ -107,12 +112,23 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
      */
     protected function normalizeVariantGroupValues(GroupInterface $group, $format, array $context)
     {
-        $valuesData = [];
-        if ($group->getType()->isVariant() && null !== $group->getProductTemplate()) {
-            $template = $group->getProductTemplate();
-            $valuesData = $template->getValuesData();
+        if (!$group->getType()->isVariant() || null === $group->getProductTemplate()) {
+            return [];
         }
 
-        return $valuesData;
+        $context["entity"] = "variant-group";
+
+        // As variant group > product template > values data are not type hinted we cannot normalize them directly
+        // so we first denormalize them into product values using the common format then normalize them
+        // this allow to transform localization based values for example
+        return $this->valuesNormalizer->normalize(
+            $this->valuesDenormalizer->denormalize(
+                $group->getProductTemplate()->getValuesData(),
+                $format,
+                $context
+            ),
+            $format,
+            $context
+        );
     }
 }

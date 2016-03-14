@@ -14,6 +14,7 @@ parameters:
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
+    pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -110,6 +111,9 @@ services:
         class: %pim_enrich.normalizer.group.class%
         arguments:
             - '@pim_serializer.normalizer.group'
+            - '@pim_enrich.provider.structure_version.variant_group'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -122,3 +126,8 @@ services:
         class: %pim_enrich.normalizer.product_violation.class%
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.variant_group_violation:
+        class: %pim_enrich.normalizer.variant_group_violation.class%
+        arguments:
+            - '@pim_internal_api_serializer'

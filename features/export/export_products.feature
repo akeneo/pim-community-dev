@@ -215,10 +215,10 @@ Feature: Export products
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-    SNKRS-1B;aaa;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-    SNKRS-1R;bbb;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
-    SNKRS-1C;ccc;summer_collection;charcoal;;1;sneakers;;;;"Model 1";55.00;75.00;;;45;;
+    sku;123;categories;color;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    SNKRS-1B;aaa;summer_collection;black;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1R;bbb;summer_collection;red;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1C;ccc;summer_collection;charcoal;;;1;sneakers;;;;"Model 1";;55.00;75.00;;;45;;
     """
 
   Scenario: Export attributes with a predefine order

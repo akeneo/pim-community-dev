@@ -8,8 +8,8 @@ datagrid:
                 dataField: id
                 columnName: is_checked
                 selectors:
-                    included: '#appendProducts'
-                    excluded: '#removeProducts'
+                    included: '#added_objects'
+                    excluded: '#removed_objects'
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product

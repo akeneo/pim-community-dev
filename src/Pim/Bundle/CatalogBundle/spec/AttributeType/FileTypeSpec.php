@@ -35,11 +35,6 @@ class FileTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
     }
 
-    function it_prepares_the_value_form_alias($value)
-    {
-        $this->getFormType($value)->shouldReturn('pim_enrich_media');
-    }
-
     function it_prepares_the_value_form_options($value, $attribute)
     {
         $attribute->getLabel()->willReturn('myLabel');

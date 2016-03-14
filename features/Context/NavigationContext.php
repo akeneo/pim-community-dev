@@ -370,8 +370,8 @@ class NavigationContext extends BaseNavigationContext
         }, sprintf('Cannot find product "%s"', $product->getId()));
 
         $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.product-label');
-        }, 'Cannot find ".product-label" in product page');
+            return $this->getCurrentPage()->find('css', '.object-label');
+        }, 'Can not find any product label');
     }
 
     /**

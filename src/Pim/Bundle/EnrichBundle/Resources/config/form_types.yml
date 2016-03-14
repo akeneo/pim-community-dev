@@ -1,15 +1,8 @@
 parameters:
-    pim_enrich.form.type.product.class:                        Pim\Bundle\EnrichBundle\Form\Type\ProductType
-    pim_enrich.form.type.product_template.class:               Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType
-    pim_enrich.form.type.product_edit.class:                   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
-    pim_enrich.form.type.product_create.class:                 Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
-    pim_enrich.form.type.product.view.class:                   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
-    pim_enrich.form.type.product_value.class:                  Pim\Bundle\EnrichBundle\Form\Type\ProductValueType
-    pim_enrich.form.type.product_value_wysiwyg.class:          Pim\Bundle\EnrichBundle\Form\Type\WysiwygType
-    pim_enrich.form.type.product_value_price.class:            Pim\Bundle\EnrichBundle\Form\Type\PriceType
-    pim_enrich.form.type.product_value_price_collection.class: Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType
-    pim_enrich.form.type.product_value_metric.class:           Pim\Bundle\EnrichBundle\Form\Type\MetricType
-    pim_enrich.form.type.product_value_media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
+    pim_enrich.form.type.product.class:        Pim\Bundle\EnrichBundle\Form\Type\ProductType
+    pim_enrich.form.type.product_edit.class:   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
+    pim_enrich.form.type.product_create.class: Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
+    pim_enrich.form.type.product.view.class:   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
 
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
@@ -21,6 +14,7 @@ parameters:
     pim_enrich.form.type.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Type\AttributeGroupType
     pim_enrich.form.type.association.class:      Pim\Bundle\EnrichBundle\Form\Type\AssociationType
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
+    pim_enrich.form.type.media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
     pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
     pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
@@ -60,17 +54,6 @@ services:
         tags:
             - { name: form.type, alias: pim_product }
 
-    pim_enrich.form.type.product_template:
-        class: '%pim_enrich.form.type.product_template.class%'
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_enrich.form.subscriber.transform_product_template_values'
-            - '@pim_user.context.user'
-            - '@pim_catalog.repository.channel'
-            -  '%pim_catalog.entity.product_template.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_product_template }
-
     pim_enrich.form.type.product_edit:
         class: '%pim_enrich.form.type.product_edit.class%'
         arguments:
@@ -86,15 +69,6 @@ services:
             - '@pim_catalog.repository.family'
         tags:
             - { name: form.type, alias: pim_product_create }
-
-    pim_enrich.form.type.product_value:
-        class: '%pim_enrich.form.type.product_value.class%'
-        arguments:
-            - '%pim_catalog.entity.product_value.class%'
-            - '@pim_enrich.form.subscriber.add_value_field_subscriber'
-            - '@pim_enrich.form.type.product.view'
-        tags:
-            - { name: form.type, alias: pim_product_value }
 
     pim_enrich.form.type.attribute:
         class: '%pim_enrich.form.type.attribute.class%'
@@ -155,37 +129,6 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_attribute_requirement }
 
-    pim_enrich.form.type.wysiwyg:
-        class: '%pim_enrich.form.type.product_value_wysiwyg.class%'
-        tags:
-            - { name: form.type, alias: pim_wysiwyg }
-
-    pim_enrich.form.type.price:
-        class: '%pim_enrich.form.type.product_value_price.class%'
-        arguments:
-            - '%pim_catalog.entity.product_price.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_price }
-
-    pim_enrich.form.type.price_collection:
-        class: '%pim_enrich.form.type.product_value_price_collection.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_price_collection }
-
-    pim_enrich.form.type.metric:
-        class: '%pim_enrich.form.type.product_value_metric.class%'
-        arguments:
-            - '%pim_catalog.entity.metric.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_metric }
-
-    pim_enrich.form.type.media:
-        class: '%pim_enrich.form.type.product_value_media.class%'
-        arguments:
-            - '%akeneo_file_storage.model.file_info.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_media }
-
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
         arguments:
@@ -227,7 +170,6 @@ services:
             - '%pim_catalog.entity.attribute.class%'
             - '%pim_catalog.entity.group.class%'
         calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_axes']]
         tags:
             - { name: form.type, alias: pim_enrich_variant_group }
@@ -238,6 +180,13 @@ services:
             - '%pim_catalog.entity.group_type.class%'
         tags:
             - { name: form.type, alias: pim_enrich_grouptype }
+
+    pim_enrich.form.type.media:
+        class: '%pim_enrich.form.type.media.class%'
+        arguments:
+            - '%akeneo_file_storage.model.file_info.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_media }
 
     pim_enrich.form.type.association_type:
         class: '%pim_enrich.form.type.association_type.class%'

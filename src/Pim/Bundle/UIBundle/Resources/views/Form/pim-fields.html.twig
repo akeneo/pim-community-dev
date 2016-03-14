@@ -188,11 +188,6 @@
     {% endif %}
 {% endspaceless %}{% endblock form_errors %}
 
-{% block pim_wysiwyg_widget %}
-    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'wysiwyg' }) %}
-    {{ block('textarea_widget') }}
-{% endblock pim_wysiwyg_widget %}
-
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
     <table class="table table-condensed">
@@ -280,70 +275,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block pim_enrich_image_row %}
-    {% spaceless %}
-
-    {% set empty = not form.vars.value or not form.vars.value.key %}
-    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
-        <div class="control-group">
-            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
-            <div class="controls">
-                <label class="upload-zone image{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
-                    <div class="upload-info">
-                        {% if not empty %}
-                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'thumbnail_small' }) }}">
-                            </a>
-                            {% set filename = form.vars.value.originalFilename %}
-                            {% if filename|length > 20 %}
-                                {% set filename = filename|slice(0, 17) ~ '...' %}
-                            {% endif %}
-                        {% else %}
-                            <i class="icon-camera-retro upload-preview empty"></i>
-                        {% endif %}
-                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
-                    </div>
-                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
-                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}{% if disabled %} disabled{% endif %}">
-                            <i class="icon-trash"></i>
-                        </a>
-                    {% endif %}
-                    {% if empty %}
-                        {{ form_widget(form.uploadedFile) }}
-                    {% else %}
-                        {{ form_widget(form.uploadedFile, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                        {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
-                    {% endif %}
-                </label>
-                {{ block('form_info') }}
-                {{ form_widget(form.id) }}
-            </div>
-        </div>
-        <script type="text/javascript">
-            require(
-                ['pim/fileinput'],
-                function(fileinput) {
-                    fileinput.init('{{ form.uploadedFile.vars.id }}');
-                }
-            );
-        </script>
-    {% else %}
-        <div class="control-group">
-            <div class="controls">
-                <label class="upload-zone image empty">
-                    <div class="upload-info">
-                        <span class="upload-filename">
-                            {{ 'pim_enrich.product.no_compared_media'|trans }}
-                        </span>
-                    </div>
-                </label>
-            </div>
-        </div>
-    {% endif %}
-
-    {% endspaceless %}
-{% endblock pim_enrich_image_row %}
-
 {% block widget_attributes %}
 {% if attr.size is not defined %}
     {% if attr.class is defined %}
@@ -388,54 +319,6 @@
     </script>
 {% endspaceless %}
 {% endblock switch_widget %}
-
-{% block pim_enrich_metric_row %}
-{% spaceless %}
-    <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
-        <div class="controls metric input-append">
-            {{ form_widget(form.data, { 'attr': { 'class': 'input-small' }}) }}
-            {{ form_widget(form.unit, { 'attr': { 'class': 'select2 input-small append' }}) }}
-            {{ form_widget(form.family) }}
-            {{ form_errors(form.data) }}
-            {{ block('form_info') }}
-        </div>
-    </div>
-{% endspaceless %}
-{% endblock pim_enrich_metric_row %}
-
-{% block pim_enrich_price_collection_row %}
-    {{ form_row(form, { attr: { class: 'hide' }}) }}
-{% endblock pim_enrich_price_collection_row %}
-
-{% block pim_enrich_price_collection_widget %}
-    {% for child in form.children %}
-        {{ form_widget(child) }}
-        {{ form_errors(child.data) }}
-    {% endfor %}
-    {{ block('form_info') }}
-{% endblock pim_enrich_price_collection_widget %}
-
-{% block pim_enrich_price_widget %}
-{% spaceless %}
-    {% set metadata = {
-        label: currency_symbol(form.currency.vars.value),
-        currency: {
-            fieldName: form.currency.vars.full_name,
-            fieldId:   form.currency.vars.id,
-            data:      form.currency.vars.value,
-            disabled:  form.data.vars.disabled
-        },
-        value: {
-            fieldName: form.data.vars.full_name,
-            fieldId:   form.data.vars.id,
-            data:      form.data.vars.value,
-            disabled:  form.data.vars.disabled
-        }
-    } %}
-    <div class="currency-field" data-metadata="{{ metadata|json_encode }}"></div>
-{% endspaceless %}
-{% endblock pim_enrich_price_widget %}
 
 {% block pim_enrich_attribute_requirement_widget %}
     {% set requiredTitle = 'Required'|trans %}

@@ -853,6 +853,13 @@ div.dropdown-menu.channel {
   }
 }
 
+.no-attribute {
+  color: @slate-grey;
+  font-size: 13px;
+  padding-top: 13px;
+  margin-right: 10px;
+}
+
 .flag-language {
   color: @textColor;
   background-color: transparent;
@@ -1132,10 +1139,10 @@ table#progress-table {
 .mass-edit-form {
   padding: 25px;
   background-color: lighten(@color-light_grey, 4%);
-  .product-edit-form {
+  .entity-edit-form {
     min-height: 300px;
   }
-  .product-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
+  .entity-edit-form .tabs-left > .sidebar > .nav-tabs li.header {
     border-left: 0;
   }
   hr {
@@ -1298,4 +1305,8 @@ button.view-button {
     text-align: center;
     width: 100%;
   }
+}
+
+.tabbable.properties .accordion, .tabbable.history .grid-drop {
+  width: 100%;
 }

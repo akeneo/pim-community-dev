@@ -176,8 +176,8 @@ class Base extends Page
 
         if (null === $subtitle || null === $separator || null === $name) {
             $titleElt = $this->spin(function () {
-                return $this->getElement('Product title')->find('css', '.product-label');
-            }, 'Could not find the page title');
+                return $this->getElement('Product title')->find('css', '.object-label');
+            }, "Could not find the page title");
 
             return $titleElt->getText();
         }

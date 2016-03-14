@@ -9,15 +9,18 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Normalizer\Flat\TranslationNormalizer;
-use spec\Pim\Component\Connector\Normalizer\Flat\CustomSerializer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class GroupNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $transNormalizer, DenormalizerInterface $valuesDenormalizer)
-    {
-        $this->beConstructedWith($transNormalizer, $valuesDenormalizer);
+    function let(
+        TranslationNormalizer $transNormalizer,
+        DenormalizerInterface $valuesDenormalizer,
+        NormalizerInterface $valuesNormalizer
+    ) {
+        $this->beConstructedWith($transNormalizer, $valuesDenormalizer, $valuesNormalizer);
     }
 
     function it_is_a_serializer_aware_normalizer()

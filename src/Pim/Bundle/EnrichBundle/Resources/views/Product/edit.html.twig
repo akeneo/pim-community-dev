@@ -59,7 +59,7 @@
                                     var loadingMask = new LoadingMask();
                                     loadingMask.render().$el.appendTo($('#container')).show();
                                     FetcherRegistry.initialize().done(function () {
-                                        ProductManager.get('{{ productId }}')
+                                        FetcherRegistry.getFetcher('product').fetch('{{ productId }}')
                                             .then(function (product) {
                                                 var sku      = _.escape(product.meta.label[UserContext.get('catalogLocale')]);
                                                 var newTitle = document.title.replace('%product.sku%', sku);
