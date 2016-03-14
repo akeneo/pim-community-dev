@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Removes the values of a specific entity from all products.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductRelatedEntityRemovalCommand extends ContainerAwareCommand
@@ -39,7 +39,6 @@ class ProductRelatedEntityRemovalCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $productRepository = $this->getContainer()->get('pim_catalog.repository.product');
         $entityName        = $input->getArgument('entityName');
         $ids               = explode(',', $input->getArgument('ids'));

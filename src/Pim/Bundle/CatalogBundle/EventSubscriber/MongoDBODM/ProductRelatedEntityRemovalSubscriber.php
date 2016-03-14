@@ -127,34 +127,36 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
      */
     protected function getEntityName($entity)
     {
+        $entityName = null;
+
         if ($entity instanceof AssociationTypeInterface) {
-            return 'AssociationType';
+            $entityName = 'AssociationType';
         }
 
         if ($entity instanceof AttributeInterface) {
-            return 'Attribute';
+            $entityName = 'Attribute';
         }
 
         if ($entity instanceof AttributeOptionInterface) {
-            return 'AttributeOption';
+            $entityName = 'AttributeOption';
         }
 
         if ($entity instanceof CategoryInterface) {
-            return 'Category';
+            $entityName = 'Category';
         }
 
         if ($entity instanceof FamilyInterface) {
-            return 'Family';
+            $entityName = 'Family';
         }
 
         if ($entity instanceof GroupInterface) {
-            return 'Group';
+            $entityName = 'Group';
         }
 
         if ($entity instanceof ChannelInterface) {
-            return 'Channel';
+            $entityName = 'Channel';
         }
 
-        return null;
+        return $entityName;
     }
 }
