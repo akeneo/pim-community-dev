@@ -24,7 +24,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        if (isset($context['entity']) && $context['entity'] === 'product') {
+        if (isset($context['entity']) && in_array($context['entity'], ['product', 'variant-group'])) {
             return $entity->getCode();
         }
 

@@ -50,11 +50,6 @@ class MetricTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_METRIC);
     }
 
-    function it_prepares_the_product_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('pim_enrich_metric');
-    }
-
     function it_prepares_the_product_value_form_options($value, $size, $manager)
     {
         $size->getLabel()->willReturn('size');

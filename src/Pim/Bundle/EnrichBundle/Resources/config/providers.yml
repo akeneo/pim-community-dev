@@ -1,13 +1,13 @@
 parameters:
-    pim_enrich.provider.form_extension.class:            Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
-    pim_enrich.provider.field.chained.class:             Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
-    pim_enrich.provider.field.base.class:                Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
-    pim_enrich.provider.field.wysiwyg.class:             Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
-    pim_enrich.provider.empty_value.chained.class:       Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
-    pim_enrich.provider.empty_value.base.class:          Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
-    pim_enrich.provider.form.chained.class:              Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
-    pim_enrich.provider.form.product.class:              Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
-    pim_enrich.provider.structure_version.product.class: Pim\Bundle\EnrichBundle\Provider\StructureVersion\ProductStructureVersionProvider
+    pim_enrich.provider.form_extension.class:      Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
+    pim_enrich.provider.field.chained.class:       Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
+    pim_enrich.provider.field.base.class:          Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
+    pim_enrich.provider.field.wysiwyg.class:       Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
+    pim_enrich.provider.empty_value.chained.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
+    pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
+    pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
+    pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:
     pim_enrich.provider.form_extension:
@@ -49,7 +49,7 @@ services:
 
     # Structure version provider
     pim_enrich.provider.structure_version.product:
-        class: '%pim_enrich.provider.structure_version.product.class%'
+        class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:
@@ -60,4 +60,14 @@ services:
             - [addResource, ['%pim_catalog.entity.channel.class%']]
             - [addResource, ['%pim_catalog.entity.family.class%']]
             - [addResource, ['%pim_catalog.entity.group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_enrich.provider.structure_version.variant_group:
+        class: %pim_enrich.provider.structure_version.class%
+        arguments:
+            - '@pim_versioning.repository.version'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.channel.class%']]
             - [addResource, ['%pim_catalog.entity.locale.class%']]

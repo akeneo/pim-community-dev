@@ -83,7 +83,7 @@ define(
 
                 return _.map(groups, function (group) {
                     return {
-                        label: group.label[locale] || '[' + group.code + ']',
+                        label: group.labels[locale] || '[' + group.code + ']',
                         code: group.code,
                         isVariant: 'VARIANT' === group.type
                     };
@@ -122,7 +122,7 @@ define(
                             cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
                             title: _.__(
                                 'pim_enrich.entity.product.meta.groups.modal.title',
-                                { group: i18n.getLabel(group.label, UserContext.get('catalogLocale'), group.code) }
+                                { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
                             ),
                             content: this.modalTemplate({
                                 products:     productList.products,

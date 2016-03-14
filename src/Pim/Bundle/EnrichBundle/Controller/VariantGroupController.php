@@ -2,27 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
-use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
-use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Variant group controller
@@ -31,57 +22,48 @@ use Symfony\Component\Templating\EngineInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupController extends GroupController
+class VariantGroupController
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var RouterInterface */
+    protected $router;
 
-    /** @var VariantGroupAttributesResolver */
-    protected $groupAttrResolver;
+    /** @var GroupTypeRepositoryInterface */
+    protected $groupTypeRepository;
 
-    /** @var FormFactoryInterface */
-    protected $formFactory;
+    /** @var GroupFactory */
+    protected $groupFactory;
+
+    /** @var FormInterface */
+    protected $groupForm;
+
+    /** @var HandlerInterface */
+    protected $groupHandler;
+
+    /** @var ProductTemplateBuilderInterface */
+    protected $productTemplateBuilder;
 
     /**
-     * @param Request                        $request
-     * @param EngineInterface                $templating
-     * @param RouterInterface                $router
-     * @param GroupTypeRepositoryInterface   $groupTypeRepository
-     * @param HandlerInterface               $groupHandler
-     * @param FormInterface                  $groupForm
-     * @param GroupFactory                   $groupFactory
-     * @param RemoverInterface               $groupRemover
-     * @param FormFactoryInterface           $formFactory
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param VariantGroupAttributesResolver $groupAttrResolver
+     * @param RouterInterface                 $router
+     * @param GroupTypeRepositoryInterface    $groupTypeRepository
+     * @param HandlerInterface                $groupHandler
+     * @param FormInterface                   $groupForm
+     * @param GroupFactory                    $groupFactory
+     * @param ProductTemplateBuilderInterface $productTemplateBuilder
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
         GroupTypeRepositoryInterface $groupTypeRepository,
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory,
-        RemoverInterface $groupRemover,
-        FormFactoryInterface $formFactory,
-        AttributeRepositoryInterface $attributeRepository,
-        VariantGroupAttributesResolver $groupAttrResolver
+        ProductTemplateBuilderInterface $productTemplateBuilder
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $groupTypeRepository,
-            $groupHandler,
-            $groupForm,
-            $groupFactory,
-            $groupRemover
-        );
-
-        $this->formFactory         = $formFactory;
-        $this->attributeRepository = $attributeRepository;
-        $this->groupAttrResolver   = $groupAttrResolver;
+        $this->router                 = $router;
+        $this->groupTypeRepository    = $groupTypeRepository;
+        $this->groupFactory           = $groupFactory;
+        $this->groupForm              = $groupForm;
+        $this->groupHandler           = $groupHandler;
+        $this->productTemplateBuilder = $productTemplateBuilder;
     }
 
     /**
@@ -94,10 +76,8 @@ class VariantGroupController extends GroupController
      */
     public function indexAction()
     {
-        $groupTypes = $this->groupTypeRepository->findTypeIds(true);
-
         return [
-            'groupTypes' => $groupTypes
+            'groupTypes' => array_keys($this->groupTypeRepository->findTypeIds(true))
         ];
     }
 
@@ -114,13 +94,14 @@ class VariantGroupController extends GroupController
         }
 
         $group = $this->groupFactory->createGroup('VARIANT');
+        $group->setProductTemplate($this->productTemplateBuilder->createProductTemplate());
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_variant_group_edit',
-                ['id' => $group->getId()]
+                ['code' => $group->getCode()]
             );
             $response = ['status' => 1, 'url' => $url];
 
@@ -135,41 +116,13 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * TODO: find a way to use param converter with interfaces
-     *
      * @AclAncestor("pim_enrich_variant_group_edit")
      * @Template
      */
-    public function editAction(Group $group)
+    public function editAction($code)
     {
-        if (!$group->getType()->isVariant()) {
-            throw new NotFoundHttpException(sprintf('Variant group with id %d not found.', $group->getId()));
-        }
-
-        if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.updated'));
-        }
-
         return [
-            'form'           => $this->groupForm->createView(),
-            'currentGroup'   => $group->getId(),
-            'attributesForm' => $this->getAvailableAttributesForm($group)->createView(),
+            'code' => $code
         ];
-    }
-
-    /**
-     * Get the AvailableAttributes form
-     *
-     * @param GroupInterface $group
-     *
-     * @return FormInterface
-     */
-    protected function getAvailableAttributesForm(GroupInterface $group)
-    {
-        return $this->formFactory->create(
-            'pim_available_attributes',
-            new AvailableAttributes(),
-            ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
-        );
     }
 }

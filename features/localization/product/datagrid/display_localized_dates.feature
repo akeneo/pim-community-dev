@@ -18,7 +18,7 @@ Feature: Localize dates in the product grid
       | column          | value      |
       | Destocking date | 01/31/2015 |
 
-  Scenario: Successfully show French format numbers for French UI
+  Scenario: Successfully show French format dates for French UI
     Given I am logged in as "Julien"
     When I am on the products page
     And I display the columns sku, destocking_date
@@ -26,7 +26,7 @@ Feature: Localize dates in the product grid
       | column          | value      |
       | Destocking date | 31/01/2015 |
 
-  Scenario: Successfully show English format numbers for French catalog
+  Scenario: Successfully show English format dates for French catalog
     Given I am logged in as "Julia"
     And I add the "french" locale to the "mobile" channel
     And I am on the products page

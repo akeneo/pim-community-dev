@@ -16,7 +16,7 @@ class FamilyTransformerSpec extends ObjectBehavior
             'normalizedData' => [
                 'family' => [
                     'code' => 'mongo',
-                    'label' => [
+                    'labels' => [
                         'en_US' => 'MongoDB Family',
                         'fr_FR' => 'Famille MongoDB'
                     ],

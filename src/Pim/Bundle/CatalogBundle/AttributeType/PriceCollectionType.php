@@ -18,22 +18,6 @@ class PriceCollectionType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        return array_merge(
-            parent::prepareValueFormOptions($value),
-            [
-                'type'         => 'pim_enrich_price',
-                'allow_add'    => true,
-                'allow_delete' => false,
-                'by_reference' => false,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [

@@ -14,6 +14,8 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
@@ -25,13 +27,15 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         GroupTypeRepositoryInterface $groupTypeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
-        $productTemplateClass
+        $productTemplateClass,
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
         $this->beConstructedWith(
             $attributeRepository,
             $groupTypeRepository,
             $productBuilder,
             $productUpdater,
+            $pqbFactory,
             $productTemplateClass
         );
     }
@@ -57,16 +61,23 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         $groupTypeRepository,
         $productBuilder,
+        $pqbFactory,
         GroupInterface $variantGroup,
         AttributeInterface $attribute,
         GroupTypeInterface $type,
         GroupTranslation $translatable,
         ProductInterface $product,
-        ProductTemplateInterface $productTemplate
+        ProductInterface $removedProduct,
+        ProductInterface $addedProduct,
+        ProductTemplateInterface $productTemplate,
+        ProductQueryBuilderInterface $pqb
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('secondary_color')->willReturn($attribute);
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter('id', 'IN', [2])->shouldBeCalled();
+        $pqb->execute()->willReturn([$addedProduct]);
 
         $variantGroup->getTranslation()->willReturn($translatable);
         $translatable->setLabel('T-shirt super beau')->shouldBeCalled();
@@ -75,6 +86,10 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->setType($type)->shouldBeCalled();
         $variantGroup->getId()->willReturn(null);
         $variantGroup->addAxisAttribute(Argument::any())->shouldBeCalled();
+
+        $variantGroup->removeProduct($removedProduct)->shouldBeCalled();
+        $variantGroup->addProduct($addedProduct)->shouldBeCalled();
+        $variantGroup->getProducts()->willReturn([$removedProduct]);
 
         $productTemplate->getValuesData()->willReturn([]);
         $productTemplate->setValues(Argument::any())->shouldBeCalled();
@@ -105,7 +120,51 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                         'data'   => 'white',
                     ]
                 ]
-            ]
+            ],
+            'products' => [2]
+        ];
+
+        $this->update($variantGroup, $values, []);
+    }
+
+    function it_updates_an_empty_variant_group(
+        $groupTypeRepository,
+        $productBuilder,
+        $pqbFactory,
+        GroupInterface $variantGroup,
+        GroupTypeInterface $type,
+        ProductInterface $product,
+        ProductTemplateInterface $productTemplate
+    ) {
+        $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $pqbFactory->create()->shouldNotBeCalled();
+
+        $variantGroup->setCode('mycode')->shouldBeCalled();
+        $variantGroup->setType($type)->shouldBeCalled();
+        $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
+
+        $variantGroup->getId()->willReturn(null);
+        $variantGroup->getProducts()->willReturn([]);
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+
+        $productTemplate->getValuesData()->willReturn([]);
+        $productTemplate->setValues(Argument::any())->shouldBeCalled();
+        $productTemplate->setValuesData([])->shouldBeCalled();
+
+        $productValue = new ProductValue();
+        $identifierValue = new ProductValue();
+
+        $productBuilder->createProduct()->willReturn($product);
+        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getIdentifier()->willReturn($identifierValue);
+
+        $values = [
+            'code'     => 'mycode',
+            'axis'     => [],
+            'type'     => 'VARIANT',
+            'labels'   => [],
+            'values'   => [],
+            'products' => []
         ];
 
         $this->update($variantGroup, $values, []);

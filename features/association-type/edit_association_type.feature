@@ -7,6 +7,7 @@ Feature: Edit an association type
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully edit an association type
     Given I am on the "SUBSTITUTION" association type page
     Then I should see the Code field
@@ -16,6 +17,7 @@ Feature: Edit an association type
     And I press the "Save" button
     Then I should see "My substitution"
 
+  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "PACK" association type page
     When I fill in the following information:

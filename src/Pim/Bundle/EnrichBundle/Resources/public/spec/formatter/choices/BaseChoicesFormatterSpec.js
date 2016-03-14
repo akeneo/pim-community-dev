@@ -9,7 +9,7 @@ define(
                 this.entities = [
                     {
                         code: 'webcams',
-                        label: {
+                        labels: {
                             en_US: 'Webcams',
                             fr_FR: 'Webcams',
                             de_DE: 'Webcams'
@@ -17,7 +17,7 @@ define(
                     },
                     {
                         code: 'mugs',
-                        label: {
+                        labels: {
                             en_US: 'Mugs',
                             fr_FR: 'Chopes\/Mugs',
                             de_DE: 'Tassen'

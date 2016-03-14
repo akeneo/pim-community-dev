@@ -35,11 +35,6 @@ class ImageTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
     }
 
-    function it_prepares_value_form_alias($value)
-    {
-        $this->getFormType()->shouldReturn('pim_enrich_image');
-    }
-
     function it_prepares_value_form_options($value, $attribute)
     {
         $attribute->getLabel()->willReturn('A label');

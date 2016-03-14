@@ -36,7 +36,8 @@ class FormExtensionProvider
         'parent'        => null,
         'targetZone'    => 'self',
         'zones'         => [],
-        'aclResourceId' => null
+        'aclResourceId' => null,
+        'config'        => []
     ];
 
     /**

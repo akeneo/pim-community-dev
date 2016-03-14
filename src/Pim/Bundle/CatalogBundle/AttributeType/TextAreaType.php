@@ -18,18 +18,6 @@ class TextAreaType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormAlias(ProductValueInterface $value)
-    {
-        if ($value->getAttribute()->isWysiwygEnabled()) {
-            return 'pim_wysiwyg';
-        }
-
-        return parent::prepareValueFormAlias($value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
