@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Builder;
+namespace Pim\Component\Catalog\Builder;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;

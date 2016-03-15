@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Builder;
+namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilder;
@@ -32,7 +32,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder');
+        $this->shouldHaveType('Pim\Component\Catalog\Builder\ProductTemplateBuilder');
     }
 
     function it_creates_product_templates()
