@@ -37,6 +37,40 @@ Feature: Read a single product by applying rules
     Then the product Name should be "My jacket"
 
   @javascript
+  Scenario: Successfully execute a rule with a "not empty" condition
+    Given the following products:
+      | sku       | family  |
+      | my-jacket | jackets |
+    And the following product values:
+      | product   | attribute   | value                  | locale | scope  |
+      | my-jacket | name        |                        | en_US  |        |
+      | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
+      | my-jacket | description | A stylish white jacket | en_US  | mobile |
+      | my-boot   | name        | White boot             | en_US  |        |
+      | my-boot   | name        | Bootes blanches        | fr_FR  |        |
+      | my-boot   | description | A stylish white boot   | en_US  | mobile |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: NOT EMPTY
+            value:    null
+            locale:   en_US
+        actions:
+          - type:  set
+            field: name
+            value: New name
+            locale: en_US
+      """
+    Given the product rule "set_name" is executed
+    When I am on the "my-jacket" product page
+    Then the product Name should be ""
+    When I am on the "my-boot" product page
+    Then the product Name should be "New name"
+
+  @javascript
   Scenario: Successfully execute a rule with a "starts with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
