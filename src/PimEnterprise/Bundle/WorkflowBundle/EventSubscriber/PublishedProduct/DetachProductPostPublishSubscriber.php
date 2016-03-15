@@ -5,7 +5,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
@@ -21,20 +20,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class DetachProductPostPublishSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var EntityManager */
     protected $entityManager;
 
     /**
-     * @param ProductManager $productManager
-     * @param EntityManager  $entityManager
+     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ProductManager $productManager, EntityManager $entityManager)
+    public function __construct(ObjectManager $objectManager, EntityManager $entityManager)
     {
-        $this->productManager = $productManager;
-        $this->entityManager  = $entityManager;
+        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -58,24 +57,24 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         $published = $event->getPublishedProduct();
 
         foreach ($published->getValues() as $publishedValue) {
-            $this->getObjectManager()->detach($publishedValue);
+            $this->objectManager->detach($publishedValue);
             $this->detachSpecificValues($publishedValue);
         }
 
-        $this->getObjectManager()->detach($published);
+        $this->objectManager->detach($published);
         foreach ($published->getCompletenesses() as $publishedComp) {
-            $this->getObjectManager()->detach($publishedComp);
+            $this->objectManager->detach($publishedComp);
         }
         foreach ($published->getAssociations() as $publishedAssoc) {
-            $this->getObjectManager()->detach($publishedAssoc);
+            $this->objectManager->detach($publishedAssoc);
         }
 
-        $this->getObjectManager()->detach($product);
+        $this->objectManager->detach($product);
         foreach ($product->getAssociations() as $assoc) {
-            $this->getObjectManager()->detach($assoc);
+            $this->objectManager->detach($assoc);
         }
         foreach ($product->getCompletenesses() as $comp) {
-            $this->getObjectManager()->detach($comp);
+            $this->objectManager->detach($comp);
         }
     }
 
@@ -94,24 +93,16 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
                 break;
             case AbstractAttributeType::BACKEND_TYPE_METRIC:
                 if (null !== $publishedValue->getMetric()) {
-                    $this->getObjectManager()->detach($publishedValue->getMetric());
+                    $this->objectManager->detach($publishedValue->getMetric());
                 }
                 break;
             case AbstractAttributeType::BACKEND_TYPE_PRICE:
                 if ($publishedValue->getPrices()->count() > 0) {
                     foreach ($publishedValue->getPrices() as $price) {
-                        $this->getObjectManager()->detach($price);
+                        $this->objectManager->detach($price);
                     }
                 }
                 break;
         }
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->productManager->getObjectManager();
     }
 }
