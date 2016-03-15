@@ -1,4 +1,8 @@
 parameters:
+    # Encoder
+    pim_serializer.encoder.csv.class: Pim\Component\Connector\Encoder\CsvEncoder
+
+    # Normalizers
     pim_serializer.normalizer.flat.association_type.class:  Pim\Component\Connector\Normalizer\AssociationTypeNormalizer
     pim_serializer.normalizer.flat.attribute.class:         Pim\Component\Connector\Normalizer\AttributeNormalizer
     pim_serializer.normalizer.flat.attribute_group.class:   Pim\Component\Connector\Normalizer\AttributeGroupNormalizer
@@ -20,8 +24,7 @@ parameters:
     pim_serializer.normalizer.flat.reference_data.class:    Pim\Component\Connector\Normalizer\ReferenceDataNormalizer
     pim_serializer.normalizer.flat.file.class:              Pim\Component\Connector\Normalizer\FileNormalizer
 
-    pim_serializer.filter.flat_product_value.class:         Pim\Bundle\TransformBundle\Normalizer\Filter\FlatProductValueNormalizerFilter
-
+     # Denormalizers
     pim_serializer.denormalizer.flat.product.class:                   Pim\Component\Connector\Denormalizer\ProductDenormalizer
     pim_serializer.denormalizer.flat.family.class:                    Pim\Component\Connector\Denormalizer\FamilyDenormalizer
     pim_serializer.denormalizer.flat.category.class:                  Pim\Component\Connector\Denormalizer\CategoryDenormalizer
@@ -40,6 +43,13 @@ parameters:
     pim_serializer.denormalizer.flat.reference_data_collection.class: Pim\Component\Connector\Denormalizer\ProductValue\ReferenceDataCollectionDenormalizer
 
 services:
+    # Encoder
+    pim_serializer.encoder.csv:
+        public: false
+        class: %pim_serializer.encoder.csv.class%
+        tags:
+            - { name: pim_serializer.encoder, priority: 90 }
+
     # Normalizers
     pim_serializer.normalizer.flat.product:
         public: false
@@ -151,10 +161,6 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
-
-    # Filters
-    pim_serializer.filter.flat_product_value:
-        class: %pim_serializer.filter.flat_product_value.class%
 
     # Denormalizers
     pim_serializer.denormalizer.flat.product:

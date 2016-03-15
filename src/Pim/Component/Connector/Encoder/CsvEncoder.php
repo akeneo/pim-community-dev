@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Encoder;
+namespace Pim\Component\Connector\Encoder;
 
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
@@ -13,34 +13,22 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  */
 class CsvEncoder implements EncoderInterface
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const FORMAT = 'csv';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $firstExecution = true;
 
-    /**
-     * @var bool
-     */
-    protected $hasHeader      = false;
+    /**  @var bool */
+    protected $hasHeader = false;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $delimiter;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $enclosure;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $withHeader;
 
     /**

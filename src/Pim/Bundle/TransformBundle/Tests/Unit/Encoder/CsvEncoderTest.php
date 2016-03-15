@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Encoder;
 
-use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
+use Pim\Bundle\Connector\Encoder\CsvEncoder;
 
 /**
  * Test related class
