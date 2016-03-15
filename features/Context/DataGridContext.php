@@ -745,6 +745,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I click on import profile$/
+     */
+    public function iClickOnImportProfile()
+    {
+        $this->wait();
+        $this->getSession()->getPage()->clickLink('Collect');
+        $this->getSession()->getPage()->clickLink('Import profiles');
+        $this->wait();
+    }
+
+    /**
      * @param string $column
      *
      * @When /^I hide the "([^"]*)" column$/

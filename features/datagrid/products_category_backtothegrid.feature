@@ -44,3 +44,9 @@ Feature: Product category back to the grid
   Scenario: Successfully display the no results found message
     Given I filter by "SKU" with value "novalues"
     Then I should see "No results found. Try to change your search criteria."
+
+  Scenario: Successfully apply category's filter on product grid without affecting other grids
+    Given I filter by "category" with value "winter_collection"
+    And I click on import profile
+    When I refresh the grid
+    Then I should not see "Server error"

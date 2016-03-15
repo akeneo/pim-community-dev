@@ -119,7 +119,7 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $filtersState    = $data->offsetGetByPath('[state][filters]', []);
-        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
+        $filtersConfig   = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
@@ -128,7 +128,7 @@ class FilterExtension extends AbstractExtension
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
 
-            if ($value !== false) {
+            if (false !== $value) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
@@ -198,15 +198,34 @@ class FilterExtension extends AbstractExtension
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
-        if (!isset($filtersConfig['category'])) {
-            $categoryConfig = [
-                'type'      => 'product_category',
-                'data_name' => 'category',
-            ];
-            $filters[] = $this->getFilterObject('category', $categoryConfig);
+        $gridName = $config->offsetGetByPath('[name]');
+        $gridCategoryConfig = $this->getCategoryFilterConfig($gridName);
+
+        if (!isset($filtersConfig['category']) && null !== $gridCategoryConfig) {
+            $filters[] = $this->getFilterObject('category', $gridCategoryConfig);
         }
 
         return $filters;
+    }
+
+    /**
+     * Return the category filter config for the given $gridName,
+     * if this $gridName is not filterable by category, return null.
+     *
+     * @param string $gridName
+     *
+     * @return array|null
+     */
+    protected function getCategoryFilterConfig($gridName)
+    {
+        $gridConfigs = [
+            'product-grid' => [
+                'type'      => 'product_category',
+                'data_name' => 'category'
+            ]
+        ];
+
+        return isset($gridConfigs[$gridName]) ? $gridConfigs[$gridName] : null;
     }
 
     /**
