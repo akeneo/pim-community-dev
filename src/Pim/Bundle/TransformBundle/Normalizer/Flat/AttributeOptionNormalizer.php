@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  *
  * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
-class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
+class AttributeOptionNormalizer extends \Pim\Component\Catalog\Normalizer\AttributeOptionNormalizer
 {
     /** @var array */
     protected $supportedFormats = ['csv', 'flat'];

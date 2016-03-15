@@ -1,22 +1,22 @@
 parameters:
-    pim_serializer.normalizer.association_type.class:       Pim\Bundle\TransformBundle\Normalizer\Structured\AssociationTypeNormalizer
-    pim_serializer.normalizer.attribute.class:              Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeNormalizer
-    pim_serializer.normalizer.attribute_group.class:        Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer
-    pim_serializer.normalizer.attribute_option.class:       Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeOptionNormalizer
-    pim_serializer.normalizer.category.class:               Pim\Bundle\TransformBundle\Normalizer\Structured\CategoryNormalizer
-    pim_serializer.normalizer.channel.class:                Pim\Bundle\TransformBundle\Normalizer\Structured\ChannelNormalizer
-    pim_serializer.normalizer.datetime.class:               Pim\Bundle\TransformBundle\Normalizer\Structured\DateTimeNormalizer
-    pim_serializer.normalizer.family.class:                 Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer
-    pim_serializer.normalizer.group.class:                  Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer
-    pim_serializer.normalizer.job_instance.class:           Pim\Bundle\TransformBundle\Normalizer\Structured\JobInstanceNormalizer
-    pim_serializer.normalizer.label_translation.class:      Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer
-    pim_serializer.normalizer.metric.class:                 Pim\Bundle\TransformBundle\Normalizer\Structured\MetricNormalizer
-    pim_serializer.normalizer.product.class:                Pim\Bundle\TransformBundle\Normalizer\Structured\ProductNormalizer
-    pim_serializer.normalizer.product_price.class:          Pim\Bundle\TransformBundle\Normalizer\Structured\ProductPriceNormalizer
-    pim_serializer.normalizer.product_values.class:         Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValuesNormalizer
-    pim_serializer.normalizer.product_value.class:          Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer
-    pim_serializer.normalizer.reference_data.class:         Pim\Bundle\TransformBundle\Normalizer\Structured\ReferenceDataNormalizer
-    pim_serializer.normalizer.file.class:                   Pim\Bundle\TransformBundle\Normalizer\Structured\FileNormalizer
+    pim_serializer.normalizer.association_type.class:       Pim\Component\Catalog\Normalizer\AssociationTypeNormalizer
+    pim_serializer.normalizer.attribute.class:              Pim\Component\Catalog\Normalizer\AttributeNormalizer
+    pim_serializer.normalizer.attribute_group.class:        Pim\Component\Catalog\Normalizer\AttributeGroupNormalizer
+    pim_serializer.normalizer.attribute_option.class:       Pim\Component\Catalog\Normalizer\AttributeOptionNormalizer
+    pim_serializer.normalizer.category.class:               Pim\Component\Catalog\Normalizer\CategoryNormalizer
+    pim_serializer.normalizer.channel.class:                Pim\Component\Catalog\Normalizer\ChannelNormalizer
+    pim_serializer.normalizer.datetime.class:               Pim\Component\Catalog\Normalizer\DateTimeNormalizer
+    pim_serializer.normalizer.family.class:                 Pim\Component\Catalog\Normalizer\FamilyNormalizer
+    pim_serializer.normalizer.group.class:                  Pim\Component\Catalog\Normalizer\GroupNormalizer
+    pim_serializer.normalizer.job_instance.class:           Pim\Component\Catalog\Normalizer\JobInstanceNormalizer
+    pim_serializer.normalizer.label_translation.class:      Pim\Component\Catalog\Normalizer\TranslationNormalizer
+    pim_serializer.normalizer.metric.class:                 Pim\Component\Catalog\Normalizer\MetricNormalizer
+    pim_serializer.normalizer.product.class:                Pim\Component\Catalog\Normalizer\ProductNormalizer
+    pim_serializer.normalizer.product_price.class:          Pim\Component\Catalog\Normalizer\ProductPriceNormalizer
+    pim_serializer.normalizer.product_values.class:         Pim\Component\Catalog\Normalizer\ProductValuesNormalizer
+    pim_serializer.normalizer.product_value.class:          Pim\Component\Catalog\Normalizer\ProductValueNormalizer
+    pim_serializer.normalizer.reference_data.class:         Pim\Component\Catalog\Normalizer\ReferenceDataNormalizer
+    pim_serializer.normalizer.file.class:                   Pim\Component\Catalog\Normalizer\FileNormalizer
     pim_serializer.filter.product_value.class:              Pim\Bundle\TransformBundle\Normalizer\Filter\ProductValueNormalizerFilter
 
     pim_serializer.denormalizer.product_values.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValuesDenormalizer

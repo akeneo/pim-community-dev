@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
+namespace spec\Pim\Component\Catalog\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -10,14 +10,14 @@ use Prophecy\Argument;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $normalizer, AttributeRepositoryInterface $attributeRepository)
+    function let(\Pim\Component\Catalog\Normalizer\TranslationNormalizer $normalizer, AttributeRepositoryInterface $attributeRepository)
     {
         $this->beConstructedWith($normalizer, $attributeRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeGroupNormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\AttributeGroupNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -25,11 +25,11 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_attribute_group_normalization_into_csv(AttributeGroupInterface $group)
+    function it_supports_attribute_group_normalization_into_json_and_xml(AttributeGroupInterface $group)
     {
-        $this->supportsNormalization($group, 'csv')->shouldBe(true);
-        $this->supportsNormalization($group, 'json')->shouldBe(false);
-        $this->supportsNormalization($group, 'xml')->shouldBe(false);
+        $this->supportsNormalization($group, 'json')->shouldBe(true);
+        $this->supportsNormalization($group, 'xml')->shouldBe(true);
+        $this->supportsNormalization($group, 'csv')->shouldBe(false);
     }
 
     function it_normalizes_attribute_group(
@@ -38,7 +38,6 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
         AttributeGroupInterface $group
     ) {
         $normalizer->normalize(Argument::cetera())->willReturn([]);
-
         $attributeRepository->getAttributeCodesByGroup($group)->willReturn(['type', 'size', 'price']);
         $group->getCode()->willReturn('code');
         $group->getSortOrder()->willReturn(1);
@@ -46,7 +45,7 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
         $this->normalize($group)->shouldReturn([
             'code'       => 'code',
             'sortOrder'  => 1,
-            'attributes' => 'type,size,price'
+            'attributes' => ['type', 'size', 'price']
         ]);
     }
 }

@@ -1,27 +1,24 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
+namespace Pim\Component\Catalog\Normalizer;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Akeneo\Component\Localization\Model\TranslatableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Flat translation normalizer
+ * Translation normalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslationNormalizer extends \Pim\Component\Catalog\Normalizer\TranslationNormalizer
+class TranslationNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
-    protected $supportedFormats = ['csv'];
+    /** @var array $supportedFormats */
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \LogicException
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -33,18 +30,9 @@ class TranslationNormalizer extends \Pim\Component\Catalog\Normalizer\Translatio
             $context
         );
 
-        $property = $context['property'];
-        $translations = array_fill_keys(
-            array_map(
-                function ($locale) use ($property) {
-                    return sprintf('%s-%s', $property, $locale);
-                },
-                $context['locales']
-            ),
-            ''
-        );
+        $translations = array_fill_keys($context['locales'], '');
+        $method = sprintf('get%s', ucfirst($context['property']));
 
-        $method = sprintf('get%s', ucfirst($property));
         foreach ($object->getTranslations() as $translation) {
             if (method_exists($translation, $method) === false) {
                 throw new \LogicException(
@@ -52,11 +40,18 @@ class TranslationNormalizer extends \Pim\Component\Catalog\Normalizer\Translatio
                 );
             }
             if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
-                $key = sprintf('%s-%s', $property, $translation->getLocale());
-                $translations[$key] = $translation->$method();
+                $translations[$translation->getLocale()] = $translation->$method();
             }
         }
 
-        return $translations;
+        return [$context['property'] => $translations];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof TranslatableInterface && in_array($format, $this->supportedFormats);
     }
 }
