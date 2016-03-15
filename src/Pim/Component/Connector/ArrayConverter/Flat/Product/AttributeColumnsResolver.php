@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 

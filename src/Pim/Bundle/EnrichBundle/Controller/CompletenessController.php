@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
