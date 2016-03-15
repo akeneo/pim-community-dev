@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.manager.attribute_options_sorter.class: Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
-    pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
+    pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.completeness.class:        Pim\Bundle\CatalogBundle\Manager\CompletenessManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
