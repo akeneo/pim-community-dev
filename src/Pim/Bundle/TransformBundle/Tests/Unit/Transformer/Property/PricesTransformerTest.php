@@ -19,7 +19,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->builder = $this
-            ->getMockBuilder('Pim\Component\Catalog\Builder\ProductBuilder')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Builder\ProductBuilder')
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformer = new PricesTransformer($this->builder);

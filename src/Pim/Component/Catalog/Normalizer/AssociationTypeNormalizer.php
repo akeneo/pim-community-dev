@@ -14,9 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssociationTypeNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = ['json', 'xml'];
 
     /**

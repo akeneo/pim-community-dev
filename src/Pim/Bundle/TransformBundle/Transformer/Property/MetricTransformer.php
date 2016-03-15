@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Component\Catalog\Factory\MetricFactory;
 
 /**
  * Metric attribute transformer

@@ -21,14 +21,10 @@ class AttributeNormalizer implements NormalizerInterface
     const CHANNEL_SCOPE       = 'Channel';
     const ALL_LOCALES         = 'All';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = ['json', 'xml'];
 
-    /**
-     * @var TranslationNormalizer
-     */
+    /** @var TranslationNormalizer */
     protected $transNormalizer;
 
     /**
@@ -43,6 +39,8 @@ class AttributeNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param AttributeInterface $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
