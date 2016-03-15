@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.manager.attribute_options_sorter.class: Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter
+    pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
