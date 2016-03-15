@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier` to `Pim\Component\Catalog\Manager\ProductTemplateApplier`
 - Move `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder` to `Pim\Component\Catalog\Builder\ProductTemplateBuilder`
 - Move `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` to `Pim\Component\Catalog\Builder\ProductBuilder`
 - Move `Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver` to `Pim\Component\Catalog\Manager\AttributeValuesResolver`

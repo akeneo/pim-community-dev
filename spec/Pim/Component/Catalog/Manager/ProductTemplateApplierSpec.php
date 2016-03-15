@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Manager;
+namespace spec\Pim\Component\Catalog\Manager;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
