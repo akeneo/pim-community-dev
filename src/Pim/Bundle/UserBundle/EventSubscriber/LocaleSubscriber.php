@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -25,14 +27,19 @@ class LocaleSubscriber implements EventSubscriberInterface
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var EntityManager|null */
+    protected $em;
+
     /**
      * @param RequestStack        $requestStack
      * @param TranslatorInterface $translator
+     * @param EntityManager|null  $em
      */
-    public function __construct(RequestStack $requestStack, TranslatorInterface $translator)
+    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em = null)
     {
         $this->requestStack = $requestStack;
         $this->translator   = $translator;
+        $this->em           = $em;
     }
 
     /**
@@ -55,8 +62,11 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+        $locale  = $this->getLocale($request);
 
-        $request->setLocale($request->getSession()->get('_locale'));
+        if (null !== $locale) {
+            $request->setLocale($locale);
+        }
     }
 
     /**
@@ -68,5 +78,31 @@ class LocaleSubscriber implements EventSubscriberInterface
             UserEvent::POST_UPDATE => [['onPostUpdate']],
             KernelEvents::REQUEST  => [['onKernelRequest', 17]],
         ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    protected function getLocale(Request $request)
+    {
+        return null !== $request->getSession()->get('_locale') ?
+            $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getLocaleFromOroConfigValue()
+    {
+        $locale = null;
+        if (null !== $this->em) {
+            $locale = $this->em
+                ->getRepository('OroConfigBundle:ConfigValue')
+                ->getSectionForEntityAndScope('pim_localization', 'app', 0);
+        }
+
+        return null === $locale ? null : $locale->getValue();
     }
 }

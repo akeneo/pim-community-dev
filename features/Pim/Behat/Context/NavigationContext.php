@@ -380,7 +380,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         if ($loginForm) {
             $loginForm->fillField('_username', $this->username);
             $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
+            $loginForm->pressButton('_submit');
 
             return true;
         }
