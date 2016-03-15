@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
-    pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
+    pim_catalog.factory.metric.class:                Pim\Component\Catalog\Factory\MetricFactory
     pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
     pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
 use Pim\Component\Catalog\Model\Metric;
 

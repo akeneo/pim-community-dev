@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Factory;
+namespace Pim\Component\Catalog\Factory;
 
 /**
  * Metric factory
