@@ -114,18 +114,6 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
 
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.entities_type:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.entities_type
-
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository
-
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.entity_type:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.entity_type
-
     # Normalizers from Object to MongoDB normalizedData
     pim_catalog.mongodb.normalizer.normalized_data.product:
         class: %pim_catalog.mongodb.normalizer.normalized_data.product.class%
