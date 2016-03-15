@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ class DateTimeDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\ProductValue\DateTimeDenormalizer');
     }
 
     function it_is_a_denormalizer()

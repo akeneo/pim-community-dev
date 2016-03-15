@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured;
+namespace spec\Pim\Component\Catalog\Denormalizer;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValuesDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\ProductValuesDenormalizer');
     }
 
     function it_is_a_denormalizer()

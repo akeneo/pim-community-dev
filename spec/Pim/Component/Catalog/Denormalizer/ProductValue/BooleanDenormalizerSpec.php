@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ class BooleanDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\ProductValue\BooleanDenormalizer');
     }
 
     function it_is_a_denormalizer()

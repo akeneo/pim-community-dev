@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace Pim\Component\Catalog\Denormalizer\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

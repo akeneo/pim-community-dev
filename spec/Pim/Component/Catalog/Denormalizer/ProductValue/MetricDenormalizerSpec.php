@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
@@ -16,7 +16,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\ProductValue\MetricDenormalizer');
     }
 
     function it_is_a_denormalizer()

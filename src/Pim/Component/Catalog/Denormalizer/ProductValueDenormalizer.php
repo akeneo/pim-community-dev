@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Denormalizer\Structured;
+namespace Pim\Component\Catalog\Denormalizer;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;

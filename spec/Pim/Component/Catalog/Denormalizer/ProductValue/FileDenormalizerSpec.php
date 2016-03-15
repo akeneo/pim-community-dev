@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\ProductValue;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
@@ -16,7 +16,7 @@ class FileDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\FileDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\ProductValue\FileDenormalizer');
     }
 
     function it_denormalizes_an_empty_value()

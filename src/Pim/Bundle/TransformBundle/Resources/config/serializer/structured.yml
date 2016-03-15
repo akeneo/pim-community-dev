@@ -19,18 +19,18 @@ parameters:
     pim_serializer.normalizer.file.class:                   Pim\Component\Catalog\Normalizer\FileNormalizer
     pim_serializer.filter.product_value.class:              Pim\Bundle\TransformBundle\Normalizer\Filter\ProductValueNormalizerFilter
 
-    pim_serializer.denormalizer.product_values.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValuesDenormalizer
-    pim_serializer.denormalizer.product_value.class:             Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValueDenormalizer
-    pim_serializer.denormalizer.base_value.class:                Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BaseValueDenormalizer
-    pim_serializer.denormalizer.attribute_option.class:          Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\AttributeOptionDenormalizer
-    pim_serializer.denormalizer.attribute_options.class:         Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\AttributeOptionsDenormalizer
-    pim_serializer.denormalizer.prices.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer
-    pim_serializer.denormalizer.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
-    pim_serializer.denormalizer.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\FileDenormalizer
-    pim_serializer.denormalizer.boolean.class:                   Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer
-    pim_serializer.denormalizer.reference_data.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer
-    pim_serializer.denormalizer.reference_data_collection.class: Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer
+    pim_serializer.denormalizer.product_values.class:            Pim\Component\Catalog\Denormalizer\ProductValuesDenormalizer
+    pim_serializer.denormalizer.product_value.class:             Pim\Component\Catalog\Denormalizer\ProductValueDenormalizer
+    pim_serializer.denormalizer.base_value.class:                Pim\Component\Catalog\Denormalizer\ProductValue\BaseValueDenormalizer
+    pim_serializer.denormalizer.attribute_option.class:          Pim\Component\Catalog\Denormalizer\ProductValue\AttributeOptionDenormalizer
+    pim_serializer.denormalizer.attribute_options.class:         Pim\Component\Catalog\Denormalizer\ProductValue\AttributeOptionsDenormalizer
+    pim_serializer.denormalizer.prices.class:                    Pim\Component\Catalog\Denormalizer\ProductValue\PricesDenormalizer
+    pim_serializer.denormalizer.metric.class:                    Pim\Component\Catalog\Denormalizer\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.datetime.class:                  Pim\Component\Catalog\Denormalizer\ProductValue\DateTimeDenormalizer
+    pim_serializer.denormalizer.file.class:                      Pim\Component\Catalog\Denormalizer\ProductValue\FileDenormalizer
+    pim_serializer.denormalizer.boolean.class:                   Pim\Component\Catalog\Denormalizer\ProductValue\BooleanDenormalizer
+    pim_serializer.denormalizer.reference_data.class:            Pim\Component\Catalog\Denormalizer\ProductValue\ReferenceDataDenormalizer
+    pim_serializer.denormalizer.reference_data_collection.class: Pim\Component\Catalog\Denormalizer\ProductValue\ReferenceDataCollectionDenormalizer
 
 services:
     # Normalizers
