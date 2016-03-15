@@ -8,7 +8,7 @@ parameters:
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
-    pim_catalog.resolver.variant_group_attributes.class: Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver
+    pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
     pim_catalog.resolver.attribute_values.class:         Pim\Component\Catalog\Manager\AttributeValuesResolver
 
 services:

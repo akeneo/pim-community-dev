@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
+use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
