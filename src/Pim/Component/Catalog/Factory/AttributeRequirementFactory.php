@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Factory;
+namespace Pim\Component\Catalog\Factory;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Component\Catalog\Model\AttributeInterface;

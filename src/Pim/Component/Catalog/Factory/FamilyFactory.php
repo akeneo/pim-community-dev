@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
