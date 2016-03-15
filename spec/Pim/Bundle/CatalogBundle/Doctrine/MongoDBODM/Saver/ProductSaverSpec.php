@@ -10,7 +10,7 @@ use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

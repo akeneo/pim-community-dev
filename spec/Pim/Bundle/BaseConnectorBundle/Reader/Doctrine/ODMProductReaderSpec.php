@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

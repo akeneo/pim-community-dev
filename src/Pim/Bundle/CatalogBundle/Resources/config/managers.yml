@@ -3,7 +3,7 @@ parameters:
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
-    pim_catalog.manager.completeness.class:        Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+    pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
