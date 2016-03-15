@@ -1,4 +1,12 @@
 parameters:
+    # Serializer
+    pim_serializer.class: Symfony\Component\Serializer\Serializer
+
+    # Encoders
+    pim_serializer.encoder.xml.class:  Symfony\Component\Serializer\Encoder\XmlEncoder
+    pim_serializer.encoder.json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
+    # Normalizers
     pim_serializer.normalizer.association_type.class:       Pim\Component\Catalog\Normalizer\AssociationTypeNormalizer
     pim_serializer.normalizer.attribute.class:              Pim\Component\Catalog\Normalizer\AttributeNormalizer
     pim_serializer.normalizer.attribute_group.class:        Pim\Component\Catalog\Normalizer\AttributeGroupNormalizer
@@ -17,8 +25,8 @@ parameters:
     pim_serializer.normalizer.product_value.class:          Pim\Component\Catalog\Normalizer\ProductValueNormalizer
     pim_serializer.normalizer.reference_data.class:         Pim\Component\Catalog\Normalizer\ReferenceDataNormalizer
     pim_serializer.normalizer.file.class:                   Pim\Component\Catalog\Normalizer\FileNormalizer
-    pim_serializer.filter.product_value.class:              Pim\Bundle\TransformBundle\Normalizer\Filter\ProductValueNormalizerFilter
 
+    # Denormalizers
     pim_serializer.denormalizer.product_values.class:            Pim\Component\Catalog\Denormalizer\ProductValuesDenormalizer
     pim_serializer.denormalizer.product_value.class:             Pim\Component\Catalog\Denormalizer\ProductValueDenormalizer
     pim_serializer.denormalizer.base_value.class:                Pim\Component\Catalog\Denormalizer\ProductValue\BaseValueDenormalizer
@@ -33,6 +41,23 @@ parameters:
     pim_serializer.denormalizer.reference_data_collection.class: Pim\Component\Catalog\Denormalizer\ProductValue\ReferenceDataCollectionDenormalizer
 
 services:
+    # Serializer, TODO : should be moved somewhere else
+    pim_serializer:
+        class: %pim_serializer.class%
+
+    # Encoders
+    pim_serializer.encoder.xml:
+        public: false
+        class: %pim_serializer.encoder.xml.class%
+        tags:
+            - { name: pim_serializer.encoder, priority: 90 }
+
+    pim_serializer.encoder.json:
+        public: false
+        class: %pim_serializer.encoder.json.class%
+        tags:
+            - { name: pim_serializer.encoder, priority: 90 }
+
     # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
@@ -140,10 +165,6 @@ services:
         class: %pim_serializer.normalizer.file.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
-
-    # Filters
-    pim_serializer.filter.product_value:
-        class: %pim_serializer.filter.product_value.class%
 
     # Denormalizers
     pim_serializer.denormalizer.product_values:

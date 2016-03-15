@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @see       Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass
  */
-class SerializerPass implements CompilerPassInterface
+class RegisterSerializerPass implements CompilerPassInterface
 {
     /** @var ReferenceFactory */
     protected $factory;

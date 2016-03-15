@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFi
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -43,7 +44,8 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterProductUpdaterPass())
             ->addCompilerPass(new RegisterFilterPass())
             ->addCompilerPass(new RegisterComparatorsPass())
-            ->addCompilerPass(new RegisterCompleteCheckerPass());
+            ->addCompilerPass(new RegisterCompleteCheckerPass())
+            ->addCompilerPass(new RegisterSerializerPass('pim_serializer'));
 
         $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Catalog\Model'

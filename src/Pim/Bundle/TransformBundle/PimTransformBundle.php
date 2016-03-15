@@ -23,6 +23,6 @@ class PimTransformBundle extends Bundle
         $container
             ->addCompilerPass(new Compiler\RegisterEntityTransformersPass())
             ->addCompilerPass(new Compiler\TransformerGuesserPass())
-            ->addCompilerPass(new Compiler\SerializerPass('pim_serializer'));
+        ;
     }
 }

@@ -40,7 +40,6 @@ class PimTransformExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
         $loader->load('serializer.yml');
-        $loader->load('structured.yml');
         $loader->load('flat.yml');
     }
 }
