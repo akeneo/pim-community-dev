@@ -10,7 +10,7 @@ use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter;
+use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
