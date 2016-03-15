@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,10 +30,12 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      */
     public function normalize($completenesses, $format = null, array $context = array())
     {
+        $locales = array_keys($completenesses);
         foreach ($completenesses as $locale => $channels) {
             foreach ($channels['channels'] as $channel => $completeness) {
                 $completenesses[$locale]['channels'][$channel] = $this->normalizeCompleteness(
                     $completeness,
+                    $locales,
                     $format,
                     $context
                 );
@@ -54,21 +57,41 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      * Normalize a completeness element
      *
      * @param array  $completeness
+     * @param array  $locales
      * @param string $format
      * @param array  $context
      *
      * @return array
      */
-    protected function normalizeCompleteness($completeness, $format = null, array $context = array())
+    protected function normalizeCompleteness($completeness, array $locales, $format = null, array $context = array())
     {
         $missing = [];
         foreach ($completeness['missing'] as $attribute) {
-            $missing[] = $attribute->getCode();
+            $missing[] = [
+                'code'   => $attribute->getCode(),
+                'labels' => $this->normalizeAttributeLabels($attribute, $locales)
+            ];
         }
 
         return [
             'missing'      => $missing,
             'completeness' => $this->normalizer->normalize($completeness['completeness'], $format, $context)
         ];
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $locales
+     *
+     * @return array
+     */
+    protected function normalizeAttributeLabels(AttributeInterface $attribute, array $locales)
+    {
+        $labels = [];
+        foreach ($locales as $locale) {
+            $labels[$locale] = $attribute->getTranslation($locale)->getLabel();
+        }
+
+        return $labels;
     }
 }

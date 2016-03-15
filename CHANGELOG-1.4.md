@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5453: Display completeness missing labels according to the locale your are working on
+
 # 1.4.21 (2016-03-07)
 
 ## Bug fixes

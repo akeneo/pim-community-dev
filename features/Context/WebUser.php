@@ -2107,6 +2107,34 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see the missing completeness labels:$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheMissingCompletenessLabels(TableNode $table)
+    {
+        $page = $this->getCurrentPage();
+        $collapseSwitchers = $this->spin(function () use ($page) {
+            return $page->findAll('css', '.completeness-block header .btn');
+        }, 20, 'Unable to find completenesses block');
+
+        foreach ($collapseSwitchers as $switcher) {
+            if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {
+                $switcher->click();
+            }
+        }
+
+        foreach ($table->getHash() as $data) {
+            $expectedLabel = $data['expected_label'];
+            if (isset($expectedLabel)) {
+                $this->getCurrentPage()->checkCompletenessMissingValuesLabels($data['channel'], $data['locale'], $data['missing_value'], $expectedLabel);
+            }
+        }
+    }
+
+    /**
      * @param string $channel
      * @param string $ratio
      *

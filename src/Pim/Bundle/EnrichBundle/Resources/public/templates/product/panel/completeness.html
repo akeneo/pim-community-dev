@@ -34,7 +34,7 @@
                                  missing values:
                                  <span class="missing-attributes">
                                     <% _.each(completeness.missing, function(missing) { %>
-                                        <span data-attribute="<%- missing %>" data-locale="<%- locale %>" data-channel="<%- channel %>"><%- missing %></span>
+                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale %>" data-channel="<%- channel %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
                                     <% }) %>
                                 </span>
                                 <% } %>

@@ -648,6 +648,29 @@ class Edit extends ProductEditForm
     }
 
     /**
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param string $missingValue
+     * @param string $expectedLabel
+     *
+     * @throws ExpectationException
+     */
+    public function checkCompletenessMissingValuesLabels($channelCode, $localeCode, $missingValue, $expectedLabel)
+    {
+        $completenessCell = $this->spin(function () use ($channelCode, $localeCode) {
+            return $this->findCompletenessCell($channelCode, $localeCode)->find('css', '.missing');
+        }, 20, 'Unable to find completenesses cell');
+
+        $missingValueElement = $this->spin(function () use ($completenessCell, $missingValue) {
+            return $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $missingValue));
+        }, 20, 'Unable to find completenesses missing value element');
+
+        assertNotNull($missingValueElement);
+        $uiLabel = $missingValueElement->getText();
+        assertEquals($uiLabel, $expectedLabel);
+    }
+
+    /**
      * Check completeness ratio
      *
      * @param string $channelCode
