@@ -55,7 +55,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $ids = null;
 
     /**
-     * @var ArrayIterator
+     * @var \ArrayIterator
      */
     protected $products;
 

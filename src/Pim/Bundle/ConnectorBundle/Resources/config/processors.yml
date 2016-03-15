@@ -9,6 +9,8 @@ parameters:
     pim_connector.processor.denormalization.currency.class:            Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor
     pim_connector.processor.denormalization.simple.class:              Pim\Component\Connector\Processor\Denormalization\SimpleProcessor
     pim_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
+    pim_connector.processor.normalization.simple.class:                Pim\Component\Connector\Processor\Normalization\SimpleProcessor
+    pim_connector.processor.normalization.csv_variant_group.class:     Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
 services:
     # Dummy processor
@@ -201,3 +203,19 @@ services:
             - '@akeneo_batch.updater.job_instance'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.group.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.group'
+            - 'flat'
+
+    pim_connector.processor.normalization.variant_group.flat:
+        class: %pim_connector.processor.normalization.csv_variant_group.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_serializer'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+            - %upload_dir%
+            - 'flat'

@@ -140,6 +140,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/group.csv
+    xlsx_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_group_export
+        label:     XLSX group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/xlsx_group_export.xlsx
     variant_group_import:
         connector: Akeneo Native Connector
         alias:     csv_variant_group_import
@@ -161,6 +169,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/variant_group.csv
+    xlsx_variant_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_variant_group_export
+        label:     Variant group export
+        type:      export
+        configuration:
+            filePath:   /tmp/xlsx_variant_group_export.xlsx
+            withHeader: true
     attribute_import:
         connector: Akeneo Native Connector
         alias:     csv_attribute_import

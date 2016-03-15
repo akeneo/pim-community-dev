@@ -64,6 +64,12 @@ pim_connector:
             validation.title: File validation
             import.title: Product import
             import_associations.title: Association import
+        xlsx_group_export:
+            title: Group export in XLSX
+            export.title: Group export
+        xlsx_variant_group_export:
+            title: Variant group export in XLSX
+            export.title: Variant group export
     steps:
 
         dummy_reader.title:                  Dummy reader

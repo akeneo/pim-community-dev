@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
+namespace spec\Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -33,7 +33,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor');
+        $this->shouldHaveType('\Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor');
     }
 
     function it_is_an_item_processor()
