@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver` to `Pim\Component\Catalog\Manager\AttributeValuesResolver`
 - Remove deprecated `Pim\Bundle\CatalogBundle\Manager\FamilyManager`.
 - Remove deprecated `Pim\Bundle\CatalogBundle\Manager\ProductManager`.
 - Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler`. Remove `Pim\Bundle\CatalogBundle\Manager\ProductManager`.
