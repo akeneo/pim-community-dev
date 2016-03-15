@@ -18,7 +18,12 @@ class OptionsFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            $objectIdResolver,
+            ['pim_catalog_multiselect'],
+            ['IN', 'EMPTY', 'NOT EMPTY']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -29,7 +34,7 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -77,6 +82,24 @@ class OptionsFilterSpec extends ObjectBehavior
         $qb->addAnd($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_empty_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.options_code')->shouldBeCalled()->willReturn($expr);
+        $expr->exists(true)->shouldBeCalled()->willReturn($expr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.id']);
     }
 
     function it_adds_a_not_in_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)

@@ -19,7 +19,7 @@ class OptionFilterSpec extends ObjectBehavior
             $attrValidatorHelper,
             $objectIdResolver,
             ['pim_catalog_simpleselect'],
-            ['IN', 'EMPTY']
+            ['IN', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($qb);
     }
@@ -31,7 +31,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator(Argument::any())->shouldReturn(false);
     }
@@ -69,7 +69,7 @@ class OptionFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['1', '2'], null, null, ['field' => 'options_code.id']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -81,7 +81,9 @@ class OptionFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('option_code');
 
         $qb->getRootAlias()->willReturn('r');
-        $qb->expr()->willReturn(new Expr());
+        $qb->expr()->willReturn($expr);
+
+        $expr->isNull(Argument::any())->shouldBeCalled()->willReturn('filteroption_code.option IS NULL');
 
         $qb->leftJoin(
             'r.values',
@@ -89,9 +91,36 @@ class OptionFilterSpec extends ObjectBehavior
             'WITH',
             Argument::any()
         )->shouldBeCalled();
-        $qb->andWhere(Argument::any())->shouldBeCalled();
+        $qb->andWhere('filteroption_code.option IS NULL')->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('option');
+        $attribute->getCode()->willReturn('option_code');
+
+        $qb->getRootAlias()->willReturn('r');
+        $qb->expr()->willReturn($expr);
+
+        $expr->isNotNull(Argument::any())->shouldBeCalled()->willReturn('filteroption_code.option IS NOT NULL');
+        $qb->leftJoin(
+            'r.values',
+            Argument::any(),
+            'WITH',
+            Argument::any()
+        )->shouldBeCalled();
+
+        $qb->andWhere('filteroption_code.option IS NOT NULL')->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)

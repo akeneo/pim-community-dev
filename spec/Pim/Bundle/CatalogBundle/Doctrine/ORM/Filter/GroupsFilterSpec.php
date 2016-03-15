@@ -13,7 +13,7 @@ class GroupsFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith($objectIdResolver, ['groups'], ['IN', 'NOT IN']);
+        $this->beConstructedWith($objectIdResolver, ['groups'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -24,7 +24,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'NOT IN']);
+        $this->getOperators()->shouldReturn(['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

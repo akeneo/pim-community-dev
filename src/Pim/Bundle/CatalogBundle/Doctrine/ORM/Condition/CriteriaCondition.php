@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Exception\ProductQueryException;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Criteria condition utils
@@ -100,7 +101,14 @@ class CriteriaCondition
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {
-        $operators = ['=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like'];
+        $operators = [
+            Operators::EQUALS                => 'eq',
+            Operators::LOWER_THAN            => 'lt',
+            Operators::LOWER_OR_EQUAL_THAN   => 'lte',
+            Operators::GREATER_THAN          => 'gt',
+            Operators::GREATER_OR_EQUAL_THAN => 'gte',
+            Operators::IS_LIKE               => 'like'
+        ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
                 throw new \InvalidArgumentException(
@@ -113,14 +121,19 @@ class CriteriaCondition
             return is_object($condition) ? $condition->__toString() : $condition;
         }
 
-        $operators = ['NULL' => 'isNull', 'NOT NULL' => 'isNotNull'];
+        $operators = [
+            Operators::IS_NULL      => 'isNull',
+            Operators::IS_NOT_NULL  => 'isNotNull',
+            Operators::IS_EMPTY     => 'isNull',
+            Operators::IS_NOT_EMPTY => 'isNotNull'
+        ];
         if (array_key_exists($operator, $operators)) {
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field);
         }
 
-        $operators = ['IN' => 'in', 'NOT IN' => 'notIn'];
+        $operators = [Operators::IN_LIST => 'in', Operators::NOT_IN_LIST => 'notIn'];
         if (array_key_exists($operator, $operators)) {
             if (!is_array($value)) {
                 throw new \InvalidArgumentException(
@@ -133,7 +146,7 @@ class CriteriaCondition
             return $this->qb->expr()->$method($field, $value)->__toString();
         }
 
-        if ('NOT LIKE' === $operator) {
+        if (Operators::NOT_LIKE === $operator) {
             if (!is_scalar($value)) {
                 throw new \InvalidArgumentException(sprintf('Only scalar values are allowed for operator NOT LIKE'));
             }
@@ -141,7 +154,7 @@ class CriteriaCondition
             return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
         }
 
-        if ('BETWEEN' === $operator) {
+        if (Operators::BETWEEN === $operator) {
             if (!is_array($value)) {
                 throw new \InvalidArgumentException(sprintf('Only array values are allowed for operator BETWEEN'));
             }
@@ -152,10 +165,6 @@ class CriteriaCondition
                 $this->qb->expr()->literal($value[0]),
                 $this->qb->expr()->literal($value[1])
             );
-        }
-
-        if ('EMPTY' === $operator) {
-            return $this->qb->expr()->isNull($field);
         }
 
         throw new ProductQueryException('operator '.$operator.' is not supported');

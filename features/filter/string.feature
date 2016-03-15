@@ -13,12 +13,13 @@ Feature: Filter on string
       | BOOTBL  | Mug           |
       | BOOTRXS |               |
     Then I should get the following results for the given filters:
-      | filter                                                                                        | result                           |
-      | [{"field":"name", "operator":"STARTS WITH",      "value": "Boot",         "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"] |
-      | [{"field":"name", "operator":"STARTS WITH",      "value": "boot",         "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"] |
-      | [{"field":"name", "operator":"ENDS WITH",        "value": "xs",           "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS"]           |
-      | [{"field":"name", "operator":"CONTAINS",         "value": "black",        "locale": "en_US"}] | ["BOOTBXS", "BOOTBS"]            |
-      | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "Boot",         "locale": "en_US"}] | ["BOOTBL"]                       |
-      | [{"field":"name", "operator":"=",                "value": "Boot black s", "locale": "en_US"}] | ["BOOTBS"]                       |
-      | [{"field":"name", "operator":"=",                "value": "Mug ",         "locale": "en_US"}] | []                       |
-      | [{"field":"name", "operator":"EMPTY",            "value": null,           "locale": "en_US"}] | ["BOOTRXS"]                      |
+      | filter                                                                                        | result                                     |
+      | [{"field":"name", "operator":"STARTS WITH",      "value": "Boot",         "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"]           |
+      | [{"field":"name", "operator":"EMPTY",            "value": null,           "locale": "en_US"}] | ["BOOTRXS"]                                |
+      | [{"field":"name", "operator":"NOT EMPTY",        "value": null,           "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS", "BOOTBL"] |
+      | [{"field":"name", "operator":"STARTS WITH",      "value": "boot",         "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"]           |
+      | [{"field":"name", "operator":"ENDS WITH",        "value": "xs",           "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS"]                     |
+      | [{"field":"name", "operator":"CONTAINS",         "value": "black",        "locale": "en_US"}] | ["BOOTBXS", "BOOTBS"]                      |
+      | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "Boot",         "locale": "en_US"}] | ["BOOTBL"]                                 |
+      | [{"field":"name", "operator":"=",                "value": "Boot black s", "locale": "en_US"}] | ["BOOTBS"]                                 |
+      | [{"field":"name", "operator":"=",                "value": "Mug ",         "locale": "en_US"}] | []                                         |

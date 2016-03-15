@@ -23,8 +23,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -44,7 +42,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
@@ -56,21 +54,26 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
-        if ($operator === Operators::IN_LIST) {
-            $this->qb->andWhere(
-                $this->qb->expr()->in($entityAlias . '.id', $value)
-            );
-        } elseif ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->andWhere(
-                $this->qb->expr()->orX(
-                    $this->qb->expr()->notIn($entityAlias . '.id', $value),
-                    $this->qb->expr()->isNull($entityAlias . '.id')
-                )
-            );
-        } elseif ($operator === Operators::IS_EMPTY) {
-            $this->qb->andWhere(
-                $this->qb->expr()->isNull($entityAlias.'.id')
-            );
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->andWhere(
+                    $this->qb->expr()->in($entityAlias . '.id', $value)
+                );
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->andWhere(
+                    $this->qb->expr()->orX(
+                        $this->qb->expr()->notIn($entityAlias . '.id', $value),
+                        $this->qb->expr()->isNull($entityAlias . '.id')
+                    )
+                );
+                break;
+            case Operators::IS_EMPTY:
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->andWhere(
+                    $this->prepareCriteriaCondition($entityAlias . '.id', $operator, null)
+                );
+                break;
         }
 
         return $this;

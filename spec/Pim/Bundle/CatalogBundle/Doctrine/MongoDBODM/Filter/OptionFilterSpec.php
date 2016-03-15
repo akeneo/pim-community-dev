@@ -18,7 +18,12 @@ class OptionFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            $objectIdResolver,
+            ['pim_catalog_simpleselect'],
+            ['IN', 'EMPTY', 'NOT EMPTY']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -34,7 +39,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -82,6 +87,24 @@ class OptionFilterSpec extends ObjectBehavior
         $qb->addAnd($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'option_code.id']);
+    }
+
+    function it_adds_a_not_empty_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('option');
+        $attribute->getCode()->willReturn('option_code');
+
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
+        $expr->exists(true)->shouldBeCalled()->willReturn($expr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'option_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)

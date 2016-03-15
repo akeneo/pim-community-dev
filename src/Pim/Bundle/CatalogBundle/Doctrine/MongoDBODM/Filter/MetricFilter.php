@@ -73,11 +73,9 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
-        } else {
-            $value = null;
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
@@ -112,7 +110,10 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->qb->field($fieldData)->gte($data);
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->equals(null);
+                $this->qb->field($fieldData)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($fieldData)->exists(true);
                 break;
             default:
                 $this->qb->field($fieldData)->equals($data);

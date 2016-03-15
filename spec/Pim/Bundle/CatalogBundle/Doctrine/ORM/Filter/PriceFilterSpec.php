@@ -212,12 +212,45 @@ class PriceFilterSpec extends ObjectBehavior
 
         $expr->literal('EUR')->willReturn('EUR');
         $expr->eq(Argument::any(), 'EUR')->willReturn($comparison);
-        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NULL');
-        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NOT NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NOT NULL');
         $expr->orX(Argument::any(), Argument::any())->shouldBeCalled();
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'EMPTY', $value);
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query(
+        $currencyRepository,
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $value = ['data' => null, 'currency' => 'EUR'];
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('EUR')->willReturn('EUR');
+        $expr->eq(Argument::any(), 'EUR')->willReturn($comparison);
+        $expr->isNotNull(Argument::any())->shouldBeCalledTimes(2);
+        $expr->andX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'NOT EMPTY', $value);
     }
 
     function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)

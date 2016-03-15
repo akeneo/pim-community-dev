@@ -69,3 +69,4 @@
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Job\BatchException`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping`
+- Remove argument $objectIdResolver from constructors of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter` 

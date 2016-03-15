@@ -73,23 +73,21 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
 
-        if (Operators::IS_EMPTY === $operator) {
-            $value = null;
-        } else {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === Operators::IS_EMPTY) {
+        if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
-            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
+            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, null));
         } elseif ($operator === Operators::NOT_BETWEEN) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
@@ -122,9 +120,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $value = null;
-        } else {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($field, $value);
         }
 
@@ -168,6 +164,10 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
 
             case Operators::IS_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
+                break;
+
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->andWhere($this->qb->expr()->isNotNull($field));
                 break;
         }
 

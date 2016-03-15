@@ -25,7 +25,7 @@ class MetricFilterSpec extends ObjectBehavior
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
         );
         $this->setQueryBuilder($qb);
     }
@@ -37,7 +37,7 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -108,6 +108,29 @@ class MetricFilterSpec extends ObjectBehavior
         $qb->andWhere(Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('metric');
+        $attribute->getCode()->willReturn('metric_code');
+
+        $qb->getRootAlias()->willReturn('r');
+        $qb->expr()->willReturn($expr);
+
+        $qb->leftJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $qb->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $qb->andWhere(Argument::any())->shouldBeCalled();
+
+        $expr->isNotNull(Argument::any())->shouldBeCalled()->willReturn('metric.base_data IS NOT NULL');
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)

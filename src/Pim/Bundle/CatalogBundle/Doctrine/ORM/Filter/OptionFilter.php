@@ -77,7 +77,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'option');
         $field = $options['field'];
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
         }
 
@@ -86,7 +86,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         // prepare join value condition
         $optionAlias = $joinAlias . '.option';
 
-        if (Operators::IS_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -94,7 +94,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
 
-            $this->qb->andWhere($this->qb->expr()->isNull($optionAlias));
+            $this->qb->andWhere($this->prepareCriteriaCondition($optionAlias, $operator, null));
         } else {
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
