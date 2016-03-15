@@ -21,7 +21,7 @@ class FamilyTransformerTest extends EntityTransformerTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->familyFactory = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Factory\FamilyFactory')
+        $this->familyFactory = $this->getMockBuilder('Pim\Component\Catalog\Factory\FamilyFactory')
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformerRegistry = $this
