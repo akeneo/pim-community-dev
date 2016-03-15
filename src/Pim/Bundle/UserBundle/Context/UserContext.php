@@ -162,7 +162,7 @@ class UserContext
             throw new \LogicException('No default channel for the user.');
         }
 
-       return $catalogScope;
+        return $catalogScope;
     }
 
     /**
