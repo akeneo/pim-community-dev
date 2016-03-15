@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -16,17 +16,15 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class ChannelValidator extends ChoiceValidator
 {
-    /**
-     * @var ChannelManager
-     */
-    protected $manager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /**
-     * @param ChannelManager $manager
+     * @param ChannelRepositoryInterface $channelRepository
      */
-    public function __construct(ChannelManager $manager)
+    public function __construct(ChannelRepositoryInterface $channelRepository)
     {
-        $this->manager = $manager;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -34,7 +32,7 @@ class ChannelValidator extends ChoiceValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $channels = $this->manager->getChannelChoices();
+        $channels = $this->channelRepository->getLabelsIndexedByCode();
         if (0 === count($channels)) {
             throw new ConstraintDefinitionException('No channel is set in the application');
         }

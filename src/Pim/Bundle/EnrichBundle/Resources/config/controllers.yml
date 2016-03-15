@@ -102,7 +102,7 @@ services:
             - '@form.factory'
             - '@translator'
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
@@ -274,7 +274,7 @@ services:
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
             - '@templating'
 

@@ -294,7 +294,7 @@ services:
         class: %pim_catalog.repository.completeness.class%
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
             - %pim_catalog.entity.product.class%
 

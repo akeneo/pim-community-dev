@@ -60,6 +60,7 @@ class UserContext
      * @param ChannelRepositoryInterface  $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param RequestStack                $requestStack
+     * @param ChoicesBuilderInterface     $choicesBuilder
      * @param string                      $defaultLocale
      */
     public function __construct(
@@ -157,7 +158,11 @@ class UserContext
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
-        return $catalogScope ?: $this->channelRepository->findOneBy([]);
+        if (null === $catalogScope) {
+            throw new \LogicException('No default channel for the user.');
+        }
+
+        return $catalogScope;
     }
 
     /**

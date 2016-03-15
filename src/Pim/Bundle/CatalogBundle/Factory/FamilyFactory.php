@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Family factory
@@ -17,8 +17,8 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class FamilyFactory implements SimpleFactoryInterface
 {
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var AttributeRequirementFactory */
     protected $factory;
@@ -30,18 +30,18 @@ class FamilyFactory implements SimpleFactoryInterface
     protected $familyClass;
 
     /**
-     * @param ChannelManager               $channelManager
+     * @param ChannelRepositoryInterface               $channelRepository
      * @param AttributeRequirementFactory  $factory
      * @param AttributeRepositoryInterface $attributeRepository
      * @param string                       $familyClass
      */
     public function __construct(
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory,
         AttributeRepositoryInterface $attributeRepository,
         $familyClass
     ) {
-        $this->channelManager      = $channelManager;
+        $this->channelRepository   = $channelRepository;
         $this->factory             = $factory;
         $this->attributeRepository = $attributeRepository;
         $this->familyClass         = $familyClass;
@@ -77,10 +77,10 @@ class FamilyFactory implements SimpleFactoryInterface
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
+     * @return array
      */
     protected function getChannels()
     {
-        return $this->channelManager->getChannels();
+        return $this->channelRepository->findAll();
     }
 }
