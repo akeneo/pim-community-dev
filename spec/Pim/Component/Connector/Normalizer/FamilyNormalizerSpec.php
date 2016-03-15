@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer;
+namespace spec\Pim\Component\Connector\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -12,16 +12,14 @@ use Prophecy\Argument;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
-    function let(
-        TranslationNormalizer $transnormalizer,
-        FamilyInterface $family
-    ) {
+    function let(TranslationNormalizer $transnormalizer)
+    {
         $this->beConstructedWith($transnormalizer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\FamilyNormalizer');
+        $this->shouldHaveType('Pim\Component\Connector\Normalizer\FamilyNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -29,16 +27,16 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_family_normalization_into_json_and_xml($family)
+    function it_supports_family_normalization_into_csv(FamilyInterface $family)
     {
-        $this->supportsNormalization($family, 'csv')->shouldBe(false);
-        $this->supportsNormalization($family, 'json')->shouldBe(true);
-        $this->supportsNormalization($family, 'xml')->shouldBe(true);
+        $this->supportsNormalization($family, 'csv')->shouldBe(true);
+        $this->supportsNormalization($family, 'json')->shouldBe(false);
+        $this->supportsNormalization($family, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_family(
         $transnormalizer,
-        $family,
+        FamilyInterface $family,
         AttributeInterface $name,
         AttributeInterface $price,
         AttributeRequirement $ecommercereq,
@@ -64,10 +62,10 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->normalize($family)->shouldReturn(
             [
                 'code'                   => 'mugs',
-                'attributes'             => ['name', 'price'],
+                'attributes'             => 'name,price',
                 'attribute_as_label'     => 'name',
-                'requirements-ecommerce' => ['name'],
-                'requirements-mobile'    => [],
+                'requirements-ecommerce' => 'name',
+                'requirements-mobile'    => '',
             ]
         );
     }

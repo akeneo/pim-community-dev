@@ -1,12 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer;
+namespace spec\Pim\Component\Connector\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Connector\Normalizer\TranslationNormalizer;
 use Prophecy\Argument;
 
@@ -35,7 +36,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\AttributeNormalizer');
+        $this->shouldHaveType('Pim\Component\Connector\Normalizer\AttributeNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -43,11 +44,11 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_attribute_normalization_into_json_and_xml($attribute)
+    function it_supports_attribute_normalization_into_csv($attribute)
     {
-        $this->supportsNormalization($attribute, 'csv')->shouldBe(false);
-        $this->supportsNormalization($attribute, 'json')->shouldBe(true);
-        $this->supportsNormalization($attribute, 'xml')->shouldBe(true);
+        $this->supportsNormalization($attribute, 'csv')->shouldBe(true);
+        $this->supportsNormalization($attribute, 'json')->shouldBe(false);
+        $this->supportsNormalization($attribute, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_attribute($attribute)
@@ -69,22 +70,22 @@ class AttributeNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_normalizes_attribute_for_versioning(
-        $attribute,
-        AttributeOptionInterface $size,
-        AttributeOptionValueInterface $en,
-        AttributeOptionValueInterface $fr
-    ) {
+    function it_normalizes_attribute_for_versioning($attribute)
+    {
         $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $attribute->getOptions()->willReturn([$size]);
-        $size->getCode()->willReturn('size');
-        $size->getOptionValues()->willReturn([$en, $fr]);
-        $en->getLocale()->willReturn('en_US');
-        $en->getValue()->willReturn('big');
-        $fr->getLocale()->willReturn('fr_FR');
-        $fr->getValue()->willReturn('grand');
+        $size = new AttributeOption();
+        $size->setCode('size');
+        $en = new AttributeOptionValue();
+        $fr =new AttributeOptionValue();
+        $en->setLocale('en_US');
+        $en->setValue('big');
+        $fr->setLocale('fr_FR');
+        $fr->setValue('grand');
+        $size->addOptionValue($en);
+        $size->addOptionValue($fr);
+        $attribute->getOptions()->willReturn(new ArrayCollection([$size]));
         $attribute->getSortOrder()->willReturn(1);
         $attribute->isRequired()->willReturn(false);
         $attribute->getMaxCharacters()->willReturn(null);
@@ -109,15 +110,10 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
-                'available_locales'      => ['en_US', 'fr_FR'],
+                'available_locales'      => 'en_US,fr_FR',
                 'localizable'            => true,
                 'scope'                  => 'Channel',
-                'options'                => [
-                    'size' => [
-                        'en_US' => 'big',
-                        'fr_FR' => 'grand'
-                    ]
-                ],
+                'options'                => 'Code:size,en_US:big,fr_FR:grand',
                 'sort_order'             => 1,
                 'required'               => 0,
                 'max_characters'         => '',

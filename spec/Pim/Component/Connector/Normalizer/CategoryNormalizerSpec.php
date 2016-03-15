@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer;
+namespace spec\Pim\Component\Connector\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Model\CategoryInterface;
@@ -18,7 +18,7 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\CategoryNormalizer');
+        $this->shouldHaveType('Pim\Component\Connector\Normalizer\CategoryNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -26,20 +26,22 @@ class CategoryNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_category_normalization_into_json_and_xml($clothes)
+    function it_supports_category_normalization_into_csv($clothes)
     {
-        $this->supportsNormalization($clothes, 'csv')->shouldBe(false);
-        $this->supportsNormalization($clothes, 'json')->shouldBe(true);
-        $this->supportsNormalization($clothes, 'xml')->shouldBe(true);
+        $this->supportsNormalization($clothes, 'csv')->shouldBe(true);
+        $this->supportsNormalization($clothes, 'json')->shouldBe(false);
+        $this->supportsNormalization($clothes, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_category($transnormalizer, $clothes, CategoryInterface $catalog)
-    {
+    function it_normalizes_category(
+        $transnormalizer,
+        $clothes,
+        CategoryInterface $catalog
+    ) {
         $transnormalizer->normalize(Argument::cetera())->willReturn([]);
         $clothes->getCode()->willReturn('clothes');
         $clothes->getParent()->willReturn($catalog);
         $catalog->getCode()->willReturn('Master catalog');
-
         $this->normalize($clothes)->shouldReturn(
             [
                 'code'    => 'clothes',

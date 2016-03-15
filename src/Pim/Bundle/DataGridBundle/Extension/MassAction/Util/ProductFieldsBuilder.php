@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
+use Pim\Component\Connector\Normalizer\ProductNormalizer;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

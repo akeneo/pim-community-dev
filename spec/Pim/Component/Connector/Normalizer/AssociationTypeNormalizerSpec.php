@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer;
+namespace spec\Pim\Component\Connector\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -9,14 +9,14 @@ use Prophecy\Argument;
 
 class AssociationTypeNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $transnormalizer, AssociationTypeInterface $association)
+    function let(TranslationNormalizer $transnormalizer)
     {
         $this->beConstructedWith($transnormalizer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\AssociationTypeNormalizer');
+        $this->shouldHaveType('Pim\Component\Connector\Normalizer\AssociationTypeNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -24,18 +24,17 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_association_type_normalization_into_json_and_xml($association)
+    function it_supports_association_type_normalization_into_csv(AssociationTypeInterface $association)
     {
-        $this->supportsNormalization($association, 'csv')->shouldBe(false);
-        $this->supportsNormalization($association, 'json')->shouldBe(true);
-        $this->supportsNormalization($association, 'xml')->shouldBe(true);
+        $this->supportsNormalization($association, 'csv')->shouldBe(true);
+        $this->supportsNormalization($association, 'json')->shouldBe(false);
+        $this->supportsNormalization($association, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_association_type($transnormalizer, $association)
+    function it_normalizes_association_type($transnormalizer, AssociationTypeInterface $association)
     {
         $transnormalizer->normalize(Argument::cetera())->willReturn([]);
         $association->getCode()->willReturn('PACK');
-
         $this->normalize($association)->shouldReturn(
             [
                 'code' => 'PACK'
