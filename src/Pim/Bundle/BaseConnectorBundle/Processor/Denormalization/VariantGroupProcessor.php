@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;

@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

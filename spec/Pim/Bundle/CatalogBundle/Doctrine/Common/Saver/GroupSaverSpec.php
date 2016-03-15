@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
+use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
