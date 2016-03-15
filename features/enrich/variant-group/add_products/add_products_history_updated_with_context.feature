@@ -6,11 +6,61 @@ Feature: Add products to a variant group
 
   Background:
     Given the "footwear" catalog configuration
-    And the following products:
-      | sku             | family  | categories        | size | color | name-en_US |
-      | sandal-white-37 | sandals | winter_collection | 37   | white | old name   |
-      | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
-      | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
+    And I am logged in as "admin"
+    # Create sandal-white-37
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sandal-white-37 |
+      | family | Sandals         |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandal-white-37" product page
+    And I fill in the following information:
+      | Name | old name |
+    And I visit the "Colors" group
+    And I fill in the following information:
+      | Color | White |
+    And I visit the "Sizes" group
+    And I fill in the following information:
+      | Size | 37 |
+    And I save the product
+    # Create sandal-white-38
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sandal-white-38 |
+      | family | Sandals         |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandal-white-38" product page
+    And I visit the "Product information" group
+    And I fill in the following information:
+      | Name | old name |
+    And I visit the "Colors" group
+    And I fill in the following information:
+      | Color | White |
+    And I visit the "Sizes" group
+    And I fill in the following information:
+      | Size | 38 |
+    And I save the product
+    # Create sandal-white-39
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sandal-white-39 |
+      | family | Sandals         |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandal-white-39" product page
+    And I visit the "Product information" group
+    And I fill in the following information:
+      | Name | old name |
+    And I visit the "Colors" group
+    And I fill in the following information:
+      | Color | White |
+    And I visit the "Sizes" group
+    And I fill in the following information:
+      | Size | 39 |
+    And I save the product
+    # Create remaining
     And the following product groups:
       | code   | label  | axis        | type    |
       | SANDAL | Sandal | size, color | VARIANT |
@@ -19,6 +69,7 @@ Feature: Add products to a variant group
       | SANDAL | manufacturer | Converse    |        |       |
       | SANDAL | name         | EN name     | en_US  |       |
       | SANDAL | comment      | New comment |        |       |
+    And I logout
     And I am logged in as "Julia"
 
   Scenario: Successfully add products in variant groups, history should be updated with a variant group context
@@ -32,5 +83,6 @@ Feature: Add products to a variant group
     And I open the history
     Then I should see history:
       | version | author                                                            | property | value           |
-      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | John Doe - admin@example.com                                     | SKU      | sandal-white-37 |
+      | 3       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 2       | John Doe - admin@example.com                                      | Color    | white           |
+      | 1       | John Doe - admin@example.com                                      | SKU      | sandal-white-37 |

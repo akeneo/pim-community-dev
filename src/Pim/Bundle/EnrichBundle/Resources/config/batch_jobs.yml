@@ -51,7 +51,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.family
                         processor: pim_enrich.connector.processor.mass_edit.family.set_requirements
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pim_connector.writer.doctrine.family
                     parameters:
                         batch_size: 1000
         csv_product_quick_export:
