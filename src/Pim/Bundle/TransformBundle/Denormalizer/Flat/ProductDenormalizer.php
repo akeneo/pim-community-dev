@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
@@ -35,7 +35,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var string */
@@ -56,7 +56,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /**
      * @param ManagerRegistry              $managerRegistry
      * @param string                       $entityClass
-     * @param ProductBuilder               $productBuilder
+     * @param ProductBuilderInterface      $productBuilder
      * @param AttributeColumnInfoExtractor $attFieldExtractor
      * @param AssociationColumnsResolver   $assocFieldResolver
      * @param string                       $associationClass
@@ -68,7 +68,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
         AttributeColumnInfoExtractor $attFieldExtractor,
         AssociationColumnsResolver $assocFieldResolver,
         $associationClass,

@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Builder;
+namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Component\Catalog\Builder\ProductBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
