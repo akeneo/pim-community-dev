@@ -13,7 +13,7 @@ use Prophecy\Argument;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, ProductManager $manager)
+    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
     {
         $attributes = [
             'sku' => [
@@ -38,7 +38,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
             ->getConfiguration('pim_catalog_identifier')
             ->willReturn(['column' => ['identifier_config'], 'sorter' => 'flexible_field']);
 
-        $this->beConstructedWith($registry, $manager);
+        $this->beConstructedWith($registry);
     }
 
     function it_is_a_configurator()

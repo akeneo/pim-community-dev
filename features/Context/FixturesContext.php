@@ -1917,14 +1917,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
-    }
-
-    /**
      * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
@@ -1978,14 +1970,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeOptionSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.attribute_option');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
-     */
-    protected function getAttributeManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
 
     /**

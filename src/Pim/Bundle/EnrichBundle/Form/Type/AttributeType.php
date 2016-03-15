@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,8 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttributeType extends AbstractType
 {
-    /** @var AttributeManager Attribute type manager */
-    protected $attributeManager;
+    /** @var AttributeTypeRegistry */
+    protected $registry;
 
     /** @var AddAttributeTypeRelatedFieldsSubscriber Attribute subscriber */
     protected $subscriber;
@@ -35,7 +35,7 @@ class AttributeType extends AbstractType
     /**
      * Constructor
      *
-     * @param AttributeManager                        $manager              Attribute manager
+     * @param AttributeTypeRegistry                   $registry
      * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber           Subscriber to add attribute type
      *                                                                      related fields
      * @param string                                  $attributeTranslation
@@ -43,13 +43,13 @@ class AttributeType extends AbstractType
      * @param string                                  $attributeGroupClass
      */
     public function __construct(
-        AttributeManager $manager,
+        AttributeTypeRegistry $registry,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber,
         $attributeTranslation,
         $attributeClass,
         $attributeGroupClass
     ) {
-        $this->attributeManager     = $manager;
+        $this->registry             = $registry;
         $this->subscriber           = $subscriber;
         $this->attributeClass       = $attributeClass;
         $this->attributeTranslation = $attributeTranslation;
@@ -119,7 +119,7 @@ class AttributeType extends AbstractType
             'attributeType',
             'choice',
             [
-                'choices'   => $this->getAttributeTypeChoices(),
+                'choices'   => $this->registry->getSortedAliases(),
                 'select2'   => true,
                 'disabled'  => false,
                 'read_only' => true
@@ -184,16 +184,6 @@ class AttributeType extends AbstractType
     protected function addFieldRequired(FormBuilderInterface $builder)
     {
         $builder->add('required', 'switch');
-    }
-
-    /**
-     * Return available frontend type
-     *
-     * @return array
-     */
-    protected function getAttributeTypeChoices()
-    {
-        return $this->attributeManager->getAttributeTypes();
     }
 
     /**

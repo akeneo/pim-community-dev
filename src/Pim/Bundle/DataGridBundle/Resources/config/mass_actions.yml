@@ -73,8 +73,6 @@ services:
     pim_datagrid.extension.mass_action.handler.product_delete:
         class: %pim_datagrid.extension.mass_action.handler.product_delete.class%
         parent: pim_datagrid.extension.mass_action.handler.delete
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }
 
