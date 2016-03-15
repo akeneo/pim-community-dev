@@ -49,7 +49,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         return [
             'locale' => $entity->getLocale(),
             'scope'  => $entity->getScope(),
-            'data'   => $data
+            'data'   => $data,
         ];
     }
 

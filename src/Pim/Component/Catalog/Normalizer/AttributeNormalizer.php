@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -49,7 +48,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         $results = [
             'type' => $object->getAttributeType(),
-            'code' => $object->getCode()
+            'code' => $object->getCode(),
             ] + $this->transNormalizer->normalize($object, $format, $context);
 
         $results = array_merge(
@@ -61,7 +60,7 @@ class AttributeNormalizer implements NormalizerInterface
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit(),
-                'reference_data_name'     => $object->getReferenceDataName()
+                'reference_data_name'     => $object->getReferenceDataName(),
             ]
         );
         if (isset($context['versioning'])) {

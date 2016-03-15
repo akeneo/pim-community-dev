@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -41,6 +40,8 @@ class FamilyNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param FamilyInterface $object
      */
     public function normalize($object, $format = null, array $context = [])
     {

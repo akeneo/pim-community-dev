@@ -31,7 +31,7 @@ class JobInstanceNormalizer implements NormalizerInterface
             'label'         => $object->getLabel(),
             'connector'     => $object->getConnector(),
             'type'          => $object->getType(),
-            'configuration' => $this->normalizeConfiguration($object)
+            'configuration' => $this->normalizeConfiguration($object),
         ];
 
         return $results;

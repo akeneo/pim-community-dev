@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

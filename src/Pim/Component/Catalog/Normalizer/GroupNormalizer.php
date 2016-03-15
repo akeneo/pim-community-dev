@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer;
 
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -40,12 +39,14 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
 
     /**
      * {@inheritdoc}
+     *
+     * @param GroupInterface $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
         $results = [
             'code' => $object->getCode(),
-            'type' => $object->getType()->getCode()
+            'type' => $object->getType()->getCode(),
         ];
 
         $axisAttributes = $this->normalizeAxisAttributes($object);

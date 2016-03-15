@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Normalizer;
 
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -41,7 +40,7 @@ class AssociationTypeNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         return [
-            'code'  => $object->getCode()
+            'code' => $object->getCode(),
         ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
