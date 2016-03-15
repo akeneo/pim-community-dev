@@ -11,6 +11,7 @@ define(
             dataLocale    = null,
             relatedEntity = null,
             $el           = null,
+            categoryBaseRoute = '',
 
             getActiveNode = function(skipVirtual) {
                 if (skipVirtual) {
@@ -122,7 +123,7 @@ define(
                                 return {
                                     id: getNodeId(node),
                                     select_node_id: getActiveNode(),
-                                    with_products_count: 1,
+                                    with_products_count: 1, // TODO: Change naming
                                     include_sub: +includeSub
                                 };
                             }
@@ -202,7 +203,7 @@ define(
             };
 
         return {
-            init: function($element, state) {
+            init: function($element, state, baseRoute) {
                 if (!$element || !$element.length || !_.isObject($element)) {
                     return;
                 }

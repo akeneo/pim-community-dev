@@ -6,7 +6,7 @@
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderStatefulGrid(name, params = {}, renderParams = {}) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}, categoryBaseRoute = null) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
@@ -42,7 +42,7 @@
                         urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
 
-                    {% if name == 'product-grid' %}
+                    {% if categoryBaseRoute is not null %}
                         var categoryFilter = new CategoryFilter(urlParams, '{{ name }}');
                     {% endif %}
 

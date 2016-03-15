@@ -41,7 +41,7 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName) {
+            initialize: function(urlParams, gridName, categoryBaseRoute) {
                 this.$el.remove();
                 this.$el = $(this.container);
 
@@ -56,7 +56,7 @@ define(
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
 
-                TreeView.init(this.$el, this._getInitialState());
+                TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
 
                 this.listenTo(mediator, 'datagrid_filters:build.post', function(filtersManager) {
                     this.listenTo(filtersManager, 'collection-filters:createState.post', function(filtersState) {
