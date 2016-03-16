@@ -106,15 +106,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectManager()
-    {
-        return $this->om;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRepository()
+    protected function getRepository()
     {
         if (null === $this->repository) {
             $this->repository = $this->om->getRepository($this->getConfiguration('entity'));
