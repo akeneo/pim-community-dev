@@ -77,6 +77,18 @@ interface RuleDefinitionInterface
     public function setPriority($priority);
 
     /**
+     * @return int
+     */
+    public function getImpactedSubjectCount();
+
+    /**
+     * @param int $impactedSubjectCount
+     *
+     * @return RuleDefinitionInterface
+     */
+    public function setImpactedSubjectCount($impactedSubjectCount);
+
+    /**
      * @param ArrayCollection $relations
      *
      * @return RuleDefinitionInterface

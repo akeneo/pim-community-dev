@@ -27,6 +27,10 @@ Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition:
             nullable: false
             options:
                 default: 0
+        impactedSubjectCount:
+            type: integer
+            nullable: true
+            column: impacted_subject_count
     oneToMany:
         relations:
             targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface
