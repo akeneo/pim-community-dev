@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Doctrine\ODM\MongoDB\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -20,7 +19,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_identifier'],
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', 'EMPTY', 'NOT EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($qb);
     }
@@ -43,9 +42,9 @@ class StringFilterSpec extends ObjectBehavior
             'CONTAINS',
             'DOES NOT CONTAIN',
             '=',
-            'IN',
             'EMPTY',
-            'NOT EMPTY'
+            'NOT EMPTY',
+            '!='
         ]);
         $this->supportsOperator('ENDS WITH')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -60,8 +59,8 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/^My Sku/i'))->willReturn($qb);
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/^My Sku/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -75,8 +74,8 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/My Sku$/i'))->willReturn($qb);
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/My Sku$/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -90,8 +89,8 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/My Sku/i'))->willReturn($qb);
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/My Sku/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -105,10 +104,41 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/^((?!My Sku).)*$/i'))->willReturn($qb);
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/^((?!My Sku).)*$/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
+    }
+
+    function it_adds_an_equals_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
+        $sku->getCode()->willReturn('sku');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->equals('My Sku')->shouldBeCalled();
+
+        $this->addAttributeFilter($sku, '=', 'My Sku', null, null, ['field' => 'sku']);
+    }
+
+    function it_adds_a_not_equal_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
+        $sku->getCode()->willReturn('sku');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+        $qb->notEqual('My Sku')->shouldBeCalled();
+
+        $this->addAttributeFilter($sku, '!=', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_an_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
@@ -120,18 +150,13 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->field('normalizedData.sku')->willReturn($qb);
-        $qb->exists(false)->shouldBeCalled()->willReturn($qb);
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(false)->shouldBeCalled()->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'EMPTY', null, null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_not_empty_attribute_filter_in_the_query(
-        $attrValidatorHelper,
-        $qb,
-        AttributeInterface $sku,
-        Expr $expr
-    ) {
+    function it_adds_a_not_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku) {
         $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
 
@@ -139,14 +164,8 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
-        $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.sku')->shouldBeCalled()->willReturn($expr);
-        $expr->exists(true)->shouldBeCalled()->willReturn($expr);
-        $expr->notEqual('')->shouldBeCalled()->willReturn($expr);
-        $qb->addAnd(
-            Argument::type('Doctrine\ODM\MongoDB\Query\Expr'),
-            Argument::type('Doctrine\ODM\MongoDB\Query\Expr')
-        )->shouldBeCalled();
+        $qb->field('normalizedData.sku')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'NOT EMPTY', null, null, null, ['field' => 'sku']);
     }

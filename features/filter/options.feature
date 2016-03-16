@@ -13,14 +13,13 @@ Feature: Filter on multi select attributes
       | BOOTBL  | hot, wet           |
       | BOOTRXS |                    |
     Then I should get the following results for the given filters:
-      | filter                                                                                                                                                  | result                                     |
-      | [{"field":"weather_conditions.code", "operator":"IN",        "value": ["dry"]}]                                                                         | ["BOOTBXS", "BOOTWXS"]                     |
-      | [{"field":"weather_conditions.code", "operator":"IN",        "value": ["wet", "hot"]}]                                                                  | ["BOOTBS", "BOOTBL", "BOOTBXS"]            |
-      | [{"field":"weather_conditions.code", "operator":"NOT IN",    "value": ["wet", "hot"]}]                                                                  | ["BOOTWXS"]                                |
-      | [{"field":"weather_conditions.code", "operator":"NOT IN",    "value": ["dry"]}]                                                                         | ["BOOTBS", "BOOTBL"]                       |
-      | [{"field":"weather_conditions.code", "operator":"IN",        "value": ["wet"]}, {"field":"weather_conditions.code", "operator":"IN", "value": ["hot"]}] | ["BOOTBL"]                                 |
-      | [{"field":"weather_conditions.code", "operator":"EMPTY",     "value": null }]                                                                           | ["BOOTRXS"]                                |
-      | [{"field":"weather_conditions.code", "operator":"NOT EMPTY", "value": null }]                                                                           | ["BOOTBXS", "BOOTWXS", "BOOTBS", "BOOTBL"] |
+      | filter                                                                                 | result                                     |
+      | [{"field":"weather_conditions.code", "operator":"IN",        "value": ["dry"]}]        | ["BOOTBXS", "BOOTWXS"]                     |
+      | [{"field":"weather_conditions.code", "operator":"IN",        "value": ["wet", "hot"]}] | ["BOOTBS", "BOOTBL", "BOOTBXS"]            |
+      | [{"field":"weather_conditions.code", "operator":"NOT IN",    "value": ["wet", "hot"]}] | ["BOOTWXS"]                                |
+      | [{"field":"weather_conditions.code", "operator":"NOT IN",    "value": ["dry"]}]        | ["BOOTBS", "BOOTBL"]                       |
+      | [{"field":"weather_conditions.code", "operator":"EMPTY",     "value": null }]          | ["BOOTRXS"]                                |
+      | [{"field":"weather_conditions.code", "operator":"NOT EMPTY", "value": null }]          | ["BOOTBXS", "BOOTWXS", "BOOTBS", "BOOTBL"] |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5224
   Scenario: Successfully filter on multi select attributes that have the same option codes

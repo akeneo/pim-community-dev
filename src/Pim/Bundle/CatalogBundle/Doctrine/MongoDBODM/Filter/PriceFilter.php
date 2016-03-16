@@ -70,10 +70,14 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.%s', $field, $value['currency']);
-        $fieldData = sprintf('%s.data', $field);
-        $this->applyFilter($operator, $fieldData, $value['data']);
+        $field = sprintf(
+            '%s.%s.%s.data',
+            ProductQueryUtility::NORMALIZED_FIELD,
+            $field,
+            $value['currency']
+        );
+
+        $this->applyFilter($field, $operator, $value['data']);
 
         return $this;
     }
@@ -81,33 +85,38 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * Apply the filter to the query with the given operator
      *
+     * @param string $field
      * @param string $operator
-     * @param string $fieldData
      * @param float  $data
      */
-    protected function applyFilter($operator, $fieldData, $data)
+    protected function applyFilter($field, $operator, $data)
     {
         switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($data);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($data);
+                break;
             case Operators::LOWER_THAN:
-                $this->qb->field($fieldData)->lt($data);
+                $this->qb->field($field)->lt($data);
                 break;
             case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->lte($data);
+                $this->qb->field($field)->lte($data);
                 break;
             case Operators::GREATER_THAN:
-                $this->qb->field($fieldData)->gt($data);
+                $this->qb->field($field)->gt($data);
                 break;
             case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->gte($data);
+                $this->qb->field($field)->gte($data);
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->exists(false);
+                $this->qb->field($field)->exists(false);
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($fieldData)->exists(true);
+                $this->qb->field($field)->exists(true);
                 break;
-            default:
-                $this->qb->field($fieldData)->equals($data);
         }
     }
 
@@ -141,7 +150,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
+        if (null !== $data['data'] && !is_int($data['data']) && !is_float($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',

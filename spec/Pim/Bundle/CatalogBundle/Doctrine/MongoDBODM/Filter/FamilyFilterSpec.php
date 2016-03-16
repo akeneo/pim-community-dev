@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
@@ -12,9 +13,10 @@ use Prophecy\Argument;
  */
 class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
         $this->beConstructedWith(
+            $objectIdResolver,
             ['family.id', 'family.code'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
@@ -33,7 +35,7 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_in_filter_on_an_id_field_in_the_query($qb)
+    function it_adds_an_in_filter_on_an_id_field_in_the_query($qb)
     {
         $qb->field('family')
             ->shouldBeCalled()
@@ -43,12 +45,16 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->addFieldFilter('family.id', 'IN', [12, 13]);
     }
 
-    function it_adds_a_in_filter_on_a_code_field_in_the_query($qb)
+    function it_adds_an_in_filter_on_a_code_field_in_the_query($qb, $objectIdResolver)
     {
-        $qb->field('normalizedData.family.code')
+        $objectIdResolver->getIdsFromCodes('family', ['shoes', 'ties'])
+            ->shouldBeCalled()
+            ->willReturn([12, 13]);
+
+        $qb->field('family')
             ->shouldBeCalled()
             ->willReturn($qb);
-        $qb->in(['shoes', 'ties'])->shouldBeCalled();
+        $qb->in([12, 13])->shouldBeCalled();
 
         $this->addFieldFilter('family.code', 'IN', ['shoes', 'ties']);
     }
@@ -63,12 +69,16 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->addFieldFilter('family.id', 'NOT IN', [12, 13]);
     }
 
-    function it_adds_a_not_in_filter_on_a_code_field_in_the_query($qb)
+    function it_adds_a_not_in_filter_on_a_code_field_in_the_query($qb, $objectIdResolver)
     {
-        $qb->field('normalizedData.family.code')
+        $objectIdResolver->getIdsFromCodes('family', ['shoes', 'ties'])
+            ->shouldBeCalled()
+            ->willReturn([12, 13]);
+
+        $qb->field('family')
             ->shouldBeCalled()
             ->willReturn($qb);
-        $qb->notIn(['shoes', 'ties'])->shouldBeCalled();
+        $qb->notIn([12, 13])->shouldBeCalled();
 
         $this->addFieldFilter('family.code', 'NOT IN', ['shoes', 'ties']);
     }
@@ -85,7 +95,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_adds_an_empty_filter_on_a_code_field_in_the_query($qb)
     {
-        $qb->field('normalizedData.family.code')
+        $qb->field('family')
             ->shouldBeCalled()
             ->willReturn($qb);
         $qb->exists(false)->shouldBeCalled();
@@ -105,7 +115,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_empty_filter_on_a_code_field_in_the_query($qb)
     {
-        $qb->field('normalizedData.family.code')
+        $qb->field('family')
             ->shouldBeCalled()
             ->willReturn($qb);
         $qb->exists(true)->shouldBeCalled();

@@ -26,8 +26,6 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     protected $supportedFields;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedFields
@@ -232,6 +230,13 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             case Operators::EQUALS:
                 $this->qb->field($field)->gte($this->getTimestamp($value));
                 $this->qb->field($field)->lte($this->getTimestamp($value, true));
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->lt($this->getTimestamp($value)))
+                        ->addOr($this->qb->expr()->field($field)->gt($this->getTimestamp($value, true)))
+                );
                 break;
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);

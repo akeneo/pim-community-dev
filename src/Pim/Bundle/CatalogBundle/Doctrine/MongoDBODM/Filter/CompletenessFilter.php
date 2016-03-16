@@ -20,8 +20,6 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     protected $supportedFields;
 
     /**
-     * Instanciate the filter
-     *
      * @param array $supportedFields
      * @param array $supportedOperators
      */
@@ -93,6 +91,10 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         switch ($operator) {
             case Operators::EQUALS:
                 $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
                 break;
             case Operators::LOWER_THAN:
                 $this->qb->field($field)->lt($value);

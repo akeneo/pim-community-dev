@@ -19,7 +19,7 @@ class NumberFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_metric'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($queryBuilder);
     }
@@ -31,12 +31,12 @@ class NumberFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_an_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -44,13 +44,13 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->equals('22.5')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->equals(22.5)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, '=', '22.5', 'en_US', 'mobile');
+        $this->addAttributeFilter($attribute, '=', 22.5, 'en_US', 'mobile');
     }
 
-    function it_adds_an_empty_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_not_equal_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -58,13 +58,28 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->exists(false)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled();
+        $queryBuilder->notEqual(22.5)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, '!=', 22.5, 'en_US', 'mobile');
+    }
+
+    function it_adds_an_empty_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getCode()->willReturn('price');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(true);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, 'en_US', 'mobile');
     }
 
-    function it_adds_a_not_empty_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_not_empty_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -72,13 +87,13 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->exists(true)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'NOT EMPTY', null, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_lower_than_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -86,13 +101,13 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->lt(42)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->lt(42)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '<', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_greater_than_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -100,13 +115,13 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->gt(42)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->gt(42)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '>', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_or_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_lower_than_or_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -114,13 +129,13 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->lte(42)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->lte(42)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '<=', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -128,8 +143,8 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
-        $queryBuilder->gte(42)->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.price-en_US-mobile')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->gte(42)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '>=', 42, 'en_US', 'mobile');
     }
@@ -137,7 +152,11 @@ class NumberFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
+
         $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+
+        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('42')))
+            ->during('addAttributeFilter', [$attribute, '=', '42']);
     }
 }

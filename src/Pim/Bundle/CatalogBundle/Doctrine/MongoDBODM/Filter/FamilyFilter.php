@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -21,14 +20,20 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
+    /** @var ObjectIdResolverInterface */
+    protected $objectIdResolver;
+
     /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param ObjectIdResolverInterface $objectIdResolver
+     * @param array                     $supportedFields
+     * @param array                     $supportedOperators
      */
     public function __construct(
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -48,16 +53,15 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
+
+            if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($field)) {
+                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
+            } else {
+                $value = array_map('intval', $value);
+            }
         }
 
-
-        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
-            $this->checkValue($field, $value);
-        }
-
-        $field = FieldFilterHelper::ID_PROPERTY === FieldFilterHelper::getProperty($field) ?
-            'family' :
-            sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $field = FieldFilterHelper::getCode($field);
 
         $this->applyFilter($field, $operator, $value);
 

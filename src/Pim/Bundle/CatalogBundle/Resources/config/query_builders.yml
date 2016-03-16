@@ -81,6 +81,44 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
+    pim_catalog.doctrine.query.filter.family:
+        class: %pim_catalog.doctrine.query.filter.family.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['family.id', 'family.code']
+            - ['IN', 'NOT IN' ,'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.groups:
+        class: %pim_catalog.doctrine.query.filter.groups.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['groups.id', 'groups.code']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.option:
+        class: %pim_catalog.doctrine.query.filter.option.class%
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['pim_catalog_simpleselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.options:
+        class: %pim_catalog.doctrine.query.filter.options.class%
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['pim_catalog_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
     pim_catalog.doctrine.query.filter.date:
         class: %pim_catalog.doctrine.query.filter.date.class%
         arguments:
@@ -111,26 +149,6 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.option:
-        class: %pim_catalog.doctrine.query.filter.option.class%
-        arguments:
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.doctrine.query.filter.object_id_resolver
-            - ['pim_catalog_simpleselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.options:
-        class: %pim_catalog.doctrine.query.filter.options.class%
-        arguments:
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.doctrine.query.filter.object_id_resolver
-            - ['pim_catalog_multiselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.price:
         class: %pim_catalog.doctrine.query.filter.price.class%
         arguments:
@@ -145,7 +163,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.product_id.class%
         arguments:
             - ['id']
-            - ['=', 'IN', 'NOT IN']
+            - ['=', 'IN', 'NOT IN', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

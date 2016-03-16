@@ -87,7 +87,6 @@
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Job\BatchException`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping`
-- Remove argument $objectIdResolver from constructors of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter` 
 - Removed deprecated class `Pim\Bundle\CatalogBundle\Manager\ChannelManager`.
 - Remove the extend of the `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim/Bundle/BaseConnectorBundle/Processor/CsvSerializer/ProductProcessor` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.

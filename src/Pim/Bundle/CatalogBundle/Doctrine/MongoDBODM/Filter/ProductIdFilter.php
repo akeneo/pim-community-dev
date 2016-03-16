@@ -49,10 +49,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
             throw InvalidArgumentException::expected($field, 'array or string value', 'filter', 'productId', $value);
         }
 
-        $field = '_id';
-        $value = is_array($value) ? $value : [$value];
-
-        $this->applyFilter($value, $field, $operator);
+        $this->applyFilter('_id', $operator, $value);
 
         return $this;
     }
@@ -60,16 +57,25 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param array  $value
-     * @param string $field
-     * @param string $operator
+     * @param string       $field
+     * @param string       $operator
+     * @param string|array $value
      */
-    protected function applyFilter(array $value, $field, $operator)
+    protected function applyFilter($field, $operator, $value)
     {
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            $this->qb->field($field)->in($value);
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->notEqual($value);
+                break;
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->notIn($value);
+                break;
         }
     }
 }
