@@ -2,11 +2,6 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Buffer\BufferFactory;
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-
 /**
  * Write product data into a csv file on the local filesystem
  *
@@ -19,6 +14,11 @@ class CsvProductWriter extends CsvWriter
     /** @var BulkFileExporter */
     protected $mediaCopier;
 
+    /**
+     * @param FilePathResolverInterface $filePathResolver
+     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BulkFileExporter          $mediaCopier
+     */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
@@ -48,6 +48,10 @@ class CsvProductWriter extends CsvWriter
         parent::write($products);
 
         $this->mediaCopier->exportAll($media, $exportDirectory);
+
+        foreach ($this->mediaCopier->getCopiedMedia() as $copy) {
+            $this->writtenFiles[$copy['copyPath']] = $copy['originalMedium']['exportPath'];
+        }
 
         foreach ($this->mediaCopier->getErrors() as $error) {
             $this->stepExecution->addWarning(

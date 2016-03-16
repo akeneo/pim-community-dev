@@ -58,6 +58,16 @@ class CsvProductWriterSpec extends ObjectBehavior
         ], '/tmp/export')->shouldBeCalled();
 
         $mediaCopier->getErrors()->willReturn([]);
+        $mediaCopier->getCopiedMedia()->willReturn([
+            [
+                'copyPath'       => '/tmp/export',
+                'originalMedium' => [
+                    'filePath'     => 'img/product1.jpg',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ]
+            ]
+        ]);
 
         $this->write([
             [
@@ -82,6 +92,10 @@ class CsvProductWriterSpec extends ObjectBehavior
                     'storageAlias' => 'storageAlias',
                 ],
             ]
+        ]);
+
+        $this->getWrittenFiles()->shouldBeEqualTo([
+            '/tmp/export' => 'export'
         ]);
     }
 }

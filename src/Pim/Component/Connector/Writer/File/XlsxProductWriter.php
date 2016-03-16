@@ -13,7 +13,7 @@ use Box\Spout\Writer\WriterFactory;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterface
+class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var bool */
     protected $withHeader;
@@ -24,6 +24,14 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var BulkFileExporter */
     protected $mediaCopier;
 
+    /** @var array */
+    protected $writtenFiles;
+
+    /**
+     * @param FilePathResolverInterface $filePathResolver
+     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BulkFileExporter          $mediaCopier
+     */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
@@ -32,7 +40,8 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
-        $this->mediaCopier = $mediaCopier;
+        $this->mediaCopier   = $mediaCopier;
+        $this->writtenFiles  = [];
     }
 
     /**
@@ -48,11 +57,15 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $products = $media = [];
         foreach ($items as $item) {
             $products[] = $item['product'];
-            $media[] = $item['media'];
+            $media[]    = $item['media'];
         }
 
         $this->flatRowBuffer->write($products, $this->isWithHeader());
         $this->mediaCopier->exportAll($media, $exportDirectory);
+
+        foreach ($this->mediaCopier->getCopiedMedia() as $copy) {
+            $this->writtenFiles[$copy['copyPath']] = $copy['originalMedium']['exportPath'];
+        }
 
         foreach ($this->mediaCopier->getErrors() as $error) {
             $this->stepExecution->addWarning(
@@ -85,6 +98,15 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         }
 
         $writer->close();
+        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
     }
 
     /**

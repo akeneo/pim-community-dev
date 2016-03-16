@@ -74,7 +74,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
 
         $mediaCopier->exportAll([
             [
-                'filePath' => null,
+                'filePath' => 'wrong/path',
                 'exportPath' => 'export',
                 'storageAlias' => 'storageAlias',
             ],
@@ -87,14 +87,34 @@ class XlsxProductWriterSpec extends ObjectBehavior
 
         $mediaCopier->getErrors()->willReturn([
             [
-                'medium' => ['...'],
+                'medium' => [
+                    [
+                        'filePath' => 'wrong/path',
+                        'exportPath' => 'export',
+                        'storageAlias' => 'storageAlias',
+                    ]
+                ],
                 'message' => 'Error message',
+            ]
+        ]);
+        $mediaCopier->getCopiedMedia()->willReturn([
+            [
+                'copyPath'       => '/tmp/export',
+                'originalMedium' => [
+                    'filePath'     => 'img/product1.jpg',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ]
             ]
         ]);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
         $this->write($items);
+
+        $this->getWrittenFiles()->shouldBeEqualTo([
+            '/tmp/export' => 'export'
+        ]);
     }
 
     function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer)
@@ -114,7 +134,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
                     'family' => 12,
                 ],
                 'media' => [
-                    'filePath' => null,
+                    'filePath' => 'wrong/path',
                     'exportPath' => 'export',
                     'storageAlias' => 'storageAlias',
                 ],
