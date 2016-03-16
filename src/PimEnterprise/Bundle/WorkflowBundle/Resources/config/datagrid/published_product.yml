@@ -143,11 +143,6 @@ datagrid:
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
-                category:
-                    type:      published_product_category
-                    ftype:     product_category
-                    label:     Category
-                    data_name: category
                 completeness:
                     type:      product_completeness
                     label:     Complete
