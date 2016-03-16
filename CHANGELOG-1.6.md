@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Controller\RuleController`. Add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository` and `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber`. Replace `Pim\Bundle\CatalogBundle\Manager\ProductManager` by `Doctrine\Common\Persistence\ObjectManager`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder`. Replace `Pim\Bundle\CatalogBundle\Manager\CurrencyManager` argument by `Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface`.
 - Installer fixtures now support csv format for channels setup and not anymore the yml format
