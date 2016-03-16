@@ -4,7 +4,6 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -25,11 +24,11 @@ class AttributeTransformer extends NestedEntityTransformer
     /** @var AttributeFactory */
     protected $attributeFactory;
 
-    /** @var AttributeOptionManager */
-    protected $optionManager;
-
     /** @var DoctrineCache */
     protected $doctrineCache;
+
+    /** @var string */
+    protected $optionClass;
 
     /**
      * Constructor
@@ -40,8 +39,8 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeFactory               $attributeFactory
-     * @param AttributeOptionManager         $optionManager
      * @param DoctrineCache                  $doctrineCache
+     * @param string                         $optionClass
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -50,14 +49,14 @@ class AttributeTransformer extends NestedEntityTransformer
         ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         AttributeFactory $attributeFactory,
-        AttributeOptionManager $optionManager,
-        DoctrineCache $doctrineCache
+        DoctrineCache $doctrineCache,
+        $optionClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
 
         $this->attributeFactory = $attributeFactory;
-        $this->optionManager    = $optionManager;
         $this->doctrineCache    = $doctrineCache;
+        $this->optionClass      = $optionClass;
     }
 
     /**
@@ -87,13 +86,12 @@ class AttributeTransformer extends NestedEntityTransformer
     protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
     {
         $this->doctrineCache->setReference($attribute);
-        $optionClass = $this->optionManager->getAttributeOptionClass();
         foreach ($optionsData as $code => $optionData) {
             $optionData['attribute'] = $attribute->getCode();
             if (!isset($optionData['code'])) {
                 $optionData['code'] = $code;
             }
-            $option = $this->transformNestedEntity($class, 'options', $optionClass, $optionData);
+            $option = $this->transformNestedEntity($class, 'options', $this->optionClass, $optionData);
             $attribute->addOption($option);
             $this->doctrineCache->setReference($option);
         }

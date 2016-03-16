@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
-    pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
@@ -31,13 +30,6 @@ services:
         class: %pim_catalog.manager.attribute_options_sorter.class%
         arguments:
             - '@pim_catalog.saver.attribute_option'
-
-    pim_catalog.manager.attribute_option:
-        class: %pim_catalog.manager.attribute_option.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.attribute_option.class%
-            - %pim_catalog.entity.attribute_option_value.class%
 
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%
