@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Compiler pass to register tagged encoders and normalizers into the pim serializer
@@ -17,9 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class RegisterSerializerPass implements CompilerPassInterface
 {
-    /** @var ReferenceFactory */
-    protected $factory;
-
     /** @var string  */
     protected $serializerServiceId;
 
@@ -27,13 +24,11 @@ class RegisterSerializerPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 100;
 
     /**
-     * @param string                $serializerServiceId
-     * @param ReferenceFactory|null $factory
+     * @param string $serializerServiceId
      */
-    public function __construct($serializerServiceId, ReferenceFactory $factory = null)
+    public function __construct($serializerServiceId)
     {
-        $this->serializerServiceId  = $serializerServiceId;
-        $this->factory = $factory ?: new ReferenceFactory();
+        $this->serializerServiceId = $serializerServiceId;
     }
 
     /**
@@ -64,7 +59,7 @@ class RegisterSerializerPass implements CompilerPassInterface
      * @param string           $tagName
      * @param ContainerBuilder $container
      *
-     * @return \Symfony\Component\DependencyInjection\Reference[]
+     * @return Reference[]
      */
     protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
     {
@@ -80,7 +75,7 @@ class RegisterSerializerPass implements CompilerPassInterface
         foreach ($services as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = isset($tag['priority']) ? $tag['priority'] : self::DEFAULT_PRIORITY;
-                $sortedServices[$priority][] = $this->factory->createReference($serviceId);
+                $sortedServices[$priority][] = new Reference($serviceId);
             }
         }
 

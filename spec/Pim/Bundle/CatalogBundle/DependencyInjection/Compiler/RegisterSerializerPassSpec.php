@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
+use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -11,11 +11,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterSerializerPassSpec extends ObjectBehavior
 {
-    function let(ContainerBuilder $container, ParameterBag $bag, ReferenceFactory $factory)
+    function let(ContainerBuilder $container, ParameterBag $bag)
     {
         $container->getParameterBag()->willReturn($bag);
 
-        $this->beConstructedWith('pim_serializer', $factory);
+        $this->beConstructedWith('pim_serializer');
     }
 
     function it_is_a_compiler_pass()
@@ -42,16 +42,10 @@ class RegisterSerializerPassSpec extends ObjectBehavior
     function it_sets_arguments_of_pim_serializer_with_tagged_normalizers_and_denormalizers_by_default(
         $container,
         $bag,
-        $factory,
-        Definition $definition,
-        Reference $fooNormalizer,
-        Reference $barNormalizer,
-        Reference $bazEncoder
+        Definition $definition
     ) {
-        // Mock service definition
         $container->hasDefinition('pim_serializer')->willReturn(true);
         $container->getDefinition('pim_serializer')->willReturn($definition);
-        $definition->getClass()->willReturn('%pim_serializer.class%');
         $bag->resolveValue('%pim_serializer.class%')->willReturn('Symfony\Component\Serializer\Serializer');
 
         $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn(
@@ -66,34 +60,26 @@ class RegisterSerializerPassSpec extends ObjectBehavior
             ]
         );
 
-        $factory->createReference('normalizer.foo')->willReturn($fooNormalizer);
-        $factory->createReference('normalizer.bar')->willReturn($barNormalizer);
-        $factory->createReference('encoder.baz')->willReturn($bazEncoder);
+        $definition->setArguments(Argument::that(function ($params) {
+            $result =
+                $params[0][0] instanceof Reference &&
+                'normalizer.foo' === $params[0][0]->__toString() &&
+                $params[0][1] instanceof Reference &&
+                'normalizer.bar' === $params[0][1]->__toString() &&
+                $params[1][0] instanceof Reference &&
+                'encoder.baz' === $params[1][0]->__toString()
+            ;
 
-        $definition->setArguments(
-            [
-                [$fooNormalizer, $barNormalizer],
-                [$bazEncoder]
-            ]
-        )->shouldBeCalled();
+            return $result;
+        }))->shouldBeCalled();
 
         $this->process($container);
     }
 
-    function it_sorts_arguments_by_priority(
-        $container,
-        $bag,
-        $factory,
-        Definition $definition,
-        Reference $fooNormalizer,
-        Reference $barNormalizer,
-        Reference $bazEncoder,
-        Reference $quxEncoder
-    ) {
-        // Mock service definition
+    function it_sorts_arguments_by_priority($container, $bag, Definition $definition)
+    {
         $container->hasDefinition('pim_serializer')->willReturn(true);
         $container->getDefinition('pim_serializer')->willReturn($definition);
-        $definition->getClass()->willReturn('%pim_serializer.class%');
         $bag->resolveValue('%pim_serializer.class%')->willReturn('Symfony\Component\Serializer\Serializer');
 
         $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn(
@@ -109,17 +95,20 @@ class RegisterSerializerPassSpec extends ObjectBehavior
             ]
         );
 
-        $factory->createReference('normalizer.foo')->willReturn($fooNormalizer);
-        $factory->createReference('normalizer.bar')->willReturn($barNormalizer);
-        $factory->createReference('encoder.baz')->willReturn($bazEncoder);
-        $factory->createReference('encoder.qux')->willReturn($quxEncoder);
+        $definition->setArguments(Argument::that(function ($params) {
+            $result =
+                $params[0][0] instanceof Reference &&
+                'normalizer.bar' === $params[0][0]->__toString() &&
+                $params[0][1] instanceof Reference &&
+                'normalizer.foo' === $params[0][1]->__toString() &&
+                $params[1][0] instanceof Reference &&
+                'encoder.baz' === $params[1][0]->__toString() &&
+                $params[1][1] instanceof Reference &&
+                'encoder.qux' === $params[1][1]->__toString()
+            ;
 
-        $definition->setArguments(
-            [
-                [$barNormalizer, $fooNormalizer],
-                [$bazEncoder, $quxEncoder]
-            ]
-        )->shouldBeCalled();
+            return $result;
+        }))->shouldBeCalled();
 
         $this->process($container);
     }
