@@ -1,3 +1,9 @@
+# 1.3.40 (2016-03-16)
+
+## Bug fixes
+
+- PIM-5638: Server error when saving association on products
+
 # 1.3.39 (2016-03-03)
 
 ## Bug fixes
