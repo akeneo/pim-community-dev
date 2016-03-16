@@ -8,6 +8,10 @@ pimee_catalog_rule:
                 code: Code
                 conditions: Condition
                 actions: Action
+                impacted_product_count:
+                    label: Selected products
+                    count: "{0,1}%count% selected product|]1,Inf[ %count% selected products"
+                    no_yet_calculated: Not yet calculated
     actions:
         type:
             "copy": Then %from_field% is copied into %to_field%

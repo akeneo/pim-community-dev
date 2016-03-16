@@ -43,6 +43,7 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
+        $loader->load('repositories.yml');
         $loader->load('runners.yml');
         $loader->load('serializers.yml');
         $loader->load('validators.yml');

@@ -20,6 +20,11 @@ datagrid:
                 template: PimEnterpriseCatalogRuleBundle:Rule:_actions.html.twig
                 frontend_type: html
                 data_name: content
+            impactedSubjectCount:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
+                type: twig
+                template: PimEnterpriseCatalogRuleBundle:Rule:_impacted_product_count.html.twig
+                frontend_type: html
         properties:
             id: ~
             delete_link:
