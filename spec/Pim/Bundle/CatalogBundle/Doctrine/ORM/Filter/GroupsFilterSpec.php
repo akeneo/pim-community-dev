@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +39,7 @@ class GroupsFilterSpec extends ObjectBehavior
         $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
         $qb->expr()->willReturn($expr);
 
-        $this->addFieldFilter('groups', 'IN', [1, 2]);
+        $this->addFieldFilter('groups.id', 'IN', [1, 2]);
     }
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb, Expr $expr)
@@ -50,23 +51,47 @@ class GroupsFilterSpec extends ObjectBehavior
         $expr->isNull(Argument::any())->willReturn('filtergroups.id IS NULL');
         $qb->expr()->willReturn($expr);
 
-        $this->addFieldFilter('groups', 'EMPTY', null);
+        $this->addFieldFilter('groups.id', 'EMPTY', null);
     }
 
-    function it_adds_an_not_in_filter_on_a_field_in_the_query($qb, Expr $expr)
-    {
+    function it_adds_an_not_in_filter_on_a_field_in_the_query(
+        $qb,
+        EntityManager $em,
+        QueryBuilder $notInQb,
+        Expr $expr,
+        Expr\Func $inFunc,
+        Expr\Func $whereFunc
+    ) {
         $qb->getRootAlias()->willReturn('f');
-        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL')->willReturn($qb);
+        $qb->leftJoin('f.groups', Argument::containingString('filtergroups'))->willReturn($qb);
+        $qb->getEntityManager()->willReturn($em);
+        $em->createQueryBuilder()->willReturn($notInQb);
+        $qb->getRootEntities()->willReturn(['ProductClassName']);
+        $notInQb->select(Argument::containingString('.id'))->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->from(
+            'ProductClassName',
+            Argument::any(),
+            Argument::containingString('.id')
+        )->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->getRootAlias()->willReturn('ep');
+        $notInQb->innerJoin(
+            Argument::containingString('ep.groups'),
+            Argument::containingString('filtergroups')
+        )->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->expr()->willReturn($expr);
+        $expr->in(Argument::containingString('.id'), [3])
+            ->shouldBeCalled()
+            ->willReturn($inFunc);
+        $notInQb->where($inFunc)->shouldBeCalled();
+        $notInQb->getDQL()->willReturn('excluded products DQL');
+
         $qb->expr()->willReturn($expr);
+        $expr->notIn('f.id', 'excluded products DQL')
+            ->shouldBeCalled()
+            ->willReturn($whereFunc);
+        $qb->andWhere($whereFunc)->shouldBeCalled();
 
-        $expr->notIn(Argument::any(), [3])->willReturn('filtergroups.id NOT IN');
-        $expr->isNull(Argument::any())->willReturn('filtergroups.id IS NULL');
-
-        $expr->orX('filtergroups.id NOT IN', 'filtergroups.id IS NULL')
-            ->willReturn('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL');
-
-        $this->addFieldFilter('groups', 'NOT IN', [3]);
+        $this->addFieldFilter('groups.id', 'NOT IN', [3]);
     }
 
     function it_checks_if_field_is_supported()
