@@ -15,6 +15,12 @@ pimee_catalog_rule:
             set.label: is set into
             copy.label: is copied into
             add.label: is added into
+    datagrid:
+        rule-grid:
+            mass_edit_action:
+                confirm_title: Calculation confirmation
+                confirm_content: Are you sure you want to calculate the selected products by the rules ?
+                confirm_ok: OK
 confirmation:
     remove:
         rule: Are you sure you want to delete this rule? It is not possible to undo this action

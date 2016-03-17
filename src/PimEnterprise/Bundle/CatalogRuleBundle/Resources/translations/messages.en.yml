@@ -13,7 +13,7 @@ pimee_catalog_rule:
                     count: "{0,1}%count% selected product|]1,Inf[ %count% selected products"
                     no_yet_calculated: Not yet calculated
             mass_edit_action:
-                impacted_products: Calculate selected products by rule
+                impacted_product_count: Calculate selected products by rule
     actions:
         type:
             "copy": Then %from_field% is copied into %to_field%
@@ -44,6 +44,9 @@ pimee_catalog_rule:
             ">=": equals or greater than
             "<": less than
             "<=": equals or less than
+    mass_edit_action:
+        impacted_products:
+            label: Calculate selected products by rule
     acl_group:
         rule: Rules
     acl:

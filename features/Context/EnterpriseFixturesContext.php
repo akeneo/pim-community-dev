@@ -885,7 +885,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param TableNode $table
+     * @param PyStringNode $string
      *
      * @Given /^the following product rule definitions:$/
      */
