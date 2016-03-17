@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Factory;
+namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Component\Catalog\AttributeTypeRegistry;
 
 class AttributeFactorySpec extends ObjectBehavior
 {
@@ -29,6 +29,7 @@ class AttributeFactorySpec extends ObjectBehavior
     {
         $attributeType->getBackendType()->willReturn('backend_type');
         $attributeType->getName()->willReturn('name_type');
+        $attributeType->isUnique()->willReturn(false);
 
         $registry->get('pim_catalogue_text')->willReturn($attributeType);
 

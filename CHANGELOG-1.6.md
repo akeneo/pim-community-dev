@@ -17,6 +17,8 @@
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry` and `Pim\Bundle\NotificationBundle\NotifierInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\Twig\NotificationExtension`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface`.
+- Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` to `Pim\Component\Catalog\AttributeTypeRegistry`
+- Move `Pim\Bundle\CatalogBundle\Factory\AttributeFactory` to `Pim\Component\Catalog\Factory\AttributeFactory`
 - Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` twice.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeOptionController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` and `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`.
