@@ -39,9 +39,7 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * @var array Entity loaders and corresponding files
      */
-    protected $preEntityLoaders = array(
-        'LocaleLoader'   => null,
-    );
+    protected $preEntityLoaders = [];
 
     /**
      * Add an additional directory for catalog configuration files
