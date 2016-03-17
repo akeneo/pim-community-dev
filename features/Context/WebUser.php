@@ -852,7 +852,7 @@ class WebUser extends RawMinkContext
             try {
                 $field = $this->spin(function () use ($field, $language) {
                     return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                }, 30);
+                });
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
@@ -1988,7 +1988,7 @@ class WebUser extends RawMinkContext
         $page = $this->getCurrentPage();
         $collapseSwitchers = $this->spin(function () use ($page) {
             return $page->findAll('css', '.completeness-block header .btn');
-        }, 20, 'Unable to find completenesses block');
+        }, 'Unable to find completenesses block');
 
         foreach ($collapseSwitchers as $switcher) {
             if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {

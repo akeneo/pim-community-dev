@@ -34,7 +34,7 @@
                                  <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
                                  <span class="missing-attributes">
                                     <% _.each(completeness.missing, function(missing) { %>
-                                        <span data-attribute="<%- missing %>" data-locale="<%- locale['locale'] %>" data-channel="<%- completeness.completeness['channel'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
+                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- completeness.completeness['channel'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
                                     <% }) %>
                                 </span>
                                 <% } %>

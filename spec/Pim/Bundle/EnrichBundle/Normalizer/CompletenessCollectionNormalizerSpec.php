@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

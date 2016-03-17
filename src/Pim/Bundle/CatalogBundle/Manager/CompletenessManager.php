@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -149,7 +148,7 @@ class CompletenessManager
      *      ],
      * ]
      */
-    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode = null)
+    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
     {
         $family = $product->getFamily();
 

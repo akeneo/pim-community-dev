@@ -634,7 +634,7 @@ class Edit extends ProductEditForm
     {
         $completenessCell = $this
             ->findCompletenessCell($channelCode, $localeCode)
-            ->find('css', 'div.missing');
+            ->find('css', '.missing');
 
         if ($info === '') {
             if ($completenessCell->find('css', 'span')) {
@@ -645,12 +645,9 @@ class Edit extends ProductEditForm
         } else {
             $infoPassed = explode(' ', $info);
             foreach ($infoPassed as $value) {
-                $found = $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $value));
-                if (!$found) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Missing value %s not found for %s:%s', $value, $channelCode, $localeCode)
-                    );
-                }
+                $this->spin(function () use ($completenessCell, $value) {
+                    return $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $value));
+                }, sprintf('Missing value %s not found for %s:%s', $value, $channelCode, $localeCode));
             }
         }
     }
@@ -667,11 +664,11 @@ class Edit extends ProductEditForm
     {
         $completenessCell = $this->spin(function () use ($channelCode, $localeCode) {
             return $this->findCompletenessCell($channelCode, $localeCode)->find('css', '.missing');
-        }, 20, 'Unable to find completenesses cell');
+        }, 'Unable to find completenesses cell');
 
         $missingValueElement = $this->spin(function () use ($completenessCell, $missingValue) {
             return $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $missingValue));
-        }, 20, 'Unable to find completenesses missing value element');
+        }, 'Unable to find completenesses missing value element');
 
         assertNotNull($missingValueElement);
         $uiLabel = $missingValueElement->getText();

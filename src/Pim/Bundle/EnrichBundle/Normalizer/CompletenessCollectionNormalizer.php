@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -63,7 +63,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeCompleteness($completeness, $format = null, array $context = [])
+    protected function normalizeCompleteness($completeness, $locales, $format = null, array $context = [])
     {
         $missing = [];
         foreach ($completeness['missing'] as $attribute) {
