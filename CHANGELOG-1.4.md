@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Improvements
+- Update akeneo/measure-bundle dependency to version 0.4.1.
+
 ## Bug fixes
 - PIM-5453: Display completeness missing labels according to the locale your are working on
 
