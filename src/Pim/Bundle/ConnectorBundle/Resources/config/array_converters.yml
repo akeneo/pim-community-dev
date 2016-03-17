@@ -69,7 +69,7 @@ services:
     pim_connector.array_converter.flat.locale:
         class: %pim_connector.array_converter.flat.locale.class%
         arguments:
-            - '@pim_connector.array_convertor.validator.fields_requirement'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.attribute_group:
         class: %pim_connector.array_converter.flat.attribute_group.class%

@@ -2,27 +2,27 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Locale Flat to Standard format Converter
  *
  * @author    Clement Gautier <clement.gautier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class LocaleStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldsRequirementValidator */
-    protected $validator;
+    /** @var FieldsRequirementChecker */
+    protected $checker;
 
     /**
-     * @param FieldsRequirementValidator $validator
+     * @param FieldsRequirementChecker $checker
      */
-    public function __construct(FieldsRequirementValidator $validator)
+    public function __construct(FieldsRequirementChecker $checker)
     {
-        $this->validator = $validator;
+        $this->checker = $checker;
     }
 
     /**
@@ -37,12 +37,13 @@ class LocaleStandardConverter implements StandardArrayConverterInterface
      *
      * After:
      * [
-     *     'code'   => 'en_US',
+     *      'code' => 'en_US',
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validator->validateFields($item, ['code']);
+        $this->checker->checkFieldsPresence($item, ['code']);
+        $this->checker->checkFieldsFilling($item, ['code']);
 
         return ['code' => $item['code']];
     }
