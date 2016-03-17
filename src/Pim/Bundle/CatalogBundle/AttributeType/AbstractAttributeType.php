@@ -46,13 +46,19 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     }
 
     /**
-     * Get backend type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBackendType()
     {
         return $this->backendType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUnique()
+    {
+        return false;
     }
 
     /**
