@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model;
 use Symfony\Component\Translation\TranslatorInterface;
