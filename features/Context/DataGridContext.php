@@ -832,7 +832,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            $checkbox = $this->spin(function () use ($gridRow) {
+                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            });
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
@@ -871,6 +873,22 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
             return true;
         });
+    }
+
+    /**
+     * @Then /^I click on import profile$/
+     */
+    public function iClickOnImportProfile()
+    {
+        $collectLink = $this->spin(function () {
+            return $this->getSession()->getPage()->findLink('Collect');
+        });
+        $collectLink->click();
+
+        $importProfileLink = $this->spin(function () {
+            return $this->getSession()->getPage()->findLink('Import profiles');
+        });
+        $importProfileLink->click();
     }
 
     /**

@@ -149,7 +149,7 @@ class CompletenessManager
      *      ],
      * ]
      */
-    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
+    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode = null)
     {
         $family = $product->getFamily();
 

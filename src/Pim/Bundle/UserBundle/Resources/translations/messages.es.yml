@@ -70,6 +70,12 @@ Contact Information: Información de contacto
 User name: Nombre de Usuario
 Birthday: Cumpleaños
 API key: Clave de API
+Ui locale: Idioma de la interfaz
+UI locale: Idioma de la interfaz
+User salt: Sal de usuario
+Current password: Contraseña actual
+New password: Nueva contraseña
+Repeat new password: Nueva contraseña (repetir)
 Generate key: Generar clave
 Primary: primaria
 Removed user: Usuario eliminado

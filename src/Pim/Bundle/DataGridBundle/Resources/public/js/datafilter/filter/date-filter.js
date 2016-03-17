@@ -87,7 +87,7 @@ function(
          *
          * @property
          */
-        dateWidgetSelector: '.datepicker',
+        dateWidgetSelector: 'div.datepicker',
 
         /**
          * @inheritDoc
@@ -171,8 +171,8 @@ function(
             }
 
             if (value.value) {
-                start = value.value.start;
-                end   = value.value.end;
+                start = value.value.start.format;
+                end   = value.value.end.format;
                 type  = value.type ? value.type.toString() : '';
 
                 switch (type) {

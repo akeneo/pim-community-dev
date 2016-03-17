@@ -850,7 +850,9 @@ class WebUser extends RawMinkContext
     {
         if (null !== $language) {
             try {
-                $field = $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                $field = $this->spin(function () use ($field, $language) {
+                    return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                }, 30);
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
@@ -1536,8 +1538,7 @@ class WebUser extends RawMinkContext
      */
     public function iCheckTheSwitch($status, $locator)
     {
-        $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
+        return $this->getCurrentPage()->toggleSwitch($locator, $status === '');
     }
 
     /**
@@ -1971,6 +1972,34 @@ class WebUser extends RawMinkContext
                 }
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see the missing completeness labels:$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheMissingCompletenessLabels(TableNode $table)
+    {
+        $page = $this->getCurrentPage();
+        $collapseSwitchers = $this->spin(function () use ($page) {
+            return $page->findAll('css', '.completeness-block header .btn');
+        }, 20, 'Unable to find completenesses block');
+
+        foreach ($collapseSwitchers as $switcher) {
+            if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {
+                $switcher->click();
+            }
+        }
+
+        foreach ($table->getHash() as $data) {
+            $expectedLabel = $data['expected_label'];
+            if (isset($expectedLabel)) {
+                $this->getCurrentPage()->checkCompletenessMissingValuesLabels($data['channel'], $data['locale'], $data['missing_value'], $expectedLabel);
             }
         }
     }

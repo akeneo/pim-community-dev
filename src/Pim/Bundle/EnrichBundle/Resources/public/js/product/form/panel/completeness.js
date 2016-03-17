@@ -38,6 +38,7 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
+                this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

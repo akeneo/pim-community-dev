@@ -103,15 +103,23 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
-        return $this->getEntityManager()
+        $qb = $this->getEntityManager()
             ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
             ->createQueryBuilder('r')
             ->select('r, a, t')
-            ->leftJoin('r.attribute', 'a')
-            ->leftJoin('a.translations', 't', 'WITH', 't.locale=:localeCode')
-            ->where('r.family=:family')
-            ->setParameter('family', $family)
-            ->setParameter('localeCode', $localeCode);
+            ->leftJoin('r.attribute', 'a');
+
+        if (null !== $localeCode) {
+            $qb->leftJoin('a.translations', 't', 'WITH', 't.locale = :localeCode')
+                ->setParameter('localeCode', $localeCode);
+        } else {
+            $qb->leftJoin('a.translations', 't');
+        }
+
+        $qb->where('r.family = :family')
+            ->setParameter('family', $family);
+
+        return $qb;
     }
 
     /**

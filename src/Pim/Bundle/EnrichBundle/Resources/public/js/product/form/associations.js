@@ -36,6 +36,8 @@ define(
         mediator,
         datagridBuilder
     ) {
+        var state = {};
+
         return BaseForm.extend({
             template: _.template(formTemplate),
             panesTemplate: _.template(panesTemplate),
@@ -46,9 +48,9 @@ define(
                 'click #association-buttons button': 'changeAssociationTargets'
             },
             initialize: function () {
-                this.state = new Backbone.Model({
+                state = {
                     associationTarget: 'products'
-                });
+                };
 
                 this.datagrids = {
                     products: {
@@ -65,7 +67,7 @@ define(
                         }.bind(this),
                         paramName: 'associationType',
                         getParamValue: function (associationType) {
-                            return _.findWhere(this.state.get('associationTypes'), {code: associationType}).id;
+                            return _.findWhere(state.associationTypes, {code: associationType}).id;
                         }.bind(this),
                         getModelIdentifier: function (model, identifierAttribute) {
                             return model.get(identifierAttribute.code);
@@ -122,17 +124,14 @@ define(
                     this.loadAssociationTypes(),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (associationTypes, identifierAttribute) {
-                    this.state.set(
-                        'currentAssociationType',
-                        associationTypes.length ? _.first(associationTypes).code : null
-                    );
-                    this.state.set('associationTypes', associationTypes);
+                    state.currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
+                    state.associationTypes = associationTypes;
                     this.identifierAttribute = identifierAttribute;
                     this.$el.html(
                         this.template({
                             product:          this.getFormData(),
                             locale:           UserContext.get('catalogLocale'),
-                            state:            this.state.toJSON(),
+                            state:            state,
                             associationTypes: associationTypes
                         })
                     );
@@ -142,7 +141,7 @@ define(
                         _.each(this.datagrids, function (datagrid) {
                             this.renderGrid(
                                 datagrid.name,
-                                datagrid.getInitialParams(this.state.get('currentAssociationType'))
+                                datagrid.getInitialParams(state.currentAssociationType)
                             );
                         }.bind(this));
                         this.setListenerSelectors();
@@ -159,7 +158,7 @@ define(
                     this.$('#association-buttons').siblings('.tab-pane').remove();
                     this.$('#association-buttons').after(
                         this.panesTemplate({
-                            state:            this.state.toJSON(),
+                            state:            state,
                             locale:           UserContext.get('catalogLocale'),
                             associationTypes: associationTypes
                         })
@@ -169,7 +168,7 @@ define(
             postUpdate: function () {
                 if (this.isVisible()) {
                     this.$('.selection-inputs input').val('');
-                    this.state.set('selectedAssociations', {});
+                    state.selectedAssociations = {};
                     this.render();
                 }
             },
@@ -189,7 +188,7 @@ define(
             changeAssociationType: function (event) {
                 var associationType = event.currentTarget.dataset.associationType;
 
-                this.state.set('currentAssociationType', associationType);
+                state.currentAssociationType = associationType;
 
                 $(event.currentTarget).addClass('active').siblings('.active').removeClass('active');
 
@@ -210,7 +209,7 @@ define(
             },
             changeAssociationTargets: function (event) {
                 var associationTarget = event.currentTarget.dataset.associationTarget;
-                this.state.set('associationTarget', associationTarget);
+                state.associationTarget = associationTarget;
 
                 _.each(this.datagrids, function (datagrid, gridType) {
                     $('#' + datagrid.name)[gridType === associationTarget ? 'removeClass' : 'addClass']('hide');
@@ -244,8 +243,8 @@ define(
                 }.bind(this));
             },
             updateListenerSelectors: function () {
-                var associationType = this.state.get('currentAssociationType');
-                var selectedAssociations = this.state.get('selectedAssociations');
+                var associationType = state.currentAssociationType;
+                var selectedAssociations = state.selectedAssociations;
 
                 _.each(this.datagrids, function (datagrid, gridType) {
                     var appendFieldId = ['#', associationType, '-', gridType, '-appendfield'].join('');
@@ -266,7 +265,7 @@ define(
                 });
             },
             selectModel: function (model, datagrid) {
-                var assocType           = this.state.get('currentAssociationType');
+                var assocType           = state.currentAssociationType;
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = this.getCurrentAssociations(datagrid);
 
@@ -277,7 +276,7 @@ define(
                 this.updateSelectedAssociations('select', datagrid, model.id);
             },
             unselectModel: function (model, datagrid) {
-                var assocType           = this.state.get('currentAssociationType');
+                var assocType           = state.currentAssociationType;
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
 
@@ -290,7 +289,7 @@ define(
                 this.updateSelectedAssociations('unselect', datagrid, model.id);
             },
             getCurrentAssociations: function (datagrid) {
-                var assocType = this.state.get('currentAssociationType');
+                var assocType = state.currentAssociationType;
                 var assocTarget = this.getDatagridTarget(datagrid);
                 var associations = this.getFormData().associations;
 
@@ -305,10 +304,10 @@ define(
              * @param {string|int} id
              */
             updateSelectedAssociations: function (action, datagrid, id) {
-                var assocType     = this.state.get('currentAssociationType');
+                var assocType     = state.currentAssociationType;
                 var assocTarget   = this.getDatagridTarget(datagrid);
-                var selectedAssoc = this.state.get('selectedAssociations') || {};
-                selectedAssoc[assocType] = selectedAssoc[assocType] || [];
+                var selectedAssoc = state.selectedAssociations || {};
+                selectedAssoc[assocType] = selectedAssoc[assocType] || {};
                 if (!selectedAssoc[assocType][assocTarget]) {
                     selectedAssoc[assocType][assocTarget] = {'select': [], 'unselect': []};
                 }
@@ -325,7 +324,7 @@ define(
                     );
                 }
 
-                this.state.set('selectedAssociations', selectedAssoc);
+                state.selectedAssociations = selectedAssoc;
 
                 this.getRoot().trigger('pim_enrich:form:entity:update_state');
             },

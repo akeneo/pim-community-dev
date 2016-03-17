@@ -1,7 +1,7 @@
 Pim\Bundle\NotificationBundle\Entity\UserNotification:
     type: entity
     table: pim_notification_user_notification
-    repositoryClass: Pim\Bundle\NotificationBundle\Entity\UserNotificationRepository
+    repositoryClass: Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
     fields:
         id:
             type: integer
