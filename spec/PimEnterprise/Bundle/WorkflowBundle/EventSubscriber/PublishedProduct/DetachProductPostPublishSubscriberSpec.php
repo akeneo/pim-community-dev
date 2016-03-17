@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
@@ -35,7 +35,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     ) {
         $metric = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
         $metric->setAttribute($attribute);
 
         $product->getValues()->willReturn([$metric]);
@@ -45,7 +45,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 
         $publishedMetric = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
         $publishedMetric->setAttribute($attribute);
         $publishedProduct->getValues()->willReturn([$publishedMetric]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
@@ -68,7 +68,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     ) {
         $media = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_MEDIA);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_MEDIA);
         $media->setAttribute($attribute);
 
         $product->getValues()->willReturn([$media]);
@@ -78,7 +78,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 
         $publishedMedia = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_MEDIA);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_MEDIA);
         $publishedMedia->setAttribute($attribute);
         $publishedProduct->getValues()->willReturn([$publishedMedia]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
@@ -101,7 +101,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
     ) {
         $price = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
         $price->setAttribute($attribute);
 
         $product->getValues()->willReturn([$price]);
@@ -111,7 +111,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 
         $publishedPrice = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_METRIC);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
         $publishedPrice->setAttribute($attribute);
         $publishedProduct->getValues()->willReturn([$publishedPrice]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
