@@ -32,7 +32,7 @@ class AttributeProcessor extends AbstractProcessor
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param StandardArrayConverterInterface       $converter
-     * @param AttributeFactory                         $factory
+     * @param AttributeFactory                      $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */

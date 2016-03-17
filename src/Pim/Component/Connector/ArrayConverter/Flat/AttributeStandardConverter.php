@@ -64,38 +64,38 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertFields($field, $booleanFields, $data, $convertedItem)
     {
-        switch ($field) {
-            case false !== strpos($field, 'label-', 0):
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-                break;
-            case 'type':
-                $convertedItem['attributeType'] = $data;
-                break;
-            case 'number_min':
-            case 'number_max':
-            case 'max_file_size':
-                $convertedItem[$field] = (float) $data;
-                break;
-            case 'sort_order':
-            case 'max_characters':
-                $convertedItem[$field] = (int) $data;
-                break;
-            case 'options':
-            case 'available_locales':
-                $convertedItem[$field] = explode(',', $data);
-                break;
-            case in_array($field, $booleanFields):
-                $convertedItem[$field] = (bool) $data;
-                break;
-            case 'reference_data_name':
-                if ('' !== $data) {
+        if ('' !== $data) {
+            switch ($field) {
+                case false !== strpos($field, 'label-', 0):
+                    $labelTokens = explode('-', $field);
+                    $labelLocale = $labelTokens[1];
+                    $convertedItem['labels'][$labelLocale] = $data;
+                    break;
+                case 'type':
+                    $convertedItem['attributeType'] = $data;
+                    break;
+                case 'number_min':
+                case 'number_max':
+                case 'max_file_size':
+                    $convertedItem[$field] = (float)$data;
+                    break;
+                case 'sort_order':
+                case 'max_characters':
+                    $convertedItem[$field] = (int)$data;
+                    break;
+                case 'options':
+                case 'available_locales':
+                    $convertedItem[$field] = explode(',', $data);
+                    break;
+                case in_array($field, $booleanFields):
+                    $convertedItem[$field] = (bool)$data;
+                    break;
+                case 'reference_data_name':
                     $convertedItem[$field] = $data;
-                }
-                break;
-            default:
-                $convertedItem[$field] = (string) $data;
+                    break;
+                default:
+                    $convertedItem[$field] = (string)$data;
+            }
         }
 
         return $convertedItem;

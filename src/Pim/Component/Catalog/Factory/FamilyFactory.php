@@ -61,6 +61,7 @@ class FamilyFactory implements SimpleFactoryInterface
      */
     public function create()
     {
+        /** @var FamilyInterface $family */
         $family     = new $this->familyClass();
         $identifier = $this->attributeRepository->getIdentifier();
 
