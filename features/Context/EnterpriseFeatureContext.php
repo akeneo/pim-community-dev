@@ -27,6 +27,8 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function __construct(array $parameters = [])
     {
+        parent::__construct($parameters);
+
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
         $this->useContext('webUser', new EnterpriseWebUser());
@@ -44,7 +46,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-tree', new TreeContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-
         $this->useContext('job', new JobContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-export-profiles', new ExportProfilesContext());
