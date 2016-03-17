@@ -191,3 +191,14 @@ services:
             - '@pim_user.updater.role'
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    # TODO 5620 : à virer
+    pim_connector.processor.denormalization.job_instance.flat:
+        class: %pim_connector.processor.denormalization.simple.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_connector.array_converter.flat.attribute_group'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

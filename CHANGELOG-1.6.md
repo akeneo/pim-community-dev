@@ -115,4 +115,7 @@
 - Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Normalizer\Structured` to `Pim\Component\Catalog\Normalizer`
 - Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Denormalizer\Structured` to `Pim\Component\Catalog\Denormalizer`
 - Move and rename class `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass`
+- Move class `Pim\Bundle\TransformBundle\Cache\CacheClearer` to `Pim\Bundle\BaseConnectorBundle\Cache\CacheClearer`
+- Move class `Pim\Bundle\TransformBundle\Cache\DoctrineCache` to `Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache`
+- Move class `Pim\Bundle\TransformBundle\Converter\MetricConverter` to `Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter`
 - Remove `TransformBundle`

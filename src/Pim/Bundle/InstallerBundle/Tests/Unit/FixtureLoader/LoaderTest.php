@@ -16,7 +16,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
+        $doctrineCache = $this->getMockBuilder('Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $reader = $this->getMockBuilder('Akeneo\Component\Batch\Item\ItemReaderInterface')

@@ -29,6 +29,7 @@ categories:
         processor:         pim_connector.processor.denormalization.category.flat
     yml:
         reader:            pim_base_connector.reader.file.yaml_multiple
+        # TODO 5620
         processor:         pim_base_connector.processor.category
 
 attribute_groups:
@@ -56,6 +57,7 @@ attributes:
     csv:
         processor:         pim_connector.processor.denormalization.attribute.flat
     yml:
+        # TODO 5620
         processor:         pim_base_connector.processor.attribute
 
 attribute_options:
@@ -73,6 +75,7 @@ groups:
     csv:
         processor:         pim_connector.processor.denormalization.group.flat
     yml:
+        # TODO 5620, csv?
         processor:         pim_base_connector.processor.group
 
 variant_groups:
@@ -80,6 +83,7 @@ variant_groups:
     csv:
         processor:         pim_connector.processor.denormalization.variant_group.flat
     yml:
+        # TODO 5620, csv?
         processor:         pim_base_connector.processor.group
 
 products:

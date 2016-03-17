@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Component\Catalog\Model\AttributeInterface;

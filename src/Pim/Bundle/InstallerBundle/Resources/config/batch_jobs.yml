@@ -217,8 +217,8 @@ connector:
                     title:     pim_installer.jobs.fixtures_job_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.job_instance
-                        writer:    pim_base_connector.writer.doctrine
+                        processor: pim_connector.processor.denormalization.job_instance.flat # TODO 5620 : c'dest pas le bon
+                        writer:    pim_connector.writer.doctrine.job_instance
 
         fixtures_user_csv:
             title: pim_installer.jobs.fixtures_user_csv.title

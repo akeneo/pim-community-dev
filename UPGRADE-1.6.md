@@ -96,5 +96,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Component\\Connector\\Denormalizer/g
     find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Cache/Pim\\Bundle\\BaseConnectorBundle\\Cache/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Converter/Pim\\Bundle\\BaseConnectorBundle\\Converter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
 ```
