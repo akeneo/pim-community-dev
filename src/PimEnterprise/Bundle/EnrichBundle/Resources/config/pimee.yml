@@ -15,9 +15,9 @@ twig:
 fos_rest:
     exception:
         codes:
-            PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: HTTP_CONFLICT
+            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: HTTP_CONFLICT
         messages:
-            PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: true
+            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: true
 
 doctrine_migrations:
     dir_name: %doctrine_migrations_dir%

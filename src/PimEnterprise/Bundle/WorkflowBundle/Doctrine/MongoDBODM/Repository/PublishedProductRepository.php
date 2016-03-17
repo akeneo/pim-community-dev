@@ -20,9 +20,9 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedAssociationRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository

@@ -1,21 +1,21 @@
-{% if record.rootEntity.getStatus() == constant('PimEnterprise\\Bundle\\WorkflowBundle\\Model\\ProductDraft::IN_PROGRESS') %}
+{% if record.rootEntity.getStatus() == constant('PimEnterprise\\Component\\Workflow\\Model\\ProductDraft::IN_PROGRESS') %}
     <em>{{ 'pimee_workflow.proposal.draft_in_progress'|trans({'%author%': record.rootEntity.author}) }}</em>
 {% elseif value['values'] is defined %}
     {% for code, changes in value['values'] %}
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}
-        {% set canView = is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) %}
+        {% set canView = is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ATTRIBUTES'), code) %}
         {% for change in changes %}
             {% set product_draft_change = present_product_draft_change(record.rootEntity, change, code) %}
             {% if
                 canView and
-                (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ITEMS'), change.locale)) and
+                (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ITEMS'), change.locale)) and
                 product_draft_change|length > 0
             %}
             {%
                 set canReview = (
-                    is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), code) and
-                    is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product) and
-                    (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ITEMS'), change.locale))
+                    is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ATTRIBUTES'), code) and
+                    is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::OWN'), record.rootEntity.product) and
+                    (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ITEMS'), change.locale))
                 )
             %}
             <table

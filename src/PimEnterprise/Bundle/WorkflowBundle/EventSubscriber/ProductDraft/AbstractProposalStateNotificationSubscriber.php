@@ -15,7 +15,7 @@ use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**

@@ -10,8 +10,8 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {

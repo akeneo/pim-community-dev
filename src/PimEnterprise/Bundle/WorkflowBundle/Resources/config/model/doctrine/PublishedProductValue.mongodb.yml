@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
+PimEnterprise\Component\Workflow\Model\PublishedProductValue:
     type: embeddedDocument
     fields:
         id:
@@ -28,7 +28,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         entity:
             reference: true
             type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
             inversedBy: values
         option:
             type: entity
@@ -43,11 +43,11 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         metric:
             embedded: true
             type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductMetricInterface
         prices:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductPriceInterface
         media:
             type: entity
             targetEntity: Akeneo\Component\FileStorage\Model\FileInfo

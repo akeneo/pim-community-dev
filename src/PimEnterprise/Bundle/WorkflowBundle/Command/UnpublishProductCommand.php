@@ -4,8 +4,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

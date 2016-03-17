@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper;
+use PimEnterprise\Bundle\WorkflowBundle\Twig\SortProductValuesHelper;
 
 /**
  * Twig extension to group and sort product values to prepare them for display

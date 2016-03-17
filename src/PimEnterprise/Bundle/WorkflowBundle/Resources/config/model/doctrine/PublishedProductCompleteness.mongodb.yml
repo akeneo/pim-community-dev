@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
+PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness:
     type: embeddedDocument
     fields:
         id:

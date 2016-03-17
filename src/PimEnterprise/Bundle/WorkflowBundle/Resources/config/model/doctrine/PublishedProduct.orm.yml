@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
+PimEnterprise\Component\Workflow\Model\PublishedProduct:
     type: entity
     table: pimee_workflow_published_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -50,14 +50,14 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface
             mappedBy: owner
             cascade:
                 - persist
                 - refresh
                 - detach
         values:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface
             orphanRemoval: true
             mappedBy: entity
             cascade:
@@ -66,7 +66,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - refresh
                 - detach
         completenesses:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
             mappedBy: product
             cascade:
                 - remove

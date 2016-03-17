@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\DateTimeTransformer;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Hydrator for product history (MongoDB support)

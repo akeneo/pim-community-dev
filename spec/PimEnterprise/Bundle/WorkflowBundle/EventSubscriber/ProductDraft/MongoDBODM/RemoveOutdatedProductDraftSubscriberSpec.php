@@ -8,8 +8,8 @@ use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

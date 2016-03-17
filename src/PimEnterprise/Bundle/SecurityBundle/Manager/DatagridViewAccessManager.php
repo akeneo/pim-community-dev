@@ -15,7 +15,7 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

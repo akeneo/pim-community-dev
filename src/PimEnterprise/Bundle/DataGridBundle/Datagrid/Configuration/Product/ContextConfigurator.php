@@ -17,9 +17,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Override context configurator to apply permissions on attribute groups

@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 class ProductDraftFilterUtilitySpec extends ObjectBehavior
 {

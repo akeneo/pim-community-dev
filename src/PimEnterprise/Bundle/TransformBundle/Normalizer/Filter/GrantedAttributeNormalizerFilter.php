@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\TransformBundle\Normalizer\Filter;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

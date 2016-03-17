@@ -26,17 +26,17 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface'             =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductInterface'             =>
                 'pimee_workflow.entity.published_product.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface'        =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface'        =>
                 'pimee_workflow.entity.published_product_value.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface'       =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductMetricInterface'       =>
                 'pimee_workflow.entity.published_product_metric.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface'        =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductPriceInterface'        =>
                 'pimee_workflow.entity.published_product_price.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface' =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface' =>
                 'pimee_workflow.entity.published_product_completeness.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface'  =>
+            'PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface'  =>
                 'pimee_workflow.entity.published_product_association.class',
         ];
     }

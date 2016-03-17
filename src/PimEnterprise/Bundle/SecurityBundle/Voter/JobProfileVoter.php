@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 

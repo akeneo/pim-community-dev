@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Prophecy\Argument;

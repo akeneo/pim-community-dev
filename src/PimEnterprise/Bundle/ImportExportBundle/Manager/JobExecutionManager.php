@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Manager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

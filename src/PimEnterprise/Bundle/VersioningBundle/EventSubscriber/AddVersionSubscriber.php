@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\VersioningBundle\EventSubscriber;
 
 use Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber as BaseAddVersionSubscriber;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 
 /**
  * Disable the versioning of published product in EE

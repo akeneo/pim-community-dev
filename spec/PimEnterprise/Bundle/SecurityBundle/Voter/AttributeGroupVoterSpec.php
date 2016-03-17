@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

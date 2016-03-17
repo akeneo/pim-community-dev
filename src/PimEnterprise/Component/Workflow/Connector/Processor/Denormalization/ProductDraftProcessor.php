@@ -19,11 +19,11 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

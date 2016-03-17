@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 /**

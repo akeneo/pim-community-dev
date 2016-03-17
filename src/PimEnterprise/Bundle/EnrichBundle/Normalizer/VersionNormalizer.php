@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
+PimEnterprise\Component\Workflow\Model\PublishedProductMetric:
     type: embeddedDocument
     fields:
         id:

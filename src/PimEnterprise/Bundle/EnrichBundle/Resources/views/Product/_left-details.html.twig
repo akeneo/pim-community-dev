@@ -31,7 +31,7 @@
         {% endfor %}
     </li>
     <li>{{ 'Status'|trans }}:
-        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
+        {% if is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::OWN'), product) %}
             {{ 'pimee_workflow.product_draft.status.working_copy'|trans|capitalize }}
         {% else %}
             {% if productDraft.inProgress %}

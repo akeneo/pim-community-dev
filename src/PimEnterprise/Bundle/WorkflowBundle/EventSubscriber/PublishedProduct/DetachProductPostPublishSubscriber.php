@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

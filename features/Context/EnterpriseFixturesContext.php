@@ -3,6 +3,7 @@
 namespace Context;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
@@ -17,13 +18,15 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
@@ -46,7 +49,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     use SpinCapableTrait;
 
     protected $enterpriseEntities = [
-        'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
         'User'          => 'PimEnterprise\Bundle\UserBundle\Entity\User',
     ];
@@ -699,7 +702,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param mixed $data
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     protected function createPublishedProduct($data)
     {
@@ -791,7 +794,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+     * @return PublishedProductManager
      */
     protected function getPublishedProductManager()
     {
@@ -905,7 +908,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+     * @return RuleDefinitionInterface
      */
     public function getRule($code)
     {

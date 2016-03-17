@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AttributeViewRightFilterSpec extends ObjectBehavior

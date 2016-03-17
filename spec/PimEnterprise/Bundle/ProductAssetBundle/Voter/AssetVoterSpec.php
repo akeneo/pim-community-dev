@@ -6,7 +6,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

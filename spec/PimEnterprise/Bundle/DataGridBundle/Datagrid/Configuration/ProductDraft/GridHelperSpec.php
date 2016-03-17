@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Produc
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GridHelperSpec extends ObjectBehavior
