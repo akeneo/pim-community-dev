@@ -1053,8 +1053,8 @@ abstract class AbstractAttribute implements AttributeInterface
     public function isBackendTypeReferenceData()
     {
         return in_array($this->getBackendType(), [
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
 }

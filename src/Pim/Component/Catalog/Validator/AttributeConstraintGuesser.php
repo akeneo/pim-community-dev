@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints;
 
@@ -35,10 +35,10 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
         }
 
         switch ($attribute->getBackendType()) {
-            case AbstractAttributeType::BACKEND_TYPE_DATE:
+            case AttributeTypes::BACKEND_TYPE_DATE:
                 $constraints[] = new Constraints\Date();
                 break;
-            case AbstractAttributeType::BACKEND_TYPE_DATETIME:
+            case AttributeTypes::BACKEND_TYPE_DATETIME:
                 $constraints[] = new Constraints\DateTime();
                 break;
         }

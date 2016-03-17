@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
@@ -17,40 +18,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
     /**
-     * Available backend storage, the product doctrine mapped field
-     *
-     * @staticvar string
-     */
-    const BACKEND_STORAGE_ATTRIBUTE_VALUE = 'values';
-
-    /**
-     * Available backend types, the doctrine mapped field in value class
-     *
-     * @staticvar string
-     */
-    const BACKEND_TYPE_DATE             = 'date';
-    const BACKEND_TYPE_DATETIME         = 'datetime';
-    const BACKEND_TYPE_DECIMAL          = 'decimal';
-    const BACKEND_TYPE_BOOLEAN          = 'boolean';
-    const BACKEND_TYPE_INTEGER          = 'integer';
-    const BACKEND_TYPE_OPTIONS          = 'options';
-    const BACKEND_TYPE_OPTION           = 'option';
-    const BACKEND_TYPE_TEXT             = 'text';
-    const BACKEND_TYPE_VARCHAR          = 'varchar';
-    const BACKEND_TYPE_MEDIA            = 'media';
-    const BACKEND_TYPE_METRIC           = 'metric';
-    const BACKEND_TYPE_PRICE            = 'prices';
-    const BACKEND_TYPE_COLLECTION       = 'collections';
-    const BACKEND_TYPE_ENTITY           = 'entity';
-    const BACKEND_TYPE_REF_DATA_OPTION  = 'reference_data_option';
-    const BACKEND_TYPE_REF_DATA_OPTIONS = 'reference_data_options';
-
-    /**
      * Field backend type, "varchar" by default, the doctrine mapping field, getter / setter to use for binding
      *
      * @var string
      */
-    protected $backendType = self::BACKEND_TYPE_VARCHAR;
+    protected $backendType = AttributeTypes::BACKEND_TYPE_VARCHAR;
 
     /**
      * Form type alias, "text" by default

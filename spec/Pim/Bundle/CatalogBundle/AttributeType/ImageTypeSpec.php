@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
@@ -16,7 +16,7 @@ class ImageTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($attribute);
 
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_MEDIA, 'pim_enrich_image', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_MEDIA, 'pim_enrich_image', $guesser);
     }
 
     function it_builds_attribute_form_types(FormFactory $factory, $attribute)
@@ -31,8 +31,8 @@ class ImageTypeSpec extends ObjectBehavior
 
     function it_prepares_value_form_name($attribute, $value)
     {
-        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_MEDIA);
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_MEDIA);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
     }
 
     function it_prepares_value_form_alias($value)

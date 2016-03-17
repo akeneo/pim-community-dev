@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
 
@@ -44,16 +44,16 @@ class ColumnInfoSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()
-            ->willReturn(AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION);
+            ->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION);
         $attribute->getReferenceDataName()->willReturn('ref_name');
         $this->setAttribute($attribute);
         $this->getPropertyPath()->shouldReturn('ref_name');
 
         $attribute->getBackendType()
-            ->willReturn(AbstractAttributeType::BACKEND_TYPE_BOOLEAN);
+            ->willReturn(AttributeTypes::BACKEND_TYPE_BOOLEAN);
         $this->setAttribute($attribute);
         $this->getPropertyPath()
-            ->shouldReturn(AbstractAttributeType::BACKEND_TYPE_BOOLEAN);
+            ->shouldReturn(AttributeTypes::BACKEND_TYPE_BOOLEAN);
     }
 
     function it_has_a_locale(AttributeInterface $attribute)
