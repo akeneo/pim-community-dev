@@ -22,3 +22,4 @@ flash:
     rule:
         removed: Rule successfully removed
         impacted_product_count: The bulk action to calculate the numbers of products selected by the conditions of each rule has been launched. You will be notified when it is done.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
