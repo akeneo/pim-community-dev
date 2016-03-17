@@ -96,6 +96,19 @@ Then you can migrate your database using:
  php app/console doctrine:migration:migrate
 ```
 
+## Domain layer extraction
+
+We extracted the business classes into Components.
+ 
+### Catalog
+
+We extracted business related stuff about attribute types by introducing `Pim\Component\Catalog\AttributeTypeInterface`.*
+There is no impact for custom attribute types except that backend type constants `BACKEND_TYPE_*` have been moved from `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` to `Pim\Component\Catalog\AttributeTypes`. 
+To detect the files impacted by this change, you can execute the following command in your project folder:
+```
+    grep -rl 'AbstractAttributeType::BACKEND_TYPE' src/* 
+```
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
