@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;

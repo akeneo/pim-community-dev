@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Manager;
+namespace spec\Pim\Component\Catalog\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -18,7 +18,7 @@ class VariantGroupAttributesResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver');
+        $this->shouldHaveType('Pim\Component\Catalog\Manager\VariantGroupAttributesResolver');
     }
 
     function it_returns_non_eligible_attributes(

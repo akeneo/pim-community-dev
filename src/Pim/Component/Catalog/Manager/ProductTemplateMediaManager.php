@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Manager;
+namespace Pim\Component\Catalog\Manager;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Component\Catalog\FileStorage;

@@ -7,8 +7,8 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**

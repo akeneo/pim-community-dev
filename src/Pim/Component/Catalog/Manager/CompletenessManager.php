@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Manager;
+namespace Pim\Component\Catalog\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\Metric;
 use Pim\Component\Catalog\Model\ProductValueInterface;

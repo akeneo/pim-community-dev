@@ -13,6 +13,17 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory` to `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
+- Move `Pim\Bundle\CatalogBundle\Factory\GroupFactory` to `Pim\Component\Catalog\Factory\GroupFactory`
+- Move `Pim\Bundle\CatalogBundle\Factory\FamilyFactory` to `Pim\Component\Catalog\Factory\FamilyFactory`
+- Move `Pim\Bundle\CatalogBundle\Factory\MetricFactory` to `Pim\Component\Catalog\Factory\MetricFactory`
+- Move `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` to `Pim\Component\Catalog\Manager\CompletenessManager`
+- Move `Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager` to `Pim\Component\Catalog\Manager\AttributeGroupManager`
+- Move `Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver` to `Pim\Component\Catalog\Manager\VariantGroupAttributesResolver`
+- Move `Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier` to `Pim\Component\Catalog\Manager\ProductTemplateApplier`
+- Move `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder` to `Pim\Component\Catalog\Builder\ProductTemplateBuilder`
+- Move `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` to `Pim\Component\Catalog\Builder\ProductBuilder`
+- Move `Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver` to `Pim\Component\Catalog\Manager\AttributeValuesResolver`
 - Remove deprecated `Pim\Bundle\CatalogBundle\Manager\FamilyManager`.
 - Remove deprecated `Pim\Bundle\CatalogBundle\Manager\ProductManager`.
 - Change constructor of `Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler`. Remove `Pim\Bundle\CatalogBundle\Manager\ProductManager`.

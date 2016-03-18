@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Manager;
+namespace spec\Pim\Component\Catalog\Manager;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -18,7 +18,7 @@ class AttributeValuesResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver');
+        $this->shouldHaveType('Pim\Component\Catalog\Manager\AttributeValuesResolver');
     }
 
     function it_resolves_eligible_values_for_a_set_of_attributes(

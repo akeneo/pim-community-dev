@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 
 /**
  * Prices attribute transformer
@@ -20,9 +20,9 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
     protected $builder;
 
     /**
-     * @param ProductBuilder $builder
+     * @param ProductBuilderInterface $builder
      */
-    public function __construct(ProductBuilder $builder)
+    public function __construct(ProductBuilderInterface $builder)
     {
         $this->builder = $builder;
     }

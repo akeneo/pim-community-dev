@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Manager;
+namespace spec\Pim\Component\Catalog\Manager;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -21,7 +21,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager');
+        $this->shouldHaveType('Pim\Component\Catalog\Manager\ProductTemplateMediaManager');
     }
 
     function it_uses_the_media_manager_to_handle_the_media_of_product_templates(

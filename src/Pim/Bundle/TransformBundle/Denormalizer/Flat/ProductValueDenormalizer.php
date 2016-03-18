@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
@@ -15,15 +15,15 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
  */
 class ProductValueDenormalizer extends AbstractEntityDenormalizer
 {
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $entityClass
-     * @param ProductBuilder  $productBuilder
+     * @param ManagerRegistry         $managerRegistry
+     * @param string                  $entityClass
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(ManagerRegistry $managerRegistry, $entityClass, ProductBuilder $productBuilder = null)
+    public function __construct(ManagerRegistry $managerRegistry, $entityClass, ProductBuilderInterface $productBuilder = null)
     {
         parent::__construct($managerRegistry, $entityClass);
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,14 +16,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PricesDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param string[]       $supportedTypes
-     * @param ProductBuilder $productBuilder
+     * @param string[]                $supportedTypes
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(array $supportedTypes, ProductBuilder $productBuilder)
+    public function __construct(array $supportedTypes, ProductBuilderInterface $productBuilder)
     {
         parent::__construct($supportedTypes);
 

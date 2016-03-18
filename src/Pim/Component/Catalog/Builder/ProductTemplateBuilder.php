@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Builder;
+namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
@@ -24,7 +24,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var LocaleResolver */
@@ -37,17 +37,17 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     protected $productClass;
 
     /**
-     * @param NormalizerInterface   $normalizer
-     * @param DenormalizerInterface $denormalizer
-     * @param ProductBuilder        $productBuilder
-     * @param LocaleResolver        $localeResolver
-     * @param string                $productTemplateClass
-     * @param string                $productClass
+     * @param NormalizerInterface     $normalizer
+     * @param DenormalizerInterface   $denormalizer
+     * @param ProductBuilderInterface $productBuilder
+     * @param LocaleResolver          $localeResolver
+     * @param string                  $productTemplateClass
+     * @param string                  $productClass
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
         LocaleResolver $localeResolver,
         $productTemplateClass,
         $productClass

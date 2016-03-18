@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -45,7 +44,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var array Normalizer context */
     protected $normalizerContext;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var  ObjectDetacherInterface */

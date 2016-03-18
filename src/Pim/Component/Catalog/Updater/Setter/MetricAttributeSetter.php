@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;

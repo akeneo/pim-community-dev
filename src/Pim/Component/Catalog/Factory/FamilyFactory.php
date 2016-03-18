@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Factory;
+namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;

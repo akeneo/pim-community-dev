@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Factory;
+namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;

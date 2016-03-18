@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

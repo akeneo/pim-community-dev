@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

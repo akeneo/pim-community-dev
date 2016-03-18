@@ -1,15 +1,15 @@
 parameters:
-    pim_catalog.manager.attribute_options_sorter.class: Pim\Bundle\CatalogBundle\Manager\AttributeOptionsSorter
+    pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
     pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
-    pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
+    pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
-    pim_catalog.manager.completeness.class:        Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+    pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
-    pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
-    pim_catalog.applier.product_template.class:          Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
-    pim_catalog.resolver.variant_group_attributes.class: Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver
-    pim_catalog.resolver.attribute_values.class:         Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver
+    pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
+    pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
+    pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
+    pim_catalog.resolver.attribute_values.class:         Pim\Component\Catalog\Manager\AttributeValuesResolver
 
 services:
     # Managers

@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Writer\Doctrine;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
+use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job

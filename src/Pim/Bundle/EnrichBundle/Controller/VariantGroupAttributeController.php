@@ -4,9 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface;
+use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;

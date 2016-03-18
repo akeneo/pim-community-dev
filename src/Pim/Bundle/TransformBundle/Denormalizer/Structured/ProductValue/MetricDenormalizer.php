@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Component\Catalog\Factory\MetricFactory;
 
 /**
  * Metric denormalizer used for attribute types:
