@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
-use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
@@ -12,9 +12,9 @@ use Prophecy\Exception\Prediction\FailedPredictionException;
 
 class FileExporterSpec extends ObjectBehavior
 {
-    function let(MountManager $mountManager, FileFetcherInterface $fileFetcher)
+    function let(FilesystemProvider $filesystemProvider, FileFetcherInterface $fileFetcher)
     {
-        $this->beConstructedWith($mountManager, $fileFetcher);
+        $this->beConstructedWith($filesystemProvider, $fileFetcher);
     }
 
     function it_is_initializable()
@@ -22,7 +22,7 @@ class FileExporterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\FileExporter');
     }
 
-    function it_exports_a_file($mountManager, $fileFetcher, Filesystem $filesystem)
+    function it_exports_a_file($filesystemProvider, $fileFetcher, Filesystem $filesystem)
     {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $rawFile = new \SplFileInfo($pathname);
@@ -31,7 +31,7 @@ class FileExporterSpec extends ObjectBehavior
             mkdir(sys_get_temp_dir() . '/spec/export', 0777, true);
         }
 
-        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
+        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
         $fileFetcher->fetch($filesystem, '1/2/3/123_file.txt')->willReturn($rawFile);
 
         $this->export('1/2/3/123_file.txt', sys_get_temp_dir() . '/spec/export/file.txt', FileStorage::CATALOG_STORAGE_ALIAS);
