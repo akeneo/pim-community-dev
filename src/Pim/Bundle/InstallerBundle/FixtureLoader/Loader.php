@@ -100,7 +100,6 @@ class Loader implements LoaderInterface
                 $this->persistObjects($this->processor->process($item));
                 if ($flushEachLine) {
                     $this->objectManager->flush();
-                    $this->objectManager->clear();
                 }
             }
         }

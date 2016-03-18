@@ -93,6 +93,7 @@ class AttributeStandardConverterSpec extends ObjectBehavior
             'allowed_extensions'     => '',
             'metric_family'          => '',
             'default_metric_unit'    => '',
+            'reference_data_name'    => null,
             'localizable'            => false,
             'scopable'               => false,
         ];

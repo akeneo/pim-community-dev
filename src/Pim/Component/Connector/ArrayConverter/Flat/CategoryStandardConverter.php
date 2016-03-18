@@ -72,19 +72,14 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertField($convertedItem, $field, $data)
     {
-        if ('' !== $data) {
-            if (false !== strpos($field, 'label-', 0)) {
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-            } else {
-                switch ($field) {
-                    case 'code':
-                    case 'parent':
-                        $convertedItem[$field] = (string)$data;
-                        break;
-                }
-            }
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
+            $labelLocale = $labelTokens[1];
+            $convertedItem['labels'][$labelLocale] = $data;
+        } elseif ('code' === $field){
+            $convertedItem[$field] = (string)$data;
+        } elseif ('parent' === $field) {
+            $convertedItem[$field] = '' === $data ? null : $data;
         }
 
         return $convertedItem;
