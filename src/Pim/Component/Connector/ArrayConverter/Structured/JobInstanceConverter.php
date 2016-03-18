@@ -28,8 +28,6 @@ class JobInstanceConverter implements StandardArrayConverterInterface
     /**
      * {@inheritdoc}
      *
-     * Converts flat csv array to standard structured array:
-     *
      * Before:
      * [
      *      'connector'     => 'Data fixtures',

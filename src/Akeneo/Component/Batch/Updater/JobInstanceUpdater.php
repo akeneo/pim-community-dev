@@ -18,7 +18,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @param Job
+     * @param JobInstance $jobInstance
      */
     public function update($jobInstance, array $data, array $options = [])
     {
@@ -38,10 +38,8 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
 
     /**
      * @param JobInstance $jobInstance
-     * @param string           $field
-     * @param mixed            $data
-     *
-     * @throws \InvalidArgumentException
+     * @param string      $field
+     * @param mixed       $data
      */
     protected function setData(JobInstance $jobInstance, $field, $data)
     {

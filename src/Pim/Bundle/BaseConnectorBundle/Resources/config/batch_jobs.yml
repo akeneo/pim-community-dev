@@ -9,7 +9,7 @@ connector:
                     title:     pim_base_connector.jobs.csv_product_export.export.title
                     services:
                         reader:    pim_base_connector.reader.doctrine.product
-                        processor: pim_connector.processor.denormalization.product.flat # TODO 6520
+                        processor: pim_base_connector.processor.product_to_flat_array
                         writer:    pim_connector.writer.file.csv_product
                     parameters:
                         batch_size: 10

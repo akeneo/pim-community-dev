@@ -118,4 +118,5 @@
 - Move class `Pim\Bundle\TransformBundle\Cache\CacheClearer` to `Pim\Bundle\BaseConnectorBundle\Cache\CacheClearer`
 - Move class `Pim\Bundle\TransformBundle\Cache\DoctrineCache` to `Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache`
 - Move class `Pim\Bundle\TransformBundle\Converter\MetricConverter` to `Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter`
+- Remove namespace `Pim\Bundle\BaseConnectorBundle\Exception`
 - Remove `TransformBundle`
