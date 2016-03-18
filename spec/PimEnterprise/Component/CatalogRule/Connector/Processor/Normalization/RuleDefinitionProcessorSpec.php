@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization;
+namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;

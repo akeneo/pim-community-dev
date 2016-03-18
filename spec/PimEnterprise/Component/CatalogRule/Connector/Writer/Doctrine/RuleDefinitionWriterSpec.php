@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine;
+namespace spec\PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;

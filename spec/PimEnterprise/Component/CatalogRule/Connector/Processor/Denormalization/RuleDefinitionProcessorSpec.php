@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
+namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
