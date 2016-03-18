@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
