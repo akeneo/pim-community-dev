@@ -1,0 +1,33 @@
+attribute;code;label-en_US;sort_order
+manufacturer;Volcom;Volcom;1
+manufacturer;Desigual;Desigual;2
+manufacturer;Nike;Nike;3
+manufacturer;H_and_M;H&M;4
+weather_conditions;dry;Dry;1
+weather_conditions;wet;Wet;2
+weather_conditions;hot;Hot;3
+weather_conditions;cold;Cold;4
+weather_conditions;snowy;Snowy;5
+rating;1;1 star;1
+rating;2;2 stars;2
+rating;3;3 stars;3
+rating;4;4 stars;4
+rating;5;5 stars;5
+size;XS;XS;1
+size;S;S;2
+size;M;M;3
+size;L;L;4
+size;XL;XL;5
+size;XXL;XXL;6
+main_color;white;White;1
+main_color;black;Black;2
+main_color;blue;Blue;3
+main_color;maroon;Maroon;4
+main_color;saddle;Saddle;5
+main_color;green;Green;6
+main_color;red;Red;7
+main_color;charcoal;Charcoal;8
+secondary_color;white;White;1
+secondary_color;black;Black;2
+secondary_color;blue;Blue;3
+secondary_color;green;Green;4

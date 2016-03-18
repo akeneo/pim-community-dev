@@ -18,4 +18,5 @@
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Model/PimEnterprise\\Component\\Catalog\\Model/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Attributes/PimEnterprise\\Component\\Security\\Attributes/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Publisher\\Product\\FilePublisher/PimEnterprise\\Component\\Workflow\\Publisher\\Product\\FileInfoPublisher/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/PimEnterprise\\Bundle\\VersioningBundle\\Normalizer\\Flat/g'
 ```

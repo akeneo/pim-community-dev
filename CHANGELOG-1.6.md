@@ -22,6 +22,7 @@
 - Installer fixtures now support csv format for product category accesses setup and not anymore the yml format
 - Installer fixtures now support csv format for attribute group accesses setup and not anymore the yml format
 - Installer fixtures now support csv format for job profile accesses setup and not anymore the yml format
+- Installer fixtures now support csv format for asset categories setup and not anymore the yml format
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,
@@ -65,3 +66,10 @@
 - Move `PimEnterprise\Bundle\SecurityBundle\Attributes` to `PimEnterprise\Component\Security\Attributes`.
 - Remove parameter `pimee_workflow.publisher.product_media.class` because class was removed in 1.4.
 - Rename and move `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\FilePublisher` to `PimEnterprise\Component\Workflow\Publisher\Product\FileInfoPublisher`.
+- Move namespace `Pim\Bundle\TransformBundle\Normalizer\Flat` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\AbstractAccessProcessor`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\AssetCategoryAccessProcessor`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\AttributeGroupAccessProcessor`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\CategoryAccessProcessor`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\JobProfileAccessProcessor`
+- Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\LocaleAccessProcessor`

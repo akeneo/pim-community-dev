@@ -65,6 +65,9 @@ pimee_workflow:
             edit: Edit
             view: View
     jobs:
+        csv_published_product_export:
+            title: Published product export in CSV
+            export.title: Published product export
         csv_product_proposal_import:
             title: Product proposal import in CSV
             import.title: Product proposal import

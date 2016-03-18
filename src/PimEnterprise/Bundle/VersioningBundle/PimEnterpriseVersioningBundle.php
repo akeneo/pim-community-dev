@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle;
 
-use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -28,6 +28,6 @@ class PimEnterpriseVersioningBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new SerializerPass('pimee_versioning.serializer'));
+            ->addCompilerPass(new RegisterSerializerPass('pimee_versioning.serializer'));
     }
 }

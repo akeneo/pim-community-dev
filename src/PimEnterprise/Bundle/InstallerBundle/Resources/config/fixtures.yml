@@ -26,13 +26,9 @@ asset_channel_configurations:
 
 asset_categories:
     order: 120
-    multiple: true
     csv:
-        reader:    pim_base_connector.reader.file.csv_category
+        reader:    pim_connector.reader.file.csv_category
         processor: pimee_product_asset.processor.denormalization.category.flat
-    yml:
-        reader:    pim_base_connector.reader.file.yaml_multiple
-        processor: pimee_base_connector.processor.asset_category
 
 asset_tags:
     order: 120

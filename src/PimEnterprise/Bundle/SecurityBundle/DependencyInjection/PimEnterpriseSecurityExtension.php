@@ -44,5 +44,7 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('updaters.yml');
         $loader->load('voters.yml');
+        $loader->load('normalizers.yml');
+        $loader->load('writers.yml');
     }
 }
