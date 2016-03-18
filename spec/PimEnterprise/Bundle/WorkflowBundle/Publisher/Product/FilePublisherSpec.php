@@ -3,8 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use League\Flysystem\Filesystem;
-use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;

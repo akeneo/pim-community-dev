@@ -13,10 +13,10 @@ namespace PimEnterprise\Component\ProductAsset;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\MountManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
@@ -42,8 +42,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var ChannelConfigurationRepositoryInterface */
     protected $configurationRepository;
 
-    /** @var MountManager */
-    protected $mountManager;
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /** @var SaverInterface */
     protected $metadataSaver;
@@ -68,7 +68,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
-     * @param MountManager                            $mountManager
+     * @param FilesystemProvider                      $filesystemProvider
      * @param SaverInterface                          $metadataSaver
      * @param SaverInterface                          $variationSaver
      * @param FileTransformerInterface                $fileTransformer
@@ -79,7 +79,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
@@ -90,7 +90,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     ) {
         $this->configurationRepository = $configurationRepository;
         $this->fileTransformer         = $fileTransformer;
-        $this->mountManager            = $mountManager;
+        $this->filesystemProvider      = $filesystemProvider;
         $this->metadataSaver           = $metadataSaver;
         $this->variationSaver          = $variationSaver;
         $this->fileStorer              = $fileStorer;
@@ -110,7 +110,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $sourceFile         = $this->retrieveSourceFileInfo($variation);
         $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
-        $storageFilesystem  = $this->mountManager->getFilesystem($this->filesystemAlias);
+        $storageFilesystem  = $this->filesystemProvider->getFilesystem($this->filesystemAlias);
         $sourceFileInfo     = $this->fileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
         $variationFileInfo  = $this->fileTransformer->transform(
             $sourceFileInfo,
@@ -165,7 +165,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             throw new \LogicException(sprintf('The variation "%s" has no source file.', $variation->getId()));
         }
 
-        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
+        $storageFilesystem = $this->filesystemProvider->getFilesystem($this->filesystemAlias);
 
         if (!$storageFilesystem->has($sourceFileInfo->getKey())) {
             throw new \LogicException(
