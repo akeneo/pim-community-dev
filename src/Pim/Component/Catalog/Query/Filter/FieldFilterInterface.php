@@ -15,7 +15,7 @@ interface FieldFilterInterface extends FilterInterface
      * Add an attribute to filter
      *
      * @param string       $field    the field
-     * @param string|array $operator the used operator
+     * @param string       $operator the used operator
      * @param string|array $value    the value(s) to filter
      * @param string       $locale   the locale
      * @param string       $scope    the scope
