@@ -46,7 +46,7 @@ class JobInstanceConverterSpec extends ObjectBehavior
     function it_throws_an_exception_if_some_data_are_missing($checker)
     {
         $checker
-            ->checkFieldsPresence(['code' => 'Code'], ['code', 'type', 'connector', 'label', 'configuration', 'alias'])
+            ->checkFieldsPresence(['code' => 'Code'], ['code', 'type', 'connector', 'label', 'alias'])
             ->willThrow(new ArrayConversionException('Field "code" must be filled'));
 
         $this->shouldThrow('Pim\Component\Connector\Exception\ArrayConversionException')
@@ -56,7 +56,7 @@ class JobInstanceConverterSpec extends ObjectBehavior
     function it_throws_an_exception_if_some_data_are_empty($checker)
     {
         $checker
-            ->checkFieldsPresence(['code' => 'Code'], ['code', 'type', 'connector', 'label', 'configuration', 'alias'])
+            ->checkFieldsPresence(['code' => 'Code'], ['code', 'type', 'connector', 'label', 'alias'])
             ->shouldBeCalled();
 
         $checker
