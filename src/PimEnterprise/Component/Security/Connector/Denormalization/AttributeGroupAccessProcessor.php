@@ -14,10 +14,10 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
