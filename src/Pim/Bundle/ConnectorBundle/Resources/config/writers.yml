@@ -182,5 +182,5 @@ services:
     pim_connector.writer.doctrine.job_instance:
         class: %pim_connector.writer.doctrine.base.class%
         arguments:
-            - '@pim_catalog.saver.association_type'
+            - '@akeneo_batch.saver.job_instance'
             - '@akeneo_storage_utils.doctrine.object_detacher'
