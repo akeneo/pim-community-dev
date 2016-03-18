@@ -54,6 +54,9 @@ pim_connector:
       title: Import des groupes de variantes en CSV
       validation.title: Validation du fichier
       import.title: Import des groupes de variantes
+    xlsx_product_export:
+      title: Export produits en XLSX
+      export.title: Export des produits
   steps:
     dummy_reader.title: Lecteur factice
     product_reader.title: Extraction des produits
