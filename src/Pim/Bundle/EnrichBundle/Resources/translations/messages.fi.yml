@@ -39,6 +39,10 @@ pim_enrich:
     tab:
       property.title: Ominaisuudet
       history.title: Historia
+  locale:
+    tab:
+      property.title: Ominaisuudet
+      permission.title: Käyttöoikeudet
   group:
     axis.help: Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.
     type:
@@ -101,6 +105,7 @@ pim_enrich:
       launched_flash: 'Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
     edit-common-attributes:
       label: Muokkaa attribuutteja
+      description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: 'Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä'
       launched_flash: 'Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
@@ -566,6 +571,10 @@ Drop a file or click here: Pudota tiedosto tai klikkaa tästä
 Drop an image or click here: Pudota kuva tai klikkaa tästä
 Automatic option sorting: Automaattinen vaihtoehtojen lajittelu
 save_attribute_before_manage_option: Hallinnoidaksesi vaihtoehtoja, ole hyvä ja tallenna ensin attribuutti
+Please select: Valitse
+Active: Aktiivinen
+Inactive: Ei aktiivinen
+Do not convert: Älä muunna
 Create: Luo
 Cancel: Peruuta
 Choose a family: Valitse perhe
@@ -702,6 +711,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa yleisiä attribuutteja
+    description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
@@ -715,6 +725,7 @@ pim_enrich.mass_edit_action:
     label: Vaihda tuoteperhettä
     description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
+    no_family: Ei perhettä
   add-to-groups:
     label: Lisää ryhmiin
     description: Valitse ryhmät joihin valitut tuotteet lisätään
@@ -853,3 +864,5 @@ mass_edit report:
 job_tracker:
   tab:
     title: Prosessiseurain
+  filter:
+    started_at: Alkoi
