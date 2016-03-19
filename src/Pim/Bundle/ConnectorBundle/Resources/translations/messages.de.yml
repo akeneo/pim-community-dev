@@ -99,6 +99,8 @@ pim_connector:
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
+    header:
+      label: Header
   import:
     enabled:
       label: Produkt aktivieren
