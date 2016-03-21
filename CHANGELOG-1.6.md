@@ -55,6 +55,7 @@
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
 - Installer fixtures now support csv format for group types setup and not anymore the yml format
 - Installer fixtures now support csv format for locales setup and not anymore the yml format
+- Installer fixtures now support csv format for groups, variant groups setup and not anymore the yml format
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,
@@ -120,3 +121,4 @@
 - Move class `Pim\Bundle\TransformBundle\Converter\MetricConverter` to `Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter`
 - Remove namespace `Pim\Bundle\BaseConnectorBundle\Exception`
 - Remove `TransformBundle`
+- Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
