@@ -47,7 +47,7 @@ class FamilyProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter = $familyConverter;
+        $this->familyConverter = $familyConverter;
         $this->familyFactory  = $familyFactory;
         $this->updater        = $updater;
         $this->validator      = $validator;
@@ -82,7 +82,7 @@ class FamilyProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        return $this->arrayConverter->convert($item);
+        return $this->familyConverter->convert($item);
     }
 
     /**
