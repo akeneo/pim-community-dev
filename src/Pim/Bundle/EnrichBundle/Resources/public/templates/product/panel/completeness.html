@@ -21,24 +21,24 @@
                 <span class="btn"><i class="icon-angle-down"></i></span>
             </header>
             <div class="content">
-                <% _.each(locale['channels'], function(completeness) { %>
-                    <% if (completeness.completeness) { %>
+                <% _.each(locale['channels'], function(channelCompleteness) { %>
+                    <% if (channelCompleteness.completeness) { %>
                         <div>
-                            <span class="channel" data-channel="<%- completeness.completeness['channel'] %>"><%- completeness.completeness['channel'] %></span>
-                            <span class="literal-progress"><%- completeness.completeness.ratio %>%</span>
-                            <div class="progress <%- completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
-                                <div class="bar" data-ratio="<%- completeness.completeness.ratio %>" style="width: <%- completeness.completeness.ratio %>%;"></div>
+                            <span class="channel" data-channel="<%- channelCompleteness.completeness['channel'] %>"><%- channelCompleteness.completeness['channel'] %></span>
+                            <span class="literal-progress"><%- channelCompleteness.completeness.ratio %>%</span>
+                            <div class="progress <%- channelCompleteness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
+                                <div class="bar" data-ratio="<%- channelCompleteness.completeness.ratio %>" style="width: <%- channelCompleteness.completeness.ratio %>%;"></div>
                             </div>
                             <div class="missing">
-                                <% if (completeness.completeness.missing !== 0) { %>
+                                <% if (channelCompleteness.completeness.missing !== 0) { %>
                                  <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
                                  <span class="missing-attributes">
-                                    <% _.each(completeness.missing, function(missing) { %>
-                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- completeness.completeness['channel'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
+                                    <% _.each(channelCompleteness.missing, function(missing) { %>
+                                        <span data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></span>
                                     <% }) %>
                                 </span>
                                 <% } %>
-                                <% if (0 === completeness.completeness.missing && completeness.missing.length > 0) { %>
+                                <% if (0 === channelCompleteness.completeness.missing && channelCompleteness.missing.length > 0) { %>
                                 <span class="label label-important">Completeness error</span>
                                 <% } %>
                             </div>

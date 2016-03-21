@@ -30,19 +30,32 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {
-        $locales = array_keys($completenesses);
-        foreach ($completenesses as $locale => $channels) {
-            foreach ($channels['channels'] as $channel => $completeness) {
-                $completenesses[$locale]['channels'][$channel] = $this->normalizeCompleteness(
-                    $completeness,
-                    $locales,
-                    $format,
-                    $context
-                );
-            }
+        $normalizedCompleteness = [];
+        $locales = [];
+        foreach ($completenesses as $completeness) {
+            $locales[] = $completeness['locale'];
         }
 
-        return $completenesses;
+        foreach ($completenesses as $completeness) {
+            $locale = $completeness['locale'];
+            $channels = $completeness['channels'];
+            $stats = $completeness['stats'];
+
+            $normalizedCompChannels = $this->normalizeChannelCompleteness(
+                $format,
+                $context,
+                $channels,
+                $locales
+            );
+
+            $normalizedCompleteness[] = [
+                'locale'   => $locale,
+                'stats'    => $stats,
+                'channels' => $normalizedCompChannels,
+            ];
+        }
+
+        return $normalizedCompleteness;
     }
 
     /**
@@ -51,32 +64,6 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return false;
-    }
-
-    /**
-     * Normalize a completeness element
-     *
-     * @param array  $completeness
-     * @param array  $locales
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
-     */
-    protected function normalizeCompleteness($completeness, $locales, $format = null, array $context = [])
-    {
-        $missing = [];
-        foreach ($completeness['missing'] as $attribute) {
-            $missing[] = [
-                'code'   => $attribute->getCode(),
-                'labels' => $this->normalizeAttributeLabels($attribute, $locales)
-            ];
-        }
-
-        return [
-            'missing'      => $missing,
-            'completeness' => $this->normalizer->normalize($completeness['completeness'], $format, $context)
-        ];
     }
 
     /**
@@ -93,5 +80,43 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         }
 
         return $labels;
+    }
+
+    /**
+     * Returns the normalized channel completeness
+     *
+     * @param string $format
+     * @param array  $context
+     * @param array  $channels
+     * @param array  $locales
+     *
+     * @return array
+     */
+    protected function normalizeChannelCompleteness($format, array $context, array $channels, array $locales)
+    {
+        //TODO: workaround in order to handle behat empty completeness
+        foreach ($channels as $channelCompleteness) {
+            $channelCode = null;
+            if (null !== $channelCompleteness['completeness']) {
+                $channelCode = $channelCompleteness['completeness']->getChannel()->getCode();
+            }
+
+            $attributes = $channelCompleteness['missing'];
+            $normChannel = $this->normalizer->normalize($channelCompleteness, $format, $context);
+            $normChannel['missing'] = [];
+
+            foreach ($attributes as $attribute) {
+                $normChannel['missing'][] = [
+                    'code'   => $attribute->getCode(),
+                    'labels' => $this->normalizeAttributeLabels($attribute, $locales)
+                ];
+            }
+
+            if (null !== $channelCode) {
+                $normalizedCompChannels[$channelCode] = $normChannel;
+            }
+        }
+
+        return $normalizedCompChannels;
     }
 }
