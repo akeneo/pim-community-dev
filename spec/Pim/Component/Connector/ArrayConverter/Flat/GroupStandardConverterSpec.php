@@ -3,11 +3,8 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class GroupStandardConverterSpec extends ObjectBehavior
 {
@@ -23,17 +20,19 @@ class GroupStandardConverterSpec extends ObjectBehavior
             'type'        => 'RELATED',
             'label-fr_FR' => 'T-shirt super beau',
             'label-en_US' => 'T-shirt very beautiful',
+            'axis'        => 'color,size',
         ];
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $this->convert($fields)->shouldReturn([
-            'labels'   => [
+            'labels' => [
                 'fr_FR' => 'T-shirt super beau',
                 'en_US' => 'T-shirt very beautiful',
             ],
-            'code'     => 'mycode',
-            'type'     => 'RELATED',
+            'code'   => 'mycode',
+            'type'   => 'RELATED',
+            'axis'   => ['color', 'size'],
         ]);
     }
 
@@ -108,7 +107,7 @@ class GroupStandardConverterSpec extends ObjectBehavior
         $exception = new \LogicException(sprintf(
             'Field "%s" is provided, authorized fields are: "%s"',
             'not_authorized',
-            'type, code, label-fr_FR, label-en_US'
+            'type, code, axis, label-fr_FR, label-en_US'
         ));
 
         $this->shouldThrow($exception)->during(
