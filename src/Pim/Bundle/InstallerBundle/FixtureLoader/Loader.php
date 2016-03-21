@@ -5,8 +5,8 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 use Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache;
+use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

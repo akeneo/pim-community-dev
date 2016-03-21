@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Normalizer;
 
-use Pim\Component\Catalog\Normalizer\AssociationTypeNormalizer as BaseNormalizer;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Normalizer\AssociationTypeNormalizer as BaseNormalizer;
 
 /**
  * Flat association type normalizer

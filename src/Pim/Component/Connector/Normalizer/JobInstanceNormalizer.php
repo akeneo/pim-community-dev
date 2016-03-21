@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Normalizer;
 
-use Pim\Component\Catalog\Normalizer\JobInstanceNormalizer as BaseNormalizer;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Pim\Component\Catalog\Normalizer\JobInstanceNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform a job instance entity into a array

@@ -76,7 +76,7 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif ('code' === $field){
+        } elseif ('code' === $field) {
             $convertedItem[$field] = (string)$data;
         } elseif ('parent' === $field) {
             $convertedItem[$field] = '' === $data ? null : $data;

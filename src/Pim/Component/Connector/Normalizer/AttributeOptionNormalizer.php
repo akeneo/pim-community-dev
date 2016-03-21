@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Normalizer;
 
-use Pim\Component\Catalog\Normalizer\AttributeOptionNormalizer as BaseNormalizer;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Normalizer\AttributeOptionNormalizer as BaseNormalizer;
 
 /**
  * Normalize an attribute option
