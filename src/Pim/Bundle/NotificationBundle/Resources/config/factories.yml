@@ -3,6 +3,11 @@ parameters:
     pim_notification.factory.user_notification.class: Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory
 
 services:
+    pim_notification.factory.notification:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_notification.entity.notification.class%
+
     pim_notification.registry.factory.notification:
         class: %pim_notification.registry.factory.notification.class%
 

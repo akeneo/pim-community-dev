@@ -28,6 +28,7 @@ class PimNotificationExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
         $loader->load('managers.yml');
+        $loader->load('notifiers.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');

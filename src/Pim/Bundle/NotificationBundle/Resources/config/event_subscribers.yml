@@ -6,9 +6,6 @@ services:
         class: %pim_notification.event_subscriber.job_execution_notifier.class%
         arguments:
             - '@pim_notification.registry.factory.notification'
-            - '@pim_notification.factory.user_notification'
-            - '@pim_user.provider.user'
-            - '@pim_notification.saver.notification'
-            - '@pim_notification.saver.user_notification'
+            - '@pim_notification.notifier'
         tags:
             - { name: kernel.event_subscriber }

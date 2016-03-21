@@ -5,11 +5,9 @@ namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
-use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -25,37 +23,19 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @var NotificationFactoryRegistry */
     protected $factoryRegistry;
 
-    /** @var UserNotificationFactory */
-    protected $userNotifFactory;
-
-    /** @var UserProviderInterface */
-    protected $userProvider;
-
-    /** @var SaverInterface */
-    protected $notificationSaver;
-
-    /** @var BulkSaverInterface */
-    protected $userNotifsSaver;
+    /** @var NotifierInterface */
+    protected $notifier;
 
     /**
      * @param NotificationFactoryRegistry $factoryRegistry
-     * @param UserNotificationFactory     $userNotifFactory
-     * @param UserProviderInterface       $userProvider
-     * @param SaverInterface              $notificationSaver
-     * @param BulkSaverInterface          $userNotifsSaver
+     * @param NotifierInterface           $notifier
      */
     public function __construct(
         NotificationFactoryRegistry $factoryRegistry,
-        UserNotificationFactory $userNotifFactory,
-        UserProviderInterface $userProvider,
-        SaverInterface $notificationSaver,
-        BulkSaverInterface $userNotifsSaver
+        NotifierInterface $notifier
     ) {
-        $this->factoryRegistry   = $factoryRegistry;
-        $this->userNotifFactory  = $userNotifFactory;
-        $this->userProvider      = $userProvider;
-        $this->notificationSaver = $notificationSaver;
-        $this->userNotifsSaver   = $userNotifsSaver;
+        $this->factoryRegistry = $factoryRegistry;
+        $this->notifier        = $notifier;
     }
 
     /**
@@ -83,7 +63,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
         }
 
         $notification = $this->createNotification($jobExecution);
-        $this->notify([$user], $notification);
+        $this->notifier->notify($notification, [$user]);
     }
 
     /**
@@ -107,27 +87,5 @@ class JobExecutionNotifier implements EventSubscriberInterface
         $notification = $factory->create($jobExecution);
 
         return $notification;
-    }
-
-    /**
-     * Send a user notification to given users
-     *
-     * @param array                 $users   Users which have to be notified (can be string or UserInterface[])
-     * @param NotificationInterface $notification
-     *
-     * @return JobExecutionNotifier
-     */
-    protected function notify(array $users, NotificationInterface $notification)
-    {
-        $userNotifications = [];
-        foreach ($users as $user) {
-            $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
-            $userNotifications[] = $this->userNotifFactory->createUserNotification($notification, $user);
-        }
-
-        $this->notificationSaver->save($notification);
-        $this->userNotifsSaver->saveAll($userNotifications);
-
-        return $this;
     }
 }

@@ -12,3 +12,4 @@ services:
             - '@pim_notification.saver.notification'
             - '@pim_notification.saver.user_notification'
             - '@pim_notification.remover.user_notification'
+            - '@pim_notification.notifier'
