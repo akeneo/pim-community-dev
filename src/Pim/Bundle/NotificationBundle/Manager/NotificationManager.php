@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be remove in 1.7. please use dedicated Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface repository methods
  */
 class NotificationManager
 {
@@ -71,6 +73,8 @@ class NotificationManager
      * @param NotificationInterface $notification
      *
      * @return NotificationManager
+     *
+     * @deprecated will be removed in 1.7. Please use Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier to send notification
      */
     public function notify(array $users, NotificationInterface $notification)
     {

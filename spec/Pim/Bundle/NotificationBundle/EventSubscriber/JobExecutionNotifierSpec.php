@@ -7,20 +7,27 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
     function let(
         NotificationFactoryRegistry $factoryRegistry,
-        NotificationManager $manager,
+        UserNotificationFactory $userNotifFactory,
+        UserProviderInterface $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         StepExecution $stepExecution,
@@ -30,7 +37,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         BatchStatus $status,
         NotificationFactoryInterface $notificationFactory
     ) {
-        $this->beConstructedWith($factoryRegistry, $manager);
+        $this->beConstructedWith(
+            $factoryRegistry,
+            $userNotifFactory,
+            $userProvider,
+            $notificationSaver,
+            $userNotifsSaver
+        );
 
         $jobExecution->getUser()->willReturn($user);
         $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
@@ -58,12 +71,17 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager)
-    {
+    function it_does_not_notify_if_job_execution_has_no_user(
+        $event,
+        $jobExecution,
+        $notificationSaver,
+        $userNotifsSaver
+    ) {
         $jobExecution->getUser()->willReturn(null);
 
         $jobExecution->getStatus()->shouldNotBeCalled();
-        $manager->notify(Argument::cetera())->shouldNotBeCalled();
+        $notificationSaver->save()->shouldNotBeCalled();
+        $userNotifsSaver->saveAll()->shouldNotBeCalled();
 
         $this->afterJobExecution($event);
     }
@@ -71,10 +89,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
     function it_notifies_a_user_of_the_completion_of_job_execution(
         $event,
         $user,
-        $manager,
+        $userNotifFactory,
+        $notificationSaver,
+        $userNotifsSaver,
         $notificationFactory,
         $jobExecution,
-        NotificationInterface $notification
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification
     ) {
         $notificationFactory->create($jobExecution)->willReturn($notification);
         $notification->getMessage()->willReturn('pim_import_export.notification.export.success');
@@ -83,9 +104,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->getRouteParams()->willReturn(['id' => 5]);
         $notification->getMessageParams()->willReturn(['%label%' => 'Product export']);
 
-        $manager
-            ->notify([$user], $notification)
-            ->shouldBeCalled();
+        $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
+        $notificationSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
@@ -93,11 +114,14 @@ class JobExecutionNotifierSpec extends ObjectBehavior
     function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
         $event,
         $user,
-        $manager,
+        $userNotifFactory,
+        $notificationSaver,
+        $userNotifsSaver,
         $notificationFactory,
         $jobInstance,
         $jobExecution,
-        NotificationInterface $notification
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification
     ) {
         $notificationFactory->create($jobExecution)->willReturn($notification);
         $notification->getMessage()->willReturn('pim_mass_edit.notification.mass_edit.success');
@@ -106,9 +130,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->getRouteParams()->willReturn(['id' => 5]);
         $notification->getMessageParams()->willReturn(['%label%' => 'Product mass edit']);
 
-        $manager
-            ->notify([$user], $notification)
-            ->shouldBeCalled();
+        $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
+        $notificationSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
         $jobInstance->getType()->willReturn('mass_edit');
         $jobInstance->getLabel()->willReturn('Product mass edit');
@@ -121,10 +145,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $event,
         $warnings,
         $user,
-        $manager,
+        $userNotifFactory,
+        $notificationSaver,
+        $userNotifsSaver,
         $notificationFactory,
         $jobExecution,
-        NotificationInterface $notification
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification
     ) {
         $notificationFactory->create($jobExecution)->willReturn($notification);
         $notification->getMessage()->willReturn('pim_import_export.notification.export.warning');
@@ -135,9 +162,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $warnings->count()->willReturn(2);
 
-        $manager
-            ->notify([$user], $notification)
-            ->shouldBeCalled();
+        $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
+        $notificationSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
@@ -145,11 +172,14 @@ class JobExecutionNotifierSpec extends ObjectBehavior
     function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
         $event,
         $user,
+        $userNotifFactory,
+        $notificationSaver,
+        $userNotifsSaver,
         $status,
-        $manager,
         $notificationFactory,
         $jobExecution,
-        NotificationInterface $notification
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification
     ) {
         $notificationFactory->create($jobExecution)->willReturn($notification);
         $notification->getMessage()->willReturn('pim_import_export.notification.export.error');
@@ -160,9 +190,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $status->isUnsuccessful()->willReturn(true);
 
-        $manager
-            ->notify([$user], $notification)
-            ->shouldBeCalled();
+        $userNotifFactory->createUserNotification($notification, $user)->willReturn($userNotification);
+        $notificationSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }

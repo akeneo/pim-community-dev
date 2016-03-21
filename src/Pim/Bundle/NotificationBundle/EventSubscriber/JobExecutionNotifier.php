@@ -5,12 +5,13 @@ namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Intl\Exception\NotImplementedException;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Job execution notifier
@@ -21,28 +22,40 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
-    /** @staticvar string */
-    const TYPE_MASS_EDIT = 'mass_edit';
-
-    /** @staticvar string */
-    const QUICK_EXPORT = 'quick_export';
-
     /** @var NotificationFactoryRegistry */
     protected $factoryRegistry;
 
-    /** @var NotificationManager */
-    protected $manager;
+    /** @var UserNotificationFactory */
+    protected $userNotifFactory;
+
+    /** @var UserProviderInterface */
+    protected $userProvider;
+
+    /** @var SaverInterface */
+    protected $notificationSaver;
+
+    /** @var BulkSaverInterface */
+    protected $userNotifsSaver;
 
     /**
      * @param NotificationFactoryRegistry $factoryRegistry
-     * @param NotificationManager         $manager
+     * @param UserNotificationFactory     $userNotifFactory
+     * @param UserProviderInterface       $userProvider
+     * @param SaverInterface              $notificationSaver
+     * @param BulkSaverInterface          $userNotifsSaver
      */
     public function __construct(
         NotificationFactoryRegistry $factoryRegistry,
-        NotificationManager $manager
+        UserNotificationFactory $userNotifFactory,
+        UserProviderInterface $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver
     ) {
-        $this->factoryRegistry = $factoryRegistry;
-        $this->manager         = $manager;
+        $this->factoryRegistry   = $factoryRegistry;
+        $this->userNotifFactory  = $userNotifFactory;
+        $this->userProvider      = $userProvider;
+        $this->notificationSaver = $notificationSaver;
+        $this->userNotifsSaver   = $userNotifsSaver;
     }
 
     /**
@@ -70,7 +83,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
         }
 
         $notification = $this->createNotification($jobExecution);
-        $this->manager->notify([$user], $notification);
+        $this->notify([$user], $notification);
     }
 
     /**
@@ -97,55 +110,24 @@ class JobExecutionNotifier implements EventSubscriberInterface
     }
 
     /**
-     * Generates the correct notification for the given job $type.
+     * Send a user notification to given users
      *
-     * @param JobExecution $jobExecution
-     * @param null|string  $user
-     * @param string       $type
-     * @param string       $status
+     * @param array                 $users   Users which have to be notified (can be string or UserInterface[])
+     * @param NotificationInterface $notification
      *
-     * @throws NotImplementedException
+     * @return JobExecutionNotifier
      */
-    protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
+    protected function notify(array $users, NotificationInterface $notification)
     {
-        switch ($type) {
-            case self::TYPE_MASS_EDIT:
-            case self::QUICK_EXPORT:
-                $this->generateMassEditNotify($jobExecution, $user, $type, $status);
-                break;
-
-            default:
-                throw new NotImplementedException(
-                    sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
-                );
-                break;
+        $userNotifications = [];
+        foreach ($users as $user) {
+            $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
+            $userNotifications[] = $this->userNotifFactory->createUserNotification($notification, $user);
         }
-    }
 
-    /**
-     * @param JobExecution         $jobExecution
-     * @param string|UserInterface $user
-     * @param string               $type
-     * @param string               $status
-     */
-    protected function generateMassEditNotify(JobExecution $jobExecution, $user, $type, $status)
-    {
-        $this->manager->notify(
-            [$user],
-            sprintf('pim_mass_edit.notification.%s.%s', $type, $status),
-            $status,
-            [
-                'route'       => 'pim_enrich_job_tracker_show',
-                'routeParams' => [
-                    'id' => $jobExecution->getId()
-                ],
-                'messageParams' => [
-                    '%label%' => $jobExecution->getJobInstance()->getLabel()
-                ],
-                'context' => [
-                    'actionType' => $type
-                ]
-            ]
-        );
+        $this->notificationSaver->save($notification);
+        $this->userNotifsSaver->saveAll($userNotifications);
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@ parameters:
     pim_notification.manager.notification.class: Pim\Bundle\NotificationBundle\Manager\NotificationManager
 
 services:
+    # deprecated: will be removed in 1.7
     pim_notification.manager.notification:
         class: %pim_notification.manager.notification.class%
         arguments:
