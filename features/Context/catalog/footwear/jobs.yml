@@ -5,6 +5,7 @@ jobs:
         label:     Footwear product import
         type:      import
         configuration:
+            filePath:           ''
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'

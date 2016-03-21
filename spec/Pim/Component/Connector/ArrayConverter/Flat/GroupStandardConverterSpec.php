@@ -20,7 +20,6 @@ class GroupStandardConverterSpec extends ObjectBehavior
             'type'        => 'RELATED',
             'label-fr_FR' => 'T-shirt super beau',
             'label-en_US' => 'T-shirt very beautiful',
-            'axis'        => 'color,size',
         ];
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
@@ -32,7 +31,6 @@ class GroupStandardConverterSpec extends ObjectBehavior
             ],
             'code'   => 'mycode',
             'type'   => 'RELATED',
-            'axis'   => ['color', 'size'],
         ]);
     }
 
@@ -107,7 +105,7 @@ class GroupStandardConverterSpec extends ObjectBehavior
         $exception = new \LogicException(sprintf(
             'Field "%s" is provided, authorized fields are: "%s"',
             'not_authorized',
-            'type, code, axis, label-fr_FR, label-en_US'
+            'type, code, label-fr_FR, label-en_US'
         ));
 
         $this->shouldThrow($exception)->during(
