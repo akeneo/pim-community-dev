@@ -49,3 +49,15 @@ Feature: Classify a product
     And I click on the "123" category
     When I save the product
     Then I should see "Product successfully updated"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5656
+  Scenario: Change categories without saving
+    Given I edit the "tea" product
+    When I visit the "Categories" tab
+    And I select the "2014 collection" tree
+    And I expand the "2014 collection" category
+    And I click on the "Summer collection" category
+    And I click on the "Winter collection" category
+    When I visit the "Attributes" tab
+    Then I visit the "Categories" tab
+    Then I should see 2 category count
