@@ -30,7 +30,7 @@ class Form extends Base
                 'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
-                'Associations list'               => ['css' => '#associations-list'],
+                'Associations list'               => ['css' => '.associations-list'],
                 'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
@@ -180,13 +180,14 @@ class Form extends Base
         return true;
     }
 
-    public function selectAssociation($assocation)
+    /**
+     * @return NodeElement
+     */
+    public function getAssociationsList()
     {
-        $associations = $this->spin(function () {
+        return $this->spin(function () {
             return $this->find('css', $this->elements['Associations list']['css']);
         });
-
-        $associations->clickLink($assocation);
     }
 
     /**

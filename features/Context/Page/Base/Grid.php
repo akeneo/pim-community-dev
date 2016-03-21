@@ -63,6 +63,7 @@ class Grid extends Index
     public function getGrid()
     {
         $body = $this->getElement('Body');
+
         return $this->spin(
             function () use ($body) {
                 $modal = $body->find('css', $this->elements['Dialog']['css']);
@@ -97,7 +98,7 @@ class Grid extends Index
      */
     public function getRow($value)
     {
-        $value   = str_replace('"', '', $value);
+        $value = str_replace('"', '', $value);
 
         try {
             $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));

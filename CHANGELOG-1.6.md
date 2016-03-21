@@ -2,13 +2,14 @@
 
 ## Functional improvements
 
-- PIM-5592: the product grid keeps the page number when you go back to it
-- PIM-5096: introduces the XLSX quick export
+- PIM-5592: The product grid keeps the page number when you go back to it
+- PIM-5096: Introduce the XLSX quick export
+- PIM-5593: The context is now kept in the associations tab of the product edit form
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
-- PIM-5589: introduce a SimpleFactoryInterface to create simple entities
+- PIM-5589: Introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
+- PIM-5589: Introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
 
 ## BC breaks
