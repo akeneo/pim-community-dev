@@ -165,6 +165,7 @@ services:
         class: %pim_catalog.updater.group.class%
         arguments:
             - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
 
     # Setters
     pim_catalog.updater.setter.registry:

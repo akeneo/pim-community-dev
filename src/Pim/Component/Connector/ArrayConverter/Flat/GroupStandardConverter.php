@@ -41,22 +41,24 @@ class GroupStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'code' => 'group1',
-     *      'type' => 'RELATED',
+     *      'code'        => 'group1',
+     *      'type'        => 'RELATED',
      *      'label-de_DE' => '',
      *      'label-en_US' => '',
      *      'label-fr_FR' => '',
+     *      'axis'        => 'color,size'
      * ]
      *
      * After:
-     * {
-     *     "code": "mycode",
-     *     "type": "RELATED",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau",
-     *     },
-     * }
+     * [
+     *     'code'   => 'mycode',
+     *     'type'   => 'RELATED',
+     *     'labels' => [
+     *         'en_US' => 'T-shirt very beautiful',
+     *         'fr_FR' => 'T-shirt super beau',
+     *     ],
+     *     'axis'   => ['color', 'size']
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -72,6 +74,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
      *
@@ -83,6 +86,8 @@ class GroupStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
+        } elseif ('axis' === $field) {
+            $convertedItem[$field] = '' === $data ? [] : explode(',', $data);
         } else {
             switch ($field) {
                 case 'code':
@@ -102,7 +107,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code', 'type']);
         $this->fieldChecker->checkFieldsFilling($item, ['code', 'type']);
-        $this->validateAuthorizedFields($item, ['type', 'code']);
+        $this->validateAuthorizedFields($item, ['type', 'code', 'axis']);
     }
 
     /**
