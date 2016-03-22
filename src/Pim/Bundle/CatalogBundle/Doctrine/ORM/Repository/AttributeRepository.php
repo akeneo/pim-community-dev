@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -453,6 +454,21 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return array_map('current', $qb->getQuery()->getScalarResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAttributesByFamily(FamilyInterface $family)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a, g')
+            ->join('a.group', 'g')
+            ->innerJoin('a.families', 'f', 'WITH', 'f.id = :family')
+            ->setParameter(':family', $family->getId());
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

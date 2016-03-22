@@ -17,10 +17,10 @@ Feature: Export families
     And exported file of "footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
-      boots;Boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
-      sneakers;Sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
+      boots;Boots;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
+      heels;Heels;color,description,heel_color,manufacturer,name,price,side_view,size,sku,sole_color,sole_fabric,top_view;name;color,heel_color,name,price,size,sku,sole_color;color,description,heel_color,name,price,side_view,size,sku,sole_color
+      sneakers;Sneakers;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
+      sandals;Sandals;color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       """
 
   @javascript
@@ -40,9 +40,9 @@ Feature: Export families
     And exported file of "footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
-      boots;Boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
-      sneakers;Sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
+      boots;Boots;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
+      heels;Heels;color,description,heel_color,manufacturer,name,price,side_view,size,sku,sole_color,sole_fabric,top_view;name;color,heel_color,name,price,size,sku,sole_color;color,description,heel_color,name,price,side_view,size,sku,sole_color
+      sneakers;Sneakers;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
+      sandals;Sandals;color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       tractors;;sku;sku;sku;sku
       """

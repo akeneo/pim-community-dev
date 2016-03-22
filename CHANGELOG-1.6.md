@@ -6,6 +6,10 @@
 - PIM-5096: Introduce the XLSX quick export
 - PIM-5593: The context is now kept in the associations tab of the product edit form
 
+## Scalability improvements
+
+- PIM-5542: Optimize the Family normalization
+
 ## Technical improvements
 
 - PIM-5589: Introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
@@ -124,3 +128,4 @@
 - Remove namespace `Pim\Bundle\BaseConnectorBundle\Exception`
 - Remove `TransformBundle`
 - Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
+- Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`

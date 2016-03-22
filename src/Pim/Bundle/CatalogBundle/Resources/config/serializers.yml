@@ -123,6 +123,8 @@ services:
         arguments:
             - '@pim_serializer.normalizer.label_translation'
             - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_requirement'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

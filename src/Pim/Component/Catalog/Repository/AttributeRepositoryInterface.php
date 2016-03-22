@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Repository interface for attribute
@@ -160,6 +161,15 @@ interface AttributeRepositoryInterface extends
      * @return string[]
      */
     public function getAttributeCodesByGroup(AttributeGroupInterface $group);
+
+    /**
+     * Get attributes by family
+     *
+     * @param FamilyInterface $family
+     *
+     * @return AttributeInterface[]
+     */
+    public function findAttributesByFamily(FamilyInterface $family);
 
     /**
      * Return the number of existing attributes

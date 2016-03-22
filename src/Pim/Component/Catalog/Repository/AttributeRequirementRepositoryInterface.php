@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Repository interface for attribute requirements
@@ -13,4 +14,12 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface AttributeRequirementRepositoryInterface extends ObjectRepository
 {
+    /**
+     * Returns attributes requirements codes and channel code for the given family
+     *
+     * @param FamilyInterface $family
+     *
+     * @return array
+     */
+    public function findRequiredAttributesCodesByFamily(FamilyInterface $family);
 }
