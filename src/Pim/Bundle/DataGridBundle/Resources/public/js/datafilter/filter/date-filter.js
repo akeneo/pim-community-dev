@@ -87,7 +87,7 @@ function(
          *
          * @property
          */
-        dateWidgetSelector: '.datepicker',
+        dateWidgetSelector: 'datepicker',
 
         /**
          * @inheritDoc

@@ -1,5 +1,5 @@
 Feature: Define the attribute requirement
-  In order to ensure product completness when exporting them
+  In order to ensure product completeness when exporting them
   As an administrator
   I need to be able to define which attributes are required or not for a given channel
 

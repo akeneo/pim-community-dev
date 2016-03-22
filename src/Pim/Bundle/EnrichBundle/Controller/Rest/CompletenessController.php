@@ -32,7 +32,7 @@ class CompletenessController
     protected $userContext;
 
     /** @var NormalizerInterface */
-    protected $completenessNormalizer;
+    protected $compNormalizer;
 
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
@@ -42,7 +42,7 @@ class CompletenessController
      * @param ProductRepositoryInterface $productRepository
      * @param ChannelRepositoryInterface $channelRepository
      * @param UserContext                $userContext
-     * @param NormalizerInterface        $completenessNormalizer
+     * @param NormalizerInterface        $compNormalizer
      * @param CollectionFilterInterface  $collectionFilter
      */
     public function __construct(
@@ -50,15 +50,15 @@ class CompletenessController
         ProductRepositoryInterface $productRepository,
         ChannelRepositoryInterface $channelRepository,
         UserContext $userContext,
-        NormalizerInterface $completenessNormalizer,
+        NormalizerInterface $compNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->completenessManager    = $completenessManager;
-        $this->productRepository      = $productRepository;
-        $this->channelRepository      = $channelRepository;
-        $this->userContext            = $userContext;
-        $this->completenessNormalizer = $completenessNormalizer;
-        $this->collectionFilter       = $collectionFilter;
+        $this->completenessManager = $completenessManager;
+        $this->productRepository   = $productRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->userContext         = $userContext;
+        $this->compNormalizer      = $compNormalizer;
+        $this->collectionFilter    = $collectionFilter;
     }
 
     /**
@@ -82,13 +82,8 @@ class CompletenessController
 
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
 
-        $completenesses = $this->completenessManager->getProductCompleteness(
-            $product,
-            $channels,
-            $filteredLocales,
-            $this->userContext->getCurrentLocale()->getCode()
-        );
+        $completenesses = $this->completenessManager->getProductCompleteness($product, $channels, $filteredLocales);
 
-        return new JsonResponse($this->completenessNormalizer->normalize($completenesses, 'internal_api'));
+        return new JsonResponse($this->compNormalizer->normalize($completenesses, 'internal_api'));
     }
 }
