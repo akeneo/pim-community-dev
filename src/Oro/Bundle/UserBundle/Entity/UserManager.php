@@ -5,6 +5,7 @@ namespace Oro\Bundle\UserBundle\Entity;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
