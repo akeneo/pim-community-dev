@@ -8,11 +8,6 @@ use Pim\Behat\Context\Storage\ProductStorage;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
-use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
-use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
-use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
-use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
-use Pim\Behat\Context\Domain\TreeContext;
 
 /**
  * A context for creating entities
@@ -27,6 +22,8 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function __construct(array $parameters = [])
     {
+        parent::__construct($parameters);
+
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
         $this->useContext('webUser', new EnterpriseWebUser());
@@ -39,21 +36,10 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
-
-        $this->useContext('domain-variant-group', new VariantGroupContext());
-        $this->useContext('domain-attribute-tab', new AttributeTabContext());
-        $this->useContext('domain-tree', new TreeContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-
         $this->useContext('job', new JobContext());
-        $this->useContext('domain-import-profiles', new ImportProfilesContext());
-        $this->useContext('domain-export-profiles', new ExportProfilesContext());
-
         $this->useContext('dashboard', new DashboardContext());
-
         $this->useContext('storage-product', new ProductStorage());
-
-        $this->setTimeout($parameters);
     }
 
     /**
