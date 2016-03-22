@@ -53,6 +53,7 @@ datagrid:
         mass_actions:
             impacted_product_count:
                 type: ajax
+                acl_resource: pimee_catalog_rule_rule_impacted_product_count_permissions
                 handler: rule_impacted_product_count
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.impacted_product_count
                 route: pimee_catalog_rule_rule_mass_impacted_product_count

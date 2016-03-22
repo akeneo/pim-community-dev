@@ -50,6 +50,7 @@ pimee_catalog_rule:
         rule:
             view_permissions: View rules
             delete_permissions: Delete rules
+            impacted_product_count_permissions: Calculate the number of products selected by a rule
     attribute:
         tab:
             rule.title: Rules

@@ -117,6 +117,8 @@ class RuleController
     /**
      * Launch the mass calculation of products impacted by rules
      *
+     * @AclAncestor("pimee_catalog_rule_rule_impacted_product_count_permissions")
+     *
      * @param Request $request
      *
      * @return RedirectResponse
