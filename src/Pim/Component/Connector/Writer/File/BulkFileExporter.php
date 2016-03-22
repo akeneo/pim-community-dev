@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -21,9 +20,16 @@ class BulkFileExporter
     /** @var array */
     protected $errors;
 
+    /** @var array */
+    protected $copiedMedia;
+
+    /**
+     * @param FileExporterInterface $fileExporter
+     */
     public function __construct(FileExporterInterface $fileExporter)
     {
-        $this->errors = [];
+        $this->errors       = [];
+        $this->copiedMedia  = [];
         $this->fileExporter = $fileExporter;
     }
 
@@ -46,6 +52,17 @@ class BulkFileExporter
      * Get an array of errors
      *
      * @return array
+     *  [
+     *      [
+     *          'message' => (string),
+     *          'medium'  => [
+     *              'filePath'     => (string),
+     *              'exportPath'   => (string),
+     *              'storageAlias' => (string)
+     *          ]
+     *      ],
+     *      [...]
+     *  ]
      */
     public function getErrors()
     {
@@ -53,40 +70,71 @@ class BulkFileExporter
     }
 
     /**
+     * Returns media that have been well copied and path of the copy
+     *
+     * @return array
+     *  [
+     *      [
+     *          'copyPath'       => (string),
+     *          'originalMedium' => [
+     *              'filePath'     => (string),
+     *              'exportPath'   => (string),
+     *              'storageAlias' => (string)
+     *          ]
+     *      ],
+     *      [...]
+     *  ]
+     */
+    public function getCopiedMedia()
+    {
+        return $this->copiedMedia;
+    }
+
+    /**
      * Copy a medium to the target
      *
      * @param array|mixed $medium
      * @param string      $target
-     *
-     * @throws IOException
-     * @throws \LogicException
      */
     protected function doCopy($medium, $target)
     {
         if (isset($medium['filePath']) && isset($medium['exportPath'])) {
-            $target = $target.DIRECTORY_SEPARATOR.$medium['exportPath'];
+            $target     = $target . DIRECTORY_SEPARATOR . $medium['exportPath'];
             $fileSystem = new Filesystem();
             $fileSystem->mkdir(dirname($target));
 
             try {
                 $this->fileExporter->export($medium['filePath'], $target, $medium['storageAlias']);
+                $this->addCopiedMedium($medium, $target);
             } catch (FileTransferException $e) {
-                $this->addError('The media has not been found or is not currently available', $medium);
+                $this->addError($medium, 'The media has not been found or is not currently available');
             } catch (\LogicException $e) {
-                $this->addError(sprintf('The media has not been copied. %s', $e->getMessage()), $medium);
+                $this->addError($medium, sprintf('The media has not been copied. %s', $e->getMessage()));
             }
         }
     }
 
     /**
+     * @param array  $medium
      * @param string $message
-     * @param string $medium
      */
-    protected function addError($message, $medium)
+    protected function addError(array $medium, $message)
     {
         $this->errors[] = [
             'message' => $message,
             'medium'  => $medium,
+        ];
+    }
+
+    /**
+     * @param array  $medium
+     * @param string $copyPath
+     */
+    protected function addCopiedMedium(array $medium, $copyPath)
+    {
+        $this->copiedMedia[] = [
+            'copyPath'       => $copyPath,
+            'originalMedium' => $medium
         ];
     }
 }

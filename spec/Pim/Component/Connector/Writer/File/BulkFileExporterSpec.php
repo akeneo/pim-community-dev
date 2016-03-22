@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
 use Prophecy\Argument;
@@ -26,45 +27,76 @@ class BulkFileExporterSpec extends ObjectBehavior
         $this->exportAll([
             [
                 [
-                    'filePath' => 'img/product.jpg',
-                    'exportPath' => 'export',
+                    'filePath'     => 'img/product.jpg',
+                    'exportPath'   => 'export',
                     'storageAlias' => 'storageAlias',
                 ],
             ],
             [
                 [
-                    'filePath' => null,
-                    'exportPath' => 'export',
+                    'filePath'     => null,
+                    'exportPath'   => 'export',
                     'storageAlias' => 'storageAlias',
                 ],
             ],
         ], '/tmp');
 
         $this->getErrors()->shouldHaveCount(0);
+        $this->getCopiedMedia()->shouldBeEqualTo([
+            [
+                'copyPath'       => '/tmp/export',
+                'originalMedium' => [
+                    'filePath'     => 'img/product.jpg',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias'
+                ]
+            ]
+        ]);
     }
 
-    function it_copy_media_to_the_export_dir($fileExporter)
+    function it_allows_to_get_errors_if_the_copy_went_wrong($fileExporter)
     {
-        $fileExporter->export('img/product.jpg', '/tmp/export', 'storageAlias')->willThrow('Akeneo\Component\FileStorage\Exception\FileTransferException');
-        $fileExporter->export(null, '/tmp/export', 'storageAlias')->willThrow('\LogicException');
+        $fileExporter
+            ->export('img/product.jpg', '/tmp/export', 'storageAlias')
+            ->willThrow(new FileTransferException());
+        $fileExporter
+            ->export('wrong/-path.foo', '/tmp/export', 'storageAlias')
+            ->willThrow(new \LogicException('Something went wrong.'));
 
         $this->exportAll([
             [
                 [
-                    'filePath' => 'img/product.jpg',
-                    'exportPath' => 'export',
+                    'filePath'     => 'img/product.jpg',
+                    'exportPath'   => 'export',
                     'storageAlias' => 'storageAlias',
                 ]
             ],
             [
                 [
-                    'filePath' => 'img/product.jpg',
-                    'exportPath' => 'export',
+                    'filePath'     => 'wrong/-path.foo',
+                    'exportPath'   => 'export',
                     'storageAlias' => 'storageAlias',
                 ],
             ],
         ], '/tmp');
 
-        $this->getErrors()->shouldHaveCount(2);
+        $this->getErrors()->shouldBeEqualTo([
+            [
+                'message' => 'The media has not been found or is not currently available',
+                'medium'  => [
+                    'filePath'     => 'img/product.jpg',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ]
+            ],
+            [
+                'message' => 'The media has not been copied. Something went wrong.',
+                'medium'  => [
+                    'filePath'     => 'wrong/-path.foo',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ]
+            ]
+        ]);
     }
 }
