@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Connector\Normalizer\ProductNormalizer;
+use Pim\Component\Connector\Normalizer\Flat\ProductNormalizer;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point
