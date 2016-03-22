@@ -5,6 +5,8 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,10 +24,15 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $normalizer,
         AttributeInterface $attribute,
         AttributeTranslation $attributeTranslationFr,
-        AttributeTranslation $attributeTranslationEn
+        AttributeTranslation $attributeTranslationEn,
+        CompletenessInterface $completeness,
+        ChannelInterface $channel
     ) {
-        $normalizer->normalize('completeness', 'internal_api', ['a_context_key' => 'context_value'])
-            ->willReturn('normalized_completeness');
+        $normalizer->normalize(Argument::any(), 'internal_api', ['a_context_key' => 'context_value'])
+            ->willReturn(['missing' => [], 'completeness' => 'normalized_completeness']);
+
+        $completeness->getChannel()->willReturn($channel);
+        $channel->getCode()->willReturn('mobile', 'print', 'tablet', 'mobile', 'print', 'tablet');
 
         $attribute->getCode()->willReturn('name');
 
@@ -37,65 +44,75 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
 
         $this->normalize([
             'en_US' => [
+                'locale' => 'en_US',
+                'stats' => [],
                 'channels' => [
-                    'mobile' => ['missing' => [$attribute], 'completeness' => 'completeness'],
-                    'print'  => ['missing' => [$attribute], 'completeness' => 'completeness'],
-                    'tablet' => ['missing' => [$attribute], 'completeness' => 'completeness']
+                    'mobile' => ['missing' => [$attribute], 'completeness' => $completeness],
+                    'print'  => ['missing' => [$attribute], 'completeness' => $completeness],
+                    'tablet' => ['missing' => [$attribute], 'completeness' => $completeness]
                 ],
             ],
             'fr_FR' => [
+                'locale' => 'fr_FR',
+                'stats' => [],
                 'channels' => [
-                    'mobile' => ['missing' => [$attribute], 'completeness' => 'completeness'],
-                    'print'  => ['missing' => [$attribute], 'completeness' => 'completeness'],
-                    'tablet' => ['missing' => [$attribute], 'completeness' => 'completeness']
+                    'mobile' => ['missing' => [$attribute], 'completeness' => $completeness],
+                    'print'  => ['missing' => [$attribute], 'completeness' => $completeness],
+                    'tablet' => ['missing' => [$attribute], 'completeness' => $completeness]
                 ]
             ]
         ], 'internal_api', ['a_context_key' => 'context_value'])
-            ->shouldReturn([
-                'en_US' => [
-                    'channels' => [
-                        'mobile' => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+            ->shouldReturn(
+                [
+                    [
+                        'locale'   => 'en_US',
+                        'stats'    => [],
+                        'channels' => [
+                            'mobile' => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
                             ],
-                            'completeness' => 'normalized_completeness'
+                            'print'  => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
+                            ],
+                            'tablet' => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
+                            ],
                         ],
-                        'print'  => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
-                            ],
-                            'completeness' => 'normalized_completeness'
-                        ],
-                        'tablet' => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
-                            ],
-                            'completeness' => 'normalized_completeness'
-                        ]
                     ],
-                ],
-                'fr_FR' => [
-                    'channels' => [
-                        'mobile' => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                    [
+                        'locale'   => 'fr_FR',
+                        'stats'    => [],
+                        'channels' => [
+                            'mobile' => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
                             ],
-                            'completeness' => 'normalized_completeness'
+                            'print'  => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
+                            ],
+                            'tablet' => [
+                                'missing' => [
+                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                ],
+                                'completeness' => 'normalized_completeness'
+                            ],
                         ],
-                        'print'  => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
-                            ],
-                            'completeness' => 'normalized_completeness'
-                        ],
-                        'tablet' => [
-                            'missing'      => [
-                                ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
-                            ],
-                            'completeness' => 'normalized_completeness'
-                        ]
-                    ]
+                    ],
                 ]
-            ]);
+            );
     }
 }
