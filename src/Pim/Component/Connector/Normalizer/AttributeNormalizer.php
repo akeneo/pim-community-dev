@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Normalizer;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\AttributeNormalizer as BaseNormalizer;
 
 /**
@@ -46,7 +46,7 @@ class AttributeNormalizer extends BaseNormalizer
             foreach ($options as $option) {
                 $item = [];
                 foreach ($option->getOptionValues() as $value) {
-                    /* @var ProductValueInterface $label */
+                    /* @var ProductValueInterface $value */
                     $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
                     $label = str_replace('{value}', $value->getValue(), $label);
                     $item[] = $label;
