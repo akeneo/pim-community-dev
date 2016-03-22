@@ -59,44 +59,6 @@ class FileWriterArchiverSpec extends ObjectBehavior
         unlink($pathname);
     }
 
-    function it_creates_a_file_even_when_written_files_is_greater_than_two(
-        $filesystem,
-        CsvWriter $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
-        $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
-        $job->getSteps()->willReturn([$step]);
-        $step->getWriter()->willReturn($writer);
-
-        $pathname1 = tempnam(sys_get_temp_dir(), 'spec1');
-        $filename1 = basename($pathname1);
-        $pathname2 = tempnam(sys_get_temp_dir(), 'spec2');
-        $filename2 = basename($pathname2);
-        $pathname3 = tempnam(sys_get_temp_dir(), 'spec3');
-        $writer->getWrittenFiles()->willReturn(
-            [
-                $pathname1 => $filename1,
-                $pathname2 => $filename2
-            ]
-        );
-        $writer->getPath()->willReturn($pathname3);
-
-        $filesystem->put(Argument::cetera())->shouldBeCalled();
-
-        $this->archive($jobExecution);
-
-        unlink($pathname1);
-        unlink($pathname2);
-        unlink($pathname3);
-    }
-
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $filesystem,
         ItemWriterInterface $writer,
