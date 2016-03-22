@@ -432,3 +432,20 @@ jobs:
             uploadAllowed: true
             multiple:      false
             enabled:       true
+    xlsx_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_group_export
+        label:     Demo xlsx group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo xlsx variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/variant_group.xlsx
+

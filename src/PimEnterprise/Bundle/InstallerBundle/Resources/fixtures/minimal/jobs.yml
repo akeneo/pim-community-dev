@@ -105,3 +105,19 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation the matching products for the rules
         type:      mass_edit_rule
+    xlsx_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_group_export
+        label:     Demo xlsx group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo xlsx variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/variant_group.xlsx
