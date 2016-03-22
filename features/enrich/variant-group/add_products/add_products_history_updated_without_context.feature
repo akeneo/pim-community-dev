@@ -6,7 +6,7 @@ Feature: Add products to a variant group
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "admin"
     # Create sandal-white-37
     And I am on the products page
     And I create a new product
@@ -23,9 +23,6 @@ Feature: Add products to a variant group
     And I visit the "Sizes" group
     And I fill in the following information:
       | Size | 37 |
-    And I visit the "Categories" tab
-    And I expand the "2014 collection" category
-    And I click on the "Winter collection" category
     And I save the product
     # Create sandal-white-38
     And I am on the products page
@@ -35,7 +32,6 @@ Feature: Add products to a variant group
       | family | Sandals         |
     And I press the "Save" button in the popin
     And I wait to be on the "sandal-white-38" product page
-    And I visit the "Attributes" tab
     And I visit the "Product information" group
     And I fill in the following information:
       | Name | old name |
@@ -45,9 +41,6 @@ Feature: Add products to a variant group
     And I visit the "Sizes" group
     And I fill in the following information:
       | Size | 38 |
-    And I visit the "Categories" tab
-    And I expand the "2014 collection" category
-    And I click on the "Winter collection" category
     And I save the product
     # Create sandal-white-39
     And I am on the products page
@@ -57,7 +50,6 @@ Feature: Add products to a variant group
       | family | Sandals         |
     And I press the "Save" button in the popin
     And I wait to be on the "sandal-white-39" product page
-    And I visit the "Attributes" tab
     And I visit the "Product information" group
     And I fill in the following information:
       | Name | old name |
@@ -67,9 +59,6 @@ Feature: Add products to a variant group
     And I visit the "Sizes" group
     And I fill in the following information:
       | Size | 39 |
-    And I visit the "Categories" tab
-    And I expand the "2014 collection" category
-    And I click on the "Winter collection" category
     And I save the product
     # Create remaining
     And the following product groups:
@@ -80,6 +69,7 @@ Feature: Add products to a variant group
       | SANDAL | manufacturer | Converse    |        |       |
       | SANDAL | name         | EN name     | en_US  |       |
       | SANDAL | comment      | New comment |        |       |
+    And I logout
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a variant group, product history should be updated without context
@@ -96,6 +86,7 @@ Feature: Add products to a variant group
     And I open the history
     And I should see history in panel:
       | version | author                                                            | property | value           |
-      | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
-      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | John Doe - admin@example.com                                     | SKU      | sandal-white-37 |
+      | 4       | Julia Stark - Julia@example.com                                   | groups   |                 |
+      | 3       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 2       | John Doe - admin@example.com                                      | Color    | white           |
+      | 1       | John Doe - admin@example.com                                      | SKU      | sandal-white-37 |
