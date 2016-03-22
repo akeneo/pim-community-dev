@@ -1,13 +1,3 @@
-pim_user:
-  user:
-    tab:
-      general.title: Général
-      additional.title: Complément
-      group_and_role.title: Groupes et rôles
-      password.title: Mot de passe
-      business_unit.title: Business Units
-      email_synchronization.title: Paramètres de synchronisation de messagerie
-      interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Groupe enregistré
   role.message.saved: Rôle enregistré
@@ -30,14 +20,12 @@ oro.user.grid.groups:
     name: Nom
 pim_title:
   user.index: Utilisateurs
-  user_role.index: Rôles
+  user_role.index: Roles
   user_group.index: Groupes
   system_configuration.index: Configuration
 user.title: Utilisateur
-user.overview: Utilisateur
 Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur
-btn.create.user: Créer un utilisateur
 New user: Nouvel utilisateur
 Additional: Supplémentaire
 Groups and Roles: Groupes et rôles
@@ -64,27 +52,14 @@ Ssl: SSL
 Last logged in: Dernière connexion
 Login count: Nombre de connexion
 Additional Information: Informations complémentaires
-Interfaces: Interfaces
 Basic Information: Informations générales
 Contact Information: Information Contact
 User name: "Nom d'utilisateur"
 Birthday: Date d’anniversaire
 API key: Clé API
-Ui locale: "Langage de l'interface"
-UI locale: "Langage de l'interface"
-User salt: Sel de hachage
-Current password: Mot de passe actuel 
-New password: Nouveau mot de passe 
-Repeat new password: Nouveau mot de passe (répéter)
 Generate key: Générer une clé
 Primary: principal
 Removed user: Utilisateur supprimé
-user:
-  product_grid_filters: Filtres de la grille produits
-  default_product_grid_view:
-    label: Vue par défaut de la grille produits
-  default_grid_view:
-    none: Aucune
 Role: Rôle
 Owner: Propriétaire
 General: Général
@@ -94,16 +69,14 @@ Save and close: Enregistrer et fermer
 Has role: A le rôle
 role:
   title: rôle
-  overview: rôle
   edit: Editer un rôle
   create: Créer un rôle
-btn.create.role: Créer un rôle
 rights:
   action: Permissions
 oro_security:
   acl_group:
     user: Utilisateurs
-    role: Rôles
+    role: Roles
     group: "Groupes d'utilisateurs"
   acl:
     user:
@@ -124,7 +97,7 @@ oro_security:
 (default): Autorisations par défaut sur les entités
 VIEW: Voir
 CREATE: Créer
-EDIT: Editer
+EDIT: Modifier
 DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
@@ -138,10 +111,8 @@ oro:
       SYSTEM: Système
       NONE: Aucun
 Create group: Créer un groupe
-btn.create.user-group: Créer un groupe
 Has group: Appartient au groupe
 Save and Close: Enregistrer et fermer
-user-group.overview: Groupes
 Log in: Connexion
 Remember me on this computer: Mémoriser mes informations sur cet ordinateur
 Forgot your password?: Mot de passe oublié ?
