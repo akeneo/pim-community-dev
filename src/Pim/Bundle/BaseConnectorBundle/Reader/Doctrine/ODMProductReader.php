@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -52,7 +52,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var MetricConverter */
+    /** @var \Pim\Component\Catalog\Converter\MetricConverter */
     protected $metricConverter;
 
     /** @var bool */
@@ -65,7 +65,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      * @param ProductRepositoryInterface $repository
      * @param ChannelRepositoryInterface $channelRepository
      * @param CompletenessManager        $completenessManager
-     * @param MetricConverter            $metricConverter
+     * @param \Pim\Component\Catalog\Converter\MetricConverter            $metricConverter
      * @param DocumentManager            $documentManager
      * @param bool                       $missingCompleteness
      */

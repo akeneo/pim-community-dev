@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -25,7 +25,7 @@ class PimVersioningBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
-            ->addCompilerPass(new SerializerPass('pim_versioning.serializer'));
+            ->addCompilerPass(new RegisterSerializerPass('pim_versioning.serializer'));
 
         $versionMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Component\Versioning\Model'

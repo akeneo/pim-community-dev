@@ -33,5 +33,5 @@ Feature: Localize dates in the product grid
     And I display the columns sku, destocking_date
     When I switch the locale to "fr_FR"
     Then the row "sandals" should contain:
-      | column            | value      |
-      | [Destocking_date] | 01/31/2015 |
+      | column             | value      |
+      | Date de déstockage | 01/31/2015 |

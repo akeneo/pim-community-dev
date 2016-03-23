@@ -3,11 +3,8 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class GroupStandardConverterSpec extends ObjectBehavior
 {
@@ -28,12 +25,12 @@ class GroupStandardConverterSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $this->convert($fields)->shouldReturn([
-            'labels'   => [
+            'labels' => [
                 'fr_FR' => 'T-shirt super beau',
                 'en_US' => 'T-shirt very beautiful',
             ],
-            'code'     => 'mycode',
-            'type'     => 'RELATED',
+            'code'   => 'mycode',
+            'type'   => 'RELATED',
         ]);
     }
 

@@ -255,7 +255,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function assertColumnContainsValue($row, $column, $expectation)
     {
-        $column = strtoupper($column);
+        $column = mb_strtoupper($column);
         $actual = $this->datagrid->getColumnValue($column, $row);
 
         // do not consider the elements' order of "actual" and "expectation"

@@ -3,30 +3,20 @@
 namespace spec\Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
+use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterWidgetsPassSpec extends ObjectBehavior
 {
-    function let(ReferenceFactory $factory)
-    {
-        $this->beConstructedWith($factory);
-    }
-
     function it_is_a_compiler_pass()
     {
         $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
-    function it_add_tagged_widgets_to_the_widget_registry(
-        ContainerBuilder $container,
-        Definition $definition,
-        Reference $fooReference,
-        Reference $barReference,
-        $factory
-    ) {
+    function it_add_tagged_widgets_to_the_widget_registry(ContainerBuilder $container, Definition $definition)
+    {
         $container->hasDefinition('pim_dashboard.widget.registry')->willReturn(true);
         $container->getDefinition('pim_dashboard.widget.registry')->willReturn($definition);
         $container->findTaggedServiceIds('pim_dashboard.widget')->willReturn(
@@ -36,11 +26,23 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
             ]
         );
 
-        $factory->createReference('pim_dashboard.widget.foo')->willReturn($fooReference);
-        $factory->createReference('pim_dashboard.widget.bar')->willReturn($barReference);
+        $definition->addMethodCall('add', Argument::that(function ($params) {
+            return
+                $params[0] instanceof Reference &&
+                'pim_dashboard.widget.foo' === $params[0]->__toString() &&
+                10 === $params[1]
+            ;
+        }))->shouldBeCalled();
 
-        $definition->addMethodCall('add', [$fooReference, 10])->shouldBeCalled();
-        $definition->addMethodCall('add', [$barReference, 0])->shouldBeCalled();
+        $definition->addMethodCall('add', Argument::that(function ($params) {
+            $result =
+                $params[0] instanceof Reference &&
+                'pim_dashboard.widget.bar' === $params[0]->__toString() &&
+                0 === $params[1]
+            ;
+
+            return $result;
+        }))->shouldBeCalled();
 
         $this->process($container);
     }

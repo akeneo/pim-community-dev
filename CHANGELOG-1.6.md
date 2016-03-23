@@ -55,6 +55,7 @@
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
 - Installer fixtures now support csv format for group types setup and not anymore the yml format
 - Installer fixtures now support csv format for locales setup and not anymore the yml format
+- Installer fixtures now support csv format for groups, variant groups setup and not anymore the yml format
 - Add `Pim\Component\Connector\ArrayConverter\FieldsRequirementValidator` as last parameter of
     `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter`,
     `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter`,
@@ -87,7 +88,7 @@
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Job\BatchException`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping`
-- Remove argument $objectIdResolver from constructors of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter` 
+- Remove argument $objectIdResolver from constructors of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter`
 - Removed deprecated class `Pim\Bundle\CatalogBundle\Manager\ChannelManager`.
 - Remove the extend of the `Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController` and `Pim\Bundle\EnrichBundle\AbstractController\AbstractController`.
 - Change constructor of `Pim/Bundle/BaseConnectorBundle/Processor/CsvSerializer/ProductProcessor` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
@@ -110,3 +111,14 @@
 - Change constructor of `Pim/Component/Catalog/Repository/ChannelRepositoryInterface` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Rename `Pim\Component\Catalog\Repository\ChannelRepositoryInterface::getChannelChoices` to `Pim\Component\Catalog\Repository\ChannelRepositoryInterface::getLabelsIndexedByCode`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository` to inject two more arguments `%akeneo_batch.entity.job_instance.class%` and `%pim_import_export.repository.job_instance.class%`
+- Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Normalizer\Flat` to `Pim\Component\Connector\Normalizer`
+- Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Denormalizer\Flat` to `Pim\Component\Connector\Denormalizer`
+- Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Normalizer\Structured` to `Pim\Component\Catalog\Normalizer`
+- Move namespace `Pim\Bundle\TransformBundle\DependencyInjection\Denormalizer\Structured` to `Pim\Component\Catalog\Denormalizer`
+- Move and rename class `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass`
+- Move class `Pim\Bundle\TransformBundle\Cache\CacheClearer` to `Pim\Bundle\BaseConnectorBundle\Cache\CacheClearer`
+- Move class `Pim\Bundle\TransformBundle\Cache\DoctrineCache` to `Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache`
+- Move class `Pim\Bundle\TransformBundle\Converter\MetricConverter` to `Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter`
+- Remove namespace `Pim\Bundle\BaseConnectorBundle\Exception`
+- Remove `TransformBundle`
+- Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
