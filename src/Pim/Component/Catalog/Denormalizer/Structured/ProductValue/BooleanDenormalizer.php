@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer\ProductValue;
+namespace Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
 
 /**
  * Boolean denormalizer used for the following attribute type:

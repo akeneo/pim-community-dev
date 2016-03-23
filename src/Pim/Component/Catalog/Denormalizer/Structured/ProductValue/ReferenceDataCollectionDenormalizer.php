@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer\ProductValue;
+namespace Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Exception\InvalidParameterException;

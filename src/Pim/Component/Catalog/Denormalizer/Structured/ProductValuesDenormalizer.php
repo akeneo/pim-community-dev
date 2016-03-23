@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer;
+namespace Pim\Component\Catalog\Denormalizer\Structured;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Collections\ArrayCollection;

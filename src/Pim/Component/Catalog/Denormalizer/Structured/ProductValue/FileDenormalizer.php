@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer\ProductValue;
+namespace Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
 
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 

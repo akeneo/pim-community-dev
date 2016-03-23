@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Denormalizer\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -17,7 +17,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\ProductValue\AbstractValueDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AbstractValueDenormalizer');
     }
 
     function it_is_a_denormalizer()

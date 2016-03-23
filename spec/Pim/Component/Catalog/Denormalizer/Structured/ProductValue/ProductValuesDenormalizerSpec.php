@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Denormalizer;
+namespace spec\Pim\Component\Catalog\Structured\Denormalizer;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
