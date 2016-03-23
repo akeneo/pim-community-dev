@@ -29,7 +29,6 @@ Please, select item to perform action.: Por favor, seleccione elemento para real
 View per page: Vista por página
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: No se encontraron resultados. Intenta cambiar el criterio de búsqueda.
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
 oro.datagrid.pagination.label: Página
 oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
@@ -40,34 +39,9 @@ oro_datagrid.select.all: Todo
 oro_datagrid.select.visible: Todo visible
 oro_datagrid.select.none: Nignuno
 pim.grid.ajax_choice_filter.label_empty: está vacía
-pim.grid.choice_filter:
-  label_empty: Está vacía
-  label_in_list: En la lista
 Available Columns: Columnas disponibles
 Displayed Columns: Columnas mostradas
 datagrid_view.columns.min_message: Debe seleccionar al menos una columna de datagrid para mostrar
-pim_datagrid:
-  column_configurator:
-    label: Columnas
-    title: Selección de columna
-    all_groups: Todos los grupos
-    search: Buscar
-    clear: Restablecer
-    displayed_columns: Columnas mostradas
-    apply: Aplicar
-    cancel: Cancelar
-    remove_column: Eliminar
-  mass_action:
-    delete:
-      confirm_title: Confirmación de eliminación.
-      confirm_ok: OK
-      empty_selection: Ningún producto seleccionado.
 pim.grid.mass_action.quick_export.title: Exportación rápida
-pim.grid.mass_action.quick_export.launched: Se ha ejecutado la exportación rápida
 pim.grid.action.launch.title: Ejecutar
 pim.grid.action.show.title: Mostrar
-Please select view: Por favor, seleccione Vista
-Loading...: Cargando...
-View: Visualizar
-from: desde
-to: hasta
