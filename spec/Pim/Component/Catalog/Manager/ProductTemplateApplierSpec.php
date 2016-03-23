@@ -47,7 +47,7 @@ class ProductTemplateApplierSpec extends ObjectBehavior
             ->willReturn($emptyViolationList);
         $emptyViolationList->count()->willReturn(0);
 
-        $productSaver->saveAll([$productOne, $productTwo])->shouldBeCalled();
+        $productSaver->saveAll([$productOne, $productTwo], ['recalculate' => true])->shouldBeCalled();
 
         $this->apply($template, [$productOne, $productTwo]);
     }
@@ -76,7 +76,7 @@ class ProductTemplateApplierSpec extends ObjectBehavior
         $notEmptyViolationList->getIterator()->willReturn(new ArrayCollection());
 
         $productDetacher->detach($invalidProduct)->shouldBeCalled();
-        $productSaver->saveAll([$validProduct])->shouldBeCalled();
+        $productSaver->saveAll([$validProduct], ['recalculate' => true])->shouldBeCalled();
 
         $this->apply($template, [$validProduct, $invalidProduct]);
     }
