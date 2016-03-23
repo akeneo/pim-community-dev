@@ -4,6 +4,7 @@
 - Update akeneo/measure-bundle dependency to version 0.4.1.
 
 ## Bug fixes
+- PIM-5656: Category Tree does not load when 0 category selected
 - PIM-5453: Display completeness missing labels according to the locale your are working on
 
 # 1.4.21 (2016-03-07)
