@@ -2,10 +2,10 @@ pim_user:
   user:
     tab:
       general.title: Général
-      additional.title: Complément
+      additional.title: Supplémentaire
       group_and_role.title: Groupes et rôles
       password.title: Mot de passe
-      business_unit.title: Business Units
+      business_unit.title: Entité commerciale
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
 oro.user.controller:
@@ -30,7 +30,7 @@ oro.user.grid.groups:
     name: Nom
 pim_title:
   user.index: Utilisateurs
-  user_role.index: Rôles
+  user_role.index: Roles
   user_group.index: Groupes
   system_configuration.index: Configuration
 user.title: Utilisateur
@@ -84,7 +84,7 @@ user:
   default_product_grid_view:
     label: Vue par défaut de la grille produits
   default_grid_view:
-    none: Aucune
+    none: Aucun
 Role: Rôle
 Owner: Propriétaire
 General: Général
@@ -103,7 +103,7 @@ rights:
 oro_security:
   acl_group:
     user: Utilisateurs
-    role: Rôles
+    role: Roles
     group: "Groupes d'utilisateurs"
   acl:
     user:
@@ -124,7 +124,7 @@ oro_security:
 (default): Autorisations par défaut sur les entités
 VIEW: Voir
 CREATE: Créer
-EDIT: Editer
+EDIT: Modifier
 DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
