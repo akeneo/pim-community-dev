@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément ?
+    item: Êtes-vous certain de vouloir supprimer cet élément?
     association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
     attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr de que vouloir supprimer cette famille ?
@@ -26,17 +26,17 @@ flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: "Le type d'association a bien été supprimé"
+    removed: "Le type d'association est supprimé avec succès"
   attribute:
-    removed: "L'attribut a bien été supprimé"
+    removed: Attribut supprimé avec succès
   family:
-    removed: La famille a bien été supprimée
+    removed: Famille supprimée avec succès
   product:
-    removed: Le produit a bien été supprimé
+    removed: Produit supprimé avec succès
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Canal supprimé avec succès
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -46,7 +46,7 @@ flash:
   export profile:
     removed: "Le profil d'export a bien été supprimé"
   user:
-    removed: "L'utilisateur a bien été supprimé"
+    removed: Utilisateur supprimé avec succès
   role:
     removed: Le rôle a bien été supprimé
 error:
@@ -81,7 +81,7 @@ label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Editer
+Edit: Modifier
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -117,7 +117,7 @@ pim_enrich:
       btn:
         enable: Activer
         enabled: Activé
-        disable: Desactiver
+        disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
@@ -192,7 +192,7 @@ pim_enrich:
     delete:
       product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
       updated: "Des modifications n'ont pas encore été sauvegardées."
   error:
@@ -249,7 +249,7 @@ pim_enrich:
           merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
           keep_attributes: Aucun attribut ne sera supprimé.
           change_family_to: Changer la famille pour
-          empty_selection: Choisir une famille
+          empty_selection: Choisissez une famille
       flash:
         attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
       mass_edit:
@@ -269,6 +269,6 @@ pim_enrich:
         "yes": Oui
   mass_edit_action:
     edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités pour les paramètres régionaux <span class="bold-purple">{{ locale }}</span> et le canal <span class="bold-purple">{{ channel }}</span>, choisis dans la grille des produits.'
+      description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
 pim_enrich.error:
   exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
