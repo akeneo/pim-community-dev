@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément ?
+    item: Êtes-vous certain de vouloir supprimer cet élément?
     association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
     attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr de que vouloir supprimer cette famille ?
@@ -14,9 +14,6 @@ confirmation:
     user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr de vouloir supprimer ce rôle ?
 pim_datagrid:
-  mass_action_group:
-    quick_export:
-      label: Export rapide
   mass_action:
     delete:
       confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
@@ -26,17 +23,17 @@ flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: "Le type d'association a bien été supprimé"
+    removed: "Le type d'association est supprimé avec succès"
   attribute:
-    removed: "L'attribut a bien été supprimé"
+    removed: Attribut supprimé avec succès
   family:
-    removed: La famille a bien été supprimée
+    removed: Famille supprimée avec succès
   product:
-    removed: Le produit a bien été supprimé
+    removed: Produit supprimé avec succès
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Canal supprimé avec succès
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -46,7 +43,7 @@ flash:
   export profile:
     removed: "Le profil d'export a bien été supprimé"
   user:
-    removed: "L'utilisateur a bien été supprimé"
+    removed: Utilisateur supprimé avec succès
   role:
     removed: Le rôle a bien été supprimé
 error:
@@ -81,7 +78,7 @@ label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Editer
+Edit: Modifier
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -107,17 +104,12 @@ pim_enrich:
     link:
       back_to_grid: Retour à la grille
   entity:
-    save:
-      label: Enregistrer
-    info:
-      update_failed: Échec de la mise à jour
-      update_successful: Mise à jour effectuée avec succès
     product:
       title: produit
       btn:
         enable: Activer
         enabled: Activé
-        disable: Desactiver
+        disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
@@ -168,12 +160,11 @@ pim_enrich:
         all: Tous
         all_visible: Tous les visibles
         none: Aucun
-        copy: Copier
       variant_group:
         updated_by: Mis à jour par un groupe de variantes
         switch:
-          "yes": Oui
-          "no": Non
+          "yes": true
+          "no": false
       optional_attribute:
         remove: Supprimer cet attribut
       locale_specific_attribute:
@@ -192,7 +183,7 @@ pim_enrich:
     delete:
       product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
       updated: "Des modifications n'ont pas encore été sauvegardées."
   error:
@@ -216,11 +207,9 @@ pim_enrich:
             add: Ajouter
             add_attributes: Ajouter des attributs
           info:
-            search_attributes: Rechercher...
+            search_attributes: Rechercher
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
             attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
-            no_match: Aucune correspondance trouvée
-            load_more: Chargement de plus de résultats...
         categories:
           title: Catégories
       panel:
@@ -229,12 +218,11 @@ pim_enrich:
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
-          missing_values: Valeurs manquantes
         history:
           title: Historique
       switch:
-        "no": Non
-        "yes": Oui
+        "no": false
+        "yes": true
       sequential_edit:
         info:
           products: Produits
@@ -249,7 +237,7 @@ pim_enrich:
           merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
           keep_attributes: Aucun attribut ne sera supprimé.
           change_family_to: Changer la famille pour
-          empty_selection: Choisir une famille
+          empty_selection: Choisissez une famille
       flash:
         attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
       mass_edit:
@@ -263,12 +251,5 @@ pim_enrich:
         title: "Ajouter une option d'attribut"
         confirm: Ajouter
         cancel: Annuler
-    entity:
-      switch:
-        "no": Non
-        "yes": Oui
-  mass_edit_action:
-    edit_common_attributes:
-      description: 'Les attributs des produits sélectionnés vont être édités pour les paramètres régionaux <span class="bold-purple">{{ locale }}</span> et le canal <span class="bold-purple">{{ channel }}</span>, choisis dans la grille des produits.'
 pim_enrich.error:
   exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."

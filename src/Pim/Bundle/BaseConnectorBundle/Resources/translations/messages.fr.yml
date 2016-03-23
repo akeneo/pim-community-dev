@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Export des groupes de variantes en CSV
       export.title: Export des groupes de variantes
-    csv_family_export:
-      title: Export des familles en CSV
-      export.title: Export des familles
     csv_product_import:
       title: Import des produits en CSV
       validation.title: Validation du fichier
@@ -98,12 +95,6 @@ pim_base_connector:
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
-    decimalSeparator:
-      label: Séparateur de décimale
-      help: Détermine le séparateur de décimale
-    dateFormat:
-      label: Format de date
-      help: Déterminer le format des champs de type date
   import:
     enabled:
       label: Activer le produit
@@ -130,7 +121,7 @@ pim_base_connector:
       label: Délimiteur
       help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement"
+      label: "Caractère d'encadrement (enclosure)"
       help: Délimiteur de champs
     escape:
       label: Echapper

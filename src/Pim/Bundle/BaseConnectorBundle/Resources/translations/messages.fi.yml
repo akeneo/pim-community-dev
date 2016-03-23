@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Muuttujaryhmien vienti CSV-muodossa
       export.title: Muutujaryhmien vienti
-    csv_family_export:
-      title: Ryhmän tuonti CSV-tiedostona
-      export.title: Ryhmän vienti
     csv_product_import:
       title: Tuotteiden tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
@@ -98,12 +95,6 @@ pim_base_connector:
     channel:
       label: Kanava
       help: Kanava, jonka haluat viedä
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Määritä desimaalierotin
-    dateFormat:
-      label: Päivämäärän muoto
-      help: Määritä päivämääräkenttien formaatti
   import:
     enabled:
       label: Enabloi tuote
