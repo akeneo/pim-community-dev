@@ -1,4 +1,9 @@
-# 1.4.x
+# 1.4.21 (2016-03-07)
+
+## Bug fixes
+- PIM-5598: Fix flash message translation when no asset category permission
+
+# 1.4.20 (2016-02-24)
 
 # 1.4.19 (2016-02-11)
 
@@ -54,8 +59,6 @@
 
 ## Bug fixes
 - PIM-5136: Fixed completeness of published products
-
-# 1.4.12 (2015-12-03)
 
 # 1.4.11 (2015-11-27)
 

@@ -20,21 +20,13 @@ class SchemaHelperEE extends SchemaHelper
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        array_merge(
-            $this->classMapping,
-            [
-                'product_draft'           => 'pimee_workflow.model.product_draft.class',
-                'published_product'       => 'pimee_workflow.entity.published_product.class',
-                'published_product_media' => 'pimee_workflow.entity.published_product_media.class',
-            ]
-        );
-        array_merge(
-            $this->productResources,
-            [
-                'published_product',
-                'published_product_media',
-                'product_draft'
-            ]
-        );
+
+        $this->classMapping['product_draft']           = 'pimee_workflow.model.product_draft.class';
+        $this->classMapping['published_product']       = 'pimee_workflow.entity.published_product.class';
+        $this->classMapping['published_product_media'] = 'pimee_workflow.entity.published_product_media.class';
+
+        $this->productResources[] = 'published_product';
+        $this->productResources[] = 'published_product_media';
+        $this->productResources[] = 'product_draft';
     }
 }

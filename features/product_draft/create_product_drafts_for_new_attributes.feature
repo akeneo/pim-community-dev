@@ -19,7 +19,7 @@ Feature: Create product drafts for new attributes added to the product
     And I save the product
     Then I should see "Send for approval"
 
-  Scenario: Save a product draft with empty custom attribute values
+  Scenario: Do not save a product draft with empty attribute values
     Given a "clothing" catalog configuration
     And the following family:
       | code           | attributes                                                    |
@@ -37,4 +37,4 @@ Feature: Create product drafts for new attributes added to the product
     And I wait for the "footwear_product_import" job to finish
     And I am on the "bullet_proof_vest" product page
     And I save the product
-    Then I should see "Send for approval"
+    Then I should not see the text "Send for approval"

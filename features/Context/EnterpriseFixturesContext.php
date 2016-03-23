@@ -22,7 +22,6 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -33,6 +32,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
+use Context\Spin\SpinCapableTrait;
 
 /**
  * A context for creating entities
@@ -42,6 +42,8 @@ use Symfony\Component\Yaml\Parser;
  */
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
+    use SpinCapableTrait;
+
     protected $enterpriseEntities = [
         'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
@@ -541,11 +543,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function getAssetCategory($code)
     {
-        $assetCategory = $this->getAssetCategoryRepository()->findOneByIdentifier($code);
-
-        if (null === $assetCategory) {
-            throw new \InvalidArgumentException(sprintf('Could not find a category with code "%s"', $code));
-        }
+        $assetCategory = $this->spin(function () use ($code) {
+            return $this->getAssetCategoryRepository()->findOneByIdentifier($code);
+        }, sprintf('Could not find a category with code "%s"', $code));
 
         $this->refresh($assetCategory);
 
@@ -640,40 +640,59 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $user
+     * @param string $username
      *
      * @Then /^the user "([^"]*)" should have email notifications enabled$/
      */
-    public function userShouldHaveEmailNotificationsEnabled($user)
+    public function userShouldHaveEmailNotificationsEnabled($username)
     {
-        $user = $this->getUser($user);
-        $this->getEntityManager()->refresh($user);
-        assertEquals($user->isEmailNotifications(), true);
+        return $this->userShouldHaveEmailNotifications($username, true);
     }
 
     /**
-     * @param string $user
+     * @param string $username
      *
      * @Then /^the user "([^"]*)" should have email notifications disabled$/
      */
-    public function userShouldHaveEmailNotificationsDisabled($user)
+    public function userShouldHaveEmailNotificationsDisabled($username)
     {
-        $user = $this->getUser($user);
-        $this->getEntityManager()->refresh($user);
-        assertEquals($user->isEmailNotifications(), false);
+        return $this->userShouldHaveEmailNotifications($username, false);
     }
 
     /**
-     * @param string $user
+     * @param $username
+     * @param $value
+     *
+     * @throws Spin\TimeoutException
+     */
+    protected function userShouldHaveEmailNotifications($username, $value)
+    {
+        $user = $this->getUser($username);
+        $this->spin(function () use ($user, $value) {
+            $this->getEntityManager()->refresh($user);
+            $emailNotifications = (bool) $user->isEmailNotifications();
+
+            return $emailNotifications === $value;
+        }, sprintf('Email notifications of %s does not change to %s.', $username, $value ? 'true' : 'false'));
+    }
+
+    /**
+     * @param string $username
      * @param int    $delay
      *
      * @Then /^the user "([^"]*)" should have an asset delay notification set to (\d+)$/
      */
-    public function userShouldHaveAnAssetDelayNotification($user, $delay)
+    public function userShouldHaveAnAssetDelayNotification($username, $delay)
     {
-        $user = $this->getUser($user);
-        $this->getEntityManager()->refresh($user);
-        assertEquals($user->getAssetDelayReminder(), $delay);
+        $user = $this->getUser($username);
+        $value = $this->spin(function () use ($user, $delay) {
+            $this->getEntityManager()->refresh($user);
+            $value = $user->getAssetDelayReminder();
+
+            return (int) $value === (int) $delay ? $value : null;
+        }, sprintf('Asset delay reminder of %s does not change to %s', $username, $delay));
+
+        assertEquals($value, $delay);
     }
 
     /**

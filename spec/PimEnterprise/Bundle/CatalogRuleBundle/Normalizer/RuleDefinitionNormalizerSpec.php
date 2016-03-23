@@ -9,28 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\Localization\Normalizer;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RuleDefinitionNormalizerSpec extends ObjectBehavior
 {
-    function let(
-        NormalizerInterface $ruleNormalizer,
-        PresenterRegistryInterface $presenterRegistry,
-        LocaleResolver $localeResolver
-    ) {
-        $this->beConstructedWith(
-            $ruleNormalizer,
-            $presenterRegistry,
-            $localeResolver
-        );
+    function let(PresenterRegistryInterface $presenterRegistry)
+    {
+        $this->beConstructedWith($presenterRegistry);
     }
 
     function it_supports_rule_definition_normalization(RuleDefinitionInterface $ruleDefinition)
@@ -39,58 +31,52 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_fr_numbers(
-        $ruleNormalizer,
         $presenterRegistry,
-        $localeResolver,
         RuleDefinitionInterface $ruleDefinition,
         PresenterInterface $pricesPresenter,
         PresenterInterface $metricPresenter,
         PresenterInterface $numberPresenter
     ) {
-        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
-        $ruleNormalizer->normalize($ruleDefinition, 'array', [])->willReturn(
+        $ruleDefinition->getId()->willReturn(42);
+        $ruleDefinition->getCode()->willReturn('set_tshirt_price');
+        $ruleDefinition->getType()->willReturn('product');
+        $ruleDefinition->getPriority()->willReturn(0);
+        $ruleDefinition->getContent()->willReturn(
             [
-                'id'       => 42,
-                'code'     => 'set_tshirt_price',
-                'type'     => 'product',
-                'priority' => 0,
-                'content'  => [
-                    'conditions' => [
-                        ['field' => 'sku', 'operator' => 'CONTAINS', 'value' => 'AKNTS_PB'],
-                    ],
-                    'actions' => [
-                        ['type' => 'set_value', 'field' => 'price', 'value' => [
-                            ['data' => '12.1234', 'currency' => 'EUR']
-                        ] ],
-                        ['type' => 'set_value', 'field' => 'auto_focus_points', 'value' => 4.1234 ],
-                        ['type' => 'set_value', 'field' => 'weight', 'value' => [
-                            'data' => 500.1234, 'unit' => 'GRAM'
-                        ]],
-                    ],
+                'conditions' => [
+                    ['field' => 'sku', 'operator' => 'CONTAINS', 'value' => 'AKNTS_PB'],
+                ],
+                'actions' => [
+                    ['type' => 'set_value', 'field' => 'price', 'value' => [
+                        ['data' => '12.1234', 'currency' => 'EUR']
+                    ] ],
+                    ['type' => 'set_value', 'field' => 'auto_focus_points', 'value' => 4.1234 ],
+                    ['type' => 'set_value', 'field' => 'weight', 'value' => [
+                        'data' => 500.1234, 'unit' => 'GRAM'
+                    ]],
                 ]
             ]
         );
-
-        $options = ['locale' => 'fr_FR'];
+        $context = ['locale' => 'fr_FR'];
 
         $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricesPresenter);
         $pricesPresenter->present(
             [['data' => '12.1234', 'currency' => 'EUR']],
-            $options
+            $context
         )->willReturn([['data' => '12,1234', 'currency' => 'EUR']]);
 
         $presenterRegistry->getPresenterByAttributeCode('auto_focus_points')->willReturn($numberPresenter);
-        $numberPresenter->present(4.1234, $options)->willReturn('4,1234');
+        $numberPresenter->present(4.1234, $context)->willReturn('4,1234');
 
         $presenterRegistry->getPresenterByAttributeCode('weight')->willReturn($metricPresenter);
         $metricPresenter->present(
             ['data' => 500.1234, 'unit' => 'GRAM'],
-            $options
+            $context
         )->willReturn(['data' => '500,1234', 'unit' => 'GRAM']);
 
         $presenterRegistry->getPresenterByAttributeCode('sku')->willReturn(null);
 
-        $this->normalize($ruleDefinition, 'array', [])->shouldReturn(
+        $this->normalize($ruleDefinition, 'array', $context)->shouldReturn(
             [
                 'id'       => 42,
                 'code'     => 'set_tshirt_price',

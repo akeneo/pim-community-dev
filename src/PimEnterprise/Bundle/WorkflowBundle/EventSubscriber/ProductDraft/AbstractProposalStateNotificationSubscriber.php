@@ -61,8 +61,9 @@ abstract class AbstractProposalStateNotificationSubscriber
      * Send a notification to the reviewer when a proposal state changes
      *
      * @param GenericEvent $event
+     * @param array        $messageInfos
      */
-    abstract protected function send(GenericEvent $event);
+    abstract protected function send(GenericEvent $event, array $messageInfos);
 
     /**
      * @param ProductDraftInterface $productDraft
@@ -104,29 +105,43 @@ abstract class AbstractProposalStateNotificationSubscriber
      * @param GenericEvent $event
      * @param string       $type
      *
-     * @return GenericEvent
+     * @return array
      */
-    protected function buildNotificationMessage(GenericEvent $event, $type)
+    protected function buildNotificationMessageInfos(GenericEvent $event, $type)
     {
         $updatedValues = $event->getArgument('updatedValues');
+        $isPartialAction = 0 === strpos($type, 'partial');
 
-        $event->setArgument('actionType', sprintf('pimee_workflow_product_draft_notification_%s', $type));
+        $messageInfos = [
+            'message' => sprintf('pimee_workflow.product_draft.notification.%s', $type),
+            'options' => [
+                'context' => [
+                    'actionType' => sprintf('pimee_workflow_product_draft_notification_%s', $type)
+                ]
+            ]
+        ];
 
-        if (count($updatedValues) > self::NOTIFICATION_MAX_ATTRIBUTES) {
-            $event->setArgument('message', sprintf('pimee_workflow.product_draft.notification.%s_number', $type));
-            $event->setArgument('messageParams', ['%attributes_count%' => count($updatedValues)]);
-        } else {
-            $attributeLabels = array_map(function ($attributeCode) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-                $attribute->setLocale($this->userContext->getCurrentLocaleCode());
-
-                return $attribute->getLabel();
-            }, array_keys($updatedValues));
-
-            $event->setArgument('message', sprintf('pimee_workflow.product_draft.notification.%s', $type));
-            $event->setArgument('messageParams', ['%attributes%' => implode(', ', $attributeLabels)]);
+        if (!$isPartialAction) {
+            return $messageInfos;
         }
 
-        return $event;
+        if (count($updatedValues) > self::NOTIFICATION_MAX_ATTRIBUTES) {
+            $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s_number', $type);
+            $messageInfos['options']['messageParams'] = ['%attributes_count%' => count($updatedValues)];
+
+            return $messageInfos;
+        }
+
+        $attributeLabels = array_map(function ($attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute->setLocale($this->userContext->getCurrentLocaleCode());
+
+            return $attribute->getLabel();
+        }, array_keys($updatedValues));
+
+        $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s', $type);
+        $messageInfos['options']['messageParams'] = ['%attributes%' => implode(', ', $attributeLabels)];
+
+        return $messageInfos;
     }
 }

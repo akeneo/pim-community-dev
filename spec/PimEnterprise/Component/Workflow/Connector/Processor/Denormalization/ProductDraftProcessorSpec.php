@@ -6,12 +6,12 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -33,7 +33,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductDraftApplierInterface $productDraftApplier,
         ProductDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
@@ -98,7 +98,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
-        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($values['converted_localized_values']);
@@ -143,7 +143,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
-        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($values['converted_localized_values']);
@@ -173,7 +173,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
-        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($values['converted_localized_values']);
@@ -210,7 +210,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
-        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($values['converted_localized_values']);
@@ -255,7 +255,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
-        $localizedConverter->convertLocalizedToDefaultValues($values['converted_values'], [
+        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($values['converted_localized_values']);

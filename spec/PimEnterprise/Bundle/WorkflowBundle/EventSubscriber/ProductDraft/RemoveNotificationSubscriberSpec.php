@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -58,44 +59,34 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
     function it_does_not_send_on_unknown_user(
         $notifier,
         $userRepository,
-        $attributeRepository,
         $context,
         ProductDraftInterface $draft,
-        GenericEvent $event,
-        AttributeInterface $attribute
+        GenericEvent $event
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn(null);
-        $notifier->notify(Argument::any())->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $context->getUser()->willReturn(null);
 
-        $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
+        $values = [
             'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
-        $draft->getChangesToReview()->willReturn([]);
+        ];
 
-        $event->setArgument('actionType', Argument::any())->willReturn();
-        $event->setArgument('message', Argument::any())->willReturn();
-        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
-
-        $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
 
         $this->sendNotificationForRemoval($event);
     }
 
     function it_does_not_send_notification_if_author_does_not_want(
         $userRepository,
-        $attributeRepository,
         $notifier,
         $context,
         ProductDraftInterface $draft,
         UserInterface $author,
-        GenericEvent $event,
-        AttributeInterface $attribute
+        GenericEvent $event
     ) {
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
@@ -105,26 +96,19 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $context->getUser()->willReturn(null);
 
-        $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
+        $values = [
             'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
-        $draft->getChangesToReview()->willReturn([]);
+        ];
 
-        $event->setArgument('actionType', Argument::any())->willReturn();
-        $event->setArgument('message', Argument::any())->willReturn();
-        $event->setArgument('messageParams', Argument::type('array'))->willReturn();
-
-        $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $event->hasArgument('updatedValues')->willReturn(true);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
 
         $this->sendNotificationForRemoval($event);
     }
 
     function it_sends_on_product_draft(
         $notifier,
-        $attributeRepository,
         $context,
         $userRepository,
         GenericEvent $event,
@@ -132,27 +116,21 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier,
-        AttributeInterface $attribute
+        ProductValueInterface $identifier
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
+        $values = [
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ];
 
         $event->getSubject()->willReturn($draft);
         $event->hasArgument(Argument::any())->willReturn(true);
-        $event->setArgument(Argument::cetera())->willReturn(true);
         $event->hasArgument('comment')->willReturn(false);
         $event->getArgument('message')->willReturn('pimee_workflow.product_draft.notification.approve');
         $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_approve');
         $event->getArgument('messageParams')->willReturn([]);
-        $event->getArgument('updatedValues')->willReturn([
-            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
-
-        $attribute->setLocale(Argument::any())->willReturn();
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-
-        $draft->getChangesToReview()->willReturn([]);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
         $author->hasProposalsStateNotification()->willReturn(true);
@@ -166,9 +144,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getProduct()->willReturn($product);
 
         $product->getId()->willReturn(42);
-        $product->getIdentifier()->willReturn($identifier);
-
-        $identifier->getData()->willReturn('tshirt');
+        $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notifier->notify(
             ['author'],
@@ -177,7 +153,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
+                'messageParams' => ['%product%' => 'T-Shirt', '%owner%' => 'John Doe'],
                 'context'       => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_remove',
                     'showReportButton' => false
@@ -190,7 +166,6 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
 
     function it_sends_on_product_draft_with_a_comment(
         $notifier,
-        $attributeRepository,
         $context,
         $userRepository,
         GenericEvent $event,
@@ -198,22 +173,18 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier,
-        AttributeInterface $attribute
+        ProductValueInterface $identifier
     ) {
-        $attribute->setLocale(Argument::any())->willReturn();
-        $attribute->getLabel()->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-
         $event->getSubject()->willReturn($draft);
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
-        $draft->getChangesToReview()->willReturn([]);
-        $event->setArgument(Argument::cetera())->willReturn(true);
+
+        $values = [
+            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
+        ];
 
         $event->hasArgument('updatedValues')->willReturn(true);
-        $event->getArgument('updatedValues')->willReturn([
-            'description' => [['locale' => null, 'scope' => null, 'data' => 'Hi.']]
-        ]);
+        $event->getArgument('updatedValues')->willReturn($values);
+        $event->getArgument('isPartial')->willReturn(false);
         $event->hasArgument('comment')->willReturn(true);
         $event->getArgument('comment')->willReturn('Nope Mary.');
 
@@ -229,9 +200,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $draft->getProduct()->willReturn($product);
 
         $product->getId()->willReturn(42);
-        $product->getIdentifier()->willReturn($identifier);
-
-        $identifier->getData()->willReturn('tshirt');
+        $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notifier->notify(
             ['author'],
@@ -240,7 +209,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
+                'messageParams' => ['%product%' => 'T-Shirt', '%owner%' => 'John Doe'],
                 'context'       => [
                     'actionType' => 'pimee_workflow_product_draft_notification_remove',
                     'showReportButton' => false,

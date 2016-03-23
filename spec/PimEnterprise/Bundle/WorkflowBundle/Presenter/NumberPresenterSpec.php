@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class NumberPresenterSpec extends ObjectBehavior

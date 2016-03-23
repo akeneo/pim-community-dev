@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 
 /**
  * Present changes on date data

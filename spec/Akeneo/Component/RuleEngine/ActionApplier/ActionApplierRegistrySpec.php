@@ -24,7 +24,7 @@ class ActionApplierRegistrySpec extends ObjectBehavior
         $this->addActionApplier($setterActionApplier);
         $setterActionApplier->supports($action)->willReturn(false);
 
-        $this->shouldThrow(new \LogicException('The action "Double\ActionInterface\P101" is not supported yet.'))
+        $this->shouldThrow(new \LogicException(sprintf('The action "%s" is not supported yet.', get_class($action->getWrappedObject()))))
             ->during('getActionApplier', [$action]);
     }
 }

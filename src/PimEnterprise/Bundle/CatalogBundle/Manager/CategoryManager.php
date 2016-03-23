@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  *
- * @deprecated Will be removed in 1.5
+ * @deprecated Will be removed in 1.6
  */
 class CategoryManager extends BaseCategoryManager
 {
@@ -86,27 +86,6 @@ class CategoryManager extends BaseCategoryManager
         }
 
         return $trees;
-    }
-
-    /**
-     * Get only the granted direct children for a parent category id.
-     *
-     * @param int      $parentId
-     * @param int|bool $selectNodeId
-     *
-     * @return ArrayCollection
-     */
-    public function getGrantedChildren($parentId, $selectNodeId = false)
-    {
-        $children = $this->getChildren($parentId, $selectNodeId);
-        foreach ($children as $indChild => $child) {
-            $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
-                unset($children[$indChild]);
-            }
-        }
-
-        return $children;
     }
 
     /**

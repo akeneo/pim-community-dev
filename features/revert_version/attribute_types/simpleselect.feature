@@ -15,11 +15,12 @@ Feature: Revert product attributes to a previous version
     Given I am on the "jean" product page
     And I change the Manufacturer to "Desigual"
     Then I save the product
+    And I should see the flash message "Product successfully updated"
     And the history of the product "jean" has been built
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    Then I should see a flash message "Product successfully reverted"
+    Then I should see the flash message "Product successfully restored"
 
   Scenario: Successfully revert a simpleselect attribute
     Given the following product:

@@ -44,8 +44,8 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
             return;
         }
 
-        $event = $this->buildNotificationMessage($event, 'partial_approve');
-        $this->send($event);
+        $messageInfos = $this->buildNotificationMessageInfos($event, 'partial_approve');
+        $this->send($event, $messageInfos);
     }
 
     /**
@@ -57,29 +57,27 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
             return;
         }
 
-        $draftChanges = $event->getSubject()->getChangesToReview();
-        $type = empty($draftChanges['values']) ? 'approve' : 'partial_approve';
-        $event = $this->buildNotificationMessage($event, $type);
+        $type = $event->getArgument('isPartial') ? 'partial_approve' : 'approve';
+        $messageInfos = $this->buildNotificationMessageInfos($event, $type);
 
-        $this->send($event);
+        $this->send($event, $messageInfos);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function send(GenericEvent $event)
+    protected function send(GenericEvent $event, array $messageInfos)
     {
         $productDraft = $event->getSubject();
+        $user = $this->userContext->getUser();
 
-        if (null === $user = $this->userContext->getUser()) {
+        if (null === $user || !$this->authorWantToBeNotified($productDraft)) {
             return;
         }
 
-        if (!$this->authorWantToBeNotified($productDraft)) {
-            return;
-        }
-
-        $message = 'pimee_workflow.product_draft.notification.approve';
+        $message = isset($messageInfos['message'])
+            ? $messageInfos['message']
+            : 'pimee_workflow.product_draft.notification.approve';
 
         $options = [
             'route'         => 'pim_enrich_product_edit',
@@ -93,6 +91,8 @@ class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSub
                 'showReportButton' => false,
             ]
         ];
+
+        $options = array_replace_recursive($options, $messageInfos['options']);
 
         if ($event->hasArgument('comment')) {
             $options['comment'] = $event->getArgument('comment');

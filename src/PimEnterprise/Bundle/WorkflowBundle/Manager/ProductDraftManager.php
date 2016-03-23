@@ -21,6 +21,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -107,9 +108,10 @@ class ProductDraftManager
      * @param ChannelInterface|null $channel
      * @param array                 $context ['comment' => string|null]
      *
-     * @throws \LogicException If the $productDraft is not ready to be reviewed.
+     * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission
+     *                                     to approve the given change.
      */
-    public function approveValue(
+    public function approveChange(
         ProductDraftInterface $productDraft,
         AttributeInterface $attribute,
         LocaleInterface $locale = null,
@@ -119,7 +121,7 @@ class ProductDraftManager
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, new GenericEvent($productDraft, $context));
 
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft not in ready state can not be partially approved');
+            throw new DraftNotReviewableException('A product draft not in ready state can not be partially approved');
         }
 
         $localeCode = null !== $locale ? $locale->getCode() : null;
@@ -133,11 +135,13 @@ class ProductDraftManager
             'pim.internal_api.attribute.edit'
         );
 
-        if (!empty($filteredValues)) {
-            $partialDraft = $this->createDraft($productDraft, $filteredValues);
-            $this->applyDraftOnProduct($partialDraft);
-            $this->removeDraftChanges($productDraft, $filteredValues);
+        if (empty($filteredValues)) {
+            throw new DraftNotReviewableException('Impossible to approve a single change without permission on it');
         }
+
+        $partialDraft = $this->createDraft($productDraft, $filteredValues);
+        $this->applyDraftOnProduct($partialDraft);
+        $this->removeDraftChanges($productDraft, $filteredValues);
 
         $context['updatedValues'] = $filteredValues;
 
@@ -155,14 +159,14 @@ class ProductDraftManager
      * @param ProductDraftInterface $productDraft
      * @param array                 $context ['comment' => string|null]
      *
-     * @throws \LogicException If the $productDraft is not ready to be reviewed.
+     * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed.
      */
     public function approve(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft, $context));
 
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft not in ready state can not be approved');
+            throw new DraftNotReviewableException('A product draft not in ready state can not be approved');
         }
 
         $productDraftChanges = $productDraft->getChangesToReview();
@@ -171,15 +175,18 @@ class ProductDraftManager
             'pim.internal_api.attribute.edit'
         );
 
+        $isPartial = ($filteredValues != $productDraftChanges['values']);
+
         if (!empty($filteredValues)) {
-            $fullyApproved = $filteredValues == $productDraftChanges['values'];
-            $draftToApply = $fullyApproved ? $productDraft : $this->createDraft($productDraft, $filteredValues);
+            $draftToApply = $isPartial ? $this->createDraft($productDraft, $filteredValues) : $productDraft;
 
             $this->applyDraftOnProduct($draftToApply);
             $this->removeDraftChanges($productDraft, $filteredValues);
         }
 
         $context['updatedValues'] = $filteredValues;
+        $context['originalValues'] = $productDraftChanges['values'];
+        $context['isPartial'] = $isPartial;
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft, $context));
     }
@@ -194,9 +201,10 @@ class ProductDraftManager
      * @param ChannelInterface|null $channel
      * @param array                 $context ['comment' => string|null]
      *
-     * @throws \LogicException If the $productDraft is not ready to be reviewed.
+     * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission to
+     * refuse the given change.
      */
-    public function refuseValue(
+    public function refuseChange(
         ProductDraftInterface $productDraft,
         AttributeInterface $attribute,
         LocaleInterface $locale = null,
@@ -206,7 +214,7 @@ class ProductDraftManager
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, new GenericEvent($productDraft, $context));
 
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft not in ready state can not be partially rejected');
+            throw new DraftNotReviewableException('A product draft not in ready state can not be partially rejected');
         }
 
         $localeCode = null !== $locale ? $locale->getCode() : null;
@@ -219,9 +227,11 @@ class ProductDraftManager
             'pim.internal_api.attribute.edit'
         );
 
-        if (!empty($filteredValues)) {
-            $this->refuseDraftChanges($productDraft, $filteredValues);
+        if (empty($filteredValues)) {
+            throw new DraftNotReviewableException('Impossible to refuse a single change without permission on it');
         }
+
+        $this->refuseDraftChanges($productDraft, $filteredValues);
 
         $context['updatedValues'] = $filteredValues;
 
@@ -239,14 +249,14 @@ class ProductDraftManager
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
      *
-     * @throws \LogicException If the $productDraft is not ready to be reviewed.
+     * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed.
      */
     public function refuse(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft, $context));
 
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A product draft not in ready state can not be rejected');
+            throw new DraftNotReviewableException('A product draft not in ready state can not be rejected');
         }
 
         $productDraftChanges = $productDraft->getChangesToReview();
@@ -260,27 +270,51 @@ class ProductDraftManager
         }
 
         $context['updatedValues'] = $filteredValues;
+        $context['originalValues'] = $productDraftChanges['values'];
+        $context['isPartial'] = ($filteredValues != $productDraftChanges['values']);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft, $context));
     }
 
     /**
-     * Remove an in progress product draft
+     * Remove an in progress product draft.
+     * This removal is only applied if current user have edit rights on the change, so if
+     * not all changes can be removed, a "partial removal" is done instead.
      *
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
      *
-     * @throws \LogicException
+     * @throws DraftNotReviewableException If the $productDraft is not in progress or if no permission to remove the draft.
      */
     public function remove(ProductDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REMOVE, new GenericEvent($productDraft, $context));
 
         if (ProductDraftInterface::READY === $productDraft->getStatus()) {
-            throw new \LogicException('A product draft in ready state can not be removed');
+            throw new DraftNotReviewableException('A product draft in ready state can not be removed');
         }
 
-        $this->productDraftRemover->remove($productDraft);
+        $productDraftChanges = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT);
+        $filteredValues = $this->valuesFilter->filterCollection(
+            $productDraftChanges['values'],
+            'pim.internal_api.attribute.edit'
+        );
+
+        if (empty($filteredValues)) {
+            throw new DraftNotReviewableException('Impossible to delete a draft if no permission at all on it');
+        }
+
+        $isPartial = ($filteredValues != $productDraftChanges['values']);
+
+        if (!$isPartial) {
+            $this->productDraftRemover->remove($productDraft);
+        } else {
+            $this->removeDraftChanges($productDraft, $filteredValues);
+        }
+
+        $context['updatedValues'] = $filteredValues;
+        $context['originalValues'] = $productDraftChanges['values'];
+        $context['isPartial'] = $isPartial;
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REMOVE, new GenericEvent($productDraft, $context));
     }

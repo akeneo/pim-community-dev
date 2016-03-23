@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Localization\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;

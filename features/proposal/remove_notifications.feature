@@ -39,9 +39,9 @@ Feature: Remove notifications
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                         | comment       |
-      | error | Julia Stark has deleted your proposal for the product my-jacket | You're fired. |
-    When I click on the notification "Julia Stark has deleted your proposal for the product my-jacket"
+      | type  | message                                                      | comment       |
+      | error | Julia Stark has deleted your proposal for the product Jacket | You're fired. |
+    When I click on the notification "Julia Stark has deleted your proposal for the product Jacket"
     Then I should be on the product "my-jacket" edit page
 
   Scenario: A notification is sent when I remove a proposal from the product draft page
@@ -51,7 +51,7 @@ Feature: Remove notifications
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type  | message                                                         |
-      | error | Julia Stark has deleted your proposal for the product my-jacket |
-    When I click on the notification "Julia Stark has deleted your proposal for the product my-jacket"
+      | type  | message                                                      |
+      | error | Julia Stark has deleted your proposal for the product Jacket |
+    When I click on the notification "Julia Stark has deleted your proposal for the product Jacket"
     Then I should be on the product "my-jacket" edit page

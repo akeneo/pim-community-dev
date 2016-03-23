@@ -88,6 +88,7 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml",
+            "keep-outdated": true,
             "env-map": {
                 "database_host": "PIM_DATABASE_HOST",
                 "database_port": "PIM_DATABASE_PORT",
