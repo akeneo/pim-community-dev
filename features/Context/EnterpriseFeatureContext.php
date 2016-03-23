@@ -5,6 +5,8 @@ namespace Context;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use PimEnterprise\Behat\Context\DashboardContext;
+use PimEnterprise\Behat\Context\HookContext;
+use PimEnterprise\Behat\Context\JobContext;
 
 /**
  * A context for creating entities
@@ -31,6 +33,8 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('job', new JobContext());
 
         $this->useContext('dashboard', new DashboardContext());
     }
