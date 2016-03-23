@@ -5,28 +5,28 @@ pim_enrich:
       category.title: Categorías
       association.title: Asociaciones
       completeness.title: Completitud
-      history.title: Historial
+      history.title: Histórico
     no_comparison_locale_available: Ningún otro local está disponible para la comparación
     no_compared_media: No hay medios disponibles para la comparación
   attribute:
     tab:
       parameter.title: Parámetros
       value.title: Valores
-      history.title: Historial
+      history.title: Histórico
   attribute_group:
     tab:
       property.title: Propiedades
       attribute.title: Atributos
-      history.title: Historial
+      history.title: Histórico
   family:
     tab:
       property.title: Propiedades
       attribute.title: Atributos
-      history.title: Historial
+      history.title: Histórico
   association_type:
     tab:
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   group_type:
     tab:
       property.title: Propiedades
@@ -34,15 +34,11 @@ pim_enrich:
     pick_conversion_unit: Elegir una unidad de conversión para cada atributo métrico que se utilizará durante la exportación del producto
     tab:
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   category:
     tab:
       property.title: Propiedades
-      history.title: Historial
-  locale:
-    tab:
-      property.title: Propiedades
-      permission.title: Permisos
+      history.title: Histórico
   group:
     axis.help: Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.
     type:
@@ -53,7 +49,7 @@ pim_enrich:
     tab:
       product.title: Productos
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   variant_group:
     type:
       VARIANT: Variante
@@ -79,78 +75,64 @@ pim_enrich:
     product:
       page_title: Productos
       page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
-      title: Elegir la operación
+      title: Elegir operación
       subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
-      confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar los siguientes %count% productos con la siguiente información, por favor confirme.'
+      confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
       steps:
         first: Elegir productos
-        second: Elegir la operación
+        second: Elegir operación
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Familias
-      page_subtitle: 'Edición masiva (1 familia) |Edición (%count% familias)'
-      title: Elegir la operación
-      subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en %count% de las familias seleccionadas'
-      confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Está a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
+      page_subtitle: 'Edición masiva (1 familia) |Edición (%count% de familias)'
+      title: Elegir operación
+      subtitle: 'Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas'
+      confirm: 'Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.'
       steps:
-        first: Elija las familias
+        first: Elija familias
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
     change-status:
       label: Cambiar estado (habilitar / inhabilitar)
-      description: Los productos seleccionados serán habilitados o deshabilitados.
+      description: Los productos seleccionados serán habilitados o inhabilitados.
       success_flash: Estado de los producto(s) han sido cambiados
-      launched_flash: 'La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.'
     edit-common-attributes:
       label: Editar atributos
-      description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
-      success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
-      launched_flash: 'La acción en masa "editar atributos comunes" ha sido lanzada. Será notificado una vez finalizada.'
+      success_flash: Atributo(s) del producto(s) han sido actualizados
       message:
         warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
-        invalid_attribute: 'El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.'
-        no_valid_attribute: Ninguno de los atributos seleccionados puede ser aplicado a este producto.
     classify:
       label: Clasificar los productos en categorías
       description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
-      launched_flash: 'La acción en masa "clasificar" ha sido lanzada. Será notificado una vez finalizada.'
     change-family:
       label: Cambiar la familia de los productos
       description: La familia de los productos seleccionados se cambiará a la familia elegida
       success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
-      launched_flash: 'La acción en masa "cambiar familia" ha sido lanzada. Será notificado una vez finalizada.'
     add-to-groups:
       label: Agregar a grupos
       description: Seleccione los grupos en los cuales agregará los productos seleccionados
       success_flash: Los productos se han agregado correctamente a los grupos seleccionados
-      launched_flash: 'La acción en masa "agregar a grupos" ha sido lanzada. Será notificado una vez finalizada.'
       no_group: Ningún grupo por el instante. Por favor comience creando un grupo.
     add-to-variant-group:
       label: Agregar a un grupo de variantes
       description: Seleccione el grupo de variantes al cual agregar los productos seleccionados
       success_flash: Los productos fueron agregados exitosamente al grupo de variantes seleccionado
-      already_in_variant_group_or_not_valid: No puede agrupar el siguiente producto debido a que ya forma parte de un grupo de variantes o no posee el axis de grupo.
       no_variant_group: Ningún grupo de variantes por ahora. Por favor comience por crear un grupo de variantes.
       no_valid_variant_group: Ningún grupo de variantes comparte atributos con los productos seleccionados.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: 'La acción en masa "agregar a grupo de variantes" ha sido lanzada. Será notificado una vez finalizada.'
     set-attribute-requirements:
-      label: Poner requerimientos del atributo
+      label: Configurar requerimientos del atributo
       description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
       success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
-      launched_flash: 'La acción en masa "definir requisitos de atributos" ha sido lanzada. Será notificado una vez finalizada.'
-    mass_action:
-      quick_export:
-        launched_flash: El trabajo de exportación de productos está ejecutándose
   sequential_edit_action:
     product:
-      previous: 'Regresar a "%product%" sin guardar los cambios.'
-      next: 'Saltar a "%product%" sin guardar los cambios.'
+      previous: 'Saltar a "%product%" sin guardar los cambios.'
+      next: 'Vaya a "%product%" sin guardar los cambios.'
   acl:
     locale:
       index: Lista de locales
@@ -238,10 +220,8 @@ pim_enrich:
       edit: Editar un tipo de asociación
       remove: Eliminar un tipo de asociación
       history: 'Ver historial de  asociación de tipo'
-    job_tracker:
-      index: Visualizar los procesos ejecutados
   acl_group:
-    association_type: Tipos de asociación
+    association_type: Tipos de asociaciones
     attribute: Atributos
     attribute_group: Grupos de atributos
     category: Categorías
@@ -249,7 +229,7 @@ pim_enrich:
     currency: Monedas
     family: Familias
     group: Grupos
-    variant_group: Grupo de variantes
+    variant_group: Grupos de variantes
     group_type: Tipos de grupo
     locale: Idiomas
     product: Productos
@@ -258,10 +238,6 @@ pim_enrich:
       from_variant:
         title: Actualizado por un grupo de variantes
         content: Este campo es actualizado por el siguiente grupo de variantes
-  reference_data:
-    empty_value:
-      reference_data_type:
-        label: Seleccione el tipo de información de referencia
 attribute:
   title: atributo
   overview: Lista de atributos
@@ -335,8 +311,8 @@ association type:
 products: productos
 btn:
   create:
-    attribute: crear atributos
-    attribute group: Crear grupo de atributos
+    attribute: Crear atributo
+    attribute group: crear grupo de atributos
     category: crear categoría
     tree: crear árbol
     channel: crear canal
@@ -345,10 +321,9 @@ btn:
     locale: crear idioma
     product: crear producto
     group: crear grupo
-    variant group: Crear grupo variante
-    association type: crear asociación de tipo
+    variant group: crear un grupo de variante
+    association type: crear Asociación de tipo
     group type: crear tipo de grupo
-    drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
   edit: editar
   save: guardar
   save and back: guardar y volver a la grilla
@@ -364,7 +339,6 @@ btn:
   to grid: regresa a grilla
   to parent: subir nivel
   download_pdf: PDF
-  download: descargar
 confirmation:
   confirm: Confirmación
   delete: Confirmación de borrado
@@ -417,14 +391,12 @@ flash:
     created: Árbol creado correctamente
     updated: Árbol actualizado correctamente
     removed: Árbol eliminado correctamente
-    not removable: Árboles conectados a canales no pueden eliminarse.
   channel:
     saved: Canal guardado correctamente
     removed: Canal eliminado correctamente
     not removable: No puede eliminarse el último canal
   currency:
     updated: Moneda actualizada correctamente
-    error.linked_to_channel: No puede desactivar una moneda ligada a un canal.
   family:
     created: Familia creada correctamente
     updated: Familia actualizada correctamente
@@ -561,7 +533,7 @@ Axis: Eje
 Add attributes: Agregar atributos
 Translate from: Traducir desde
 switch_on: SÍ
-switch_off: 'No 	'
+switch_off: 'No'
 Close: Cerrar
 Choose a color: Elige un color
 Search: Buscar
@@ -571,10 +543,6 @@ Drop a file or click here: Suelta un fichero o haga clic aquí
 Drop an image or click here: Suelta una imagen o haga clic aquí
 Automatic option sorting: Opción automática de ordenamiento
 save_attribute_before_manage_option: Para administrar las opciones, por favor, guarde el atributo primero
-Please select: Seleccionar
-Active: Activo
-Inactive: Inactivo
-Do not convert: No convertir
 Create: Crear
 Cancel: Cancelar
 Choose a family: Elija una familia
@@ -609,7 +577,7 @@ Default metric unit: Unidad métrica predeterminada
 Max file size: Tamaño máximo de archivo (MB)
 Allowed extensions: Extensiones permitidas
 None: Ninguno
-E-mail: Correo electrónico
+E-mail: E-mail
 URL: URL
 Regular expression: Expresión regular
 Minimum input length: Longitud mínima de entrada
@@ -646,10 +614,10 @@ pim_title.group:
   index: Grupos
   edit: 'Grupos %group.label% | Editar'
 pim_title.variant_group:
-  index: Grupos Variantes
+  index: Grupos de variantes
   edit: 'Grupos Variante %group.label% | Editar'
 pim_title.association_type:
-  index: Tipos de asociación
+  index: Tipos de asociaciones
   edit: 'Tipos de asociación %association type.label% | Editar'
 pim_title.group_type:
   index: Tipos de grupo
@@ -657,26 +625,21 @@ pim_title.group_type:
 pim_title.mass_edit_action:
   choose: Edición masiva | Elija
   configure: Edición masiva | Configurar
-pim_title.job_tracker:
-  index: Seguimiento de procesos
-  show: Seguimiento de procesos | Ver el trabajo
 pim_title.dashboard: Cartelera
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
 pim_catalog_number: Número
 pim_catalog_price_collection: Precio
-pim_catalog_multiselect: Selección multiple
-pim_catalog_simpleselect: Seleccione simple
-pim_catalog_file: Archivo
+pim_catalog_multiselect: Selección múltiple
+pim_catalog_simpleselect: Selección simple
+pim_catalog_file: Fichero
 pim_catalog_image: Imagen
 pim_catalog_boolean: Si/No
 pim_catalog_date: Fecha
 pim_catalog_metric: Métrica
-pim_reference_data_simpleselect: Selección simple de datos de referencia
-pim_reference_data_multiselect: Selección múltiple de datos de referencia
 Activated: Activada
-Disable: Desactivar
+Disable: Inhabilitar
 pim_enrich.sequential_edit_action:
   product:
     previous: 'Saltar a "%product%" sin guardar los cambios.'
@@ -691,7 +654,7 @@ pim_enrich.mass_edit_action:
     confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
     steps:
       first: Elegir productos
-      second: Elegir la operación
+      second: Elegir operación
       third: Configurar
       fourth: Confirmar
   family:
@@ -711,11 +674,10 @@ pim_enrich.mass_edit_action:
     success_flash: Estado de los producto(s) han sido cambiados
   edit-common-attributes:
     label: Editar atributos comunes
-    description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
     empty: Por favor, seleccione atributo(s) que desea editar
     success_flash: Atributo(s) del producto(s) han sido actualizados
-    message.warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
-    no_attribute.warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
+    message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
+    no_attribute.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
     truncated_by_variant_attribute.warning: 'Algunos atributos comunes de los productos seleccionados provienen de un grupo de variantes. Los mismos no están disponibles para edición en masa: %attributes%.'
   classify:
     label: Clasificar los productos en categorías
@@ -725,7 +687,6 @@ pim_enrich.mass_edit_action:
     label: Cambiar la familia de los productos
     description: La familia de los productos seleccionados se cambiará a la familia elegida
     success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
-    no_family: Ninguna familia
   add-to-groups:
     label: Agregar a grupos
     description: Seleccione los grupos en los cuales agregará los productos seleccionados
@@ -788,8 +749,8 @@ Is associated: Esta asociado
 Complete: Completo
 Created At: Creado el
 Updated At: Actualizado el
-Enabled: Activada
-Disabled: Desactivada
+Enabled: Habilitado
+Disabled: Inhabilitado
 Status: Estado
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
@@ -836,33 +797,3 @@ oro.locale:
       timezone: Seleccione la zona horaria para visualización de fecha y hora
       currency: Seleccione la divisa predeterminada
 Selected products successfully deleted: Productos seleccionados borrados con éxito
-pim_mass_edit:
-  notification:
-    mass_edit:
-      error: 'Edición en masa <strong>%label%</strong> fallida'
-      warning: 'Edición en masa <strong>%label%</strong> finalizada con algunas alertas'
-      success: 'Edición en masa <strong>%label%</strong> finalizada'
-    quick_export:
-      error: 'Exportación rápida <strong>%label%</strong> fallida'
-      warning: 'Exportación rápida <strong>%label%</strong> finalizada con algunas alertas'
-      success: 'Exportación rápida <strong>%label%</strong> finalizada'
-job_execution.summary:
-  mass_edited: Editado en masa
-  skip: Omitido
-  skipped_products: Productos omitidos
-  skipped_attributes: Atributos omitidos
-pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
-update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
-add_to_variant_group_clean.steps.excluded.title: Producto excluido
-add_to_variant_group_clean.steps.duplicated.title: Eje duplicado
-add_to_variant_group.steps.cleaner.warning.description: 'El producto no puede ser afectado al grupo de variantes seleccionado: duplicación de valores del eje de variación con otro producto en la selección'
-edit_common_attributes: Editar atributos comunes
-edit_common_attributes_clean: Limpiar archivos para los atributos comunes
-mass_edit report:
-  overview: Reportes de edición en masa
-job_tracker:
-  tab:
-    title: Seguimiento de procesos
-  filter:
-    started_at: Ejecutado el

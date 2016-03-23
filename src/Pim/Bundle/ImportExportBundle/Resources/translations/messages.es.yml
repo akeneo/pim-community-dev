@@ -14,7 +14,7 @@ pim_import_export:
     8: DESCONOCIDO
   download_archive:
     archive: descargar fichero generado |descargar ficheros generados
-    output: descargar ficher generado |descargar ficheros generados
+    output: descargar fichero generado |descargar ficheros generados
     input: descargar fichero de lectura |descargar ficheros de lectura
     invalid: descargar datos no válidos
   notification:
@@ -85,7 +85,7 @@ pim_importexport:
 btn:
   create:
     export profile: crear perfil exportador
-    import profile: crear Perfil de importación
+    import profile: crear perfil de importación
 Upload and import: Cargar e Importar
 Upload and import now: Subir e importar ahora
 import now: Importar ahora
@@ -99,12 +99,10 @@ flash:
     created: La exportación se ha creado con éxito
     removed: La exportación se ha eliminado
     updated: La exportación se ha actualizado exitosamente
-    running: La exportación se está ejecutando
   import:
     created: La importación se ha creado con éxito
     removed: La importación se ha eliminado
     updated: La importación se ha actualizado exitosamente
-    running: La importación se está ejecutando
 pim_menu:
   item:
     export_history: Histórico de exportaciones
@@ -143,12 +141,3 @@ Status: Estado
 Summary: Resumen
 Start: Iniciar
 End: Finalizar
-set_attribute_requirements: Configurar requerimientos del atributo
-COMPLETED: FINALIZADO
-STARTING: INICIANDO
-STARTED: INICIADO
-STOPPING: DETENIENDO
-STOPPED: DETENIDO
-FAILED: FALLIDO
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONOCIDO
