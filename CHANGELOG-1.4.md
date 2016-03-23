@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.22 (2016-03-23)
 
 ## Improvements
 - Update akeneo/measure-bundle dependency to version 0.4.1.
