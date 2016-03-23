@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Normalizer\Flat;
 
-use Pim\Component\Catalog\Normalizer\CategoryNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\CategoryNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform a category entity into a flat array

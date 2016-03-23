@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Normalizer\AttributeNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\AttributeNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform an AttributeInterface entity into a flat array

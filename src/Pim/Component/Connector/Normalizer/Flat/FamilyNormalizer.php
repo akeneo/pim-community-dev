@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\FamilyNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\FamilyNormalizer as BaseNormalizer;
 
 /**
  * Flat family normalizer

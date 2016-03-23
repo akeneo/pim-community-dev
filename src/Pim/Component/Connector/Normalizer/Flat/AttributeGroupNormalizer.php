@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Normalizer\Flat;
 
-use Pim\Component\Catalog\Normalizer\AttributeGroupNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\AttributeGroupNormalizer as BaseNormalizer;
 
 /**
  * Flat attribute group normalizer

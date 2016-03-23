@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Normalizer\ChannelNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\ChannelNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform a channel entity into a flat array

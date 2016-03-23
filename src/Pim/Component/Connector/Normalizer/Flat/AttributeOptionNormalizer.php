@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Normalizer\AttributeOptionNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\AttributeOptionNormalizer as BaseNormalizer;
 
 /**
  * Normalize an attribute option

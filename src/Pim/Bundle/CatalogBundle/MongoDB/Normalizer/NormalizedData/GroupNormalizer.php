@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Normalizer\TranslationNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Normalizer\GroupNormalizer as BaseNormalizer;
+use Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform a group entity into a flat array

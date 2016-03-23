@@ -1,21 +1,27 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
+namespace Pim\Component\Catalog\Normalizer\Structured;
 
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Family normalizer
+ * A normalizer to transform a category entity into an array
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer implements NormalizerInterface
+class CategoryNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer $transNormalizer */
+    /**
+     * @var array
+     */
+    protected $supportedFormats = ['json', 'xml'];
+
+    /**
+     * @var TranslationNormalizer
+     */
     protected $transNormalizer;
 
     /**
@@ -33,10 +39,10 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
-        $data['attributeAsLabel'] = ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : null;
-
-        return $data;
+        return [
+            'code'    => $object->getCode(),
+            'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -44,6 +50,6 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof FamilyInterface && 'mongodb_json' === $format;
+        return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
     }
 }
