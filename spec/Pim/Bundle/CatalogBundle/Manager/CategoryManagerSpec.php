@@ -25,11 +25,6 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
 
-    function it_provides_object_manager($objectManager)
-    {
-        $this->getObjectManager()->shouldReturn($objectManager);
-    }
-
     function it_provides_the_category_repository($objectManager, $categoryRepository)
     {
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
