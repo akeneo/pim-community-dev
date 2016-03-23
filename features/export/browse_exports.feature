@@ -12,7 +12,7 @@ Feature: Browse export profiles
     And I should see the columns Code, Label, Job, Connector and Status
     And I should see export profiles footwear_product_export, footwear_category_export, footwear_association_type_export, footwear_group_export, footwear_variant_group_export, footwear_attribute_export and footwear_option_export
     And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code, Label, Job, Connector and Status
+    And I should be able to sort the rows by Code, Label, Connector and Status
     And I should be able to use the following filters:
       | filter    | value                   | result                                                                                                                                                                                                                  |
       | Code      | at                      | footwear_association_type_export, footwear_attribute_export and footwear_category_export                                                                                                                                |

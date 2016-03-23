@@ -31,4 +31,4 @@ Feature:
     Given I am on the "csv_footwear_product_import" import job page
     When I upload and import the file "caterpillar_import.zip"
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "File encoding: skipped, extension in white list"
+    Then I should see the text "File encoding: skipped, extension in white list"
