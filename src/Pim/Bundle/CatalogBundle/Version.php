@@ -12,10 +12,10 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.5.1';
+    const VERSION = '1.6.0-alpha';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Fresh Hare';
+    const VERSION_CODENAME = '';
 
     /** @staticvar string */
     const EDITION = 'CE';
