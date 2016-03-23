@@ -39,10 +39,6 @@ pim_enrich:
     tab:
       property.title: Eigenschaften
       history.title: Historie
-  locale:
-    tab:
-      property.title: Eigenschaften
-      permission.title: Berechtigungen
   group:
     axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
     type:
@@ -105,7 +101,6 @@ pim_enrich:
       launched_flash: 'Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     edit-common-attributes:
       label: Attribute bearbeiten
-      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
       launched_flash: 'Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
@@ -571,10 +566,6 @@ Drop a file or click here: Datei hierhin ziehen oder klicken
 Drop an image or click here: Bild hierhin ziehen oder klicken
 Automatic option sorting: Option automatisch sortieren
 save_attribute_before_manage_option: Um Auswahlmöglichkeiten zu verwalten, speichern Sie bitte zunächst das Attribut
-Please select: Bitte wählen Sie
-Active: Aktiv
-Inactive: Inaktiv
-Do not convert: Werden nicht konvertiert
 Create: Anlegen
 Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
@@ -711,7 +702,6 @@ pim_enrich.mass_edit_action:
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
     label: Gemeinsame Attribute bearbeiten
-    description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
@@ -864,5 +854,3 @@ mass_edit report:
 job_tracker:
   tab:
     title: Prozess-Tracker
-  filter:
-    started_at: Gestartet am

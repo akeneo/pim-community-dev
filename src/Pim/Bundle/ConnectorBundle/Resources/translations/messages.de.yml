@@ -42,10 +42,6 @@ pim_connector:
       title: Verbindungstyp-Import aus CSV-Datei
       validation.title: Dateivalidierung
       import.title: Verbindungstyp-Import
-    csv_family_import:
-      title: Produktfamilien-Import aus CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Produktfamilien-Import
     csv_group_import:
       title: Gruppen-Import aus CSV-Datei
       validation.title: Dateivalidierung
@@ -99,8 +95,6 @@ pim_connector:
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
-    header:
-      label: Header
   import:
     enabled:
       label: Produkt aktivieren
@@ -125,7 +119,7 @@ pim_connector:
       help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
     delimiter:
       label: Trennzeichen
-      help: Einzelnes Zeichen, von dem Felder in der CSV-Datei getrennt werden
+      help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
     enclosure:
       label: Zeichen zum Einschließen
       help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
@@ -144,12 +138,6 @@ pim_connector:
     enabledComparison:
       label: Werte vergleichen
       help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
-    decimalSeparator:
-      label: Dezimaltrennzeichen
-      help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
-    dateFormat:
-      label: Datumsformat
-      help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
 job_execution.summary:
   read: gelesen
   read_lines: gelesene Zeilen

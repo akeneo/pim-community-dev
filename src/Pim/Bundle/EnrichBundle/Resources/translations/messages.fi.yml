@@ -71,33 +71,33 @@ pim_enrich:
     legend:
       locale_not_associated: Lokaatio ei ole liitetty tähän kanavaan
   mass_edit_action:
-    limit_exceeded: 'Valitse alle %limit% kohteita muokattavaksi'
+    limit_exceeded: 'Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi'
     product:
       page_title: Tuotteet
-      page_subtitle: 'Massaeditoi (1 tuote) | Massaeditoi (%count% tuotetta)'
-      title: Valitse toimenpide
+      page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
+      title: Valitse toiminto
       subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
       confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
       steps:
         first: Valitse tuotteet
-        second: Valitse toimepide
+        second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
     family:
       page_title: Perheet
-      page_subtitle: 'Massamuokkaa (1 perhe) | Massamuokkaa (%count% perheet)'
-      title: Valitse toimenpide
-      subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle perheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% perheille'
-      confirm: 'Olet päivittämässä perhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä perheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+      page_subtitle: 'Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)'
+      title: Valitse toiminto
+      subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille'
+      confirm: 'Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
       steps:
-        first: Valitse perheet
-        second: Valitse toimenpide
+        first: Valitse tuoteperheet
+        second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
     change-status:
       label: Muuta tilaa (päälle / pois)
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
-      success_flash: Tuotteen / tuotteiden status on muuttunut
+      success_flash: Tuotteiden tila on muutettu
       launched_flash: 'Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.'
     edit-common-attributes:
       label: Muokkaa attribuutteja
@@ -137,7 +137,7 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta attribuuttivaatimukset
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Määritteen vaatimuksia sovellettaisiin valittuihin ryhmiin
+      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
       launched_flash: 'Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.'
     mass_action:
       quick_export:
@@ -246,7 +246,7 @@ pim_enrich:
     group: Ryhmät
     variant_group: Tuotevariaatioryhmät
     group_type: Ryhmätyypit
-    locale: Lokaatiot
+    locale: Alueet
     product: Tuotteet
   product_value:
     tooltip:
@@ -333,11 +333,11 @@ btn:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
     category: luo kategoria
-    tree: luo puu
+    tree: luo tuotepuu
     channel: luo kanava
     currency: luo valuutta
-    family: luo perhe
-    locale: luo alue
+    family: luo tuoteperhe
+    locale: luo lokaatio
     product: luo tuote
     group: luo ryhmä
     variant group: luo tuotevariaatioryhmä
@@ -559,7 +559,7 @@ switch_on: Kyllä
 switch_off: Ei
 Close: Sulje
 Choose a color: Valitse väri
-Search: Etsi
+Search: Haku
 Choose the attribute type: Valitse attribuutin tyyppi
 Choose the attribute group: Valitse attribuuttiryhmä
 Drop a file or click here: Pudota tiedosto tai klikkaa tästä
@@ -623,7 +623,7 @@ pim_title.product:
   index: Tuotteet
   edit: 'Tuotteiden %product.sku% | Muokkaa'
 pim_title.family:
-  index: Tuoteperheet
+  index: Perheet
   edit: 'Tuoteperheiden %family.label% | Muokkaa'
 pim_title.channel:
   index: Kanavat
@@ -632,7 +632,7 @@ pim_title.channel:
 pim_title.currency:
   index: Valuutat
 pim_title.locale:
-  index: Lokaatiot
+  index: Alueet
 pim_title.group:
   index: Ryhmät
   edit: 'Ryhmien %group.label% | Muokkaa'
@@ -663,7 +663,7 @@ pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
 pim_catalog_boolean: Kyllä/ei
 pim_catalog_date: Päivämäärä
-pim_catalog_metric: Metriikka
+pim_catalog_metric: Metrinen arvo
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
 pim_reference_data_multiselect: Viitetiedot monivalinta
 Activated: Aktivoitu
@@ -686,7 +686,7 @@ pim_enrich.mass_edit_action:
       third: Konfiguroi
       fourth: Vahvista
   family:
-    page_title: Tuoteperheet
+    page_title: Perheet
     page_subtitle: 'Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)'
     title: Valitse toiminto
     subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille'
@@ -715,6 +715,7 @@ pim_enrich.mass_edit_action:
     label: Vaihda tuoteperhettä
     description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
+    no_family: Ei perhettä
   add-to-groups:
     label: Lisää ryhmiin
     description: Valitse ryhmät joihin valitut tuotteet lisätään
@@ -775,15 +776,15 @@ In group: Ryhmässä
 Attribute as label: Attribuutti otsikkona
 Is associated: Liittyy
 Complete: Valmis
-Created At: Luontiaika
-Updated At: Päivitysaika
-Enabled: Otettu käyttöön
+Created At: Luotu
+Updated At: Päivitetty
+Enabled: Käytössä
 Disabled: Poistettu käytöstä
 Status: Status
 Change History: Muutoshistoria
 Data Audit: Tietojen audit
 Data Audit - System: 'Tietojen audit - järjestelmä'
-Action: Toiminto
+Action: Toimi
 Version: Versio
 Entity type: Entiteettityyppi
 Entity name: Entiteetin nimi
