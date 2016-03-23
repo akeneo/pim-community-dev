@@ -8,7 +8,42 @@
 
 We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
  - validation
- 
+
+## Deprecated imports
+
+We've removed `TransformBundle` and `BaseConnectorBundle` because they are deprecated since the new export system has been created.
+
+### TransformBundle
+
+Flat (De)Normalizers have been to moved to `Connector` component and Structured ones have been to moved to `Catalog` component
+
+Based on a PIM standard installation, execute the following command in your project folder:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Component\\Connector\\Normalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Component\\Connector\\Denormalizer/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer/g'
+```
+
+Extra classes have been moved but the rest of the `TransformBundle` have been removed
+
+Based on a PIM standard installation, execute the following command in your project folder:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Converter/Pim\\Component\\Catalog\\Converter/g'
+```
+
+### BaseConnectorBundle
+
+TODO : This bundle will be removed after the export refactoring
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Cache/Pim\\Bundle\\BaseConnectorBundle\\Cache/g'
+```
+
+See the documentation [here](http://docs.akeneo.com/latest/reference/import_export/index.html).
+
+
 ## Update dependencies and configuration
 
 Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
@@ -91,12 +126,4 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository/Pim\\Component\\Catalog\\Repository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Validator/Pim\\Component\\Catalog\\Validator/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\AttributeType\\AttributeTypes/Pim\\Component\\Catalog\\AttributeTypes/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Component\\Connector\\Normalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Component\\Connector\\Denormalizer/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Cache/Pim\\Bundle\\BaseConnectorBundle\\Cache/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Converter/Pim\\Bundle\\BaseConnectorBundle\\Converter/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
 ```
