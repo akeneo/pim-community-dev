@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

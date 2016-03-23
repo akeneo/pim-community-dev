@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Pim\Component\Catalog\Factory\MetricFactory;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Catalog\Factory\MetricFactory;
 
 /**
  * Metric denormalizer used for attribute types:
