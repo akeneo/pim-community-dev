@@ -99,7 +99,7 @@ pim_base_connector:
       label: Canal
       help: Le canal que vous souhaitez exporter
     decimalSeparator:
-      label: Séparateur de décimale
+      label: Séparateur de décimales
       help: Détermine le séparateur de décimale
     dateFormat:
       label: Format de date
@@ -130,7 +130,7 @@ pim_base_connector:
       label: Délimiteur
       help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement"
+      label: "Caractère d'encadrement (enclosure)"
       help: Délimiteur de champs
     escape:
       label: Echapper

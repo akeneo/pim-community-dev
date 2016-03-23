@@ -143,7 +143,7 @@ Status: Status
 Summary: Zusammenfassung
 Start: Start
 End: Ende
-set_attribute_requirements: Attribut-Anforderungen festlegen
+set_attribute_requirements: Benötigte Attribute auswählen
 COMPLETED: ABGESCHLOSSEN
 STARTING: STARTEN
 STARTED: GESTARTET
