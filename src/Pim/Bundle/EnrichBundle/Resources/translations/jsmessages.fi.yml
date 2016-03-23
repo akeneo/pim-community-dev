@@ -14,6 +14,9 @@ confirmation:
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Nopea vienti
   mass_action:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
@@ -165,8 +168,12 @@ pim_enrich:
         all: Kaikki
         all_visible: Kaikki näkyvillä olevat
         none: Ei yhtään
+        copy: Kopioi
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
+        switch:
+          "yes": Kyllä
+          "no": Ei
       optional_attribute:
         remove: Poista määrite
       locale_specific_attribute:
@@ -209,7 +216,11 @@ pim_enrich:
             add: Lisää
             add_attributes: Lisää määritteet
           info:
+            search_attributes: Hae...
             no_available_attributes: Määritteitä ei ole enää lisättävänä
+            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
+            no_match: Ei hakutuloksia
+            load_more: Ladataan lisää tuloksia...
         categories:
           title: Kategoriat
       panel:
@@ -218,8 +229,12 @@ pim_enrich:
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+          missing_values: Puuttuvat arvot
         history:
           title: Historiatiedot
+      switch:
+        "no": Ei
+        "yes": Kyllä
       sequential_edit:
         info:
           products: tuotteet
@@ -237,6 +252,9 @@ pim_enrich:
           empty_selection: Valitse ryhmä
       flash:
         attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
+      mass_edit:
+        select_attributes: Valitse attribuutit
+        select: Valitse
     attribute_option:
       flash:
         option_created: Määritteen asetuksen luominen onnistui
@@ -245,5 +263,9 @@ pim_enrich:
         title: Lisää määritteen vaihtoehto
         confirm: Lisää
         cancel: Peruuta
+    entity:
+      switch:
+        "no": Ei
+        "yes": Kyllä
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
