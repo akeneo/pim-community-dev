@@ -15,7 +15,7 @@ oro.grid.datagrid.page_size.all: Tous
 oro.grid.mass_action.delete.success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimé|]1, Inf [ %count% entités ont été supprimée"
 datagrid_view:
   views: Vues
-  default: Vue par défaut
+  default: Ma vue par défaut
   create: Créer une vue
   placeholder: Nom de la nouvelle vue
   remove: Supprimer cette vue
@@ -32,7 +32,3 @@ flash.datagrid view:
   updated: Vue de grille mise à jour avec succès
   removed: Vue de grille supprimée avec succès
   not removable: "Vous n'avez pas le droit de supprimer cette vue"
-quick_export: Export rapide
-import: Import
-export: Export
-mass_edit: Edition de masse
