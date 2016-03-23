@@ -12,7 +12,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DummyItemProcessor implements ItemProcessorInterface
+class DummyItemProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /**
      * {@inheritdoc}
@@ -20,5 +20,13 @@ class DummyItemProcessor implements ItemProcessorInterface
     public function process($item)
     {
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [];
     }
 }
