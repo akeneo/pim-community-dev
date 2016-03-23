@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Converter;
+namespace spec\Pim\Component\Catalog\Catalog;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;

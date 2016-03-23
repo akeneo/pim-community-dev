@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BaseConnectorBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Component\Catalog\Manager\CompletenessManager;
