@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Twig extension to present localized data

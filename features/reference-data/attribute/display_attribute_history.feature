@@ -15,12 +15,14 @@ Feature: Display the attribute history
     Given I am on the attributes page
     And I create a "Reference data simple select" attribute
     And I fill in the following information:
-      | Code                | mycolor  |
-      | Reference data name | color     |
-      | Attribute group     | Other     |
+      | Code                | mycolor |
+      | Reference data name | color   |
+      | Attribute group     | Other   |
     And I save the attribute
+    And I should see the flash message "Attribute successfully created"
     And I change the "Attribute group" to "Technical"
     And I save the attribute
+    And I should see the flash message "Attribute successfully updated"
     When I visit the "History" tab
     Then there should be 2 update
     And I should see history:

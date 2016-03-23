@@ -42,6 +42,7 @@ config:
         jquery.sidebarize:
             deps:
                 - jquery
+
     map:
         '*':
             jquery: oro/jquery-setup

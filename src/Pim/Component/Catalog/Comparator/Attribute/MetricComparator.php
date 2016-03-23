@@ -37,16 +37,22 @@ class MetricComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default = ['locale' => null, 'scope' => null, 'data' => []];
+        $default = ['locale' => null, 'scope' => null, 'data' => [
+            'data' => null,
+            'unit' => null,
+        ]];
         $originals = array_merge($default, $originals);
 
-        if (isset($data['data']['data'])) {
-            $data['data']['data'] = (float) $data['data']['data'];
+        if (!isset($data['data']['data']) && !isset($originals['data']['data'])) {
+            return null;
         }
 
-        if (isset($originals['data']['data'])) {
-            $originals['data']['data'] = (float) $originals['data']['data'];
+        if (!is_numeric($data['data']['data'])) {
+            return $data;
         }
+
+        $data['data']['data']      = (float) $data['data']['data'];
+        $originals['data']['data'] = (float) $originals['data']['data'];
 
         $diff = array_diff_assoc((array) $data['data'], (array) $originals['data']);
 

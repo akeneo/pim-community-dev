@@ -43,8 +43,8 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
-            - %pim_localization.decimal_separators%
-            - %pim_localization.date_formats%
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
@@ -70,7 +70,7 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
 
-    # @deprecated will be dropped in 1.5
+    # @deprecated will be removed in 1.6
     pim_base_connector.processor.product:
         class: %pim_base_connector.processor.product.class%
         arguments:
@@ -109,7 +109,7 @@ services:
         arguments:
             - %pim_catalog.entity.attribute.class%
 
-    # @deprecated will be dropped in 1.5
+    # @deprecated will be removed in 1.6
     pim_base_connector.processor.attribute_option:
         parent: pim_base_connector.processor.transformer
         arguments:
@@ -149,7 +149,7 @@ services:
             - %pim_catalog.entity.group.class%
             - 'csv'
 
-    # @deprecated will be dropped in 1.5
+    # @deprecated will be removed in 1.6
     pim_base_connector.processor.denormalization.csv_variant_group:
         class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
@@ -174,8 +174,8 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
-            - %pim_localization.decimal_separators%
-            - %pim_localization.date_formats%
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
             - %upload_dir%
             - 'csv'
 

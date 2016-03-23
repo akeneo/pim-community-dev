@@ -15,7 +15,7 @@ services:
         class: %pim_import_export.normalizer.step_execution.class%
         arguments:
             - '@translator'
-            - '@pim_localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.datetime'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
             - { name: pim_versioning.serializer.normalizer, priority: 90 }

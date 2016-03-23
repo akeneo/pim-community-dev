@@ -4,9 +4,6 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\MongoDB\ArrayIterator;
-use Doctrine\MongoDB\Collection;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;

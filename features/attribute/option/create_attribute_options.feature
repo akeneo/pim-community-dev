@@ -28,6 +28,6 @@ Feature: Create attribute options
       | green |
     Then I should see "green"
     And I save the attribute
-    And I wait for options to load
     Then I should see flash message "Attribute successfully updated"
+    And I wait for options to load
     Then I should see "green"

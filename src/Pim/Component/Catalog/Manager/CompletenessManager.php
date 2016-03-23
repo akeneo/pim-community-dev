@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -122,15 +123,37 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface                                    $product
-     * @param \Pim\Bundle\CatalogBundle\Entity\ChannelInterface[] $channels
-     * @param \Pim\Bundle\CatalogBundle\Entity\LocaleInterface[]  $locales
-     * @param string                                              $localeCode
+     * @param ProductInterface   $product
+     * @param ChannelInterface[] $channels
+     * @param LocaleInterface[]  $locales
+     * @param string             $localeCode
      *
      * @return array
+     * [
+     *      [
+     *          'channels' => [
+     *              'completeness' => [
+     *                  'channel'  => string,
+     *                  'locale'   => string,
+     *                  'missing'  => int,
+     *                  'ratio'    => int,
+     *                  'required' => int
+     *              ],
+     *              'missing' => [string, ...],
+     *          'stats'    => [
+     *               'total'    => int,
+     *               'complete' => int,
+     *          ],
+     *          'locale'   => string
+     *      ],
+     * ]
      */
-    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
-    {
+    public function getProductCompleteness(
+        ProductInterface $product,
+        array $channels,
+        array $locales,
+        $localeCode = null
+    ) {
         $family = $product->getFamily();
 
         $getCodes = function ($entities) {
@@ -145,20 +168,51 @@ class CompletenessManager
         $channelCodes = $getCodes($channels);
         $localeCodes  = $getCodes($locales);
 
+        sort($channelCodes);
         $channelTemplate = [
             'channels' => array_fill_keys($channelCodes, ['completeness' => null, 'missing' => []]),
             'stats'    => [
                 'total'    => 0,
                 'complete' => 0
-            ]
+            ],
+            'locale' => ''
         ];
 
         $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
-        if (!$family) {
-            return $completenesses;
+        if ($family) {
+            $completenesses = $this->fillCompletenessesTemplate(
+                $completenesses,
+                $product,
+                $locales,
+                $localeCode
+            );
         }
 
+        foreach ($completenesses as $localeCode => $completeness) {
+            $completenesses[$localeCode]['channels'] = array_values($completeness['channels']);
+        }
+        $completenesses = array_values($completenesses);
+
+        return $completenesses;
+    }
+
+    /**
+     * Returns completenesses filled
+     *
+     * @param array            $completenesses
+     * @param ProductInterface $product
+     * @param array            $locales
+     * @param string           $localeCode
+     *
+     * @return array
+     */
+    protected function fillCompletenessesTemplate(
+        array $completenesses,
+        ProductInterface $product,
+        array $locales,
+        $localeCode
+    ) {
         $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
             $locale  = $completeness->getLocale();
@@ -167,6 +221,7 @@ class CompletenessManager
             $compLocaleCode = $locale->getCode();
             if (isset($completenesses[$compLocaleCode])) {
                 $completenesses[$compLocaleCode]['channels'][$channel->getCode()]['completeness'] = $completeness;
+                $completenesses[$compLocaleCode]['locale'] = $compLocaleCode;
                 $completenesses[$compLocaleCode]['stats']['total']++;
 
                 if (0 === $completeness->getMissingCount()) {
@@ -176,7 +231,7 @@ class CompletenessManager
         }
 
         $requirements = $this->familyRepository
-            ->getFullRequirementsQB($family, $localeCode)
+            ->getFullRequirementsQB($product->getFamily(), $localeCode)
             ->getQuery()
             ->getResult();
 

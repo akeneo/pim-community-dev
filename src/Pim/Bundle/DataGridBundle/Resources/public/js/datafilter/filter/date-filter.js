@@ -39,32 +39,10 @@ function(
          * @property
          */
         criteriaValueSelectors: {
-            type: '.type',
+            type: '.type select:first',
             value: {
                 start: '.start',
                 end: '.end'
-            }
-        },
-
-        /**
-         * Values for filter data
-         *
-         * "format" is used to stock localized date
-         * "defaultFormat" is used to stock the default pattern
-         *
-         * @property
-         */
-        values: {
-            type: null,
-            value: {
-                start: {
-                    format: null,
-                    defaultFormat: null
-                },
-                end: {
-                    format: null,
-                    defaultFormat: null
-                }
             }
         },
 
@@ -109,7 +87,7 @@ function(
          *
          * @property
          */
-        dateWidgetSelector: 'div.datepicker',
+        dateWidgetSelector: 'datepicker',
 
         /**
          * @inheritDoc
@@ -129,6 +107,9 @@ function(
             ChoiceFilter.prototype.initialize.apply(this, arguments);
         },
 
+        /**
+         * @param {Event} e
+         */
         changeFilterType: function (e) {
             var select = this.$el.find(e.currentTarget);
             var selectedValue = select.val();
@@ -170,8 +151,8 @@ function(
 
             $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
 
-            _.each(this.criteriaValueSelectors.value, function(actualSelector, name) {
-                this.dateWidgets[name] = this._initializeDateWidget(actualSelector);
+            _.each(this.criteriaValueSelectors.value, function(selector, name) {
+                this.dateWidgets[name] = Datepicker.init(this.$(selector), this.datetimepickerOptions);
             }, this);
 
             return this;
@@ -180,45 +161,18 @@ function(
         /**
          * @inheritDoc
          */
-        _initializeDateWidget: function(widgetSelector) {
-            var $widget = Datepicker.init(this.$(widgetSelector), this.datetimepickerOptions);
-
-            var picker = $widget.data('datetimepicker');
-            $widget.on('changeDate', function(e) {
-                picker.format = Datepicker.options.defaultFormat;
-                this.values.value[e.target.className].defaultFormat = picker.formatDate(e.date);
-
-                picker.format = Datepicker.options.format;
-                this.values.value[e.target.className].format = picker.formatDate(e.date);
-            }.bind(this));
-
-            return $widget;
-        },
-
-        /**
-         * @inheritDoc
-         */
-        _getInputValue: function(node) {
-            var $select = this.$(node).find('select');
-
-            return $select.val();
-        },
-
-        /**
-         * @inheritDoc
-         */
         _getCriteriaHint: function() {
             var hint = '',
                 option, start, end, type,
-                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this.values;
+                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
 
             if (value.type === 'empty') {
                 return this._getChoiceOption(value.type).label;
             }
 
             if (value.value) {
-                start = value.value.start.format;
-                end   = value.value.end.format;
+                start = value.value.start;
+                end   = value.value.end;
                 type  = value.type ? value.type.toString() : '';
 
                 switch (type) {
@@ -261,9 +215,66 @@ function(
         /**
          * @inheritDoc
          */
+        _formatDisplayValue: function(value) {
+            var fakeDatepicker = Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
+            _.each(value.value, function(dateValue, name) {
+                if (dateValue) {
+                    value.value[name] = this._formatDate(
+                        dateValue,
+                        Datepicker.options.defaultFormat,
+                        Datepicker.options.format
+                    );
+                }
+            }, this);
+
+            return value;
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _formatRawValue: function(value) {
+            _.each(value.value, function(dateValue, name) {
+                if (dateValue) {
+                    value.value[name] = this._formatDate(
+                        dateValue,
+                        Datepicker.options.format,
+                        Datepicker.options.defaultFormat
+                    );
+                }
+            }, this);
+
+            return value;
+        },
+
+        /**
+         * Format a date according to specified format.
+         * It instantiates a datepicker on-the-fly to perform the conversion. Not possible to use the "real" ones since
+         * we need to format a date even when the UI is not initialized yet.
+         *
+         * @param {String} date
+         * @param {String} fromFormat
+         * @param {String} toFormat
+         *
+         * @return {String}
+         */
+        _formatDate: function (date, fromFormat, toFormat) {
+            var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
+            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
+
+            fakeDatepicker.setValue(date);
+            fakeDatepicker.format = toFormat;
+            fakeDatepicker._compileFormat();
+
+            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
+        },
+
+        /**
+         * @inheritDoc
+         */
         _writeDOMValue: function(value) {
-            this._setInputValue(this.criteriaValueSelectors.value.start, value.value.start);
-            this._setInputValue(this.criteriaValueSelectors.value.end, value.value.end);
+            this._setInputValue(this.criteriaValueSelectors.value.start + ' input', value.value.start);
+            this._setInputValue(this.criteriaValueSelectors.value.end + ' input', value.value.end);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
 
             return this;
@@ -276,8 +287,8 @@ function(
             return {
                 type: this._getInputValue(this.criteriaValueSelectors.type),
                 value: {
-                    start: this.values.value.start.defaultFormat,
-                    end:   this.values.value.end.defaultFormat
+                    start: this._getInputValue(this.criteriaValueSelectors.value.start + ' input'),
+                    end:   this._getInputValue(this.criteriaValueSelectors.value.end + ' input')
                 }
             };
         },
@@ -302,20 +313,11 @@ function(
         /**
          * @inheritDoc
          */
-        setValue: function(value) {
-            if (this._isValueValid(value)) {
-                return ChoiceFilter.prototype.setValue.apply(this, arguments);
-            }
-            return this;
-        },
-
-        /**
-         * @inheritDoc
-         */
         _isValueValid: function(value) {
             if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
                 return true;
             }
+
             return value.type === 'empty' || value.value.start || value.value.end;
         },
 

@@ -57,9 +57,6 @@ class Form extends Base
     public function save()
     {
         $this->getElement('Save')->click();
-        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $this->getSession()->wait($this->getTimeout(), '!$.active');
-        }
     }
 
     /**
@@ -158,7 +155,7 @@ class Form extends Base
 
             $groupsContainer = $this->spin(function () use ($groups, $group) {
                 return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, "Finding the group $group");
+            }, sprintf('Finding the group %s', $group));
 
             $button = null;
 

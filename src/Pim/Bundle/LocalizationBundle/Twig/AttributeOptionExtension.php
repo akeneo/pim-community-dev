@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
-use Pim\Component\Localization\LocaleResolver;
-use Pim\Component\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 
 /**
  * Twig extension to present localized attribute options

@@ -95,7 +95,7 @@ class ProductProcessor extends HeterogeneousProcessor
 
         $media = [];
         foreach ($products as $product) {
-            $media = array_merge($product->getMedia(), $media);
+            $media = array_merge($this->getProductMedia($product), $media);
         }
 
         return [
@@ -138,5 +138,28 @@ class ProductProcessor extends HeterogeneousProcessor
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
+    }
+
+
+    /**
+     * Get all the media of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return FileInfoInterface[]
+     */
+    public function getProductMedia(ProductInterface $product)
+    {
+        $media = [];
+        foreach ($product->getValues() as $value) {
+            if (in_array(
+                $value->getAttribute()->getAttributeType(),
+                [AttributeTypes::IMAGE, AttributeTypes::FILE]
+            )) {
+                $media[] = $value->getData();
+            }
+        }
+
+        return $media;
     }
 }

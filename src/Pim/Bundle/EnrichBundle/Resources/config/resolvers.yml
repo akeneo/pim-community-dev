@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.imagine.loader.flysystem.class: Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader
+    pim_enrich.resolver.locale.class:          Pim\Bundle\EnrichBundle\Resolver\LocaleResolver
 
 services:
     pim_enrich.imagine.loader.flysystem:
@@ -9,3 +10,9 @@ services:
             - ['catalogStorage']
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+
+    pim_enrich.resolver.locale:
+        class: %pim_enrich.resolver.locale.class%
+        arguments:
+            - '@request_stack'
+            - %locale%

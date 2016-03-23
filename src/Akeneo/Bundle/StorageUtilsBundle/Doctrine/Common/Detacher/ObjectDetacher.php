@@ -26,7 +26,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     protected $managerRegistry;
 
     /** @var array */
-    protected $scheduledForDirtyCheck;
+    protected $scheduledForCheck;
 
     /**
      * @param ManagerRegistry $registry
@@ -34,7 +34,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     public function __construct(ManagerRegistry $registry)
     {
         $this->managerRegistry = $registry;
-        $this->scheduledForDirtyCheck = null;
+        $this->scheduledForCheck = null;
     }
 
     /**
@@ -64,8 +64,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     }
 
     /**
-     * Detach entity living in the scheduledForDirtyCheck's
-     * unit of work property.
+     * Detach entity living in UoW's scheduledForDirtyCheck property.
      *
      * @param mixed $entity  The entity to be detached
      * @param array $visited Array of already detached entities
@@ -84,11 +83,11 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
         $visited[$oid] = $entity;
 
-        if (null === $this->scheduledForDirtyCheck) {
-            $this->scheduledForDirtyCheck = &$this->getScheduledForDirtyCheck($uow);
+        if (null === $this->scheduledForCheck) {
+            $this->scheduledForCheck = &$this->getScheduledForDirtyCheck($uow);
         }
-        if (isset($this->scheduledForDirtyCheck[$rootClassName])) {
-            unset($this->scheduledForDirtyCheck[$rootClassName][$oid]);
+        if (isset($this->scheduledForCheck[$rootClassName])) {
+            unset($this->scheduledForCheck[$rootClassName][$oid]);
         }
 
         $this->cascadeDetachScheduled($entity, $visited);

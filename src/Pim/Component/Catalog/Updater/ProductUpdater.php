@@ -21,10 +21,10 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
-    
+
     /** @var array */
     protected $supportedFields = [];
-    
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param ProductTemplateUpdaterInterface $templateUpdater

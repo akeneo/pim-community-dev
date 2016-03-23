@@ -36,7 +36,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
      */
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getLaunchableJobs($manager) as $job) {
+        foreach ($this->getLaunchableJobs() as $job) {
             $this->launchJob($job);
         }
     }

@@ -4,6 +4,8 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,20 +24,23 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /** @var SerializerInterface */
     protected $serializer;
 
-    /**
-     * @var string[]
-     */
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
+
+    /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
 
     /** @var int */
     protected $precision;
 
     /**
-     * @param int $precision
+     * @param LocalizerRegistryInterface $localizerRegistry
+     * @param int                        $precision
      */
-    public function __construct($precision = 4)
+    public function __construct(LocalizerRegistryInterface $localizerRegistry, $precision = 4)
     {
-        $this->precision = $precision;
+        $this->localizerRegistry = $localizerRegistry;
+        $this->precision         = $precision;
     }
 
     /**
@@ -63,7 +68,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data = new ArrayCollection($data);
         }
 
-        if (is_null($data)) {
+        $type = $entity->getAttribute()->getAttributeType();
+
+        if (AttributeTypes::BOOLEAN === $type) {
+            $result = [$fieldName => (string) (int) $data];
+        } elseif (is_null($data)) {
             $result = [$fieldName => ''];
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
@@ -72,8 +81,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $result = [$fieldName => sprintf($pattern, $data)];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
-        } elseif (is_bool($data)) {
-            $result = [$fieldName => (string) (int) $data];
         } elseif (is_object($data)) {
             // TODO: Find a way to have proper currency-suffixed keys for normalized price data
             // even when an empty collection is passed
@@ -86,9 +93,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $result = $this->serializer->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
-                if ('metric' === $entity->getAttribute()->getBackendType()) {
+                if ('metric' === $backendType) {
                     $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
-                } elseif ('media' === $entity->getAttribute()->getBackendType()) {
+                } elseif ('media' === $backendType) {
                     $context['value'] = $entity;
                 }
 
@@ -104,6 +111,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                     is_object($data) ? get_class($data) : gettype($data)
                 )
             );
+        }
+
+        $localizer = $this->localizerRegistry->getLocalizer($type);
+        if (null !== $localizer) {
+            foreach ($result as $field => $data) {
+                $result[$field] = $localizer->localize($data, $context);
+            }
         }
 
         return $result;

@@ -100,7 +100,7 @@
                     }
 
                     {% if categoryBaseRoute is not null %}
-                    var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
+                        var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
                     {% endif %}
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {

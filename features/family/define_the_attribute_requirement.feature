@@ -1,5 +1,5 @@
 Feature: Define the attribute requirement
-  In order to ensure product completness when exporting them
+  In order to ensure product completeness when exporting them
   As an administrator
   I need to be able to define which attributes are required or not for a given channel
 
@@ -20,6 +20,7 @@ Feature: Define the attribute requirement
     Given I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
+    And I should see the flash message "Family successfully updated"
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
@@ -28,6 +29,7 @@ Feature: Define the attribute requirement
     Given I visit the "Attributes" tab
     And I switch the attribute "Description" requirement in channel "Tablet"
     And I save the family
+    And I should see the flash message "Family successfully updated"
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
 
@@ -48,6 +50,7 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
+    And I should see the flash message "Family successfully updated"
     When I remove the "Rating" attribute
     And I confirm the deletion
     Then I should not see the "Rating" attribute

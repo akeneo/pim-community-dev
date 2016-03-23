@@ -52,7 +52,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'reference data collection');
         $this->checkData($attribute, $data);
 
-        $referenceDataCollection = [];
+        $refDataCollection = [];
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($data as $referenceDataCode) {
@@ -73,13 +73,13 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
                 );
             }
 
-            $referenceDataCollection[] = $referenceData;
+            $refDataCollection[] = $referenceData;
         }
 
         $this->setReferenceDataCollection(
             $attribute,
             $product,
-            $referenceDataCollection,
+            $refDataCollection,
             $options['locale'],
             $options['scope']
         );
@@ -120,7 +120,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
-     * @param array              $referenceDataCollection
+     * @param array              $refDataCollection
      * @param string|null        $locale
      * @param string|null        $scope
      *
@@ -129,7 +129,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     protected function setReferenceDataCollection(
         AttributeInterface $attribute,
         ProductInterface $product,
-        array $referenceDataCollection,
+        array $refDataCollection,
         $locale = null,
         $scope = null
     ) {
@@ -165,7 +165,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
             $value->$removeMethod($currentReferenceData);
         }
 
-        foreach ($referenceDataCollection as $referenceData) {
+        foreach ($refDataCollection as $referenceData) {
             $value->$addMethod($referenceData);
         }
     }

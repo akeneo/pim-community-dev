@@ -47,7 +47,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected $fieldChecker;
 
     /** @var array */
-    protected $optionalAssociationFields;
+    protected $optionalAssocFields;
 
     /**
      * @param AttributeColumnInfoExtractor    $attrFieldExtractor
@@ -69,15 +69,15 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         ColumnsMapper $columnsMapper,
         FieldsRequirementChecker $fieldChecker
     ) {
-        $this->attrFieldExtractor        = $attrFieldExtractor;
-        $this->converterRegistry         = $converterRegistry;
-        $this->assocColumnsResolver      = $assocColumnsResolver;
-        $this->attrColumnsResolver       = $attrColumnsResolver;
-        $this->fieldConverter            = $fieldConverter;
-        $this->columnsMerger             = $columnsMerger;
-        $this->columnsMapper             = $columnsMapper;
-        $this->fieldChecker              = $fieldChecker;
-        $this->optionalAssociationFields = [];
+        $this->attrFieldExtractor   = $attrFieldExtractor;
+        $this->converterRegistry    = $converterRegistry;
+        $this->assocColumnsResolver = $assocColumnsResolver;
+        $this->attrColumnsResolver  = $attrColumnsResolver;
+        $this->fieldConverter       = $fieldConverter;
+        $this->columnsMerger        = $columnsMerger;
+        $this->columnsMapper        = $columnsMapper;
+        $this->fieldChecker         = $fieldChecker;
+        $this->optionalAssocFields  = [];
     }
 
     /**
@@ -393,10 +393,10 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function getOptionalAssociationFields()
     {
-        if (empty($this->optionalAssociationFields)) {
-            $this->optionalAssociationFields = $this->assocColumnsResolver->resolveAssociationColumns();
+        if (empty($this->optionalAssocFields)) {
+            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
         }
 
-        return $this->optionalAssociationFields;
+        return $this->optionalAssocFields;
     }
 }

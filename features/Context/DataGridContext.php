@@ -189,6 +189,20 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $value
+     *
+     * @Then /^the filter "([^"]*)" should be set to "([^"]*)"$/
+     */
+    public function theFilterShouldBeSetTo($filterName, $value)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+        $this->spin(function () use ($filter, $value) {
+            return $filter->find('css', sprintf('.filter-criteria-hint:contains("%s")', $value));
+        }, sprintf('Filter "%s" should be set to "%s".', $filterName, $value));
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *
@@ -397,11 +411,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShowTheFilter($filterName)
     {
-        if (false === strpos(strtolower($filterName), 'category')) {
-            $this->datagrid->showFilter($filterName);
-            $this->wait();
-            $this->datagrid->assertFilterVisible($filterName);
-        }
+        $this->datagrid->showFilter($filterName);
     }
 
     /**
@@ -411,9 +421,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheFilter($filterName)
     {
-        if (false === strpos(strtolower($filterName), 'category')) {
-            $this->datagrid->hideFilter($filterName);
-        }
+        $this->datagrid->hideFilter($filterName);
     }
 
     /**
@@ -571,12 +579,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $item) {
             $count  = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
+            $isCategoryFilter = false !== strpos(strtolower($filter), 'category');
 
-            $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
+            if (!$isCategoryFilter) {
+                $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
+            }
             $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
             $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
-            $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
+            if (!$isCategoryFilter) {
+                $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
+            }
         }
 
         return $steps;
@@ -836,7 +849,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow = $this->datagrid->getRow($row);
-            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            $checkbox = $this->spin(function () use ($gridRow) {
+                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+            });
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
@@ -875,6 +890,22 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
             return true;
         });
+    }
+
+    /**
+     * @Then /^I click on import profile$/
+     */
+    public function iClickOnImportProfile()
+    {
+        $collectLink = $this->spin(function () {
+            return $this->getSession()->getPage()->findLink('Collect');
+        });
+        $collectLink->click();
+
+        $importProfileLink = $this->spin(function () {
+            return $this->getSession()->getPage()->findLink('Import profiles');
+        });
+        $importProfileLink->click();
     }
 
     /**
