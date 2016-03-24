@@ -1538,7 +1538,8 @@ class WebUser extends RawMinkContext
      */
     public function iCheckTheSwitch($status, $locator)
     {
-        return $this->getCurrentPage()->toggleSwitch($locator, $status === '');
+        $this->getCurrentPage()->toggleSwitch($locator, $status === '');
+        $this->wait();
     }
 
     /**

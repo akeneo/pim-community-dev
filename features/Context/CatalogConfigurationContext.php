@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
