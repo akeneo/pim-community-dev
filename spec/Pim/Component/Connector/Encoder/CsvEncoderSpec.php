@@ -23,7 +23,7 @@ class CsvEncoderSpec extends ObjectBehavior
         $this->supportsEncoding('json')->shouldReturn(false);
     }
 
-    function it_encode_data_in_csv()
+    function it_encodes_data_in_csv()
     {
         $this->encode(
             [
@@ -111,7 +111,7 @@ class CsvEncoderSpec extends ObjectBehavior
         )->shouldReturn("\n");
     }
 
-    function it_encode_header()
+    function it_encodes_header()
     {
         $this->encode(
             [
@@ -136,7 +136,7 @@ class CsvEncoderSpec extends ObjectBehavior
         )->shouldReturn("foo;bar\nbaz;buz\n");
     }
 
-    function it_throw_exception_when_data_are_invalid()
+    function it_throws_exception_when_data_are_invalid()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('encode', [null, 'csv']);
         $this->shouldThrow('\InvalidArgumentException')->during('encode', [false, 'csv']);

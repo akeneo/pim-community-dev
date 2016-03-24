@@ -52,7 +52,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var \Pim\Component\Catalog\Converter\MetricConverter */
+    /** @var MetricConverter */
     protected $metricConverter;
 
     /** @var bool */
@@ -65,7 +65,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      * @param ProductRepositoryInterface $repository
      * @param ChannelRepositoryInterface $channelRepository
      * @param CompletenessManager        $completenessManager
-     * @param \Pim\Component\Catalog\Converter\MetricConverter            $metricConverter
+     * @param MetricConverter            $metricConverter
      * @param DocumentManager            $documentManager
      * @param bool                       $missingCompleteness
      */
