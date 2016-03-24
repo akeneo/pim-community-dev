@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use League\Flysystem\MountManager;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -26,15 +26,15 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     /** @var FileStorerInterface */
     protected $fileStorer;
 
-    /** @var MountManager */
-    protected $mountManager;
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param FileFetcherInterface     $fileFetcher
      * @param FileStorerInterface      $fileStorer
-     * @param MountManager             $mountManager
+     * @param FilesystemProvider       $filesystemProvider
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
@@ -43,7 +43,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         AttributeValidatorHelper $attrValidatorHelper,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
@@ -51,7 +51,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
 
         $this->fileFetcher        = $fileFetcher;
         $this->fileStorer         = $fileStorer;
-        $this->mountManager       = $mountManager;
+        $this->filesystemProvider = $filesystemProvider;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes   = $supportedToTypes;
     }
@@ -116,7 +116,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
 
             $file = null;
             if (null !== $fromValue->getMedia()) {
-                $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+                $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
                 $rawFile    = $this->fileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
                 $file       = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 

@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -1053,8 +1052,8 @@ abstract class AbstractAttribute implements AttributeInterface
     public function isBackendTypeReferenceData()
     {
         return in_array($this->getBackendType(), [
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
-            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
 }

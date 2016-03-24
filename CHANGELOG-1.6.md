@@ -13,6 +13,17 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` to `Pim\Component\Catalog\AttributeTypeRegistry`
+- Move `Pim\Bundle\CatalogBundle\Factory\AttributeFactory` to `Pim\Component\Catalog\Factory\AttributeFactory`
+- Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` twice.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\AttributeOptionController`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` and `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer`. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
+- Change constructor of ``. Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager` and add ``.
 - Move `Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory` to `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
 - Move `Pim\Bundle\CatalogBundle\Factory\GroupFactory` to `Pim\Component\Catalog\Factory\GroupFactory`
 - Move `Pim\Bundle\CatalogBundle\Factory\FamilyFactory` to `Pim\Component\Catalog\Factory\FamilyFactory`

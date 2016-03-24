@@ -2,18 +2,18 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Imagine\Loader;
 
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\FileStorage;
 
 class FlysystemLoaderSpec extends ObjectBehavior
 {
-    function let(MountManager $mountManager, FilesystemInterface $filesystem)
+    function let(FilesystemProvider $filesystemProvider, FilesystemInterface $filesystem)
     {
-        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
+        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
 
-        $this->beConstructedWith($mountManager, [FileStorage::CATALOG_STORAGE_ALIAS]);
+        $this->beConstructedWith($filesystemProvider, [FileStorage::CATALOG_STORAGE_ALIAS]);
     }
 
     function it_is_a_loader()

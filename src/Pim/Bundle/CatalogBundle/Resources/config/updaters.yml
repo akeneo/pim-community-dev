@@ -334,7 +334,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_image']
             - ['pim_catalog_image']
         tags:
@@ -346,7 +346,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file']
             - ['pim_catalog_file']
         tags:

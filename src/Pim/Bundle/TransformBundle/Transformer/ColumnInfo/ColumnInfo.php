@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -92,8 +92,8 @@ class ColumnInfo implements ColumnInfoInterface
             if (!in_array(
                 $attribute->getBackendType(),
                 [
-                    AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
-                    AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+                    AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+                    AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
                 ]
             )) {
                 $this->propertyPath = $attribute->getBackendType();

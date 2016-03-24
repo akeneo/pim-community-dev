@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
@@ -22,11 +22,11 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AttributeInterface $attribute)
     {
         $availableTypes = [
-            AbstractAttributeType::BACKEND_TYPE_VARCHAR,
-            AbstractAttributeType::BACKEND_TYPE_DATE,
-            AbstractAttributeType::BACKEND_TYPE_DATETIME,
-            AbstractAttributeType::BACKEND_TYPE_DECIMAL,
-            AbstractAttributeType::BACKEND_TYPE_INTEGER
+            AttributeTypes::BACKEND_TYPE_VARCHAR,
+            AttributeTypes::BACKEND_TYPE_DATE,
+            AttributeTypes::BACKEND_TYPE_DATETIME,
+            AttributeTypes::BACKEND_TYPE_DECIMAL,
+            AttributeTypes::BACKEND_TYPE_INTEGER
         ];
 
         return in_array($attribute->getBackendType(), $availableTypes);

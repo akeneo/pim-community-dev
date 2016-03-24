@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -22,9 +22,9 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
     ) {
         $value->getAttribute()->willReturn($color);
         $value->getData()->willReturn(new ArrayCollection([$red]));
-        $color->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_OPTIONS);
+        $color->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_OPTIONS);
 
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_OPTIONS, 'pim_ajax_entity', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_OPTIONS, 'pim_ajax_entity', $guesser);
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, $color)
@@ -38,7 +38,7 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
 
     function it_prepares_the_product_value_form($value)
     {
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_OPTIONS);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_OPTIONS);
     }
 
     function it_prepares_the_product_value_form_alias($value)
