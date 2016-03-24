@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
@@ -86,17 +86,17 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
     protected function detachSpecificValues(ProductValueInterface $publishedValue)
     {
         switch ($publishedValue->getAttribute()->getBackendType()) {
-            case AttributeTypes::BACKEND_TYPE_MEDIA:
+            case AbstractAttributeType::BACKEND_TYPE_MEDIA:
                 if (null !== $publishedValue->getMedia()) {
                     $this->entityManager->detach($publishedValue->getMedia());
                 }
                 break;
-            case AttributeTypes::BACKEND_TYPE_METRIC:
+            case AbstractAttributeType::BACKEND_TYPE_METRIC:
                 if (null !== $publishedValue->getMetric()) {
                     $this->objectManager->detach($publishedValue->getMetric());
                 }
                 break;
-            case AttributeTypes::BACKEND_TYPE_PRICE:
+            case AbstractAttributeType::BACKEND_TYPE_PRICE:
                 if ($publishedValue->getPrices()->count() > 0) {
                     foreach ($publishedValue->getPrices() as $price) {
                         $this->objectManager->detach($price);
