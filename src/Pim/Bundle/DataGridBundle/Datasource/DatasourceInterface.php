@@ -24,18 +24,6 @@ interface DatasourceInterface extends OroDatasourceInterface
     public function getQueryBuilder();
 
     /**
-     * @return ObjectManager
-     */
-    public function getObjectManager();
-
-    /**
-     * Get repository
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    public function getRepository();
-
-    /**
      * Get repository
      *
      * @return mixed
