@@ -10,6 +10,10 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise/Bundle/WorkflowBundle/EventSubscriber/Import/ImportProposalsSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
+- Change constructor of `PimEnterprise/Bundle/WorkflowBundle/EventSubscriber/ProductDraft/AbstractProposalStateNotificationSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
+- Change constructor of `PimEnterprise/Bundle/WorkflowBundle/EventSubscriber/ProductDraft/SendForApprovalSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
+- Change constructor of `PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager`.
 - Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Controller\RuleController`. Add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository` and `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber`. Replace `Pim\Bundle\CatalogBundle\Manager\ProductManager` by `Doctrine\Common\Persistence\ObjectManager`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder`. Replace `Pim\Bundle\CatalogBundle\Manager\CurrencyManager` argument by `Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface`.

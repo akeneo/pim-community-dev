@@ -78,9 +78,14 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
             ? $messageInfos['message']
             : 'pimee_workflow.product_draft.notification.refuse';
 
+        $notification = $this->notificationFactory->create();
+        $notification
+            ->setType('error')
+            ->setMessage($message)
+            ->setRoute('pim_enrich_product_edit')
+            ->setRouteParams(['id' => $productDraft->getProduct()->getId()]);
+
         $options = [
-            'route'         => 'pim_enrich_product_edit',
-            'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
             'messageParams' => [
                 '%product%' => $productDraft->getProduct()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
@@ -91,14 +96,14 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
             ]
         ];
 
-        $options = array_replace_recursive($options, $messageInfos['options']);
+        $options = array_replace_recursive($options, $messageInfos);
 
         if ($event->hasArgument('comment')) {
-            $options['comment'] = $event->getArgument('comment');
+            $notification->setComment($event->getArgument('comment'));
         }
 
         if ($event->hasArgument('message')) {
-            $message = $event->getArgument('message');
+            $notification->setMessage($event->getArgument('message'));
         }
 
         if ($event->hasArgument('messageParams')) {
@@ -109,6 +114,10 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
             $options['context']['actionType'] = $event->getArgument('actionType');
         }
 
-        $this->notifier->notify([$productDraft->getAuthor()], $message, 'error', $options);
+        $notification
+            ->setMessageParams($options['messageParams'])
+            ->setContext($options['context']);
+
+        $this->notifier->notify($notification, [$productDraft->getAuthor()]);
     }
 }
