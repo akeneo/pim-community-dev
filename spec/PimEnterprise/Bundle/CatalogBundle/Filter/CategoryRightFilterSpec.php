@@ -17,9 +17,12 @@ class CategoryRightFilterSpec extends ObjectBehavior
     function let(
         TokenStorageInterface $tokenStorage,
         CategoryAccessRepository $categoryAccessRepo,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenInterface $token
     ) {
-        $this->beConstructedWith($tokenStorage, $categoryAccessRepo, $authorizationChecker);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $this->beConstructedWith($tokenStorage, $authorizationChecker, $categoryAccessRepo);
     }
 
     function it_filters_a_category_collection_depending_on_user_s_permissions(
