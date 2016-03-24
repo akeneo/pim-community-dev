@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog;
+namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 class UniqueValueGuesserSpec extends ObjectBehavior
@@ -32,7 +32,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
     public function it_guesses_unique_value(AttributeInterface $attribute)
     {
         $attribute->getBackendType()
-            ->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
+            ->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         $attribute->isUnique()->willReturn(true);
         $textConstraints = $this->guessConstraints($attribute);
 
@@ -45,7 +45,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
     public function it_does_not_guess_unique_value(AttributeInterface $attribute)
     {
         $attribute->getBackendType()
-            ->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
+            ->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
 
         $attribute->isUnique()->willReturn(false);
 
@@ -56,20 +56,20 @@ class UniqueValueGuesserSpec extends ObjectBehavior
     private function dataProviderForSupportedAttributes()
     {
         return [
-            'boolean' => array(AttributeTypes::BACKEND_TYPE_BOOLEAN, false),
-            'collection' => array(AttributeTypes::BACKEND_TYPE_COLLECTION, false),
-            'date' => array(AttributeTypes::BACKEND_TYPE_DATE, true),
-            'datetime' => array(AttributeTypes::BACKEND_TYPE_DATETIME, true),
-            'decimal' => array(AttributeTypes::BACKEND_TYPE_DECIMAL, true),
-            'entity' => array(AttributeTypes::BACKEND_TYPE_ENTITY, false),
-            'integer' => array(AttributeTypes::BACKEND_TYPE_INTEGER, true),
-            'media' => array(AttributeTypes::BACKEND_TYPE_MEDIA, false),
-            'metric' => array(AttributeTypes::BACKEND_TYPE_METRIC, false),
-            'option' => array(AttributeTypes::BACKEND_TYPE_OPTION, false),
-            'options' => array(AttributeTypes::BACKEND_TYPE_OPTIONS, false),
-            'price' => array(AttributeTypes::BACKEND_TYPE_PRICE, false),
-            'text' => array(AttributeTypes::BACKEND_TYPE_TEXT, false),
-            'varchar' => array(AttributeTypes::BACKEND_TYPE_VARCHAR, true),
+            'boolean' => array(AbstractAttributeType::BACKEND_TYPE_BOOLEAN, false),
+            'collection' => array(AbstractAttributeType::BACKEND_TYPE_COLLECTION, false),
+            'date' => array(AbstractAttributeType::BACKEND_TYPE_DATE, true),
+            'datetime' => array(AbstractAttributeType::BACKEND_TYPE_DATETIME, true),
+            'decimal' => array(AbstractAttributeType::BACKEND_TYPE_DECIMAL, true),
+            'entity' => array(AbstractAttributeType::BACKEND_TYPE_ENTITY, false),
+            'integer' => array(AbstractAttributeType::BACKEND_TYPE_INTEGER, true),
+            'media' => array(AbstractAttributeType::BACKEND_TYPE_MEDIA, false),
+            'metric' => array(AbstractAttributeType::BACKEND_TYPE_METRIC, false),
+            'option' => array(AbstractAttributeType::BACKEND_TYPE_OPTION, false),
+            'options' => array(AbstractAttributeType::BACKEND_TYPE_OPTIONS, false),
+            'price' => array(AbstractAttributeType::BACKEND_TYPE_PRICE, false),
+            'text' => array(AbstractAttributeType::BACKEND_TYPE_TEXT, false),
+            'varchar' => array(AbstractAttributeType::BACKEND_TYPE_VARCHAR, true),
         ];
     }
 }

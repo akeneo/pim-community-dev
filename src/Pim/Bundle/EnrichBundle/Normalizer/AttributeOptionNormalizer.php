@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -31,17 +31,17 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var SimpleFactoryInterface */
-    protected $optionValueFactory;
+    /** @var AttributeOptionManager */
+    protected $optionManager;
 
     /**
      * @param LocaleRepositoryInterface $localeRepository
-     * @param SimpleFactoryInterface    $optionValueFactory
+     * @param AttributeOptionManager    $optionManager
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository, SimpleFactoryInterface $optionValueFactory)
+    public function __construct(LocaleRepositoryInterface $localeRepository, AttributeOptionManager $optionManager)
     {
-        $this->localeRepository   = $localeRepository;
-        $this->optionValueFactory = $optionValueFactory;
+        $this->localeRepository = $localeRepository;
+        $this->optionManager    = $optionManager;
     }
 
     /**
@@ -96,7 +96,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
 
         foreach ($activeLocales as $activatedLocale) {
             if (!in_array($activatedLocale->getCode(), $usedLocales)) {
-                $attributeOptionValue = $this->optionValueFactory->create();
+                $attributeOptionValue = $this->optionManager->createAttributeOptionValue();
                 $attributeOptionValue->setLocale($activatedLocale->getCode());
                 $attributeOptionValue->setValue('');
 

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityManager;
@@ -10,10 +9,10 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -46,8 +45,8 @@ class AttributeOptionController
     /** @var AttributeOptionsSorter */
     protected $sorter;
 
-    /** @var SimpleFactoryInterface */
-    protected $optionFactory;
+    /** @var AttributeOptionManager */
+    protected $optionManager;
 
     /** @var RemoverInterface */
     protected $optionRemover;
@@ -58,20 +57,16 @@ class AttributeOptionController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var AttributeOptionRepositoryInterface */
-    protected $optionRepository;
-
     /**
      * @param NormalizerInterface          $normalizer
      * @param EntityManager                $entityManager
      * @param FormFactoryInterface         $formFactory
      * @param ViewHandlerInterface         $viewHandler
      * @param AttributeOptionsSorter       $sorter
-     * @param SimpleFactoryInterface       $optionFactory
+     * @param AttributeOptionManager       $optionManager
      * @param SaverInterface               $optionSaver
      * @param RemoverInterface             $optionRemover
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -79,22 +74,20 @@ class AttributeOptionController
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
         AttributeOptionsSorter $sorter,
-        SimpleFactoryInterface $optionFactory,
+        AttributeOptionManager $optionManager,
         SaverInterface $optionSaver,
         RemoverInterface $optionRemover,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeOptionRepositoryInterface $attributeOptionRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->normalizer          = $normalizer;
         $this->entityManager       = $entityManager;
         $this->formFactory         = $formFactory;
         $this->viewHandler         = $viewHandler;
         $this->sorter              = $sorter;
-        $this->optionFactory       = $optionFactory;
+        $this->optionManager       = $optionManager;
         $this->optionRemover       = $optionRemover;
         $this->optionSaver         = $optionSaver;
         $this->attributeRepository = $attributeRepository;
-        $this->optionRepository    = $attributeOptionRepository;
     }
 
     /**
@@ -129,7 +122,7 @@ class AttributeOptionController
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
-        $attributeOption = $this->optionFactory->create();
+        $attributeOption = $this->optionManager->createAttributeOption();
         $attributeOption->setAttribute($attribute);
 
         //Should be replaced by a paramConverter
@@ -260,7 +253,7 @@ class AttributeOptionController
     protected function findAttributeOptionOr404($id)
     {
         try {
-            $result = $this->optionRepository->find($id);
+            $result = $this->optionManager->getAttributeOption($id);
         } catch (EntityNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

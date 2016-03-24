@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -36,6 +36,6 @@ class MediaCompleteChecker implements ProductValueCompleteCheckerInterface
      */
     public function supportsValue(ProductValueInterface $productValue)
     {
-        return AttributeTypes::BACKEND_TYPE_MEDIA === $productValue->getAttribute()->getBackendType();
+        return AbstractAttributeType::BACKEND_TYPE_MEDIA === $productValue->getAttribute()->getBackendType();
     }
 }

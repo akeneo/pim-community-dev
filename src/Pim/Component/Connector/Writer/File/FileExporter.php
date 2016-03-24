@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
-use Akeneo\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\MountManager;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -19,21 +19,21 @@ class FileExporter implements FileExporterInterface
     /** @var FileFetcherInterface */
     protected $fileFetcher;
 
-    /** @var FilesystemProvider */
-    protected $filesystemProvider;
+    /** @var MountManager */
+    protected $mountManager;
 
     /** @var Filesystem */
     protected $localFs;
 
     /**
-     * @param FilesystemProvider   $filesystemProvider
+     * @param MountManager            $mountManager
      * @param FileFetcherInterface $fileFetcher
      */
-    public function __construct(FilesystemProvider $filesystemProvider, FileFetcherInterface $fileFetcher)
+    public function __construct(MountManager $mountManager, FileFetcherInterface $fileFetcher)
     {
-        $this->filesystemProvider = $filesystemProvider;
-        $this->fileFetcher        = $fileFetcher;
-        $this->localFs            = new Filesystem();
+        $this->mountManager = $mountManager;
+        $this->fileFetcher  = $fileFetcher;
+        $this->localFs      = new Filesystem();
     }
 
     /**
@@ -45,7 +45,7 @@ class FileExporter implements FileExporterInterface
             throw new \LogicException(sprintf('The export directory "%s" does not exist.', dirname($localPathname)));
         }
 
-        $storageFs = $this->filesystemProvider->getFilesystem($storageAlias);
+        $storageFs = $this->mountManager->getFilesystem($storageAlias);
         $rawFile = $this->fileFetcher->fetch($storageFs, $key);
 
         $copied = $this->copyFile($rawFile->getPathname(), $localPathname);

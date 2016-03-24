@@ -4,9 +4,9 @@ namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
+use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
@@ -23,14 +23,14 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         AttributeValidatorHelper $attrValidatorHelper,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
-        FilesystemProvider $filesystemProvider
+        MountManager $mountManager
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
             $fileFetcher,
             $fileStorer,
-            $filesystemProvider,
+            $mountManager,
             ['media'],
             ['media']
         );
@@ -67,7 +67,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
     function it_copies_when_a_product_value_has_the_values_and_the_media(
         $attrValidatorHelper,
-        $filesystemProvider,
         FileInfoInterface $fromMedia,
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
@@ -79,6 +78,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         ProductValueInterface $toProductValue,
         FileStorerInterface $fileStorer,
         FileFetcherInterface $fileFetcher,
+        MountManager $mountManager,
         FilesystemInterface $fileSystem
     ) {
         $fromLocale = 'fr_FR';
@@ -98,7 +98,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
         $fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);
@@ -155,7 +155,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
     function it_copies_when_a_product_value_has_a_media_but_not_the_target_value(
         $builder,
         $attrValidatorHelper,
-        $filesystemProvider,
         FileInfoInterface $fromMedia,
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
@@ -167,6 +166,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         FileStorerInterface $fileStorer,
         ProductValueInterface $toProductValue,
         FileFetcherInterface $fileFetcher,
+        MountManager $mountManager,
         FilesystemInterface $fileSystem
     ) {
         $fromLocale = 'fr_FR';
@@ -185,7 +185,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $fileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
         $fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 class AttributeConstraintGuesserSpec extends ObjectBehavior
@@ -26,7 +26,7 @@ class AttributeConstraintGuesserSpec extends ObjectBehavior
     function it_returns_date_constraint(AttributeInterface $attribute)
     {
         $attribute->isRequired()->willReturn(false);
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_DATE);
+        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_DATE);
 
         $constraint = $this->guessConstraints($attribute);
         $constraint->shouldHaveCount(1);
@@ -36,7 +36,7 @@ class AttributeConstraintGuesserSpec extends ObjectBehavior
     function it_returns_not_blank_and_date_constraints(AttributeInterface $attribute)
     {
         $attribute->isRequired()->willReturn(true);
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_DATE);
+        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_DATE);
 
         $constraints = $this->guessConstraints($attribute);
         $constraints->shouldHaveCount(2);
@@ -47,7 +47,7 @@ class AttributeConstraintGuesserSpec extends ObjectBehavior
     function it_returns_datetime_constraint(AttributeInterface $attribute)
     {
         $attribute->isRequired()->willReturn(false);
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_DATETIME);
+        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_DATETIME);
 
         $constraint = $this->guessConstraints($attribute);
         $constraint->shouldHaveCount(1);
@@ -57,7 +57,7 @@ class AttributeConstraintGuesserSpec extends ObjectBehavior
     function it_returns_not_blank_and_datetime_constraints(AttributeInterface $attribute)
     {
         $attribute->isRequired()->willReturn(true);
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_DATETIME);
+        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_DATETIME);
 
         $constraints = $this->guessConstraints($attribute);
         $constraints->shouldHaveCount(2);
