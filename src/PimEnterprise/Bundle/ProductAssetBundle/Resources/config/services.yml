@@ -9,7 +9,7 @@ services:
         class: %pimee_product_asset.variation_file_generator.class%
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@oneup_flysystem.mount_manager'
             - '@pimee_product_asset.saver.file_metadata'
             - '@pimee_product_asset.saver.variation'
             - '@akeneo_file_transformer.file_transformer'

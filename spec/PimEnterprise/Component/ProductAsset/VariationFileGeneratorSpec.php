@@ -4,11 +4,11 @@ namespace spec\PimEnterprise\Component\ProductAsset;
 
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -27,7 +27,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
-        FilesystemProvider $filesystemProvider,
+        MountManager $mountManager,
         SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
@@ -55,12 +55,12 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $sourceFileInfo->getExtension()->willReturn('txt');
         $sourceFileInfo->getOriginalFilename()->willReturn('my_original_file.txt');
         $sourceFileInfo->getStorage()->willReturn(self::STORAGE_FS);
-        $filesystemProvider->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
+        $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
         $filesystem->has('path/to/my_original_file.txt')->willReturn(true);
 
         $this->beConstructedWith(
             $channelConfigurationRepository,
-            $filesystemProvider,
+            $mountManager,
             $metadataSaver,
             $variationSaver,
             $fileTransformer,
