@@ -26,23 +26,9 @@ interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
      *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductCountByTree(ProductInterface $product);
-
-    /**
-     * Get product ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return array
-     *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
-     */
-    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
     /**
      * Count products linked to a node.
@@ -55,7 +41,7 @@ interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @return int
      *
-     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
@@ -73,7 +59,7 @@ interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @param mixed $qb query builder to update
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByUnclassified($qb);
 
@@ -85,7 +71,7 @@ interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositor
      * @param bool  $include     if yes, get product in those categories, if false
      *                           products NOT in those categories
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
@@ -95,7 +81,7 @@ interface ProductCategoryRepositoryInterface extends IdentifiableObjectRepositor
      * @param mixed $qb          query builder to update
      * @param array $categoryIds category ids
      *
-     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
+     * @deprecated Will be removed in 1.6. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);
 }

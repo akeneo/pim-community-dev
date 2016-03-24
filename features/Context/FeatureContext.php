@@ -11,6 +11,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
@@ -18,6 +19,7 @@ use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
+use Pim\Behat\Context\Storage\ProductStorage;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -67,6 +69,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-panel', new PanelContext());
         $this->useContext('domain-pagination-grid', new GridPaginationContext());
+        $this->useContext('domain-completeness', new CompletenessContext());
+        $this->useContext('storage-product', new ProductStorage());
 
         $this->setTimeout($parameters);
     }

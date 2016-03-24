@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Attribute option controller
+ *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -57,8 +58,6 @@ class AttributeOptionController
     protected $attributeRepository;
 
     /**
-     * Constructor
-     *
      * @param NormalizerInterface          $normalizer
      * @param EntityManager                $entityManager
      * @param FormFactoryInterface         $formFactory

@@ -2,7 +2,7 @@ Pim\Component\Catalog\Model\Product:
     type: entity
     table: pim_catalog_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     fields:
         id:
             type: integer

@@ -4,18 +4,19 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ class ProductController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var PropertySetterInterface */
+    /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
     /** @var SaverInterface */
@@ -67,27 +68,31 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var LocalizedAttributeConverterInterface */
+    /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
+    /** @var ProductFilterInterface */
+    protected $emptyValuesFilter;
+
     /**
-     * @param ProductRepositoryInterface           $productRepository
-     * @param AttributeRepositoryInterface         $attributeRepository
-     * @param PropertySetterInterface              $productUpdater
-     * @param SaverInterface                       $productSaver
-     * @param NormalizerInterface                  $normalizer
-     * @param ValidatorInterface                   $validator
-     * @param UserContext                          $userContext
-     * @param ObjectFilterInterface                $objectFilter
-     * @param CollectionFilterInterface            $productEditDataFilter
-     * @param RemoverInterface                     $productRemover
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface              $productBuilder
-     * @param LocalizedAttributeConverterInterface $localizedConverter
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param SaverInterface               $productSaver
+     * @param NormalizerInterface          $normalizer
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
+     * @param ObjectFilterInterface        $objectFilter
+     * @param CollectionFilterInterface    $productEditDataFilter
+     * @param RemoverInterface             $productRemover
+     * @param ProductBuilderInterface      $productBuilder
+     * @param AttributeConverterInterface  $localizedConverter
+     * @param ProductFilterInterface       $emptyValuesFilter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
-        PropertySetterInterface $productUpdater,
+        ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
@@ -96,7 +101,8 @@ class ProductController
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
-        LocalizedAttributeConverterInterface $localizedConverter
+        AttributeConverterInterface $localizedConverter,
+        ProductFilterInterface $emptyValuesFilter
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -110,6 +116,7 @@ class ProductController
         $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
         $this->localizedConverter    = $localizedConverter;
+        $this->emptyValuesFilter     = $emptyValuesFilter;
     }
 
     /**
@@ -181,7 +188,6 @@ class ProductController
         // passed here, so a product is always removed from it's variant group when saved
         unset($data['groups']);
 
-        $data = $this->convertLocalizedAttributes($data);
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
@@ -305,22 +311,6 @@ class ProductController
     }
 
     /**
-     * Convert localized attributes to the default format
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function convertLocalizedAttributes(array $data)
-    {
-        $locale         = $this->userContext->getUiLocale()->getCode();
-        $data['values'] = $this->localizedConverter
-            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
-
-        return $data;
-    }
-
-    /**
      * Updates product with the provided request data
      *
      * @param ProductInterface $product
@@ -328,28 +318,15 @@ class ProductController
      */
     protected function updateProduct(ProductInterface $product, array $data)
     {
-        foreach ($data as $item => $itemData) {
-            if ('values' === $item) {
-                foreach ($itemData as $attributeCode => $values) {
-                    foreach ($values as $value) {
-                        $this->productUpdater->setData(
-                            $product,
-                            $attributeCode,
-                            $value['data'],
-                            [
-                                'locale' => $value['locale'],
-                                'scope'  => $value['scope']
-                            ]
-                        );
-                    }
-                }
-            } else {
-                $this->productUpdater->setData(
-                    $product,
-                    $item,
-                    $itemData
-                );
-            }
-        }
+        $values = $this->localizedConverter->convertToDefaultFormats($data['values'], [
+            'locale' => $this->userContext->getUiLocale()->getCode()
+        ]);
+
+        $values = $this->emptyValuesFilter->filter($product, $values);
+
+        unset($data['values']);
+        $data = array_merge($data, $values);
+
+        $this->productUpdater->update($product, $data);
     }
 }

@@ -23,6 +23,7 @@ use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -1255,12 +1256,15 @@ class FixturesContext extends BaseFixturesContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $allMedia     = $product->getMedia();
         $mountManager = $this->getMountManager();
-        foreach ($allMedia as $media) {
-            if (null !== $media) {
-                $fs = $mountManager->getFilesystem($media->getStorage());
-                $fs->delete($media->getKey());
+
+        foreach ($product->getValues() as $value) {
+            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+                $media = $value->getData();
+                if (null !== $media) {
+                    $fs = $mountManager->getFilesystem($media->getStorage());
+                    $fs->delete($media->getKey());
+                }
             }
         }
     }

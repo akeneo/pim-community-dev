@@ -124,7 +124,7 @@ services:
     pim_base_connector.reader.dummy:
         class: %pim_base_connector.reader.dummy.class%
 
-    # Deprecated: This service is deprecated and will be removed in 1.5
+    # Deprecated: This service is deprecated and will be removed in 1.6
     pim_base_connector.reader.cached_association:
         class: %pim_base_connector.reader.cached.class%
 

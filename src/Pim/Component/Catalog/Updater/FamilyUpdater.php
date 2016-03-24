@@ -155,15 +155,15 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function getExistingIdentifierRequirements(FamilyInterface $family)
     {
-        $identifierRequirements = [];
+        $identifierReqs = [];
         $existingRequirements = $family->getAttributeRequirements();
         foreach ($existingRequirements as $requirement) {
             if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $identifierRequirements[] = $requirement;
+                $identifierReqs[] = $requirement;
             }
         }
 
-        return $identifierRequirements;
+        return $identifierReqs;
     }
 
     /**

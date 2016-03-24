@@ -59,10 +59,10 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5 please use SaverInterface::save
-     */
+    * {@inheritdoc}
+    *
+    * @deprecated will be removed in 1.6 please use SaverInterface::save
+    */
     public function save($object, array $options = [])
     {
         $this->saver->save($object, $options);
@@ -84,7 +84,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
+     * @deprecated will be removed in 1.6 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {

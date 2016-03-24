@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer;
 use Pim\Component\Catalog\AttributeTypes;
 
@@ -41,7 +42,7 @@ class ValuesTransformer
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $refDataTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
-                    $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
+                    $result[$attributeCode] = $this->prepareMediaData($result, $attribute, $locale, $scope);
                 }
             }
 
@@ -75,16 +76,25 @@ class ValuesTransformer
     /**
      * @param array $result
      * @param array $attribute
+     * @param string $locale
+     * @param string $scope
      *
      * @return array
      */
-    protected function prepareMediaData(array $result, array $attribute)
+    protected function prepareMediaData(array $result, array $attribute, $locale, $scope)
     {
         $attributeCode = $attribute['code'];
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
         if (AttributeTypes::IMAGE === $attribute['attributeType'] && isset($value[$backendType])) {
             $normalizedData = $result['normalizedData'];
+            $attributeCode = ProductQueryUtility::getNormalizedValueField(
+                $attributeCode,
+                $attribute['localizable'],
+                $attribute['scopable'],
+                $locale,
+                $scope
+            );
             $value[$backendType] = $normalizedData[$attributeCode];
         }
 

@@ -8,6 +8,8 @@ services:
     pim_versioning.serializer.normalizer.flat.product_value:
         public: false
         class: %pim_serializer.normalizer.flat.product_value.class%
+        arguments:
+            - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

@@ -486,20 +486,16 @@ class Grid extends Index
      *
      * @param string $filterName
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getFilter($filterName)
     {
         $filter = $this->spin(function () use ($filterName) {
             if (strtolower($filterName) === 'channel') {
-                $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
-            } else {
-                $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+                return $this->getElement('Grid toolbar')->find('css', '.filter-item');
             }
 
-            return $filter;
+            return $this->getElement('Filters')->find('css', sprintf('.filter-item:contains("%s")', $filterName));
         }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
 
         return $filter;
@@ -528,22 +524,12 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        $this->clickFiltersList();
-        $this->activateFilter($filterName);
-        $this->clickFiltersList();
-    }
-
-    /**
-     * Make sure a filter is visible
-     *
-     * @param string $filterName
-     */
-    public function assertFilterVisible($filterName)
-    {
-        if (!$this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is not visible', $filterName)
-            );
+        try {
+            if (!$this->getFilter($filterName)->isVisible()) {
+                $this->clickOnFilterToManage($filterName);
+            }
+        } catch (TimeoutException $e) {
+            $this->clickOnFilterToManage($filterName);
         }
     }
 
@@ -554,9 +540,9 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        $this->clickFiltersList();
-        $this->deactivateFilter($filterName);
-        $this->clickFiltersList();
+        if ($this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
     }
 
     /**
@@ -591,8 +577,6 @@ class Grid extends Index
      * Click on view in the view select
      *
      * @param string $viewLabel
-     *
-     * @throws \InvalidArgumentException
      */
     public function applyView($viewLabel)
     {
@@ -624,52 +608,29 @@ class Grid extends Index
     }
 
     /**
-     * Activate a filter
-     *
-     * @param string $filterName
-     */
-    protected function activateFilter($filterName)
-    {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
-            $this->clickOnFilterToManage($filterName);
-        }
-    }
-
-    /**
-     * Deactivate filter
-     *
-     * @param string $filterName
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function deactivateFilter($filterName)
-    {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
-
-        if ($this->getFilter($filterName)->isVisible()) {
-            throw new \InvalidArgumentException(
-                sprintf('Filter "%s" is visible', $filterName)
-            );
-        }
-    }
-
-    /**
      * Click on a filter in filter management list
      *
      * @param string $filterName
      */
     protected function clickOnFilterToManage($filterName)
     {
-        $filterElement = $this->spin(function () use ($filterName) {
-            return $this
-                ->getElement('Manage filters')
-                ->find('css', sprintf('label:contains("%s")', $filterName));
+        $manageFilters = $this->getElement('Manage filters');
+        if (!$manageFilters->isVisible()) {
+            $this->clickFiltersList();
+        }
+
+        $searchField   = $this->spin(function () use ($manageFilters) {
+            return $manageFilters->find('css', 'input[type="search"]');
+        }, 'Cannot find manage filters search field');
+        $searchField->setValue($filterName);
+
+        $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
+            $filterElement = $manageFilters->find('css', sprintf('label:contains("%s")', $filterName));
+            if (null === $filterElement || !$filterElement->isVisible()) {
+                return false;
+            }
+
+            return $filterElement;
         }, sprintf('Impossible to activate filter "%s"', $filterName));
 
         $filterElement->click();
@@ -743,8 +704,6 @@ class Grid extends Index
      * Open the filter
      *
      * @param NodeElement $filter
-     *
-     * @throws \InvalidArgumentException
      */
     public function openFilter(NodeElement $filter)
     {
@@ -935,6 +894,8 @@ class Grid extends Index
 
     /**
      * Press the mass edit button
+     *
+     * @throws \InvalidArgumentException
      */
     public function massEdit()
     {

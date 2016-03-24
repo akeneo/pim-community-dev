@@ -75,7 +75,7 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
         $this->validator->checkFieldsPresence($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['sortOrder', 'labels']);
-        foreach ($item as $field => $data) {
+        foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields)) {
                 throw new ArrayConversionException(
                     sprintf(

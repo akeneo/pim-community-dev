@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
 
 /**
  * Product csv reader

@@ -6,12 +6,31 @@ Feature: Update product history when mass editing products
 
   Background:
     Given a "footwear" catalog configuration
-    And the following products:
-     | sku      | family   |
-     | boots    | boots    |
-     | sneakers | sneakers |
-     | sandals  | sandals  |
     And I am logged in as "Julia"
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | boots |
+      | family | Boots |
+    And I press the "Save" button in the popin
+    And I wait to be on the "boots" product page
+    And I save the product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sneakers |
+      | family | Sneakers |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sneakers" product page
+    And I save the product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sandals |
+      | family | Sandals |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandals" product page
+    And I save the product
     And I am on the products page
     And I mass-edit products boots, sandals and sneakers
 

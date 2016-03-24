@@ -37,7 +37,7 @@ class GroupManager
     /**
      * Get axis as choice list
      *
-     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.5
+     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.6
      *
      * @return array
      */
@@ -59,7 +59,7 @@ class GroupManager
      *
      * @param bool $isVariant
      *
-     * @deprecated not used anymore except in controller which should use the repo, will be removed in 1.5
+     * @deprecated not used anymore except in controller which should use the repo, will be removed in 1.6
      *
      * @return array
      */

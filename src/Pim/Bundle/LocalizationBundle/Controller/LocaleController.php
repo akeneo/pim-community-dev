@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Controller;
 
-use Pim\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

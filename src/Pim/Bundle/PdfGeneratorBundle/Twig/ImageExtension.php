@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * This class manages images from product values to get paths for render in PDF.

@@ -25,7 +25,7 @@ interface FamilyRepositoryInterface extends
      * @param bool   $inset
      * @param mixed  $values
      *
-     * @deprecated will be removed in 1.4
+     * @deprecated will be removed in 1.6
      */
     public function applyMassActionParameters($qb, $inset, $values);
 

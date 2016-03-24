@@ -52,14 +52,6 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsInCategory(CatalogCategoryInterface $category, QueryBuilder $categoryQb = null)
-    {
-        return $this->getItemIdsInCategory($category, $categoryQb);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();

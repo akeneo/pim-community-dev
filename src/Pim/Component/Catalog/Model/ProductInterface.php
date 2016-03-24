@@ -4,11 +4,11 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Component\Catalog\Exception\MissingIdentifierException;
-use Pim\Component\Localization\Model\LocalizableInterface;
 
 /**
  * Product interface
@@ -280,15 +280,6 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function markIndexedValuesOutdated();
-
-    /**
-     * Get all the media of the product
-     *
-     * @deprecated will be removed in 1.4
-     *
-     * @return FileInfoInterface[]
-     */
-    public function getMedia();
 
     /**
      * Get product label

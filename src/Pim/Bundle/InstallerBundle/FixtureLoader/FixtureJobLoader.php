@@ -91,7 +91,7 @@ class FixtureJobLoader
             unset($rawJob['order']);
             $job = $this->processor->process($rawJob);
             $config = $job->getRawConfiguration();
-            $config['filePath'] = sprintf('%s/%s', $this->installerDataPath, $config['filePath']);
+            $config['filePath'] = sprintf('%s%s', $this->installerDataPath, $config['filePath']);
             $job->setRawConfiguration($config);
 
             $this->em->persist($job);
@@ -137,8 +137,8 @@ class FixtureJobLoader
             throw new \RuntimeException('Installer data directory cannot be found.');
         }
 
-        if ('/' !== substr($installerDataDir, -1, 1)) {
-            $installerDataDir .= '/';
+        if (DIRECTORY_SEPARATOR !== substr($installerDataDir, -1, 1)) {
+            $installerDataDir .= DIRECTORY_SEPARATOR;
         }
 
         return $installerDataDir;

@@ -210,14 +210,14 @@ class FilterExtension extends AbstractExtension
     }
 
     /**
-     * Return the category filter config for the given $gridname,
-     * if this $gridname is not filterable by category, return null.
+     * Return the category filter config for the given $gridName,
+     * if this $gridName is not filterable by category, return null.
      *
-     * @param $gridname
+     * @param string $gridName
      *
      * @return array|null
      */
-    protected function getCategoryFilterConfig($gridname)
+    protected function getCategoryFilterConfig($gridName)
     {
         $gridConfigs = [
             'product-grid' => [
@@ -226,7 +226,7 @@ class FilterExtension extends AbstractExtension
             ]
         ];
 
-        return isset($gridConfigs[$gridname]) ? $gridConfigs[$gridname] : null;
+        return isset($gridConfigs[$gridName]) ? $gridConfigs[$gridName] : null;
     }
 
     /**
