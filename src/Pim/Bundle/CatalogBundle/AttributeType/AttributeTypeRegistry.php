@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 /**
  * The attribute type registry

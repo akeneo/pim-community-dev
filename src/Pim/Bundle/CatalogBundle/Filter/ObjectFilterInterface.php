@@ -18,7 +18,7 @@ interface ObjectFilterInterface
      * @param string $type    The type of objects in the collection
      * @param array  $options The filter options
      *
-     * @throws \LogicException If the object is not supported
+     * @throws LogicException If the object is not supported
      *
      * @return bool Does the object should be filtered
      */

@@ -131,6 +131,7 @@ services:
             - '@translator'
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.attribute'
@@ -140,8 +141,6 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.registry.attribute_type'
             - '@pim_catalog.factory.attribute'
-            - '@pim_catalog.factory.attribute_option'
-            - '@pim_catalog.factory.attribute_option_value'
             - %akeneo_measure.measures_config%
 
     pim_enrich.controller.attribute_option:
@@ -153,11 +152,10 @@ services:
             - '@form.factory'
             - '@fos_rest.view_handler'
             - '@pim_catalog.manager.attribute_options_sorter'
-            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.remover.attribute_option'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
 
     pim_enrich.controller.product:
         scope: request
@@ -240,7 +238,7 @@ services:
         class: %pim_enrich.controller.file.class%
         arguments:
             - '@liip_imagine.controller'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@oneup_flysystem.mount_manager'
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,7 +32,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         if ($object->getData() instanceof Collection) {
             $normalized = $this->normalizeCollection($object->getData(), $format, $context);
         } elseif ($object->getData() !== null) {
-            if (AttributeTypes::BACKEND_TYPE_DECIMAL === $object->getAttribute()->getBackendType()) {
+            if (AbstractAttributeType::BACKEND_TYPE_DECIMAL === $object->getAttribute()->getBackendType()) {
                 $normalized = $this->normalizeDecimal($object->getData(), $format, $context);
             } else {
                 $normalized = $this->serializer->normalize($object->getData(), $format, $context);

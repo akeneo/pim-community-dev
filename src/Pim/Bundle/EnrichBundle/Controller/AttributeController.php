@@ -2,18 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -55,6 +55,9 @@ class AttributeController
     /** @var Form */
     protected $attributeForm;
 
+    /** @var AttributeOptionManager */
+    protected $optionManager;
+
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -91,19 +94,14 @@ class AttributeController
     /** @var AttributeFactory */
     protected $factory;
 
-    /** @var SimpleFactoryInterface */
-    protected $optionFactory;
-
-    /** @var SimpleFactoryInterface */
-    protected $optionValueFactory;
-
     /**
      * @param Request                      $request
      * @param RouterInterface              $router
      * @param FormFactoryInterface         $formFactory
-     * @param TranslatorInterface          $translator
+     * @param TranslatorInterface                   $translator
      * @param HandlerInterface             $attributeHandler
      * @param Form                         $attributeForm
+     * @param AttributeOptionManager       $optionManager
      * @param LocaleRepositoryInterface    $localeRepository
      * @param VersionManager               $versionManager
      * @param BulkSaverInterface           $attributeSaver
@@ -113,8 +111,6 @@ class AttributeController
      * @param GroupRepositoryInterface     $groupRepository
      * @param AttributeTypeRegistry        $registry
      * @param AttributeFactory             $factory
-     * @param SimpleFactoryInterface       $optionFactory
-     * @param SimpleFactoryInterface       $optionValueFactory
      * @param array                        $measuresConfig
      */
     public function __construct(
@@ -124,6 +120,7 @@ class AttributeController
         TranslatorInterface $translator,
         HandlerInterface $attributeHandler,
         Form $attributeForm,
+        AttributeOptionManager $optionManager,
         LocaleRepositoryInterface $localeRepository,
         VersionManager $versionManager,
         BulkSaverInterface $attributeSaver,
@@ -133,8 +130,6 @@ class AttributeController
         GroupRepositoryInterface $groupRepository,
         AttributeTypeRegistry $registry,
         AttributeFactory $factory,
-        SimpleFactoryInterface $optionFactory,
-        SimpleFactoryInterface $optionValueFactory,
         $measuresConfig
     ) {
         $this->request             = $request;
@@ -143,6 +138,7 @@ class AttributeController
         $this->translator          = $translator;
         $this->attributeHandler    = $attributeHandler;
         $this->attributeForm       = $attributeForm;
+        $this->optionManager       = $optionManager;
         $this->localeRepository    = $localeRepository;
         $this->versionManager      = $versionManager;
         $this->measuresConfig      = $measuresConfig;
@@ -153,8 +149,6 @@ class AttributeController
         $this->groupRepository     = $groupRepository;
         $this->registry            = $registry;
         $this->factory             = $factory;
-        $this->optionFactory       = $optionFactory;
-        $this->optionValueFactory  = $optionValueFactory;
     }
 
     /**
@@ -297,9 +291,9 @@ class AttributeController
             );
         }
 
-        $option = $this->optionFactory->create();
+        $option = $this->optionManager->createAttributeOption();
 
-        $optionValue = $this->optionValueFactory->create();
+        $optionValue = $this->optionManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);

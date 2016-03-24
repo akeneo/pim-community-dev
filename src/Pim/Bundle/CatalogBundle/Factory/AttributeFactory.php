@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory;
+namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Component\Catalog\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\AttributeType\IdentifierType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -45,13 +46,17 @@ class AttributeFactory
     public function createAttribute($type = null)
     {
         $attribute = new $this->attributeClass();
+
         $attribute->setEntityType($this->productClass);
 
         if (null !== $type && '' !== $type) {
             $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
-            $attribute->setUnique($attributeType->isUnique());
+
+            if ($attributeType instanceof IdentifierType) {
+                $attribute->setUnique(true);
+            }
         }
 
         return $attribute;

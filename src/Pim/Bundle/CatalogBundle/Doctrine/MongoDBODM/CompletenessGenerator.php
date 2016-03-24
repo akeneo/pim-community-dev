@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -326,7 +326,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 
                     if ($shouldExistInLocale) {
-                        if (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                        if (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
                             $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
                             foreach ($channel->getCurrencies() as $currency) {
                                 $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();

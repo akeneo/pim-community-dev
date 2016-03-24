@@ -84,12 +84,4 @@ class IdentifierType extends AbstractAttributeType
     {
         return AttributeTypes::IDENTIFIER;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isUnique()
-    {
-        return true;
-    }
 }
