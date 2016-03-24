@@ -1,0 +1,10 @@
+parameters:
+    akeneo_rule_engine.normalizer.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\RuleDefinitionNormalizer
+
+services:
+    akeneo_rule_engine.normalizer.rule_definition:
+        class: %akeneo_rule_engine.normalizer.rule_definition.class%
+        arguments:
+            - '@pim_catalog.localization.presenter.registry'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

@@ -158,7 +158,7 @@ pimee_enrich:
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
 edit_common_attributes_with_permission: Edit common attributes with permission
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit commmon attributes with permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit common attributes with permission
 
 job_execution.summary:
     mass_published: Product published

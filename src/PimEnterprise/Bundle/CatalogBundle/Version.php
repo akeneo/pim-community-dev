@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.5.0-ALPHA1';
+    const VERSION = '1.6.0-alpha';
 
     /** @staticvar string */
     const VERSION_CODENAME = '';

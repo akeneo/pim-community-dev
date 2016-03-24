@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\Filter;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 
 /**
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
 class FilterExtension extends BaseFilterExtension
@@ -23,9 +24,13 @@ class FilterExtension extends BaseFilterExtension
      *
      * We override this method to add a new grid that can use the category filter
      */
-    protected function getCategoryFilterConfig($gridname)
+    protected function getCategoryFilterConfig($gridName)
     {
         $gridConfigs = [
+            'published-product-grid' => [
+                'type'      => 'published_product_category',
+                'data_name' => 'category'
+            ],
             'asset-grid' => [
                 'type'      => 'asset_category',
                 'data_name' => 'category'
@@ -36,6 +41,6 @@ class FilterExtension extends BaseFilterExtension
             ]
         ];
 
-        return isset($gridConfigs[$gridname]) ? $gridConfigs[$gridname] : parent::getCategoryFilterConfig($gridname);
+        return isset($gridConfigs[$gridName]) ? $gridConfigs[$gridName] : parent::getCategoryFilterConfig($gridName);
     }
 }

@@ -6,7 +6,7 @@ services:
         class: %pimee_catalog_rule.twig.rule_extension.class%
         public: false
         arguments:
-            - @pim_localization.presenter.registry
-            - @pim_localization.resolver.locale
+            - @pim_catalog.localization.presenter.registry
+            - @pim_enrich.resolver.locale
         tags:
             - { name: twig.extension }

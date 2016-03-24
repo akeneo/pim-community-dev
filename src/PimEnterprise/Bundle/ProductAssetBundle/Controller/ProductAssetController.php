@@ -205,7 +205,7 @@ class ProductAssetController extends Controller
         try {
             $this->userContext->getAccessibleUserTree();
         } catch (\LogicException $e) {
-            $this->addFlash('error', 'category.permissions.no_access_to_assets');
+            $this->addFlashMessage('error', 'pimee_product_asset.category.permissions.no_access_to_products');
 
             return $this->redirectToRoute('oro_default');
         }

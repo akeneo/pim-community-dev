@@ -127,6 +127,7 @@ Feature: Enforce no permissions for a category
     And I visit the "Permissions" tab
     And I fill in "Allowed to view products" with "" on the current page
     And I save the category
+    And I should see the flash message "Tree successfully updated"
     Then I should see the "Winter collection" category under the "2014 collection" category
     And I should see the "Summer collection" category under the "2014 collection" category
     And I expand the "2014 collection" category

@@ -17,11 +17,12 @@ Feature: Revert product attributes to a previous version
     | Code | very_wet      |
     | en   | Extremely wet |
     And I save the product
+    And I should see the flash message "Product successfully updated"
     And the history of the product "jean" has been built
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    Then I should see a flash message "Product successfully reverted"
+    Then I should see the flash message "Product successfully restored"
 
   Scenario: Successfully revert a pim_catalog_multiselect attribute
     Given the following product:
@@ -31,6 +32,7 @@ Feature: Revert product attributes to a previous version
     Given I am on the "t-shirt" product page
     And I change the "Weather conditions" to ""
     And I save the product
+    And I should see the flash message "Product successfully updated"
     And the history of the product "t-shirt" has been built
     When I open the history
     Then I should see 2 versions in the history
@@ -42,6 +44,7 @@ Feature: Revert product attributes to a previous version
     Then I add available attributes Weather conditions
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
+    And I should see the flash message "Product successfully updated"
     And the history of the product "marcel" has been built
     When I open the history
     Then I should see 2 versions in the history

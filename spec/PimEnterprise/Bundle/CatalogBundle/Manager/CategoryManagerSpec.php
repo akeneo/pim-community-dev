@@ -91,18 +91,6 @@ class CategoryManagerSpec extends ObjectBehavior
         $this->getAccessibleTrees($user, Attributes::EDIT_ITEMS)->shouldReturn([$firstTree]);
     }
 
-    function it_gets_granted_children(
-        $productCategoryRepo,
-        CategoryInterface $childOne,
-        CategoryInterface $childTwo,
-        $context
-    ) {
-        $productCategoryRepo->getChildrenByParentId(42)->willReturn([$childOne, $childTwo]);
-        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->shouldBeCalled();
-        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->shouldBeCalled();
-        $this->getGrantedChildren(42);
-    }
-
     function it_gets_granted_filled_tree_when_path_is_not_granted(
         $productCategoryRepo,
         CategoryInterface $parent,

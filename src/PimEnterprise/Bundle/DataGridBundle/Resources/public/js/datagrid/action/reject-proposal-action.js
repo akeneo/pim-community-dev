@@ -10,6 +10,8 @@ define(
         'jquery',
         'underscore',
         'oro/mediator',
+        'oro/messenger',
+        'oro/translator',
         'oro/datagrid/ajax-action',
         'pim/form-modal'
     ],
@@ -17,6 +19,8 @@ define(
         $,
         _,
         mediator,
+        messenger,
+        __,
         AjaxAction,
         FormModal
     ) {
@@ -40,9 +44,9 @@ define(
              */
             _handleAjax: function (action) {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.reject_proposal'),
-                    okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
-                    cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
+                    title: __('pimee_enrich.entity.product_draft.modal.reject_proposal'),
+                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    cancelText: __('pimee_enrich.entity.product_draft.modal.cancel')
                 };
 
                 var formModal = new FormModal(
@@ -62,6 +66,11 @@ define(
              * @param product
              */
             _onAjaxSuccess: function (product) {
+                messenger.notificationFlashMessage(
+                    'success',
+                    __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                );
+
                 this.datagrid.collection.fetch();
 
                 mediator.trigger('pim_enrich:form:proposal:post_reject:success', product);
