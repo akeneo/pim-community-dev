@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
+namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;

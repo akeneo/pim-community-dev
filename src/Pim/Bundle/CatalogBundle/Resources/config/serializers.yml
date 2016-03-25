@@ -34,6 +34,7 @@ parameters:
     pim_serializer.denormalizer.attribute_options.class:         Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AttributeOptionsDenormalizer
     pim_serializer.denormalizer.prices.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\PricesDenormalizer
     pim_serializer.denormalizer.metric.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.number.class:                    Pim\Component\Catalog\Denormalizer\Structured\ProductValue\NumberDenormalizer
     pim_serializer.denormalizer.datetime.class:                  Pim\Component\Catalog\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
     pim_serializer.denormalizer.file.class:                      Pim\Component\Catalog\Denormalizer\Structured\ProductValue\FileDenormalizer
     pim_serializer.denormalizer.boolean.class:                   Pim\Component\Catalog\Denormalizer\Structured\ProductValue\BooleanDenormalizer

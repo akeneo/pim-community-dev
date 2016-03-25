@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,7 @@ class NumberDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\NumberDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\Structured\ProductValue\NumberDenormalizer');
     }
 
     function it_is_a_denormalizer()
