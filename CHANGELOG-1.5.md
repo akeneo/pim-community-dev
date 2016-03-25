@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5643: Fix default system locale
+
 # 1.5.1 (2016-03-09)
 
 ## Bug fixes

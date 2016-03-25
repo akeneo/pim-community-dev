@@ -859,8 +859,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iRefrestTheGrid()
     {
-        $this->datagrid->clickOnRefreshButton();
-        $this->wait();
+        $this->spin(function () {
+            $this->getSession()->getPage()->clickLink('Refresh');
+
+            return true;
+        });
     }
 
     /**

@@ -33,7 +33,7 @@ define([
                 FetcherRegistry.getFetcher('ui-locale').fetchAll().then(function (locales) {
                     this.$el.html(this.template({
                         locales: locales,
-                        selected: this.getFormData()['oro_locale___language'].value
+                        selected: this.getFormData()['pim_localization___language'].value
                     }));
 
                     initSelect2.init(this.$('select'));
@@ -52,7 +52,7 @@ define([
              */
             updateModel: function (event) {
                 var data = this.getFormData();
-                data['oro_locale___language'].value = event.target.value;
+                data['pim_localization___language'].value = event.target.value;
                 this.setData(data);
             }
         });
