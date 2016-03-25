@@ -14,6 +14,7 @@ use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
+use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\TreeContext;
@@ -60,16 +61,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
-        $this->useContext('domain-variant-group', new VariantGroupContext());
-        $this->useContext('domain-tree', new TreeContext());
-        $this->useContext('job', new JobContext());
-        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-        $this->useContext('domain-import-profiles', new ImportProfilesContext());
-        $this->useContext('domain-export-profiles', new ExportProfilesContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
-        $this->useContext('domain-panel', new PanelContext());
-        $this->useContext('domain-pagination-grid', new GridPaginationContext());
         $this->useContext('domain-completeness', new CompletenessContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-pagination-grid', new GridPaginationContext());
+        $this->useContext('domain-panel', new PanelContext());
+        $this->useContext('domain-product-association-tab', new AssociationTabContext());
+        $this->useContext('domain-tree', new TreeContext());
+        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('job', new JobContext());
         $this->useContext('storage-product', new ProductStorage());
 
         $this->setTimeout($parameters);

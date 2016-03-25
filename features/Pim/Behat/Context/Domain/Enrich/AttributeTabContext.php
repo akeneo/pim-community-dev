@@ -104,7 +104,7 @@ class AttributeTabContext extends PimContext
         throw $this->getMainContext()->createExpectationException(
             sprintf(
                 'Expected to not see the field "%s".',
-                $field
+                $fieldLabel
             )
         );
     }

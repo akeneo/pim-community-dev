@@ -1,5 +1,5 @@
 <% _.each(associationTypes, function (associationType) { %>
-     <div data-association-type="<%- associationType.code %>" class="tab-pane association-type<% if (associationType.code === state.currentAssociationType) { %> active<% } %>">
+     <div data-association-type="<%- associationType.code %>" class="tab-pane association-type<% if (associationType.code === currentAssociationType) { %> active<% } %>">
         <h3 class="tab-header unspaced">
             <%- associationType.label[locale] || '[' + associationType.code + ']'  %>
             <span class="muted small">

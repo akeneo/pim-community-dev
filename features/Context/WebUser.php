@@ -14,7 +14,6 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
-use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -239,17 +238,6 @@ class WebUser extends RawMinkContext
     public function iClickOnTheACLRole($group)
     {
         $this->getCurrentPage()->selectRole($group);
-    }
-
-    /**
-     * @param string $association
-     *
-     * @Given /^I select the "([^"]*)" association$/
-     */
-    public function iSelectTheAssociation($association)
-    {
-        $this->getCurrentPage()->selectAssociation($association);
-        $this->wait();
     }
 
     /**
