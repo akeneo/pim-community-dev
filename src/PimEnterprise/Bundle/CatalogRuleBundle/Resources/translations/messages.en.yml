@@ -33,6 +33,7 @@ pimee_catalog_rule:
             "BETWEEN": between
             "NOT BETWEEN": not between
             "=": equals
+            "!=": not equal
             ">": greater than
             ">=": equals or greater than
             "<": less than
