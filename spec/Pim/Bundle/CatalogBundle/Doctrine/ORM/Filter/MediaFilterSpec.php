@@ -17,7 +17,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($qb);
 
@@ -44,7 +44,7 @@ class MediaFilterSpec extends ObjectBehavior
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         );
 
         $this->supportsOperator('=')->shouldReturn(true);
@@ -144,6 +144,7 @@ class MediaFilterSpec extends ObjectBehavior
             ->willReturn($qb);
 
         $expr->literal('%foo%')->willReturn('%foo%');
+        $expr->notLike(Argument::any(), '%foo%')->shouldBeCalled();
 
         $qb->innerJoin(
                 Argument::any(),
@@ -211,6 +212,26 @@ class MediaFilterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'NOT EMPTY', null);
+    }
+
+    function it_adds_a_not_equal_filter_on_an_attribute_in_the_query($qb, $expr, $image)
+    {
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($qb);
+
+        $expr->literal('foo')->willReturn('foo');
+        $expr->notLike(Argument::any(), 'foo')
+            ->willReturn('filterMediapicture.originalFilename NOT LIKE "foo"');
+
+        $qb->innerJoin(
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            'filterMediapicture.originalFilename NOT LIKE "foo"'
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($image, '!=', 'foo');
     }
 
     function it_throws_an_exception_if_value_is_not_valid(AttributeInterface $attribute)

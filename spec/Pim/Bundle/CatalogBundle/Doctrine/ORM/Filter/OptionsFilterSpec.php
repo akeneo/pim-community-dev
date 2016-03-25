@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +16,7 @@ class OptionsFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY', 'NOT EMPTY']);
+        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 
@@ -26,7 +27,7 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('EMPTY')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -138,6 +139,68 @@ class OptionsFilterSpec extends ObjectBehavior
         $qb->andWhere('filteroptions_code.option IS NOT NULL')->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_in_filter_to_the_query(
+        $qb,
+        $attrValidatorHelper,
+        AttributeInterface $attribute,
+        EntityManager $em,
+        QueryBuilder $notInQb,
+        Expr $expr,
+        Expr\Func $notInFunc,
+        Expr\Func $inFunc,
+        Expr\Func $whereFunc
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $qb->getRootAlias()->willReturn('r');
+        $expr->notIn(Argument::containingString('filterOoptions_code'), [10, 12])
+            ->shouldBeCalled()
+            ->willReturn($notInFunc);
+        $qb->innerJoin(Argument::cetera())->willReturn($qb);
+
+        $qb->getEntityManager()->willReturn($em);
+        $qb->getRootEntities()->willReturn(['ProductClassName']);
+        $em->createQueryBuilder()->willReturn($notInQb);
+        $notInQb->select(Argument::containingString('.id'))->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->from(
+            'ProductClassName',
+            Argument::any(),
+            Argument::containingString('.id')
+        )->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->getRootAlias()->willReturn('ep');
+        $notInQb->innerJoin(
+            'ep.values',
+            Argument::containingString('filteroptions_code'),
+            'WITH',
+            Argument::any()
+        )->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->innerJoin(
+            Argument::containingString('filteroptions_code'),
+            Argument::containingString('filterOoptions_code')
+        )->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->expr()->willReturn($expr);
+        $expr->in(Argument::containingString('.id'), [10, 12])
+            ->shouldBeCalled()
+            ->willReturn($inFunc);
+        $notInQb->where($inFunc)->shouldBeCalled();
+        $notInQb->getDQL()->willReturn('excluded products DQL');
+
+        $qb->expr()->willReturn($expr);
+        $expr->notIn('r.id', 'excluded products DQL')
+            ->shouldBeCalled()
+            ->willReturn($whereFunc);
+        $qb->andWhere($whereFunc)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT IN', [10, 12], null, null, ['field' => 'options_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)

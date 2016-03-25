@@ -23,7 +23,7 @@ class PriceFilterSpec extends ObjectBehavior
             $attrValidatorHelper,
             $currencyRepository,
             ['pim_catalog_price_collection'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($queryBuilder);
     }
@@ -35,7 +35,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -251,6 +251,50 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'NOT EMPTY', $value);
+    }
+
+    function it_adds_a_not_equal_filter_in_the_query(
+        $attrValidatorHelper,
+        $currencyRepository,
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $currencyLiteral,
+        Expr\Literal $dataLiteral
+    ) {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $value = ['data' => 12, 'currency' => 'EUR'];
+
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $expr->literal('EUR')->willReturn($currencyLiteral);
+        $expr->literal(12)->willReturn($dataLiteral);
+        $expr->eq(Argument::any(), $currencyLiteral)->shouldBeCalled();
+        $expr->neq(Argument::any(), $dataLiteral)->shouldBeCalled()->willReturn($comp);
+        $currencyLiteral->__toString()->willReturn('EUR');
+        $dataLiteral->__toString()->willReturn('12');
+        $comp->__toString()->willReturn('filterPprice.data <> 12');
+
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $queryBuilder->innerJoin(
+            Argument::containingString('.prices'),
+            Argument::containingString('filterPprice'),
+            'WITH',
+            Argument::containingString('filterPprice.data <> 12')
+        )->shouldBeCalled();
+
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+
+        $this->addAttributeFilter($price, '!=', $value);
     }
 
     function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)

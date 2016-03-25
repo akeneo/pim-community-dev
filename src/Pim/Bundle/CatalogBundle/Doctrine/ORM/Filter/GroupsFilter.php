@@ -61,12 +61,10 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
                 );
                 break;
             case Operators::NOT_IN_LIST:
-                $this->qb->andWhere(
-                    $this->qb->expr()->orX(
-                        $this->qb->expr()->notIn($entityAlias . '.id', $value),
-                        $this->qb->expr()->isNull($entityAlias . '.id')
-                    )
-                );
+                $this->qb->andWhere($this->qb->expr()->notIn(
+                    $rootAlias . '.id',
+                    $this->getNotInSubquery(FieldFilterHelper::getCode($field), $value)
+                ));
                 break;
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
@@ -85,6 +83,32 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * Subquery matching all products that actually have one of $value groups
+     *
+     * @param string $field
+     * @param array  $value
+     *
+     * @return string
+     */
+    protected function getNotInSubquery($field, $value)
+    {
+        $notInQb      = $this->qb->getEntityManager()->createQueryBuilder();
+        $rootEntity   = current($this->qb->getRootEntities());
+        $notInAlias   = $this->getUniqueAlias('productsNotIn');
+        $joinAlias    = $this->getUniqueAlias('filter' . $field);
+
+        $notInQb->select($notInAlias . '.id')
+            ->from($rootEntity, $notInAlias, $notInAlias . '.id')
+            ->innerJoin(
+                sprintf('%s.%s', $notInQb->getRootAlias(), $field),
+                $joinAlias
+            )
+            ->where($notInQb->expr()->in($joinAlias . '.id', $value));
+
+        return $notInQb->getDQL();
     }
 
     /**

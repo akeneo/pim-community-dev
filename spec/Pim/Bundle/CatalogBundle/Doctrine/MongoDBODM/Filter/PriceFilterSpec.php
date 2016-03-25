@@ -38,7 +38,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query(
+    function it_adds_an_equals_filter_in_the_query(
         $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
@@ -53,10 +53,34 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->equals(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($price, '=', $value, 'en_US', 'mobile');
+    }
+
+    function it_adds_a_not_equal_filter_in_the_query(
+        $attrValidatorHelper,
+        $currencyRepository,
+        Builder $queryBuilder,
+        AttributeInterface $price
+    ) {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
+        $value = ['data' => 22.5, 'currency' => 'EUR'];
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+
+        $price->getCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(true);
+        $price->isScopable()->willReturn(true);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->exists(true)->shouldBeCalled();
+        $queryBuilder->notEqual(22.5)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, '!=', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_filter_in_the_query(
@@ -74,7 +98,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->gt(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($price, '>', $value, 'en_US', 'mobile');
@@ -95,7 +120,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->gte(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($price, '>=', $value, 'en_US', 'mobile');
@@ -116,7 +142,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->lt(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($price, '<', $value, 'en_US', 'mobile');
@@ -137,7 +164,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->lte(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($price, '<=', $value, 'en_US', 'mobile');
@@ -158,7 +186,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'EMPTY', $value, 'en_US', 'mobile');
@@ -179,7 +208,8 @@ class PriceFilterSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
         $price->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
+
+        $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'NOT EMPTY', $value, 'en_US', 'mobile');
@@ -207,6 +237,12 @@ class PriceFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['data' => 'foo', 'currency' => 'foo'];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'data', 'filter', 'price', 'string')
+        )
+            ->during('addAttributeFilter', [$attribute, '=', $value]);
+
+        $value = ['data' => '42', 'currency' => 'foo'];
         $this->shouldThrow(
             InvalidArgumentException::arrayNumericKeyExpected('price_code', 'data', 'filter', 'price', 'string')
         )

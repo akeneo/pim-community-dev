@@ -31,8 +31,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected $resolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributes
@@ -88,20 +86,20 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
 
-            if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
+            if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($options['field'])) {
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
+            } else {
+                $value = array_map('intval', $value);
             }
-        } else {
-            $value = !is_array($value) ? [$value] : $value;
         }
 
-        $mongoField = sprintf(
-            '%s.%s',
+        $field = sprintf(
+            '%s.%s.id',
             ProductQueryUtility::NORMALIZED_FIELD,
             ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
         );
 
-        $this->applyFilter($value, $operator, $mongoField);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -124,26 +122,26 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param array  $value
-     * @param string $operator
      * @param string $field
+     * @param string $operator
+     * @param mixed  $value
      */
-    protected function applyFilter(array $value, $operator, $field)
+    protected function applyFilter($field, $operator, $value)
     {
-        if (Operators::NOT_IN_LIST === $operator) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            if (Operators::IS_EMPTY === $operator) {
-                $expr = $this->qb->expr()->field($field)->exists(false);
-                $this->qb->addAnd($expr);
-            } elseif (Operators::IS_NOT_EMPTY === $operator) {
-                $expr = $this->qb->expr()->field($field)->exists(true);
-                $this->qb->addAnd($expr);
-            } else {
-                $value = array_map('intval', $value);
-                $expr  = $this->qb->expr()->field($field.'.id')->in($value);
-                $this->qb->addAnd($expr);
-            }
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
         }
     }
 

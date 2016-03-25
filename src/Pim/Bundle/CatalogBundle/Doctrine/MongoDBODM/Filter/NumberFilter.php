@@ -22,8 +22,6 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $supportedAttributes;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedOperators
@@ -59,12 +57,14 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
-        if (!is_numeric($value) && null !== $value) {
+        if (null !== $value &&
+            !is_int($value) &&
+            !is_float($value)
+        ) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         $this->applyFilter($operator, $value, $field);
@@ -90,6 +90,10 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
             case Operators::EQUALS:
                 $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
                 break;
             case Operators::LOWER_THAN:
                 $this->qb->field($field)->lt($value);

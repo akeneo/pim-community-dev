@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -26,8 +27,6 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     protected $supportedFields;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedFields
@@ -84,7 +83,8 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $this->addFieldFilter($field, $operator, $value, $locale, $scope, $options);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -98,10 +98,27 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
             throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
         }
 
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, FieldFilterHelper::getCode($field));
-
-        $this->qb->field($field)->equals($value);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $operator
+     * @param bool   $value
+     */
+    protected function applyFilter($field, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
+                break;
+        }
     }
 }

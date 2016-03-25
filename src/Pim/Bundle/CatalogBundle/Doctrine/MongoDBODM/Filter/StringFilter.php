@@ -81,6 +81,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+
         $this->applyFilter($field, $operator, $value);
 
         return $this;
@@ -95,19 +96,23 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function applyFilter($field, $operator, $value)
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $this->qb->field($field)->exists(false);
-        } elseif (Operators::IS_NOT_EMPTY === $operator) {
-            $this->qb->addAnd(
-                $this->qb->expr()->field($field)->exists(true),
-                $this->qb->expr()->field($field)->notEqual('')
-            );
-        } elseif (Operators::IN_LIST === $operator) {
-            $this->qb->field($field)->in($value);
-        } else {
-            $value = $this->prepareValue($operator, $value);
-
-            $this->qb->field($field)->equals($value);
+        switch ($operator) {
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
+                break;
+            default:
+                $value = $this->prepareValue($operator, $value);
+                $this->qb->field($field)->equals($value);
         }
     }
 
@@ -133,8 +138,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
-                break;
-            default:
                 break;
         }
 

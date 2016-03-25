@@ -21,3 +21,4 @@ Feature: Filter on price attributes
       | [{"field":"number_in_stock", "operator":">",         "value": 35   }] | ["BOOTBS"]                                  |
       | [{"field":"number_in_stock", "operator":"EMPTY",     "value": null }] | ["BOOTRXS"]                                 |
       | [{"field":"number_in_stock", "operator":"NOT EMPTY", "value": null }] | ["BOOTBXS" , "BOOTWXS", "BOOTBS", "BOOTBL"] |
+      | [{"field":"number_in_stock", "operator":"!=",        "value": 12   }] | ["BOOTWXS", "BOOTBS", "BOOTBL"]             |

@@ -30,8 +30,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $supportedAttributes;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
      * @param MeasureConverter         $measureConverter
@@ -79,10 +77,9 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $fieldData = sprintf('%s.baseData', $field);
+        $field = sprintf('%s.%s.baseData', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->applyFilter($operator, $fieldData, $value);
+        $this->applyFilter($operator, $field, $value);
 
         return $this;
     }
@@ -97,6 +94,13 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function applyFilter($operator, $fieldData, $data)
     {
         switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($fieldData)->equals($data);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($fieldData)->exists(true);
+                $this->qb->field($fieldData)->notEqual($data);
+                break;
             case Operators::LOWER_THAN:
                 $this->qb->field($fieldData)->lt($data);
                 break;
@@ -115,8 +119,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             case Operators::IS_NOT_EMPTY:
                 $this->qb->field($fieldData)->exists(true);
                 break;
-            default:
-                $this->qb->field($fieldData)->equals($data);
         }
     }
 
@@ -152,7 +154,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
+        if (null !== $data['data'] && !is_int($data['data']) && !is_float($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',

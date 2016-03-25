@@ -25,7 +25,7 @@ class MetricFilterSpec extends ObjectBehavior
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
-            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+            ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($qb);
     }
@@ -37,7 +37,7 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

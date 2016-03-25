@@ -114,18 +114,6 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
 
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.entities_type:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.entities_type
-
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository
-
-    # deprecated: will be removed in 1.6
-    pim_catalog.event_subscriber.mongodb.entity_type:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.entity_type
-
     # Normalizers from Object to MongoDB normalizedData
     pim_catalog.mongodb.normalizer.normalized_data.product:
         class: %pim_catalog.mongodb.normalizer.normalized_data.product.class%
@@ -461,24 +449,6 @@ services:
             - '@pim_catalog.repository.association_type'
         tags:
             - { name: kernel.event_subscriber }
-
-    # PQB filters
-    pim_catalog.doctrine.query.filter.family:
-        class: %pim_catalog.doctrine.query.filter.family.class%
-        arguments:
-            - ['family.id', 'family.code']
-            - ['IN', 'NOT IN' ,'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.groups:
-        class: %pim_catalog.doctrine.query.filter.groups.class%
-        arguments:
-            - ['groups.id', 'groups.code']
-            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
 
     pim_catalog.factory.product_cursor:
         class: %pim_catalog.doctrine.cursor_factory.product.class%

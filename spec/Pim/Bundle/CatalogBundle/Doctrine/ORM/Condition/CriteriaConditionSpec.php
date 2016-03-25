@@ -132,11 +132,11 @@ class CriteriaConditionSpec extends ObjectBehavior
         $this->prepareCriteriaCondition('my_field', 'NOT IN', ['my_value1', 'my_value2']);
     }
 
-    function it_processes_a_not_like_criteria($qb, Expr $expr, Expr\Literal $literal)
+    function it_processes_a_not_like_criteria($qb, Expr $expr, Expr\Comparison $comp, Expr\Literal $literal)
     {
-        $literal->__toString()->willReturn('');
         $qb->expr()->shouldBeCalled()->willReturn($expr);
         $expr->literal('my_value')->shouldBeCalled()->willReturn($literal);
+        $expr->notLike('my_field', $literal)->shouldBeCalled()->willReturn($comp);
 
         $this->prepareCriteriaCondition('my_field', 'NOT LIKE', 'my_value');
     }

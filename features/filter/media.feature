@@ -28,3 +28,4 @@ Feature: Filter on media attributes
       | [{"field":"side_view", "operator":"=",                "value": "SNKRS-1R.png", "locale": "en_US"}] | ["BOOTBXS"]                      |
       | [{"field":"side_view", "operator":"EMPTY",            "value": null,           "locale": "en_US"}] | ["BOOTBL", "BOOTBXL"]            |
       | [{"field":"side_view", "operator":"NOT EMPTY",        "value": null,           "locale": "en_US"}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"] |
+      | [{"field":"side_view", "operator":"!=",               "value": "SNKRS-1R.png", "locale": "en_US"}] | ["BOOTWXS", "BOOTBS"]            |
