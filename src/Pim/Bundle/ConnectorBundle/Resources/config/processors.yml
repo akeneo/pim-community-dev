@@ -71,7 +71,7 @@ services:
             - '@pim_connector.array_converter.flat.product_association'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@pim_catalog.comparator.filter.product_association'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
@@ -82,7 +82,7 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.variant_group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
 
     pim_connector.processor.denormalization.group.flat:
         class: %pim_connector.processor.denormalization.group.class%
@@ -91,7 +91,7 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - %pim_catalog.entity.group.class%
 
     pim_connector.processor.denormalization.category.flat:
@@ -101,7 +101,7 @@ services:
             - '@pim_connector.array_converter.flat.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.family.flat:
@@ -111,7 +111,7 @@ services:
             - '@pim_connector.array_converter.flat.family'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.updater.family'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.channel.flat:
@@ -121,7 +121,7 @@ services:
             - '@pim_connector.array_converter.flat.channel'
             - '@pim_catalog.factory.channel'
             - '@pim_catalog.updater.channel'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.locale.flat:
@@ -131,7 +131,7 @@ services:
             - '@pim_connector.array_converter.flat.locale'
             - '@pim_catalog.factory.locale'
             - '@pim_catalog.updater.locale'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.attribute_group.flat:
@@ -141,7 +141,7 @@ services:
             - '@pim_connector.array_converter.flat.attribute_group'
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.updater.attribute_group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.group_type.flat:
@@ -151,7 +151,7 @@ services:
             - '@pim_connector.array_converter.flat.group_type'
             - '@pim_catalog.factory.group_type'
             - '@pim_catalog.updater.group_type'
-            - '@pim_catalog.validator.product'
+            - '@validator'
 
     pim_connector.processor.denormalization.currency.flat:
         class: %pim_connector.processor.denormalization.currency.class%
@@ -160,7 +160,7 @@ services:
             - '@pim_connector.array_converter.flat.currency'
             - '@pim_catalog.factory.currency'
             - '@pim_catalog.updater.currency'
-            - '@pim_catalog.validator.product'
+            - '@validator'
 
     pim_connector.processor.denormalization.user.flat:
         class: %pim_connector.processor.denormalization.simple.class%
@@ -169,7 +169,7 @@ services:
             - '@pim_connector.array_converter.flat.user'
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_group.flat:
@@ -179,7 +179,7 @@ services:
             - '@pim_connector.array_converter.flat.user_group'
             - '@pim_user.factory.group'
             - '@pim_user.updater.group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_role.flat:
@@ -189,5 +189,5 @@ services:
             - '@pim_connector.array_converter.flat.user_role'
             - '@pim_user.factory.role'
             - '@pim_user.updater.role'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'

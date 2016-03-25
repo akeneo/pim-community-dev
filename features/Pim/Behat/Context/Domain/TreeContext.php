@@ -98,9 +98,7 @@ class TreeContext extends PimContext
      */
     public function iClickOnTheNode($right, $node)
     {
-        $node = $this->getCurrentPage()
-            ->getElement('Category tree')
-            ->findNodeInTree($node);
+        $node = $this->getCurrentPage()->getCategoryTree()->findNodeInTree($node);
 
         if ($right) {
             $node->rightClick();
