@@ -1,7 +1,7 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Ninguna operación encontrada
+      empty: Ninguna operacione encontrada
       status: Estado
       date: Fecha
       type: Tipo
