@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_workflow.processor.denormalization.product_draft.flat:
-        class: %pimee_base_connector.processor.denormalization.product_draft.class%
+        class: %pimee_workflow.processor.denormalization.product_draft.class%
         arguments:
             - '@pimee_base_connector.array_converter.flat.product_draft'
             - '@pim_catalog.repository.product'
