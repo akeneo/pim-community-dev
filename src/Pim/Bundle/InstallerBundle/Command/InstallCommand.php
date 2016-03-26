@@ -9,6 +9,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\InstallerBundle\Event\InstallEvents;
+use Pim\Bundle\InstallerBundle\Event\InstallEvent;
 
 /**
  * Installer command to add PIM custom rules
@@ -24,6 +27,9 @@ class InstallCommand extends ContainerAwareCommand
 
     /** @var CommandExecutor */
     protected $commandExecutor;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
@@ -46,6 +52,7 @@ class InstallCommand extends ContainerAwareCommand
             $output,
             $this->getApplication()
         );
+        $this->eventDispatcher = $this->getContainer()->get("event_dispatcher");
     }
 
     /**
@@ -53,6 +60,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->eventDispatcher->dispatch(InstallEvents::PRE_INSTALL, new InstallEvent());
         $forceInstall = $input->getOption('force');
         // if there is application is not installed or no --force option
         if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
@@ -87,6 +95,8 @@ class InstallCommand extends ContainerAwareCommand
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
+
+        $this->eventDispatcher->dispatch(InstallEvents::POST_INSTALL, new InstallEvent());
 
         return 0;
     }

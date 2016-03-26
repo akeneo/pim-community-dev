@@ -1,5 +1,4 @@
 <?php
-
 namespace Pim\Bundle\InstallerBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
