@@ -1,5 +1,5 @@
 <?php
-namespace Erp\Bundle\InstallerBundle\Command;
+namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\Event\CommandBatchEvent;
 use Pim\Bundle\InstallerBundle\Event\CommandEvent;
