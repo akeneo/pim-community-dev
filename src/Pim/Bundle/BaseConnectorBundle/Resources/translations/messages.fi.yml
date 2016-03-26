@@ -18,12 +18,6 @@ pim_base_connector:
     csv_group_export:
       title: Ryhmän vienti CSV-muodossa
       export.title: Ryhmän vienti
-    csv_variant_group_export:
-      title: Muuttujaryhmien vienti CSV-muodossa
-      export.title: Muutujaryhmien vienti
-    csv_family_export:
-      title: Ryhmän tuonti CSV-tiedostona
-      export.title: Ryhmän vienti
     csv_product_import:
       title: Tuotteiden tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
@@ -49,10 +43,6 @@ pim_base_connector:
       title: Ryhmien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
       import.title: Ryhmien tuonti
-    csv_variant_group_import:
-      title: Muuttujaryhmien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Muutujaryhmien tuonti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto
@@ -62,13 +52,10 @@ pim_base_connector:
       invalid_item_columns_count: 'Odotit %totalColumnsCount% saraketta, sinulla on %itemColumnsCount% %csvPath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
-    csv_variant_group .title: CSV variant ryhmän lukija
     dummy_processor.title: Malliprosessori
     product_processor.title: Tuotteen luominen
-    variant_group_processor.title: Malliryhmän luonti / päivitys
     category_processor.title: Kategorian luominen
     association_processor.title: Assosiaation luominen
-    product_association_processor.title: Assosiaation luominen
     group_processor.title: Ryhmän perustaminen
     attribute_processor.title: Attribuutin luominen
     attribute_option_processor.title: Attribuutin vaihtoehdon luominen
@@ -79,7 +66,6 @@ pim_base_connector:
     file_writer.title: Ulostulo
     product_writer.title: Tuotteen varastointi
     category_writer.title: Luokan varastointi
-    variant_group_writer.title: Variant ryhmän tallennus
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
   export:
@@ -98,12 +84,6 @@ pim_base_connector:
     channel:
       label: Kanava
       help: Kanava, jonka haluat viedä
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Määritä desimaalierotin
-    dateFormat:
-      label: Päivämäärän muoto
-      help: Määritä päivämääräkenttien formaatti
   import:
     enabled:
       label: Enabloi tuote
@@ -119,10 +99,6 @@ pim_base_connector:
       help: Ryhmäsarakkeen nimi
     filePath:
       label: Tiedosto
-      help: Tuotava CSV-tiedosto
-    yamlFilePath:
-      label: Tiedosto
-      help: YAML tiedosto joka tuodaan
     uploadAllowed:
       label: Salli tiedoston tuonti
       help: Sallitaanko tiedoston suora lataus järjestelmään
@@ -141,6 +117,3 @@ pim_base_connector:
     realTimeVersioning:
       label: Reaaliaikainen historiapäivitys
       help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
-    copyValuesToProducts:
-      label: Kopioi variant-ryhmien arvot tuotteisiin
-      help: Tarkoittaa että tuotteet päivitetään automaattisesti variant-ryhmien arvojen mukaan, voidaan ottaa poistaa päältä vain variant-ryhmän päivittämiseksi
