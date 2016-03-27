@@ -1,0 +1,11 @@
+pim_enrich:
+  mass_edit_action:
+    published_product:
+      page_title: Опубликованные продукты
+pim_enrich.mass_edit_action:
+  product:
+    page_title: Продукты
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Предложения

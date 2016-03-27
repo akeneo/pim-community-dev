@@ -1,0 +1,6 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Дата
+      author: Автор
+      product: Продукт

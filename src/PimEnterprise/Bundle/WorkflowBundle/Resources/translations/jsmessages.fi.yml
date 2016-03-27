@@ -1,19 +1,3 @@
 View the product: Katso tuotte
 Unpublish the product: Ota tuote pois julkaisusta
 Approve: Hyväksy
-Refuse: Hylkää
-Approve selected: Hyväksy valitut
-Refuse selected: Hylkää valitut
-pimee_workflow:
-  entity:
-    published_product:
-      btn:
-        original_product: Muokkaa työstämääsi kopiota
-    proposal:
-      modal.title: 'Jätä kommentti (valinnainen - 255 merkkiä max.)'
-  proposal:
-    partial_accept:
-      modal.title: Hyväksy osittaisia tietoja
-      modal.label: Jätä kommentti (valinnainen)
-      modal.error: Virhe, ehdotusta ei ole hyväksytty osittain
-      modal.success: Ehdotus on osittain vahvistettu onnistuneesti
