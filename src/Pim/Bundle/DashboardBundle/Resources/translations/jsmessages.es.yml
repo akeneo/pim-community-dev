@@ -1,7 +1,7 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Ninguna operación encontrada
+      empty: Ninguna operacione encontrada
       status: Estado
       date: Fecha
       type: Tipo
@@ -10,5 +10,3 @@ pim_dashboard:
       job_type:
         import: Importar
         export: Exportar
-        mass_edit: Edición en masa
-        quick_export: Exportación rápida

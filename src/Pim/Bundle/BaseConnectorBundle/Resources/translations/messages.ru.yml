@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Экспорт групп вариантов в CSV
       export.title: Экспорт групп вариантов
-    csv_family_export:
-      title: Экспорт семейств в CSV
-      export.title: Экспорт семейств
     csv_product_import:
       title: Импорт продуктов из CSV
       validation.title: Подтверждение файла
@@ -31,15 +28,15 @@ pim_base_connector:
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
       title: Импорт выборов атрибутов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт выборов атрибутов
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
@@ -47,11 +44,11 @@ pim_base_connector:
       import.title: Импорт типов ассоциаций
     csv_group_import:
       title: Импорт группы из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт группы
     csv_variant_group_import:
       title: Импорт группы вариантов в CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
@@ -68,7 +65,6 @@ pim_base_connector:
     variant_group_processor.title: Создание / обновление группы вариантов
     category_processor.title: Создание категории
     association_processor.title: Создание ассоциации
-    product_association_processor.title: Создание ассоциации
     group_processor.title: Создание группы
     attribute_processor.title: Создание атрибутов
     attribute_option_processor.title: Создание выборов атрибутов
@@ -98,12 +94,6 @@ pim_base_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
-    decimalSeparator:
-      label: Десятичный разделитель
-      help: Введите десятичный разделитель
-    dateFormat:
-      label: Формат даты
-      help: Введите формат даты
   import:
     enabled:
       label: Активировать продукт
@@ -131,7 +121,7 @@ pim_base_connector:
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления полей
+      help: Символ, используемый для обрамления поля
     escape:
       label: Экранирование
       help: Символ, используемый для экранирования
