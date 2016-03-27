@@ -23,7 +23,7 @@ pimee_workflow:
     action:
       approve: Aprobar todos
       refuse: Rechazar todos
-      remove: Eliminar
+      remove: Quitar
       partial_approve: 'Aprobar cambios en atributo %attribute% de el producto %product%'
       partial_reject: 'Rechazar cambios en atributo %attribute% del producto %product%'
     notification:
@@ -66,14 +66,14 @@ pimee_workflow:
       title: Importación de propuesta de producto en CSV
       import.title: Importación de propuesta de producto
     approve_product_draft:
-      title: Aprobar propuesta
-      perform.title: Aprobar propuesta
+      title: Aprobar la propuesta
+      perform.title: Aprobar la propuesta
     refuse_product_draft:
       title: Rechazar propuesta
-      perform.title: Rechazar propuestas
+      perform.title: Rechazar propuesta
   steps:
     product_draft_processor.title: Procesador de propuesta
-    approve.title: Aprobar la proposición
+    approve.title: Aprobar la propuesta
     refuse.title: Rechazar la proposición
 pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
 pimee_workflow_import_notification_new_proposals: Nuevas propuestas provenientes de una importación
@@ -81,6 +81,7 @@ btn.publish: Publicar
 btn.unpublish: Despublicar
 pimee_workflow_product_draft_notification_partial_approve: Propuesta aprobada parcialmente
 pimee_workflow_product_draft_notification_partial_reject: Propuesta parcialmente rechazada
+pimee_workflow_product_draft_notification_partial_remove: Propuesta parcialmente rechazada
 pimee_workflow_product_draft_notification_approve: Propuesta aprobada
 pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
 pimee_workflow_product_draft_notification_remove: Propuesta eliminada
@@ -95,7 +96,7 @@ flash:
     refuse:
       success: La propuesta ha sido rechazada.
     remove:
-      success: La propuesta ha sido removida.
+      success: La propuesta ha sido eliminada.
 pim_menu:
   item:
     published_product: Productos publicados

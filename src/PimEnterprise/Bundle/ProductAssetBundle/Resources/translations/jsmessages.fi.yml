@@ -9,7 +9,7 @@ pimee_product_asset:
             empty_basket: Kori on tyhjä
         manage_asset:
           title: Hallinnoi resursseja
-          cancel: Keskeytä
+          cancel: Peruuta
           confirm: Vahvista
   enrich_asset:
     grid:
@@ -26,10 +26,10 @@ pimee_product_asset:
     menu: Tuo resursseja
     btn:
       add_files: Lisää tiedostoja
-      cancel: Peruuta lataaminen
+      cancel: Keskeytä tuonti
       delete: Poista
       schedule: Aikataulu
-      start: Aloita lataus
+      start: Aloita tuonti
     success:
       new: Uusi resurssi luodaan
       scheduled: Resurssin käsittelyä varten aikataulutetut tiedostot
@@ -37,11 +37,11 @@ pimee_product_asset:
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
-      upload: Virhe tapahtui tuonnin yhteydessä
+      upload: Tuonnin yhteydessä tapahtui virhe
       delete: Tiedostoa ei voida poistaa palvelimelta
       schedule: Tuonnin prosessoinnin aikataulutuksen yhteydessä tapahtui virhe
       filename: Resurssin tiedostonimi ei ole pätevä
-      code: Resurssin koodiformaatti ei ole pätevä
+      code: Vääränmuotoinen koodi resurssille
       locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       exists: Samanniminen tiedosto on jo aikataulutettu tuotavaksi

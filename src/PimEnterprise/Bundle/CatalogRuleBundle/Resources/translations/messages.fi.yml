@@ -1,4 +1,27 @@
 pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Poista
+      title: Säännöt
+      column:
+        code: Koodi
+        conditions: Ehto
+        actions: Toimi
+  condition:
+    operators:
+      STARTS WITH: alkaa
+      ENDS WITH: päättyy
+      CONTAINS: sisältää
+      DOES NOT CONTAIN: ei sisällä
+      BETWEEN: välillä
+      NOT BETWEEN: ei välillä
+      <: pienempi kuin
+  acl_group:
+    rule: Säännöt
+  acl:
+    rule:
+      view_permissions: Näytä säännöt
   attribute:
     tab:
       rule.title: Säännöt
@@ -10,7 +33,7 @@ pimee_catalog_rule:
     tooltip:
       product_attribute_affected_by_a_rule.content: 'Tämän attribuutin arvo voi tulla säännöistä <strong>%rule%</strong>. Tämä tarkoittaa, että mikäli säännön ehdot ovat päteviä, muutoksesi ohitetaan.'
       variant_attribute_affected_by_a_rule.content: 'Varianttiryhmän attribuuteilla on prioriteetti tuotteen attribuuteissa. Tämä tarkoittaa, että jokainen attributti tässä varianttiryhmässä tulee ohittamaan vastaavan arvon sen sisältämissä tuotteissa. Sääntöjä <strong>%rule%</strong> ei käytetä tuotteissa.'
-      loading.title: Lataa...
+      loading.title: Ladataan...
     history: 'Otettu käyttöön sääntö "%rule%"'
   product_value:
     tooltip:

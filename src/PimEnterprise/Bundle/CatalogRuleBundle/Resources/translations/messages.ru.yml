@@ -1,0 +1,14 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Удалить
+      column:
+        code: Код
+        actions: Действие
+  attribute:
+    grid:
+      is_smart.label: Smart
+  product:
+    tooltip:
+      loading.title: Загрузка...
