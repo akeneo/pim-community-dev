@@ -4,6 +4,6 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Revue
+      review: Relire
       empty: Aucune proposition à revoir
       view_all: Tout voir

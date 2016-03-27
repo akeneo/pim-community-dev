@@ -17,7 +17,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Löschen bestätigen
+        title: Löschbestätigung
         message: Sind Sie sicher, dass Sie dieses Element löschen möchten?
       reset:
         title: Variationen zurücksetzen

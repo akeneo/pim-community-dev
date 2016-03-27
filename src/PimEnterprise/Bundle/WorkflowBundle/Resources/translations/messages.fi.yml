@@ -1,6 +1,6 @@
 pimee_workflow:
   product_draft:
-    author: Kirjoittaja
+    author: Tekijä
     created: Ehdotettu
     changes: Muutokset
     locale: Lokaation konteksti
@@ -52,9 +52,10 @@ pimee_workflow:
       perform.title: Hyväksy ehdotus
     refuse_product_draft:
       title: Hylkää ehdotus
-      perform.title: Hylkää ehdotukset
+      perform.title: Hylkää ehdotus
   steps:
     product_draft_processor.title: Ehdotuksen prosessori
+    approve.title: Hyväksy ehdotus
 pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
 pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
 btn.publish: Julkaise
@@ -94,7 +95,7 @@ confirmation:
     publish: Oletko varma, että haluat julkaista tämän tuotteen?
     unpublish: 'Oletko varma, että haluat muuttaa tuotteen tilan tilaan "Julkaisematon"?'
 proposal.overview: Ehdotukset
-Attributes.title: Ominaisuudet
+Attributes.title: Attribuutit
 Completeness.title: Valmistumisaste
 publish_product.steps.publish_product_tasklet.title: Julkaise tuote
 unpublish_product.steps.unpublish_product_tasklet.title: 'Muuta tuote tilaan "Julkaisematon"'
@@ -110,4 +111,4 @@ job_execution.summary:
   proposal_updated: ehdotus päivitetty
   proposal_created: ehdotus luotu
   proposal_skipped: ehdotus ohitettu (ei eroja)
-published products: Julkaistu tuote
+published products: Julkaistut tuotteet

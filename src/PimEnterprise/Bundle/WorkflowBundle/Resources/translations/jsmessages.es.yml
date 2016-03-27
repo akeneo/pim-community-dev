@@ -29,12 +29,12 @@ pimee_workflow:
     partial_approve:
       modal:
         title: Aprobar los cambios parciales
-        label: Dejar un comentario (opcional)
-        error: Ha ocurrido un error, la propuesta no ha sido aprobada parcialmente
+        label: Hacer un comentario (opcional)
+        error: Ha ocurrido un error, la propuesta no sido aprobada parcialmente
         success: Los cambios han sido aprobados con éxito
     partial_reject:
       modal:
         title: Cambios rechazados parcialmente
-        label: Dejar un comentario (opcional)
+        label: Hacer un comentario (opcional)
         error: Ha ocurrido un error, la propuesta no ha sido rechazada parcialmente
         success: Los cambios han sido rechazados con éxito

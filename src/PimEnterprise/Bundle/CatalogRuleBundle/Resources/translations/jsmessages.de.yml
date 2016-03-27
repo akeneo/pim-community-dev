@@ -12,8 +12,8 @@ pimee_catalog_rule:
       then.label: dann
       set_value.label: ist gesetzt in
       copy_value.label: ist kopiert in
-      set.label: wird gesetzt in
-      copy.label: wird kopiert nach
+      set.label: ist gesetzt in
+      copy.label: ist kopiert in
       add.label: wird hinzugefügt zu
 confirmation:
   remove:

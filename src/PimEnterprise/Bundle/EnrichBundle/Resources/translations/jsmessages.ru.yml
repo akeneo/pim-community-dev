@@ -1,0 +1,27 @@
+View the product: Посмотреть продукт
+pimee_enrich:
+  entity:
+    product:
+      btn:
+        publish: Опубликовать
+        unpublish: Снять с публикации
+      meta:
+        draft:
+          in_progress: В процессе
+          sent_for_approval: В ожидании утверждения
+          working_copy: Рабочая копия
+      tab:
+        proposals:
+          title: Предложения
+          messages:
+            approve:
+              success: Предложение было успешно применено.
+            reject:
+              success: Это предложение было отклонено.
+      copy:
+        source:
+          working_copy: Рабочая копия
+    product_draft:
+      modal:
+        reject_proposal: Отклонить предложение
+        cancel: Отмена

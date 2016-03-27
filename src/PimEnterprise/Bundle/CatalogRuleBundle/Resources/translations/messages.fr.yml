@@ -29,12 +29,12 @@ pimee_catalog_rule:
       NOT IN CHILDREN: "n'est pas dans les enfants"
       UNCLASSIFIED: "n'est pas catégorisé"
       IN OR UNCLASSIFIED: "n'est pas catégorisé ou est dans"
-      BETWEEN: est entre
-      NOT BETWEEN: "n'est pas entre"
+      BETWEEN: entre
+      NOT BETWEEN: pas entre
       =: égale
       >: est supérieur à
       >=: est supérieur ou égal à
-      <: est inférieur à
+      <: moins de
       <=: est inférieur ou égal à
   acl_group:
     rule: Règles
