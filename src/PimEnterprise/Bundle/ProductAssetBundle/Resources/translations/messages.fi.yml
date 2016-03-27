@@ -120,6 +120,7 @@ pimee_product_asset:
     yml_asset_configuration_export.title: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
     csv_asset_category_export.title: Resurssikategorioiden vienti csv-muodossa
     yml_asset_channel_configuration_import.title: Resurssikanavien konfiguraation tuonti Yaml muodossa
+    assets_mass_upload.title: Resurssien massatuonti
   steps:
     channel_configuration.processor.title: Prosessikanavien konfiguraatiot
   notAvailable:

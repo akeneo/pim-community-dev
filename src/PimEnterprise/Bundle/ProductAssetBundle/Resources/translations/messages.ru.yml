@@ -1,0 +1,17 @@
+pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: Удалить
+    view:
+      code: Код
+  popin.create:
+    is_localized: Локализуемые
+  code:
+    label: Код
+  status:
+    label: Статус
+  createdAt:
+    label: Создано
+  tabs:
+    properties.title: Свойства
+    categories.title: Категории

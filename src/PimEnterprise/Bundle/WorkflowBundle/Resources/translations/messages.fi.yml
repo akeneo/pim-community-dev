@@ -53,8 +53,11 @@ pimee_workflow:
     refuse_product_draft:
       title: Hylkää ehdotus
       perform.title: Hylkää ehdotukset
+    xlsx_published_product_export:
+      export.title: Julkaistun tuotteen vienti
   steps:
     product_draft_processor.title: Ehdotuksen prosessori
+    approve.title: Hyväksy ehdotus
 pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
 pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
 btn.publish: Julkaise

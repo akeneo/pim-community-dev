@@ -143,6 +143,7 @@ pimee_enrich:
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
 edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuutteja
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Muokkaa yleisiä luvanvaraisia attribuutteja
 job_execution.summary:
   mass_published: Tuote julkaistu
   mass_unpublished: Tuote ei julkaistu

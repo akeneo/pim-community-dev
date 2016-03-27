@@ -20,6 +20,7 @@ pimee_workflow:
       can_be_partially_reviewed: "Vous ne pouvez examiner cette proposition que partiellement car certains changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
       can_not_be_approved: "Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
       can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
+      in_progress: "Cette proposition est actuellement en cours et n'a pas encore été soumise."
     action:
       approve: Tout approuver
       refuse: Tout rejeter
@@ -31,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% a accepté les valeurs de %attributes_count% attributs, pour le produit %product%'
       partial_reject: '%owner% a rejeté la(les) valeur(s) sur %attributes%, pour le produit %product%'
       partial_reject_number: '%owner% a refusé les valeurs de %attributes_count% attributs, pour le produit %product%'
+      partial_remove: '%owner% a supprimé la(les) valeur(s) sur %attributes%, pour le produit %product%'
+      partial_remove_number: '%owner% a supprimé les valeurs de %attributes_count% attributs pour le produit %product%'
       approve: '%owner% a accepté votre proposition pour le produit %product%'
       refuse: '%owner% a rejeté votre proposition pour le produit %product%'
       remove: '%owner% a supprimé votre proposition pour le produit %product%'
@@ -71,6 +74,9 @@ pimee_workflow:
     refuse_product_draft:
       title: Rejeter les propositions
       perform.title: Rejeter les propositions
+    xlsx_published_product_export:
+      title: Export des produits publiés en XLSX
+      export.title: Export des produits publiés
   steps:
     product_draft_processor.title: Processeur de proposition
     approve.title: Approuver la proposition
@@ -81,6 +87,7 @@ btn.publish: Publier
 btn.unpublish: Dépublier
 pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
 pimee_workflow_product_draft_notification_partial_reject: Proposition partiellement rejetée
+pimee_workflow_product_draft_notification_partial_remove: Proposition partiellement supprimée
 pimee_workflow_product_draft_notification_approve: Proposition approuvée
 pimee_workflow_product_draft_notification_refuse: Proposition rejetée
 pimee_workflow_product_draft_notification_remove: Proposition supprimée

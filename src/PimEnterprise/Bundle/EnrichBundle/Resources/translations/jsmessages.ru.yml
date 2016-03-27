@@ -1,0 +1,20 @@
+pimee_enrich:
+  entity:
+    product:
+      meta:
+        draft:
+          in_progress: В процессе
+          sent_for_approval: В ожидании утверждения
+          working_copy: Рабочая копия
+      tab:
+        proposals:
+          title: Предложения
+          messages:
+            approve:
+              success: Предложение было успешно применено.
+            reject:
+              success: Это предложение было отклонено.
+    product_draft:
+      modal:
+        reject_proposal: Отклонить предложение
+        cancel: Отмена

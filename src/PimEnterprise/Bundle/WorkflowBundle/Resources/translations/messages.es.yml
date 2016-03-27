@@ -71,6 +71,9 @@ pimee_workflow:
     refuse_product_draft:
       title: Rechazar propuesta
       perform.title: Rechazar propuestas
+    xlsx_published_product_export:
+      title: Exportar productos publicados en XLSX
+      export.title: Exportar productos publicados
   steps:
     product_draft_processor.title: Procesador de propuesta
     approve.title: Aprobar la proposición
@@ -81,6 +84,7 @@ btn.publish: Publicar
 btn.unpublish: Despublicar
 pimee_workflow_product_draft_notification_partial_approve: Propuesta aprobada parcialmente
 pimee_workflow_product_draft_notification_partial_reject: Propuesta parcialmente rechazada
+pimee_workflow_product_draft_notification_partial_remove: Propuesta parcialmente rechazada
 pimee_workflow_product_draft_notification_approve: Propuesta aprobada
 pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
 pimee_workflow_product_draft_notification_remove: Propuesta eliminada

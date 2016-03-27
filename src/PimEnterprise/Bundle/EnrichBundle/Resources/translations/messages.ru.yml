@@ -1,0 +1,9 @@
+pimee_enrich:
+  asset_transformation:
+    title:
+      transformation: Преобразование
+      options: Параметры
+job_execution.summary:
+  mass_published: Продукт опубликован
+  mass_unpublished: Продукт снят с публикации
+  proposal: Предложение создано
