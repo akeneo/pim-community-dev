@@ -54,6 +54,8 @@ pim_connector:
       title: Muuttujaryhmien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
       import.title: Muuttujaryhmien tuonti
+    xlsx_product_export:
+      export.title: Tuotteiden vienti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto

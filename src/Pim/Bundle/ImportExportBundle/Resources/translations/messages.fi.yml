@@ -13,7 +13,6 @@ pim_import_export:
     7: HYLÄTTY
     8: TUNTEMATON
   download_archive:
-    archive: lataus loi tiedoston|latauksien luomat tiedostot
     output: lataus loi tiedoston|latauksien luomat tiedostot
     input: lataus lukema tiedosto|latauksien lukemat tiedostot
     invalid: lataa virheellisiä tietoja
@@ -141,3 +140,12 @@ Status: Status
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
+set_attribute_requirements: Aseta attribuuttivaatimukset
+COMPLETED: VALMIS
+STARTING: ALKAEN
+STARTED: ALKOI
+STOPPING: PYSÄYTYS
+STOPPED: LOPETTANUT
+FAILED: EPÄONNISTUNUT
+ABANDONED: HYLÄTTY
+UNKNOWN: TUNTEMATON

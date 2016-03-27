@@ -11,3 +11,17 @@ Currency: Валюта
 jstree:
   no_tree: Дерево категорий недоступно
   include_sub: Включить подкатегории
+oro_config:
+  form:
+    config:
+      title: Конфигурация системы
+      tab:
+        system:
+          title: Система
+      group:
+        localization:
+          title: Локализация
+          system_locale: Язык
+        notification:
+          title: Уведомления
+          system_notification: Уведомления о новых версиях

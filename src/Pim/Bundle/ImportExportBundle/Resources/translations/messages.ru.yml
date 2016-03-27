@@ -13,7 +13,6 @@ pim_import_export:
     7: ОТМЕНЕНО
     8: НЕИЗВЕСТНО
   download_archive:
-    archive: Скачать созданный файл|скачать созданные файлы
     output: Скачать созданный файл|скачать созданные файлы
     input: 'скачать файл чтения|скачать  файлы чтения'
     invalid: Скачать недопустимые значения
@@ -101,3 +100,11 @@ Display item: Показать элемент
 Hide item: Скрыть элемент
 Collecting data about job execution...: Сбор данных о выполнении задания...
 You must select a file to upload: Необходимо выбрать файл для загрузки
+COMPLETED: ЗАВЕРШЕНО
+STARTING: НАЧИНАЕТСЯ
+STARTED: НАЧАТО
+STOPPING: ОСТАНАВЛИВАЕТСЯ
+STOPPED: ОСТАНОВЛЕНО
+FAILED: НЕ УДАЛОСЬ
+ABANDONED: ОТМЕНЕНО
+UNKNOWN: НЕИЗВЕСТНО

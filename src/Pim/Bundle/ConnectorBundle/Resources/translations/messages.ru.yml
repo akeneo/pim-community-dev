@@ -54,6 +54,8 @@ pim_connector:
       title: Импорт групп вариантов из CSV
       validation.title: Проверка файла
       import.title: Импорт групп вариантов
+    xlsx_product_export:
+      export.title: Экспорт продуктов
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продуктов
