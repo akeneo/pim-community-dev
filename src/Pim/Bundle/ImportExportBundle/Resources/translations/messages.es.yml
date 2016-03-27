@@ -13,7 +13,6 @@ pim_import_export:
     7: ABANDONADO
     8: DESCONOCIDO
   download_archive:
-    archive: descargar fichero generado |descargar ficheros generados
     output: descargar ficher generado |descargar ficheros generados
     input: descargar fichero de lectura |descargar ficheros de lectura
     invalid: descargar datos no válidos
