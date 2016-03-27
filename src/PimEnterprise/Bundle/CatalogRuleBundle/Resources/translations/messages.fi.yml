@@ -10,7 +10,7 @@ pimee_catalog_rule:
     tooltip:
       product_attribute_affected_by_a_rule.content: 'Tämän attribuutin arvo voi tulla säännöistä <strong>%rule%</strong>. Tämä tarkoittaa, että mikäli säännön ehdot ovat päteviä, muutoksesi ohitetaan.'
       variant_attribute_affected_by_a_rule.content: 'Varianttiryhmän attribuuteilla on prioriteetti tuotteen attribuuteissa. Tämä tarkoittaa, että jokainen attributti tässä varianttiryhmässä tulee ohittamaan vastaavan arvon sen sisältämissä tuotteissa. Sääntöjä <strong>%rule%</strong> ei käytetä tuotteissa.'
-      loading.title: Lataa...
+      loading.title: Ladataan...
     history: 'Otettu käyttöön sääntö "%rule%"'
   product_value:
     tooltip:
