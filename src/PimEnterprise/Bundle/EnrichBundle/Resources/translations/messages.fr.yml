@@ -49,18 +49,18 @@ pim_enrich:
           Vous n'êtes pas propriétaire de tous les produits sélectionnés. Vous ne pouvez pas publier les produits "%notGranted%".
         info: 'Les %nbProducts% produits sélectionnés vont être publiés.'
       not_editable: |-
-        Vous n'avez pas les permissions d'éditer les produits "%identifiers%".
+        Vous n'avez pas le droit de modifier les produits "%identifiers%".
     published_product:
       page_title: Produits publiés
       page_subtitle: 'Edition en masse (1 produit publié)|Edition en masse (%count% produits publiés)'
-      title: Choisissez une action
+      title: Choisir une opération
       subtitle: "Choisissez l'action que vous souhaitez réaliser sur le produit publié sélectionné|Choisissez l'action que vous souhaitez réaliser sur les %count% produits publiés sélectionnés"
       confirm: "Vous êtes sur le point de mettre à jour un produit publié avec les informations suivantes, veuillez confirmer s'il vous plaît|Vous êtes sur le point de mettre à jour les %count% produits publiés sélectionnés, veuillez confirmer s'il vous plait."
       steps:
         first: Choisissez les produits publiés
-        second: "Choix de l'opération"
-        third: Configuration
-        fourth: Confirmation
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
     unpublish:
       label: Dépublier des produits
       description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
@@ -72,7 +72,7 @@ pim_enrich:
           Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas dépublier les produits "%notGranted%".
         info: 'Les %nbProducts% produits sélectionnés vont être dépubliés.'
       not_editable: |-
-        Vous n'avez pas la permission d'éditer les produits "%identifiers%".
+        Vous n'avez pas le droit de modifier les produits "%identifiers%".
     classify:
       message:
         error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le classifier."
@@ -82,32 +82,29 @@ pim_enrich:
       message:
         error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le modifier."
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
+  limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à éditer'
   product:
     page_title: Produits
-    page_subtitle: 'Éditer en masse (1 produit)|Éditer en masse (%count% produits)'
-    title: Choisissez une opération
-    subtitle: "Choisissez l'opération que vous souhaitez appliquer sur le produit sélectionné|Choisissez l'opération que vous souhaitez appliquer aux %count% produits sélectionnés"
-    confirm: "Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, veuillez confirmer s'il vous plaît.|Vous êtes sur le point de mettre à jour %count% produits avec les informations suivantes, veuillez confirmer s'il vous plaît."
+    page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
+    title: Choisir une opération
+    subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+    confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
     steps:
-      first: "Choisissez les produits sur lesquels l'opération sera effectuée"
-      second: "Choisissez l'opération à effectuer"
-      third: "Configurez l'opération à effectuer"
-      fourth: Confirmation
+      first: Choisissez des produits
+      second: Choisir une opération
+      third: Configurer
+      fourth: Confirmer
 flash.product.updated: La copie de travail a bien été mise à jour
 flash.product_draft.updated: Le brouillon a bien été enregistré
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Autorisations 
+      permission.title: Permissions
   product:
     tab:
       proposal.title: Propositions
   category:
-    tab:
-      permission.title: Autorisations 
-  locale:
     tab:
       permission.title: Permissions
   channel:
@@ -152,10 +149,10 @@ pimee_enrich:
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Modifier les attributs communs avec permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Édition des attributs communs avec permission
 job_execution.summary:
-  mass_published: Produit publié
+  mass_published: Produit(s) publié(s)
   mass_unpublished: Produit dépublié
-  proposal: Proposition créée
+  proposal: Proposition(s) créée(s)
   proposal_deleted: supprimé
 pim_assets_collection: Collection de ressources

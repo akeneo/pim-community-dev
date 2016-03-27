@@ -24,7 +24,7 @@ pimee_enrich:
       btn:
         publish: Publicar
         publish_this_version: Publicar esta versión
-        unpublish: Remover publicación
+        unpublish: Despublicar
         save_draft: Guardar borrador
       flash:
         product_unpublished: Publicación del producto removida exitosamente
@@ -34,25 +34,23 @@ pimee_enrich:
         product_reverted: Producto restaurado con éxito
       meta:
         published: Versión publicada
-        owner_groups: Grupos de propietarios
+        owner_groups: Grupos de propietario
         draft_status: Estado borrador
         draft:
           in_progress: En progreso
-          sent_for_approval: Aguardando aprobación
-          working_copy: Versión de trabajo
+          sent_for_approval: Esperando aprobacion
+          working_copy: Copia de trabajo
       tab:
         proposals:
           title: Propuestas
           messages:
             approve:
-              success: La propuesta ha sido aplicada con éxito.
+              success: La propuesta ha sido aplicada exitosamente.
               error:
                 The proposal can't be applied due to the following error:
                   - error
             reject:
               success: La propuesta ha sido rechazada.
-            remove:
-              success: La propuesta ha sido eliminada.
       confirmation:
         revert:
           title: Confirmar la restauración
@@ -64,12 +62,11 @@ pimee_enrich:
           title: Romover la publicación de este producto
           content: ¿Está seguro que desea remover la publicación de este producto?
       info:
-        update_successful: La versión de trabajo ha sido actualizada
+        update_successful: La copia de trabajo del producto ha sido actualizada
       copy:
         source:
-          working_copy: Versión de trabajo
+          working_copy: Copia de trabajo
           draft: Mi borrador
-          draft_of: 'Borrador de {{ author }}'
     product_draft:
       info:
         update_successful: El borrador del producto ha sido guardado con éxito
@@ -79,19 +76,8 @@ pimee_enrich:
         sent_for_approval: El borrador del producto ha sido enviado a aprobación
         draft_not_sendable: No puede enviar este borrador para aprobación
       btn:
-        send_for_approval: Enviar para aprobación
-        sent_for_approval: Enviado para aprobación
-      modal:
-        accept_proposal: Aceptar propuesta
-        accept_selected_proposal: Aceptar propuesta(s) seleccionada(s)
-        reject_proposal: Rechazar propuesta
-        reject_selected_proposal: Rechazar propuesta(s) seleccionada(s)
-        remove_proposal: Suprimir propuesta
-        send_for_approval: Enviar para aprobación
-        cancel: Cancelar
-        confirm: Enviar
-        title: 'Comentar su propuesta (opcional - 255 caracteres máximo)'
-        characters: caracteres.
+        send_for_approval: Enviar a aprobar
+        sent_for_approval: Enviado a aprobar
       confirmation:
         discard_changes: Las modificaciones no guardadas serán perdidas. ¿Está seguro que desea enviar el borrador sin guardar los cambios?
         discard_changes_title: ¿Está seguro que desea enviar este borrador?

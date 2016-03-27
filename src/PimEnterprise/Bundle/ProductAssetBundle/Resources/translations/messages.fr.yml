@@ -22,9 +22,9 @@ pimee_product_asset:
     button:
       upload: Télécharger
       delete: Supprimer
-      download: Télécharger
+      download: Téléchargement
       generate_from_reference: Générer depuis la référence
-      reset_variations: Réinitialiser les variations
+      reset_variations: Réinitialisation les variations
     confirmation.remove: 'Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?'
     grid:
       edit: Editer les propriétés de la ressource
@@ -119,8 +119,7 @@ pimee_product_asset:
     csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en csv
     yml_asset_configuration_export.title: Export de la configuration des canaux de ressources en Yaml
     csv_asset_category_export.title: Export des catégories de ressources en csv
-    yml_asset_channel_configuration_import.title: Import des configurations de transformations de ressources en Yaml
-    assets_mass_upload.title: Téléchargement en masse de ressources
+    yml_asset_channel_configuration_import.title: Import des configurations des transformations pour les canaux en csv
   steps:
     channel_configuration.processor.title: Traiter les configurations des canaux
   notAvailable:

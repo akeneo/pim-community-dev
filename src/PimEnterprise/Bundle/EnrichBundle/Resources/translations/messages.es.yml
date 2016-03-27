@@ -1,7 +1,7 @@
 pim_title.locale:
   edit: 'Locales %locale.code% | Editar'
-Permissions: Permisiones
-pane.accordion.permissions: Permisiones
+Permissions: Permisos
+pane.accordion.permissions: Permisos
 attribute group.permissions:
   view.label: Autorizado a ver los atributos
   view.help: Autorizar a ver los productos en este grupo de atributos
@@ -46,18 +46,18 @@ pim_enrich:
         error: Usted no es el dueño de este producto, no puede publicarlo.
         warning: 'Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".'
         info: 'Los productos %nbProducts% seleccionados serán publicados.'
-      not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
+      not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
     published_product:
       page_title: Productos publicados
       page_subtitle: 'Edición en masa (1 producto publicado)|Edición en masa (%count% producost publicados)'
-      title: Selecciones una operación
+      title: Elegir operación
       subtitle: 'Selecciones la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
       confirm: 'Está a punto de actualizar un producto Publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos Publicados con la siguiente información, por favor confirme.'
       steps:
         first: Seleccione los productos publicados
-        second: Seleccione la operación
-        third: Configuración
-        fourth: Confirmación
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
     unpublish:
       label: Quitar publicación de productos
       description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
@@ -67,7 +67,7 @@ pim_enrich:
         error: Usted no es el dueño del producto, no puede publicarlo.
         warning: 'Usted no es el dueño de los productos seleccionados. No puede quitar la publicación de los productos "%notGranted%".'
         info: 'Los %nbProducts% productos seleccionados serán quitados de la publicación.'
-      not_editable: 'No tiene permisos para editar los productos "%identifiers%".'
+      not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
     classify:
       message:
         error: Usted no es el dueño del producto, no puede clasificarlo.
@@ -76,16 +76,16 @@ pim_enrich:
       message:
         error: Usted no es el dueño del producto, no puede editarlo.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Por favor seleccione menos de %limit% productos a editar'
+  limit_exceeded: 'Por favor, elige menos de %limit% de artículos para editar'
   product:
     page_title: Productos
-    page_subtitle: 'Edición en masa (1 producto)|Edición en masa (%count% productos)'
-    title: Seleccione una operación
-    subtitle: 'Seleccione la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
-    confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
+    page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+    title: Elegir operación
+    subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
+    confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
     steps:
-      first: Seleccione los productos
-      second: Seleccione la operación
+      first: Elegir productos
+      second: Elegir operación
       third: Configurar
       fourth: Confirmar
 flash.product.updated: La copia de trabajo del producto ha sido actualizada
@@ -94,16 +94,13 @@ flash.locale.updated: El local y los permisos han sido actualizados
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Permisiones
+      permission.title: Permisos
   product:
     tab:
       proposal.title: Propuestas
   category:
     tab:
-      permission.title: Permisiones
-  locale:
-    tab:
-      permission.title: Permisiones
+      permission.title: Permisos
   channel:
     tab:
       asset_transformation.title: Transformaciones de recursos
@@ -135,21 +132,21 @@ pimee_enrich:
     scale:
       title: Escala
       options:
-        width: 'Ancho px %value%'
+        width: 'Px ancho %value%'
         height: 'Alto px %value%'
         ratio: 'Ratio %value%%'
     thumbnail:
       title: Miniatura
       options:
-        width: 'Ancho px %value%'
+        width: 'Px ancho %value%'
         height: 'Alto px %value%'
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
 edit_common_attributes_with_permission: Editar los atributos comunes con permisiones
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar los atributos comunes con permisiones
 job_execution.summary:
-  mass_published: Productos publicados
-  mass_unpublished: Productos no publicados
+  mass_published: Producto publicado
+  mass_unpublished: Producto no publicado
   proposal: Propuesta creada
   proposal_deleted: eliminada
 pim_assets_collection: Colección de recursos

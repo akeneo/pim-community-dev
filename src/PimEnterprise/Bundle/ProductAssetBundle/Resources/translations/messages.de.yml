@@ -27,7 +27,7 @@ pimee_product_asset:
       reset_variations: Variationen zurücksetzen
     confirmation.remove: 'Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?'
     grid:
-      edit: Asseteigenschaften bearbeiten
+      edit: Eigenschaften des Assets bearbeiten
     view:
       title: Produktasset
       code: Code
@@ -96,7 +96,7 @@ pimee_product_asset:
   endOfUse:
     label: Ende der Nutzung
   createdAt:
-    label: Erstellt am
+    label: Angelegt am
   updatedAt:
     label: Zuletzt aktualisiert am
   tags:
@@ -119,8 +119,7 @@ pimee_product_asset:
     csv_asset_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
     yml_asset_configuration_export.title: Assetausgabekanalkonfiguration-Export in Yaml
     csv_asset_category_export.title: Assetkategorie-Export in CSV-Datei
-    yml_asset_channel_configuration_import.title: Assets Channel-Konfiguration in Yaml importieren
-    assets_mass_upload.title: Massenupload von Assets
+    yml_asset_channel_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
   steps:
     channel_configuration.processor.title: Verarbeite Ausgabekanalkonfigurationen
   notAvailable:
@@ -138,7 +137,7 @@ pimee_product_asset:
     error:
       upload: Während des Hochladens ist ein Fehler aufgetreten
       code: Ungültiges Code-Format für Asset
-      localizable: Es existiert ein Asset, ist aber nicht lokalisierbar
+      localizable: Ein Asset existiert, ist aber nicht lokalisierbar
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
   category:
     menu: Assetkategorien
@@ -148,8 +147,8 @@ pimee_product_asset:
       edit.label: Berechtigt zum Bearbeiten von Assets
       edit.help: Erlaube das Bearbeiten von Assets in dieser Kategorie (beinhaltet die Berechtigung zum Betrachten)
       no_access_to_products: SIe haben keinen Zugriff auf Assets eines beliebigen Baumes. Bitte wenden Sie sich an Ihren Administrator
-      apply_on_children.label: Übernehme Änderungen auf Kindelemente
-      apply_on_children.help: Übertragen der Berechtigungen auf alle Kindelemente, bereits bestehende Berechtigungen werden beibehalten
+      apply_on_children.label: Änderung auf die Kindelemente anwenden
+      apply_on_children.help: Die Änderungen an den Berechtigungen auf alle Kindelemente kopieren. Bestehende Berechtigungen bei Kindelementen werden beibehalten.
 btn.create.asset: Asset erstellen
 btn.drag_or_upload: 'Drag & Drop einer Datei oder hier klicken'
 job_execution.summary:

@@ -1,4 +1,4 @@
-View the product: Näytä tuote
+View the product: Katso tuotte
 pimee_enrich.product_history.action.revert: Palaa tähän versioon
 permission-changes:
   category:
@@ -37,7 +37,7 @@ pimee_enrich:
         owner_groups: Omistajaryhmät
         draft_status: Luonnoksen tila
         draft:
-          in_progress: Työn alla
+          in_progress: Toiminto käynnissä
           sent_for_approval: Odottaa hyväksyntää
           working_copy: Työkopio
       tab:
@@ -51,8 +51,6 @@ pimee_enrich:
                   - virhe
             reject:
               success: Ehdotus on hylätty.
-            remove:
-              success: Ehdotus on poistettu.
       confirmation:
         revert:
           title: Palauta vahvistus
@@ -64,12 +62,11 @@ pimee_enrich:
           title: Peruuta tuotteen julkaisu
           content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
       info:
-        update_successful: Tuotteen työkopio on päivitetty
+        update_successful: Tuotteen työn alla oleva kopio on päivitetty
       copy:
         source:
           working_copy: Työkopio
           draft: Luonnokseni
-          draft_of: '{{ author }}: n luonnos'
     product_draft:
       info:
         update_successful: Tuotteen luonnos tallennettu onnistuneesti
@@ -81,17 +78,6 @@ pimee_enrich:
       btn:
         send_for_approval: Lähetä hyväksyttäväksi
         sent_for_approval: Lähetetty hyväksyttäväksi
-      modal:
-        accept_proposal: Hyväksy ehdotus
-        accept_selected_proposal: Hyävksy valittu ehdotus / ehdotukset
-        reject_proposal: Hylkää ehdotus
-        reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
-        remove_proposal: Poista ehdotus
-        send_for_approval: Lähetä hyväksyttäväksi
-        cancel: Hylkää
-        confirm: Lähetä
-        title: 'Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)'
-        characters: merkkiä
       confirmation:
         discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
         discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?

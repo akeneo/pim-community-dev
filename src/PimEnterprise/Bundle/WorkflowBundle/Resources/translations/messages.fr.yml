@@ -6,50 +6,28 @@ pimee_workflow:
     locale: Locale contextuelle
     product:
       label: Libellé du produit
-    attribute:
-      label: Attribut
     status:
       label: Statut
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation
-      can_be_partially_reviewed: Peut être partiellement examinée
       can_not_be_approved: Ne peut pas être validé
       can_not_be_deleted: Ne peut pas être supprimé
     status_message:
-      can_be_partially_reviewed: "Vous ne pouvez examiner cette proposition que partiellement car certains changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
-      can_not_be_approved: "Vous ne pouvez pas examiner cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
-      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition car tous les changements s'appliquent sur des valeurs que vous ne pouvez pas modifier. Merci de contacter votre administrateur pour modifier vos droits."
+      can_not_be_approved: "Vous ne pouvez pas approuver ou refuser cette proposition car elle s'applique à des valeurs que vous ne pouvez pas éditer. Contactez votre administrateur pour modifier vos droits."
+      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
     action:
-      approve: Tout approuver
-      refuse: Tout rejeter
+      approve: Accepter
+      refuse: Refuser
       remove: Supprimer
-      partial_approve: "Approuver les modifications sur l'attribut %attribute% du produit %product%"
-      partial_reject: "Rejeter les modifications sur l'attribut %attribute% du produit %product%"
-    notification:
-      partial_approve: '%owner% a accepté la(les) valeur(s) sur %attributes%, pour le produit %product%'
-      partial_approve_number: '%owner% a accepté les valeurs de %attributes_count% attributs, pour le produit %product%'
-      partial_reject: '%owner% a rejeté la(les) valeur(s) sur %attributes%, pour le produit %product%'
-      partial_reject_number: '%owner% a refusé les valeurs de %attributes_count% attributs, pour le produit %product%'
-      approve: '%owner% a accepté votre proposition pour le produit %product%'
-      refuse: '%owner% a rejeté votre proposition pour le produit %product%'
-      remove: '%owner% a supprimé votre proposition pour le produit %product%'
     mass_review_action:
-      approve: Tout approuver
-      refuse: Tout refuser
+      approve: Approuver les éléments sélectionnés
+      refuse: Rejeter les éléments sélectionnés
       error:
         draft_not_ready: "Cette propostion n'est pas prêt à être approuvée"
         not_product_owner: "Vous n'êtes pas propriétaire du produit associé à cette proposition"
         cannot_edit_attributes: Vous ne pouvez pas modifier les attributs modifiés par cette proposition
         invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
-  proposal:
-    to_review: '%author.firstname% %author.lastname% a envoyé une proposition à examiner pour le produit %product.label%'
-    individual_import: "%author.firstname% %author.lastname% a envoyé des propositions de relectures venant d'un import"
-    generic_import: "Vous avez des propositions de relectures venant d'un import"
-    original_value: Original
-    new_value: Nouveau
-    no_diff: 'La valeur "%value%" est identique entre la proposition et la copie de travail.'
-    draft_in_progress: 'Un brouillon est en cours par %author% sur ce produit.'
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -73,17 +51,8 @@ pimee_workflow:
       perform.title: Rejeter les propositions
   steps:
     product_draft_processor.title: Processeur de proposition
-    approve.title: Approuver la proposition
-    refuse.title: Rejeter la proposition
-pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
-pimee_workflow_import_notification_new_proposals: "Nouvelles propositions de relectures venant d'un import"
 btn.publish: Publier
 btn.unpublish: Dépublier
-pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
-pimee_workflow_product_draft_notification_partial_reject: Proposition partiellement rejetée
-pimee_workflow_product_draft_notification_approve: Proposition approuvée
-pimee_workflow_product_draft_notification_refuse: Proposition rejetée
-pimee_workflow_product_draft_notification_remove: Proposition supprimée
 flash:
   product:
     published: Le produit a été publié avec succès.
@@ -94,8 +63,6 @@ flash:
       error: "La proposition ne peut être soumise en raison de l'erreur suivante. %error%"
     refuse:
       success: La proposition a été rejetée.
-    remove:
-      success: La proposition a été supprimée.
 pim_menu:
   item:
     published_product: Produits publiés
@@ -131,4 +98,3 @@ job_execution.summary:
   proposal_updated: proposition(s) mise(s) à jour
   proposal_created: proposition(s) créée(s)
   proposal_skipped: proposition(s) ignorée(s) (aucune différence)
-published products: Produits publiés
