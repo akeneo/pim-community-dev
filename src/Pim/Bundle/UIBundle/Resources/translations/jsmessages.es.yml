@@ -44,7 +44,7 @@ jstree:
     unclassified: Productos sin clasificar
   no_tree: Ningún árbol disponible
   include_sub: Incluir subcategorías
-  loading: Cargando...
+  loading: Cargando ...
 datetimepicker:
   days:
     Sunday: Domingo
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Mar
+    May: Mayo
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -99,14 +99,14 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuración del sitema
+      title: Configuración del sistema
       tab:
         system:
           title: Sistema
       group:
         localization:
           title: Localización
-          system_locale: Idioma
+          system_locale: idioma
         notification:
           title: Notificaciones
           system_notification: Notificaciones de nuevas versiones
