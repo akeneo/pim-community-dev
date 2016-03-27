@@ -101,9 +101,6 @@ pimee_enrich:
   category:
     tab:
       permission.title: Berechtigungen
-  locale:
-    tab:
-      permission.title: Berechtigungen
   channel:
     tab:
       asset_transformation.title: Assetumwandlungen
@@ -116,7 +113,7 @@ pimee_enrich:
   asset_transformation:
     not_found: Keine Umwandlung gefunden
     title:
-      transformation: Umwandlung
+      transformation: Transformation
       options: Optionen
     colorspace:
       title: Farbraum
@@ -150,6 +147,6 @@ edit_common_attributes_with_permission.steps.edit_common_attributes_processor.ti
 job_execution.summary:
   mass_published: Produkt veröffentlicht
   mass_unpublished: Produktveröffentlichung entzogen
-  proposal: Vorschlag erstellt
+  proposal: Vorschlag angelegt
   proposal_deleted: gelöscht
 pim_assets_collection: Sammlung von Assets

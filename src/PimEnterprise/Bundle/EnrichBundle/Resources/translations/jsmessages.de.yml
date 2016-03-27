@@ -37,8 +37,8 @@ pimee_enrich:
         owner_groups: Eigentümer-Gruppen
         draft_status: Entwurfsstatus
         draft:
-          in_progress: In Bearbeitung
-          sent_for_approval: Auf Genehmigung wartend
+          in_progress: In Arbeit
+          sent_for_approval: Auf Genehmigung warten
           working_copy: Arbeitskopie
       tab:
         proposals:
@@ -51,8 +51,6 @@ pimee_enrich:
                   - Fehler
             reject:
               success: Der Vorschlag wurde abgelehnt.
-            remove:
-              success: Der Vorschlag wurde entfernt.
       confirmation:
         revert:
           title: Wiederherstellen der Bestätigung
@@ -69,7 +67,6 @@ pimee_enrich:
         source:
           working_copy: Arbeitskopie
           draft: Mein Entwurf
-          draft_of: 'Entwurf von {{ author }}'
     product_draft:
       info:
         update_successful: Produktentwurf wurde erfolgreich gespeichert
@@ -81,17 +78,6 @@ pimee_enrich:
       btn:
         send_for_approval: Zur Freigabe senden
         sent_for_approval: Zur Freigabe gesendet
-      modal:
-        accept_proposal: Vorschlag akzeptieren
-        accept_selected_proposal: Ausgewählte Vorschläge akzeptieren
-        reject_proposal: Vorschlag ablehnen
-        reject_selected_proposal: Ausgewählte Vorschläge ablehnen
-        remove_proposal: Vorschlag entfernen
-        send_for_approval: Zur Genehmigung senden
-        cancel: Abbrechen
-        confirm: Senden
-        title: 'Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)'
-        characters: Zeichen.
       confirmation:
         discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?
         discard_changes_title: Sind Sie sicher, dass Sie diesen Produktentwurf absenden möchten?
