@@ -31,7 +31,7 @@ pim_enrich:
     tab:
       property.title: Propriétés
   channel:
-    pick_conversion_unit: "Choisissez une unité de conversion pour chaque métrique. Elle sera utilisé lors de l'exportation du produit"
+    pick_conversion_unit: "Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisé lors de l'exportation du produit"
     tab:
       property.title: Propriétés
       history.title: Historique
@@ -298,8 +298,8 @@ tree:
 channel:
   title: canal
   overview: Liste des canaux
-  create: Créer un channel
-  edit: Editer un channel
+  create: Créer un canal
+  edit: Editer un canal
 currency:
   title: devise
   overview: Liste des devises
@@ -379,7 +379,7 @@ confirmation:
   leave: Êtes-vous sûr de vouloir quitter cette page?
   discard changes: "Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page."
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément?
+    item: Êtes-vous certain de vouloir supprimer cet élément ?
     attribute: "Êtes-vous sûr de vouloir supprimer l'attribut %name% ?"
     attribute group: "Êtes-vous sûr de vouloir supprimer le groupe d'attributs %name% ?"
     category: 'Êtes-vous sûr de vouloir supprimer la catégorie %name% ?'
