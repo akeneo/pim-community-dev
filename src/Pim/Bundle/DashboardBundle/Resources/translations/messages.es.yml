@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Tablero
+  title: Cartelera
   version: Versión
   link.label:
     product: Gestionar productos
@@ -23,5 +23,3 @@ pim_dashboard:
       job_type:
         import: Importar
         export: Exportar
-        mass_edit: Edición en masa
-        quick_export: Exportación rápida
