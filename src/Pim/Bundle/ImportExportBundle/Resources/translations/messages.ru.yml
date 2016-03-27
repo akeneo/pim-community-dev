@@ -13,7 +13,6 @@ pim_import_export:
     7: ОТМЕНЕНО
     8: НЕИЗВЕСТНО
   download_archive:
-    archive: Скачать созданный файл|скачать созданные файлы
     output: Скачать созданный файл|скачать созданные файлы
     input: 'скачать файл чтения|скачать  файлы чтения'
     invalid: Скачать недопустимые значения
@@ -65,6 +64,9 @@ pim_importexport:
       show: Подробный просмотр отчета импорта
       dl_log: Скачать журнал отчетов импорта
       dl_files: Скачать импортированные файлы
+  acl_group:
+    export: Профили экспорта
+    import: Профили импорта
 btn:
   create:
     export profile: Создать профиль экспорта
@@ -101,3 +103,4 @@ Display item: Показать элемент
 Hide item: Скрыть элемент
 Collecting data about job execution...: Сбор данных о выполнении задания...
 You must select a file to upload: Необходимо выбрать файл для загрузки
+Status: Статус
