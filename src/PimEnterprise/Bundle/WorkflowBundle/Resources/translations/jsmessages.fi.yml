@@ -17,3 +17,10 @@ pimee_workflow:
       modal.label: Jätä kommentti (valinnainen)
       modal.error: Virhe, ehdotusta ei ole hyväksytty osittain
       modal.success: Ehdotus on osittain vahvistettu onnistuneesti
+    partial_approve:
+      modal:
+        label: Jätä kommentti (valinnainen)
+        error: Virhe, ehdotusta ei ole hyväksytty osittain
+    partial_reject:
+      modal:
+        label: Jätä kommentti (valinnainen)

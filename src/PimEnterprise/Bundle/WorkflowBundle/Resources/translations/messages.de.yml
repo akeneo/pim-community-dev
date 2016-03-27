@@ -71,6 +71,9 @@ pimee_workflow:
     refuse_product_draft:
       title: Vorschläge verweigern
       perform.title: Vorschläge verweigern
+    xlsx_published_product_export:
+      title: Export veröffentlichter Produkte als XLSX
+      export.title: Export veröffentlichter Produkte
   steps:
     product_draft_processor.title: Vorschlag-Prozessor
     approve.title: Vorschlag freigeben

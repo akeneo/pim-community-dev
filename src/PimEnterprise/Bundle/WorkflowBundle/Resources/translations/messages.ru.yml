@@ -55,6 +55,7 @@ pimee_workflow:
       perform.title: Отклонить предложения
   steps:
     product_draft_processor.title: Процессор предложений
+    approve.title: Принять предложение
 pimee_workflow_product_draft_notification_new_proposal: Новое предложение
 btn.publish: Опубликовать
 btn.unpublish: Снять с публикации

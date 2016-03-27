@@ -1,4 +1,27 @@
 pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Poista
+      title: Säännöt
+      column:
+        code: Koodi
+        conditions: Ehto
+        actions: Toimi
+  condition:
+    operators:
+      STARTS WITH: alkaa
+      ENDS WITH: päättyy
+      CONTAINS: sisältää
+      DOES NOT CONTAIN: ei sisällä
+      BETWEEN: välillä
+      NOT BETWEEN: ei välillä
+      <: pienempi kuin
+  acl_group:
+    rule: Säännöt
+  acl:
+    rule:
+      view_permissions: Näytä säännöt
   attribute:
     tab:
       rule.title: Säännöt

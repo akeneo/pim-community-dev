@@ -1,0 +1,8 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Удалить
+      column:
+        code: Код
+        actions: Действие

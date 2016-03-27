@@ -23,6 +23,7 @@ pimee_catalog_rule:
       CONTAINS: contient
       DOES NOT CONTAIN: ne contient pas
       EMPTY: est vide
+      NOT EMPTY: non vide
       IN: est dans
       NOT IN: "n'est pas dans"
       IN CHILDREN: est dans les enfants
