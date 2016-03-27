@@ -82,7 +82,7 @@ user:
 Role: Rooli
 Owner: Omistaja
 General: Yleinen
-Entity: Yksikkö
+Entity: Entiteetti
 Capabilities: Ominaisuudet
 Save and close: Tallenna ja sulje
 Has role: On rooli

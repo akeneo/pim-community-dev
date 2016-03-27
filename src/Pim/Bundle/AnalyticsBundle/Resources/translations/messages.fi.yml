@@ -7,3 +7,19 @@ pim_analytics:
     form:
       version_update.label: Uuden version päivitykset
       version_update.tooltip: Lähetä pyyntö etäpalvelimelle hakemaan tietoa uusien päivityksien julkaisuista
+  system_info:
+    title: Järjestelmätiedot
+    download: TXT
+  info_type:
+    pim_edition: Painos
+    pim_version: Versio
+    pim_storage_driver: Tallennus
+    pim_environment: Ympäristö
+    pim_install_time: Asennusaika
+    registered_bundles: Rekisteröidyt ohjelmapaketit
+  acl:
+    system_info:
+      index: Järjestelmätiedot
+pim_menu:
+  item:
+    system_info: Järjestelmätiedot

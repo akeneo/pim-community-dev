@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Haluatko varmasti poistaa tämän kohteen?
+    item: Oletko varma että haluat poistaa tämän kohteen?
     association type: Oletko varma, että haluat poistaa tämän liitostyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
@@ -14,6 +14,9 @@ confirmation:
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
 pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Nopea vienti
   mass_action:
     delete:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
@@ -23,11 +26,11 @@ flash:
   item:
     removed: Kohde poistettu
   association type:
-    removed: Liitostyyppi poistettu
+    removed: Sidostyyppi poistettu onnistuneesti
   attribute:
-    removed: Määritteen poistaminen onnistui
+    removed: Attribuutin poistaminen onnistui
   family:
-    removed: Ryhmä poistettu
+    removed: Tuoteperhe poistettu
   product:
     removed: Tuote poistettu
   channel:
@@ -35,15 +38,15 @@ flash:
   group:
     removed: Ryhmän poistaminen onnistui
   variant group:
-    removed: Variant-ryhmä poistettiin onnistuneesti
+    removed: Tuotevariaatioryhmä poistettiin onnistuneesti
   group type:
-    removed: Ryhmätyyppi poistettiin onnistuneesti
+    removed: Ryhmätyyppi poistettu onnistuneesti
   import profile:
     removed: Tuontiprofiili poistettiin onnistuneesti
   export profile:
     removed: Vientiprofiili poistettiin onnistuneesti
   user:
-    removed: Käyttäjän poistaminen onnistui
+    removed: Käyttäjä poistettu onnistuneesti
   role:
     removed: Roolin poistaminen onnistui
 error:
@@ -114,8 +117,8 @@ pim_enrich:
       btn:
         enable: Ota käyttöön
         enabled: Käytössä
-        disable: Ota pois käytöstä
-        disabled: Pois käytöstä
+        disable: Poista käytöstä
+        disabled: Poistettu käytöstä
         download_pdf: PDF
         compare_translate: Vertaa / Käännä
         delete: Poista
@@ -148,7 +151,7 @@ pim_enrich:
         created: Luotu
         created_by: Luoja
         updated_by: Luoja
-        updated: Uusi päivitys
+        updated: Viimeisin päivitys
         family:
           title: Perhe
           none: Ei yhtään
@@ -165,27 +168,31 @@ pim_enrich:
         all: Kaikki
         all_visible: Kaikki näkyvillä olevat
         none: Ei yhtään
+        copy: Kopioi
       variant_group:
         updated_by: Päivitetty variant-ryhmittäin
+        switch:
+          "yes": Kyllä
+          "no": Ei
       optional_attribute:
-        remove: Poista määrite
+        remove: Poista tämä attribuutti
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
         channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
       media:
-        upload: Vedä ja pudota ladattavaksi tai klikkaa tästä
+        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
     attribute_option:
       code: Koodi
       label: Nimike
   confirmation:
-    leave: Oletko varma, että haluat poistua tältä sivulta?
+    leave: Oletko varma että haluat poistua sivulta?
     discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
     delete_item: Vahvista poisto
     delete:
       product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
   info:
-    not_applicable: N/A
+    not_applicable: Ei mitään
     entity:
       updated: Tallentamattomia muutoksia löytyy.
   error:
@@ -199,27 +206,35 @@ pim_enrich:
         associations:
           title: Määritteet
           info:
-            none_exist: Yhdistystyyppejä ei ole olemassa.
+            none_exist: Sidostyyppiä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
             number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
         attributes:
-          title: Ominaisuudet
+          title: Attribuutit
           btn:
             add: Lisää
-            add_attributes: Lisää määritteet
+            add_attributes: Lisää attribuutteja
           info:
-            no_available_attributes: Määritteitä ei ole enää lisättävänä
+            search_attributes: Hae...
+            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
+            no_match: Vastaavuuksia ei löydy
+            load_more: Ladataan lisää tuloksia...
         categories:
           title: Kategoriat
       panel:
         completeness:
-          title: Täyttöaste
+          title: Valmistumisaste
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+          missing_values: Puuttuvat arvot
         history:
-          title: Historiatiedot
+          title: Historia
+      switch:
+        "no": Ei
+        "yes": Kyllä
       sequential_edit:
         info:
           products: tuotteet
@@ -230,13 +245,16 @@ pim_enrich:
           save_and_finish: Tallenna ja lopeta
       change_family:
         modal:
-          title: Muuta tuoteperhe
-          merge_attributes: Nykyiset määritteet yhdistetään uuteen ryhmään.
-          keep_attributes: Määritteitä ei poisteta.
-          change_family_to: Vaihda ryhmä
-          empty_selection: Valitse ryhmä
+          title: Vaihda tuoteperhettä
+          merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
+          keep_attributes: Mitään attribuutteja ei poisteta.
+          change_family_to: Vaihda perhe olemaan
+          empty_selection: Valitse perhe
       flash:
         attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
+      mass_edit:
+        select_attributes: Valitse attribuutit
+        select: Valitse
     attribute_option:
       flash:
         option_created: Määritteen asetuksen luominen onnistui
@@ -245,5 +263,9 @@ pim_enrich:
         title: Lisää määritteen vaihtoehto
         confirm: Lisää
         cancel: Peruuta
+    entity:
+      switch:
+        "no": Ei
+        "yes": Kyllä
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
