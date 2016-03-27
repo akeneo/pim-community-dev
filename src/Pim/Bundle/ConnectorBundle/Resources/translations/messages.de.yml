@@ -2,30 +2,30 @@ pim_connector:
   jobs:
     csv_product_export:
       title: Produkt-Export als CSV-Datei
-      export.title: Produkt-Export
+      export.title: Produkt export
     csv_category_export:
       title: Kategorie-Export als CSV-Datei
-      export.title: Kategorie-Export
+      export.title: Kategorie export
     csv_attribute_export:
       title: Attribut-Export als CSV-Datei
-      export.title: Attribut-Export
+      export.title: Attribut export
     csv_attribute_option_export:
-      title: Attributoptionen-Export als CSV-Datei
-      export.title: Attributoptionen-Export
+      title: Attribut-Option in CSV-Datei exportieren
+      export.title: Attribut-Option export
     csv_association_type_export:
       title: Verbindungstyp-Export als CSV-Datei
       export.title: Verbindungstyp-Export
     csv_group_export:
-      title: Gruppen-Export als CSV-Datei
+      title: Gruppen-Export in CSV-Datei
       export.title: Gruppen-Export
     csv_variant_group_export:
-      title: Variantengruppen-Export als CSV-Datei
+      title: Variantengruppen-Export als CSV
       export.title: Variantengruppen-Export
     csv_product_import:
-      title: Produkt-Import aus CSV-Datei
+      title: Produkt-Export als CSV-Datei
       validation.title: Dateivalidierung
-      import.title: Produkt-Import
-      import_associations.title: Verbindungen-Import
+      import.title: Produkt import
+      import_associations.title: Produktverbindungen-Import
     csv_category_import:
       title: Kategorie-Import aus CSV-Datei
       validation.title: Dateivalidierung
@@ -35,85 +35,79 @@ pim_connector:
       validation.title: Dateivalidierung
       import.title: Attribut-Import
     csv_attribute_option_import:
-      title: Attributoptionen-Import aus CSV-Datei
+      title: Attribut-Optionen aus CSV-Datei importieren
       validation.title: Dateivalidierung
-      import.title: Attributoption-Import
+      import.title: Attribut-Option import
     csv_association_type_import:
-      title: Verbindungstyp-Import aus CSV-Datei
+      title: Verbindungstyp-Import als CSV-Datei
       validation.title: Dateivalidierung
       import.title: Verbindungstyp-Import
-    csv_family_import:
-      title: Produktfamilien-Import aus CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Produktfamilien-Import
     csv_group_import:
       title: Gruppen-Import aus CSV-Datei
       validation.title: Dateivalidierung
       import.title: Gruppen-Import
     csv_variant_group_import:
-      title: Variantengruppen-Import aus CSV-Datei
+      title: Variantengruppen-Import als CSV
       validation.title: Dateivalidierung
       import.title: Variantengruppen-Import
   steps:
-    dummy_reader.title: Dummy-Leser
-    product_reader.title: Produktextraktion
-    entity_reader.title: Entitätsextraktion
+    dummy_reader.title: Dummy reader
+    product_reader.title: Produkt Auszug
+    entity_reader.title: Entitäten Auszug
     csv_reader:
-      title: CSV-Leser
-      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich vorhanden sind %itemColumnsCount% in %csvPath%:%lineno%'
-    csv_product_reader.title: CSV Produkt-Leser
-    csv_category_reader.title: CSV Kategorie-Leser
-    csv_variant_group .title: CSV Variantengruppen-Leser
-    dummy_processor.title: Dummy-Prozessor
-    product_processor.title: Produkterstellung
-    variant_group_processor.title: Variantengruppenerstellung / -aktualisierung
-    category_processor.title: Kategorieerstellung
-    association_processor.title: Verbindungserstellung
-    product_association_processor.title: Verbindungserstellung
+      title: CSV-Reader
+      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich sind es %itemColumnsCount% in %csvPath%:%lineno%'
+    csv_product_reader.title: CSV Produkt Reader
+    csv_category_reader.title: CSV Kategorie Reader
+    csv_variant_group .title: CSV Variantengruppen-Einleser
+    dummy_processor.title: Dummy Processor
+    product_processor.title: Produktanlage
+    variant_group_processor.title: Variantengruppen Anlage / Aktualisierung
+    category_processor.title: Kategorieanlage
+    association_processor.title: Zuweisungserstellung
+    product_association_processor.title: Zuweisungserstellung
     group_processor.title: Gruppenerstellung
     attribute_processor.title: Attributerstellung
-    attribute_option_processor.title: Attributoptionserstellung
-    heterogeneous_processor.title: Produkt CSV-Serialisierer
-    homogeneous_processor.title: CSV Entitäten-Serialisierer
-    transformer_processor.title: Umwandlung
-    dummy_writer.title: Dummy-Schreiber
+    attribute_option_processor.title: Attribut-Optionserstellung
+    heterogeneous_processor.title: Produkt CSV serialisierung
+    homogeneous_processor.title: CSV Entitäten serialisierung
+    transformer_processor.title: Transformation
+    dummy_writer.title: Dummy Writer
     file_writer.title: Ausgabe
     product_writer.title: Produkt-Speicher
     category_writer.title: Kategorie-Speicher
     variant_group_writer.title: Variantengruppen-Speicher
     writer.title: Entitäten-Speicher
-    csv_writer.title: CSV-Schreiber
+    csv_writer.title: CSV Writer
   export:
     delimiter:
       label: Trennzeichen
-      help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
     enclosure:
-      label: Zeichen zum Einschließen
-      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
     withHeader:
       label: Mit Kopfzeile
-      help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      help: Soll die Spaltenüberschrift ausgegeben werden
     filePath:
-      label: Dateipfad
-      help: Wo die generierte Datei im Dateisystem abgelegt wird
+      label: Datei
+      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
-    header:
-      label: Header
   import:
     enabled:
       label: Produkt aktivieren
-      help: Ob importierte Produkte aktiviert werden sollen oder nicht
+      help: Auswahl, ob importierte Produkte aktiviert werden sollen oder nicht
     categoriesColumn:
-      label: Kategorienspalte
-      help: Name der Kategorienspalte
+      label: Kategorie-Spalte
+      help: Name der Kategorie-Spalte
     familyColumn:
-      label: Produktfamilienspalte
-      help: Name der Produktfamilienspalte
+      label: Produktfamilien-Spalte
+      help: Name der Produktfamilien-Spalte
     groupsColumn:
-      label: Gruppenspalte
-      help: Name der Gruppenspalte
+      label: Gruppen-Spalte
+      help: Name der Gruppen-Spalte
     filePath:
       label: Datei
       help: Die zu importierende CSV-Datei
@@ -122,44 +116,38 @@ pim_connector:
       help: Die zu importierende YAML-Datei
     uploadAllowed:
       label: Datei-Upload erlauben
-      help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
+      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
     delimiter:
       label: Trennzeichen
-      help: Einzelnes Zeichen, von dem Felder in der CSV-Datei getrennt werden
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
     enclosure:
-      label: Zeichen zum Einschließen
-      help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
     escape:
-      label: Escape-Zeichen
-      help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
+      label: Escape
+      help: Zeichen mit dem das Feld escaped wird
     circularRefsChecked:
-      label: Zirkelbezüge überprüfen
+      label: Prüfen Sie auf Zirkelbezüge
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
     realTimeVersioning:
       label: Echtzeit Änderungsverfolgung
-      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+      help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern kann diese Funktion ausgeschaltet werden.
     copyValuesToProducts:
-      label: Variantengruppenwerte in Produkte kopieren
-      help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
+      label: Kopieren von Variantengruppen-Werten in Produkte
+      help: Bedeutet, dass die Produkte automatisch mit den Variantengruppen-Werten aktualisiert werden; das kann abgestellt werden, damit nur die Varientengruppen aktualisiert werden
     enabledComparison:
       label: Werte vergleichen
       help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
-    decimalSeparator:
-      label: Dezimaltrennzeichen
-      help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
-    dateFormat:
-      label: Datumsformat
-      help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
 job_execution.summary:
-  read: gelesen
+  read: Lesen
   read_lines: gelesene Zeilen
   write: geschrieben
   skip: übersprungen
   create: erstellt
   process: verarbeitet
-  update_products: aktualisierte Produkte
+  update_products: Aktualisierte Produkte
   process_products: verarbeitete Produkte
-  skip_products: übersprungene Produkte
+  skip_products: Übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
     title: 'Datei Zeichenkodierung:'

@@ -15,7 +15,6 @@ oro.grid.datagrid.page_size.all: Все
 oro.grid.mass_action.delete.success_message: '{0} Ни одна сущность не была удалена|{1} Одна сущность была удалена|]1,Inf[ %count% сущностей было удалено'
 datagrid_view:
   views: Представления
-  default: Представление по умолчанию
   create: Создать представление
   placeholder: Название нового представления
   remove: Удалить это представление

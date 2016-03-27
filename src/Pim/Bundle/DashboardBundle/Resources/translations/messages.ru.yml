@@ -15,7 +15,7 @@ pim_dashboard:
     last_operations:
       title: Последние операции
       empty: Операции не найдены
-      status: Состояние
+      status: Статус
       date: Дата
       type: Тип
       profile name: Имя профиля

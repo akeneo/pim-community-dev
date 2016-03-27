@@ -1,5 +1,5 @@
 Item deleted: Kohde poistettu
-Are you sure you want to delete this item?: Haluatko varmasti poistaa tämän kohteen?
+Are you sure you want to delete this item?: Oletko varma että haluat poistaa tämän kohteen?
 Delete Error: Virhe poistossa
 Are you sure you want to do remove selected items?: Oletko varma, että haluat poistaa valitut kohteet?
 Selected items were removed.: Valitut kohteet poistettiin.
@@ -11,7 +11,7 @@ Your local changes will be lost. Are you sure you want to refresh grid?: Paikall
 Reset Confirmation: Nollauksen vahvistus
 Your local changes will be lost. Are you sure you want to reset grid?: Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää gridin?
 Confirmation: Vahvistus
-edit: editoi
+edit: muokkaa
 copy: kopioi
 remove: poista
 Status: Status
@@ -51,10 +51,10 @@ pim_datagrid:
     label: Sarakkeet
     title: Sarakkeen valitseminen
     all_groups: Kaikki ryhmät
-    search: Etsi
+    search: Haku
     clear: Tyhjennä
     displayed_columns: Näytettävät sarakkeet
-    apply: Käytä
+    apply: Valitse
     cancel: Peruuta
     remove_column: Poista
   mass_action:

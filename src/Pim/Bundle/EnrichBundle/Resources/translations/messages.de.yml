@@ -39,10 +39,6 @@ pim_enrich:
     tab:
       property.title: Eigenschaften
       history.title: Historie
-  locale:
-    tab:
-      property.title: Eigenschaften
-      permission.title: Berechtigungen
   group:
     axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
     type:
@@ -59,7 +55,7 @@ pim_enrich:
       VARIANT: Variante
       X_SELL: Cross-Sell
       ADDITIONAL: Ergänzend
-      RELATED: Zugehörig
+      RELATED: Verknüpft
     tab:
       product.title: Produkte
       property.title: Eigenschaften
@@ -81,7 +77,7 @@ pim_enrich:
       page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
       title: Aktion auswählen
       subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
-      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
+      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -92,7 +88,7 @@ pim_enrich:
       page_subtitle: 'Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)'
       title: Aktion auswählen
       subtitle: 'Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen'
-      confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
+      confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
       steps:
         first: Produktfamilien auswählen
         second: Aktion auswählen
@@ -105,7 +101,6 @@ pim_enrich:
       launched_flash: 'Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     edit-common-attributes:
       label: Attribute bearbeiten
-      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
       launched_flash: 'Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
@@ -140,9 +135,9 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: 'Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     set-attribute-requirements:
-      label: Attribut-Anforderungen festlegen
-      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
-      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
+      label: Benötigte Attribute auswählen
+      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: 'Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     mass_action:
       quick_export:
@@ -571,10 +566,6 @@ Drop a file or click here: Datei hierhin ziehen oder klicken
 Drop an image or click here: Bild hierhin ziehen oder klicken
 Automatic option sorting: Option automatisch sortieren
 save_attribute_before_manage_option: Um Auswahlmöglichkeiten zu verwalten, speichern Sie bitte zunächst das Attribut
-Please select: Bitte wählen Sie
-Active: Aktiv
-Inactive: Inaktiv
-Do not convert: Werden nicht konvertiert
 Create: Anlegen
 Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
@@ -711,7 +702,6 @@ pim_enrich.mass_edit_action:
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
     label: Gemeinsame Attribute bearbeiten
-    description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
@@ -864,5 +854,3 @@ mass_edit report:
 job_tracker:
   tab:
     title: Prozess-Tracker
-  filter:
-    started_at: Gestartet am

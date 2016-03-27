@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Exportar Grupo de variantes a CSV
       export.title: Exportación de grupo de variantes
-    csv_family_export:
-      title: Exportar familias en CSV
-      export.title: Exportar familias
     csv_product_import:
       title: Importar productos desde CSV
       validation.title: Validación de archivo
@@ -68,7 +65,7 @@ pim_base_connector:
     variant_group_processor.title: Creación / actualización de grupo de variantes
     category_processor.title: Creación de categorías
     association_processor.title: Creación de asociaciones
-    product_association_processor.title: Creación de asociados
+    product_association_processor.title: Creación de asociaciones
     group_processor.title: Creación de grupos
     attribute_processor.title: Creación de atributos
     attribute_option_processor.title: Creación de opciones de atributo
@@ -98,12 +95,6 @@ pim_base_connector:
     channel:
       label: Canal
       help: Canal que desea exportar
-    decimalSeparator:
-      label: Separador de decimales
-      help: Determinar el separador de decimales
-    dateFormat:
-      label: Formato de fecha
-      help: Determinar el formato de los campos de fecha
   import:
     enabled:
       label: Activar el producto
