@@ -10,6 +10,3 @@ This value should be Yes or No: Это значение должно быть Д
 This value should not be blank: Это значение не должно быть пустым
 Option code may contain only letters, numbers and underscores: Код выбора может содержать только буквы, цифры и символ подчеркивания
 This color is already used by another channel: Этот цвет уже используется другим каналом
-This value should not be a decimal.: Это значение не должно быть десятичным.
-file.extensions.message: 'Расширение файла не разрешается (возможные расширения: %extensions%).'
-regex.comma_or_semicolon.message: Это поле не должно содержать запятыe или точки с запятой.

@@ -13,12 +13,6 @@ confirmation:
     export profile: ¿Está seguro que desea eliminar este perfil de exportación?
     user: ¿Seguro que desea eliminar este usuario?
     role: ¿Está seguro que desea eliminar este rol?
-pim_datagrid:
-  mass_action:
-    delete:
-      confirm_content: ¿Está seguro que desea eliminar los productos seleccionados?
-      success: Productos seleccionados eliminados exitosamente.
-      error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
 flash:
   item:
     removed: Elemento eliminado correctamente
@@ -61,21 +55,6 @@ error:
     export profile: No se puede eliminar este perfil de exportación
     user: No se puede eliminar este usuario
     role: No se puede eliminar este rol
-    attribute_option: Error durante la eliminación de la opción de atributo
-  saving:
-    attribute_option: No se puede guardar la opción de atributo
-alert:
-  attribute_option:
-    error_occured_during_submission: Se produjo un error durante el envío del formulario al servidor
-    save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
-confirm:
-  attribute_option:
-    cancel_edition_on_new_option_text: ADVERTENCIA, perderá los datos no guardados. ¿Está seguro de que desea cancelar la modificación de esta nueva opción ?
-    cancel_edition_on_new_option_title: Cancelar modificación
-label:
-  attribute_option:
-    add_option: Agregar una opción
-Code: Código
 Edit: Editar
 Delete: Eliminar
 Edit attributes of the product: Editar atributos del producto
@@ -86,15 +65,6 @@ Toggle status: Alternar Estado
 pim.grid.mass_action.quick_export.csv_all: CSV (todos los atributos)
 pim.grid.mass_action.delete: Eliminar
 pim.grid.mass_action.mass_edit: Edición masiva
-pim.grid.mass_action.sequential_edit: Edición secuencial
 jstree.create: Crear
 switch_on: SÍ
 switch_off: 'No'
-pim_enrich:
-  item:
-    list:
-      delete.label: Eliminar
-      delete.error: Error durante la eliminación del elemento
-    delete:
-      confirm.content: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible revertir esta opción'
-      confirm.title: 'Eliminar este {{ itemName }}'
