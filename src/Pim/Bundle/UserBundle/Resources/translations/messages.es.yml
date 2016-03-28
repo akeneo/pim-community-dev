@@ -1,13 +1,3 @@
-pim_user:
-  user:
-    tab:
-      general.title: General
-      additional.title: Adicional
-      group_and_role.title: Grupos y Roles
-      password.title: Contraseña
-      business_unit.title: Unidades de negocio
-      email_synchronization.title: Configuraciones de sincronización de e-mail
-      interfaces.title: Interfaces
 oro.user.controller:
   group.message.saved: Grupo guardado
   role.message.saved: Rol guardado
@@ -34,10 +24,8 @@ pim_title:
   user_group.index: Grupos
   system_configuration.index: Configuración
 user.title: Usuario
-user.overview: Usuario
 Users Management: Gestión de Usuarios
 Create user: Crear usuario
-btn.create.user: Crear usuario
 New user: Nuevo usuario
 Additional: Adicional
 Groups and Roles: Grupos y Roles
@@ -64,27 +52,14 @@ Ssl: SSL
 Last logged in: Última visita
 Login count: Contador de inicios de sesión
 Additional Information: Información Adicional
-Interfaces: Interfaces
 Basic Information: Información básica
 Contact Information: Información de contacto
 User name: Nombre de Usuario
 Birthday: Cumpleaños
 API key: Clave de API
-Ui locale: Idioma de la interfaz
-UI locale: Idioma de la interfaz
-User salt: Sal de usuario
-Current password: Contraseña actual
-New password: Nueva contraseña
-Repeat new password: Nueva contraseña (repetir)
 Generate key: Generar clave
 Primary: primaria
 Removed user: Usuario eliminado
-user:
-  product_grid_filters: Filtross de grilla de productos
-  default_product_grid_view:
-    label: Vista de grilla de producto automática
-  default_grid_view:
-    none: Ninguna
 Role: Rol
 Owner: Propietario
 General: General
@@ -94,10 +69,8 @@ Save and close: Guardar y cerrar
 Has role: Tiene rol
 role:
   title: rol
-  overview: rol
   edit: Editar rol
   create: Crear rol
-btn.create.role: Crear rol
 rights:
   action: Permisos
 oro_security:
@@ -125,7 +98,7 @@ oro_security:
 VIEW: Vista
 CREATE: Crear
 EDIT: Editar
-DELETE: Borrar
+DELETE: Eliminar
 ASSIGN: Asignar
 SHARE: Compartir
 oro:
@@ -138,10 +111,8 @@ oro:
       SYSTEM: Sistema
       NONE: Ninguno
 Create group: Crear grupo
-btn.create.user-group: Crear grupo
 Has group: Tiene grupo
 Save and Close: Guardar y cerrar
-user-group.overview: Grupos
 Log in: Iniciar sesion
 Remember me on this computer: Recordarme en esta computadora
 Forgot your password?: ¿Olvidó su contraseña?
