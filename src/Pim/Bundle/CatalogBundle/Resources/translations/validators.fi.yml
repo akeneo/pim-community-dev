@@ -10,6 +10,3 @@ This value should be Yes or No: Tämän arvon on oltava kyllä tai ei
 This value should not be blank: Tämä arvo ei saa olla tyhjä
 Option code may contain only letters, numbers and underscores: Vaihtoehtokoodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 This color is already used by another channel: Tätä väriä käytetään jo toisessa kanavassa
-This value should not be a decimal.: Tämän arvon pitäisi olla desimaalimuodossa.
-file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
-regex.comma_or_semicolon.message: Tässä kentässä ei saa olla pilkkuja tai puolipisteitä.

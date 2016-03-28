@@ -17,16 +17,6 @@ pim_import_export:
     output: descargar ficher generado |descargar ficheros generados
     input: descargar fichero de lectura |descargar ficheros de lectura
     invalid: descargar datos no válidos
-  notification:
-    export:
-      error: 'Exportación <strong>%label%</strong> fallida'
-      warning: 'Exportación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Exportación <strong>%label%</strong> finalizada'
-    import:
-      error: 'Importación <strong>%label%</strong> fallida'
-      warning: 'Importación <strong>%label%</strong> terminó con algunas advertencias'
-      success: 'Importación <strong>%label%</strong> finalizada'
-  list: Seleccionar un trabajo
 pim_title.export_profile.index: Gestión de perfiles de exportación
 pim_title.export_profile.edit: 'Perfiles de exportación %job.label% | Editar'
 pim_title.export_profile.show: 'Perfiles de exportación %job.label% | Mostrar'
@@ -60,7 +50,6 @@ pim_importexport:
       edit: Editar un perfil de exportación
       remove: Quitar un perfil de exportación
       launch: Lanzar un perfil de exportación
-      history: Ver historial del perfil exportación
     import_profile:
       index: Ver lista de perfiles de importación
       create: Crear un perfil de importación
@@ -68,7 +57,6 @@ pim_importexport:
       edit: Editar un perfil de importación
       remove: Quitar un perfil de importación
       launch: Lanzar un perfil de importación
-      history: Ver historial del perfil de importación
     export_execution:
       index: Ver lista de informes de exportación
       show: Ver detalles de informe de exportación
@@ -130,8 +118,6 @@ job_execution.summary:
   skip: omitido
   create: creado
   update: actualizado
-  update_products: productos actualizados
-  skip_products: productos omitidos
   displayed: primeras advertencias mostradas
   charset_validator:
     title: 'Codificación de Archivo:'

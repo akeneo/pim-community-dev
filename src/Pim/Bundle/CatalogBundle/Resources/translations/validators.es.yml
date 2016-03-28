@@ -10,6 +10,3 @@ This value should be Yes or No: Este valor debe ser Si o No
 This value should not be blank: Este valor no debe estar vacío
 Option code may contain only letters, numbers and underscores: El Código de opción debe contener sólo letras, números y caracteres especiales
 This color is already used by another channel: Este color está siendo utilizado en otro canal
-This value should not be a decimal.: Este valor no debe ser un decimal.
-file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
-regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
