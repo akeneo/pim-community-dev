@@ -17,16 +17,6 @@ pim_import_export:
     output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
     invalid: Télécharger données invalides
-  notification:
-    export:
-      error: "L'export de <strong>%label%</strong> a échoué"
-      warning: "L'export de <strong>%label%</strong> est terminé mais il y a des avertissements"
-      success: "L'export de <strong>%label%</strong> est terminé"
-    import:
-      error: "L'import de <strong>%label%</strong> a échoué"
-      warning: "L'import de <strong>%label%</strong> est terminé mais il y a des avertissements"
-      success: "L'import de <strong>%label%</strong> est terminé"
-  list: Sélectionner un job
 pim_title.export_profile.index: "Gestion de profils d'export"
 pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
 pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
@@ -60,7 +50,6 @@ pim_importexport:
       edit: "Modifier un profil d'export"
       remove: "Supprimer un profil d'export"
       launch: "Lancer un profil d'export"
-      history: "Afficher l'historique du profil d'export"
     import_profile:
       index: "Visualiser la liste des profils d'import"
       create: "Créer un profil d'import"
@@ -68,7 +57,6 @@ pim_importexport:
       edit: "Modifier un profil d'import"
       remove: "Supprimer un profil d'import"
       launch: "Lancer un profil d'import"
-      history: "Afficher l'historique du profil d'import"
     export_execution:
       index: "Visualiser la liste des rapports d'export"
       show: "Visualiser les détails du rapport d'export"
@@ -99,12 +87,10 @@ flash:
     created: "L'export a été correctement crée"
     removed: "Le profil d'export a été supprimé"
     updated: "L'export a correctement été mis à jour"
-    running: "L'export est en cours d'exécution"
   import:
     created: "L'import a été correctement crée"
     removed: "Le profil d'import a été supprimé"
     updated: "L'import a correctement été mis à jour"
-    running: "L'import est en cours d'exécution"
 pim_menu:
   item:
     export_history: Historique des exports
@@ -132,8 +118,6 @@ job_execution.summary:
   skip: ignoré
   create: créé
   update: mis à jour
-  update_products: produits mis à jour
-  skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
     title: 'Encodage du fichier :'
@@ -143,12 +127,3 @@ Status: Statut
 Summary: Résumé
 Start: Début
 End: Fin
-set_attribute_requirements: Choisir les attributs requis
-COMPLETED: TERMINÉ
-STARTING: DÉMARRAGE EN COURS
-STARTED: DÉMARRÉ
-STOPPING: ARRÊT EN COURS
-STOPPED: ARRÊTÉ
-FAILED: EN ÉCHEC
-ABANDONED: ABANDONNÉ
-UNKNOWN: INCONNU
