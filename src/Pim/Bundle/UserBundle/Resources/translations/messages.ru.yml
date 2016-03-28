@@ -15,7 +15,6 @@ pim_title:
   user_group.index: Группы
   system_configuration.index: Настройки
 user.title: Пользователь
-user.overview: Пользователь
 Entity: Объект
 oro_security:
   acl_group:
@@ -30,4 +29,3 @@ oro:
       BASIC: Пользователь
       SYSTEM: Система
       NONE: Нет
-user-group.overview: Группы

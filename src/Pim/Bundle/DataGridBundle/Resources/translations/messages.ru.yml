@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": 'Сущность %entityHint% не существует.'
-oro_datagrid.not_found_hint: Ничего не найдено. Попробуйте изменить критерии поиска.
 oro_datagrid.label_add_filter: Управление фильтрами
 oro_datagrid.label_loading_mask: Загрузка . . .
 oro.grid.mass_action.selected_rows: Выбранные строки
@@ -18,7 +17,7 @@ datagrid_view:
   create: Создать представление
   placeholder: Название нового представления
   remove: Удалить это представление
-  save_changes: Сохранить представление
+  save_changes: Обновить
   choose_label: Выберите ярлык для представления
   columns:
     min_message: Вы должны выбрать по крайней мере один столбец для отображения
@@ -31,7 +30,3 @@ flash.datagrid view:
   updated: Представление табличных данных успешно обновлено
   removed: Представление табличных данных успешно удалено
   not removable: У вас нет прав для удаления этого представления
-quick_export: Быстрый экспорт
-import: Импорт
-export: Экспорт
-mass_edit: Массовое редактирование
