@@ -13,19 +13,10 @@ pim_import_export:
     7: HYLÄTTY
     8: TUNTEMATON
   download_archive:
+    archive: lataus loi tiedoston|latauksien luomat tiedostot
     output: lataus loi tiedoston|latauksien luomat tiedostot
     input: lataus lukema tiedosto|latauksien lukemat tiedostot
     invalid: lataa virheellisiä tietoja
-  notification:
-    export:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
-    import:
-      error: 'Vienti <strong>%label%</strong> epäonnistui'
-      warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
-      success: 'Vienti <strong>%label%</strong> valmis'
-  list: Valitse työ
 pim_title.export_profile.index: Profiilien viennin hallinta
 pim_title.export_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
 pim_title.export_profile.show: 'Vie profiilit %job.label% | Näytä'
@@ -59,7 +50,6 @@ pim_importexport:
       edit: Editoi vientiprofiilia
       remove: Poista vientiprofiili
       launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
     import_profile:
       index: Näytä tuontiprofiilien lista
       create: Vientiprofiilin luonti
@@ -67,7 +57,6 @@ pim_importexport:
       edit: Editoi vientiprofiilia
       remove: Poista vientiprofiili
       launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
     export_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
@@ -129,8 +118,6 @@ job_execution.summary:
   skip: ohitettu
   create: luotu
   update: päivitetty
-  update_products: päivitetyt tuotteet
-  skip_products: ohitetut tuotteet
   displayed: ensimmäiset varoitukset näytetty
   charset_validator:
     title: 'Tiedoston koodaus:'
@@ -140,12 +127,3 @@ Status: Status
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
-set_attribute_requirements: Aseta attribuuttivaatimukset
-COMPLETED: VALMIS
-STARTING: ALKAEN
-STARTED: ALKOI
-STOPPING: PYSÄYTYS
-STOPPED: LOPETTANUT
-FAILED: EPÄONNISTUNUT
-ABANDONED: HYLÄTTY
-UNKNOWN: TUNTEMATON

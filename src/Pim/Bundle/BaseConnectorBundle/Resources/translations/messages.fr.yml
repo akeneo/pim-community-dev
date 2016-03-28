@@ -18,12 +18,6 @@ pim_base_connector:
     csv_group_export:
       title: Export des groupes en CSV
       export.title: Export de groupes
-    csv_variant_group_export:
-      title: Export des groupes de variantes en CSV
-      export.title: Export des groupes de variantes
-    csv_family_export:
-      title: Export des familles en CSV
-      export.title: Export des familles
     csv_product_import:
       title: Import des produits en CSV
       validation.title: Validation du fichier
@@ -49,10 +43,6 @@ pim_base_connector:
       title: Import des groupes en CSV
       validation.title: Validation du fichier
       import.title: Import des groupes
-    csv_variant_group_import:
-      title: Import des groupes de variantes en CSV
-      validation.title: Validation du fichier
-      import.title: Import des groupes de variantes
   steps:
     dummy_reader.title: Lecteur factice
     product_reader.title: Extraction des produits
@@ -62,13 +52,10 @@ pim_base_connector:
       invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %csvPath%:%lineno%'
     csv_product_reader.title: Lecteur de CSV de produits
     csv_category_reader.title: Lecteur de CSV de catégories
-    csv_variant_group .title: Lecteur de groupes de variantes en CSV
     dummy_processor.title: Processeur factice
     product_processor.title: Création des produits
-    variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création de catégorie
     association_processor.title: "Création d'association"
-    product_association_processor.title: "Création d'association"
     group_processor.title: Création de groupe
     attribute_processor.title: "Création d'attribut"
     attribute_option_processor.title: "Création des options d'attributs"
@@ -79,7 +66,6 @@ pim_base_connector:
     file_writer.title: Sortie
     product_writer.title: Stockage des produits
     category_writer.title: Stockage des catégories
-    variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
     csv_writer.title: Ecriture CSV
   export:
@@ -98,12 +84,6 @@ pim_base_connector:
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
-    decimalSeparator:
-      label: Séparateur de décimales
-      help: Détermine le séparateur de décimale
-    dateFormat:
-      label: Format de date
-      help: Déterminer le format des champs de type date
   import:
     enabled:
       label: Activer le produit
@@ -119,10 +99,7 @@ pim_base_connector:
       help: Nom de la colonne de groupes
     filePath:
       label: Fichier
-      help: Le fichier CSV à importer
-    yamlFilePath:
-      label: Fichier
-      help: Le fichier YAML à importer
+      help: Fichier CSV à importer
     uploadAllowed:
       label: "Autoriser l'envoi de fichier sur le serveur"
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
@@ -141,6 +118,3 @@ pim_base_connector:
     realTimeVersioning:
       label: "Mise à jour de l'historique en temps réel"
       help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances."
-    copyValuesToProducts:
-      label: Copie des valeurs liées aux groupes de variantes dans les produits
-      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes."

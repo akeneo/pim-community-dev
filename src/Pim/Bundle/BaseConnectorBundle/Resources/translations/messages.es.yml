@@ -18,12 +18,6 @@ pim_base_connector:
     csv_group_export:
       title: Exportar grupos a CSV
       export.title: Exportar grupos
-    csv_variant_group_export:
-      title: Exportar Grupo de variantes a CSV
-      export.title: Exportación de grupo de variantes
-    csv_family_export:
-      title: Exportar familias en CSV
-      export.title: Exportar familias
     csv_product_import:
       title: Importar productos desde CSV
       validation.title: Validación de archivo
@@ -49,10 +43,6 @@ pim_base_connector:
       title: Importar grupos desde CSV
       validation.title: Validación de archivo
       import.title: Importar grupos
-    csv_variant_group_import:
-      title: Importar Grupo de variantes de CSV
-      validation.title: Validación de archivo
-      import.title: importación de grupo de variantes
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
@@ -62,13 +52,10 @@ pim_base_connector:
       invalid_item_columns_count: 'Se esperan %totalColumnsCount% columna(s), encontradas %itemColumnsCount% en %csvPath%:%lineno%'
     csv_product_reader.title: Lector de productos desde CSV
     csv_category_reader.title: Lector de categorías desde CSV
-    csv_variant_group .title: Lector de grupo de variantes CSV
     dummy_processor.title: Procesador de prueba
     product_processor.title: Creación de productos
-    variant_group_processor.title: Creación / actualización de grupo de variantes
     category_processor.title: Creación de categorías
     association_processor.title: Creación de asociaciones
-    product_association_processor.title: Creación de asociaciones
     group_processor.title: Creación de grupos
     attribute_processor.title: Creación de atributos
     attribute_option_processor.title: Creación de opciones de atributo
@@ -79,7 +66,6 @@ pim_base_connector:
     file_writer.title: Salida
     product_writer.title: Almacenado de productos
     category_writer.title: Almacenado de categorías
-    variant_group_writer.title: Almacenamiento de grupo de variantes
     writer.title: Almacenado de entidades
     csv_writer.title: Editor CSV
   export:
@@ -98,12 +84,6 @@ pim_base_connector:
     channel:
       label: Canal
       help: Canal que desea exportar
-    decimalSeparator:
-      label: Separador de decimales
-      help: Determinar el separador de decimales
-    dateFormat:
-      label: Formato de fecha
-      help: Determinar el formato de los campos de fecha
   import:
     enabled:
       label: Activar el producto
@@ -119,10 +99,6 @@ pim_base_connector:
       help: Nombre de la columna de grupos
     filePath:
       label: Fichero
-      help: El archivo CSV para importar
-    yamlFilePath:
-      label: Fichero
-      help: El archivo YAML para importar
     uploadAllowed:
       label: Permite la carga de archivos
       help: Si desea o no permitir cargar el archivo directamente
@@ -141,6 +117,3 @@ pim_base_connector:
     realTimeVersioning:
       label: Actualización del historial en tiempo real
       help: Significa que el historial de productos se actualiza automáticamente, puede desactivarse para mejorar el rendimiento
-    copyValuesToProducts:
-      label: Copiar los valores de grupo de variantes a productos
-      help: Significa que los productos se actualizan automáticamente con los valores del grupo de variantes, puede establecerse a sólo actualizar un grupo de variantes
