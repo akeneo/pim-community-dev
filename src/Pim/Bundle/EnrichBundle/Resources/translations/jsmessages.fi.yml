@@ -13,12 +13,6 @@ confirmation:
     export profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
-pim_datagrid:
-  mass_action:
-    delete:
-      confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
-      success: Valitut tuotteet poistettiin.
-      error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
 flash:
   item:
     removed: Kohde poistettu
@@ -61,23 +55,6 @@ error:
     export profile: Vientiprofiilia ei voi poistaa
     user: Käyttäjää ei voi poistaa
     role: Roolia ei voi poistaa
-    attribute_option: Määriteasetuksen poistossa virhe
-  saving:
-    attribute_option: Määriteasennusta ei voi tallentaa
-alert:
-  attribute_option:
-    error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
-    save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
-  session_storage:
-    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
-confirm:
-  attribute_option:
-    cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
-    cancel_edition_on_new_option_title: Peruuta muokkaukset
-label:
-  attribute_option:
-    add_option: Lisää vaihtoehto
-Code: Koodi
 Edit: Muokkaa
 Delete: Poista
 Edit attributes of the product: Muokkaa tuotteen ominaisuuksia
@@ -88,168 +65,6 @@ Toggle status: Vaihda tuotteen tilaa
 pim.grid.mass_action.quick_export.csv_all: CSV (kaikki määritteet)
 pim.grid.mass_action.delete: Poista
 pim.grid.mass_action.mass_edit: Massaedit
-pim.grid.mass_action.sequential_edit: Peräkkäiset muokkaukset
 jstree.create: Luo
 switch_on: Kyllä
 switch_off: Ei
-pim_enrich:
-  item:
-    list:
-      delete.label: Poista
-      delete.error: Virhe kohteen poistamisessa
-    delete:
-      confirm.content: 'Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota'
-      confirm.title: 'Poista tämä {{ itemName }}'
-  navigation:
-    link:
-      back_to_grid: Takaisin ruudukkoon
-  entity:
-    product:
-      title: tuote
-      btn:
-        enable: Ota käyttöön
-        enabled: Käytössä
-        disable: Poista käytöstä
-        disabled: Poistettu käytöstä
-        download_pdf: PDF
-        compare_translate: Vertaa / Käännä
-        delete: Poista
-        save: Tallenna
-        save_and_back: Tallenna ja takaisin ruudukkoon
-      history:
-        version: Versio
-        author: Tekijä
-        logged_at: Kirjautunut
-        more: Lisää
-        less: Vähemmän
-        from: Lähettäjä
-        modified: Muutettu
-        property: Ominaisuus
-        old_values: Vanhat arvot
-        new_values: Uudet arvot
-        actions: Toiminnot
-      info:
-        deletion_successful: Tuote poistettiin.
-        deletion_failed: Tuotetta ei voi poistaa.
-        update_successful: Tuote päivitetty.
-        update_failed: Tuotetta ei voitu päivittää.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - kentät
-        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
-      error:
-        upload: Virhe tiedoston lataamisessa
-      meta:
-        created: Luotu
-        created_by: Luoja
-        updated_by: Luoja
-        updated: Viimeisin päivitys
-        family:
-          title: Perhe
-          none: Ei yhtään
-        groups:
-          title: Ryhmät
-          modal:
-            title: 'Ryhmä {{ group }}'
-            view_group: Näytä ryhmä
-            group_label: Nimike
-            more_products: '{{ count }} lisää tuotteita...'
-            close: Sulje
-      copy:
-        select: Valitse
-        all: Kaikki
-        all_visible: Kaikki näkyvillä olevat
-        none: Ei yhtään
-      variant_group:
-        updated_by: Päivitetty variant-ryhmittäin
-        switch:
-          "yes": true
-          "no": false
-      optional_attribute:
-        remove: Poista tämä attribuutti
-      locale_specific_attribute:
-        unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
-      localizable:
-        channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
-      media:
-        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
-    attribute_option:
-      code: Koodi
-      label: Nimike
-  confirmation:
-    leave: Oletko varma että haluat poistua sivulta?
-    discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
-    delete_item: Vahvista poisto
-    delete:
-      product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
-  info:
-    not_applicable: Ei mitään
-    entity:
-      updated: Tallentamattomia muutoksia löytyy.
-  error:
-    upload: Tiedoston lataamisen aikana tapahtui virhe
-  alert:
-    not_allowed: Et saa käyttää tätä sivua
-    error_occured: Virhe ladattaessa sivua
-  form:
-    product:
-      tab:
-        associations:
-          title: Määritteet
-          info:
-            none_exist: Sidostyyppiä ei ole olemassa.
-            show_products: Näytä tuotteet
-            show_groups: Näytä ryhmät
-            number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
-        attributes:
-          title: Attribuutit
-          btn:
-            add: Lisää
-            add_attributes: Lisää attribuutteja
-          info:
-            search_attributes: Haku
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-            attributes_selected: '{{ attributeCount }} attribuuttia valittu'
-        categories:
-          title: Kategoriat
-      panel:
-        completeness:
-          title: Valmistumisaste
-          info:
-            no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
-            no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
-        history:
-          title: Historia
-      switch:
-        "no": false
-        "yes": true
-      sequential_edit:
-        info:
-          products: tuotteet
-          previous: 'Siirry takaisin {{ product }} tallentamatta.'
-          next: 'Siirry {{ product }} tallentamatta.'
-        btn:
-          save_and_next: Tallenna ja seuraava
-          save_and_finish: Tallenna ja lopeta
-      change_family:
-        modal:
-          title: Vaihda tuoteperhettä
-          merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
-          keep_attributes: Mitään attribuutteja ei poisteta.
-          change_family_to: Vaihda perhe olemaan
-          empty_selection: Valitse perhe
-      flash:
-        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
-      mass_edit:
-        select_attributes: Valitse attribuutit
-        select: Valitse
-    attribute_option:
-      flash:
-        option_created: Määritteen asetuksen luominen onnistui
-        error_creating_option: Virhe yritettäessä luoda määritteen asetusta
-      add_option_modal:
-        title: Lisää määritteen vaihtoehto
-        confirm: Lisää
-        cancel: Peruuta
-pim_enrich.error:
-  exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'
