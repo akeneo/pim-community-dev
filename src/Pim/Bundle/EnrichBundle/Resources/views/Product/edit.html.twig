@@ -63,7 +63,8 @@
                                 'oro/mediator',
                                 'pim/error',
                                 'oro/navigation',
-                                'pim/history-item-manager'
+                                'pim/history-item-manager',
+                                'oro/loading-mask'
                             ],
                             function(
                                 $,
@@ -75,9 +76,12 @@
                                 mediator,
                                 Error,
                                 Navigation,
-                                HistoryItemManager
+                                HistoryItemManager,
+                                LoadingMask
                             ) {
                                 $(function() {
+                                    var loadingMask = new LoadingMask();
+                                    loadingMask.render().$el.appendTo($('#container')).show();
                                     FetcherRegistry.initialize().done(function () {
                                         ProductManager.get('{{ productId }}')
                                             .then(function (product) {
@@ -99,8 +103,10 @@
                                                         mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
                                                         form.setElement('#product-edit-form').render();
+                                                        loadingMask.remove();
                                                     });
                                             }).fail(function(response, textStatus, errorThrown) {
+                                                loadingMask.remove();
                                                 var errorView = new Error(response.responseJSON.message, response.status);
                                                 errorView.setElement('#product-edit-form').render();
                                             });
