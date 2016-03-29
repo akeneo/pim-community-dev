@@ -1,12 +1,3 @@
-pim_user:
-  user:
-    tab:
-      general.title: Allgemein
-      additional.title: Ergänzend
-      group_and_role.title: Gruppen und Rollen
-      password.title: Kennwort
-      business_unit.title: Geschäftsbereich
-      email_synchronization.title: Einstellungen für E-Mail Synchronisierung
 oro.user.controller:
   group.message.saved: Gruppe gespeichert
   role.message.saved: Rolle gespeichert
@@ -33,10 +24,8 @@ pim_title:
   user_group.index: Gruppen
   system_configuration.index: Konfiguration
 user.title: Benutzer
-user.overview: Benutzer
 Users Management: Benutzerverwaltung
 Create user: Benutzer anlegen
-btn.create.user: Benutzer anlegen
 New user: Neuer Benutzer
 Additional: Ergänzend
 Groups and Roles: Gruppen und Rollen
@@ -71,7 +60,6 @@ API key: API-Schlüssel
 Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
-user.product_grid_filters: Produktübersichtsfilter
 Role: Rolle
 Owner: Eigentümer
 General: Allgemein
@@ -81,10 +69,8 @@ Save and close: Speichern und schließen
 Has role: hat Rolle
 role:
   title: Rolle
-  overview: Rolle
   edit: Rolle bearbeiten
   create: Rolle anlegen
-btn.create.role: Rolle anlegen
 rights:
   action: Berechtigungen
 oro_security:
@@ -125,10 +111,8 @@ oro:
       SYSTEM: System
       NONE: Keine
 Create group: Gruppe anlegen
-btn.create.user-group: Gruppe anlegen
 Has group: hat Gruppe
 Save and Close: Speichern und schließen
-user-group.overview: Gruppen
 Log in: Anmelden
 Remember me on this computer: Automatisch anmelden
 Forgot your password?: Passwort vergessen?
