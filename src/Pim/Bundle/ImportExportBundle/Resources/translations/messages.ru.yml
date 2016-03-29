@@ -13,9 +13,20 @@ pim_import_export:
     7: ОТМЕНЕНО
     8: НЕИЗВЕСТНО
   download_archive:
+    archive: Скачать созданный архив|Скачать созданные архивы|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
     input: 'скачать файл чтения|скачать  файлы чтения'
     invalid: Скачать недопустимые значения
+  notification:
+    export:
+      error: 'Экспорт <strong>%label%</strong> не удался'
+      warning: 'Экспорт <strong>%label%</strong> завершен с некоторыми предупреждениями'
+      success: 'Экспорт <strong>%label%</strong> завершен'
+    import:
+      error: 'Импорт <strong>%label%</strong> не удался'
+      warning: 'Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями'
+      success: 'Импорт <strong>%label%</strong> завершен'
+  list: Выберите задание
 pim_title.export_profile.index: Управление профилями экспорта
 pim_title.export_profile.edit: 'Профиль экспорта %job.label% | Редактировать'
 pim_title.export_profile.show: 'Профиль экспорта %job.label% | Показать'
@@ -27,12 +38,14 @@ pim_title.import_profile.show: 'Профиль импорта %job.label% | По
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
+  title: профиль экспорта
   overview: Обзор профилей экспорта
   create: Создать профиль экспорта
   edit: Редактировать профиль экспорта
 export report:
   overview: Отчеты экспорта
 import profile:
+  title: профиль импорта
   overview: Обзор профилей импорта
   create: Создать профиль импорта
   edit: Редактировать профиль импорта
@@ -47,6 +60,7 @@ pim_importexport:
       edit: Редактировать профиль экспорта
       remove: Удалить профиль экспорта
       launch: Запуск исполнения профиля экспорта
+      history: Просмотр истории профиля экспорта
     import_profile:
       index: Просмотр списка профилей импорта
       create: Создать профиль импорта
@@ -54,6 +68,7 @@ pim_importexport:
       edit: Редактировать профиль импорта
       remove: Удалить профиль импорта
       launch: Запуск исполнения профиля импорта
+      history: Просмотр истории профиля импорта
     export_execution:
       index: Посмотреть список отчетов об экспорте
       show: Подробный просмотр отчета об экспорте
@@ -72,6 +87,9 @@ btn:
     export profile: Создать профиль экспорта
     import profile: Создать профиль импорта
 Upload and import: Загрузить и импортировать
+Upload and import now: Загрузить и импортировать сейчас
+import now: Импортировать сейчас
+export now: Экспортировать сейчас
 confirmation:
   remove:
     export profile: 'Вы уверены, что хотите удалить профиль экспорта "%name%"?'
@@ -103,4 +121,23 @@ Display item: Показать элемент
 Hide item: Скрыть элемент
 Collecting data about job execution...: Сбор данных о выполнении задания...
 You must select a file to upload: Необходимо выбрать файл для загрузки
+Download log: Журнал загрузок
+Show profile: Показать профиль
+execution details: подробности выполнения
+job_execution.summary:
+  read: прочитано
+  write: записано
+  skip: пропущено
+  create: создано
+  update: обновлено
+  update_products: обновленные продукты
+  skip_products: пропущенные продукты
+  displayed: первые предупреждения отображены
+  charset_validator:
+    title: 'Кодировка файла:'
+    skipped: пропущено, расширение в белом списке
+Step: Этап
 Status: Статус
+Summary: Сводка
+Start: Начало
+End: Окончание
