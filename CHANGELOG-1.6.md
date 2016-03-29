@@ -15,6 +15,7 @@
 - PIM-5589: Introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
 - PIM-5589: Introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
+- PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo XLSX Connector
 
 ## BC breaks
 
