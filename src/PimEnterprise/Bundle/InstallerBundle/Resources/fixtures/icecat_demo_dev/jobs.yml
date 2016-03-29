@@ -172,7 +172,6 @@ jobs:
         label:     Demo rules import
         type:      import
         configuration:
-            filePath:      /tmp/rules.yml
             uploadAllowed: true
             multiple:      false
     yml_rule_export:
@@ -340,7 +339,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            filePath:      /tmp/asset_channel_configurations.yml
     yml_asset_channel_configuration_export:
         connector: Akeneo Product Asset Connector
         alias:     yml_asset_channel_configuration_export

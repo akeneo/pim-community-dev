@@ -8,10 +8,10 @@ Feature: Add attributes to a product
     And the following products:
       | sku    | family  |
       | jacket | jackets |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
 
   @javascript
   Scenario: Successfully display only attributes I have edit permissions access
     Given I am on the "jacket" product page
     Then I should see available attribute Width in group "Sizes"
-    And I should not see available attribute Video in group "Media"
+    And I should not see available attribute Main color in group "Colors"

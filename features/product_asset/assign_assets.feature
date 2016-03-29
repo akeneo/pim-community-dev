@@ -60,7 +60,7 @@ Feature: Assign assets to a product
     When I cancel the asset modification
     And I switch the scope to "mobile"
     And I switch the locale to "de_DE"
-    And I start to manage assets for "[front_view]"
+    And I start to manage assets for "Vorderansicht"
     Then the row "paint" should contain the thumbnail for channel "mobile"
     And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
     When I check the row "paint"
@@ -68,8 +68,8 @@ Feature: Assign assets to a product
     Then the asset basket item "paint" should contain the thumbnail for channel "mobile"
     And the asset basket item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
     When I confirm the asset modification
-    Then the "[front_view]" asset gallery item "paint" should contain the thumbnail for channel "mobile"
-    Then the "[front_view]" asset gallery item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
+    Then the "Vorderansicht" asset gallery item "paint" should contain the thumbnail for channel "mobile"
+    Then the "Vorderansicht" asset gallery item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
 
   @skip @info Unskip when Firefox will be updated on CI workers
   Scenario: Successfully filter product assets by category in asset picker

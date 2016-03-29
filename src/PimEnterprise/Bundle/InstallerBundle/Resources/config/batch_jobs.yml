@@ -10,7 +10,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv
                         processor: pimee_security.processor.denormalization.attribute_group_access.flat
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pimee_security.writer.doctrine.attribute_group_access
 
         fixtures_product_category_access_csv:
             title: pim_installer.jobs.fixtures_product_category_access_yml.title
@@ -21,7 +21,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv
                         processor: pimee_security.processor.denormalization.product_category_access.flat
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pimee_security.writer.doctrine.product_category_access
 
         fixtures_asset_category_csv:
             title: pim_installer.jobs.fixtures_asset_category_csv.title
@@ -50,7 +50,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv
                         processor: pimee_security.processor.denormalization.job_profile_access.flat
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pimee_security.writer.doctrine.job_profile_access
 
         fixtures_locale_access_csv:
             title: pim_installer.jobs.fixtures_locale_csv.title
@@ -61,7 +61,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv
                         processor: pimee_security.processor.denormalization.locale_access.flat
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pimee_security.writer.doctrine.locale_access
 
         fixtures_rule_yml:
             title: pim_installer.jobs.fixtures_locale_yml.title
@@ -75,7 +75,7 @@ connector:
                         writer:    pimee_catalog_rule.writer.doctrine.rule_definition
 
         fixtures_asset_csv:
-            title: pimee_base_connector.jobs.fixtures_asset_csv.title
+            title: pimee_product_asset.jobs.fixtures_asset_csv.title
             type:  fixtures
             steps:
                 import_tags:
@@ -101,10 +101,10 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv
                         processor: pimee_security.processor.denormalization.asset_category_access.flat
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pimee_security.writer.doctrine.asset_category_access
 
         fixtures_asset_channel_configurations_yml:
-            title: pimee_base_connector.jobs.fixtures_asset_channel_configurations_yml.title
+            title: pimee_product_asset.jobs.fixtures_asset_channel_configurations_yml.title
             type:  fixtures
             steps:
                 import_asset:

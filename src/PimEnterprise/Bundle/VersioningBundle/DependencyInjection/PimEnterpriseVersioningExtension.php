@@ -33,7 +33,6 @@ class PimEnterpriseVersioningExtension extends Extension
         $loader->load('denormalizers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('guessers.yml');
-        $loader->load('normalizers.yml');
         $loader->load('reverters.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');

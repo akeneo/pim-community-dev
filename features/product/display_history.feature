@@ -7,10 +7,13 @@ Feature: Display the product history
   Scenario: Display product updates and published version
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following products:
-      | sku         | family  |
-      | sandals-001 | sandals |
-    And I edit the "sandals-001" product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | sandals-001 |
+      | family | Sandals     |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandals-001" product page
     And I fill in the following information:
       | Name | BG sandals |
     And I save the product

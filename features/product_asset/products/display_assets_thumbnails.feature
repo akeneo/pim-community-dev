@@ -45,5 +45,5 @@ Feature: Display assets thumbnails
     And the cell "Front view" in row "potatoe" should contain the thumbnail for channel "tablet" and locale "en_US"
     When I switch the locale to "de_DE"
     And I filter by "channel" with value "Mobile"
-    Then the cell "[Front_view]" in row "pineapple" should contain the thumbnail for channel "mobile"
-    And the cell "[Front_view]" in row "potatoe" should contain the thumbnail for channel "mobile" and locale "de_DE"
+    Then the cell "Vorderansicht" in row "pineapple" should contain the thumbnail for channel "mobile"
+    And the cell "Vorderansicht" in row "potatoe" should contain the thumbnail for channel "mobile" and locale "de_DE"
