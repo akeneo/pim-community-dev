@@ -1,12 +1,3 @@
-pim_user:
-  user:
-    tab:
-      general.title: Général
-      additional.title: Supplémentaire
-      group_and_role.title: Groupes et rôles
-      password.title: Mot de passe
-      business_unit.title: Entité commerciale
-      email_synchronization.title: Paramètres de synchronisation de messagerie
 oro.user.controller:
   group.message.saved: Groupe enregistré
   role.message.saved: Rôle enregistré
@@ -33,10 +24,8 @@ pim_title:
   user_group.index: Groupes
   system_configuration.index: Configuration
 user.title: Utilisateur
-user.overview: Utilisateur
 Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur
-btn.create.user: Créer un utilisateur
 New user: Nouvel utilisateur
 Additional: Supplémentaire
 Groups and Roles: Groupes et rôles
@@ -80,10 +69,8 @@ Save and close: Enregistrer et fermer
 Has role: A le rôle
 role:
   title: rôle
-  overview: rôle
   edit: Editer un rôle
   create: Créer un rôle
-btn.create.role: Créer un rôle
 rights:
   action: Permissions
 oro_security:
@@ -124,10 +111,8 @@ oro:
       SYSTEM: Système
       NONE: Aucun
 Create group: Créer un groupe
-btn.create.user-group: Créer un groupe
 Has group: Appartient au groupe
 Save and Close: Enregistrer et fermer
-user-group.overview: Groupes
 Log in: Connexion
 Remember me on this computer: Mémoriser mes informations sur cet ordinateur
 Forgot your password?: Mot de passe oublié ?

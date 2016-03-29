@@ -10,6 +10,3 @@ This value should be Yes or No: Dieser Wert sollte Ja oder Nein sein
 This value should not be blank: Dieser Wert darf nicht leer sein
 Option code may contain only letters, numbers and underscores: Der Optionscode kann nur Buchstaben, Zahlen und Unterstriche enthalten
 This color is already used by another channel: Diese Farbe wird bereits von einem anderen Ausgabekanal verwendet
-This value should not be a decimal.: Dieser Wert darf keine Dezimalzahl sein.
-file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
-regex.comma_or_semicolon.message: Dieses Feld sollte keine Komma oder Semikolon enthalten.

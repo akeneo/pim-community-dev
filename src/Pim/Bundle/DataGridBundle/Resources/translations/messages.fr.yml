@@ -1,5 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": "Aucun %entityHint% n'existe."
-oro_datagrid.not_found_hint: Aucun résultat trouvé. Essayez de modifier vos critères de recherche.
+"oro_datagrid.not_found_hint %entityHint%": 'Aucun %entityHint% ne correspond à votre recherche. Essayez de modifier vos critères de recherche ...'
 oro_datagrid.label_add_filter: Gérer les filtres
 oro_datagrid.label_loading_mask: Chargement . . .
 oro.grid.mass_action.selected_rows: Lignes sélectionnées
@@ -19,7 +19,7 @@ datagrid_view:
   create: Créer une vue
   placeholder: Nom de la nouvelle vue
   remove: Supprimer cette vue
-  save_changes: Enregistrer cette vue
+  save_changes: Mettre à jour
   choose_label: Choisissez un titre pour la vue
   columns:
     min_message: Vous devez sélectionner au moins une colonne à afficher
