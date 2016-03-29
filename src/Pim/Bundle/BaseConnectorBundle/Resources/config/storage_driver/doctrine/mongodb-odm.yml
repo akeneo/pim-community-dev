@@ -1,16 +1,3 @@
 parameters:
     pim_base_connector.reader.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ODMProductReader
-    pim_base_connector.writer.direct_to_db.mongodb.product.class: Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
 
-services:
-    # deprecated: will be removed in 1.6
-    pim_base_connector.writer.direct_to_db.mongodb.product:
-        class: %pim_base_connector.writer.direct_to_db.mongodb.product.class%
-        arguments:
-            - '@doctrine.odm.mongodb.document_manager'
-            - '@pim_versioning.doctrine.mongodb.pending_mass_persister'
-            - '@pim_serializer'
-            - '@event_dispatcher'
-            - '@pim_catalog.mongodb.mongo_objects_factory'
-            - %pim_catalog.entity.product.class%
-            - '@pim_transform.cache.product_cache_clearer'

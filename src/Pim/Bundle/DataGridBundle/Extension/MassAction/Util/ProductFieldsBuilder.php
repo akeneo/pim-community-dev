@@ -3,13 +3,13 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Connector\Normalizer\Flat\ProductNormalizer;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point

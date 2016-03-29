@@ -5,8 +5,8 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\BaseConnectorBundle\Cache\DoctrineCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -76,6 +76,20 @@ class Loader implements LoaderInterface
         $this->eventDispatcher->dispatch(static::EVENT_STARTED, new FixtureLoaderEvent($file));
         $this->reader->setFilePath($file);
 
+        /**
+         * Hardcore fix!
+         * There is a difference between categories import and every other import in the behat fixtures: category
+         * file lines are dependent each other (it's a tree). So, every line must be flushed to be useable by the
+         * next one.
+         *
+         * This fix is not needful in pim:install:assets because the job have a batch size of 1, which is equivalent
+         * to flush after each line.
+         * @see src/PimEnterprise/Bundle/InstallerBundle/Resources/config/batch_jobs.yml#21
+         *
+         * TODO We have to burn the fixture loader system and use the same than the installer (#PIM-5625).
+         */
+        $flushEachLine = 1 === preg_match('/categories.csv$/', $file);
+
         if ($this->multiple) {
             $items = $this->reader->read();
             foreach ($this->processor->process($items) as $object) {
@@ -84,6 +98,9 @@ class Loader implements LoaderInterface
         } else {
             while ($item = $this->reader->read()) {
                 $this->persistObjects($this->processor->process($item));
+                if ($flushEachLine) {
+                    $this->objectManager->flush();
+                }
             }
         }
 

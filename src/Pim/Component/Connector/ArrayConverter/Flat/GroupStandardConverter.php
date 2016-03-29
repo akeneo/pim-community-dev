@@ -41,22 +41,22 @@ class GroupStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'code' => 'group1',
-     *      'type' => 'RELATED',
+     *      'code'        => 'group1',
+     *      'type'        => 'RELATED',
      *      'label-de_DE' => '',
      *      'label-en_US' => '',
      *      'label-fr_FR' => '',
      * ]
      *
      * After:
-     * {
-     *     "code": "mycode",
-     *     "type": "RELATED",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau",
-     *     },
-     * }
+     * [
+     *     'code'   => 'mycode',
+     *     'type'   => 'RELATED',
+     *     'labels' => [
+     *         'en_US' => 'T-shirt very beautiful',
+     *         'fr_FR' => 'T-shirt super beau',
+     *     ],
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -72,6 +72,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
      *
@@ -83,13 +84,13 @@ class GroupStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } else {
-            switch ($field) {
-                case 'code':
-                case 'type':
-                    $convertedItem[$field] = $data;
-                    break;
-            }
+        }
+
+        switch ($field) {
+            case 'code':
+            case 'type':
+                $convertedItem[$field] = $data;
+                break;
         }
 
         return $convertedItem;

@@ -21,6 +21,14 @@ services:
     pim_base_connector.factory.zip_filesystem:
         class: %pim_base_connector.factory.zip_filesystem.class%
 
+    pim_base_connector.archiver.file_reader_archiver:
+        class: %pim_base_connector.archiver.file_reader_archiver.class%
+        arguments:
+            - '@oneup_flysystem.archivist_filesystem'
+        tags:
+            - { name: pim_base_connector.archiver }
+
+
     pim_base_connector.archiver.invalid_item_csv_archiver:
         class: %pim_base_connector.archiver.invalid_item_csv_archiver.class%
         arguments:
@@ -32,13 +40,6 @@ services:
 
     pim_base_connector.archiver.invalid_item_csv_writer:
         parent: pim_connector.writer.file.csv
-
-    pim_base_connector.archiver.file_reader_archiver:
-        class: %pim_base_connector.archiver.file_reader_archiver.class%
-        arguments:
-            - '@oneup_flysystem.archivist_filesystem'
-        tags:
-            - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.file_writer_archiver:
         class: %pim_base_connector.archiver.file_writer_archiver.class%

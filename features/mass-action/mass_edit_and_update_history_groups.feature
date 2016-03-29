@@ -33,7 +33,7 @@ Feature: Update product history when mass editing products
     And I save the product
     And I am on the products page
     And I mass-edit products boots, sandals and sneakers
-
+    
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"

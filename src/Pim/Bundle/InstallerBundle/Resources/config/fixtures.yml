@@ -22,14 +22,10 @@ locales:
         processor:         pim_connector.processor.denormalization.locale.flat
 
 categories:
-    order: 30
-    multiple: true
+    order: 20
     csv:
         reader:            pim_connector.reader.file.csv_category
         processor:         pim_connector.processor.denormalization.category.flat
-    yml:
-        reader:            pim_base_connector.reader.file.yaml_multiple
-        processor:         pim_base_connector.processor.category
 
 attribute_groups:
     order: 30
@@ -55,8 +51,6 @@ attributes:
     order: 40
     csv:
         processor:         pim_connector.processor.denormalization.attribute.flat
-    yml:
-        processor:         pim_base_connector.processor.attribute
 
 attribute_options:
     order: 50
@@ -72,15 +66,11 @@ groups:
     order: 70
     csv:
         processor:         pim_connector.processor.denormalization.group.flat
-    yml:
-        processor:         pim_base_connector.processor.group
 
 variant_groups:
     order: 75
     csv:
         processor:         pim_connector.processor.denormalization.variant_group.flat
-    yml:
-        processor:         pim_base_connector.processor.group
 
 products:
     order: 80

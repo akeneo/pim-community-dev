@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 class ORMProductReaderSpec extends ObjectBehavior
