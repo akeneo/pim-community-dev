@@ -1,6 +1,10 @@
 Close: Закрыть
 Update: Обновить
 Selected Rows: Выбранные строки
+Yes, do it: Да, сделать это
+Cancel: Отмена
+Edit: Редактировать
+Next: Следующая
 Localized value: Локализованное значение
 Columns: Столбцы
 Datagrid Configuration: Настройки таблицы
@@ -11,17 +15,3 @@ Currency: Валюта
 jstree:
   no_tree: Дерево категорий недоступно
   include_sub: Включить подкатегории
-oro_config:
-  form:
-    config:
-      title: Конфигурация системы
-      tab:
-        system:
-          title: Система
-      group:
-        localization:
-          title: Локализация
-          system_locale: Язык
-        notification:
-          title: Уведомления
-          system_notification: Уведомления о новых версиях
