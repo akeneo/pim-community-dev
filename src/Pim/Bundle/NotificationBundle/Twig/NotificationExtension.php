@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Twig;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
@@ -14,8 +14,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class NotificationExtension extends \Twig_Extension
 {
-    /** @var NotificationManager */
-    protected $manager;
+    /** @var UserNotificationRepositoryInterface */
+    protected $repository;
 
     /** @var UserContext */
     protected $userContext;
@@ -23,12 +23,12 @@ class NotificationExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param NotificationManager $manager
-     * @param UserContext         $userContext
+     * @param UserNotificationRepositoryInterface $repository
+     * @param UserContext                         $userContext
      */
-    public function __construct(NotificationManager $manager, UserContext $userContext)
+    public function __construct(UserNotificationRepositoryInterface $repository, UserContext $userContext)
     {
-        $this->manager     = $manager;
+        $this->repository  = $repository;
         $this->userContext = $userContext;
     }
 
@@ -55,7 +55,7 @@ class NotificationExtension extends \Twig_Extension
             return 0;
         }
 
-        return $this->manager->countUnreadForUser($user);
+        return $this->repository->countUnreadForUser($user);
     }
 
     /**
