@@ -443,7 +443,7 @@ services:
             - '@pim_catalog.updater.variant_group'
             - '@pim_catalog.saver.group'
             - '@pim_user.context.user'
-            - '@pim_localization.localizer.converter'
+            - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.validator.product'
 
     pim_enrich.controller.rest.versioning:

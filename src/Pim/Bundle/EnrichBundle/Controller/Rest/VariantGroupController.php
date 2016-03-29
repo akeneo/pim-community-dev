@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,20 +38,20 @@ class VariantGroupController
     /** @var UserContext */
     protected $userContext;
 
-    /** @var LocalizedAttributeConverterInterface */
-    protected $localizedConverter;
+    /** @var AttributeConverterInterface */
+    protected $attributeConverter;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param EntityRepository                     $variantGroupRepo
-     * @param NormalizerInterface                  $normalizer
-     * @param ObjectUpdaterInterface               $variantGroupUpdater
-     * @param SaverInterface                       $variantGroupSaver
-     * @param UserContext                          $userContext
-     * @param LocalizedAttributeConverterInterface $localizedConverter
-     * @param ValidatorInterface                   $validator
+     * @param EntityRepository            $variantGroupRepo
+     * @param NormalizerInterface         $normalizer
+     * @param ObjectUpdaterInterface      $variantGroupUpdater
+     * @param SaverInterface              $variantGroupSaver
+     * @param UserContext                 $userContext
+     * @param AttributeConverterInterface $attributeConverter
+     * @param ValidatorInterface          $validator
      */
     public function __construct(
         EntityRepository $variantGroupRepo,
@@ -59,7 +59,7 @@ class VariantGroupController
         ObjectUpdaterInterface $variantGroupUpdater,
         SaverInterface $variantGroupSaver,
         UserContext $userContext,
-        LocalizedAttributeConverterInterface $localizedConverter,
+        AttributeConverterInterface $attributeConverter,
         ValidatorInterface $validator
     ) {
         $this->variantGroupRepo    = $variantGroupRepo;
@@ -67,7 +67,7 @@ class VariantGroupController
         $this->variantGroupUpdater = $variantGroupUpdater;
         $this->variantGroupSaver   = $variantGroupSaver;
         $this->userContext         = $userContext;
-        $this->localizedConverter  = $localizedConverter;
+        $this->attributeConverter  = $attributeConverter;
         $this->validator           = $validator;
     }
 
@@ -149,7 +149,7 @@ class VariantGroupController
 
         $violations = $this->validator->validate($variantGroup);
         $violations->addAll($this->validator->validate($variantGroup->getProductTemplate()));
-        $violations->addAll($this->localizedConverter->getViolations());
+        $violations->addAll($this->attributeConverter->getViolations());
 
         if (0 === $violations->count()) {
             $this->variantGroupSaver->save($variantGroup, ['flush' => true]);
@@ -187,7 +187,7 @@ class VariantGroupController
     protected function convertLocalizedAttributes(array $data)
     {
         $locale         = $this->userContext->getUiLocale()->getCode();
-        $data['values'] = $this->localizedConverter
+        $data['values'] = $this->attributeConverter
             ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
 
         return $data;
