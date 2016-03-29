@@ -29,7 +29,6 @@ Please, select item to perform action.: Пожалуйста, выберите �
 View per page: Записей на странице
 oro.datagrid.entityHint: Объект
 oro.datagrid.noentities: Записи не найдены
-oro.datagrid.noresults: Ничего не найдено. Попробуйте изменить критерии поиска.
 oro.datagrid.nocolumns: Ни один столбец не настроен для этой сетки
 oro.datagrid.pagination.label: Страница
 oro.datagrid.pagination.totalPages: 'из {{ totalPages }}'
@@ -40,31 +39,9 @@ oro_datagrid.select.all: Все
 oro_datagrid.select.visible: Все видимые
 oro_datagrid.select.none: Нет
 pim.grid.ajax_choice_filter.label_empty: пусто
-pim.grid.choice_filter:
-  label_empty: Пусто
-  label_in_list: В списке
 Available Columns: Доступные столбцы
 Displayed Columns: Отображаемые столбцы
 datagrid_view.columns.min_message: Вы должны выбрать по крайней мере один столбец для отображения
-pim_datagrid:
-  column_configurator:
-    label: Столбцы
-    title: Выбор столбцов
-    all_groups: Все группы
-    search: Поиск
-    clear: Очистить
-    displayed_columns: Отображаемые столбцы
-    apply: Применить
-    cancel: Отмена
-    remove_column: Удалить
-  mass_action:
-    delete:
-      confirm_title: Отменить подтверждение
-      confirm_ok: Подтвердить
-      empty_selection: Не выбрано ни одного продукта
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
-pim.grid.mass_action.quick_export.launched: Экспорт запущен
 pim.grid.action.launch.title: Запуск
 pim.grid.action.show.title: Показать
-Please select view: Пожалуйста выберите вид
-Loading...: Загрузка...

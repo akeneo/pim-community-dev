@@ -4,6 +4,7 @@ Product: Produit
 Attribute list: "Liste d'attributs"
 Attribute Group list: "Liste de groupes d'attributs"
 Users: Utilisateurs
+Roles: Rôles
 Groups: Groupes
 Configuration: Configuration
 Currency list: Liste de devises
@@ -34,5 +35,3 @@ Most Viewed: Plus populaires
 Add this page to favorites: Ajouter cette page à vos favoris
 Minimize the window to the pinbar: Réduire la fenêtre dans la pinbar
 Loading ...: Chargement ...
-"Yes": Oui
-"No": Non
