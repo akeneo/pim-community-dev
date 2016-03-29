@@ -1,5 +1,18 @@
+pim_user:
+  user:
+    tab:
+      general.title: Основные
+oro.user.controller:
+  group.message.saved: Группа сохранена
+  role.message.saved: Роль сохранена
+  user.message.saved: Пользователь сохранен
+  status.message.saved: Состояние сохранено
 oro.user.grid.users:
   columns:
+    username: Имя пользователя
+    email: Эл. почта
+    firstName: Имя
+    lastName: Фамилия
     createdAt: Создано
     updatedAt: Обновлено
     enabled: Статус
