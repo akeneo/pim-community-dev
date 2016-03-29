@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\ViewDecorator;
+namespace Pim\Behat\Decorator\NodeDecorator\ViewDecorator;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
@@ -76,9 +76,11 @@ class ViewSelectorDecorator extends ElementDecorator
      */
     public function findView($viewLabel)
     {
-        $viewList = $this
-            ->find('xpath', 'ancestor::body')
-            ->find('css', $this->selectors['View list']);
+        $viewList = $this->spin(function () {
+            return $this
+                ->find('xpath', 'ancestor::body')
+                ->find('css', $this->selectors['View list']);
+        });
 
         return $this->spin(function () use ($viewList, $viewLabel) {
             return $viewList->find('css', sprintf('label:contains("%s")', $viewLabel));

@@ -21,18 +21,15 @@ class GridCapableDecorator extends ElementDecorator
     protected $selectors = [
         'Dialog grid' => '.modal',
         'Grid'        => 'table.grid',
-        'Filters'     => '.filter-box',
     ];
 
     /** @var array */
     protected $decorators = [
         'Grid decorators'   => [
-            'Pim\Behat\Decorator\GridDecorator\DataDecorator',
-            'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
-            'Pim\Behat\Decorator\GridDecorator\ActionDecorator',
-        ],
-        'Filter decorators' => [
-            'Pim\Behat\Decorator\GridDecorator\FilterDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\DataDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\PaginationDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\ActionDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\FilterDecorator',
         ],
     ];
 
@@ -59,17 +56,5 @@ class GridCapableDecorator extends ElementDecorator
             $grid->getParent()->getParent()->getParent()->getParent(),
             $this->decorators['Grid decorators']
         );
-    }
-
-    /**
-     * Return the filters within the grid toolbar
-     *
-     * @return ElementDecorator
-     */
-    public function getGridFilters()
-    {
-        $filters = $this->getCurrentGrid()->find('css', $this->selectors['Filters']);
-
-        return $this->decorate($filters, $this->decorators['Filter decorators']);
     }
 }

@@ -6,8 +6,7 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Page\Base\Grid;
-use Pim\Behat\Decorator\GridDecorator\FilterDecorator;
+use Pim\Behat\Decorator\NodeDecorator\GridDecorator\FilterDecorator;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
@@ -29,7 +28,7 @@ class GridFilterContext extends PimContext
      */
     public function iShowTheFilter($filterName)
     {
-        $this->getCurrentPage()->getGridFilters()->showFilter($filterName);
+        $this->getCurrentPage()->getCurrentGrid()->showFilter($filterName);
     }
 
     /**
@@ -39,7 +38,7 @@ class GridFilterContext extends PimContext
      */
     public function iHideTheFilter($filterName)
     {
-        $this->getCurrentPage()->getGridFilters()->hideFilter($filterName);
+        $this->getCurrentPage()->getCurrentGrid()->hideFilter($filterName);
     }
 
     /**
@@ -54,7 +53,7 @@ class GridFilterContext extends PimContext
     {
         $toBeSeen = !(bool)$not;
         $filters = $this->getMainContext()->listToArray($filters);
-        $gridFilters = $this->getCurrentPage()->getGridFilters();
+        $gridFilters = $this->getCurrentPage()->getCurrentGrid();
 
         foreach ($filters as $filter) {
             if ($toBeSeen) {
@@ -77,7 +76,7 @@ class GridFilterContext extends PimContext
     {
         $available = !(bool)$not;
         $filters = $this->getMainContext()->listToArray($filters);
-        $gridFilters = $this->getCurrentPage()->getGridFilters();
+        $gridFilters = $this->getCurrentPage()->getCurrentGrid();
 
         foreach ($filters as $filter) {
             if ($available && !$gridFilters->isFilterAvailable($filter)) {
@@ -171,7 +170,7 @@ class GridFilterContext extends PimContext
             $operator = $operators[$operator];
         }
 
-        $this->getCurrentPage()->getGridFilters()->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
+        $this->getCurrentPage()->getCurrentGrid()->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
         $this->wait();
     }
 
@@ -185,7 +184,7 @@ class GridFilterContext extends PimContext
      */
     public function iFilterByPrice($filterName, $action, $value, $currency)
     {
-        $this->getCurrentPage()->getGridFilters()->filterPerPrice($filterName, $action, $value, $currency);
+        $this->getCurrentPage()->getCurrentGrid()->filterPerPrice($filterName, $action, $value, $currency);
         $this->wait();
     }
 
@@ -199,7 +198,7 @@ class GridFilterContext extends PimContext
      */
     public function iFilterByMetric($filterName, $action, $value, $unit)
     {
-        $this->getCurrentPage()->getGridFilters()->filterPerMetric($filterName, $action, $value, $unit);
+        $this->getCurrentPage()->getCurrentGrid()->filterPerMetric($filterName, $action, $value, $unit);
         $this->wait();
     }
 
@@ -211,7 +210,7 @@ class GridFilterContext extends PimContext
      */
     public function iFilterByPriceWithEmptyValue($filterName, $currency)
     {
-        $this->getCurrentPage()->getGridFilters()->filterPerPrice($filterName, 'is empty', null, $currency);
+        $this->getCurrentPage()->getCurrentGrid()->filterPerPrice($filterName, 'is empty', null, $currency);
         $this->wait();
     }
 
@@ -224,7 +223,7 @@ class GridFilterContext extends PimContext
      */
     public function iFilterByNumber($filterName, $action, $value)
     {
-        $this->getCurrentPage()->getGridFilters()->filterPerNumber($filterName, $action, $value);
+        $this->getCurrentPage()->getCurrentGrid()->filterPerNumber($filterName, $action, $value);
         $this->wait();
     }
 
@@ -257,7 +256,7 @@ class GridFilterContext extends PimContext
             $values = [$values, $values];
         }
 
-        $gridFilters = $this->getCurrentPage()->getGridFilters();
+        $gridFilters = $this->getCurrentPage()->getCurrentGrid();
         $filter = $gridFilters->getFilter($filterName);
         $gridFilters->openFilter($filter);
 

@@ -5,13 +5,13 @@ namespace Pim\Behat\Decorator\PageDecorator;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Decorators of elements to manipulate page views
+ * Decorators of elements to manipulate the page view selector.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ViewCapableDecorator extends ElementDecorator
+class UserViewSelectorCapableDecorator extends ElementDecorator
 {
     protected $selectors = [
         'View selector' => '#view-selector',
@@ -19,7 +19,7 @@ class ViewCapableDecorator extends ElementDecorator
     ];
 
     protected $decorators = [
-        '\Pim\Behat\Decorator\ViewDecorator\ViewSelectorDecorator',
+        '\Pim\Behat\Decorator\NodeDecorator\ViewDecorator\ViewSelectorDecorator',
     ];
 
     /**

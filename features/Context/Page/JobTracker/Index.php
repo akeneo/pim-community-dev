@@ -2,7 +2,7 @@
 
 namespace Context\Page\JobTracker;
 
-use Context\Page\Base\Index as BaseIndexe;
+use Context\Page\Base\Index as BaseIndex;
 
 /**
  * Job tracker index page

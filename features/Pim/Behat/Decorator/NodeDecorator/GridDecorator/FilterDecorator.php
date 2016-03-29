@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\GridDecorator;
+namespace Pim\Behat\Decorator\NodeDecorator\GridDecorator;
 
 use Behat\Mink\Driver\DriverInterface;
 use Behat\Mink\Driver\Selenium2Driver;
